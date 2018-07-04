@@ -16,3 +16,7 @@ message Account {
     int32 game_membership_tier = 11;
     Address owner              = 12;
 }
+
+message CreateAccountRequest {
+    string username = 1;
+}

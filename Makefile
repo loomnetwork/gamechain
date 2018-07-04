@@ -22,7 +22,7 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	$(PROTOC) --gogo_out=$(GOPATH)/src $(PKG)/$<
 
-proto: types/zombie_battleground.pb.go
+proto: types/zb/zb.pb.go
 
 deps: $(PLUGIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
@@ -38,8 +38,8 @@ clean:
 	go clean
 	rm -f \
 		protoc-gen-gogo \
-		types/battleground.pb.go \
-		contracts/zombiebattleground.so \
-		bin/zombie-cli
+		types/zb/zb.pb.go \
+		contracts/zombiebattleground.so.1.0.0 \
+		bin/zb-cli
 
-.PHONY: all clean test deps proto
+.PHONY: all clean test deps proto cli
