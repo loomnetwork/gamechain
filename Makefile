@@ -3,9 +3,14 @@ GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 
-all: build
+all: build cli
 
 build: contracts/zombiebattleground.so.1.0.0
+
+cli: bin/zb-cli
+
+bin/zb-cli: 
+	go build -o $@ $(PKG)/cli
 
 contracts/zombiebattleground.so.1.0.0: proto
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
