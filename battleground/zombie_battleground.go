@@ -1,8 +1,11 @@
 package battleground
 
 import (
+	"context"
+
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
 type ZombieBattleground struct {
@@ -16,6 +19,10 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *plugin.Request) error {
+	return nil
+}
+
+func (z *ZombieBattleground) CreateAccount(ctx context.Context, req *zb.CreateAccountRequest) error {
 	return nil
 }
 
