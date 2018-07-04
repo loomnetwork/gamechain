@@ -1,0 +1,11 @@
+{
+    "contracts": [
+        {
+            "vm": "plugin",
+            "format": "plugin",
+            "name": "ZombieBattleground",
+            "location": "ZombieBattleground:1.0.0",
+            "init": null
+        }
+    ]
+}
