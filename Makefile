@@ -5,15 +5,15 @@ PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 
 all: build cli
 
-build: contracts/zombiebattleground.so.1.0.0
+build: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
 bin/zb-cli: 
 	go build -o $@ $(PKG)/cli
 
-contracts/zombiebattleground.so.1.0.0: proto
-	go build -buildmode=plugin -o $@ $(PKG)/plugin
+contracts/zombiebattleground.1.0.0: proto
+	go build -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
 	go build github.com/gogo/protobuf/protoc-gen-gogo
