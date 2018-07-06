@@ -18,6 +18,7 @@ var rootCmdArgs struct {
 var commonTxObjs struct {
 	privateKey []byte
 	contract   *client.Contract
+	rpcClient  *client.DAppChainRPCClient
 }
 
 func readKeyFile() error {
@@ -47,6 +48,7 @@ func connectToRPC(readURI string, writeURI string) error {
 	}
 
 	commonTxObjs.contract = client.NewContract(rpcClient, loomAddress.Local)
+	commonTxObjs.rpcClient = rpcClient
 
 	return nil
 }
