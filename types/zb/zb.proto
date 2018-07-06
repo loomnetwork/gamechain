@@ -5,18 +5,29 @@ import "github.com/loomnetwork/go-loom/types/types.proto";
 message Account {
     string id                  = 1;
     string username            = 2;
-    bool phone_number_verified = 4;
-    bool reward_redeemed       = 5;
-    bool is_kickstarter        = 6;
-    string image               = 7;
-    bool email_notification    = 8;
-    int64 elo_score            = 9;
-    int32 current_tier         = 10;
-    int32 game_membership_tier = 11;
-    Address owner              = 12;
+    bool phone_number_verified = 3;
+    bool reward_redeemed       = 4;
+    bool is_kickstarter        = 5;
+    string image               = 6;
+    bool email_notification    = 7;
+    int64 elo_score            = 8;
+    int32 current_tier         = 9;
+    int32 game_membership_tier = 10;
+    Address owner              = 11;
 }
 
-message CreateAccountRequest {
+message UpsertAccountRequest {
+    string username            = 1;
+    bool phone_number_verified = 2;
+    bool reward_redeemed       = 3;
+    bool is_kickstarter        = 4;
+    string image               = 5;
+    bool email_notification    = 6;
+    int64 elo_score            = 7;
+    int32 current_tier         = 8;
+    int32 game_membership_tier = 9;
+}
+
+message GetAccountRequest {
     string username = 1;
-    string image    = 2;
 }
