@@ -5,7 +5,6 @@ import "github.com/loomnetwork/go-loom/types/types.proto";
 message Account {
     string id                  = 1;
     string username            = 2;
-    bool private_key_created   = 3;
     bool phone_number_verified = 4;
     bool reward_redeemed       = 5;
     bool is_kickstarter        = 6;
