@@ -2,13 +2,11 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/spf13/cobra"
-
 	"github.com/loomnetwork/zombie_battleground/types/zb"
-
-	"fmt"
+	"github.com/spf13/cobra"
 )
 
 var createAccCmdArgs struct {
