@@ -8,6 +8,7 @@ import (
 
 const UUIDBytes = 16
 
+// Generates crypto random uuids
 func generateUUID() (string, error) {
 	buffer := make([]byte, UUIDBytes)
 
