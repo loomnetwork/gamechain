@@ -9,7 +9,7 @@ build: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
-bin/zb-cli: 
+bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
 contracts/zombiebattleground.1.0.0: proto
@@ -32,7 +32,8 @@ deps: $(PLUGIN_DIR)
 		github.com/gogo/protobuf/proto \
 		github.com/spf13/cobra \
 		github.com/pkg/errors \
-        github.com/hashicorp/go-plugin 
+    	github.com/hashicorp/go-plugin \
+		github.com/google/uuid
 
 clean:
 	go clean
