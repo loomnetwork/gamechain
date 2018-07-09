@@ -42,5 +42,5 @@ var getAccountCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(getAccountCmd)
 
-	getAccountCmd.Flags().StringVarP(&getAccCmdArgs.userName, "username", "u", "", "Username of account")
+	getAccountCmd.Flags().StringVarP(&getAccCmdArgs.userName, "username", "u", "loom", "Username of account")
 }
