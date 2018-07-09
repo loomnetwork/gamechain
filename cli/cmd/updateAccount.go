@@ -18,23 +18,23 @@ var updateAccCmdArgs struct {
 var updateAccountCmd = &cobra.Command{
 	Use:   "updateAccount",
 	Short: "creates an account for zombiebattleground",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var result zb.Account
 		var accountData zb.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(*updateAccCmdArgs.value), &accountData); err != nil {
-			fmt.Printf("Invalid JSON passed in value field. Error: %s\n", err.Error())
-			return
+			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
 		accountData.Username = *updateAccCmdArgs.userName
 
 		_, err := commonTxObjs.contract.Call("UpdateAccount", &accountData, signer, &result)
 		if err != nil {
-			fmt.Printf("Error encountered while calling UpdateAccount: %s\n", err.Error())
+			return fmt.Errorf("Error encountered while calling UpdateAccount: %s\n", err.Error())
 		} else {
 			fmt.Println(result)
+			return nil
 		}
 	},
 }

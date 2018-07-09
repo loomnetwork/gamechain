@@ -61,22 +61,22 @@ var rootCmd = &cobra.Command{
 
 		err = readKeyFile()
 		if err != nil {
-			return err
+			return fmt.Errorf("Error while reading private key file: %s", err.Error())
 		}
 
 		err = connectToRPC(*rootCmdArgs.readURI, *rootCmdArgs.writeURI)
 		if err != nil {
-			return err
+			return fmt.Errorf("Error while establishing RPC connection: %s", err.Error())
 		}
 
 		return nil
 	},
 }
 
-func Execute() {
+func Execute() error {
 	rootCmdArgs.privateKeyFilePath = rootCmd.PersistentFlags().StringP("key", "k", "", "Private key file path")
 	rootCmdArgs.readURI = rootCmd.PersistentFlags().StringP("readURI", "r", "", "Read URI for rpc")
 	rootCmdArgs.writeURI = rootCmd.PersistentFlags().StringP("writeURI", "w", "", "Write URI for rpc")
 
-	rootCmd.Execute()
+	return rootCmd.Execute()
 }
