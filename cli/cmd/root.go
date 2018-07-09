@@ -10,9 +10,9 @@ import (
 )
 
 var rootCmdArgs struct {
-	privateKeyFilePath *string
-	readURI            *string
-	writeURI           *string
+	privateKeyFilePath string
+	readURI            string
+	writeURI           string
 }
 
 var commonTxObjs struct {
@@ -22,17 +22,17 @@ var commonTxObjs struct {
 }
 
 func readKeyFile() error {
-	fileContents, err := ioutil.ReadFile(*rootCmdArgs.privateKeyFilePath)
+	fileContents, err := ioutil.ReadFile(rootCmdArgs.privateKeyFilePath)
 	if err != nil {
 		return fmt.Errorf("Unable to read private key from file: %s",
-			*rootCmdArgs.privateKeyFilePath)
+			rootCmdArgs.privateKeyFilePath)
 	}
 
 	decodeBuffer := make([]byte, len(fileContents))
 	bytesDecoded, err := base64.StdEncoding.Decode(decodeBuffer, fileContents)
 	if err != nil {
 		return fmt.Errorf("Invalid base64 content in private key file: %s",
-			*rootCmdArgs.privateKeyFilePath)
+			rootCmdArgs.privateKeyFilePath)
 	}
 
 	commonTxObjs.privateKey = decodeBuffer[:bytesDecoded]
@@ -64,7 +64,7 @@ var rootCmd = &cobra.Command{
 			return fmt.Errorf("Error while reading private key file: %s", err.Error())
 		}
 
-		err = connectToRPC(*rootCmdArgs.readURI, *rootCmdArgs.writeURI)
+		err = connectToRPC(rootCmdArgs.readURI, rootCmdArgs.writeURI)
 		if err != nil {
 			return fmt.Errorf("Error while establishing RPC connection: %s", err.Error())
 		}
@@ -74,9 +74,9 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() error {
-	rootCmdArgs.privateKeyFilePath = rootCmd.PersistentFlags().StringP("key", "k", "priv.key", "Private key file path")
-	rootCmdArgs.readURI = rootCmd.PersistentFlags().StringP("readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
-	rootCmdArgs.writeURI = rootCmd.PersistentFlags().StringP("writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
+	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.privateKeyFilePath, "key", "k", "priv.key", "Private key file path")
+	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.readURI, "readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
+	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.writeURI, "writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
 
 	return rootCmd.Execute()
 }
