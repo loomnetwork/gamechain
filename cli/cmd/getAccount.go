@@ -10,7 +10,7 @@ import (
 )
 
 var getAccCmdArgs struct {
-	userName *string
+	userName string
 }
 
 var getAccountCmd = &cobra.Command{
@@ -26,7 +26,7 @@ var getAccountCmd = &cobra.Command{
 		}
 
 		req := &zb.GetAccountRequest{
-			Username: *getAccCmdArgs.userName,
+			Username: getAccCmdArgs.userName,
 		}
 
 		_, err := commonTxObjs.contract.StaticCall("GetAccount", req, callerAddr, &result)
@@ -42,5 +42,5 @@ var getAccountCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(getAccountCmd)
 
-	getAccCmdArgs.userName = getAccountCmd.Flags().StringP("username", "u", "", "Username of account")
+	getAccountCmd.Flags().StringVarP(&getAccCmdArgs.userName, "username", "u", "", "Username of account")
 }

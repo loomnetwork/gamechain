@@ -74,9 +74,9 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() error {
-	rootCmdArgs.privateKeyFilePath = rootCmd.PersistentFlags().StringP("key", "k", "", "Private key file path")
-	rootCmdArgs.readURI = rootCmd.PersistentFlags().StringP("readURI", "r", "", "Read URI for rpc")
-	rootCmdArgs.writeURI = rootCmd.PersistentFlags().StringP("writeURI", "w", "", "Write URI for rpc")
+	rootCmdArgs.privateKeyFilePath = rootCmd.PersistentFlags().StringP("key", "k", "priv.key", "Private key file path")
+	rootCmdArgs.readURI = rootCmd.PersistentFlags().StringP("readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
+	rootCmdArgs.writeURI = rootCmd.PersistentFlags().StringP("writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
 
 	return rootCmd.Execute()
 }
