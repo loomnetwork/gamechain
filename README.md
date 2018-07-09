@@ -22,20 +22,20 @@ loom run
 ## Creating account and running transactions
 
 ```
+# create a key pair using loom binary
+loom genkey -k priv
+
 # Note that setAccount and getAccount supports all fields defined in `UpsertAccountRequest`. To make example simple,
 # only two fields has been used.
 
-cd /path/to/project/directory
+# In zombie_battleground directory, run:
 
-# create a key pair
-LOOM_CMDPLUGINDIR=cmds/ loom genkey -k priv
-
-# send a create account tx
-LOOM_CMDPLUGINDIR=cmds/ ./bin/zb-cli createAccount -k priv -u loom -v "{\"image\":\"Image\", \"game_membership_tier\": 1}"
+# create account transaction
+./bin/zb-cli createAccount -k priv -u loom -v "{\"image\":\"Image\", \"game_membership_tier\": 1}"
 
 # get account static call
-LOOM_CMDPLUGINDIR=cmds/ ./bin/zb-cli getAccount -k priv -u loom
+./bin/zb-cli getAccount -k priv -u loom
 
-#update account transaction
-LOOM_CMDPLUGINDIR=cmds/ ./bin/zb-cli setAccount -k priv -u loom -v "{\"image\":\"Image2\", \"game_membership_tier\": 2}"
+# update account transaction
+./bin/zb-cli updateAccount -k priv -u loom -v "{\"image\":\"Image2\", \"game_membership_tier\": 2}"
 ```

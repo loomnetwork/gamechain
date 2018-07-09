@@ -32,7 +32,7 @@ deps: $(PLUGIN_DIR)
 		github.com/gogo/protobuf/proto \
 		github.com/spf13/cobra \
 		github.com/pkg/errors \
-    github.com/hashicorp/go-plugin \
+    	github.com/hashicorp/go-plugin \
 		github.com/google/uuid
 
 clean:
