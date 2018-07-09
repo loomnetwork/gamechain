@@ -1,6 +1,13 @@
 package main
 
-// TODO: create commandline to interact with the contract
-// Example can be found here https://github.com/loomnetwork/go-loom/tree/master/examples/cli
+import (
+	"os"
 
-func main() {}
+	"github.com/loomnetwork/zombie_battleground/cli/cmd"
+)
+
+func main() {
+	if err := cmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+}
