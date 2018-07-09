@@ -10,8 +10,8 @@ import (
 )
 
 var createAccCmdArgs struct {
-	userName *string
-	value    *string
+	userName string
+	value    string
 }
 
 var createAccountCmd = &cobra.Command{
@@ -21,11 +21,11 @@ var createAccountCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var accountData zb.UpsertAccountRequest
 
-		if err := json.Unmarshal([]byte(*updateAccCmdArgs.value), &accountData); err != nil {
+		if err := json.Unmarshal([]byte(createAccCmdArgs.value), &accountData); err != nil {
 			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
-		accountData.Username = *updateAccCmdArgs.userName
+		accountData.Username = createAccCmdArgs.userName
 
 		_, err := commonTxObjs.contract.Call("CreateAccount", &accountData, signer, nil)
 		if err != nil {
@@ -39,6 +39,6 @@ var createAccountCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(createAccountCmd)
 
-	createAccCmdArgs.userName = createAccountCmd.Flags().StringP("username", "u", "", "Username of account")
-	createAccCmdArgs.value = createAccountCmd.Flags().StringP("value", "v", "", "Account data in serialized json format")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userName, "username", "u", "loom", "Username of account")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.value, "value", "v", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
 }
