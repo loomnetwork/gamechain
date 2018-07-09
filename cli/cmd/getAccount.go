@@ -16,7 +16,7 @@ var getAccCmdArgs struct {
 var getAccountCmd = &cobra.Command{
 	Use:   "getAccount",
 	Short: "gets account data for zombiebattleground",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var result zb.Account
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
@@ -31,9 +31,10 @@ var getAccountCmd = &cobra.Command{
 
 		_, err := commonTxObjs.contract.StaticCall("GetAccount", req, callerAddr, &result)
 		if err != nil {
-			fmt.Printf("Error encountered while calling GetAccount: %s\n", err.Error())
+			return fmt.Errorf("Error encountered while calling GetAccount: %s\n", err.Error())
 		} else {
 			fmt.Println(result)
+			return nil
 		}
 	},
 }

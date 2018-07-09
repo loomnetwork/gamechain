@@ -1,7 +1,16 @@
 package main
 
-import "github.com/loomnetwork/zombie_battleground/cli/cmd"
+import (
+	"os"
+
+	"github.com/loomnetwork/zombie_battleground/cli/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	err := cmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	} else {
+		os.Exit(0)
+	}
 }
