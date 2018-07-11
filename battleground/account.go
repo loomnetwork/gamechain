@@ -4,27 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
 )
 
-type ZombieBattleground struct {
-}
-
-func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
-	return plugin.Meta{
-		Name:    "ZombieBattleground",
-		Version: "1.0.0",
-	}, nil
-}
-
-func (z *ZombieBattleground) Init(ctx contract.Context, req *plugin.Request) error {
-	return nil
-}
-
-func (z *ZombieBattleground) copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
+func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.PhoneNumberVerified = req.PhoneNumberVerified
 	account.RewardRedeemed = req.RewardRedeemed
 	account.IsKickstarter = req.IsKickstarter
@@ -35,7 +20,7 @@ func (z *ZombieBattleground) copyAccountInfo(account *zb.Account, req *zb.Upsert
 	account.GameMembershipTier = req.GameMembershipTier
 }
 
-func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
+func GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	owner := strings.TrimSpace(req.Username)
 
@@ -46,7 +31,7 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 	return &account, nil
 }
 
-func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
+func UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	senderAddress := []byte(ctx.Message().Sender.Local)
 
@@ -61,7 +46,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 		return nil, errors.Wrapf(err, "Unable to retrieve account data for username: %s", req.Username)
 	}
 
-	z.copyAccountInfo(&account, req)
+	copyAccountInfo(&account, req)
 	if err := ctx.Set(OwnerKey(owner), &account); err != nil {
 		return nil, errors.Wrapf(err, "Error setting account information for user: %s", req.Username)
 	}
@@ -78,7 +63,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 	return &account, nil
 }
 
-func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
+func CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
 	var account zb.Account
 	var uuid string
 
@@ -100,7 +85,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	account.Owner = ctx.Message().Sender.MarshalPB()
 	account.Username = req.Username
 
-	z.copyAccountInfo(&account, req)
+	copyAccountInfo(&account, req)
 
 	if err := ctx.Set(OwnerKey(owner), &account); err != nil {
 		return errors.Wrapf(err, "Error setting account information for user: %s", req.Username)
@@ -119,5 +104,3 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	return nil
 }
-
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
