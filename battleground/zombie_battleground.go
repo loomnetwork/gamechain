@@ -14,13 +14,13 @@ import (
 type ZombieBattleground struct {
 }
 
-func (z *ZombieBattleground) isOwner(ctx contract.Context, username string) bool {
-	ok, _ := ctx.HasPermission([]byte(username), []string{"owner"})
+func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
+	ok, _ := ctx.HasPermission([]byte(userId), []string{"user"})
 	return ok
 }
 
-func (z *ZombieBattleground) constructOwnerKey(owner string) []byte {
-	return []byte("owner:" + owner)
+func (z *ZombieBattleground) constructUserKey(userId string) []byte {
+	return []byte("user:" + userId)
 }
 
 func (z *ZombieBattleground) prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
@@ -57,10 +57,9 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *plugin.Request) err
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
-	owner := strings.TrimSpace(req.Username)
 
-	if err := ctx.Get(z.constructOwnerKey(owner), &account); err != nil {
-		return nil, errors.Wrapf(err, "Unable to retrieve account data for username: %s", req.Username)
+	if err := ctx.Get(z.constructUserKey(strings.TrimSpace(req.UserId)), &account); err != nil {
+		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
 	}
 
 	return &account, nil
@@ -69,28 +68,27 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	senderAddress := []byte(ctx.Message().Sender.Local)
+	userId := strings.TrimSpace(req.UserId)
 
-	// Verify whether user is actually an owner or not
-	if !z.isOwner(ctx, strings.TrimSpace(req.Username)) {
-		return nil, fmt.Errorf("Username: %s is not verified", req.Username)
+	// Verify whether this privateKey associated with user
+	if !z.isUser(ctx, userId) {
+		return nil, fmt.Errorf("UserId: %s is not verified", req.UserId)
 	}
 
-	owner := strings.TrimSpace(req.Username)
-
-	if err := ctx.Get(z.constructOwnerKey(owner), &account); err != nil {
-		return nil, errors.Wrapf(err, "Unable to retrieve account data for username: %s", req.Username)
+	if err := ctx.Get(z.constructUserKey(userId), &account); err != nil {
+		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
 	}
 
 	z.copyAccountInfo(&account, req)
-	if err := ctx.Set(z.constructOwnerKey(owner), &account); err != nil {
-		return nil, errors.Wrapf(err, "Error setting account information for user: %s", req.Username)
+	if err := ctx.Set(z.constructUserKey(userId), &account); err != nil {
+		return nil, errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
 	}
 
-	ctx.Logger().Info("Updated zombiebattleground account", "owner", owner, "address", senderAddress)
+	ctx.Logger().Info("Updated zombiebattleground account", "user_id", userId, "address", senderAddress)
 
-	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, owner, "updateaccount")
+	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "updateaccount")
 	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for username:%s. Error:%s", req.Username, err))
+		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 	} else {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:updateaccount")
 	}
@@ -100,39 +98,31 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
 	var account zb.Account
-	var uuid string
 
+	userId := strings.TrimSpace(req.UserId)
 	senderAddress := []byte(ctx.Message().Sender.Local)
 
 	// confirm owner doesnt exist already
-	if ctx.Has(z.constructOwnerKey(strings.TrimSpace(req.Username))) {
-		return errors.New("Owner already exists.\n")
+	if ctx.Has(z.constructUserKey(userId)) {
+		return errors.New("User already exists.\n")
 	}
 
-	owner := strings.TrimSpace(req.Username)
-
-	uuid, err := generateUUID()
-	if err != nil {
-		return errors.Wrapf(err, "Unable to generate Account Id for user: %s", req.Username)
-	}
-
-	account.Id = uuid
+	account.UserId = userId
 	account.Owner = ctx.Message().Sender.MarshalPB()
-	account.Username = req.Username
 
 	z.copyAccountInfo(&account, req)
 
-	if err := ctx.Set(z.constructOwnerKey(owner), &account); err != nil {
-		return errors.Wrapf(err, "Error setting account information for user: %s", req.Username)
+	if err := ctx.Set(z.constructUserKey(userId), &account); err != nil {
+		return errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
 	}
 
-	ctx.GrantPermission([]byte(owner), []string{"owner"})
+	ctx.GrantPermission([]byte(userId), []string{"user"})
 
-	ctx.Logger().Info("Created zombiebattleground account", "owner", owner, "address", senderAddress)
+	ctx.Logger().Info("Created zombiebattleground account", "userId", userId, "address", senderAddress)
 
-	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, owner, "createaccount")
+	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "createaccount")
 	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for username:%s. Error:%s", req.Username, err))
+		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 	} else {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createaccount")
 	}
