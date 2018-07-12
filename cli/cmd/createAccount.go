@@ -10,8 +10,8 @@ import (
 )
 
 var createAccCmdArgs struct {
-	userName string
-	value    string
+	userId string
+	value  string
 }
 
 var createAccountCmd = &cobra.Command{
@@ -25,7 +25,7 @@ var createAccountCmd = &cobra.Command{
 			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
-		accountData.Username = createAccCmdArgs.userName
+		accountData.UserId = createAccCmdArgs.userId
 
 		_, err := commonTxObjs.contract.Call("CreateAccount", &accountData, signer, nil)
 		if err != nil {
@@ -39,6 +39,6 @@ var createAccountCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(createAccountCmd)
 
-	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userName, "username", "u", "loom", "Username of account")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userId, "userId", "u", "loom", "UserId of account")
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.value, "value", "v", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
 }
