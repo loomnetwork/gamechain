@@ -19,10 +19,6 @@ func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
 	return ok
 }
 
-func (z *ZombieBattleground) constructUserKey(userId string) []byte {
-	return []byte("user:" + userId)
-}
-
 func (z *ZombieBattleground) prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
 	emitMsg := struct {
 		Owner  string
@@ -51,14 +47,16 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 	}, nil
 }
 
-func (z *ZombieBattleground) Init(ctx contract.Context, req *plugin.Request) error {
+func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
+	ctx.Set(InitDataKey(), req)
 	return nil
 }
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
+	userKeySpace := NewUserKeySpace(req.UserId)
 
-	if err := ctx.Get(z.constructUserKey(strings.TrimSpace(req.UserId)), &account); err != nil {
+	if err := ctx.Get(userKeySpace.AccountKey(), &account); err != nil {
 		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
 	}
 
@@ -67,20 +65,22 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	var account zb.Account
+
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	userId := strings.TrimSpace(req.UserId)
+	userKeySpace := NewUserKeySpace(userId)
 
 	// Verify whether this privateKey associated with user
 	if !z.isUser(ctx, userId) {
 		return nil, fmt.Errorf("UserId: %s is not verified", req.UserId)
 	}
 
-	if err := ctx.Get(z.constructUserKey(userId), &account); err != nil {
+	if err := ctx.Get(userKeySpace.AccountKey(), &account); err != nil {
 		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
 	}
 
 	z.copyAccountInfo(&account, req)
-	if err := ctx.Set(z.constructUserKey(userId), &account); err != nil {
+	if err := ctx.Set(userKeySpace.AccountKey(), &account); err != nil {
 		return nil, errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
 	}
 
@@ -101,9 +101,15 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	userId := strings.TrimSpace(req.UserId)
 	senderAddress := []byte(ctx.Message().Sender.Local)
+	userKeySpace := NewUserKeySpace(userId)
+
+	var initData zb.InitRequest
+	if err := ctx.Get(InitDataKey(), &initData); err != nil {
+		return errors.Wrapf(err, "Unable to retrieve initdata.")
+	}
 
 	// confirm owner doesnt exist already
-	if ctx.Has(z.constructUserKey(userId)) {
+	if ctx.Has(userKeySpace.AccountKey()) {
 		return errors.New("User already exists.\n")
 	}
 
@@ -112,11 +118,13 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	z.copyAccountInfo(&account, req)
 
-	if err := ctx.Set(z.constructUserKey(userId), &account); err != nil {
+	if err := ctx.Set(userKeySpace.AccountKey(), &account); err != nil {
 		return errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
 	}
 
 	ctx.GrantPermission([]byte(userId), []string{"user"})
+
+	ctx.Set(userKeySpace.DecksKey(), &zb.UserDecks{Decks: initData.DefaultDecks})
 
 	ctx.Logger().Info("Created zombiebattleground account", "userId", userId, "address", senderAddress)
 
@@ -128,6 +136,25 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	return nil
+}
+
+// Deck related functions
+func (z *ZombieBattleground) GetDecks(ctx contract.StaticContext, req *zb.GetDecksRequest) (*zb.UserDecks, error) {
+	var userDecks zb.UserDecks
+
+	userId := strings.TrimSpace(req.UserId)
+	userKeySpace := NewUserKeySpace(userId)
+
+	var initData zb.InitRequest
+	if err := ctx.Get(InitDataKey(), &initData); err != nil {
+		return nil, errors.Wrapf(err, "Unable to retrieve initdata.")
+	}
+
+	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+		return nil, errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+	}
+
+	return &userDecks, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
