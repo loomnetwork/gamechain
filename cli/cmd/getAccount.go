@@ -17,7 +17,7 @@ var getAccountCmd = &cobra.Command{
 	Use:   "getAccount",
 	Short: "gets account data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var result zb.Account
+		var result zb.ZBAccount
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
