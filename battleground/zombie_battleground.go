@@ -29,7 +29,7 @@ func (z *ZombieBattleground) prepareEmitMsgJSON(address []byte, owner, method st
 	return json.Marshal(emitMsg)
 }
 
-func (z *ZombieBattleground) copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
+func (z *ZombieBattleground) copyAccountInfo(account *zb.ZBAccount, req *zb.UpsertAccountRequest) {
 	account.PhoneNumberVerified = req.PhoneNumberVerified
 	account.RewardRedeemed = req.RewardRedeemed
 	account.IsKickstarter = req.IsKickstarter
@@ -52,8 +52,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	return nil
 }
 
-func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
-	var account zb.Account
+func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.ZBAccount, error) {
+	var account zb.ZBAccount
 	userKeySpace := NewUserKeySpace(req.UserId)
 
 	if err := ctx.Get(userKeySpace.AccountKey(), &account); err != nil {
@@ -63,8 +63,8 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 	return &account, nil
 }
 
-func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
-	var account zb.Account
+func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.ZBAccount, error) {
+	var account zb.ZBAccount
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	userId := strings.TrimSpace(req.UserId)
@@ -97,7 +97,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 }
 
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
-	var account zb.Account
+	var account zb.ZBAccount
 
 	userId := strings.TrimSpace(req.UserId)
 	senderAddress := []byte(ctx.Message().Sender.Local)
