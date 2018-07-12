@@ -20,7 +20,7 @@ var updateAccountCmd = &cobra.Command{
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var result zb.Account
+		var result zb.ZBAccount
 		var accountData zb.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(updateAccCmdArgs.value), &accountData); err != nil {
