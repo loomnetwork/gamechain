@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "github.com/loomnetwork/go-loom/types/types.proto";
 
-message Account {
+message ZBAccount {
     string user_id             = 1;
     bool phone_number_verified = 2;
     bool reward_redeemed       = 3;
@@ -37,17 +37,17 @@ message GetDecksRequest {
 
 message DecksResponse {
     string user_id = 1;
-    repeated Deck decks = 2;
+    repeated ZBDeck decks = 2;
 }
 
-message Deck {
+message ZBDeck {
    string name = 1;
    int64 hero_id = 2;
    repeated CardInDeck cards = 3;
 }
 
 message UserDecks {
-    repeated Deck decks = 1;
+    repeated ZBDeck decks = 1;
 }
 
 message CardInDeck {
@@ -61,9 +61,9 @@ message GetDeckRequest {
 }
 
 message GetDecksResponse {
-    repeated Deck decks = 1;
+    repeated ZBDeck decks = 1;
 }
 
 message InitRequest {
-    repeated Deck default_decks = 1;
+    repeated ZBDeck default_decks = 1;
 }
