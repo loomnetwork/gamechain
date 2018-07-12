@@ -1,11 +1,68 @@
 {
-    "contracts": [
-        {
-            "vm": "plugin",
-            "format": "plugin",
-            "name": "ZombieBattleground",
-            "location": "zombiebattleground:1.0.0",
-            "init": null
-        }
-    ]
+   "contracts":[
+      {
+         "vm":"plugin",
+         "format":"plugin",
+         "name":"ZombieBattleground",
+         "location":"zombiebattleground:1.0.0",
+         "init":{
+            "default_decks":[
+               {
+                  "heroId":1,
+                  "name":"Default",
+                  "cards":[
+                     {
+                        "cardId":0,
+                        "amount":4
+                     },
+                     {
+                        "cardId":4,
+                        "amount":4
+                     },
+                     {
+                        "cardId":8,
+                        "amount":4
+                     },
+                     {
+                        "cardId":12,
+                        "amount":4
+                     },
+                     {
+                        "cardId":16,
+                        "amount":4
+                     },
+                     {
+                        "cardId":20,
+                        "amount":4
+                     },
+                     {
+                        "cardId":1,
+                        "amount":1
+                     },
+                     {
+                        "cardId":5,
+                        "amount":1
+                     },
+                     {
+                        "cardId":2,
+                        "amount":1
+                     },
+                     {
+                        "cardId":14,
+                        "amount":1
+                     },
+                     {
+                        "cardId":3,
+                        "amount":1
+                     },
+                     {
+                        "cardId":25,
+                        "amount":1
+                     }
+                  ]
+               }
+            ]
+         }
+      }
+   ]
 }
