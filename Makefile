@@ -1,6 +1,6 @@
 PKG = github.com/loomnetwork/zombie_battleground
 GIT_SHA = `git rev-parse --verify HEAD`
-PROTOC = protoc --plugin=./protoc-gen-gogo -Ivendor -I$(GOPATH)/src -I/usr/local/include
+PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 
 all: build cli
@@ -22,7 +22,11 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	$(PROTOC) --gogo_out=$(GOPATH)/src $(PKG)/$<
 
-proto: types/zb/zb.pb.go
+%.cs: %.proto protoc-gen-gogo
+	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
+	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<
+
+proto: types/zb/zb.pb.go types/zb/zb.cs 
 
 deps: $(PLUGIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
@@ -40,6 +44,7 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/zb.pb.go \
+		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
 		bin/zb-cli
 

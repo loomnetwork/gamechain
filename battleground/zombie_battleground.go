@@ -114,7 +114,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	account.UserId = userId
-	account.Owner = ctx.Message().Sender.MarshalPB()
+	account.Owner = ctx.Message().Sender.Bytes()
 
 	z.copyAccountInfo(&account, req)
 

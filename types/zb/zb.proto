@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "github.com/loomnetwork/go-loom/types/types.proto";
+option csharp_namespace = "Loom.Unity3d.Zb";
 
 message ZBAccount {
     string user_id             = 1;
@@ -12,7 +12,7 @@ message ZBAccount {
     int64 elo_score            = 7;
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
-    Address owner              = 10;
+    bytes owner                = 10;
 }
 
 message UpsertAccountRequest {
