@@ -60,10 +60,29 @@ message GetDeckRequest {
     string deck_id = 2;
 }
 
+message DeleteDeckRequest {
+    string user_id = 1;
+    string deck_id = 2;
+}
+
 message GetDecksResponse {
     repeated ZBDeck decks = 1;
 }
 
+
+message ZBCard {
+    int64 id = 1;
+    string element = 2;
+    int64 goo_cost = 3;
+}
+
+message ZBCardCollection {
+    repeated ZBCard cards = 1;
+}
+
+
 message InitRequest {
     repeated ZBDeck default_decks = 1;
+    ZBCardCollection default_collection = 2;
+    ZBCardCollection available_cards = 3;
 }
