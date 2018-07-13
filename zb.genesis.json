@@ -6,6 +6,24 @@
          "name":"ZombieBattleground",
          "location":"zombiebattleground:1.0.0",
          "init":{
+            "default_collection":{
+               "cards":[
+                  {
+                     "id":1,
+                     "element":"Fire",
+                     "goo_cost":4
+                  }
+               ]
+            },
+            "available_cards":{
+               "cards":[
+                  {
+                     "id":1,
+                     "element":"Fire",
+                     "goo_cost":4
+                  }
+               ]
+            },
             "default_decks":[
                {
                   "heroId":1,
