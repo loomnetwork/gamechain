@@ -19,5 +19,5 @@ func (u *UserKeySpace) AccountKey() []byte {
 }
 
 func (u *UserKeySpace) DecksKey() []byte {
-	return []byte("user:" + u.userId + ":decks")
+	return []byte("user:" + u.userId + ":deck")
 }
