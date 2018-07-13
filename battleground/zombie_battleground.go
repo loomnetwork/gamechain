@@ -262,6 +262,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return errors.Wrapf(err, "Unable to save decks for userId: %s", userId)
 	}
 
+	// TODO: Only emit events and log in case something actually got deleted
 	ctx.Logger().Info("Deleted zombiebattleground deck", "userId", userId, "deckId", deckId, "address", senderAddress)
 
 	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "deletedeck")
