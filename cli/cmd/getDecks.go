@@ -26,7 +26,7 @@ var getDecksCmd = &cobra.Command{
 		}
 
 		req := &zb.GetDecksRequest{
-			UserId: getAccCmdArgs.userId,
+			UserId: getDecksCmdArgs.userId,
 		}
 
 		_, err := commonTxObjs.contract.StaticCall("GetDecks", req, callerAddr, &result)
