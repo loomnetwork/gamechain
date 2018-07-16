@@ -15,7 +15,7 @@ var deleteDeckCmdArgs struct {
 
 var deleteDeckCmd = &cobra.Command{
 	Use:   "deleteDeck",
-	Short: "gets deck for zombiebattleground by its name",
+	Short: "deletes deck for zombiebattleground by its name",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
