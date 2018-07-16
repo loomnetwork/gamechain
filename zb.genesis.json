@@ -9,18 +9,52 @@
             "default_collection":{
                "cards":[
                   {
-                     "id":1,
-                     "element":"Fire",
-                     "goo_cost":4
-                  }
-               ]
-            },
-            "available_cards":{
-               "cards":[
+                     "card_id":1,
+                     "amount": 4
+                  },
                   {
-                     "id":1,
-                     "element":"Fire",
-                     "goo_cost":4
+                     "card_id":2,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":3,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":4,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":5,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":6,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":7,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":8,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":9,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":10,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":11,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":12,
+                    "amount": 5
                   }
                ]
             },
@@ -30,51 +64,51 @@
                   "name":"Default",
                   "cards":[
                      {
-                        "cardId":0,
-                        "amount":4
+                        "card_id":1,
+                        "amount":2
                      },
                      {
-                        "cardId":4,
-                        "amount":4
+                        "card_id":2,
+                        "amount":2
                      },
                      {
-                        "cardId":8,
-                        "amount":4
+                        "card_id":3,
+                        "amount":2
                      },
                      {
-                        "cardId":12,
-                        "amount":4
+                        "card_id":4,
+                        "amount":2
                      },
                      {
-                        "cardId":16,
-                        "amount":4
+                        "card_id":5,
+                        "amount":2
                      },
                      {
-                        "cardId":20,
-                        "amount":4
+                        "card_id":6,
+                        "amount":2
                      },
                      {
-                        "cardId":1,
+                        "card_id":7,
                         "amount":1
                      },
                      {
-                        "cardId":5,
+                        "card_id":8,
                         "amount":1
                      },
                      {
-                        "cardId":2,
+                        "card_id":9,
                         "amount":1
                      },
                      {
-                        "cardId":14,
+                        "card_id":10,
                         "amount":1
                      },
                      {
-                        "cardId":3,
+                        "card_id":11,
                         "amount":1
                      },
                      {
-                        "cardId":25,
+                        "card_id":12,
                         "amount":1
                      }
                   ]

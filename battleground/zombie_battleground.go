@@ -35,6 +35,22 @@ func (z *ZombieBattleground) getDecks(deckSet []*zb.ZBDeck, decksToQuery []strin
 	return decks[:i]
 }
 
+func (z *ZombieBattleground) validateDeckAddition(collection *zb.ZBCardCollection, deck *zb.ZBDeck) error {
+	maxAmountMap := make(map[int64]int64)
+
+	for _, card := range collection.Cards {
+		maxAmountMap[card.CardId] = card.Amount
+	}
+
+	for _, card := range deck.Cards {
+		if maxAmountMap[card.CardId] < card.Amount {
+			return fmt.Errorf("You cannot add more than %d for your card id: %d", maxAmountMap[card.CardId], card.CardId)
+		}
+	}
+
+	return nil
+}
+
 func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb.ZBDeck) []*zb.ZBDeck {
 	deckMap := make(map[string]*zb.ZBDeck)
 
@@ -194,6 +210,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	ctx.GrantPermission([]byte(userId), []string{"user"})
 
 	ctx.Set(userKeySpace.DecksKey(), &zb.UserDecks{Decks: initData.DefaultDecks})
+	ctx.Set(userKeySpace.CardCollectionKey(), initData.DefaultCollection)
 
 	ctx.Logger().Info("Created zombiebattleground account", "userId", userId, "address", senderAddress)
 
@@ -251,6 +268,10 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	userKeySpace := NewUserKeySpace(userId)
 	deckId := strings.TrimSpace(req.DeckId)
 
+	if !z.isUser(ctx, userId) {
+		return fmt.Errorf("UserId: %s is not verified", req.UserId)
+	}
+
 	if err = ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
 		return errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
 	}
@@ -275,6 +296,49 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	}
 
 	return nil
+}
+
+func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckRequest) error {
+	var userCollection zb.ZBCardCollection
+	var userDecks zb.UserDecks
+
+	userId := strings.TrimSpace(req.UserId)
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	userKeySpace := NewUserKeySpace(userId)
+
+	if !z.isUser(ctx, userId) {
+		return fmt.Errorf("UserId: %s is not verified", req.UserId)
+	}
+
+	if err := ctx.Get(userKeySpace.CardCollectionKey(), &userCollection); err != nil {
+		return errors.Wrapf(err, "Unable to get collection data for userId: %s", req.UserId)
+	}
+
+	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+		return errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+	}
+
+	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
+		return errors.Wrapf(err, "Unable to validate deck data for userId: %s", req.UserId)
+	}
+
+	userDecks.Decks = z.mergeDeckSets(userDecks.Decks, []*zb.ZBDeck{req.Deck})
+
+	if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
+		return errors.Wrapf(err, "Unable to save decks for userId: %s", userId)
+	}
+
+	ctx.Logger().Info("Created zombiebattleground deck", "userId", userId, "deckId", req.Deck.Name, "address", senderAddress)
+
+	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "adddeck")
+	if err != nil {
+		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+	} else {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:adddeck")
+	}
+
+	return nil
+
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})

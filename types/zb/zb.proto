@@ -43,14 +43,14 @@ message DecksResponse {
 message ZBDeck {
    string name = 1;
    int64 hero_id = 2;
-   repeated CardInDeck cards = 3;
+   repeated CardInCollection cards = 3;
 }
 
 message UserDecks {
     repeated ZBDeck decks = 1;
 }
 
-message CardInDeck {
+message CardInCollection {
     int64 card_id = 1;
     int64 amount = 2;
 }
@@ -58,6 +58,11 @@ message CardInDeck {
 message GetDeckRequest {
     string user_id = 1;
     string deck_id = 2;
+}
+
+message AddDeckRequest {
+    string user_id = 1;
+    ZBDeck deck = 2;
 }
 
 message DeleteDeckRequest {
@@ -69,20 +74,12 @@ message GetDecksResponse {
     repeated ZBDeck decks = 1;
 }
 
-
-message ZBCard {
-    int64 id = 1;
-    string element = 2;
-    int64 goo_cost = 3;
-}
-
 message ZBCardCollection {
-    repeated ZBCard cards = 1;
+    repeated CardInCollection cards = 1;
 }
 
 
 message InitRequest {
     repeated ZBDeck default_decks = 1;
     ZBCardCollection default_collection = 2;
-    ZBCardCollection available_cards = 3;
 }
