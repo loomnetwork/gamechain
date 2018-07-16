@@ -5,7 +5,7 @@ PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 
 all: build cli
 
-build: contracts/zombiebattleground.1.0.0
+build: contracts/zombiebattleground.1.0.0 contracts/zombiebattleground-card.1.0.0
 
 cli: bin/zb-cli
 
@@ -14,6 +14,9 @@ bin/zb-cli:
 
 contracts/zombiebattleground.1.0.0: proto
 	go build -o $@ $(PKG)/plugin
+
+contracts/zombiebattleground-card.1.0.0: proto
+	go build -o $@ $(PKG)/card/plugin
 
 protoc-gen-gogo:
 	go build github.com/gogo/protobuf/protoc-gen-gogo
@@ -46,6 +49,7 @@ clean:
 		types/zb/zb.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
+		contracts/zombiebattleground-card.so.1.0.0 \
 		bin/zb-cli
 
 .PHONY: all clean test deps proto cli
