@@ -82,4 +82,31 @@ message ZBCardCollection {
 message InitRequest {
     repeated ZBDeck default_decks = 1;
     ZBCardCollection default_collection = 2;
+    repeated Card cards = 3;
 }
+
+message Card {
+    string id               = 1;
+    string name             = 2;
+    string element          = 3;
+    string rank             = 4;
+    string type             = 5;
+    int32 attack            = 6;
+    int32 defence           = 7;
+    int32 goo_cost          = 8;
+    string ability          = 9;
+    repeated Effect effects = 10;
+}
+
+message Effect {
+    string trigger  = 1;
+    string effect   = 2;
+    string duration = 3;
+    string target   = 4;
+    string limit    = 5;
+}
+
+message CardList {
+    repeated Card cards = 1;
+}
+
