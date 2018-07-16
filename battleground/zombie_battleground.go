@@ -57,7 +57,7 @@ func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb
 	return newArray
 }
 
-func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, error) {
+func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, bool, error) {
 	deckMap := make(map[string]*zb.ZBDeck)
 
 	for _, deck := range deckSet {
@@ -77,10 +77,10 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 	}
 
 	if len(newArray) == 0 {
-		return nil, errors.New("Cannot delete only deck available")
+		return nil, false, errors.New("Cannot delete only deck available")
 	}
 
-	return newArray, nil
+	return newArray, len(newArray) == len(deckSet), nil
 }
 
 func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
@@ -244,6 +244,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeckRequest) error {
 	var userDecks zb.UserDecks
 	var err error
+	var deleted bool
 
 	userId := strings.TrimSpace(req.UserId)
 	senderAddress := []byte(ctx.Message().Sender.Local)
@@ -254,7 +255,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
 	}
 
-	if userDecks.Decks, err = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
+	if userDecks.Decks, deleted, err = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
 		return errors.Wrapf(err, "Unable to delete deck: %s", deckId)
 	}
 
@@ -262,14 +263,16 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return errors.Wrapf(err, "Unable to save decks for userId: %s", userId)
 	}
 
-	// TODO: Only emit events and log in case something actually got deleted
-	ctx.Logger().Info("Deleted zombiebattleground deck", "userId", userId, "deckId", deckId, "address", senderAddress)
+	if deleted {
+		// TODO: Only emit events and log in case something actually got deleted
+		ctx.Logger().Info("Deleted zombiebattleground deck", "userId", userId, "deckId", deckId, "address", senderAddress)
 
-	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "deletedeck")
-	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
-	} else {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:deletedeck")
+		emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "deletedeck")
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+		} else {
+			ctx.EmitTopics(emitMsgJSON, "zombiebattleground:deletedeck")
+		}
 	}
 
 	return nil
