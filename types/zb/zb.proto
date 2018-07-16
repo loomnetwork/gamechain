@@ -110,3 +110,23 @@ message CardList {
     repeated Card cards = 1;
 }
 
+message CardCollection {
+    string card_id = 1;
+    int32 amount   = 2;
+}
+
+message CardCollectionList {
+    repeated CardCollection cards = 1;
+}
+
+message CardLibrary {
+    string name         = 1;
+    repeated Card cards = 2;
+}
+
+message ListCardLibraryRequest {
+}
+
+message ListCardLibraryResponse {
+    repeated CardLibrary sets = 1;
+}
