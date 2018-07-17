@@ -9,7 +9,9 @@ import (
 )
 
 var (
-	cardListKey = []byte("cardlist")
+	cardListKey          = []byte("cardlist")
+	defaultDeckKey       = []byte("default-deck")
+	defaultCollectionKey = []byte("default-collection")
 )
 
 func cardKey(id int64) []byte {

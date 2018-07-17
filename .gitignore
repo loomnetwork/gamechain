@@ -15,6 +15,9 @@
 # Gopath
 /vendor
 
+# C# generated
+/types/zb/Zb.cs
+
 # App specific
 /app.db
 /chaindata
