@@ -44,7 +44,7 @@ func (z *ZombieBattleground) validateDeckAddition(collection *zb.ZBCardCollectio
 
 	for _, card := range deck.Cards {
 		if maxAmountMap[card.CardId] < card.Amount {
-			return fmt.Errorf("You cannot add more than %d for your card id: %d", maxAmountMap[card.CardId], card.CardId)
+			return fmt.Errorf("you cannot add more than %d for your card id: %d", maxAmountMap[card.CardId], card.CardId)
 		}
 	}
 
@@ -110,7 +110,7 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 	newArray := make([]*zb.ZBDeck, len(deckMap))
 
 	if len(newArray) == 0 {
-		return nil, false, errors.New("Cannot delete only deck available")
+		return nil, false, errors.New("cannot delete only deck available")
 	}
 
 	i := 0
