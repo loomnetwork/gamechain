@@ -14,6 +14,26 @@ import (
 type ZombieBattleground struct {
 }
 
+func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
+	return plugin.Meta{
+		Name:    "ZombieBattleground",
+		Version: "1.0.0",
+	}, nil
+}
+
+func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
+	// initialize card library
+	cardList := zb.CardList{
+		Cards: req.Cards,
+	}
+	if err := ctx.Set(cardListKey, &cardList); err != nil {
+		return err
+	}
+	// TODO: break down this to key value pairs
+	ctx.Set(InitDataKey(), req)
+	return nil
+}
+
 func (z *ZombieBattleground) getDecks(deckSet []*zb.ZBDeck, decksToQuery []string) []*zb.ZBDeck {
 	deckMap := make(map[string]*zb.ZBDeck)
 	decks := make([]*zb.ZBDeck, len(decksToQuery))
@@ -150,23 +170,6 @@ func (z *ZombieBattleground) copyAccountInfo(account *zb.ZBAccount, req *zb.Upse
 	account.EloScore = req.EloScore
 	account.CurrentTier = req.CurrentTier
 	account.GameMembershipTier = req.GameMembershipTier
-}
-
-func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
-	return plugin.Meta{
-		Name:    "ZombieBattleground",
-		Version: "1.0.0",
-	}, nil
-}
-
-func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
-	cardList := zb.CardList{
-		Cards: req.Cards,
-	}
-	if err := ctx.Set(cardListKey, &cardList); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.ZBAccount, error) {

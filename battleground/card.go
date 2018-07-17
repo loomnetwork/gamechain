@@ -31,13 +31,13 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 	}
 	sort.Strings(elements)
 
-	var sets []*zb.CardLibrary
+	var sets []*zb.CardSet
 	for _, elem := range elements {
 		cards, ok := category[elem]
 		if !ok {
 			continue
 		}
-		set := &zb.CardLibrary{
+		set := &zb.CardSet{
 			Name:  elem,
 			Cards: cards,
 		}
