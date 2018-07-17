@@ -20,18 +20,18 @@ var updateAccountCmd = &cobra.Command{
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var result zb.Account
+		var result zb.ZBAccount
 		var accountData zb.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(updateAccCmdArgs.value), &accountData); err != nil {
-			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
+			return fmt.Errorf("invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
 		accountData.UserId = updateAccCmdArgs.userId
 
 		_, err := commonTxObjs.contract.Call("UpdateAccount", &accountData, signer, &result)
 		if err != nil {
-			return fmt.Errorf("Error encountered while calling UpdateAccount: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling UpdateAccount: %s\n", err.Error())
 		} else {
 			fmt.Println(result)
 			return nil

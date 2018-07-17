@@ -38,4 +38,16 @@ loom genkey -k priv
 
 # update account transaction
 ./bin/zb-cli updateAccount -k priv -u loom -v "{\"image\":\"Image2\", \"game_membership_tier\": 2}"
+
+# Get Decks
+./bin/zb-cli getDecks -k priv -u loom
+
+# Get Deck by name
+./bin/zb-cli getDeck -k priv -u loom -d Default
+
+# Add Deck
+./bin/zb-cli addDeck -k priv -u loom -v "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_id\": 1, \"amount\": 2}, {\"card_id\": 2, \"amount\": 1} ]}"
+
+# Delete Deck
+./bin/zb-cli deleteDeck -k priv -u loom -d NewDeck
 ```

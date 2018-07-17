@@ -22,14 +22,14 @@ var createAccountCmd = &cobra.Command{
 		var accountData zb.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(createAccCmdArgs.value), &accountData); err != nil {
-			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
+			return fmt.Errorf("invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
 		accountData.UserId = createAccCmdArgs.userId
 
 		_, err := commonTxObjs.contract.Call("CreateAccount", &accountData, signer, nil)
 		if err != nil {
-			return fmt.Errorf("Error encountered while calling CreateAccount: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling CreateAccount: %s\n", err.Error())
 		}
 
 		return nil

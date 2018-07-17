@@ -1,11 +1,120 @@
 {
-    "contracts": [
-        {
-            "vm": "plugin",
-            "format": "plugin",
-            "name": "ZombieBattleground",
-            "location": "zombiebattleground:1.0.0",
-            "init": null
-        }
-    ]
+   "contracts":[
+      {
+         "vm":"plugin",
+         "format":"plugin",
+         "name":"ZombieBattleground",
+         "location":"zombiebattleground:1.0.0",
+         "init":{
+            "default_collection":{
+               "cards":[
+                  {
+                     "card_id":1,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":2,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":3,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":4,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":5,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":6,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":7,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":8,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":9,
+                    "amount": 5
+                  },
+                  {
+                     "card_id":10,
+                     "amount": 4
+                  },
+                  {
+                     "card_id":11,
+                     "amount": 3
+                  },
+                  {
+                     "card_id":12,
+                    "amount": 5
+                  }
+               ]
+            },
+            "default_decks":[
+               {
+                  "heroId":1,
+                  "name":"Default",
+                  "cards":[
+                     {
+                        "card_id":1,
+                        "amount":2
+                     },
+                     {
+                        "card_id":2,
+                        "amount":2
+                     },
+                     {
+                        "card_id":3,
+                        "amount":2
+                     },
+                     {
+                        "card_id":4,
+                        "amount":2
+                     },
+                     {
+                        "card_id":5,
+                        "amount":2
+                     },
+                     {
+                        "card_id":6,
+                        "amount":2
+                     },
+                     {
+                        "card_id":7,
+                        "amount":1
+                     },
+                     {
+                        "card_id":8,
+                        "amount":1
+                     },
+                     {
+                        "card_id":9,
+                        "amount":1
+                     },
+                     {
+                        "card_id":10,
+                        "amount":1
+                     },
+                     {
+                        "card_id":11,
+                        "amount":1
+                     },
+                     {
+                        "card_id":12,
+                        "amount":1
+                     }
+                  ]
+               }
+            ]
+         }
+      }
+   ]
 }
