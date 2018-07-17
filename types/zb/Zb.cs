@@ -51,19 +51,24 @@ namespace Loom.Unity3d.Zb {
             "ES5DYXJkSW5Db2xsZWN0aW9uInIKC0luaXRSZXF1ZXN0Eh4KDWRlZmF1bHRf",
             "ZGVja3MYASADKAsyBy5aQkRlY2sSLQoSZGVmYXVsdF9jb2xsZWN0aW9uGAIg",
             "ASgLMhEuWkJDYXJkQ29sbGVjdGlvbhIUCgVjYXJkcxgDIAMoCzIFLkNhcmQi",
-            "qwEKBENhcmQSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIPCgdlbGVtZW50",
-            "GAMgASgJEgwKBHJhbmsYBCABKAkSDAoEdHlwZRgFIAEoCRIOCgZhdHRhY2sY",
-            "BiABKAUSDwoHZGVmZW5jZRgHIAEoBRIQCghnb29fY29zdBgIIAEoBRIPCgdh",
-            "YmlsaXR5GAkgASgJEhgKB2VmZmVjdHMYCiADKAsyBy5FZmZlY3QiWgoGRWZm",
-            "ZWN0Eg8KB3RyaWdnZXIYASABKAkSDgoGZWZmZWN0GAIgASgJEhAKCGR1cmF0",
-            "aW9uGAMgASgJEg4KBnRhcmdldBgEIAEoCRINCgVsaW1pdBgFIAEoCSIgCghD",
-            "YXJkTGlzdBIUCgVjYXJkcxgBIAMoCzIFLkNhcmQiMQoOQ2FyZENvbGxlY3Rp",
-            "b24SDwoHY2FyZF9pZBgBIAEoCRIOCgZhbW91bnQYAiABKAUiNAoSQ2FyZENv",
-            "bGxlY3Rpb25MaXN0Eh4KBWNhcmRzGAEgAygLMg8uQ2FyZENvbGxlY3Rpb24i",
-            "MQoLQ2FyZExpYnJhcnkSDAoEbmFtZRgBIAEoCRIUCgVjYXJkcxgCIAMoCzIF",
-            "LkNhcmQiGAoWTGlzdENhcmRMaWJyYXJ5UmVxdWVzdCI1ChdMaXN0Q2FyZExp",
-            "YnJhcnlSZXNwb25zZRIaCgRzZXRzGAEgAygLMgwuQ2FyZExpYnJhcnlCEqoC",
-            "D0xvb20uVW5pdHkzZC5aYmIGcHJvdG8z"));
+            "mwIKBENhcmQSCgoCaWQYASABKAMSDAoEa2luZBgCIAEoCRIPCgdlbGVtZW50",
+            "GAMgASgJEgwKBG5hbWUYBCABKAkSEwoLZGVzY3JpcHRpb24YBSABKAkSEgoK",
+            "Zmxhdm9yVGV4dBgGIAEoCRIPCgdwaWN0dXJlGAcgASgJEgwKBHJhbmsYCCAB",
+            "KAkSDAoEdHlwZRgJIAEoCRIOCgZyYXJpdHkYCiABKAkSDgoGZGFtYWdlGAsg",
+            "ASgFEg4KBmhlYWx0aBgMIAEoBRIMCgRjb3N0GA0gASgFEg8KB2FiaWxpdHkY",
+            "DiABKAkSGAoHZWZmZWN0cxgPIAMoCzIHLkVmZmVjdBIbCglhYmlsaXRpZXMY",
+            "ECADKAsyCC5BYmlsaXR5IloKBkVmZmVjdBIPCgd0cmlnZ2VyGAEgASgJEg4K",
+            "BmVmZmVjdBgCIAEoCRIQCghkdXJhdGlvbhgDIAEoCRIOCgZ0YXJnZXQYBCAB",
+            "KAkSDQoFbGltaXQYBSABKAkiZQoHQWJpbGl0eRIMCgR0eXBlGAEgASgJEhUK",
+            "DWFjdGl2aXR5X3R5cGUYAiABKAkSEQoJY2FsbF90eXBlGAMgASgJEhMKC3Rh",
+            "cmdldF90eXBlGAQgASgJEg0KBXZhbHVlGAUgASgFIiAKCENhcmRMaXN0EhQK",
+            "BWNhcmRzGAEgAygLMgUuQ2FyZCIxCg5DYXJkQ29sbGVjdGlvbhIPCgdjYXJk",
+            "X2lkGAEgASgJEg4KBmFtb3VudBgCIAEoBSI0ChJDYXJkQ29sbGVjdGlvbkxp",
+            "c3QSHgoFY2FyZHMYASADKAsyDy5DYXJkQ29sbGVjdGlvbiItCgdDYXJkU2V0",
+            "EgwKBG5hbWUYASABKAkSFAoFY2FyZHMYAiADKAsyBS5DYXJkIiUKC0NhcmRM",
+            "aWJyYXJ5EhYKBHNldHMYASADKAsyCC5DYXJkU2V0IhgKFkxpc3RDYXJkTGli",
+            "cmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0",
+            "cxgBIAMoCzIILkNhcmRTZXRCEqoCD0xvb20uVW5pdHkzZC5aYmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -81,12 +86,14 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksResponse), global::Loom.Unity3d.Zb.GetDecksResponse.Parser, new[]{ "Decks" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ZBCardCollection), global::Loom.Unity3d.Zb.ZBCardCollection.Parser, new[]{ "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.InitRequest), global::Loom.Unity3d.Zb.InitRequest.Parser, new[]{ "DefaultDecks", "DefaultCollection", "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Card), global::Loom.Unity3d.Zb.Card.Parser, new[]{ "Id", "Name", "Element", "Rank", "Type", "Attack", "Defence", "GooCost", "Ability", "Effects" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Card), global::Loom.Unity3d.Zb.Card.Parser, new[]{ "Id", "Kind", "Element", "Name", "Description", "FlavorText", "Picture", "Rank", "Type", "Rarity", "Damage", "Health", "Cost", "Ability", "Effects", "Abilities" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Effect), global::Loom.Unity3d.Zb.Effect.Parser, new[]{ "Trigger", "Effect_", "Duration", "Target", "Limit" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Ability), global::Loom.Unity3d.Zb.Ability.Parser, new[]{ "Type", "ActivityType", "CallType", "TargetType", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardList), global::Loom.Unity3d.Zb.CardList.Parser, new[]{ "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollection), global::Loom.Unity3d.Zb.CardCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollectionList), global::Loom.Unity3d.Zb.CardCollectionList.Parser, new[]{ "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Name", "Cards" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryRequest), global::Loom.Unity3d.Zb.ListCardLibraryRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryResponse), global::Loom.Unity3d.Zb.ListCardLibraryResponse.Parser, new[]{ "Sets" }, null, null, null)
           }));
@@ -2611,15 +2618,21 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Card(Card other) : this() {
       id_ = other.id_;
-      name_ = other.name_;
+      kind_ = other.kind_;
       element_ = other.element_;
+      name_ = other.name_;
+      description_ = other.description_;
+      flavorText_ = other.flavorText_;
+      picture_ = other.picture_;
       rank_ = other.rank_;
       type_ = other.type_;
-      attack_ = other.attack_;
-      defence_ = other.defence_;
-      gooCost_ = other.gooCost_;
+      rarity_ = other.rarity_;
+      damage_ = other.damage_;
+      health_ = other.health_;
+      cost_ = other.cost_;
       ability_ = other.ability_;
       effects_ = other.effects_.Clone();
+      abilities_ = other.abilities_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2630,23 +2643,23 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 1;
-    private string id_ = "";
+    private long id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Id {
+    public long Id {
       get { return id_; }
       set {
-        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        id_ = value;
       }
     }
 
-    /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 2;
-    private string name_ = "";
+    /// <summary>Field number for the "kind" field.</summary>
+    public const int KindFieldNumber = 2;
+    private string kind_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Name {
-      get { return name_; }
+    public string Kind {
+      get { return kind_; }
       set {
-        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2661,8 +2674,52 @@ namespace Loom.Unity3d.Zb {
       }
     }
 
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 4;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "description" field.</summary>
+    public const int DescriptionFieldNumber = 5;
+    private string description_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Description {
+      get { return description_; }
+      set {
+        description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "flavorText" field.</summary>
+    public const int FlavorTextFieldNumber = 6;
+    private string flavorText_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string FlavorText {
+      get { return flavorText_; }
+      set {
+        flavorText_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "picture" field.</summary>
+    public const int PictureFieldNumber = 7;
+    private string picture_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Picture {
+      get { return picture_; }
+      set {
+        picture_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "rank" field.</summary>
-    public const int RankFieldNumber = 4;
+    public const int RankFieldNumber = 8;
     private string rank_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Rank {
@@ -2673,7 +2730,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 5;
+    public const int TypeFieldNumber = 9;
     private string type_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Type {
@@ -2683,41 +2740,52 @@ namespace Loom.Unity3d.Zb {
       }
     }
 
-    /// <summary>Field number for the "attack" field.</summary>
-    public const int AttackFieldNumber = 6;
-    private int attack_;
+    /// <summary>Field number for the "rarity" field.</summary>
+    public const int RarityFieldNumber = 10;
+    private string rarity_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Attack {
-      get { return attack_; }
+    public string Rarity {
+      get { return rarity_; }
       set {
-        attack_ = value;
+        rarity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "defence" field.</summary>
-    public const int DefenceFieldNumber = 7;
-    private int defence_;
+    /// <summary>Field number for the "damage" field.</summary>
+    public const int DamageFieldNumber = 11;
+    private int damage_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Defence {
-      get { return defence_; }
+    public int Damage {
+      get { return damage_; }
       set {
-        defence_ = value;
+        damage_ = value;
       }
     }
 
-    /// <summary>Field number for the "goo_cost" field.</summary>
-    public const int GooCostFieldNumber = 8;
-    private int gooCost_;
+    /// <summary>Field number for the "health" field.</summary>
+    public const int HealthFieldNumber = 12;
+    private int health_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int GooCost {
-      get { return gooCost_; }
+    public int Health {
+      get { return health_; }
       set {
-        gooCost_ = value;
+        health_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "cost" field.</summary>
+    public const int CostFieldNumber = 13;
+    private int cost_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Cost {
+      get { return cost_; }
+      set {
+        cost_ = value;
       }
     }
 
     /// <summary>Field number for the "ability" field.</summary>
-    public const int AbilityFieldNumber = 9;
+    public const int AbilityFieldNumber = 14;
     private string ability_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Ability {
@@ -2728,13 +2796,23 @@ namespace Loom.Unity3d.Zb {
     }
 
     /// <summary>Field number for the "effects" field.</summary>
-    public const int EffectsFieldNumber = 10;
+    public const int EffectsFieldNumber = 15;
     private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Effect> _repeated_effects_codec
-        = pb::FieldCodec.ForMessage(82, global::Loom.Unity3d.Zb.Effect.Parser);
+        = pb::FieldCodec.ForMessage(122, global::Loom.Unity3d.Zb.Effect.Parser);
     private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Effect> effects_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Effect>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Loom.Unity3d.Zb.Effect> Effects {
       get { return effects_; }
+    }
+
+    /// <summary>Field number for the "abilities" field.</summary>
+    public const int AbilitiesFieldNumber = 16;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Ability> _repeated_abilities_codec
+        = pb::FieldCodec.ForMessage(130, global::Loom.Unity3d.Zb.Ability.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> abilities_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> Abilities {
+      get { return abilities_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2751,31 +2829,43 @@ namespace Loom.Unity3d.Zb {
         return true;
       }
       if (Id != other.Id) return false;
-      if (Name != other.Name) return false;
+      if (Kind != other.Kind) return false;
       if (Element != other.Element) return false;
+      if (Name != other.Name) return false;
+      if (Description != other.Description) return false;
+      if (FlavorText != other.FlavorText) return false;
+      if (Picture != other.Picture) return false;
       if (Rank != other.Rank) return false;
       if (Type != other.Type) return false;
-      if (Attack != other.Attack) return false;
-      if (Defence != other.Defence) return false;
-      if (GooCost != other.GooCost) return false;
+      if (Rarity != other.Rarity) return false;
+      if (Damage != other.Damage) return false;
+      if (Health != other.Health) return false;
+      if (Cost != other.Cost) return false;
       if (Ability != other.Ability) return false;
       if(!effects_.Equals(other.effects_)) return false;
+      if(!abilities_.Equals(other.abilities_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Id != 0L) hash ^= Id.GetHashCode();
+      if (Kind.Length != 0) hash ^= Kind.GetHashCode();
       if (Element.Length != 0) hash ^= Element.GetHashCode();
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Description.Length != 0) hash ^= Description.GetHashCode();
+      if (FlavorText.Length != 0) hash ^= FlavorText.GetHashCode();
+      if (Picture.Length != 0) hash ^= Picture.GetHashCode();
       if (Rank.Length != 0) hash ^= Rank.GetHashCode();
       if (Type.Length != 0) hash ^= Type.GetHashCode();
-      if (Attack != 0) hash ^= Attack.GetHashCode();
-      if (Defence != 0) hash ^= Defence.GetHashCode();
-      if (GooCost != 0) hash ^= GooCost.GetHashCode();
+      if (Rarity.Length != 0) hash ^= Rarity.GetHashCode();
+      if (Damage != 0) hash ^= Damage.GetHashCode();
+      if (Health != 0) hash ^= Health.GetHashCode();
+      if (Cost != 0) hash ^= Cost.GetHashCode();
       if (Ability.Length != 0) hash ^= Ability.GetHashCode();
       hash ^= effects_.GetHashCode();
+      hash ^= abilities_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2789,43 +2879,64 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Id.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Id);
+      if (Id != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Id);
       }
-      if (Name.Length != 0) {
+      if (Kind.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(Name);
+        output.WriteString(Kind);
       }
       if (Element.Length != 0) {
         output.WriteRawTag(26);
         output.WriteString(Element);
       }
-      if (Rank.Length != 0) {
+      if (Name.Length != 0) {
         output.WriteRawTag(34);
+        output.WriteString(Name);
+      }
+      if (Description.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Description);
+      }
+      if (FlavorText.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(FlavorText);
+      }
+      if (Picture.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(Picture);
+      }
+      if (Rank.Length != 0) {
+        output.WriteRawTag(66);
         output.WriteString(Rank);
       }
       if (Type.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(74);
         output.WriteString(Type);
       }
-      if (Attack != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(Attack);
+      if (Rarity.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(Rarity);
       }
-      if (Defence != 0) {
-        output.WriteRawTag(56);
-        output.WriteInt32(Defence);
+      if (Damage != 0) {
+        output.WriteRawTag(88);
+        output.WriteInt32(Damage);
       }
-      if (GooCost != 0) {
-        output.WriteRawTag(64);
-        output.WriteInt32(GooCost);
+      if (Health != 0) {
+        output.WriteRawTag(96);
+        output.WriteInt32(Health);
+      }
+      if (Cost != 0) {
+        output.WriteRawTag(104);
+        output.WriteInt32(Cost);
       }
       if (Ability.Length != 0) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(114);
         output.WriteString(Ability);
       }
       effects_.WriteTo(output, _repeated_effects_codec);
+      abilities_.WriteTo(output, _repeated_abilities_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2834,14 +2945,26 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Id.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      if (Id != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Id);
+      }
+      if (Kind.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Kind);
+      }
+      if (Element.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Element);
       }
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Element.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Element);
+      if (Description.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
+      }
+      if (FlavorText.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(FlavorText);
+      }
+      if (Picture.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Picture);
       }
       if (Rank.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Rank);
@@ -2849,19 +2972,23 @@ namespace Loom.Unity3d.Zb {
       if (Type.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
       }
-      if (Attack != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Attack);
+      if (Rarity.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Rarity);
       }
-      if (Defence != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Defence);
+      if (Damage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Damage);
       }
-      if (GooCost != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(GooCost);
+      if (Health != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Health);
+      }
+      if (Cost != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Cost);
       }
       if (Ability.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Ability);
       }
       size += effects_.CalculateSize(_repeated_effects_codec);
+      size += abilities_.CalculateSize(_repeated_abilities_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2873,14 +3000,26 @@ namespace Loom.Unity3d.Zb {
       if (other == null) {
         return;
       }
-      if (other.Id.Length != 0) {
+      if (other.Id != 0L) {
         Id = other.Id;
+      }
+      if (other.Kind.Length != 0) {
+        Kind = other.Kind;
+      }
+      if (other.Element.Length != 0) {
+        Element = other.Element;
       }
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.Element.Length != 0) {
-        Element = other.Element;
+      if (other.Description.Length != 0) {
+        Description = other.Description;
+      }
+      if (other.FlavorText.Length != 0) {
+        FlavorText = other.FlavorText;
+      }
+      if (other.Picture.Length != 0) {
+        Picture = other.Picture;
       }
       if (other.Rank.Length != 0) {
         Rank = other.Rank;
@@ -2888,19 +3027,23 @@ namespace Loom.Unity3d.Zb {
       if (other.Type.Length != 0) {
         Type = other.Type;
       }
-      if (other.Attack != 0) {
-        Attack = other.Attack;
+      if (other.Rarity.Length != 0) {
+        Rarity = other.Rarity;
       }
-      if (other.Defence != 0) {
-        Defence = other.Defence;
+      if (other.Damage != 0) {
+        Damage = other.Damage;
       }
-      if (other.GooCost != 0) {
-        GooCost = other.GooCost;
+      if (other.Health != 0) {
+        Health = other.Health;
+      }
+      if (other.Cost != 0) {
+        Cost = other.Cost;
       }
       if (other.Ability.Length != 0) {
         Ability = other.Ability;
       }
       effects_.Add(other.effects_);
+      abilities_.Add(other.abilities_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2912,12 +3055,12 @@ namespace Loom.Unity3d.Zb {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            Id = input.ReadString();
+          case 8: {
+            Id = input.ReadInt64();
             break;
           }
           case 18: {
-            Name = input.ReadString();
+            Kind = input.ReadString();
             break;
           }
           case 26: {
@@ -2925,31 +3068,55 @@ namespace Loom.Unity3d.Zb {
             break;
           }
           case 34: {
-            Rank = input.ReadString();
+            Name = input.ReadString();
             break;
           }
           case 42: {
-            Type = input.ReadString();
+            Description = input.ReadString();
             break;
           }
-          case 48: {
-            Attack = input.ReadInt32();
+          case 50: {
+            FlavorText = input.ReadString();
             break;
           }
-          case 56: {
-            Defence = input.ReadInt32();
+          case 58: {
+            Picture = input.ReadString();
             break;
           }
-          case 64: {
-            GooCost = input.ReadInt32();
+          case 66: {
+            Rank = input.ReadString();
             break;
           }
           case 74: {
-            Ability = input.ReadString();
+            Type = input.ReadString();
             break;
           }
           case 82: {
+            Rarity = input.ReadString();
+            break;
+          }
+          case 88: {
+            Damage = input.ReadInt32();
+            break;
+          }
+          case 96: {
+            Health = input.ReadInt32();
+            break;
+          }
+          case 104: {
+            Cost = input.ReadInt32();
+            break;
+          }
+          case 114: {
+            Ability = input.ReadString();
+            break;
+          }
+          case 122: {
             effects_.AddEntriesFrom(input, _repeated_effects_codec);
+            break;
+          }
+          case 130: {
+            abilities_.AddEntriesFrom(input, _repeated_abilities_codec);
             break;
           }
         }
@@ -3199,6 +3366,247 @@ namespace Loom.Unity3d.Zb {
 
   }
 
+  public sealed partial class Ability : pb::IMessage<Ability> {
+    private static readonly pb::MessageParser<Ability> _parser = new pb::MessageParser<Ability>(() => new Ability());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Ability> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ability() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ability(Ability other) : this() {
+      type_ = other.type_;
+      activityType_ = other.activityType_;
+      callType_ = other.callType_;
+      targetType_ = other.targetType_;
+      value_ = other.value_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ability Clone() {
+      return new Ability(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private string type_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Type {
+      get { return type_; }
+      set {
+        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "activity_type" field.</summary>
+    public const int ActivityTypeFieldNumber = 2;
+    private string activityType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ActivityType {
+      get { return activityType_; }
+      set {
+        activityType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "call_type" field.</summary>
+    public const int CallTypeFieldNumber = 3;
+    private string callType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string CallType {
+      get { return callType_; }
+      set {
+        callType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "target_type" field.</summary>
+    public const int TargetTypeFieldNumber = 4;
+    private string targetType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string TargetType {
+      get { return targetType_; }
+      set {
+        targetType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 5;
+    private int value_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Value {
+      get { return value_; }
+      set {
+        value_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Ability);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Ability other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (ActivityType != other.ActivityType) return false;
+      if (CallType != other.CallType) return false;
+      if (TargetType != other.TargetType) return false;
+      if (Value != other.Value) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type.Length != 0) hash ^= Type.GetHashCode();
+      if (ActivityType.Length != 0) hash ^= ActivityType.GetHashCode();
+      if (CallType.Length != 0) hash ^= CallType.GetHashCode();
+      if (TargetType.Length != 0) hash ^= TargetType.GetHashCode();
+      if (Value != 0) hash ^= Value.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Type);
+      }
+      if (ActivityType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ActivityType);
+      }
+      if (CallType.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(CallType);
+      }
+      if (TargetType.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(TargetType);
+      }
+      if (Value != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(Value);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
+      }
+      if (ActivityType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ActivityType);
+      }
+      if (CallType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CallType);
+      }
+      if (TargetType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TargetType);
+      }
+      if (Value != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Value);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Ability other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type.Length != 0) {
+        Type = other.Type;
+      }
+      if (other.ActivityType.Length != 0) {
+        ActivityType = other.ActivityType;
+      }
+      if (other.CallType.Length != 0) {
+        CallType = other.CallType;
+      }
+      if (other.TargetType.Length != 0) {
+        TargetType = other.TargetType;
+      }
+      if (other.Value != 0) {
+        Value = other.Value;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Type = input.ReadString();
+            break;
+          }
+          case 18: {
+            ActivityType = input.ReadString();
+            break;
+          }
+          case 26: {
+            CallType = input.ReadString();
+            break;
+          }
+          case 34: {
+            TargetType = input.ReadString();
+            break;
+          }
+          case 40: {
+            Value = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class CardList : pb::IMessage<CardList> {
     private static readonly pb::MessageParser<CardList> _parser = new pb::MessageParser<CardList>(() => new CardList());
     private pb::UnknownFieldSet _unknownFields;
@@ -3207,7 +3615,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3328,7 +3736,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3485,7 +3893,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3598,15 +4006,15 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class CardLibrary : pb::IMessage<CardLibrary> {
-    private static readonly pb::MessageParser<CardLibrary> _parser = new pb::MessageParser<CardLibrary>(() => new CardLibrary());
+  public sealed partial class CardSet : pb::IMessage<CardSet> {
+    private static readonly pb::MessageParser<CardSet> _parser = new pb::MessageParser<CardSet>(() => new CardSet());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CardLibrary> Parser { get { return _parser; } }
+    public static pb::MessageParser<CardSet> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3615,22 +4023,22 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardLibrary() {
+    public CardSet() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardLibrary(CardLibrary other) : this() {
+    public CardSet(CardSet other) : this() {
       name_ = other.name_;
       cards_ = other.cards_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardLibrary Clone() {
-      return new CardLibrary(this);
+    public CardSet Clone() {
+      return new CardSet(this);
     }
 
     /// <summary>Field number for the "name" field.</summary>
@@ -3656,11 +4064,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as CardLibrary);
+      return Equals(other as CardSet);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CardLibrary other) {
+    public bool Equals(CardSet other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3714,7 +4122,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CardLibrary other) {
+    public void MergeFrom(CardSet other) {
       if (other == null) {
         return;
       }
@@ -3747,6 +4155,127 @@ namespace Loom.Unity3d.Zb {
 
   }
 
+  public sealed partial class CardLibrary : pb::IMessage<CardLibrary> {
+    private static readonly pb::MessageParser<CardLibrary> _parser = new pb::MessageParser<CardLibrary>(() => new CardLibrary());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CardLibrary> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardLibrary() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardLibrary(CardLibrary other) : this() {
+      sets_ = other.sets_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardLibrary Clone() {
+      return new CardLibrary(this);
+    }
+
+    /// <summary>Field number for the "sets" field.</summary>
+    public const int SetsFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardSet> _repeated_sets_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.CardSet.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet> sets_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet> Sets {
+      get { return sets_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CardLibrary);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CardLibrary other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!sets_.Equals(other.sets_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= sets_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      sets_.WriteTo(output, _repeated_sets_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += sets_.CalculateSize(_repeated_sets_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CardLibrary other) {
+      if (other == null) {
+        return;
+      }
+      sets_.Add(other.sets_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            sets_.AddEntriesFrom(input, _repeated_sets_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class ListCardLibraryRequest : pb::IMessage<ListCardLibraryRequest> {
     private static readonly pb::MessageParser<ListCardLibraryRequest> _parser = new pb::MessageParser<ListCardLibraryRequest>(() => new ListCardLibraryRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -3755,7 +4284,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3856,7 +4385,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3884,11 +4413,11 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "sets" field.</summary>
     public const int SetsFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardLibrary> _repeated_sets_codec
-        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.CardLibrary.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardLibrary> sets_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardLibrary>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardSet> _repeated_sets_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.CardSet.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet> sets_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardLibrary> Sets {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardSet> Sets {
       get { return sets_; }
     }
 
