@@ -37,5 +37,5 @@ func init() {
 	rootCmd.AddCommand(deleteDeckCmd)
 
 	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.userId, "userId", "u", "loom", "UserId of account")
-	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.deckId, "deckId", "d", "Default", "DeckId of account")
+	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.deckId, "deckId", "d", "NewDeck", "DeckId of account")
 }

@@ -43,5 +43,5 @@ func init() {
 	rootCmd.AddCommand(addDeckCmd)
 
 	addDeckCmd.Flags().StringVarP(&addDeckCmdArgs.userId, "userId", "u", "loom", "UserId of account")
-	addDeckCmd.Flags().StringVarP(&addDeckCmdArgs.value, "value", "v", "{\"heroId\":\"1\", \"name\": \"exp\", \"cards\": [ {\"card_id\": 1, \"amount\": 2}, {\"card_id\": 2, \"amount\": 1} ]}", "Deck data in serialized json format")
+	addDeckCmd.Flags().StringVarP(&addDeckCmdArgs.value, "value", "v", "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_id\": 1, \"amount\": 2}, {\"card_id\": 2, \"amount\": 1} ]}", "Deck data in serialized json format")
 }
