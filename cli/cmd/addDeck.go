@@ -22,7 +22,7 @@ var addDeckCmd = &cobra.Command{
 		var deck zb.ZBDeck
 
 		if err := json.Unmarshal([]byte(addDeckCmdArgs.value), &deck); err != nil {
-			return fmt.Errorf("Invalid JSON passed in value field. Error: %s\n", err.Error())
+			return fmt.Errorf("invalid JSON passed in value field. Error: %s\n", err.Error())
 		}
 
 		req := &zb.AddDeckRequest{
@@ -32,7 +32,7 @@ var addDeckCmd = &cobra.Command{
 
 		_, err := commonTxObjs.contract.Call("AddDeck", req, signer, nil)
 		if err != nil {
-			return fmt.Errorf("Error encountered while calling AddDeck: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling AddDeck: %s\n", err.Error())
 		} else {
 			return nil
 		}
