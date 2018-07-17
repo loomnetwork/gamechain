@@ -31,7 +31,7 @@ var getDecksCmd = &cobra.Command{
 
 		_, err := commonTxObjs.contract.StaticCall("GetDecks", req, callerAddr, &result)
 		if err != nil {
-			return fmt.Errorf("Error encountered while calling GetDecks: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling GetDecks: %s\n", err.Error())
 		} else {
 			fmt.Println(result)
 			return nil

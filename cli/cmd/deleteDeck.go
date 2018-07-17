@@ -26,7 +26,7 @@ var deleteDeckCmd = &cobra.Command{
 
 		_, err := commonTxObjs.contract.Call("DeleteDeck", req, signer, nil)
 		if err != nil {
-			return fmt.Errorf("Error encountered while calling DeleteDeck: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling DeleteDeck: %s\n", err.Error())
 		} else {
 			return nil
 		}

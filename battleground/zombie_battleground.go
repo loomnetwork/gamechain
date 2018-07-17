@@ -169,7 +169,7 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 	userKeySpace := NewUserKeySpace(req.UserId)
 
 	if err := ctx.Get(userKeySpace.AccountKey(), &account); err != nil {
-		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
+		return nil, errors.Wrapf(err, "unable to retrieve account data for userId: %s", req.UserId)
 	}
 
 	return &account, nil
@@ -184,23 +184,23 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 
 	// Verify whether this privateKey associated with user
 	if !z.isUser(ctx, userId) {
-		return nil, fmt.Errorf("UserId: %s is not verified", req.UserId)
+		return nil, fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
 	if err := ctx.Get(userKeySpace.AccountKey(), &account); err != nil {
-		return nil, errors.Wrapf(err, "Unable to retrieve account data for userId: %s", req.UserId)
+		return nil, errors.Wrapf(err, "unable to retrieve account data for userId: %s", req.UserId)
 	}
 
 	z.copyAccountInfo(&account, req)
 	if err := ctx.Set(userKeySpace.AccountKey(), &account); err != nil {
-		return nil, errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
+		return nil, errors.Wrapf(err, "error setting account information for userId: %s", req.UserId)
 	}
 
-	ctx.Logger().Info("Updated zombiebattleground account", "user_id", userId, "address", senderAddress)
+	ctx.Logger().Info("updated zombiebattleground account", "user_id", userId, "address", senderAddress)
 
 	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "updateaccount")
 	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+		ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 	} else {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:updateaccount")
 	}
@@ -217,12 +217,12 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	var initData zb.InitRequest
 	if err := ctx.Get(InitDataKey(), &initData); err != nil {
-		return errors.Wrapf(err, "Unable to retrieve initdata.")
+		return errors.Wrapf(err, "unable to retrieve initdata.")
 	}
 
 	// confirm owner doesnt exist already
 	if ctx.Has(userKeySpace.AccountKey()) {
-		return errors.New("User already exists.\n")
+		return errors.New("user already exists.\n")
 	}
 
 	account.UserId = userId
@@ -231,7 +231,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	z.copyAccountInfo(&account, req)
 
 	if err := ctx.Set(userKeySpace.AccountKey(), &account); err != nil {
-		return errors.Wrapf(err, "Error setting account information for userId: %s", req.UserId)
+		return errors.Wrapf(err, "error setting account information for userId: %s", req.UserId)
 	}
 
 	ctx.GrantPermission([]byte(userId), []string{"user"})
@@ -239,11 +239,11 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	ctx.Set(userKeySpace.DecksKey(), &zb.UserDecks{Decks: initData.DefaultDecks})
 	ctx.Set(userKeySpace.CardCollectionKey(), initData.DefaultCollection)
 
-	ctx.Logger().Info("Created zombiebattleground account", "userId", userId, "address", senderAddress)
+	ctx.Logger().Info("created zombiebattleground account", "userId", userId, "address", senderAddress)
 
 	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "createaccount")
 	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+		ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 	} else {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createaccount")
 	}
@@ -259,7 +259,7 @@ func (z *ZombieBattleground) GetDecks(ctx contract.StaticContext, req *zb.GetDec
 	userKeySpace := NewUserKeySpace(userId)
 
 	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
 	}
 
 	return &userDecks, nil
@@ -273,7 +273,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	deckId := strings.TrimSpace(req.DeckId)
 
 	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
 	}
 
 	result := z.getDecks(userDecks.Decks, []string{deckId})
@@ -281,7 +281,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	if len(result) != 0 {
 		return result[0], nil
 	} else {
-		return nil, fmt.Errorf("Deck: %s not found.", deckId)
+		return nil, fmt.Errorf("deck: %s not found.", deckId)
 	}
 }
 
@@ -296,19 +296,19 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	deckId := strings.TrimSpace(req.DeckId)
 
 	if !z.isUser(ctx, userId) {
-		return fmt.Errorf("UserId: %s is not verified", req.UserId)
+		return fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
 	if err = ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
 	}
 
 	if userDecks.Decks, deleted, err = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
-		return errors.Wrapf(err, "Unable to delete deck: %s", deckId)
+		return errors.Wrapf(err, "unable to delete deck: %s", deckId)
 	}
 
 	if err = ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "Unable to save decks for userId: %s", userId)
+		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
 	}
 
 	if deleted {
@@ -316,7 +316,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 
 		emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "deletedeck")
 		if err != nil {
-			ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+			ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 		} else {
 			ctx.EmitTopics(emitMsgJSON, "zombiebattleground:deletedeck")
 		}
@@ -334,32 +334,32 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 	userKeySpace := NewUserKeySpace(userId)
 
 	if !z.isUser(ctx, userId) {
-		return fmt.Errorf("UserId: %s is not verified", req.UserId)
+		return fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
 	if err := ctx.Get(userKeySpace.CardCollectionKey(), &userCollection); err != nil {
-		return errors.Wrapf(err, "Unable to get collection data for userId: %s", req.UserId)
+		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
 
 	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "Unable to get decks for userId: %s", userId)
+		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
 	}
 
 	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
-		return errors.Wrapf(err, "Unable to validate deck data for userId: %s", req.UserId)
+		return errors.Wrapf(err, "unable to validate deck data for userId: %s", req.UserId)
 	}
 
 	userDecks.Decks = z.mergeDeckSets(userDecks.Decks, []*zb.ZBDeck{req.Deck})
 
 	if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "Unable to save decks for userId: %s", userId)
+		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
 	}
 
 	ctx.Logger().Info("Created zombiebattleground deck", "userId", userId, "deckId", req.Deck.Name, "address", senderAddress)
 
 	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "adddeck")
 	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("Error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+		ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
 	} else {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:adddeck")
 	}
