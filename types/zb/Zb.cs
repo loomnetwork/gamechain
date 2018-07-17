@@ -45,41 +45,32 @@ namespace Loom.Unity3d.Zb {
             "X2lkGAEgASgDEg4KBmFtb3VudBgCIAEoAyIyCg5HZXREZWNrUmVxdWVzdBIP",
             "Cgd1c2VyX2lkGAEgASgJEg8KB2RlY2tfaWQYAiABKAkiOAoOQWRkRGVja1Jl",
             "cXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIVCgRkZWNrGAIgASgLMgcuWkJEZWNr",
-<<<<<<< HEAD
             "IjkKD0VkaXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhUKBGRlY2sY",
             "AiABKAsyBy5aQkRlY2siNQoRRGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9p",
             "ZBgBIAEoCRIPCgdkZWNrX2lkGAIgASgJIioKEEdldERlY2tzUmVzcG9uc2US",
             "FgoFZGVja3MYASADKAsyBy5aQkRlY2siNAoQWkJDYXJkQ29sbGVjdGlvbhIg",
-            "CgVjYXJkcxgBIAMoCzIRLkNhcmRJbkNvbGxlY3Rpb24iXAoLSW5pdFJlcXVl",
+            "CgVjYXJkcxgBIAMoCzIRLkNhcmRJbkNvbGxlY3Rpb24icgoLSW5pdFJlcXVl",
             "c3QSHgoNZGVmYXVsdF9kZWNrcxgBIAMoCzIHLlpCRGVjaxItChJkZWZhdWx0",
-            "X2NvbGxlY3Rpb24YAiABKAsyES5aQkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29t",
-            "LlVuaXR5M2QuWmJiBnByb3RvMw=="));
-=======
-            "IjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVj",
-            "a19pZBgCIAEoCSIqChBHZXREZWNrc1Jlc3BvbnNlEhYKBWRlY2tzGAEgAygL",
-            "MgcuWkJEZWNrIjQKEFpCQ2FyZENvbGxlY3Rpb24SIAoFY2FyZHMYASADKAsy",
-            "ES5DYXJkSW5Db2xsZWN0aW9uInIKC0luaXRSZXF1ZXN0Eh4KDWRlZmF1bHRf",
-            "ZGVja3MYASADKAsyBy5aQkRlY2sSLQoSZGVmYXVsdF9jb2xsZWN0aW9uGAIg",
-            "ASgLMhEuWkJDYXJkQ29sbGVjdGlvbhIUCgVjYXJkcxgDIAMoCzIFLkNhcmQi",
-            "mwIKBENhcmQSCgoCaWQYASABKAMSDAoEa2luZBgCIAEoCRIPCgdlbGVtZW50",
-            "GAMgASgJEgwKBG5hbWUYBCABKAkSEwoLZGVzY3JpcHRpb24YBSABKAkSEgoK",
-            "Zmxhdm9yVGV4dBgGIAEoCRIPCgdwaWN0dXJlGAcgASgJEgwKBHJhbmsYCCAB",
-            "KAkSDAoEdHlwZRgJIAEoCRIOCgZyYXJpdHkYCiABKAkSDgoGZGFtYWdlGAsg",
-            "ASgFEg4KBmhlYWx0aBgMIAEoBRIMCgRjb3N0GA0gASgFEg8KB2FiaWxpdHkY",
-            "DiABKAkSGAoHZWZmZWN0cxgPIAMoCzIHLkVmZmVjdBIbCglhYmlsaXRpZXMY",
-            "ECADKAsyCC5BYmlsaXR5IloKBkVmZmVjdBIPCgd0cmlnZ2VyGAEgASgJEg4K",
-            "BmVmZmVjdBgCIAEoCRIQCghkdXJhdGlvbhgDIAEoCRIOCgZ0YXJnZXQYBCAB",
-            "KAkSDQoFbGltaXQYBSABKAkiZQoHQWJpbGl0eRIMCgR0eXBlGAEgASgJEhUK",
-            "DWFjdGl2aXR5X3R5cGUYAiABKAkSEQoJY2FsbF90eXBlGAMgASgJEhMKC3Rh",
-            "cmdldF90eXBlGAQgASgJEg0KBXZhbHVlGAUgASgFIiAKCENhcmRMaXN0EhQK",
-            "BWNhcmRzGAEgAygLMgUuQ2FyZCIxCg5DYXJkQ29sbGVjdGlvbhIPCgdjYXJk",
-            "X2lkGAEgASgJEg4KBmFtb3VudBgCIAEoBSI0ChJDYXJkQ29sbGVjdGlvbkxp",
-            "c3QSHgoFY2FyZHMYASADKAsyDy5DYXJkQ29sbGVjdGlvbiItCgdDYXJkU2V0",
-            "EgwKBG5hbWUYASABKAkSFAoFY2FyZHMYAiADKAsyBS5DYXJkIiUKC0NhcmRM",
-            "aWJyYXJ5EhYKBHNldHMYASADKAsyCC5DYXJkU2V0IhgKFkxpc3RDYXJkTGli",
-            "cmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0",
-            "cxgBIAMoCzIILkNhcmRTZXRCEqoCD0xvb20uVW5pdHkzZC5aYmIGcHJvdG8z"));
->>>>>>> 3c2c10ab821592003fadc5612808e2c786b26fc8
+            "X2NvbGxlY3Rpb24YAiABKAsyES5aQkNhcmRDb2xsZWN0aW9uEhQKBWNhcmRz",
+            "GAMgAygLMgUuQ2FyZCKbAgoEQ2FyZBIKCgJpZBgBIAEoAxIMCgRraW5kGAIg",
+            "ASgJEg8KB2VsZW1lbnQYAyABKAkSDAoEbmFtZRgEIAEoCRITCgtkZXNjcmlw",
+            "dGlvbhgFIAEoCRISCgpmbGF2b3JUZXh0GAYgASgJEg8KB3BpY3R1cmUYByAB",
+            "KAkSDAoEcmFuaxgIIAEoCRIMCgR0eXBlGAkgASgJEg4KBnJhcml0eRgKIAEo",
+            "CRIOCgZkYW1hZ2UYCyABKAUSDgoGaGVhbHRoGAwgASgFEgwKBGNvc3QYDSAB",
+            "KAUSDwoHYWJpbGl0eRgOIAEoCRIYCgdlZmZlY3RzGA8gAygLMgcuRWZmZWN0",
+            "EhsKCWFiaWxpdGllcxgQIAMoCzIILkFiaWxpdHkiWgoGRWZmZWN0Eg8KB3Ry",
+            "aWdnZXIYASABKAkSDgoGZWZmZWN0GAIgASgJEhAKCGR1cmF0aW9uGAMgASgJ",
+            "Eg4KBnRhcmdldBgEIAEoCRINCgVsaW1pdBgFIAEoCSJlCgdBYmlsaXR5EgwK",
+            "BHR5cGUYASABKAkSFQoNYWN0aXZpdHlfdHlwZRgCIAEoCRIRCgljYWxsX3R5",
+            "cGUYAyABKAkSEwoLdGFyZ2V0X3R5cGUYBCABKAkSDQoFdmFsdWUYBSABKAUi",
+            "IAoIQ2FyZExpc3QSFAoFY2FyZHMYASADKAsyBS5DYXJkIjEKDkNhcmRDb2xs",
+            "ZWN0aW9uEg8KB2NhcmRfaWQYASABKAkSDgoGYW1vdW50GAIgASgFIjQKEkNh",
+            "cmRDb2xsZWN0aW9uTGlzdBIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0",
+            "aW9uIi0KB0NhcmRTZXQSDAoEbmFtZRgBIAEoCRIUCgVjYXJkcxgCIAMoCzIF",
+            "LkNhcmQiJQoLQ2FyZExpYnJhcnkSFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQi",
+            "GAoWTGlzdENhcmRMaWJyYXJ5UmVxdWVzdCIxChdMaXN0Q2FyZExpYnJhcnlS",
+            "ZXNwb25zZRIWCgRzZXRzGAEgAygLMgguQ2FyZFNldEISqgIPTG9vbS5Vbml0",
+            "eTNkLlpiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -1893,7 +1884,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AddDeckRequest(AddDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2618,7 +2609,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public InitRequest(InitRequest other) : this() {
       defaultDecks_ = other.defaultDecks_.Clone();
-      DefaultCollection = other.defaultCollection_ != null ? other.DefaultCollection.Clone() : null;
+      defaultCollection_ = other.defaultCollection_ != null ? other.defaultCollection_.Clone() : null;
       cards_ = other.cards_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2775,7 +2766,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3308,7 +3299,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3549,7 +3540,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3790,7 +3781,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3911,7 +3902,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4068,7 +4059,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4189,7 +4180,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4338,7 +4329,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4459,7 +4450,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4560,7 +4551,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
