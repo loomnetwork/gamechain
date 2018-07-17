@@ -65,9 +65,32 @@ func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb
 	newArray := make([]*zb.ZBDeck, len(deckMap))
 
 	i := 0
-	for _, deck := range deckMap {
-		newArray[i] = deck
+	for j := len(deckSet2) - 1; j >= 0; j -= 1 {
+		deck := deckSet2[j]
+
+		newDeck, ok := deckMap[deck.Name]
+		if !ok {
+			continue
+		}
+
+		newArray[i] = newDeck
 		i++
+
+		delete(deckMap, deck.Name)
+	}
+
+	for j := len(deckSet1) - 1; j >= 0; j -= 1 {
+		deck := deckSet1[j]
+
+		newDeck, ok := deckMap[deck.Name]
+		if !ok {
+			continue
+		}
+
+		newArray[i] = newDeck
+		i++
+
+		delete(deckMap, deck.Name)
 	}
 
 	return newArray
@@ -86,14 +109,18 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 
 	newArray := make([]*zb.ZBDeck, len(deckMap))
 
-	i := 0
-	for _, deck := range deckMap {
-		newArray[i] = deck
-		i++
-	}
-
 	if len(newArray) == 0 {
 		return nil, false, errors.New("Cannot delete only deck available")
+	}
+
+	i := 0
+	for _, deck := range deckSet {
+		if _, ok := deckMap[deck.Name]; !ok {
+			continue
+		}
+
+		newArray[i] = deck
+		i++
 	}
 
 	return newArray, len(newArray) == len(deckSet), nil
