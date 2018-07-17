@@ -1,6 +1,8 @@
 package battleground
 
 import (
+	"strconv"
+
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
@@ -10,8 +12,8 @@ var (
 	cardListKey = []byte("cardlist")
 )
 
-func cardKey(id string) []byte {
-	return util.PrefixKey([]byte("card"), []byte(id))
+func cardKey(id int64) []byte {
+	return util.PrefixKey([]byte("card"), []byte(strconv.FormatInt(id, 10)))
 }
 
 func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
