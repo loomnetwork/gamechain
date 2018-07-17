@@ -2,6 +2,7 @@ PKG = github.com/loomnetwork/zombie_battleground
 GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
+GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 
 all: build cli
 
@@ -37,7 +38,10 @@ deps: $(PLUGIN_DIR)
 		github.com/spf13/cobra \
 		github.com/pkg/errors \
     	github.com/hashicorp/go-plugin \
-		github.com/google/uuid
+        github.com/google/uuid \
+        github.com/grpc-ecosystem/go-grpc-prometheus \
+        github.com/prometheus/client_golang/prometheus
+	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 
 clean:
 	go clean
