@@ -24,14 +24,14 @@ var commonTxObjs struct {
 func readKeyFile() error {
 	fileContents, err := ioutil.ReadFile(rootCmdArgs.privateKeyFilePath)
 	if err != nil {
-		return fmt.Errorf("Unable to read private key from file: %s",
+		return fmt.Errorf("unable to read private key from file: %s",
 			rootCmdArgs.privateKeyFilePath)
 	}
 
 	decodeBuffer := make([]byte, len(fileContents))
 	bytesDecoded, err := base64.StdEncoding.Decode(decodeBuffer, fileContents)
 	if err != nil {
-		return fmt.Errorf("Invalid base64 content in private key file: %s",
+		return fmt.Errorf("invalid base64 content in private key file: %s",
 			rootCmdArgs.privateKeyFilePath)
 	}
 
@@ -44,7 +44,7 @@ func connectToRPC(readURI string, writeURI string) error {
 
 	loomAddress, err := rpcClient.Resolve("ZombieBattleground")
 	if err != nil {
-		return fmt.Errorf("Unable to resolve RPC connection. RPC Error:%s", err.Error())
+		return fmt.Errorf("unable to resolve RPC connection. RPC Error:%s", err.Error())
 	}
 
 	commonTxObjs.contract = client.NewContract(rpcClient, loomAddress.Local)
@@ -61,12 +61,12 @@ var rootCmd = &cobra.Command{
 
 		err = readKeyFile()
 		if err != nil {
-			return fmt.Errorf("Error while reading private key file: %s", err.Error())
+			return fmt.Errorf("error while reading private key file: %s", err.Error())
 		}
 
 		err = connectToRPC(rootCmdArgs.readURI, rootCmdArgs.writeURI)
 		if err != nil {
-			return fmt.Errorf("Error while establishing RPC connection: %s", err.Error())
+			return fmt.Errorf("error while establishing RPC connection: %s", err.Error())
 		}
 
 		return nil

@@ -9,15 +9,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var getAccCmdArgs struct {
+var getDecksCmdArgs struct {
 	userId string
 }
 
-var getAccountCmd = &cobra.Command{
-	Use:   "getAccount",
-	Short: "gets account data for zombiebattleground",
+var getDecksCmd = &cobra.Command{
+	Use:   "getDecks",
+	Short: "gets deck data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var result zb.ZBAccount
+		var result zb.UserDecks
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -25,13 +25,13 @@ var getAccountCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetAccountRequest{
-			UserId: getAccCmdArgs.userId,
+		req := &zb.GetDecksRequest{
+			UserId: getDecksCmdArgs.userId,
 		}
 
-		_, err := commonTxObjs.contract.StaticCall("GetAccount", req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("GetDecks", req, callerAddr, &result)
 		if err != nil {
-			return fmt.Errorf("error encountered while calling GetAccount: %s\n", err.Error())
+			return fmt.Errorf("error encountered while calling GetDecks: %s\n", err.Error())
 		} else {
 			fmt.Println(result)
 			return nil
@@ -40,7 +40,7 @@ var getAccountCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getAccountCmd)
+	rootCmd.AddCommand(getDecksCmd)
 
-	getAccountCmd.Flags().StringVarP(&getAccCmdArgs.userId, "userId", "u", "loom", "UserId of account")
+	getDecksCmd.Flags().StringVarP(&getDecksCmdArgs.userId, "userId", "u", "loom", "UserId of account")
 }
