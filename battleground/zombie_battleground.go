@@ -160,7 +160,12 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
-	ctx.Set(InitDataKey(), req)
+	cardList := zb.CardList{
+		Cards: req.Cards,
+	}
+	if err := ctx.Set(cardListKey, &cardList); err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -43,11 +43,14 @@ func loadcards(reader io.Reader) (*zb.CardList, error) {
 			if err != nil {
 				return nil, err
 			}
+			card.Id = int64(current + 1)
 			cards = append(cards, card)
 		}
 		// convert effect
 		effect := effectFrom(record[8:])
-		cards[current].Effects = append(cards[current].Effects, effect)
+		if effect.Trigger != "" {
+			cards[current].Effects = append(cards[current].Effects, effect)
+		}
 
 		current++
 	}
@@ -59,17 +62,16 @@ func loadcards(reader io.Reader) (*zb.CardList, error) {
 
 func cardFrom(record []string) (*zb.Card, error) {
 	var card zb.Card
-	card.Id = record[0]
 	card.Name = record[0]
 	card.Element = record[1]
 	card.Rank = record[2]
 	card.Type = record[3]
 	i, _ := strconv.ParseInt(record[4], 10, 32)
-	card.Attack = int32(i)
+	card.Damage = int32(i)
 	i, _ = strconv.ParseInt(record[5], 10, 32)
-	card.Defence = int32(i)
+	card.Health = int32(i)
 	i, _ = strconv.ParseInt(record[6], 10, 32)
-	card.GooCost = int32(i)
+	card.Cost = int32(i)
 	card.Ability = record[7]
 	return &card, nil
 }
