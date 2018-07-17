@@ -80,22 +80,28 @@ message ZBCardCollection {
 
 
 message InitRequest {
-    repeated ZBDeck default_decks = 1;
+    repeated ZBDeck default_decks       = 1;
     ZBCardCollection default_collection = 2;
-    repeated Card cards = 3;
+    repeated Card cards                 = 3;
 }
 
 message Card {
-    string id               = 1;
-    string name             = 2;
-    string element          = 3;
-    string rank             = 4;
-    string type             = 5;
-    int32 attack            = 6;
-    int32 defence           = 7;
-    int32 goo_cost          = 8;
-    string ability          = 9;
-    repeated Effect effects = 10;
+    int64 id                   = 1;
+    string kind                = 2;
+    string element             = 3;
+    string name                = 4;
+    string description         = 5;
+    string flavorText          = 6;
+    string picture             = 7;
+    string rank                = 8;
+    string type                = 9;
+    string rarity              = 10;
+    int32 damage               = 11;
+    int32 health               = 12;
+    int32 cost                 = 13;
+    string ability             = 14;
+    repeated Effect effects    = 15;
+    repeated Ability abilities = 16;
 }
 
 message Effect {
@@ -104,6 +110,14 @@ message Effect {
     string duration = 3;
     string target   = 4;
     string limit    = 5;
+}
+
+message Ability {
+    string type          = 1;
+    string activity_type = 2;
+    string call_type     = 3;
+    string target_type   = 4;
+    int32 value          = 5;
 }
 
 message CardList {
@@ -119,14 +133,18 @@ message CardCollectionList {
     repeated CardCollection cards = 1;
 }
 
-message CardLibrary {
+message CardSet {
     string name         = 1;
     repeated Card cards = 2;
+}
+
+message CardLibrary {
+    repeated CardSet sets = 1;
 }
 
 message ListCardLibraryRequest {
 }
 
 message ListCardLibraryResponse {
-    repeated CardLibrary sets = 1;
+    repeated CardSet sets = 1;
 }
