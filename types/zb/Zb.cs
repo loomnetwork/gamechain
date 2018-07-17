@@ -45,13 +45,14 @@ namespace Loom.Unity3d.Zb {
             "X2lkGAEgASgDEg4KBmFtb3VudBgCIAEoAyIyCg5HZXREZWNrUmVxdWVzdBIP",
             "Cgd1c2VyX2lkGAEgASgJEg8KB2RlY2tfaWQYAiABKAkiOAoOQWRkRGVja1Jl",
             "cXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIVCgRkZWNrGAIgASgLMgcuWkJEZWNr",
-            "IjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVj",
-            "a19pZBgCIAEoCSIqChBHZXREZWNrc1Jlc3BvbnNlEhYKBWRlY2tzGAEgAygL",
-            "MgcuWkJEZWNrIjQKEFpCQ2FyZENvbGxlY3Rpb24SIAoFY2FyZHMYASADKAsy",
-            "ES5DYXJkSW5Db2xsZWN0aW9uIlwKC0luaXRSZXF1ZXN0Eh4KDWRlZmF1bHRf",
-            "ZGVja3MYASADKAsyBy5aQkRlY2sSLQoSZGVmYXVsdF9jb2xsZWN0aW9uGAIg",
-            "ASgLMhEuWkJDYXJkQ29sbGVjdGlvbkISqgIPTG9vbS5Vbml0eTNkLlpiYgZw",
-            "cm90bzM="));
+            "IjkKD0VkaXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhUKBGRlY2sY",
+            "AiABKAsyBy5aQkRlY2siNQoRRGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9p",
+            "ZBgBIAEoCRIPCgdkZWNrX2lkGAIgASgJIioKEEdldERlY2tzUmVzcG9uc2US",
+            "FgoFZGVja3MYASADKAsyBy5aQkRlY2siNAoQWkJDYXJkQ29sbGVjdGlvbhIg",
+            "CgVjYXJkcxgBIAMoCzIRLkNhcmRJbkNvbGxlY3Rpb24iXAoLSW5pdFJlcXVl",
+            "c3QSHgoNZGVmYXVsdF9kZWNrcxgBIAMoCzIHLlpCRGVjaxItChJkZWZhdWx0",
+            "X2NvbGxlY3Rpb24YAiABKAsyES5aQkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29t",
+            "LlVuaXR5M2QuWmJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -65,6 +66,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardInCollection), global::Loom.Unity3d.Zb.CardInCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDeckRequest), global::Loom.Unity3d.Zb.GetDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddDeckRequest), global::Loom.Unity3d.Zb.AddDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.EditDeckRequest), global::Loom.Unity3d.Zb.EditDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeleteDeckRequest), global::Loom.Unity3d.Zb.DeleteDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksResponse), global::Loom.Unity3d.Zb.GetDecksResponse.Parser, new[]{ "Decks" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ZBCardCollection), global::Loom.Unity3d.Zb.ZBCardCollection.Parser, new[]{ "Cards" }, null, null, null),
@@ -1991,6 +1993,169 @@ namespace Loom.Unity3d.Zb {
 
   }
 
+  public sealed partial class EditDeckRequest : pb::IMessage<EditDeckRequest> {
+    private static readonly pb::MessageParser<EditDeckRequest> _parser = new pb::MessageParser<EditDeckRequest>(() => new EditDeckRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<EditDeckRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest(EditDeckRequest other) : this() {
+      userId_ = other.userId_;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest Clone() {
+      return new EditDeckRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "deck" field.</summary>
+    public const int DeckFieldNumber = 2;
+    private global::Loom.Unity3d.Zb.ZBDeck deck_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Loom.Unity3d.Zb.ZBDeck Deck {
+      get { return deck_; }
+      set {
+        deck_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as EditDeckRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(EditDeckRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      if (!object.Equals(Deck, other.Deck)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (deck_ != null) hash ^= Deck.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (deck_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Deck);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (deck_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Deck);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(EditDeckRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      if (other.deck_ != null) {
+        if (deck_ == null) {
+          deck_ = new global::Loom.Unity3d.Zb.ZBDeck();
+        }
+        Deck.MergeFrom(other.Deck);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (deck_ == null) {
+              deck_ = new global::Loom.Unity3d.Zb.ZBDeck();
+            }
+            input.ReadMessage(deck_);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class DeleteDeckRequest : pb::IMessage<DeleteDeckRequest> {
     private static readonly pb::MessageParser<DeleteDeckRequest> _parser = new pb::MessageParser<DeleteDeckRequest>(() => new DeleteDeckRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -1999,7 +2164,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2156,7 +2321,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2277,7 +2442,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2398,7 +2563,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
