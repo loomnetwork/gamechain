@@ -136,7 +136,7 @@ func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb
 	return newArray
 }
 
-func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, bool, error) {
+func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, bool) {
 	deckMap := make(map[string]*zb.ZBDeck)
 
 	for _, deck := range deckSet {
@@ -149,10 +149,6 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 
 	newArray := make([]*zb.ZBDeck, len(deckMap))
 
-	if len(newArray) == 0 {
-		return nil, false, errors.New("cannot delete only deck available")
-	}
-
 	i := 0
 	for _, deck := range deckSet {
 		if _, ok := deckMap[deck.Name]; !ok {
@@ -163,7 +159,7 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 		i++
 	}
 
-	return newArray, len(newArray) == len(deckSet), nil
+	return newArray, len(deckSet) != len(newArray)
 }
 
 func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
@@ -286,8 +282,10 @@ func (z *ZombieBattleground) GetDecks(ctx contract.StaticContext, req *zb.GetDec
 	userId := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userId)
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return nil, errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	return &userDecks, nil
@@ -300,8 +298,10 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	userKeySpace := NewUserKeySpace(userId)
 	deckId := strings.TrimSpace(req.DeckId)
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return nil, errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	result := z.getDecks(userDecks.Decks, []string{deckId})
@@ -327,16 +327,22 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
-	if err = ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
-	if userDecks.Decks, deleted, err = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
+	if userDecks.Decks, deleted = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
 		return errors.Wrapf(err, "unable to delete deck: %s", deckId)
 	}
 
-	if err = ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
+	if len(userDecks.Decks) == 0 {
+		ctx.Delete(userKeySpace.DecksKey())
+	} else {
+		if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to save decks, for userId: %d", req.UserId)
+		}
 	}
 
 	if deleted {
@@ -369,12 +375,14 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
-	}
-
 	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
 		return errors.Wrapf(err, "unable to validate deck data for userId: %s", req.UserId)
+	}
+
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	userDecks.Decks = z.mergeDeckSets(userDecks.Decks, []*zb.ZBDeck{req.Deck})
@@ -412,8 +420,10 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
