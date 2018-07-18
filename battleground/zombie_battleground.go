@@ -71,6 +71,26 @@ func (z *ZombieBattleground) validateDeckAddition(collection *zb.ZBCardCollectio
 	return nil
 }
 
+func (z *ZombieBattleground) editDeck(deckSet []*zb.ZBDeck, deck *zb.ZBDeck) error {
+	var deckToEdit *zb.ZBDeck
+
+	for _, deckInSet := range deckSet {
+		if deck.Name == deckInSet.Name {
+			deckToEdit = deckInSet
+			break
+		}
+	}
+
+	if deckToEdit == nil {
+		return fmt.Errorf("Unable to find deck: %s", deck.Name)
+	}
+
+	deckToEdit.Cards = deck.Cards
+	deckToEdit.HeroId = deck.HeroId
+
+	return nil
+}
+
 func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb.ZBDeck) []*zb.ZBDeck {
 	deckMap := make(map[string]*zb.ZBDeck)
 
@@ -116,7 +136,7 @@ func (z *ZombieBattleground) mergeDeckSets(deckSet1 []*zb.ZBDeck, deckSet2 []*zb
 	return newArray
 }
 
-func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, bool, error) {
+func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []string) ([]*zb.ZBDeck, bool) {
 	deckMap := make(map[string]*zb.ZBDeck)
 
 	for _, deck := range deckSet {
@@ -129,10 +149,6 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 
 	newArray := make([]*zb.ZBDeck, len(deckMap))
 
-	if len(newArray) == 0 {
-		return nil, false, errors.New("cannot delete only deck available")
-	}
-
 	i := 0
 	for _, deck := range deckSet {
 		if _, ok := deckMap[deck.Name]; !ok {
@@ -143,7 +159,7 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.ZBDeck, decksToDelete []s
 		i++
 	}
 
-	return newArray, len(newArray) == len(deckSet), nil
+	return newArray, len(deckSet) != len(newArray)
 }
 
 func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
@@ -266,8 +282,10 @@ func (z *ZombieBattleground) GetDecks(ctx contract.StaticContext, req *zb.GetDec
 	userId := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userId)
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return nil, errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	return &userDecks, nil
@@ -280,8 +298,10 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	userKeySpace := NewUserKeySpace(userId)
 	deckId := strings.TrimSpace(req.DeckId)
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return nil, errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return nil, errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	result := z.getDecks(userDecks.Decks, []string{deckId})
@@ -307,16 +327,22 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
-	if err = ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
-	if userDecks.Decks, deleted, err = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
+	if userDecks.Decks, deleted = z.deleteDecks(userDecks.Decks, []string{deckId}); err != nil {
 		return errors.Wrapf(err, "unable to delete deck: %s", deckId)
 	}
 
-	if err = ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
+	if len(userDecks.Decks) == 0 {
+		ctx.Delete(userKeySpace.DecksKey())
+	} else {
+		if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to save decks, for userId: %d", req.UserId)
+		}
 	}
 
 	if deleted {
@@ -349,12 +375,14 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
 
-	if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
-		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
-	}
-
 	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
 		return errors.Wrapf(err, "unable to validate deck data for userId: %s", req.UserId)
+	}
+
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
 	}
 
 	userDecks.Decks = z.mergeDeckSets(userDecks.Decks, []*zb.ZBDeck{req.Deck})
@@ -374,6 +402,52 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 
 	return nil
 
+}
+
+func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequest) error {
+	var userCollection zb.ZBCardCollection
+	var userDecks zb.UserDecks
+
+	userId := strings.TrimSpace(req.UserId)
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	userKeySpace := NewUserKeySpace(userId)
+
+	if !z.isUser(ctx, userId) {
+		return fmt.Errorf("userId: %s is not verified", req.UserId)
+	}
+
+	if err := ctx.Get(userKeySpace.CardCollectionKey(), &userCollection); err != nil {
+		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
+	}
+
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
+	}
+
+	if err := z.validateDeckAddition(&userCollection, req.Deck); err != nil {
+		return errors.Wrapf(err, "unable to validate deck data for userId: %s", req.UserId)
+	}
+
+	if err := z.editDeck(userDecks.Decks, req.Deck); err != nil {
+		return errors.Wrapf(err, "unable to edit deck for userId: %s", req.UserId)
+	}
+
+	if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
+		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
+	}
+
+	ctx.Logger().Info("Edited zombiebattleground deck", "userId", userId, "deckId", req.Deck.Name, "address", senderAddress)
+
+	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "editdeck")
+	if err != nil {
+		ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+	} else {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:editdeck")
+	}
+
+	return nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
