@@ -45,30 +45,32 @@ namespace Loom.Unity3d.Zb {
             "X2lkGAEgASgDEg4KBmFtb3VudBgCIAEoAyIyCg5HZXREZWNrUmVxdWVzdBIP",
             "Cgd1c2VyX2lkGAEgASgJEg8KB2RlY2tfaWQYAiABKAkiOAoOQWRkRGVja1Jl",
             "cXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIVCgRkZWNrGAIgASgLMgcuWkJEZWNr",
-            "IjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVj",
-            "a19pZBgCIAEoCSIqChBHZXREZWNrc1Jlc3BvbnNlEhYKBWRlY2tzGAEgAygL",
-            "MgcuWkJEZWNrIjQKEFpCQ2FyZENvbGxlY3Rpb24SIAoFY2FyZHMYASADKAsy",
-            "ES5DYXJkSW5Db2xsZWN0aW9uInIKC0luaXRSZXF1ZXN0Eh4KDWRlZmF1bHRf",
-            "ZGVja3MYASADKAsyBy5aQkRlY2sSLQoSZGVmYXVsdF9jb2xsZWN0aW9uGAIg",
-            "ASgLMhEuWkJDYXJkQ29sbGVjdGlvbhIUCgVjYXJkcxgDIAMoCzIFLkNhcmQi",
-            "mwIKBENhcmQSCgoCaWQYASABKAMSDAoEa2luZBgCIAEoCRIPCgdlbGVtZW50",
-            "GAMgASgJEgwKBG5hbWUYBCABKAkSEwoLZGVzY3JpcHRpb24YBSABKAkSEgoK",
-            "Zmxhdm9yVGV4dBgGIAEoCRIPCgdwaWN0dXJlGAcgASgJEgwKBHJhbmsYCCAB",
-            "KAkSDAoEdHlwZRgJIAEoCRIOCgZyYXJpdHkYCiABKAkSDgoGZGFtYWdlGAsg",
-            "ASgFEg4KBmhlYWx0aBgMIAEoBRIMCgRjb3N0GA0gASgFEg8KB2FiaWxpdHkY",
-            "DiABKAkSGAoHZWZmZWN0cxgPIAMoCzIHLkVmZmVjdBIbCglhYmlsaXRpZXMY",
-            "ECADKAsyCC5BYmlsaXR5IloKBkVmZmVjdBIPCgd0cmlnZ2VyGAEgASgJEg4K",
-            "BmVmZmVjdBgCIAEoCRIQCghkdXJhdGlvbhgDIAEoCRIOCgZ0YXJnZXQYBCAB",
-            "KAkSDQoFbGltaXQYBSABKAkiZQoHQWJpbGl0eRIMCgR0eXBlGAEgASgJEhUK",
-            "DWFjdGl2aXR5X3R5cGUYAiABKAkSEQoJY2FsbF90eXBlGAMgASgJEhMKC3Rh",
-            "cmdldF90eXBlGAQgASgJEg0KBXZhbHVlGAUgASgFIiAKCENhcmRMaXN0EhQK",
-            "BWNhcmRzGAEgAygLMgUuQ2FyZCIxCg5DYXJkQ29sbGVjdGlvbhIPCgdjYXJk",
-            "X2lkGAEgASgJEg4KBmFtb3VudBgCIAEoBSI0ChJDYXJkQ29sbGVjdGlvbkxp",
-            "c3QSHgoFY2FyZHMYASADKAsyDy5DYXJkQ29sbGVjdGlvbiItCgdDYXJkU2V0",
-            "EgwKBG5hbWUYASABKAkSFAoFY2FyZHMYAiADKAsyBS5DYXJkIiUKC0NhcmRM",
-            "aWJyYXJ5EhYKBHNldHMYASADKAsyCC5DYXJkU2V0IhgKFkxpc3RDYXJkTGli",
-            "cmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0",
-            "cxgBIAMoCzIILkNhcmRTZXRCEqoCD0xvb20uVW5pdHkzZC5aYmIGcHJvdG8z"));
+            "IjkKD0VkaXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhUKBGRlY2sY",
+            "AiABKAsyBy5aQkRlY2siNQoRRGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9p",
+            "ZBgBIAEoCRIPCgdkZWNrX2lkGAIgASgJIioKEEdldERlY2tzUmVzcG9uc2US",
+            "FgoFZGVja3MYASADKAsyBy5aQkRlY2siNAoQWkJDYXJkQ29sbGVjdGlvbhIg",
+            "CgVjYXJkcxgBIAMoCzIRLkNhcmRJbkNvbGxlY3Rpb24icgoLSW5pdFJlcXVl",
+            "c3QSHgoNZGVmYXVsdF9kZWNrcxgBIAMoCzIHLlpCRGVjaxItChJkZWZhdWx0",
+            "X2NvbGxlY3Rpb24YAiABKAsyES5aQkNhcmRDb2xsZWN0aW9uEhQKBWNhcmRz",
+            "GAMgAygLMgUuQ2FyZCKbAgoEQ2FyZBIKCgJpZBgBIAEoAxIMCgRraW5kGAIg",
+            "ASgJEg8KB2VsZW1lbnQYAyABKAkSDAoEbmFtZRgEIAEoCRITCgtkZXNjcmlw",
+            "dGlvbhgFIAEoCRISCgpmbGF2b3JUZXh0GAYgASgJEg8KB3BpY3R1cmUYByAB",
+            "KAkSDAoEcmFuaxgIIAEoCRIMCgR0eXBlGAkgASgJEg4KBnJhcml0eRgKIAEo",
+            "CRIOCgZkYW1hZ2UYCyABKAUSDgoGaGVhbHRoGAwgASgFEgwKBGNvc3QYDSAB",
+            "KAUSDwoHYWJpbGl0eRgOIAEoCRIYCgdlZmZlY3RzGA8gAygLMgcuRWZmZWN0",
+            "EhsKCWFiaWxpdGllcxgQIAMoCzIILkFiaWxpdHkiWgoGRWZmZWN0Eg8KB3Ry",
+            "aWdnZXIYASABKAkSDgoGZWZmZWN0GAIgASgJEhAKCGR1cmF0aW9uGAMgASgJ",
+            "Eg4KBnRhcmdldBgEIAEoCRINCgVsaW1pdBgFIAEoCSJlCgdBYmlsaXR5EgwK",
+            "BHR5cGUYASABKAkSFQoNYWN0aXZpdHlfdHlwZRgCIAEoCRIRCgljYWxsX3R5",
+            "cGUYAyABKAkSEwoLdGFyZ2V0X3R5cGUYBCABKAkSDQoFdmFsdWUYBSABKAUi",
+            "IAoIQ2FyZExpc3QSFAoFY2FyZHMYASADKAsyBS5DYXJkIjEKDkNhcmRDb2xs",
+            "ZWN0aW9uEg8KB2NhcmRfaWQYASABKAkSDgoGYW1vdW50GAIgASgFIjQKEkNh",
+            "cmRDb2xsZWN0aW9uTGlzdBIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0",
+            "aW9uIi0KB0NhcmRTZXQSDAoEbmFtZRgBIAEoCRIUCgVjYXJkcxgCIAMoCzIF",
+            "LkNhcmQiJQoLQ2FyZExpYnJhcnkSFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQi",
+            "GAoWTGlzdENhcmRMaWJyYXJ5UmVxdWVzdCIxChdMaXN0Q2FyZExpYnJhcnlS",
+            "ZXNwb25zZRIWCgRzZXRzGAEgAygLMgguQ2FyZFNldEISqgIPTG9vbS5Vbml0",
+            "eTNkLlpiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -82,6 +84,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardInCollection), global::Loom.Unity3d.Zb.CardInCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDeckRequest), global::Loom.Unity3d.Zb.GetDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddDeckRequest), global::Loom.Unity3d.Zb.AddDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.EditDeckRequest), global::Loom.Unity3d.Zb.EditDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeleteDeckRequest), global::Loom.Unity3d.Zb.DeleteDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksResponse), global::Loom.Unity3d.Zb.GetDecksResponse.Parser, new[]{ "Decks" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ZBCardCollection), global::Loom.Unity3d.Zb.ZBCardCollection.Parser, new[]{ "Cards" }, null, null, null),
@@ -1881,7 +1884,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AddDeckRequest(AddDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2018,6 +2021,169 @@ namespace Loom.Unity3d.Zb {
 
   }
 
+  public sealed partial class EditDeckRequest : pb::IMessage<EditDeckRequest> {
+    private static readonly pb::MessageParser<EditDeckRequest> _parser = new pb::MessageParser<EditDeckRequest>(() => new EditDeckRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<EditDeckRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest(EditDeckRequest other) : this() {
+      userId_ = other.userId_;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public EditDeckRequest Clone() {
+      return new EditDeckRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "deck" field.</summary>
+    public const int DeckFieldNumber = 2;
+    private global::Loom.Unity3d.Zb.ZBDeck deck_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Loom.Unity3d.Zb.ZBDeck Deck {
+      get { return deck_; }
+      set {
+        deck_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as EditDeckRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(EditDeckRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      if (!object.Equals(Deck, other.Deck)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (deck_ != null) hash ^= Deck.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (deck_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Deck);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (deck_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Deck);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(EditDeckRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      if (other.deck_ != null) {
+        if (deck_ == null) {
+          deck_ = new global::Loom.Unity3d.Zb.ZBDeck();
+        }
+        Deck.MergeFrom(other.Deck);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (deck_ == null) {
+              deck_ = new global::Loom.Unity3d.Zb.ZBDeck();
+            }
+            input.ReadMessage(deck_);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class DeleteDeckRequest : pb::IMessage<DeleteDeckRequest> {
     private static readonly pb::MessageParser<DeleteDeckRequest> _parser = new pb::MessageParser<DeleteDeckRequest>(() => new DeleteDeckRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -2026,7 +2192,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2183,7 +2349,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2304,7 +2470,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2425,7 +2591,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2443,7 +2609,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public InitRequest(InitRequest other) : this() {
       defaultDecks_ = other.defaultDecks_.Clone();
-      DefaultCollection = other.defaultCollection_ != null ? other.DefaultCollection.Clone() : null;
+      defaultCollection_ = other.defaultCollection_ != null ? other.defaultCollection_.Clone() : null;
       cards_ = other.cards_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2600,7 +2766,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3133,7 +3299,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3374,7 +3540,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3615,7 +3781,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3736,7 +3902,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3893,7 +4059,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4014,7 +4180,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4163,7 +4329,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4284,7 +4450,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4385,7 +4551,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
