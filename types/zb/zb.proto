@@ -146,6 +146,11 @@ message DeleteDeckRequest {
     string deck_id = 2;
 }
 
+message EditDeckRequest {
+    string user_id = 1;
+    Deck deck      = 2;
+}
+
 message GetDecksResponse {
     repeated Deck decks = 1;
 }
