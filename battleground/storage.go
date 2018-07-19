@@ -10,6 +10,7 @@ import (
 
 var (
 	cardListKey          = []byte("cardlist")
+	heroListKey          = []byte("herolist")
 	defaultDeckKey       = []byte("default-deck")
 	defaultCollectionKey = []byte("default-collection")
 )
