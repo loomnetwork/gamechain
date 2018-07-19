@@ -68,3 +68,23 @@ func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
 
 	return newArray
 }
+
+func editDeck(deckSet []*zb.Deck, deck *zb.Deck) error {
+	var deckToEdit *zb.Deck
+
+	for _, deckInSet := range deckSet {
+		if deck.Name == deckInSet.Name {
+			deckToEdit = deckInSet
+			break
+		}
+	}
+
+	if deckToEdit == nil {
+		return fmt.Errorf("Unable to find deck: %s", deck.Name)
+	}
+
+	deckToEdit.Cards = deck.Cards
+	deckToEdit.HeroId = deck.HeroId
+
+	return nil
+}
