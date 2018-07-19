@@ -2013,7 +2013,7 @@
           },
           {
             "id": 142,
-            "element": "Void",
+            "element": "None",
             "name": "Feeble",
             "rank": "Minion",
             "type": "Walker",
@@ -2024,7 +2024,7 @@
           },
           {
             "id": 143,
-            "element": "Void",
+            "element": "None",
             "name": "Drainer",
             "rank": "Minion",
             "type": "Walker",
@@ -2042,7 +2042,7 @@
           },
           {
             "id": 144,
-            "element": "Void",
+            "element": "None",
             "name": "Drifter",
             "rank": "Minion",
             "type": "Walker",
@@ -2060,7 +2060,7 @@
           },
           {
             "id": 145,
-            "element": "Void",
+            "element": "None",
             "name": "Trasher",
             "rank": "Minion",
             "type": "Walker",
@@ -2078,7 +2078,7 @@
           },
           {
             "id": 146,
-            "element": "Void",
+            "element": "None",
             "name": "Ztalker",
             "rank": "Minion",
             "type": "Feral",
@@ -2089,7 +2089,7 @@
           },
           {
             "id": 147,
-            "element": "Void",
+            "element": "None",
             "name": "Zinge",
             "rank": "Minion",
             "type": "Heavy",
@@ -2100,7 +2100,7 @@
           },
           {
             "id": 148,
-            "element": "Void",
+            "element": "None",
             "name": "Doubt",
             "rank": "Minion",
             "type": "Walker",
@@ -2111,7 +2111,7 @@
           },
           {
             "id": 149,
-            "element": "Void",
+            "element": "None",
             "name": "Faded",
             "rank": "Minion",
             "type": "Feral",
@@ -2122,7 +2122,7 @@
           },
           {
             "id": 150,
-            "element": "Void",
+            "element": "None",
             "name": "Violator",
             "rank": "Officer",
             "type": "Walker",
@@ -2133,7 +2133,7 @@
           },
           {
             "id": 151,
-            "element": "Void",
+            "element": "None",
             "name": "Choker",
             "rank": "Officer",
             "type": "Walker",
@@ -2144,7 +2144,7 @@
           },
           {
             "id": 152,
-            "element": "Void",
+            "element": "None",
             "name": "Corrupter",
             "rank": "Officer",
             "type": "Walker",
@@ -2155,7 +2155,7 @@
           },
           {
             "id": 153,
-            "element": "Void",
+            "element": "None",
             "name": "Defiler",
             "rank": "Officer",
             "type": "Feral",
@@ -2166,7 +2166,7 @@
           },
           {
             "id": 154,
-            "element": "Void",
+            "element": "None",
             "name": "Crippler",
             "rank": "Officer",
             "type": "Heavy",
@@ -2177,7 +2177,7 @@
           },
           {
             "id": 155,
-            "element": "Void",
+            "element": "None",
             "name": "Zlendermaz",
             "rank": "Commander",
             "type": "Walker",
@@ -2188,7 +2188,7 @@
           },
           {
             "id": 156,
-            "element": "Void",
+            "element": "None",
             "name": "Ztrangler",
             "rank": "Commander",
             "type": "Walker",
@@ -2199,7 +2199,7 @@
           },
           {
             "id": 157,
-            "element": "Void",
+            "element": "None",
             "name": "Delirium",
             "rank": "Commander",
             "type": "Walker",
@@ -2210,7 +2210,7 @@
           },
           {
             "id": 158,
-            "element": "Void",
+            "element": "None",
             "name": "Fear",
             "rank": "Commander",
             "type": "Feral",
@@ -2221,7 +2221,7 @@
           },
           {
             "id": 159,
-            "element": "Void",
+            "element": "None",
             "name": "Envy",
             "rank": "Commander",
             "type": "Walker",
@@ -2238,7 +2238,7 @@
           },
           {
             "id": 160,
-            "element": "Void",
+            "element": "None",
             "name": "Nightmare",
             "rank": "General",
             "type": "Walker",
@@ -2249,7 +2249,7 @@
           },
           {
             "id": 161,
-            "element": "Void",
+            "element": "None",
             "name": "Oblivion",
             "rank": "General",
             "type": "Heavy",
