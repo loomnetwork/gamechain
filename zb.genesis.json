@@ -997,7 +997,7 @@
             "element": "Item",
             "name": "Bat",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "cost": 3,
             "ability": "Deal 2 damage to a zombie and Distract it.",
             "effects": [
@@ -1013,7 +1013,7 @@
             "element": "Item",
             "name": "Molotov",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "damage": 3,
             "cost": 4,
             "ability": "Deal 3 damage to a zombie and its adjacent zombies"
@@ -1023,7 +1023,7 @@
             "element": "Item",
             "name": "Stapler",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "cost": 4,
             "ability": "Heals a zombie for 4 HP",
             "effects": [
@@ -1039,7 +1039,7 @@
             "element": "Item",
             "name": "Super Goo Serum",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "cost": 4,
             "ability": "Give a friendly zombie +3/+3."
           },
@@ -1048,7 +1048,7 @@
             "element": "Item",
             "name": "Supply Drop",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "cost": 3,
             "ability": "Each playerputs a random zombie card from their deck to play.",
             "effects": [
@@ -1064,7 +1064,7 @@
             "element": "Item",
             "name": "Torch",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "cost": 2,
             "ability": "Entry: Destroy a zombie that costs 3 Goo or less."
           },
@@ -1073,7 +1073,7 @@
             "element": "Item",
             "name": "Whistle",
             "rank": "Minion",
-            "type": "Item",
+            "type": "Feral",
             "ability": "Draw a card."
           },
           {
@@ -1081,7 +1081,7 @@
             "element": "Item",
             "name": "Beaker",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "ability": "Get +1 Goo for this turn only.",
             "effects": [
               {
@@ -1096,7 +1096,7 @@
             "element": "Item",
             "name": "Fire Extinguisher",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "cost": 4,
             "ability": "Entry: Disable (freeze) all enemy zombies.",
             "effects": [
@@ -1112,7 +1112,7 @@
             "element": "Item",
             "name": "Junk Spear",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "damage": 3,
             "health": 1,
             "cost": 4,
@@ -1131,7 +1131,7 @@
             "element": "Item",
             "name": "Lawnmower",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "cost": 6,
             "ability": "Entry: Deal 2 damage to all enemy zombies.",
             "effects": [
@@ -1146,7 +1146,7 @@
             "element": "Item",
             "name": "Nail Bomb",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "damage": 10,
             "cost": 4,
             "ability": "Damage target and 2 adjacent zombies for 5 damage."
@@ -1156,7 +1156,7 @@
             "element": "Item",
             "name": "Shovel",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "cost": 3,
             "ability": "Entry: Deal 4 damage to an enemy OR restore 5 health to a friendly character."
           },
@@ -1165,7 +1165,7 @@
             "element": "Item",
             "name": "Zed Kit",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "cost": 2,
             "ability": "Restore defense to each zombie you have for each zombie element type you have in the battleground."
           },
@@ -1174,7 +1174,7 @@
             "element": "Item",
             "name": "Fresh Meat",
             "rank": "Commander",
-            "type": "Item",
+            "type": "Feral",
             "cost": 5,
             "ability": "Entry: Give all enemy zombies -3 attack until the end of your turn."
           },
@@ -1183,7 +1183,7 @@
             "element": "Item",
             "name": "Goo Bottles",
             "rank": "Commander",
-            "type": "Item",
+            "type": "Feral",
             "ability": "adds 2 full Goo vials",
             "effects": [
               {
@@ -1198,7 +1198,7 @@
             "element": "Item",
             "name": "Leash",
             "rank": "Commander",
-            "type": "Item",
+            "type": "Feral",
             "cost": 8,
             "ability": "Entry: Gain control of an enemy zombie."
           },
@@ -1207,7 +1207,7 @@
             "element": "Item",
             "name": "Shopping Cart",
             "rank": "Commander",
-            "type": "Item",
+            "type": "Feral",
             "cost": 6,
             "ability": "Entry: All your zombies gain \"Swing\" (Swing: when attacking, deal damage to the target, as well as any adjacent zombies.)",
             "effects": [
@@ -1223,7 +1223,7 @@
             "element": "Item",
             "name": "Bulldozer",
             "rank": "General",
-            "type": "Item",
+            "type": "Feral",
             "cost": 10,
             "ability": "Entry: Destroy all zombies in the battleground.",
             "effects": [
@@ -1239,7 +1239,7 @@
             "element": "Item",
             "name": "Chainsaw",
             "rank": "General",
-            "type": "Item",
+            "type": "Feral",
             "damage": 5,
             "health": 3,
             "cost": 2,
@@ -1376,7 +1376,7 @@
             "element": "Life",
             "name": "Sapper",
             "rank": "Officer",
-            "type": "Item",
+            "type": "Feral",
             "damage": 1,
             "health": 4,
             "cost": 5,
