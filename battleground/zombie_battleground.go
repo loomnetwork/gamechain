@@ -75,7 +75,7 @@ func (z *ZombieBattleground) getDecks(deckSet []*zb.Deck, decksToQuery []string)
 	return decks[:i]
 }
 
-func (z *ZombieBattleground) deleteDecks(deckSet []*zb.Deck, decksToDelete []string) ([]*zb.Deck, bool, error) {
+func (z *ZombieBattleground) deleteDecks(deckSet []*zb.Deck, decksToDelete []string) ([]*zb.Deck, bool) {
 	deckMap := make(map[string]*zb.Deck)
 
 	for _, deck := range deckSet {
@@ -88,10 +88,6 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.Deck, decksToDelete []str
 
 	newArray := make([]*zb.Deck, len(deckMap))
 
-	if len(newArray) == 0 {
-		return nil, false, errors.New("cannot delete only deck available")
-	}
-
 	i := 0
 	for _, deck := range deckSet {
 		if _, ok := deckMap[deck.Name]; !ok {
@@ -102,7 +98,7 @@ func (z *ZombieBattleground) deleteDecks(deckSet []*zb.Deck, decksToDelete []str
 		i++
 	}
 
-	return newArray, len(newArray) == len(deckSet), nil
+	return newArray, len(deckSet) != len(newArray)
 }
 
 func (z *ZombieBattleground) isUser(ctx contract.Context, userId string) bool {
@@ -278,9 +274,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return errors.Wrapf(err, "unable to get decks for userId: %s", userId)
 	}
 
-	if DeckList.Decks, deleted, err = z.deleteDecks(DeckList.Decks, []string{deckId}); err != nil {
-		return errors.Wrapf(err, "unable to delete deck: %s", deckId)
-	}
+	DeckList.Decks, deleted = z.deleteDecks(DeckList.Decks, []string{deckId})
 
 	if err = ctx.Set(userKeySpace.DecksKey(), &DeckList); err != nil {
 		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
