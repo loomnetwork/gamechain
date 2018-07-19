@@ -38,7 +38,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 	// initialize default card collection
-	collectionList := zb.CardCollectionList{
+	collectionList := zb.CollectionList{
 		Cards: req.DefaultCollection,
 	}
 	if err := ctx.Set(defaultCollectionKey, &collectionList); err != nil {
@@ -194,7 +194,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	ctx.GrantPermission([]byte(userId), []string{"user"})
 
 	// add default collection list
-	var collectionList zb.CardCollectionList
+	var collectionList zb.CollectionList
 	if err := ctx.Get(defaultCollectionKey, &collectionList); err != nil {
 		return err
 	}
@@ -303,7 +303,7 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 		return fmt.Errorf("userId: %s is not verified", req.UserId)
 	}
 
-	var collectionList zb.CardCollectionList
+	var collectionList zb.CollectionList
 	if err := ctx.Get(userKeySpace.CardCollectionKey(), &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
