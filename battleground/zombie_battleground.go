@@ -337,6 +337,52 @@ func (z *ZombieBattleground) AddDeck(ctx contract.Context, req *zb.AddDeckReques
 
 }
 
+func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequest) error {
+	var userCollection zb.CollectionList
+	var userDecks zb.DeckList
+
+	userId := strings.TrimSpace(req.UserId)
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	userKeySpace := NewUserKeySpace(userId)
+
+	if !z.isUser(ctx, userId) {
+		return fmt.Errorf("userId: %s is not verified", req.UserId)
+	}
+
+	if err := ctx.Get(userKeySpace.CardCollectionKey(), &userCollection); err != nil {
+		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
+	}
+
+	if ctx.Has(userKeySpace.DecksKey()) {
+		if err := ctx.Get(userKeySpace.DecksKey(), &userDecks); err != nil {
+			return errors.Wrapf(err, "unable to get deck data for userId: %s", req.UserId)
+		}
+	}
+
+	if err := validateDeckAddition(userCollection.Cards, req.Deck.Cards); err != nil {
+		return errors.Wrapf(err, "unable to validate deck data for userId: %s", req.UserId)
+	}
+
+	if err := editDeck(userDecks.Decks, req.Deck); err != nil {
+		return errors.Wrapf(err, "unable to edit deck for userId: %s", req.UserId)
+	}
+
+	if err := ctx.Set(userKeySpace.DecksKey(), &userDecks); err != nil {
+		return errors.Wrapf(err, "unable to save decks for userId: %s", userId)
+	}
+
+	ctx.Logger().Info("Edited zombiebattleground deck", "userId", userId, "deckId", req.Deck.Name, "address", senderAddress)
+
+	emitMsgJSON, err := z.prepareEmitMsgJSON(senderAddress, userId, "editdeck")
+	if err != nil {
+		ctx.Logger().Error(fmt.Sprintf("error marshalling emit message for userId:%s. Error:%s", req.UserId, err))
+	} else {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:editdeck")
+	}
+
+	return nil
+}
+
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
 	var cardList zb.CardList
 	if err := ctx.Get(cardListKey, &cardList); err != nil {
