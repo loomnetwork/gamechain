@@ -2,10 +2,6 @@ package battleground
 
 import "strings"
 
-func InitDataKey() []byte {
-	return []byte("init")
-}
-
 func NewUserKeySpace(userId string) *UserKeySpace {
 	return &UserKeySpace{userId: strings.TrimSpace(userId)}
 }
