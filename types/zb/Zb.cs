@@ -31,67 +31,68 @@ namespace Loom.Unity3d.Zb {
             "GAUgASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2Nv",
             "cmUYByABKAMSFAoMY3VycmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVy",
             "c2hpcF90aWVyGAkgASgFEg0KBW93bmVyGAogASgMIkUKBERlY2sSDAoEbmFt",
-            "ZRgBIAEoCRIPCgdoZXJvX2lkGAIgASgDEh4KBWNhcmRzGAMgAygLMg8uQ29s",
-            "bGVjdGlvbkxpc3QiIAoIRGVja0xpc3QSFAoFZGVja3MYASADKAsyBS5EZWNr",
-            "IpsCCgRDYXJkEgoKAmlkGAEgASgDEgwKBGtpbmQYAiABKAkSDwoHZWxlbWVu",
-            "dBgDIAEoCRIMCgRuYW1lGAQgASgJEhMKC2Rlc2NyaXB0aW9uGAUgASgJEhIK",
-            "CmZsYXZvclRleHQYBiABKAkSDwoHcGljdHVyZRgHIAEoCRIMCgRyYW5rGAgg",
-            "ASgJEgwKBHR5cGUYCSABKAkSDgoGcmFyaXR5GAogASgJEg4KBmRhbWFnZRgL",
-            "IAEoBRIOCgZoZWFsdGgYDCABKAUSDAoEY29zdBgNIAEoBRIPCgdhYmlsaXR5",
-            "GA4gASgJEhgKB2VmZmVjdHMYDyADKAsyBy5FZmZlY3QSGwoJYWJpbGl0aWVz",
-            "GBAgAygLMgguQWJpbGl0eSJaCgZFZmZlY3QSDwoHdHJpZ2dlchgBIAEoCRIO",
-            "CgZlZmZlY3QYAiABKAkSEAoIZHVyYXRpb24YAyABKAkSDgoGdGFyZ2V0GAQg",
-            "ASgJEg0KBWxpbWl0GAUgASgJImUKB0FiaWxpdHkSDAoEdHlwZRgBIAEoCRIV",
-            "Cg1hY3Rpdml0eV90eXBlGAIgASgJEhEKCWNhbGxfdHlwZRgDIAEoCRITCgt0",
-            "YXJnZXRfdHlwZRgEIAEoCRINCgV2YWx1ZRgFIAEoBSIgCghDYXJkTGlzdBIU",
-            "CgVjYXJkcxgBIAMoCzIFLkNhcmQiLQoKQ29sbGVjdGlvbhIPCgdjYXJkX2lk",
-            "GAEgASgDEg4KBmFtb3VudBgCIAEoAyIsCg5Db2xsZWN0aW9uTGlzdBIaCgVj",
-            "YXJkcxgBIAMoCzILLkNvbGxlY3Rpb24iLQoHQ2FyZFNldBIMCgRuYW1lGAEg",
-            "ASgJEhQKBWNhcmRzGAIgAygLMgUuQ2FyZCIlCgtDYXJkTGlicmFyeRIWCgRz",
-            "ZXRzGAEgAygLMgguQ2FyZFNldCJbCgRIZXJvEg8KB2hlcm9faWQYASABKAMS",
-            "DAoEaWNvbhgCIAEoCRIMCgRuYW1lGAMgASgJEg8KB2VsZW1lbnQYBCABKAUS",
-            "FQoFc2tpbGwYBSABKAsyBi5Ta2lsbCJfCgVTa2lsbBINCgV0aXRsZRgBIAEo",
-            "CRIRCglza2lsbFR5cGUYAiABKAUSFwoPc2tpbGxUYXJnZXRUeXBlGAMgASgF",
-            "EgwKBGNvc3QYBCABKAUSDQoFdmFsdWUYBSABKAUiIAoISGVyb0xpc3QSFAoF",
-            "aGVyb3MYASADKAsyBS5IZXJvIoABCgtJbml0UmVxdWVzdBIcCg1kZWZhdWx0",
-            "X2RlY2tzGAEgAygLMgUuRGVjaxInChJkZWZhdWx0X2NvbGxlY3Rpb24YAiAD",
-            "KAsyCy5Db2xsZWN0aW9uEhQKBWNhcmRzGAMgAygLMgUuQ2FyZBIUCgVoZXJv",
-            "cxgEIAMoCzIFLkhlcm8i6QEKFFVwc2VydEFjY291bnRSZXF1ZXN0Eg8KB3Vz",
-            "ZXJfaWQYASABKAkSHQoVcGhvbmVfbnVtYmVyX3ZlcmlmaWVkGAIgASgIEhcK",
-            "D3Jld2FyZF9yZWRlZW1lZBgDIAEoCBIWCg5pc19raWNrc3RhcnRlchgEIAEo",
-            "CBINCgVpbWFnZRgFIAEoCRIaChJlbWFpbF9ub3RpZmljYXRpb24YBiABKAgS",
-            "EQoJZWxvX3Njb3JlGAcgASgDEhQKDGN1cnJlbnRfdGllchgIIAEoBRIcChRn",
-            "YW1lX21lbWJlcnNoaXBfdGllchgJIAEoBSIkChFHZXRBY2NvdW50UmVxdWVz",
-            "dBIPCgd1c2VyX2lkGAEgASgJIiIKD0dldERlY2tzUmVxdWVzdBIPCgd1c2Vy",
-            "X2lkGAEgASgJIjIKDkdldERlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkS",
-            "DwoHZGVja19pZBgCIAEoCSI2Cg5BZGREZWNrUmVxdWVzdBIPCgd1c2VyX2lk",
-            "GAEgASgJEhMKBGRlY2sYAiABKAsyBS5EZWNrIjUKEURlbGV0ZURlY2tSZXF1",
-            "ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVja19pZBgCIAEoCSI3Cg9FZGl0",
-            "RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRITCgRkZWNrGAIgASgLMgUu",
-            "RGVjayIoChBHZXREZWNrc1Jlc3BvbnNlEhQKBWRlY2tzGAEgAygLMgUuRGVj",
-            "ayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJfaWQYASABKAkSFAoFZGVja3MY",
-            "AiADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVlc3QiMQoXTGlz",
-            "dENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQi",
-            "EQoPTGlzdEhlcm9SZXF1ZXN0IigKEExpc3RIZXJvUmVzcG9uc2USFAoFaGVy",
-            "b3MYASADKAsyBS5IZXJvQhKqAg9Mb29tLlVuaXR5M2QuWmJiBnByb3RvMw=="));
+            "ZRgBIAEoCRIPCgdoZXJvX2lkGAIgASgDEh4KBWNhcmRzGAMgAygLMg8uQ2Fy",
+            "ZENvbGxlY3Rpb24imwIKBENhcmQSCgoCaWQYASABKAMSDAoEa2luZBgCIAEo",
+            "CRIPCgdlbGVtZW50GAMgASgJEgwKBG5hbWUYBCABKAkSEwoLZGVzY3JpcHRp",
+            "b24YBSABKAkSEgoKZmxhdm9yVGV4dBgGIAEoCRIPCgdwaWN0dXJlGAcgASgJ",
+            "EgwKBHJhbmsYCCABKAkSDAoEdHlwZRgJIAEoCRIOCgZyYXJpdHkYCiABKAkS",
+            "DgoGZGFtYWdlGAsgASgFEg4KBmhlYWx0aBgMIAEoBRIMCgRjb3N0GA0gASgF",
+            "Eg8KB2FiaWxpdHkYDiABKAkSGAoHZWZmZWN0cxgPIAMoCzIHLkVmZmVjdBIb",
+            "CglhYmlsaXRpZXMYECADKAsyCC5BYmlsaXR5IloKBkVmZmVjdBIPCgd0cmln",
+            "Z2VyGAEgASgJEg4KBmVmZmVjdBgCIAEoCRIQCghkdXJhdGlvbhgDIAEoCRIO",
+            "CgZ0YXJnZXQYBCABKAkSDQoFbGltaXQYBSABKAkiZQoHQWJpbGl0eRIMCgR0",
+            "eXBlGAEgASgJEhUKDWFjdGl2aXR5X3R5cGUYAiABKAkSEQoJY2FsbF90eXBl",
+            "GAMgASgJEhMKC3RhcmdldF90eXBlGAQgASgJEg0KBXZhbHVlGAUgASgFIiAK",
+            "CENhcmRMaXN0EhQKBWNhcmRzGAEgAygLMgUuQ2FyZCIxCg5DYXJkQ29sbGVj",
+            "dGlvbhIPCgdjYXJkX2lkGAEgASgDEg4KBmFtb3VudBgCIAEoAyItCgdDYXJk",
+            "U2V0EgwKBG5hbWUYASABKAkSFAoFY2FyZHMYAiADKAsyBS5DYXJkIiUKC0Nh",
+            "cmRMaWJyYXJ5EhYKBHNldHMYASADKAsyCC5DYXJkU2V0IlsKBEhlcm8SDwoH",
+            "aGVyb19pZBgBIAEoAxIMCgRpY29uGAIgASgJEgwKBG5hbWUYAyABKAkSDwoH",
+            "ZWxlbWVudBgEIAEoBRIVCgVza2lsbBgFIAEoCzIGLlNraWxsIl8KBVNraWxs",
+            "Eg0KBXRpdGxlGAEgASgJEhEKCXNraWxsVHlwZRgCIAEoBRIXCg9za2lsbFRh",
+            "cmdldFR5cGUYAyABKAUSDAoEY29zdBgEIAEoBRINCgV2YWx1ZRgFIAEoBSIh",
+            "CghIZXJvTGlzdBIVCgZoZXJvZXMYASADKAsyBS5IZXJvIjQKEkNhcmRDb2xs",
+            "ZWN0aW9uTGlzdBIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uIiAK",
+            "CERlY2tMaXN0EhQKBWRlY2tzGAEgAygLMgUuRGVjayKFAQoLSW5pdFJlcXVl",
+            "c3QSHAoNZGVmYXVsdF9kZWNrcxgBIAMoCzIFLkRlY2sSKwoSZGVmYXVsdF9j",
+            "b2xsZWN0aW9uGAIgAygLMg8uQ2FyZENvbGxlY3Rpb24SFAoFY2FyZHMYAyAD",
+            "KAsyBS5DYXJkEhUKBmhlcm9lcxgEIAMoCzIFLkhlcm8i6QEKFFVwc2VydEFj",
+            "Y291bnRSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSHQoVcGhvbmVfbnVtYmVy",
+            "X3ZlcmlmaWVkGAIgASgIEhcKD3Jld2FyZF9yZWRlZW1lZBgDIAEoCBIWCg5p",
+            "c19raWNrc3RhcnRlchgEIAEoCBINCgVpbWFnZRgFIAEoCRIaChJlbWFpbF9u",
+            "b3RpZmljYXRpb24YBiABKAgSEQoJZWxvX3Njb3JlGAcgASgDEhQKDGN1cnJl",
+            "bnRfdGllchgIIAEoBRIcChRnYW1lX21lbWJlcnNoaXBfdGllchgJIAEoBSIk",
+            "ChFHZXRBY2NvdW50UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJIiIKD0dldERl",
+            "Y2tzUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJIjIKDkdldERlY2tSZXF1ZXN0",
+            "Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVja19pZBgCIAEoCSI2Cg5BZGREZWNr",
+            "UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhMKBGRlY2sYAiABKAsyBS5EZWNr",
+            "IjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVj",
+            "a19pZBgCIAEoCSI3Cg9FZGl0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEo",
+            "CRITCgRkZWNrGAIgASgLMgUuRGVjayIoChBHZXREZWNrc1Jlc3BvbnNlEhQK",
+            "BWRlY2tzGAEgAygLMgUuRGVjayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJf",
+            "aWQYASABKAkSFAoFZGVja3MYAiADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGli",
+            "cmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0",
+            "cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0IikKEExpc3RI",
+            "ZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygLMgUuSGVyb0ISqgIPTG9vbS5V",
+            "bml0eTNkLlpiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Account), global::Loom.Unity3d.Zb.Account.Parser, new[]{ "UserId", "PhoneNumberVerified", "RewardRedeemed", "IsKickstarter", "Image", "EmailNotification", "EloScore", "CurrentTier", "GameMembershipTier", "Owner" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Deck), global::Loom.Unity3d.Zb.Deck.Parser, new[]{ "Name", "HeroId", "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeckList), global::Loom.Unity3d.Zb.DeckList.Parser, new[]{ "Decks" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Card), global::Loom.Unity3d.Zb.Card.Parser, new[]{ "Id", "Kind", "Element", "Name", "Description", "FlavorText", "Picture", "Rank", "Type", "Rarity", "Damage", "Health", "Cost", "Ability", "Effects", "Abilities" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Effect), global::Loom.Unity3d.Zb.Effect.Parser, new[]{ "Trigger", "Effect_", "Duration", "Target", "Limit" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Ability), global::Loom.Unity3d.Zb.Ability.Parser, new[]{ "Type", "ActivityType", "CallType", "TargetType", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardList), global::Loom.Unity3d.Zb.CardList.Parser, new[]{ "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Collection), global::Loom.Unity3d.Zb.Collection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CollectionList), global::Loom.Unity3d.Zb.CollectionList.Parser, new[]{ "Cards" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollection), global::Loom.Unity3d.Zb.CardCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Hero), global::Loom.Unity3d.Zb.Hero.Parser, new[]{ "HeroId", "Icon", "Name", "Element", "Skill" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Skill), global::Loom.Unity3d.Zb.Skill.Parser, new[]{ "Title", "SkillType", "SkillTargetType", "Cost", "Value" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroList), global::Loom.Unity3d.Zb.HeroList.Parser, new[]{ "Heros" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.InitRequest), global::Loom.Unity3d.Zb.InitRequest.Parser, new[]{ "DefaultDecks", "DefaultCollection", "Cards", "Heros" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroList), global::Loom.Unity3d.Zb.HeroList.Parser, new[]{ "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollectionList), global::Loom.Unity3d.Zb.CardCollectionList.Parser, new[]{ "Cards" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeckList), global::Loom.Unity3d.Zb.DeckList.Parser, new[]{ "Decks" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.InitRequest), global::Loom.Unity3d.Zb.InitRequest.Parser, new[]{ "DefaultDecks", "DefaultCollection", "Cards", "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.UpsertAccountRequest), global::Loom.Unity3d.Zb.UpsertAccountRequest.Parser, new[]{ "UserId", "PhoneNumberVerified", "RewardRedeemed", "IsKickstarter", "Image", "EmailNotification", "EloScore", "CurrentTier", "GameMembershipTier" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetAccountRequest), global::Loom.Unity3d.Zb.GetAccountRequest.Parser, new[]{ "UserId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksRequest), global::Loom.Unity3d.Zb.GetDecksRequest.Parser, new[]{ "UserId" }, null, null, null),
@@ -104,7 +105,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryRequest), global::Loom.Unity3d.Zb.ListCardLibraryRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryResponse), global::Loom.Unity3d.Zb.ListCardLibraryResponse.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroRequest), global::Loom.Unity3d.Zb.ListHeroRequest.Parser, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroResponse), global::Loom.Unity3d.Zb.ListHeroResponse.Parser, new[]{ "Heros" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroResponse), global::Loom.Unity3d.Zb.ListHeroResponse.Parser, new[]{ "Heroes" }, null, null, null)
           }));
     }
     #endregion
@@ -552,11 +553,11 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "cards" field.</summary>
     public const int CardsFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CollectionList> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.CollectionList.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollection> _repeated_cards_codec
+        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.CardCollection.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList> Cards {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> Cards {
       get { return cards_; }
     }
 
@@ -669,127 +670,6 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class DeckList : pb::IMessage<DeckList> {
-    private static readonly pb::MessageParser<DeckList> _parser = new pb::MessageParser<DeckList>(() => new DeckList());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<DeckList> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public DeckList() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public DeckList(DeckList other) : this() {
-      decks_ = other.decks_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public DeckList Clone() {
-      return new DeckList(this);
-    }
-
-    /// <summary>Field number for the "decks" field.</summary>
-    public const int DecksFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Deck> _repeated_decks_codec
-        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Deck.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck> decks_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck> Decks {
-      get { return decks_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as DeckList);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(DeckList other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if(!decks_.Equals(other.decks_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      hash ^= decks_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      decks_.WriteTo(output, _repeated_decks_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      size += decks_.CalculateSize(_repeated_decks_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(DeckList other) {
-      if (other == null) {
-        return;
-      }
-      decks_.Add(other.decks_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            decks_.AddEntriesFrom(input, _repeated_decks_codec);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
   public sealed partial class Card : pb::IMessage<Card> {
     private static readonly pb::MessageParser<Card> _parser = new pb::MessageParser<Card>(() => new Card());
     private pb::UnknownFieldSet _unknownFields;
@@ -798,7 +678,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1331,7 +1211,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1572,7 +1452,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1813,7 +1693,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1926,15 +1806,15 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class Collection : pb::IMessage<Collection> {
-    private static readonly pb::MessageParser<Collection> _parser = new pb::MessageParser<Collection>(() => new Collection());
+  public sealed partial class CardCollection : pb::IMessage<CardCollection> {
+    private static readonly pb::MessageParser<CardCollection> _parser = new pb::MessageParser<CardCollection>(() => new CardCollection());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Collection> Parser { get { return _parser; } }
+    public static pb::MessageParser<CardCollection> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1943,22 +1823,22 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Collection() {
+    public CardCollection() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Collection(Collection other) : this() {
+    public CardCollection(CardCollection other) : this() {
       cardId_ = other.cardId_;
       amount_ = other.amount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Collection Clone() {
-      return new Collection(this);
+    public CardCollection Clone() {
+      return new CardCollection(this);
     }
 
     /// <summary>Field number for the "card_id" field.</summary>
@@ -1985,11 +1865,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Collection);
+      return Equals(other as CardCollection);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Collection other) {
+    public bool Equals(CardCollection other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2048,7 +1928,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Collection other) {
+    public void MergeFrom(CardCollection other) {
       if (other == null) {
         return;
       }
@@ -2083,127 +1963,6 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class CollectionList : pb::IMessage<CollectionList> {
-    private static readonly pb::MessageParser<CollectionList> _parser = new pb::MessageParser<CollectionList>(() => new CollectionList());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CollectionList> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[8]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CollectionList() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CollectionList(CollectionList other) : this() {
-      cards_ = other.cards_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CollectionList Clone() {
-      return new CollectionList(this);
-    }
-
-    /// <summary>Field number for the "cards" field.</summary>
-    public const int CardsFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Collection> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Collection.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> Cards {
-      get { return cards_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as CollectionList);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CollectionList other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if(!cards_.Equals(other.cards_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      hash ^= cards_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      cards_.WriteTo(output, _repeated_cards_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      size += cards_.CalculateSize(_repeated_cards_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CollectionList other) {
-      if (other == null) {
-        return;
-      }
-      cards_.Add(other.cards_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            cards_.AddEntriesFrom(input, _repeated_cards_codec);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
   public sealed partial class CardSet : pb::IMessage<CardSet> {
     private static readonly pb::MessageParser<CardSet> _parser = new pb::MessageParser<CardSet>(() => new CardSet());
     private pb::UnknownFieldSet _unknownFields;
@@ -2212,7 +1971,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[9]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2361,7 +2120,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2482,7 +2241,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2503,7 +2262,7 @@ namespace Loom.Unity3d.Zb {
       icon_ = other.icon_;
       name_ = other.name_;
       element_ = other.element_;
-      Skill = other.skill_ != null ? other.Skill.Clone() : null;
+      skill_ = other.skill_ != null ? other.skill_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2729,7 +2488,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2970,7 +2729,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2987,7 +2746,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public HeroList(HeroList other) : this() {
-      heros_ = other.heros_.Clone();
+      heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2996,14 +2755,14 @@ namespace Loom.Unity3d.Zb {
       return new HeroList(this);
     }
 
-    /// <summary>Field number for the "heros" field.</summary>
-    public const int HerosFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heros_codec
+    /// <summary>Field number for the "heroes" field.</summary>
+    public const int HeroesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heroes_codec
         = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Hero.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heros_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heros {
-      get { return heros_; }
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heroes {
+      get { return heroes_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3019,14 +2778,14 @@ namespace Loom.Unity3d.Zb {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!heros_.Equals(other.heros_)) return false;
+      if(!heroes_.Equals(other.heroes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= heros_.GetHashCode();
+      hash ^= heroes_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3040,7 +2799,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      heros_.WriteTo(output, _repeated_heros_codec);
+      heroes_.WriteTo(output, _repeated_heroes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3049,7 +2808,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      size += heros_.CalculateSize(_repeated_heros_codec);
+      size += heroes_.CalculateSize(_repeated_heroes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3061,7 +2820,7 @@ namespace Loom.Unity3d.Zb {
       if (other == null) {
         return;
       }
-      heros_.Add(other.heros_);
+      heroes_.Add(other.heroes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3074,7 +2833,249 @@ namespace Loom.Unity3d.Zb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            heros_.AddEntriesFrom(input, _repeated_heros_codec);
+            heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class CardCollectionList : pb::IMessage<CardCollectionList> {
+    private static readonly pb::MessageParser<CardCollectionList> _parser = new pb::MessageParser<CardCollectionList>(() => new CardCollectionList());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CardCollectionList> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardCollectionList() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardCollectionList(CardCollectionList other) : this() {
+      cards_ = other.cards_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CardCollectionList Clone() {
+      return new CardCollectionList(this);
+    }
+
+    /// <summary>Field number for the "cards" field.</summary>
+    public const int CardsFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollection> _repeated_cards_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.CardCollection.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> Cards {
+      get { return cards_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CardCollectionList);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CardCollectionList other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!cards_.Equals(other.cards_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= cards_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      cards_.WriteTo(output, _repeated_cards_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += cards_.CalculateSize(_repeated_cards_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CardCollectionList other) {
+      if (other == null) {
+        return;
+      }
+      cards_.Add(other.cards_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            cards_.AddEntriesFrom(input, _repeated_cards_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class DeckList : pb::IMessage<DeckList> {
+    private static readonly pb::MessageParser<DeckList> _parser = new pb::MessageParser<DeckList>(() => new DeckList());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<DeckList> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public DeckList() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public DeckList(DeckList other) : this() {
+      decks_ = other.decks_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public DeckList Clone() {
+      return new DeckList(this);
+    }
+
+    /// <summary>Field number for the "decks" field.</summary>
+    public const int DecksFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Deck> _repeated_decks_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Deck.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck> decks_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Deck> Decks {
+      get { return decks_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as DeckList);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(DeckList other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!decks_.Equals(other.decks_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= decks_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      decks_.WriteTo(output, _repeated_decks_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += decks_.CalculateSize(_repeated_decks_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(DeckList other) {
+      if (other == null) {
+        return;
+      }
+      decks_.Add(other.decks_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            decks_.AddEntriesFrom(input, _repeated_decks_codec);
             break;
           }
         }
@@ -3111,7 +3112,7 @@ namespace Loom.Unity3d.Zb {
       defaultDecks_ = other.defaultDecks_.Clone();
       defaultCollection_ = other.defaultCollection_.Clone();
       cards_ = other.cards_.Clone();
-      heros_ = other.heros_.Clone();
+      heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3132,11 +3133,11 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "default_collection" field.</summary>
     public const int DefaultCollectionFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Collection> _repeated_defaultCollection_codec
-        = pb::FieldCodec.ForMessage(18, global::Loom.Unity3d.Zb.Collection.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> defaultCollection_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollection> _repeated_defaultCollection_codec
+        = pb::FieldCodec.ForMessage(18, global::Loom.Unity3d.Zb.CardCollection.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> defaultCollection_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> DefaultCollection {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> DefaultCollection {
       get { return defaultCollection_; }
     }
 
@@ -3150,14 +3151,14 @@ namespace Loom.Unity3d.Zb {
       get { return cards_; }
     }
 
-    /// <summary>Field number for the "heros" field.</summary>
-    public const int HerosFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heros_codec
+    /// <summary>Field number for the "heroes" field.</summary>
+    public const int HeroesFieldNumber = 4;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heroes_codec
         = pb::FieldCodec.ForMessage(34, global::Loom.Unity3d.Zb.Hero.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heros_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heros {
-      get { return heros_; }
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heroes {
+      get { return heroes_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3176,7 +3177,7 @@ namespace Loom.Unity3d.Zb {
       if(!defaultDecks_.Equals(other.defaultDecks_)) return false;
       if(!defaultCollection_.Equals(other.defaultCollection_)) return false;
       if(!cards_.Equals(other.cards_)) return false;
-      if(!heros_.Equals(other.heros_)) return false;
+      if(!heroes_.Equals(other.heroes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3186,7 +3187,7 @@ namespace Loom.Unity3d.Zb {
       hash ^= defaultDecks_.GetHashCode();
       hash ^= defaultCollection_.GetHashCode();
       hash ^= cards_.GetHashCode();
-      hash ^= heros_.GetHashCode();
+      hash ^= heroes_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3203,7 +3204,7 @@ namespace Loom.Unity3d.Zb {
       defaultDecks_.WriteTo(output, _repeated_defaultDecks_codec);
       defaultCollection_.WriteTo(output, _repeated_defaultCollection_codec);
       cards_.WriteTo(output, _repeated_cards_codec);
-      heros_.WriteTo(output, _repeated_heros_codec);
+      heroes_.WriteTo(output, _repeated_heroes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3215,7 +3216,7 @@ namespace Loom.Unity3d.Zb {
       size += defaultDecks_.CalculateSize(_repeated_defaultDecks_codec);
       size += defaultCollection_.CalculateSize(_repeated_defaultCollection_codec);
       size += cards_.CalculateSize(_repeated_cards_codec);
-      size += heros_.CalculateSize(_repeated_heros_codec);
+      size += heroes_.CalculateSize(_repeated_heroes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3230,7 +3231,7 @@ namespace Loom.Unity3d.Zb {
       defaultDecks_.Add(other.defaultDecks_);
       defaultCollection_.Add(other.defaultCollection_);
       cards_.Add(other.cards_);
-      heros_.Add(other.heros_);
+      heroes_.Add(other.heroes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3255,7 +3256,7 @@ namespace Loom.Unity3d.Zb {
             break;
           }
           case 34: {
-            heros_.AddEntriesFrom(input, _repeated_heros_codec);
+            heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
             break;
           }
         }
@@ -4058,7 +4059,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public AddDeckRequest(AddDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4378,7 +4379,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public EditDeckRequest(EditDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -5133,7 +5134,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ListHeroResponse(ListHeroResponse other) : this() {
-      heros_ = other.heros_.Clone();
+      heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -5142,14 +5143,14 @@ namespace Loom.Unity3d.Zb {
       return new ListHeroResponse(this);
     }
 
-    /// <summary>Field number for the "heros" field.</summary>
-    public const int HerosFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heros_codec
+    /// <summary>Field number for the "heroes" field.</summary>
+    public const int HeroesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heroes_codec
         = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Hero.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heros_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heros {
-      get { return heros_; }
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heroes {
+      get { return heroes_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5165,14 +5166,14 @@ namespace Loom.Unity3d.Zb {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!heros_.Equals(other.heros_)) return false;
+      if(!heroes_.Equals(other.heroes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= heros_.GetHashCode();
+      hash ^= heroes_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5186,7 +5187,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      heros_.WriteTo(output, _repeated_heros_codec);
+      heroes_.WriteTo(output, _repeated_heroes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -5195,7 +5196,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      size += heros_.CalculateSize(_repeated_heros_codec);
+      size += heroes_.CalculateSize(_repeated_heroes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -5207,7 +5208,7 @@ namespace Loom.Unity3d.Zb {
       if (other == null) {
         return;
       }
-      heros_.Add(other.heros_);
+      heroes_.Add(other.heroes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -5220,7 +5221,7 @@ namespace Loom.Unity3d.Zb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            heros_.AddEntriesFrom(input, _repeated_heros_codec);
+            heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
             break;
           }
         }

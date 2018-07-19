@@ -6,18 +6,16 @@ import (
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-func validateDeckAddition(collections []*zb.Collection, collectionList []*zb.CollectionList) error {
+func validateDeckCollections(userCollections []*zb.CardCollection, deckCollections []*zb.CardCollection) error {
 	maxAmountMap := make(map[int64]int64)
 
-	for _, card := range collections {
-		maxAmountMap[card.CardId] = card.Amount
+	for _, collection := range userCollections {
+		maxAmountMap[collection.CardId] = collection.Amount
 	}
 
-	for _, collist := range collectionList {
-		for _, card := range collist.Cards {
-			if maxAmountMap[card.CardId] < card.Amount {
-				return fmt.Errorf("you cannot add more than %d for your card id: %d", maxAmountMap[card.CardId], card.CardId)
-			}
+	for _, collection := range deckCollections {
+		if maxAmountMap[collection.CardId] < collection.Amount {
+			return fmt.Errorf("you cannot add more than %d for your card id: %d", maxAmountMap[collection.CardId], collection.CardId)
 		}
 	}
 

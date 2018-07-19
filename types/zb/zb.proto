@@ -18,11 +18,7 @@ message Account {
 message Deck {
    string name = 1;
    int64 hero_id = 2;
-   repeated CollectionList cards = 3;
-}
-
-message DeckList {
-    repeated Deck decks = 1;
+   repeated CardCollection cards = 3;
 }
 
 message Card {
@@ -64,13 +60,9 @@ message CardList {
     repeated Card cards = 1;
 }
 
-message Collection {
+message CardCollection {
     int64 card_id  = 1;
     int64 amount   = 2;
-}
-
-message CollectionList {
-    repeated Collection cards = 1;
 }
 
 message CardSet {
@@ -99,16 +91,24 @@ message Skill {
 }
 
 message HeroList {
-    repeated Hero heros = 1;
+    repeated Hero heroes = 1;
+}
+
+message CardCollectionList {
+    repeated CardCollection cards = 1;
+}
+
+message DeckList {
+    repeated Deck decks = 1;
 }
 
 // Request and Response
 
 message InitRequest {
     repeated Deck default_decks                = 1;
-    repeated Collection default_collection = 2;
+    repeated CardCollection default_collection = 2;
     repeated Card cards                        = 3;
-    repeated Hero heros                        = 4;
+    repeated Hero heroes                       = 4;
 }
 
 message UpsertAccountRequest {
@@ -171,5 +171,5 @@ message ListHeroRequest {
 }
 
 message ListHeroResponse {
-    repeated Hero heros  = 1;
+    repeated Hero heroes  = 1;
 }
