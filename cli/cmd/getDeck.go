@@ -18,7 +18,7 @@ var getDeckCmd = &cobra.Command{
 	Use:   "getDeck",
 	Short: "gets deck for zombiebattleground by its name",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var result zb.ZBDeck
+		var result zb.Deck
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{

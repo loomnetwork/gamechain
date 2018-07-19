@@ -1,48 +1,70 @@
 package battleground
 
 import (
-	"sort"
+	"fmt"
 
-	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-// TODO: need to merge with the main contract file.
-// This is just temporary for client to get all the card info.
-// All of the card functionality should be moved to call the mainnet.
+func validateDeckAddition(collections []*zb.Collection, collectionList []*zb.CollectionList) error {
+	maxAmountMap := make(map[int64]int64)
 
-func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
-	var cardList zb.CardList
-	if err := ctx.Get(cardListKey, &cardList); err != nil {
-		return nil, err
+	for _, card := range collections {
+		maxAmountMap[card.CardId] = card.Amount
 	}
-	// convert to card list to card library view grouped by element
-	var category = make(map[string][]*zb.Card)
-	for _, card := range cardList.Cards {
-		if _, ok := category[card.Element]; !ok {
-			category[card.Element] = make([]*zb.Card, 0)
+
+	for _, collist := range collectionList {
+		for _, card := range collist.Cards {
+			if maxAmountMap[card.CardId] < card.Amount {
+				return fmt.Errorf("you cannot add more than %d for your card id: %d", maxAmountMap[card.CardId], card.CardId)
+			}
 		}
-		category[card.Element] = append(category[card.Element], card)
 	}
-	// order the element by name
-	var elements []string
-	for k := range category {
-		elements = append(elements, k)
-	}
-	sort.Strings(elements)
 
-	var sets []*zb.CardSet
-	for _, elem := range elements {
-		cards, ok := category[elem]
+	return nil
+}
+
+func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
+	deckMap := make(map[string]*zb.Deck)
+
+	for _, deck := range deckSet1 {
+		deckMap[deck.Name] = deck
+	}
+
+	for _, deck := range deckSet2 {
+		deckMap[deck.Name] = deck
+	}
+
+	newArray := make([]*zb.Deck, len(deckMap))
+
+	i := 0
+	for j := len(deckSet2) - 1; j >= 0; j -= 1 {
+		deck := deckSet2[j]
+
+		newDeck, ok := deckMap[deck.Name]
 		if !ok {
 			continue
 		}
-		set := &zb.CardSet{
-			Name:  elem,
-			Cards: cards,
-		}
-		sets = append(sets, set)
+
+		newArray[i] = newDeck
+		i++
+
+		delete(deckMap, deck.Name)
 	}
 
-	return &zb.ListCardLibraryResponse{Sets: sets}, nil
+	for j := len(deckSet1) - 1; j >= 0; j -= 1 {
+		deck := deckSet1[j]
+
+		newDeck, ok := deckMap[deck.Name]
+		if !ok {
+			continue
+		}
+
+		newArray[i] = newDeck
+		i++
+
+		delete(deckMap, deck.Name)
+	}
+
+	return newArray
 }
