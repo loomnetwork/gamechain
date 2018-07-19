@@ -6,7 +6,7 @@ import (
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-func validateDeckAddition(collections []*zb.CardCollection, collectionList []*zb.CardCollectionList) error {
+func validateDeckAddition(collections []*zb.Collection, collectionList []*zb.CollectionList) error {
 	maxAmountMap := make(map[int64]int64)
 
 	for _, card := range collections {

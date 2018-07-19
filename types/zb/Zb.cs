@@ -30,51 +30,50 @@ namespace Loom.Unity3d.Zb {
             "ZGVlbWVkGAMgASgIEhYKDmlzX2tpY2tzdGFydGVyGAQgASgIEg0KBWltYWdl",
             "GAUgASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2Nv",
             "cmUYByABKAMSFAoMY3VycmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVy",
-            "c2hpcF90aWVyGAkgASgFEg0KBW93bmVyGAogASgMIkkKBERlY2sSDAoEbmFt",
-            "ZRgBIAEoCRIPCgdoZXJvX2lkGAIgASgDEiIKBWNhcmRzGAMgAygLMhMuQ2Fy",
-            "ZENvbGxlY3Rpb25MaXN0IiAKCERlY2tMaXN0EhQKBWRlY2tzGAEgAygLMgUu",
-            "RGVjayKbAgoEQ2FyZBIKCgJpZBgBIAEoAxIMCgRraW5kGAIgASgJEg8KB2Vs",
-            "ZW1lbnQYAyABKAkSDAoEbmFtZRgEIAEoCRITCgtkZXNjcmlwdGlvbhgFIAEo",
-            "CRISCgpmbGF2b3JUZXh0GAYgASgJEg8KB3BpY3R1cmUYByABKAkSDAoEcmFu",
-            "axgIIAEoCRIMCgR0eXBlGAkgASgJEg4KBnJhcml0eRgKIAEoCRIOCgZkYW1h",
-            "Z2UYCyABKAUSDgoGaGVhbHRoGAwgASgFEgwKBGNvc3QYDSABKAUSDwoHYWJp",
-            "bGl0eRgOIAEoCRIYCgdlZmZlY3RzGA8gAygLMgcuRWZmZWN0EhsKCWFiaWxp",
-            "dGllcxgQIAMoCzIILkFiaWxpdHkiWgoGRWZmZWN0Eg8KB3RyaWdnZXIYASAB",
-            "KAkSDgoGZWZmZWN0GAIgASgJEhAKCGR1cmF0aW9uGAMgASgJEg4KBnRhcmdl",
-            "dBgEIAEoCRINCgVsaW1pdBgFIAEoCSJlCgdBYmlsaXR5EgwKBHR5cGUYASAB",
-            "KAkSFQoNYWN0aXZpdHlfdHlwZRgCIAEoCRIRCgljYWxsX3R5cGUYAyABKAkS",
-            "EwoLdGFyZ2V0X3R5cGUYBCABKAkSDQoFdmFsdWUYBSABKAUiIAoIQ2FyZExp",
-            "c3QSFAoFY2FyZHMYASADKAsyBS5DYXJkIjEKDkNhcmRDb2xsZWN0aW9uEg8K",
-            "B2NhcmRfaWQYASABKAMSDgoGYW1vdW50GAIgASgDIjQKEkNhcmRDb2xsZWN0",
-            "aW9uTGlzdBIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uIi0KB0Nh",
-            "cmRTZXQSDAoEbmFtZRgBIAEoCRIUCgVjYXJkcxgCIAMoCzIFLkNhcmQiJQoL",
-            "Q2FyZExpYnJhcnkSFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQiWwoESGVybxIP",
-            "CgdoZXJvX2lkGAEgASgDEgwKBGljb24YAiABKAkSDAoEbmFtZRgDIAEoCRIP",
-            "CgdlbGVtZW50GAQgASgFEhUKBXNraWxsGAUgASgLMgYuU2tpbGwiXwoFU2tp",
-            "bGwSDQoFdGl0bGUYASABKAkSEQoJc2tpbGxUeXBlGAIgASgFEhcKD3NraWxs",
-            "VGFyZ2V0VHlwZRgDIAEoBRIMCgRjb3N0GAQgASgFEg0KBXZhbHVlGAUgASgF",
-            "IiAKCEhlcm9MaXN0EhQKBWhlcm9zGAEgAygLMgUuSGVybyKEAQoLSW5pdFJl",
-            "cXVlc3QSHAoNZGVmYXVsdF9kZWNrcxgBIAMoCzIFLkRlY2sSKwoSZGVmYXVs",
-            "dF9jb2xsZWN0aW9uGAIgAygLMg8uQ2FyZENvbGxlY3Rpb24SFAoFY2FyZHMY",
-            "AyADKAsyBS5DYXJkEhQKBWhlcm9zGAQgAygLMgUuSGVybyLpAQoUVXBzZXJ0",
-            "QWNjb3VudFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIdChVwaG9uZV9udW1i",
-            "ZXJfdmVyaWZpZWQYAiABKAgSFwoPcmV3YXJkX3JlZGVlbWVkGAMgASgIEhYK",
-            "DmlzX2tpY2tzdGFydGVyGAQgASgIEg0KBWltYWdlGAUgASgJEhoKEmVtYWls",
-            "X25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2NvcmUYByABKAMSFAoMY3Vy",
-            "cmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVyc2hpcF90aWVyGAkgASgF",
-            "IiQKEUdldEFjY291bnRSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiIgoPR2V0",
-            "RGVja3NSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiMgoOR2V0RGVja1JlcXVl",
-            "c3QSDwoHdXNlcl9pZBgBIAEoCRIPCgdkZWNrX2lkGAIgASgJIjYKDkFkZERl",
-            "Y2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRl",
-            "Y2siNQoRRGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIPCgdk",
-            "ZWNrX2lkGAIgASgJIjcKD0VkaXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEg",
-            "ASgJEhMKBGRlY2sYAiABKAsyBS5EZWNrIigKEEdldERlY2tzUmVzcG9uc2US",
-            "FAoFZGVja3MYASADKAsyBS5EZWNrIjYKDURlY2tzUmVzcG9uc2USDwoHdXNl",
-            "cl9pZBgBIAEoCRIUCgVkZWNrcxgCIAMoCzIFLkRlY2siGAoWTGlzdENhcmRM",
-            "aWJyYXJ5UmVxdWVzdCIxChdMaXN0Q2FyZExpYnJhcnlSZXNwb25zZRIWCgRz",
-            "ZXRzGAEgAygLMgguQ2FyZFNldCIRCg9MaXN0SGVyb1JlcXVlc3QiKAoQTGlz",
-            "dEhlcm9SZXNwb25zZRIUCgVoZXJvcxgBIAMoCzIFLkhlcm9CEqoCD0xvb20u",
-            "VW5pdHkzZC5aYmIGcHJvdG8z"));
+            "c2hpcF90aWVyGAkgASgFEg0KBW93bmVyGAogASgMIkUKBERlY2sSDAoEbmFt",
+            "ZRgBIAEoCRIPCgdoZXJvX2lkGAIgASgDEh4KBWNhcmRzGAMgAygLMg8uQ29s",
+            "bGVjdGlvbkxpc3QiIAoIRGVja0xpc3QSFAoFZGVja3MYASADKAsyBS5EZWNr",
+            "IpsCCgRDYXJkEgoKAmlkGAEgASgDEgwKBGtpbmQYAiABKAkSDwoHZWxlbWVu",
+            "dBgDIAEoCRIMCgRuYW1lGAQgASgJEhMKC2Rlc2NyaXB0aW9uGAUgASgJEhIK",
+            "CmZsYXZvclRleHQYBiABKAkSDwoHcGljdHVyZRgHIAEoCRIMCgRyYW5rGAgg",
+            "ASgJEgwKBHR5cGUYCSABKAkSDgoGcmFyaXR5GAogASgJEg4KBmRhbWFnZRgL",
+            "IAEoBRIOCgZoZWFsdGgYDCABKAUSDAoEY29zdBgNIAEoBRIPCgdhYmlsaXR5",
+            "GA4gASgJEhgKB2VmZmVjdHMYDyADKAsyBy5FZmZlY3QSGwoJYWJpbGl0aWVz",
+            "GBAgAygLMgguQWJpbGl0eSJaCgZFZmZlY3QSDwoHdHJpZ2dlchgBIAEoCRIO",
+            "CgZlZmZlY3QYAiABKAkSEAoIZHVyYXRpb24YAyABKAkSDgoGdGFyZ2V0GAQg",
+            "ASgJEg0KBWxpbWl0GAUgASgJImUKB0FiaWxpdHkSDAoEdHlwZRgBIAEoCRIV",
+            "Cg1hY3Rpdml0eV90eXBlGAIgASgJEhEKCWNhbGxfdHlwZRgDIAEoCRITCgt0",
+            "YXJnZXRfdHlwZRgEIAEoCRINCgV2YWx1ZRgFIAEoBSIgCghDYXJkTGlzdBIU",
+            "CgVjYXJkcxgBIAMoCzIFLkNhcmQiLQoKQ29sbGVjdGlvbhIPCgdjYXJkX2lk",
+            "GAEgASgDEg4KBmFtb3VudBgCIAEoAyIsCg5Db2xsZWN0aW9uTGlzdBIaCgVj",
+            "YXJkcxgBIAMoCzILLkNvbGxlY3Rpb24iLQoHQ2FyZFNldBIMCgRuYW1lGAEg",
+            "ASgJEhQKBWNhcmRzGAIgAygLMgUuQ2FyZCIlCgtDYXJkTGlicmFyeRIWCgRz",
+            "ZXRzGAEgAygLMgguQ2FyZFNldCJbCgRIZXJvEg8KB2hlcm9faWQYASABKAMS",
+            "DAoEaWNvbhgCIAEoCRIMCgRuYW1lGAMgASgJEg8KB2VsZW1lbnQYBCABKAUS",
+            "FQoFc2tpbGwYBSABKAsyBi5Ta2lsbCJfCgVTa2lsbBINCgV0aXRsZRgBIAEo",
+            "CRIRCglza2lsbFR5cGUYAiABKAUSFwoPc2tpbGxUYXJnZXRUeXBlGAMgASgF",
+            "EgwKBGNvc3QYBCABKAUSDQoFdmFsdWUYBSABKAUiIAoISGVyb0xpc3QSFAoF",
+            "aGVyb3MYASADKAsyBS5IZXJvIoABCgtJbml0UmVxdWVzdBIcCg1kZWZhdWx0",
+            "X2RlY2tzGAEgAygLMgUuRGVjaxInChJkZWZhdWx0X2NvbGxlY3Rpb24YAiAD",
+            "KAsyCy5Db2xsZWN0aW9uEhQKBWNhcmRzGAMgAygLMgUuQ2FyZBIUCgVoZXJv",
+            "cxgEIAMoCzIFLkhlcm8i6QEKFFVwc2VydEFjY291bnRSZXF1ZXN0Eg8KB3Vz",
+            "ZXJfaWQYASABKAkSHQoVcGhvbmVfbnVtYmVyX3ZlcmlmaWVkGAIgASgIEhcK",
+            "D3Jld2FyZF9yZWRlZW1lZBgDIAEoCBIWCg5pc19raWNrc3RhcnRlchgEIAEo",
+            "CBINCgVpbWFnZRgFIAEoCRIaChJlbWFpbF9ub3RpZmljYXRpb24YBiABKAgS",
+            "EQoJZWxvX3Njb3JlGAcgASgDEhQKDGN1cnJlbnRfdGllchgIIAEoBRIcChRn",
+            "YW1lX21lbWJlcnNoaXBfdGllchgJIAEoBSIkChFHZXRBY2NvdW50UmVxdWVz",
+            "dBIPCgd1c2VyX2lkGAEgASgJIiIKD0dldERlY2tzUmVxdWVzdBIPCgd1c2Vy",
+            "X2lkGAEgASgJIjIKDkdldERlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkS",
+            "DwoHZGVja19pZBgCIAEoCSI2Cg5BZGREZWNrUmVxdWVzdBIPCgd1c2VyX2lk",
+            "GAEgASgJEhMKBGRlY2sYAiABKAsyBS5EZWNrIjUKEURlbGV0ZURlY2tSZXF1",
+            "ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVja19pZBgCIAEoCSI3Cg9FZGl0",
+            "RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRITCgRkZWNrGAIgASgLMgUu",
+            "RGVjayIoChBHZXREZWNrc1Jlc3BvbnNlEhQKBWRlY2tzGAEgAygLMgUuRGVj",
+            "ayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJfaWQYASABKAkSFAoFZGVja3MY",
+            "AiADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVlc3QiMQoXTGlz",
+            "dENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQi",
+            "EQoPTGlzdEhlcm9SZXF1ZXN0IigKEExpc3RIZXJvUmVzcG9uc2USFAoFaGVy",
+            "b3MYASADKAsyBS5IZXJvQhKqAg9Mb29tLlVuaXR5M2QuWmJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -85,8 +84,8 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Effect), global::Loom.Unity3d.Zb.Effect.Parser, new[]{ "Trigger", "Effect_", "Duration", "Target", "Limit" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Ability), global::Loom.Unity3d.Zb.Ability.Parser, new[]{ "Type", "ActivityType", "CallType", "TargetType", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardList), global::Loom.Unity3d.Zb.CardList.Parser, new[]{ "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollection), global::Loom.Unity3d.Zb.CardCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollectionList), global::Loom.Unity3d.Zb.CardCollectionList.Parser, new[]{ "Cards" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Collection), global::Loom.Unity3d.Zb.Collection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CollectionList), global::Loom.Unity3d.Zb.CollectionList.Parser, new[]{ "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Hero), global::Loom.Unity3d.Zb.Hero.Parser, new[]{ "HeroId", "Icon", "Name", "Element", "Skill" }, null, null, null),
@@ -553,11 +552,11 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "cards" field.</summary>
     public const int CardsFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollectionList> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.CardCollectionList.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollectionList> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollectionList>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CollectionList> _repeated_cards_codec
+        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.CollectionList.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollectionList> Cards {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CollectionList> Cards {
       get { return cards_; }
     }
 
@@ -1927,11 +1926,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class CardCollection : pb::IMessage<CardCollection> {
-    private static readonly pb::MessageParser<CardCollection> _parser = new pb::MessageParser<CardCollection>(() => new CardCollection());
+  public sealed partial class Collection : pb::IMessage<Collection> {
+    private static readonly pb::MessageParser<Collection> _parser = new pb::MessageParser<Collection>(() => new Collection());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CardCollection> Parser { get { return _parser; } }
+    public static pb::MessageParser<Collection> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1944,22 +1943,22 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollection() {
+    public Collection() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollection(CardCollection other) : this() {
+    public Collection(Collection other) : this() {
       cardId_ = other.cardId_;
       amount_ = other.amount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollection Clone() {
-      return new CardCollection(this);
+    public Collection Clone() {
+      return new Collection(this);
     }
 
     /// <summary>Field number for the "card_id" field.</summary>
@@ -1986,11 +1985,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as CardCollection);
+      return Equals(other as Collection);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CardCollection other) {
+    public bool Equals(Collection other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2049,7 +2048,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CardCollection other) {
+    public void MergeFrom(Collection other) {
       if (other == null) {
         return;
       }
@@ -2084,11 +2083,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class CardCollectionList : pb::IMessage<CardCollectionList> {
-    private static readonly pb::MessageParser<CardCollectionList> _parser = new pb::MessageParser<CardCollectionList>(() => new CardCollectionList());
+  public sealed partial class CollectionList : pb::IMessage<CollectionList> {
+    private static readonly pb::MessageParser<CollectionList> _parser = new pb::MessageParser<CollectionList>(() => new CollectionList());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CardCollectionList> Parser { get { return _parser; } }
+    public static pb::MessageParser<CollectionList> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -2101,40 +2100,40 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollectionList() {
+    public CollectionList() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollectionList(CardCollectionList other) : this() {
+    public CollectionList(CollectionList other) : this() {
       cards_ = other.cards_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CardCollectionList Clone() {
-      return new CardCollectionList(this);
+    public CollectionList Clone() {
+      return new CollectionList(this);
     }
 
     /// <summary>Field number for the "cards" field.</summary>
     public const int CardsFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollection> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.CardCollection.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Collection> _repeated_cards_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Collection.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> Cards {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> Cards {
       get { return cards_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as CardCollectionList);
+      return Equals(other as CollectionList);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CardCollectionList other) {
+    public bool Equals(CollectionList other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2179,7 +2178,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CardCollectionList other) {
+    public void MergeFrom(CollectionList other) {
       if (other == null) {
         return;
       }
@@ -3133,11 +3132,11 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "default_collection" field.</summary>
     public const int DefaultCollectionFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.CardCollection> _repeated_defaultCollection_codec
-        = pb::FieldCodec.ForMessage(18, global::Loom.Unity3d.Zb.CardCollection.Parser);
-    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> defaultCollection_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection>();
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Collection> _repeated_defaultCollection_codec
+        = pb::FieldCodec.ForMessage(18, global::Loom.Unity3d.Zb.Collection.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> defaultCollection_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Loom.Unity3d.Zb.CardCollection> DefaultCollection {
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Collection> DefaultCollection {
       get { return defaultCollection_; }
     }
 
