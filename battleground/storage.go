@@ -54,7 +54,7 @@ func isUser(ctx contract.Context, userID string) bool {
 }
 
 func deleteDeckByName(decklist []*zb.Deck, name string) ([]*zb.Deck, bool) {
-	var newlist []*zb.Deck
+	newlist := make([]*zb.Deck, 0)
 	for _, deck := range decklist {
 		if deck.Name != name {
 			newlist = append(newlist, deck)
