@@ -43,6 +43,9 @@ deps: $(PLUGIN_DIR)
         github.com/prometheus/client_golang/prometheus
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 
+test:
+	go test -v ./...
+
 clean:
 	go clean
 	rm -f \

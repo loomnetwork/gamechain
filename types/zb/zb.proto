@@ -136,7 +136,7 @@ message GetDeckRequest {
     string deck_id = 2;
 }
 
-message AddDeckRequest {
+message CreateDeckRequest {
     string user_id = 1;
     Deck deck = 2;
 }
