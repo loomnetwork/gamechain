@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"encoding/json"
 	"strconv"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -35,4 +36,19 @@ func loadCardList(ctx contract.Context) (*zb.CardList, error) {
 		return nil, err
 	}
 	return &cl, nil
+}
+
+func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
+	emitMsg := struct {
+		Owner  string
+		Method string
+		Addr   []byte
+	}{owner, method, address}
+
+	return json.Marshal(emitMsg)
+}
+
+func isUser(ctx contract.Context, userID string) bool {
+	ok, _ := ctx.HasPermission([]byte(userID), []string{"user"})
+	return ok
 }
