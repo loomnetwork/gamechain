@@ -64,17 +64,17 @@ namespace Loom.Unity3d.Zb {
             "bnRfdGllchgIIAEoBRIcChRnYW1lX21lbWJlcnNoaXBfdGllchgJIAEoBSIk",
             "ChFHZXRBY2NvdW50UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJIiIKD0dldERl",
             "Y2tzUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJIjIKDkdldERlY2tSZXF1ZXN0",
-            "Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVja19pZBgCIAEoCSI2Cg5BZGREZWNr",
-            "UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhMKBGRlY2sYAiABKAsyBS5EZWNr",
-            "IjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVj",
-            "a19pZBgCIAEoCSI3Cg9FZGl0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEo",
-            "CRITCgRkZWNrGAIgASgLMgUuRGVjayIoChBHZXREZWNrc1Jlc3BvbnNlEhQK",
-            "BWRlY2tzGAEgAygLMgUuRGVjayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJf",
-            "aWQYASABKAkSFAoFZGVja3MYAiADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGli",
-            "cmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0",
-            "cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0IikKEExpc3RI",
-            "ZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygLMgUuSGVyb0ISqgIPTG9vbS5V",
-            "bml0eTNkLlpiYgZwcm90bzM="));
+            "Eg8KB3VzZXJfaWQYASABKAkSDwoHZGVja19pZBgCIAEoCSI5ChFDcmVhdGVE",
+            "ZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhMKBGRlY2sYAiABKAsyBS5E",
+            "ZWNrIjUKEURlbGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDwoH",
+            "ZGVja19pZBgCIAEoCSI3Cg9FZGl0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgB",
+            "IAEoCRITCgRkZWNrGAIgASgLMgUuRGVjayIoChBHZXREZWNrc1Jlc3BvbnNl",
+            "EhQKBWRlY2tzGAEgAygLMgUuRGVjayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3Vz",
+            "ZXJfaWQYASABKAkSFAoFZGVja3MYAiADKAsyBS5EZWNrIhgKFkxpc3RDYXJk",
+            "TGlicmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoE",
+            "c2V0cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0IikKEExp",
+            "c3RIZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygLMgUuSGVyb0ISqgIPTG9v",
+            "bS5Vbml0eTNkLlpiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -97,7 +97,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetAccountRequest), global::Loom.Unity3d.Zb.GetAccountRequest.Parser, new[]{ "UserId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksRequest), global::Loom.Unity3d.Zb.GetDecksRequest.Parser, new[]{ "UserId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDeckRequest), global::Loom.Unity3d.Zb.GetDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddDeckRequest), global::Loom.Unity3d.Zb.AddDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CreateDeckRequest), global::Loom.Unity3d.Zb.CreateDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeleteDeckRequest), global::Loom.Unity3d.Zb.DeleteDeckRequest.Parser, new[]{ "UserId", "DeckId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.EditDeckRequest), global::Loom.Unity3d.Zb.EditDeckRequest.Parser, new[]{ "UserId", "Deck" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDecksResponse), global::Loom.Unity3d.Zb.GetDecksResponse.Parser, new[]{ "Decks" }, null, null, null),
@@ -2262,7 +2262,7 @@ namespace Loom.Unity3d.Zb {
       icon_ = other.icon_;
       name_ = other.name_;
       element_ = other.element_;
-      skill_ = other.skill_ != null ? other.skill_.Clone() : null;
+      Skill = other.skill_ != null ? other.Skill.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4033,11 +4033,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class AddDeckRequest : pb::IMessage<AddDeckRequest> {
-    private static readonly pb::MessageParser<AddDeckRequest> _parser = new pb::MessageParser<AddDeckRequest>(() => new AddDeckRequest());
+  public sealed partial class CreateDeckRequest : pb::IMessage<CreateDeckRequest> {
+    private static readonly pb::MessageParser<CreateDeckRequest> _parser = new pb::MessageParser<CreateDeckRequest>(() => new CreateDeckRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddDeckRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<CreateDeckRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -4050,22 +4050,22 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddDeckRequest() {
+    public CreateDeckRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddDeckRequest(AddDeckRequest other) : this() {
+    public CreateDeckRequest(CreateDeckRequest other) : this() {
       userId_ = other.userId_;
-      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      Deck = other.deck_ != null ? other.Deck.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddDeckRequest Clone() {
-      return new AddDeckRequest(this);
+    public CreateDeckRequest Clone() {
+      return new CreateDeckRequest(this);
     }
 
     /// <summary>Field number for the "user_id" field.</summary>
@@ -4092,11 +4092,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddDeckRequest);
+      return Equals(other as CreateDeckRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddDeckRequest other) {
+    public bool Equals(CreateDeckRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -4155,7 +4155,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddDeckRequest other) {
+    public void MergeFrom(CreateDeckRequest other) {
       if (other == null) {
         return;
       }
@@ -4379,7 +4379,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public EditDeckRequest(EditDeckRequest other) : this() {
       userId_ = other.userId_;
-      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      Deck = other.deck_ != null ? other.Deck.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
