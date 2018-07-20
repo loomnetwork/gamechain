@@ -133,7 +133,7 @@ message GetDecksRequest {
 
 message GetDeckRequest {
     string user_id = 1;
-    string deck_id = 2;
+    string deck_name = 2;
 }
 
 message CreateDeckRequest {
@@ -143,7 +143,7 @@ message CreateDeckRequest {
 
 message DeleteDeckRequest {
     string user_id = 1;
-    string deck_id = 2;
+    string deck_name = 2;
 }
 
 message EditDeckRequest {
