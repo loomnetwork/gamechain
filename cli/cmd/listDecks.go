@@ -17,7 +17,6 @@ var listDecksCmd = &cobra.Command{
 	Use:   "listDecks",
 	Short: "list decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var result zb.DeckList
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -25,10 +24,10 @@ var listDecksCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetDecksRequest{
+		req := &zb.ListDecksRequest{
 			UserId: listDecksCmdArgs.userID,
 		}
-
+		var result zb.DeckList
 		_, err := commonTxObjs.contract.StaticCall("ListDecks", req, callerAddr, &result)
 		if err != nil {
 			return err

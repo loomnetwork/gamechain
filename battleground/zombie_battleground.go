@@ -255,23 +255,23 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 }
 
 // ListDecks returns the user's decks
-func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.GetDecksRequest) (*zb.DeckList, error) {
+func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListDecksRequest) (*zb.ListDecksResponse, error) {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
 
 	var deckList zb.DeckList
 	err := ctx.Get(userKeySpace.DecksKey(), &deckList)
 	if err == contract.ErrNotFound {
-		return &deckList, nil
+		return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	return &deckList, nil
+	return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
 }
 
 // GetDeck returns the deck by given name
-func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeckRequest) (*zb.Deck, error) {
+func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeckRequest) (*zb.GetDeckResponse, error) {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
 
@@ -288,7 +288,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	if deck == nil {
 		return nil, contract.ErrNotFound
 	}
-	return deck, nil
+	return &zb.GetDeckResponse{Deck: deck}, nil
 }
 
 // ListCardLibrary list all the card library data

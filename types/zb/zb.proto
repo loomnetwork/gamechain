@@ -127,13 +127,13 @@ message GetAccountRequest {
     string user_id = 1;
 }
 
-message GetDecksRequest {
-    string user_id = 1;
-}
-
 message GetDeckRequest {
     string user_id = 1;
     string deck_name = 2;
+}
+
+message GetDeckResponse {
+    Deck deck = 2;
 }
 
 message CreateDeckRequest {
@@ -151,13 +151,17 @@ message EditDeckRequest {
     Deck deck      = 2;
 }
 
-message GetDecksResponse {
-    repeated Deck decks = 1;
-}
-
 message DecksResponse {
     string user_id = 1;
     repeated Deck decks = 2;
+}
+
+message ListDecksRequest {
+    string user_id = 1;
+}
+
+message ListDecksResponse {
+    repeated Deck decks = 1;
 }
 
 message ListCardLibraryRequest {
