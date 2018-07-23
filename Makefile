@@ -27,7 +27,7 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<
 
-proto: types/zb/zb.pb.go types/zb/zb.cs 
+proto: types/zb/zb.pb.go types/zb/zb.cs
 
 deps: $(PLUGIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
@@ -44,6 +44,7 @@ deps: $(PLUGIN_DIR)
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 
 test:
+	go get github.com/stretchr/testify/assert
 	go test -v ./...
 
 clean:
