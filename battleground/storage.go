@@ -52,3 +52,33 @@ func isUser(ctx contract.Context, userID string) bool {
 	ok, _ := ctx.HasPermission([]byte(userID), []string{"user"})
 	return ok
 }
+
+func deleteDeckByName(decklist []*zb.Deck, name string) ([]*zb.Deck, bool) {
+	newlist := make([]*zb.Deck, 0)
+	for _, deck := range decklist {
+		if deck.Name != name {
+			newlist = append(newlist, deck)
+		}
+	}
+	return newlist, len(newlist) != len(decklist)
+}
+
+func getDeckByName(decklist []*zb.Deck, name string) *zb.Deck {
+	for _, deck := range decklist {
+		if deck.Name != name {
+			return deck
+		}
+	}
+	return nil
+}
+
+func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
+	account.PhoneNumberVerified = req.PhoneNumberVerified
+	account.RewardRedeemed = req.RewardRedeemed
+	account.IsKickstarter = req.IsKickstarter
+	account.Image = req.Image
+	account.EmailNotification = req.EmailNotification
+	account.EloScore = req.EloScore
+	account.CurrentTier = req.CurrentTier
+	account.GameMembershipTier = req.GameMembershipTier
+}
