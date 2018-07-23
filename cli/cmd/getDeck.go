@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
@@ -10,8 +8,8 @@ import (
 )
 
 var getDeckCmdArgs struct {
-	userId string
-	deckId string
+	userID   string
+	deckName string
 }
 
 var getDeckCmd = &cobra.Command{
@@ -27,23 +25,21 @@ var getDeckCmd = &cobra.Command{
 		}
 
 		req := &zb.GetDeckRequest{
-			UserId: getDeckCmdArgs.userId,
-			DeckId: getDeckCmdArgs.deckId,
+			UserId:   getDeckCmdArgs.userID,
+			DeckName: getDeckCmdArgs.deckName,
 		}
 
 		_, err := commonTxObjs.contract.StaticCall("GetDeck", req, callerAddr, &result)
 		if err != nil {
-			return fmt.Errorf("error encountered while calling GetDeck: %s\n", err.Error())
-		} else {
-			fmt.Println(result)
-			return nil
+			return err
 		}
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(getDeckCmd)
 
-	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userId, "userId", "u", "loom", "UserId of account")
-	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.deckId, "deckId", "d", "Default", "DeckId of account")
+	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.deckName, "deckName", "d", "Default", "DeckId of account")
 }
