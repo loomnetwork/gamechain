@@ -16,7 +16,6 @@ var getDeckCmd = &cobra.Command{
 	Use:   "getDeck",
 	Short: "gets deck for zombiebattleground by its name",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var result zb.Deck
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -28,7 +27,7 @@ var getDeckCmd = &cobra.Command{
 			UserId:   getDeckCmdArgs.userID,
 			DeckName: getDeckCmdArgs.deckName,
 		}
-
+		var result zb.GetDeckResponse
 		_, err := commonTxObjs.contract.StaticCall("GetDeck", req, callerAddr, &result)
 		if err != nil {
 			return err
