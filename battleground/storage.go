@@ -65,7 +65,7 @@ func deleteDeckByName(decklist []*zb.Deck, name string) ([]*zb.Deck, bool) {
 
 func getDeckByName(decklist []*zb.Deck, name string) *zb.Deck {
 	for _, deck := range decklist {
-		if deck.Name != name {
+		if deck.Name == name {
 			return deck
 		}
 	}
