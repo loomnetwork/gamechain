@@ -177,3 +177,11 @@ message ListHeroRequest {
 message ListHeroResponse {
     repeated Hero heroes  = 1;
 }
+
+message GetCollectionRequest {
+    string user_id = 1;
+}
+
+message GetCollectionResponse {
+    repeated CardCollection cards = 1;
+}
