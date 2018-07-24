@@ -291,6 +291,23 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	return &zb.GetDeckResponse{Deck: deck}, nil
 }
 
+// GetCollection returns the collection of the card own by the user
+func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.GetCollectionRequest) (*zb.GetCollectionResponse, error) {
+	userID := strings.TrimSpace(req.UserId)
+	userKeySpace := NewUserKeySpace(userID)
+
+	var collectionList zb.CardCollectionList
+	err := ctx.Get(userKeySpace.CardCollectionKey(), &collectionList)
+	if err == contract.ErrNotFound {
+		return &zb.GetCollectionResponse{}, err
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetCollectionResponse{Cards: collectionList.Cards}, nil
+}
+
 // ListCardLibrary list all the card library data
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
 	var cardList zb.CardList
