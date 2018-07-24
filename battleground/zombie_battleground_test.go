@@ -62,6 +62,73 @@ var initRequest = zb.InitRequest{
 			Amount: 5,
 		},
 	},
+	Heroes: []*zb.Hero{
+		{
+			HeroId:  0,
+			Icon:    "asdasd",
+			Name:    "Golem Hero",
+			Element: 2,
+			Skill: &zb.Skill{
+				Title:           "Deffence",
+				SkillType:       4,
+				SkillTargetType: 0,
+				Cost:            2,
+				Value:           2,
+			},
+		},
+		{
+			HeroId:  1,
+			Icon:    "asdasd",
+			Name:    "Pyro Hero",
+			Element: 0,
+			Skill: &zb.Skill{
+				Title:           "Fireball",
+				SkillType:       2,
+				SkillTargetType: 0,
+				Cost:            2,
+				Value:           1,
+			},
+		},
+	},
+	Cards: []*zb.Card{
+		{
+			Id:      1,
+			Element: "Air",
+			Name:    "Banshee",
+			Rank:    "Minion",
+			Type:    "Feral",
+			Damage:  2,
+			Health:  1,
+			Cost:    2,
+			Ability: "Feral",
+			Effects: []*zb.Effect{
+				{
+					Trigger:  "entry",
+					Effect:   "feral",
+					Duration: "permanent",
+					Target:   "self",
+				},
+			},
+		},
+		{
+			Id:      2,
+			Element: "Air",
+			Name:    "Breezee",
+			Rank:    "Minion",
+			Type:    "Walker",
+			Damage:  1,
+			Health:  1,
+			Cost:    1,
+			Ability: "-",
+			Effects: []*zb.Effect{
+				{
+					Trigger: "death",
+					Effect:  "attack_strength_buff",
+					Target:  "friendly_selectable",
+				},
+			},
+		},
+	},
 	DefaultDecks: []*zb.Deck{
 		{
 			HeroId: 1,
@@ -194,7 +261,7 @@ func TestAccountAndDeckOperations(t *testing.T) {
 			assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 		})
 
-		t.Run("GetDeck", func(t *testing.T) {
+		t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 			deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 				UserId:   "TestUser",
 				DeckName: "NotExists",
@@ -202,6 +269,81 @@ func TestAccountAndDeckOperations(t *testing.T) {
 
 			assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
 			assert.Equal(t, contract.ErrNotFound, err)
+		})
+
+		t.Run("GetDeck", func(t *testing.T) {
+			deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
+				UserId:   "TestUser",
+				DeckName: "Default",
+			})
+
+			assert.Equal(t, nil, err)
+			assert.Equal(t, "Default", deckResponse.Deck.Name)
+		})
+
+		t.Run("AddDeck", func(t *testing.T) {
+			err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+				UserId: "TestUser",
+				Deck: &zb.Deck{
+					Name:   "NewDeck",
+					HeroId: 1,
+					Cards: []*zb.CardCollection{
+						{
+							Amount: 1,
+							CardId: 2,
+						},
+						{
+							Amount: 1,
+							CardId: 3,
+						},
+					},
+				},
+			})
+
+			assert.Equal(t, nil, err)
+
+			deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+				UserId: "TestUser",
+			})
+
+			assert.Equal(t, nil, err)
+			if err != nil {
+				return
+			}
+
+			assert.Equal(t, 2, len(deckResponse.Decks))
+		})
+
+		t.Run("DeleteDeck", func(t *testing.T) {
+			err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
+				UserId:   "TestUser",
+				DeckName: "NewDeck",
+			})
+
+			assert.Equal(t, nil, err)
+		})
+
+		t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
+			err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
+				UserId:   "TestUser",
+				DeckName: "NotExists",
+			})
+
+			assert.NotEqual(t, nil, err)
+		})
+
+		t.Run("ListCard", func(t *testing.T) {
+			cardResponse, err := c.ListCardLibrary(ctx, &zb.ListCardLibraryRequest{})
+
+			assert.Equal(t, nil, err)
+			assert.Equal(t, 2, len(cardResponse.Sets[0].Cards))
+		})
+
+		t.Run("ListHero", func(t *testing.T) {
+			heroResponse, err := c.ListHero(ctx, &zb.ListHeroRequest{})
+
+			assert.Equal(t, nil, err)
+			assert.Equal(t, 2, len(heroResponse.Heroes))
 		})
 	})
 }
