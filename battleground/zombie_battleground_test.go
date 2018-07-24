@@ -331,7 +331,9 @@ func TestAccountAndDeckOperations(t *testing.T) {
 
 			assert.NotEqual(t, nil, err)
 		})
+	})
 
+	t.Run("CardOperations", func(t *testing.T) {
 		t.Run("ListCard", func(t *testing.T) {
 			cardResponse, err := c.ListCardLibrary(ctx, &zb.ListCardLibraryRequest{})
 
