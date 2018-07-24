@@ -261,12 +261,11 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 
 	var deckList zb.DeckList
 	err := ctx.Get(userKeySpace.DecksKey(), &deckList)
-	if err == contract.ErrNotFound {
-		return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
-	}
-	if err != nil {
+
+	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
+
 	return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
 }
 
@@ -277,10 +276,8 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 
 	var deckList zb.DeckList
 	err := ctx.Get(userKeySpace.DecksKey(), &deckList)
-	if err != contract.ErrNotFound {
-		return nil, err
-	}
-	if err != nil {
+
+	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
 
