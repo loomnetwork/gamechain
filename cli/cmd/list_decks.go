@@ -14,7 +14,7 @@ var listDecksCmdArgs struct {
 }
 
 var listDecksCmd = &cobra.Command{
-	Use:   "listDecks",
+	Use:   "list_decks",
 	Short: "list decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 

@@ -15,7 +15,7 @@ var createAccCmdArgs struct {
 }
 
 var createAccountCmd = &cobra.Command{
-	Use:   "createAccount",
+	Use:   "create_account",
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)

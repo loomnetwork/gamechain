@@ -14,7 +14,7 @@ var getCollectionCmdArgs struct {
 }
 
 var getCollectionCmd = &cobra.Command{
-	Use:   "getCollection",
+	Use:   "get_collection",
 	Short: "get collection",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
