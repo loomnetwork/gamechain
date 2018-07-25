@@ -218,13 +218,13 @@ func TestAccountOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "TestUser",
+		UserId: "AccountUser",
 		Image:  "PathToImage",
 	}, t)
 
 	t.Run("UpdateAccount", func(t *testing.T) {
 		account, err := c.UpdateAccount(ctx, &zb.UpsertAccountRequest{
-			UserId:      "TestUser",
+			UserId:      "AccountUser",
 			Image:       "PathToImage2",
 			CurrentTier: 5,
 		})
@@ -239,7 +239,7 @@ func TestAccountOperations(t *testing.T) {
 
 	t.Run("GetAccount", func(t *testing.T) {
 		account, err := c.GetAccount(ctx, &zb.GetAccountRequest{
-			UserId: "TestUser",
+			UserId: "AccountUser",
 		})
 
 		assert.Nil(t, err)
@@ -252,6 +252,27 @@ func TestAccountOperations(t *testing.T) {
 	})
 }
 
+func TestCardCollectionOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "8996b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId: "CardUser",
+		Image:  "PathToImage",
+	}, t)
+
+	cardCollection, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
+		UserId: "CardUser",
+	})
+
+	assert.Nil(t, err)
+	assert.Equal(t, 12, len(cardCollection.Cards))
+
+}
+
 func TestDeckOperations(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "7796b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
@@ -260,13 +281,13 @@ func TestDeckOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "TestUser",
+		UserId: "DeckUser",
 		Image:  "PathToImage",
 	}, t)
 
 	t.Run("ListDecks", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
-			UserId: "TestUser",
+			UserId: "DeckUser",
 		})
 
 		assert.Equal(t, nil, err)
@@ -280,7 +301,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
-			UserId:   "TestUser",
+			UserId:   "DeckUser",
 			DeckName: "NotExists",
 		})
 
@@ -290,7 +311,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
-			UserId:   "TestUser",
+			UserId:   "DeckUser",
 			DeckName: "Default",
 		})
 
@@ -300,7 +321,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("AddDeck", func(t *testing.T) {
 		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
-			UserId: "TestUser",
+			UserId: "DeckUser",
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
@@ -320,7 +341,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.Nil(t, err)
 
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
-			UserId: "TestUser",
+			UserId: "DeckUser",
 		})
 
 		assert.Equal(t, nil, err)
@@ -333,7 +354,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
-			UserId:   "TestUser",
+			UserId:   "DeckUser",
 			DeckName: "NewDeck",
 		})
 
@@ -342,7 +363,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
-			UserId:   "TestUser",
+			UserId:   "DeckUser",
 			DeckName: "NotExists",
 		})
 
