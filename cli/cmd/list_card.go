@@ -10,7 +10,7 @@ import (
 )
 
 var listCardCmd = &cobra.Command{
-	Use:   "listcard",
+	Use:   "list_card",
 	Short: "list card",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
