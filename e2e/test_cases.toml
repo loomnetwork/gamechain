@@ -1,0 +1,8 @@
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["loom"]
