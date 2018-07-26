@@ -33,6 +33,7 @@ proto: types/zb/zb.pb.go types/zb/zb.cs
 deps: $(PLUGIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
 	go get \
+		github.com/golang/dep/cmd/dep \
 		github.com/loomnetwork/go-loom \
 		github.com/gogo/protobuf/jsonpb \
 		github.com/gogo/protobuf/proto \
