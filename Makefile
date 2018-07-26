@@ -37,13 +37,12 @@ deps: $(PLUGIN_DIR)
 		github.com/gogo/protobuf/proto \
 		github.com/spf13/cobra \
 		github.com/pkg/errors \
-                go get github.com/stretchr/testify/assert\
-    	github.com/hashicorp/go-plugin \
-        github.com/google/uuid \
-        github.com/grpc-ecosystem/go-grpc-prometheus \
-        github.com/prometheus/client_golang/prometheus
+		github.com/stretchr/testify/assert\
+		github.com/hashicorp/go-plugin \
+		github.com/google/uuid \
+		github.com/grpc-ecosystem/go-grpc-prometheus \
+		github.com/prometheus/client_golang/prometheus
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
-
 
 test:
 	go test -v ./...
