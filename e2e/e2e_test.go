@@ -38,12 +38,13 @@ func TestE2E(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		{"zb-1", "zb-1-validators.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-1", "test_cases.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-4", "test_cases.toml", 4, 10, "../zb.genesis.json"},
 	}
 
 	common.LoomPath = "../../loomchain/loom"
 	common.ContractDir = "./contracts"
-
+	// required internal contract to resolve port conflicts
 	err := setupInternalContract(common.ContractDir)
 	assert.Nil(t, err)
 
@@ -53,7 +54,6 @@ func TestE2E(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-
 			binary, err := exec.LookPath("go")
 			if err != nil {
 				t.Fatal(err)
