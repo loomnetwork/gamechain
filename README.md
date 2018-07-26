@@ -52,3 +52,5 @@ loom genkey -k priv
 ./bin/zb-cli delete_deck -k priv -u loom -d NewDeck
 ```
 
+
+
