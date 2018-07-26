@@ -14,7 +14,7 @@ var getAccCmdArgs struct {
 }
 
 var getAccountCmd = &cobra.Command{
-	Use:   "getAccount",
+	Use:   "get_account",
 	Short: "gets account data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var result zb.Account

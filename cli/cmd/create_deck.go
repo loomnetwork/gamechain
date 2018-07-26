@@ -14,7 +14,7 @@ var createDeckCmdArgs struct {
 }
 
 var createDeckCmd = &cobra.Command{
-	Use:   "createDeck",
+	Use:   "create_deck",
 	Short: "create a deck",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)

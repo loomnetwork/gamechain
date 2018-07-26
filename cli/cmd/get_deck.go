@@ -13,7 +13,7 @@ var getDeckCmdArgs struct {
 }
 
 var getDeckCmd = &cobra.Command{
-	Use:   "getDeck",
+	Use:   "get_deck",
 	Short: "gets deck for zombiebattleground by its name",
 	RunE: func(cmd *cobra.Command, args []string) error {
 

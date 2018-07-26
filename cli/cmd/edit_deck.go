@@ -15,7 +15,7 @@ var editDeckCmdArgs struct {
 }
 
 var editDeckCmd = &cobra.Command{
-	Use:   "editDeck",
+	Use:   "edit_deck",
 	Short: "edit deck in zombie battleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
