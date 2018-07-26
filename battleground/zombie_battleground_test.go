@@ -210,7 +210,6 @@ func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequ
 }
 
 func TestAccountOperations(t *testing.T) {
-
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -229,10 +228,6 @@ func TestAccountOperations(t *testing.T) {
 			CurrentTier: 5,
 		})
 		assert.Equal(t, nil, err)
-		if err != nil {
-			return
-		}
-
 		assert.Equal(t, int32(5), account.CurrentTier)
 		assert.Equal(t, "PathToImage2", account.Image)
 	})
@@ -241,12 +236,7 @@ func TestAccountOperations(t *testing.T) {
 		account, err := c.GetAccount(ctx, &zb.GetAccountRequest{
 			UserId: "AccountUser",
 		})
-
 		assert.Nil(t, err)
-		if err != nil {
-			return
-		}
-
 		assert.Equal(t, int32(5), account.CurrentTier)
 		assert.Equal(t, "PathToImage2", account.Image)
 	})
@@ -267,7 +257,6 @@ func TestCardCollectionOperations(t *testing.T) {
 	cardCollection, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "CardUser",
 	})
-
 	assert.Nil(t, err)
 	assert.Equal(t, 12, len(cardCollection.Cards))
 
@@ -289,12 +278,7 @@ func TestDeckOperations(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
 		})
-
 		assert.Equal(t, nil, err)
-		if err != nil {
-			return
-		}
-
 		assert.Equal(t, 1, len(deckResponse.Decks))
 		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 	})
@@ -304,7 +288,6 @@ func TestDeckOperations(t *testing.T) {
 			UserId:   "DeckUser",
 			DeckName: "NotExists",
 		})
-
 		assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
 		assert.Equal(t, contract.ErrNotFound, err)
 	})
@@ -314,7 +297,6 @@ func TestDeckOperations(t *testing.T) {
 			UserId:   "DeckUser",
 			DeckName: "Default",
 		})
-
 		assert.Nil(t, err)
 		assert.Equal(t, "Default", deckResponse.Deck.Name)
 	})
@@ -345,10 +327,6 @@ func TestDeckOperations(t *testing.T) {
 		})
 
 		assert.Equal(t, nil, err)
-		if err != nil {
-			return
-		}
-
 		assert.Equal(t, 2, len(deckResponse.Decks))
 	})
 
