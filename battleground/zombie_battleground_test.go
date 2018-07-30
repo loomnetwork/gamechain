@@ -330,6 +330,50 @@ func TestDeckOperations(t *testing.T) {
 		assert.Equal(t, 2, len(deckResponse.Decks))
 	})
 
+	t.Run("AddDeck (Invalid Requested Amount)", func(t *testing.T) {
+		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Name:   "NewDeck",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount: 200,
+						CardId: 2,
+					},
+					{
+						Amount: 100,
+						CardId: 3,
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("AddDeck (Invalid Requested CardId)", func(t *testing.T) {
+		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Name:   "NewDeck",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount: 2,
+						CardId: 234,
+					},
+					{
+						Amount: 1,
+						CardId: 345,
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
 	t.Run("DeleteDeck", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId:   "DeckUser",
