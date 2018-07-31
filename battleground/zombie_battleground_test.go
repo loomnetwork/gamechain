@@ -109,6 +109,18 @@ var initRequest = zb.InitRequest{
 					Target:   "self",
 				},
 			},
+			CardViewInfo: &zb.CardViewInfo{
+				Position: &zb.Coordinates{
+					X: 1.5,
+					Y: 2.5,
+					Z: 3.5,
+				},
+				Scale: &zb.Coordinates{
+					X: 0.5,
+					Y: 0.5,
+					Z: 0.5,
+				},
+			},
 		},
 		{
 			Id:      2,
