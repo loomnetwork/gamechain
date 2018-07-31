@@ -68,26 +68,26 @@ var initRequest = zb.InitRequest{
 			Icon:    "asdasd",
 			Name:    "Golem Hero",
 			Element: 2,
-			Skill: &zb.Skill{
+			Skills: []*zb.Skill{{
 				Title:           "Deffence",
 				SkillType:       4,
 				SkillTargetType: 0,
 				Cost:            2,
 				Value:           2,
-			},
+			}},
 		},
 		{
 			HeroId:  1,
 			Icon:    "asdasd",
 			Name:    "Pyro Hero",
 			Element: 0,
-			Skill: &zb.Skill{
+			Skills: []*zb.Skill{{
 				Title:           "Fireball",
 				SkillType:       2,
 				SkillTargetType: 0,
 				Cost:            2,
 				Value:           1,
-			},
+			}},
 		},
 	},
 	Cards: []*zb.Card{
