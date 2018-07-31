@@ -87,11 +87,11 @@ message CardLibrary {
 }
 
 message Hero {
-    int64 hero_id = 1;
-    string icon   = 2;
-    string name   = 3;
-    int32 element = 4;
-    Skill skill   = 5;
+    int64 hero_id           = 1;
+    string icon             = 2;
+    string name             = 3;
+    int32 element           = 4;
+    repeated Skill skills   = 5;
 }
 
 message Skill {
