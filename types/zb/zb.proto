@@ -36,8 +36,20 @@ message Card {
     int32 health               = 12;
     int32 cost                 = 13;
     string ability             = 14;
-    repeated Effect effects    = 15;
-    repeated Ability abilities = 16;
+    CardViewInfo card_view_info= 15;
+    repeated Effect effects    = 16;
+    repeated Ability abilities = 17;
+}
+
+message CardViewInfo {
+    Coordinates position   = 1;
+    Coordinates scale      = 2;
+}
+
+message Coordinates {
+    float x = 1;
+    float y = 2;
+    float z = 3;
 }
 
 message Effect {
