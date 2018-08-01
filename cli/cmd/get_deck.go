@@ -35,7 +35,7 @@ var getDeckCmd = &cobra.Command{
 		}
 		fmt.Printf("deck name: %v\n", result.Deck.Name)
 		for _, card := range result.Deck.Cards {
-			fmt.Printf("card_id: %d, amount: %d\n", card.CardId, card.Amount)
+			fmt.Printf("card_name: %s, amount: %d\n", card.CardName, card.Amount)
 		}
 		return nil
 	},
