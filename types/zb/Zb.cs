@@ -52,36 +52,48 @@ namespace Loom.Unity3d.Zb {
             "ASgJEhQKBWNhcmRzGAIgAygLMgUuQ2FyZCIlCgtDYXJkTGlicmFyeRIWCgRz",
             "ZXRzGAEgAygLMgguQ2FyZFNldCJcCgRIZXJvEg8KB2hlcm9faWQYASABKAMS",
             "DAoEaWNvbhgCIAEoCRIMCgRuYW1lGAMgASgJEg8KB2VsZW1lbnQYBCABKAUS",
-            "FgoGc2tpbGxzGAUgAygLMgYuU2tpbGwiXwoFU2tpbGwSDQoFdGl0bGUYASAB",
-            "KAkSEQoJc2tpbGxUeXBlGAIgASgFEhcKD3NraWxsVGFyZ2V0VHlwZRgDIAEo",
-            "BRIMCgRjb3N0GAQgASgFEg0KBXZhbHVlGAUgASgFIiEKCEhlcm9MaXN0EhUK",
-            "Bmhlcm9lcxgBIAMoCzIFLkhlcm8iNAoSQ2FyZENvbGxlY3Rpb25MaXN0Eh4K",
-            "BWNhcmRzGAEgAygLMg8uQ2FyZENvbGxlY3Rpb24iIAoIRGVja0xpc3QSFAoF",
-            "ZGVja3MYASADKAsyBS5EZWNrIoUBCgtJbml0UmVxdWVzdBIcCg1kZWZhdWx0",
-            "X2RlY2tzGAEgAygLMgUuRGVjaxIrChJkZWZhdWx0X2NvbGxlY3Rpb24YAiAD",
-            "KAsyDy5DYXJkQ29sbGVjdGlvbhIUCgVjYXJkcxgDIAMoCzIFLkNhcmQSFQoG",
-            "aGVyb2VzGAQgAygLMgUuSGVybyLpAQoUVXBzZXJ0QWNjb3VudFJlcXVlc3QS",
-            "DwoHdXNlcl9pZBgBIAEoCRIdChVwaG9uZV9udW1iZXJfdmVyaWZpZWQYAiAB",
-            "KAgSFwoPcmV3YXJkX3JlZGVlbWVkGAMgASgIEhYKDmlzX2tpY2tzdGFydGVy",
-            "GAQgASgIEg0KBWltYWdlGAUgASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgG",
-            "IAEoCBIRCgllbG9fc2NvcmUYByABKAMSFAoMY3VycmVudF90aWVyGAggASgF",
-            "EhwKFGdhbWVfbWVtYmVyc2hpcF90aWVyGAkgASgFIiQKEUdldEFjY291bnRS",
-            "ZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiNAoOR2V0RGVja1JlcXVlc3QSDwoH",
-            "dXNlcl9pZBgBIAEoCRIRCglkZWNrX25hbWUYAiABKAkiJgoPR2V0RGVja1Jl",
-            "c3BvbnNlEhMKBGRlY2sYAiABKAsyBS5EZWNrIjkKEUNyZWF0ZURlY2tSZXF1",
-            "ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRlY2siNwoR",
-            "RGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIRCglkZWNrX25h",
-            "bWUYAiABKAkiNwoPRWRpdERlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkS",
-            "EwoEZGVjaxgCIAEoCzIFLkRlY2siNgoNRGVja3NSZXNwb25zZRIPCgd1c2Vy",
-            "X2lkGAEgASgJEhQKBWRlY2tzGAIgAygLMgUuRGVjayIjChBMaXN0RGVja3NS",
-            "ZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiKQoRTGlzdERlY2tzUmVzcG9uc2US",
-            "FAoFZGVja3MYASADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVl",
-            "c3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzII",
-            "LkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0IikKEExpc3RIZXJvUmVzcG9u",
-            "c2USFQoGaGVyb2VzGAEgAygLMgUuSGVybyInChRHZXRDb2xsZWN0aW9uUmVx",
-            "dWVzdBIPCgd1c2VyX2lkGAEgASgJIjcKFUdldENvbGxlY3Rpb25SZXNwb25z",
-            "ZRIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29tLlVu",
-            "aXR5M2QuWmJiBnByb3RvMw=="));
+            "FgoGc2tpbGxzGAUgAygLMgYuU2tpbGwiTAoISGVyb0luZm8SDwoHaGVyb19p",
+            "ZBgBIAEoAxISCgpleHBlcmllbmNlGAIgASgDEhsKCWFiaWxpdGllcxgDIAMo",
+            "CzIILkFiaWxpdHkiKQoMSGVyb0luZm9MaXN0EhkKBmhlcm9lcxgBIAMoCzIJ",
+            "Lkhlcm9JbmZvIikKFkdldEhlcm9JbmZvTGlzdFJlcXVlc3QSDwoHdXNlcl9p",
+            "ZBgBIAEoCSI0ChdHZXRIZXJvSW5mb0xpc3RSZXNwb25zZRIZCgZoZXJvZXMY",
+            "ASADKAsyCS5IZXJvSW5mbyJMChRBZGRFeHBlcmllbmNlUmVxdWVzdBIPCgd1",
+            "c2VyX2lkGAEgASgJEg8KB2hlcm9faWQYAiABKAMSEgoKZXhwZXJpZW5jZRgD",
+            "IAEoAyI8ChVBZGRFeHBlcmllbmNlUmVzcG9uc2USDwoHaGVyb19pZBgBIAEo",
+            "AxISCgpleHBlcmllbmNlGAIgASgDIjYKEkdldEhlcm9JbmZvUmVxdWVzdBIP",
+            "Cgd1c2VyX2lkGAEgASgJEg8KB2hlcm9faWQYAiABKAMiOwoXR2V0SGVyb0Fi",
+            "aWxpdGllc1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIPCgdoZXJvX2lkGAIg",
+            "ASgDIjcKGEdldEhlcm9BYmlsaXRpZXNSZXNwb25zZRIbCglhYmlsaXRpZXMY",
+            "ASADKAsyCC5BYmlsaXR5Il8KBVNraWxsEg0KBXRpdGxlGAEgASgJEhEKCXNr",
+            "aWxsVHlwZRgCIAEoBRIXCg9za2lsbFRhcmdldFR5cGUYAyABKAUSDAoEY29z",
+            "dBgEIAEoBRINCgV2YWx1ZRgFIAEoBSIhCghIZXJvTGlzdBIVCgZoZXJvZXMY",
+            "ASADKAsyBS5IZXJvIjQKEkNhcmRDb2xsZWN0aW9uTGlzdBIeCgVjYXJkcxgB",
+            "IAMoCzIPLkNhcmRDb2xsZWN0aW9uIiAKCERlY2tMaXN0EhQKBWRlY2tzGAEg",
+            "AygLMgUuRGVjayKoAQoLSW5pdFJlcXVlc3QSHAoNZGVmYXVsdF9kZWNrcxgB",
+            "IAMoCzIFLkRlY2sSKwoSZGVmYXVsdF9jb2xsZWN0aW9uGAIgAygLMg8uQ2Fy",
+            "ZENvbGxlY3Rpb24SIQoOZGVmYXVsdF9oZXJvZXMYAyADKAsyCS5IZXJvSW5m",
+            "bxIUCgVjYXJkcxgEIAMoCzIFLkNhcmQSFQoGaGVyb2VzGAUgAygLMgUuSGVy",
+            "byLpAQoUVXBzZXJ0QWNjb3VudFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRId",
+            "ChVwaG9uZV9udW1iZXJfdmVyaWZpZWQYAiABKAgSFwoPcmV3YXJkX3JlZGVl",
+            "bWVkGAMgASgIEhYKDmlzX2tpY2tzdGFydGVyGAQgASgIEg0KBWltYWdlGAUg",
+            "ASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2NvcmUY",
+            "ByABKAMSFAoMY3VycmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVyc2hp",
+            "cF90aWVyGAkgASgFIiQKEUdldEFjY291bnRSZXF1ZXN0Eg8KB3VzZXJfaWQY",
+            "ASABKAkiNAoOR2V0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIRCglk",
+            "ZWNrX25hbWUYAiABKAkiJgoPR2V0RGVja1Jlc3BvbnNlEhMKBGRlY2sYAiAB",
+            "KAsyBS5EZWNrIjkKEUNyZWF0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASAB",
+            "KAkSEwoEZGVjaxgCIAEoCzIFLkRlY2siNwoRRGVsZXRlRGVja1JlcXVlc3QS",
+            "DwoHdXNlcl9pZBgBIAEoCRIRCglkZWNrX25hbWUYAiABKAkiNwoPRWRpdERl",
+            "Y2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRl",
+            "Y2siNgoNRGVja3NSZXNwb25zZRIPCgd1c2VyX2lkGAEgASgJEhQKBWRlY2tz",
+            "GAIgAygLMgUuRGVjayIjChBMaXN0RGVja3NSZXF1ZXN0Eg8KB3VzZXJfaWQY",
+            "ASABKAkiKQoRTGlzdERlY2tzUmVzcG9uc2USFAoFZGVja3MYASADKAsyBS5E",
+            "ZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJy",
+            "YXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhl",
+            "cm9SZXF1ZXN0IikKEExpc3RIZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygL",
+            "MgUuSGVybyInChRHZXRDb2xsZWN0aW9uUmVxdWVzdBIPCgd1c2VyX2lkGAEg",
+            "ASgJIjcKFUdldENvbGxlY3Rpb25SZXNwb25zZRIeCgVjYXJkcxgBIAMoCzIP",
+            "LkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29tLlVuaXR5M2QuWmJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -97,11 +109,20 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Hero), global::Loom.Unity3d.Zb.Hero.Parser, new[]{ "HeroId", "Icon", "Name", "Element", "Skills" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroInfo), global::Loom.Unity3d.Zb.HeroInfo.Parser, new[]{ "HeroId", "Experience", "Abilities" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroInfoList), global::Loom.Unity3d.Zb.HeroInfoList.Parser, new[]{ "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroInfoListRequest), global::Loom.Unity3d.Zb.GetHeroInfoListRequest.Parser, new[]{ "UserId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroInfoListResponse), global::Loom.Unity3d.Zb.GetHeroInfoListResponse.Parser, new[]{ "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddExperienceRequest), global::Loom.Unity3d.Zb.AddExperienceRequest.Parser, new[]{ "UserId", "HeroId", "Experience" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddExperienceResponse), global::Loom.Unity3d.Zb.AddExperienceResponse.Parser, new[]{ "HeroId", "Experience" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroInfoRequest), global::Loom.Unity3d.Zb.GetHeroInfoRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroAbilitiesRequest), global::Loom.Unity3d.Zb.GetHeroAbilitiesRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse), global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse.Parser, new[]{ "Abilities" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Skill), global::Loom.Unity3d.Zb.Skill.Parser, new[]{ "Title", "SkillType", "SkillTargetType", "Cost", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroList), global::Loom.Unity3d.Zb.HeroList.Parser, new[]{ "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollectionList), global::Loom.Unity3d.Zb.CardCollectionList.Parser, new[]{ "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.DeckList), global::Loom.Unity3d.Zb.DeckList.Parser, new[]{ "Decks" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.InitRequest), global::Loom.Unity3d.Zb.InitRequest.Parser, new[]{ "DefaultDecks", "DefaultCollection", "Cards", "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.InitRequest), global::Loom.Unity3d.Zb.InitRequest.Parser, new[]{ "DefaultDecks", "DefaultCollection", "DefaultHeroes", "Cards", "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.UpsertAccountRequest), global::Loom.Unity3d.Zb.UpsertAccountRequest.Parser, new[]{ "UserId", "PhoneNumberVerified", "RewardRedeemed", "IsKickstarter", "Image", "EmailNotification", "EloScore", "CurrentTier", "GameMembershipTier" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetAccountRequest), global::Loom.Unity3d.Zb.GetAccountRequest.Parser, new[]{ "UserId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetDeckRequest), global::Loom.Unity3d.Zb.GetDeckRequest.Parser, new[]{ "UserId", "DeckName" }, null, null, null),
@@ -721,7 +742,7 @@ namespace Loom.Unity3d.Zb {
       health_ = other.health_;
       cost_ = other.cost_;
       ability_ = other.ability_;
-      CardViewInfo = other.cardViewInfo_ != null ? other.CardViewInfo.Clone() : null;
+      cardViewInfo_ = other.cardViewInfo_ != null ? other.cardViewInfo_.Clone() : null;
       effects_ = other.effects_.Clone();
       abilities_ = other.abilities_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1274,8 +1295,8 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CardViewInfo(CardViewInfo other) : this() {
-      Position = other.position_ != null ? other.Position.Clone() : null;
-      Scale = other.scale_ != null ? other.Scale.Clone() : null;
+      position_ = other.position_ != null ? other.position_.Clone() : null;
+      scale_ = other.scale_ != null ? other.scale_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2866,6 +2887,1331 @@ namespace Loom.Unity3d.Zb {
 
   }
 
+  public sealed partial class HeroInfo : pb::IMessage<HeroInfo> {
+    private static readonly pb::MessageParser<HeroInfo> _parser = new pb::MessageParser<HeroInfo>(() => new HeroInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<HeroInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfo(HeroInfo other) : this() {
+      heroId_ = other.heroId_;
+      experience_ = other.experience_;
+      abilities_ = other.abilities_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfo Clone() {
+      return new HeroInfo(this);
+    }
+
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 1;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "experience" field.</summary>
+    public const int ExperienceFieldNumber = 2;
+    private long experience_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Experience {
+      get { return experience_; }
+      set {
+        experience_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "abilities" field.</summary>
+    public const int AbilitiesFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Ability> _repeated_abilities_codec
+        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.Ability.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> abilities_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> Abilities {
+      get { return abilities_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as HeroInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(HeroInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (HeroId != other.HeroId) return false;
+      if (Experience != other.Experience) return false;
+      if(!abilities_.Equals(other.abilities_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
+      if (Experience != 0L) hash ^= Experience.GetHashCode();
+      hash ^= abilities_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (HeroId != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(HeroId);
+      }
+      if (Experience != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(Experience);
+      }
+      abilities_.WriteTo(output, _repeated_abilities_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
+      if (Experience != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Experience);
+      }
+      size += abilities_.CalculateSize(_repeated_abilities_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(HeroInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
+      }
+      if (other.Experience != 0L) {
+        Experience = other.Experience;
+      }
+      abilities_.Add(other.abilities_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            Experience = input.ReadInt64();
+            break;
+          }
+          case 26: {
+            abilities_.AddEntriesFrom(input, _repeated_abilities_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class HeroInfoList : pb::IMessage<HeroInfoList> {
+    private static readonly pb::MessageParser<HeroInfoList> _parser = new pb::MessageParser<HeroInfoList>(() => new HeroInfoList());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<HeroInfoList> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfoList() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfoList(HeroInfoList other) : this() {
+      heroes_ = other.heroes_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeroInfoList Clone() {
+      return new HeroInfoList(this);
+    }
+
+    /// <summary>Field number for the "heroes" field.</summary>
+    public const int HeroesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.HeroInfo> _repeated_heroes_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.HeroInfo.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> Heroes {
+      get { return heroes_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as HeroInfoList);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(HeroInfoList other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!heroes_.Equals(other.heroes_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= heroes_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      heroes_.WriteTo(output, _repeated_heroes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += heroes_.CalculateSize(_repeated_heroes_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(HeroInfoList other) {
+      if (other == null) {
+        return;
+      }
+      heroes_.Add(other.heroes_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class GetHeroInfoListRequest : pb::IMessage<GetHeroInfoListRequest> {
+    private static readonly pb::MessageParser<GetHeroInfoListRequest> _parser = new pb::MessageParser<GetHeroInfoListRequest>(() => new GetHeroInfoListRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetHeroInfoListRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListRequest(GetHeroInfoListRequest other) : this() {
+      userId_ = other.userId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListRequest Clone() {
+      return new GetHeroInfoListRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetHeroInfoListRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetHeroInfoListRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetHeroInfoListRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class GetHeroInfoListResponse : pb::IMessage<GetHeroInfoListResponse> {
+    private static readonly pb::MessageParser<GetHeroInfoListResponse> _parser = new pb::MessageParser<GetHeroInfoListResponse>(() => new GetHeroInfoListResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetHeroInfoListResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListResponse(GetHeroInfoListResponse other) : this() {
+      heroes_ = other.heroes_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoListResponse Clone() {
+      return new GetHeroInfoListResponse(this);
+    }
+
+    /// <summary>Field number for the "heroes" field.</summary>
+    public const int HeroesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.HeroInfo> _repeated_heroes_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.HeroInfo.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> Heroes {
+      get { return heroes_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetHeroInfoListResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetHeroInfoListResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!heroes_.Equals(other.heroes_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= heroes_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      heroes_.WriteTo(output, _repeated_heroes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += heroes_.CalculateSize(_repeated_heroes_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetHeroInfoListResponse other) {
+      if (other == null) {
+        return;
+      }
+      heroes_.Add(other.heroes_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddExperienceRequest : pb::IMessage<AddExperienceRequest> {
+    private static readonly pb::MessageParser<AddExperienceRequest> _parser = new pb::MessageParser<AddExperienceRequest>(() => new AddExperienceRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddExperienceRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceRequest(AddExperienceRequest other) : this() {
+      userId_ = other.userId_;
+      heroId_ = other.heroId_;
+      experience_ = other.experience_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceRequest Clone() {
+      return new AddExperienceRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 2;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "experience" field.</summary>
+    public const int ExperienceFieldNumber = 3;
+    private long experience_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Experience {
+      get { return experience_; }
+      set {
+        experience_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddExperienceRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddExperienceRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      if (HeroId != other.HeroId) return false;
+      if (Experience != other.Experience) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
+      if (Experience != 0L) hash ^= Experience.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (HeroId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(HeroId);
+      }
+      if (Experience != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(Experience);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
+      if (Experience != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Experience);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddExperienceRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
+      }
+      if (other.Experience != 0L) {
+        Experience = other.Experience;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 16: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+          case 24: {
+            Experience = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class AddExperienceResponse : pb::IMessage<AddExperienceResponse> {
+    private static readonly pb::MessageParser<AddExperienceResponse> _parser = new pb::MessageParser<AddExperienceResponse>(() => new AddExperienceResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<AddExperienceResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceResponse(AddExperienceResponse other) : this() {
+      heroId_ = other.heroId_;
+      experience_ = other.experience_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public AddExperienceResponse Clone() {
+      return new AddExperienceResponse(this);
+    }
+
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 1;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "experience" field.</summary>
+    public const int ExperienceFieldNumber = 2;
+    private long experience_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Experience {
+      get { return experience_; }
+      set {
+        experience_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as AddExperienceResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(AddExperienceResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (HeroId != other.HeroId) return false;
+      if (Experience != other.Experience) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
+      if (Experience != 0L) hash ^= Experience.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (HeroId != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(HeroId);
+      }
+      if (Experience != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(Experience);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
+      if (Experience != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Experience);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(AddExperienceResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
+      }
+      if (other.Experience != 0L) {
+        Experience = other.Experience;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            Experience = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class GetHeroInfoRequest : pb::IMessage<GetHeroInfoRequest> {
+    private static readonly pb::MessageParser<GetHeroInfoRequest> _parser = new pb::MessageParser<GetHeroInfoRequest>(() => new GetHeroInfoRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetHeroInfoRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoRequest(GetHeroInfoRequest other) : this() {
+      userId_ = other.userId_;
+      heroId_ = other.heroId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroInfoRequest Clone() {
+      return new GetHeroInfoRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 2;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetHeroInfoRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetHeroInfoRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      if (HeroId != other.HeroId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (HeroId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(HeroId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetHeroInfoRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 16: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class GetHeroAbilitiesRequest : pb::IMessage<GetHeroAbilitiesRequest> {
+    private static readonly pb::MessageParser<GetHeroAbilitiesRequest> _parser = new pb::MessageParser<GetHeroAbilitiesRequest>(() => new GetHeroAbilitiesRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetHeroAbilitiesRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesRequest(GetHeroAbilitiesRequest other) : this() {
+      userId_ = other.userId_;
+      heroId_ = other.heroId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesRequest Clone() {
+      return new GetHeroAbilitiesRequest(this);
+    }
+
+    /// <summary>Field number for the "user_id" field.</summary>
+    public const int UserIdFieldNumber = 1;
+    private string userId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserId {
+      get { return userId_; }
+      set {
+        userId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 2;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetHeroAbilitiesRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetHeroAbilitiesRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UserId != other.UserId) return false;
+      if (HeroId != other.HeroId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UserId.Length != 0) hash ^= UserId.GetHashCode();
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (UserId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UserId);
+      }
+      if (HeroId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(HeroId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UserId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
+      }
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetHeroAbilitiesRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UserId.Length != 0) {
+        UserId = other.UserId;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UserId = input.ReadString();
+            break;
+          }
+          case 16: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class GetHeroAbilitiesResponse : pb::IMessage<GetHeroAbilitiesResponse> {
+    private static readonly pb::MessageParser<GetHeroAbilitiesResponse> _parser = new pb::MessageParser<GetHeroAbilitiesResponse>(() => new GetHeroAbilitiesResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetHeroAbilitiesResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesResponse(GetHeroAbilitiesResponse other) : this() {
+      abilities_ = other.abilities_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetHeroAbilitiesResponse Clone() {
+      return new GetHeroAbilitiesResponse(this);
+    }
+
+    /// <summary>Field number for the "abilities" field.</summary>
+    public const int AbilitiesFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Ability> _repeated_abilities_codec
+        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Ability.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> abilities_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> Abilities {
+      get { return abilities_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetHeroAbilitiesResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetHeroAbilitiesResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!abilities_.Equals(other.abilities_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= abilities_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      abilities_.WriteTo(output, _repeated_abilities_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += abilities_.CalculateSize(_repeated_abilities_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetHeroAbilitiesResponse other) {
+      if (other == null) {
+        return;
+      }
+      abilities_.Add(other.abilities_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            abilities_.AddEntriesFrom(input, _repeated_abilities_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class Skill : pb::IMessage<Skill> {
     private static readonly pb::MessageParser<Skill> _parser = new pb::MessageParser<Skill>(() => new Skill());
     private pb::UnknownFieldSet _unknownFields;
@@ -2874,7 +4220,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3115,7 +4461,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3236,7 +4582,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[14]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3357,7 +4703,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[15]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3478,7 +4824,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[16]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[25]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3497,6 +4843,7 @@ namespace Loom.Unity3d.Zb {
     public InitRequest(InitRequest other) : this() {
       defaultDecks_ = other.defaultDecks_.Clone();
       defaultCollection_ = other.defaultCollection_.Clone();
+      defaultHeroes_ = other.defaultHeroes_.Clone();
       cards_ = other.cards_.Clone();
       heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -3527,10 +4874,20 @@ namespace Loom.Unity3d.Zb {
       get { return defaultCollection_; }
     }
 
+    /// <summary>Field number for the "default_heroes" field.</summary>
+    public const int DefaultHeroesFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.HeroInfo> _repeated_defaultHeroes_codec
+        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.HeroInfo.Parser);
+    private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> defaultHeroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Loom.Unity3d.Zb.HeroInfo> DefaultHeroes {
+      get { return defaultHeroes_; }
+    }
+
     /// <summary>Field number for the "cards" field.</summary>
-    public const int CardsFieldNumber = 3;
+    public const int CardsFieldNumber = 4;
     private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Card> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(26, global::Loom.Unity3d.Zb.Card.Parser);
+        = pb::FieldCodec.ForMessage(34, global::Loom.Unity3d.Zb.Card.Parser);
     private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Card> cards_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Card>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Loom.Unity3d.Zb.Card> Cards {
@@ -3538,9 +4895,9 @@ namespace Loom.Unity3d.Zb {
     }
 
     /// <summary>Field number for the "heroes" field.</summary>
-    public const int HeroesFieldNumber = 4;
+    public const int HeroesFieldNumber = 5;
     private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Hero> _repeated_heroes_codec
-        = pb::FieldCodec.ForMessage(34, global::Loom.Unity3d.Zb.Hero.Parser);
+        = pb::FieldCodec.ForMessage(42, global::Loom.Unity3d.Zb.Hero.Parser);
     private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> heroes_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Loom.Unity3d.Zb.Hero> Heroes {
@@ -3562,6 +4919,7 @@ namespace Loom.Unity3d.Zb {
       }
       if(!defaultDecks_.Equals(other.defaultDecks_)) return false;
       if(!defaultCollection_.Equals(other.defaultCollection_)) return false;
+      if(!defaultHeroes_.Equals(other.defaultHeroes_)) return false;
       if(!cards_.Equals(other.cards_)) return false;
       if(!heroes_.Equals(other.heroes_)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -3572,6 +4930,7 @@ namespace Loom.Unity3d.Zb {
       int hash = 1;
       hash ^= defaultDecks_.GetHashCode();
       hash ^= defaultCollection_.GetHashCode();
+      hash ^= defaultHeroes_.GetHashCode();
       hash ^= cards_.GetHashCode();
       hash ^= heroes_.GetHashCode();
       if (_unknownFields != null) {
@@ -3589,6 +4948,7 @@ namespace Loom.Unity3d.Zb {
     public void WriteTo(pb::CodedOutputStream output) {
       defaultDecks_.WriteTo(output, _repeated_defaultDecks_codec);
       defaultCollection_.WriteTo(output, _repeated_defaultCollection_codec);
+      defaultHeroes_.WriteTo(output, _repeated_defaultHeroes_codec);
       cards_.WriteTo(output, _repeated_cards_codec);
       heroes_.WriteTo(output, _repeated_heroes_codec);
       if (_unknownFields != null) {
@@ -3601,6 +4961,7 @@ namespace Loom.Unity3d.Zb {
       int size = 0;
       size += defaultDecks_.CalculateSize(_repeated_defaultDecks_codec);
       size += defaultCollection_.CalculateSize(_repeated_defaultCollection_codec);
+      size += defaultHeroes_.CalculateSize(_repeated_defaultHeroes_codec);
       size += cards_.CalculateSize(_repeated_cards_codec);
       size += heroes_.CalculateSize(_repeated_heroes_codec);
       if (_unknownFields != null) {
@@ -3616,6 +4977,7 @@ namespace Loom.Unity3d.Zb {
       }
       defaultDecks_.Add(other.defaultDecks_);
       defaultCollection_.Add(other.defaultCollection_);
+      defaultHeroes_.Add(other.defaultHeroes_);
       cards_.Add(other.cards_);
       heroes_.Add(other.heroes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3638,10 +5000,14 @@ namespace Loom.Unity3d.Zb {
             break;
           }
           case 26: {
-            cards_.AddEntriesFrom(input, _repeated_cards_codec);
+            defaultHeroes_.AddEntriesFrom(input, _repeated_defaultHeroes_codec);
             break;
           }
           case 34: {
+            cards_.AddEntriesFrom(input, _repeated_cards_codec);
+            break;
+          }
+          case 42: {
             heroes_.AddEntriesFrom(input, _repeated_heroes_codec);
             break;
           }
@@ -3659,7 +5025,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[17]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[26]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4012,7 +5378,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[18]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[27]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4141,7 +5507,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[19]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[28]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4298,7 +5664,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[20]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[29]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4315,7 +5681,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetDeckResponse(GetDeckResponse other) : this() {
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4433,7 +5799,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[21]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[30]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4451,7 +5817,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CreateDeckRequest(CreateDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4596,7 +5962,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[22]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[31]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4753,7 +6119,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[23]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[32]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4771,7 +6137,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public EditDeckRequest(EditDeckRequest other) : this() {
       userId_ = other.userId_;
-      Deck = other.deck_ != null ? other.Deck.Clone() : null;
+      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4916,7 +6282,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[24]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[33]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5065,7 +6431,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[25]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[34]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5194,7 +6560,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[26]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[35]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5315,7 +6681,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[27]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[36]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5416,7 +6782,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[28]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[37]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5537,7 +6903,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[29]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[38]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5638,7 +7004,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[30]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[39]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5759,7 +7125,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[31]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[40]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5888,7 +7254,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[32]; }
+      get { return global::Loom.Unity3d.Zb.ZbReflection.Descriptor.MessageTypes[41]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
