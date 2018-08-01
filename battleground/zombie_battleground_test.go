@@ -62,6 +62,12 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
+	DefaultHeroes: []*zb.HeroInfo{
+		{
+			HeroId:     1,
+			Experience: 0,
+		},
+	},
 	Heroes: []*zb.Hero{
 		{
 			HeroId:  0,
@@ -143,7 +149,7 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
-			HeroId: 1,
+			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
 				{
