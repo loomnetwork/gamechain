@@ -73,8 +73,8 @@ message CardList {
 }
 
 message CardCollection {
-    int64 card_id  = 1;
-    int64 amount   = 2;
+    string card_name  = 1;
+    int64 amount      = 2;
 }
 
 message CardSet {
