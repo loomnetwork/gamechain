@@ -10,7 +10,7 @@ import (
 )
 
 var editDeckCmdArgs struct {
-	userId string
+	userID string
 	value  string
 }
 
@@ -22,26 +22,26 @@ var editDeckCmd = &cobra.Command{
 		var deck zb.Deck
 
 		if err := json.Unmarshal([]byte(editDeckCmdArgs.value), &deck); err != nil {
-			return fmt.Errorf("invalid JSON passed in value field. Error: %s\n", err.Error())
+			return fmt.Errorf("invalid JSON passed in value field. Error: %s", err.Error())
 		}
 
 		req := &zb.EditDeckRequest{
 			Deck:   &deck,
-			UserId: editDeckCmdArgs.userId,
+			UserId: editDeckCmdArgs.userID,
 		}
 
 		_, err := commonTxObjs.contract.Call("EditDeck", req, signer, nil)
 		if err != nil {
-			return fmt.Errorf("error encountered while calling EditDeck: %s\n", err.Error())
-		} else {
-			return nil
+			return fmt.Errorf("error encountered while calling EditDeck: %s", err.Error())
 		}
+		fmt.Printf("deck edited successfully")
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(editDeckCmd)
 
-	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.userId, "userId", "u", "loom", "UserId of account")
-	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.value, "value", "v", "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": 1, \"amount\": 2}, {\"card_name\": 5, \"amount\": 2} ]}", "Deck data in serialized json format")
+	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.value, "value", "v", "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_id\": 1, \"amount\": 2}, {\"card_id\": 5, \"amount\": 2} ]}", "Deck data in serialized json format")
 }
