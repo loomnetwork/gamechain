@@ -17,7 +17,6 @@ var listDecksCmd = &cobra.Command{
 	Use:   "list_decks",
 	Short: "list decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
@@ -32,6 +31,7 @@ var listDecksCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Printf("deck size: %d\n", len(result.Decks))
 		for _, deck := range result.Decks {
 			fmt.Printf("name: %s\n", deck.Name)
 			for _, card := range deck.Cards {
