@@ -17,7 +17,6 @@ var getCollectionCmd = &cobra.Command{
 	Use:   "get_collection",
 	Short: "get collection",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
@@ -32,6 +31,7 @@ var getCollectionCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Printf("collection:\n")
 		for _, card := range result.Cards {
 			fmt.Printf("card_id: %d, amount: %d\n", card.CardId, card.Amount)
 		}
