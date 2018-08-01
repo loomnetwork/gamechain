@@ -14,52 +14,52 @@ import (
 var initRequest = zb.InitRequest{
 	DefaultCollection: []*zb.CardCollection{
 		{
-			CardId: 1,
-			Amount: 4,
+			CardName: "Banshee",
+			Amount:   4,
 		},
 		{
-			CardId: 2,
-			Amount: 3,
+			CardName: "Breezee",
+			Amount:   3,
 		},
 		{
-			CardId: 3,
-			Amount: 5,
+			CardName: "Buffer",
+			Amount:   5,
 		},
 		{
-			CardId: 4,
-			Amount: 4,
+			CardName: "Soothsayer",
+			Amount:   4,
 		},
 		{
-			CardId: 5,
-			Amount: 3,
+			CardName: "Wheezy",
+			Amount:   3,
 		},
 		{
-			CardId: 6,
-			Amount: 5,
+			CardName: "Whiffer",
+			Amount:   5,
 		},
 		{
-			CardId: 7,
-			Amount: 4,
+			CardName: "Whizpar",
+			Amount:   4,
 		},
 		{
-			CardId: 8,
-			Amount: 3,
+			CardName: "Zhocker",
+			Amount:   3,
 		},
 		{
-			CardId: 9,
-			Amount: 5,
+			CardName: "Bouncer",
+			Amount:   5,
 		},
 		{
-			CardId: 10,
-			Amount: 4,
+			CardName: "Dragger",
+			Amount:   4,
 		},
 		{
-			CardId: 11,
-			Amount: 3,
+			CardName: "Guzt",
+			Amount:   3,
 		},
 		{
-			CardId: 12,
-			Amount: 5,
+			CardName: "Pushhh",
+			Amount:   5,
 		},
 	},
 	Heroes: []*zb.Hero{
@@ -147,52 +147,52 @@ var initRequest = zb.InitRequest{
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
 				{
-					CardId: 1,
-					Amount: 2,
+					CardName: "Banshee",
+					Amount:   2,
 				},
 				{
-					CardId: 2,
-					Amount: 2,
+					CardName: "Breezee",
+					Amount:   2,
 				},
 				{
-					CardId: 3,
-					Amount: 2,
+					CardName: "Buffer",
+					Amount:   2,
 				},
 				{
-					CardId: 4,
-					Amount: 2,
+					CardName: "Soothsayer",
+					Amount:   2,
 				},
 				{
-					CardId: 5,
-					Amount: 2,
+					CardName: "Wheezy",
+					Amount:   2,
 				},
 				{
-					CardId: 6,
-					Amount: 2,
+					CardName: "Whiffer",
+					Amount:   2,
 				},
 				{
-					CardId: 7,
-					Amount: 1,
+					CardName: "Whizpar",
+					Amount:   1,
 				},
 				{
-					CardId: 8,
-					Amount: 1,
+					CardName: "Zhocker",
+					Amount:   1,
 				},
 				{
-					CardId: 9,
-					Amount: 1,
+					CardName: "Bouncer",
+					Amount:   1,
 				},
 				{
-					CardId: 10,
-					Amount: 1,
+					CardName: "Dragger",
+					Amount:   1,
 				},
 				{
-					CardId: 11,
-					Amount: 1,
+					CardName: "Guzt",
+					Amount:   1,
 				},
 				{
-					CardId: 12,
-					Amount: 1,
+					CardName: "Pushhh",
+					Amount:   1,
 				},
 			},
 		},
@@ -321,12 +321,12 @@ func TestDeckOperations(t *testing.T) {
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
 					{
-						Amount: 1,
-						CardId: 2,
+						Amount:   1,
+						CardName: "Breezee",
 					},
 					{
-						Amount: 1,
-						CardId: 3,
+						Amount:   1,
+						CardName: "Buffer",
 					},
 				},
 			},
@@ -350,12 +350,12 @@ func TestDeckOperations(t *testing.T) {
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
 					{
-						Amount: 200,
-						CardId: 2,
+						Amount:   200,
+						CardName: "Breezee",
 					},
 					{
-						Amount: 100,
-						CardId: 3,
+						Amount:   100,
+						CardName: "Buffer",
 					},
 				},
 			},
@@ -364,7 +364,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	t.Run("AddDeck (Invalid Requested CardId)", func(t *testing.T) {
+	t.Run("AddDeck (Invalid Requested CardName)", func(t *testing.T) {
 		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
@@ -372,12 +372,12 @@ func TestDeckOperations(t *testing.T) {
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
 					{
-						Amount: 2,
-						CardId: 234,
+						Amount:   2,
+						CardName: "InvalidName1",
 					},
 					{
-						Amount: 1,
-						CardId: 345,
+						Amount:   1,
+						CardName: "InvalidName2",
 					},
 				},
 			},

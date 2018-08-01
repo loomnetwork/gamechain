@@ -47,41 +47,41 @@ namespace Loom.Unity3d.Zb {
             "CgVsaW1pdBgFIAEoCSJlCgdBYmlsaXR5EgwKBHR5cGUYASABKAkSFQoNYWN0",
             "aXZpdHlfdHlwZRgCIAEoCRIRCgljYWxsX3R5cGUYAyABKAkSEwoLdGFyZ2V0",
             "X3R5cGUYBCABKAkSDQoFdmFsdWUYBSABKAUiIAoIQ2FyZExpc3QSFAoFY2Fy",
-            "ZHMYASADKAsyBS5DYXJkIjEKDkNhcmRDb2xsZWN0aW9uEg8KB2NhcmRfaWQY",
-            "ASABKAMSDgoGYW1vdW50GAIgASgDIi0KB0NhcmRTZXQSDAoEbmFtZRgBIAEo",
-            "CRIUCgVjYXJkcxgCIAMoCzIFLkNhcmQiJQoLQ2FyZExpYnJhcnkSFgoEc2V0",
-            "cxgBIAMoCzIILkNhcmRTZXQiXAoESGVybxIPCgdoZXJvX2lkGAEgASgDEgwK",
-            "BGljb24YAiABKAkSDAoEbmFtZRgDIAEoCRIPCgdlbGVtZW50GAQgASgFEhYK",
-            "BnNraWxscxgFIAMoCzIGLlNraWxsIl8KBVNraWxsEg0KBXRpdGxlGAEgASgJ",
-            "EhEKCXNraWxsVHlwZRgCIAEoBRIXCg9za2lsbFRhcmdldFR5cGUYAyABKAUS",
-            "DAoEY29zdBgEIAEoBRINCgV2YWx1ZRgFIAEoBSIhCghIZXJvTGlzdBIVCgZo",
-            "ZXJvZXMYASADKAsyBS5IZXJvIjQKEkNhcmRDb2xsZWN0aW9uTGlzdBIeCgVj",
-            "YXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uIiAKCERlY2tMaXN0EhQKBWRl",
-            "Y2tzGAEgAygLMgUuRGVjayKFAQoLSW5pdFJlcXVlc3QSHAoNZGVmYXVsdF9k",
-            "ZWNrcxgBIAMoCzIFLkRlY2sSKwoSZGVmYXVsdF9jb2xsZWN0aW9uGAIgAygL",
-            "Mg8uQ2FyZENvbGxlY3Rpb24SFAoFY2FyZHMYAyADKAsyBS5DYXJkEhUKBmhl",
-            "cm9lcxgEIAMoCzIFLkhlcm8i6QEKFFVwc2VydEFjY291bnRSZXF1ZXN0Eg8K",
-            "B3VzZXJfaWQYASABKAkSHQoVcGhvbmVfbnVtYmVyX3ZlcmlmaWVkGAIgASgI",
-            "EhcKD3Jld2FyZF9yZWRlZW1lZBgDIAEoCBIWCg5pc19raWNrc3RhcnRlchgE",
-            "IAEoCBINCgVpbWFnZRgFIAEoCRIaChJlbWFpbF9ub3RpZmljYXRpb24YBiAB",
-            "KAgSEQoJZWxvX3Njb3JlGAcgASgDEhQKDGN1cnJlbnRfdGllchgIIAEoBRIc",
-            "ChRnYW1lX21lbWJlcnNoaXBfdGllchgJIAEoBSIkChFHZXRBY2NvdW50UmVx",
-            "dWVzdBIPCgd1c2VyX2lkGAEgASgJIjQKDkdldERlY2tSZXF1ZXN0Eg8KB3Vz",
-            "ZXJfaWQYASABKAkSEQoJZGVja19uYW1lGAIgASgJIiYKD0dldERlY2tSZXNw",
-            "b25zZRITCgRkZWNrGAIgASgLMgUuRGVjayI5ChFDcmVhdGVEZWNrUmVxdWVz",
-            "dBIPCgd1c2VyX2lkGAEgASgJEhMKBGRlY2sYAiABKAsyBS5EZWNrIjcKEURl",
-            "bGV0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEQoJZGVja19uYW1l",
-            "GAIgASgJIjcKD0VkaXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhMK",
-            "BGRlY2sYAiABKAsyBS5EZWNrIjYKDURlY2tzUmVzcG9uc2USDwoHdXNlcl9p",
-            "ZBgBIAEoCRIUCgVkZWNrcxgCIAMoCzIFLkRlY2siIwoQTGlzdERlY2tzUmVx",
-            "dWVzdBIPCgd1c2VyX2lkGAEgASgJIikKEUxpc3REZWNrc1Jlc3BvbnNlEhQK",
-            "BWRlY2tzGAEgAygLMgUuRGVjayIYChZMaXN0Q2FyZExpYnJhcnlSZXF1ZXN0",
-            "IjEKF0xpc3RDYXJkTGlicmFyeVJlc3BvbnNlEhYKBHNldHMYASADKAsyCC5D",
-            "YXJkU2V0IhEKD0xpc3RIZXJvUmVxdWVzdCIpChBMaXN0SGVyb1Jlc3BvbnNl",
-            "EhUKBmhlcm9lcxgBIAMoCzIFLkhlcm8iJwoUR2V0Q29sbGVjdGlvblJlcXVl",
-            "c3QSDwoHdXNlcl9pZBgBIAEoCSI3ChVHZXRDb2xsZWN0aW9uUmVzcG9uc2US",
-            "HgoFY2FyZHMYASADKAsyDy5DYXJkQ29sbGVjdGlvbkISqgIPTG9vbS5Vbml0",
-            "eTNkLlpiYgZwcm90bzM="));
+            "ZHMYASADKAsyBS5DYXJkIjMKDkNhcmRDb2xsZWN0aW9uEhEKCWNhcmRfbmFt",
+            "ZRgBIAEoCRIOCgZhbW91bnQYAiABKAMiLQoHQ2FyZFNldBIMCgRuYW1lGAEg",
+            "ASgJEhQKBWNhcmRzGAIgAygLMgUuQ2FyZCIlCgtDYXJkTGlicmFyeRIWCgRz",
+            "ZXRzGAEgAygLMgguQ2FyZFNldCJcCgRIZXJvEg8KB2hlcm9faWQYASABKAMS",
+            "DAoEaWNvbhgCIAEoCRIMCgRuYW1lGAMgASgJEg8KB2VsZW1lbnQYBCABKAUS",
+            "FgoGc2tpbGxzGAUgAygLMgYuU2tpbGwiXwoFU2tpbGwSDQoFdGl0bGUYASAB",
+            "KAkSEQoJc2tpbGxUeXBlGAIgASgFEhcKD3NraWxsVGFyZ2V0VHlwZRgDIAEo",
+            "BRIMCgRjb3N0GAQgASgFEg0KBXZhbHVlGAUgASgFIiEKCEhlcm9MaXN0EhUK",
+            "Bmhlcm9lcxgBIAMoCzIFLkhlcm8iNAoSQ2FyZENvbGxlY3Rpb25MaXN0Eh4K",
+            "BWNhcmRzGAEgAygLMg8uQ2FyZENvbGxlY3Rpb24iIAoIRGVja0xpc3QSFAoF",
+            "ZGVja3MYASADKAsyBS5EZWNrIoUBCgtJbml0UmVxdWVzdBIcCg1kZWZhdWx0",
+            "X2RlY2tzGAEgAygLMgUuRGVjaxIrChJkZWZhdWx0X2NvbGxlY3Rpb24YAiAD",
+            "KAsyDy5DYXJkQ29sbGVjdGlvbhIUCgVjYXJkcxgDIAMoCzIFLkNhcmQSFQoG",
+            "aGVyb2VzGAQgAygLMgUuSGVybyLpAQoUVXBzZXJ0QWNjb3VudFJlcXVlc3QS",
+            "DwoHdXNlcl9pZBgBIAEoCRIdChVwaG9uZV9udW1iZXJfdmVyaWZpZWQYAiAB",
+            "KAgSFwoPcmV3YXJkX3JlZGVlbWVkGAMgASgIEhYKDmlzX2tpY2tzdGFydGVy",
+            "GAQgASgIEg0KBWltYWdlGAUgASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgG",
+            "IAEoCBIRCgllbG9fc2NvcmUYByABKAMSFAoMY3VycmVudF90aWVyGAggASgF",
+            "EhwKFGdhbWVfbWVtYmVyc2hpcF90aWVyGAkgASgFIiQKEUdldEFjY291bnRS",
+            "ZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiNAoOR2V0RGVja1JlcXVlc3QSDwoH",
+            "dXNlcl9pZBgBIAEoCRIRCglkZWNrX25hbWUYAiABKAkiJgoPR2V0RGVja1Jl",
+            "c3BvbnNlEhMKBGRlY2sYAiABKAsyBS5EZWNrIjkKEUNyZWF0ZURlY2tSZXF1",
+            "ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRlY2siNwoR",
+            "RGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIRCglkZWNrX25h",
+            "bWUYAiABKAkiNwoPRWRpdERlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkS",
+            "EwoEZGVjaxgCIAEoCzIFLkRlY2siNgoNRGVja3NSZXNwb25zZRIPCgd1c2Vy",
+            "X2lkGAEgASgJEhQKBWRlY2tzGAIgAygLMgUuRGVjayIjChBMaXN0RGVja3NS",
+            "ZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiKQoRTGlzdERlY2tzUmVzcG9uc2US",
+            "FAoFZGVja3MYASADKAsyBS5EZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVl",
+            "c3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzII",
+            "LkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0IikKEExpc3RIZXJvUmVzcG9u",
+            "c2USFQoGaGVyb2VzGAEgAygLMgUuSGVybyInChRHZXRDb2xsZWN0aW9uUmVx",
+            "dWVzdBIPCgd1c2VyX2lkGAEgASgJIjcKFUdldENvbGxlY3Rpb25SZXNwb25z",
+            "ZRIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29tLlVu",
+            "aXR5M2QuWmJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -93,7 +93,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Effect), global::Loom.Unity3d.Zb.Effect.Parser, new[]{ "Trigger", "Effect_", "Duration", "Target", "Limit" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Ability), global::Loom.Unity3d.Zb.Ability.Parser, new[]{ "Type", "ActivityType", "CallType", "TargetType", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardList), global::Loom.Unity3d.Zb.CardList.Parser, new[]{ "Cards" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollection), global::Loom.Unity3d.Zb.CardCollection.Parser, new[]{ "CardId", "Amount" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollection), global::Loom.Unity3d.Zb.CardCollection.Parser, new[]{ "CardName", "Amount" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Hero), global::Loom.Unity3d.Zb.Hero.Parser, new[]{ "HeroId", "Icon", "Name", "Element", "Skills" }, null, null, null),
@@ -721,7 +721,7 @@ namespace Loom.Unity3d.Zb {
       health_ = other.health_;
       cost_ = other.cost_;
       ability_ = other.ability_;
-      cardViewInfo_ = other.cardViewInfo_ != null ? other.cardViewInfo_.Clone() : null;
+      CardViewInfo = other.cardViewInfo_ != null ? other.CardViewInfo.Clone() : null;
       effects_ = other.effects_.Clone();
       abilities_ = other.abilities_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1274,8 +1274,8 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CardViewInfo(CardViewInfo other) : this() {
-      position_ = other.position_ != null ? other.position_.Clone() : null;
-      scale_ = other.scale_ != null ? other.scale_.Clone() : null;
+      Position = other.position_ != null ? other.Position.Clone() : null;
+      Scale = other.scale_ != null ? other.Scale.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2231,7 +2231,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CardCollection(CardCollection other) : this() {
-      cardId_ = other.cardId_;
+      cardName_ = other.cardName_;
       amount_ = other.amount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2241,14 +2241,14 @@ namespace Loom.Unity3d.Zb {
       return new CardCollection(this);
     }
 
-    /// <summary>Field number for the "card_id" field.</summary>
-    public const int CardIdFieldNumber = 1;
-    private long cardId_;
+    /// <summary>Field number for the "card_name" field.</summary>
+    public const int CardNameFieldNumber = 1;
+    private string cardName_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public long CardId {
-      get { return cardId_; }
+    public string CardName {
+      get { return cardName_; }
       set {
-        cardId_ = value;
+        cardName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2276,7 +2276,7 @@ namespace Loom.Unity3d.Zb {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (CardId != other.CardId) return false;
+      if (CardName != other.CardName) return false;
       if (Amount != other.Amount) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2284,7 +2284,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (CardId != 0L) hash ^= CardId.GetHashCode();
+      if (CardName.Length != 0) hash ^= CardName.GetHashCode();
       if (Amount != 0L) hash ^= Amount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2299,9 +2299,9 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (CardId != 0L) {
-        output.WriteRawTag(8);
-        output.WriteInt64(CardId);
+      if (CardName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CardName);
       }
       if (Amount != 0L) {
         output.WriteRawTag(16);
@@ -2315,8 +2315,8 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (CardId != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(CardId);
+      if (CardName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CardName);
       }
       if (Amount != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Amount);
@@ -2332,8 +2332,8 @@ namespace Loom.Unity3d.Zb {
       if (other == null) {
         return;
       }
-      if (other.CardId != 0L) {
-        CardId = other.CardId;
+      if (other.CardName.Length != 0) {
+        CardName = other.CardName;
       }
       if (other.Amount != 0L) {
         Amount = other.Amount;
@@ -2349,8 +2349,8 @@ namespace Loom.Unity3d.Zb {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            CardId = input.ReadInt64();
+          case 10: {
+            CardName = input.ReadString();
             break;
           }
           case 16: {
@@ -4315,7 +4315,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetDeckResponse(GetDeckResponse other) : this() {
-      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      Deck = other.deck_ != null ? other.Deck.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4451,7 +4451,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CreateDeckRequest(CreateDeckRequest other) : this() {
       userId_ = other.userId_;
-      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      Deck = other.deck_ != null ? other.Deck.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4771,7 +4771,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public EditDeckRequest(EditDeckRequest other) : this() {
       userId_ = other.userId_;
-      deck_ = other.deck_ != null ? other.deck_.Clone() : null;
+      Deck = other.deck_ != null ? other.Deck.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
