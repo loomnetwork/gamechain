@@ -296,6 +296,12 @@
                  "amount": 4
                }
              ],
+             "default_heroes": [
+               {
+                 "heroId": 1,
+                 "experience": 0
+               }
+             ],
              "default_decks":[
                 {
                    "heroId":1,
@@ -2581,4 +2587,3 @@
        }
     ]
  }
- 
