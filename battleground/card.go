@@ -7,15 +7,15 @@ import (
 )
 
 func validateDeckCollections(userCollections []*zb.CardCollection, deckCollections []*zb.CardCollection) error {
-	maxAmountMap := make(map[int64]int64)
+	maxAmountMap := make(map[string]int64)
 
 	for _, collection := range userCollections {
-		maxAmountMap[collection.CardId] = collection.Amount
+		maxAmountMap[collection.CardName] = collection.Amount
 	}
 
 	for _, collection := range deckCollections {
-		if maxAmountMap[collection.CardId] < collection.Amount {
-			return fmt.Errorf("you cannot add more than %d for your card id: %d", maxAmountMap[collection.CardId], collection.CardId)
+		if maxAmountMap[collection.CardName] < collection.Amount {
+			return fmt.Errorf("you cannot add more than %d for your card name: %s", maxAmountMap[collection.CardName], collection.CardName)
 		}
 	}
 
