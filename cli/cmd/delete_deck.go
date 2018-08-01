@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/spf13/cobra"
@@ -26,6 +28,7 @@ var deleteDeckCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Printf("deck deleted successfully")
 		return nil
 	},
 }

@@ -20,13 +20,18 @@ var listCardCmd = &cobra.Command{
 		}
 
 		req := zb.ListCardLibraryRequest{}
-		resp := zb.ListCardLibraryResponse{}
+		result := zb.ListCardLibraryResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("ListCardLibrary", &req, callerAddr, &resp)
+		_, err := commonTxObjs.contract.StaticCall("ListCardLibrary", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
-		fmt.Println(resp)
+		fmt.Printf("card library size: %d\n", len(result.Sets))
+		for _, set := range result.Sets {
+			for _, card := range set.Cards {
+				fmt.Printf("card_id: %d, name: %s\n", card.Id, card.Name)
+			}
+		}
 		return nil
 	},
 }
