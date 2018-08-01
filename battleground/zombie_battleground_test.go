@@ -68,26 +68,26 @@ var initRequest = zb.InitRequest{
 			Icon:    "asdasd",
 			Name:    "Golem Hero",
 			Element: 2,
-			Skill: &zb.Skill{
+			Skills: []*zb.Skill{{
 				Title:           "Deffence",
 				SkillType:       4,
 				SkillTargetType: 0,
 				Cost:            2,
 				Value:           2,
-			},
+			}},
 		},
 		{
 			HeroId:  1,
 			Icon:    "asdasd",
 			Name:    "Pyro Hero",
 			Element: 0,
-			Skill: &zb.Skill{
+			Skills: []*zb.Skill{{
 				Title:           "Fireball",
 				SkillType:       2,
 				SkillTargetType: 0,
 				Cost:            2,
 				Value:           1,
-			},
+			}},
 		},
 	},
 	Cards: []*zb.Card{
@@ -107,6 +107,18 @@ var initRequest = zb.InitRequest{
 					Effect:   "feral",
 					Duration: "permanent",
 					Target:   "self",
+				},
+			},
+			CardViewInfo: &zb.CardViewInfo{
+				Position: &zb.Coordinates{
+					X: 1.5,
+					Y: 2.5,
+					Z: 3.5,
+				},
+				Scale: &zb.Coordinates{
+					X: 0.5,
+					Y: 0.5,
+					Z: 0.5,
 				},
 			},
 		},
