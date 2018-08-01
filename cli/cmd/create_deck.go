@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
@@ -33,6 +34,7 @@ var createDeckCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		fmt.Printf("deck created successfully")
 		return nil
 
 	},
