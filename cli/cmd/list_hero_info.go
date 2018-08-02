@@ -36,8 +36,8 @@ var listHeroInfoCmd = &cobra.Command{
 		for _, heroInfo := range result.Heroes {
 			fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
 			fmt.Printf("experience: %d\n", heroInfo.Experience)
-			for _, ability := range heroInfo.Abilities {
-				fmt.Printf("ability_type: %s\n", ability.Type)
+			for _, skill := range heroInfo.Skills {
+				fmt.Printf("skill_title: %s\n", skill.Title)
 			}
 		}
 		return nil
