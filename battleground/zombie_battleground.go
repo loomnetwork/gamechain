@@ -182,8 +182,6 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return err
 	}
 
-	fmt.Println(heroes.Heroes)
-
 	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
 		return err
 	}
@@ -399,7 +397,7 @@ func (z *ZombieBattleground) ListHeroInfo(ctx contract.StaticContext, req *zb.Ge
 	return &zb.GetHeroInfoListResponse{Heroes: heroes.Heroes}, nil
 }
 
-func (z *ZombieBattleground) GetHeroInfo(ctx contract.StaticContext, req *zb.GetHeroInfoRequest) (*zb.HeroInfo, error) {
+func (z *ZombieBattleground) GetHeroInfo(ctx contract.StaticContext, req *zb.GetHeroInfoRequest) (*zb.GetHeroInfoResponse, error) {
 	userKeySpace := NewUserKeySpace(req.UserId)
 	var heroes zb.HeroInfoList
 
@@ -412,7 +410,7 @@ func (z *ZombieBattleground) GetHeroInfo(ctx contract.StaticContext, req *zb.Get
 		return nil, contract.ErrNotFound
 	}
 
-	return hero, nil
+	return &zb.GetHeroInfoResponse{Hero: hero}, nil
 
 }
 
@@ -421,7 +419,7 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	var heroes zb.HeroInfoList
 
 	if req.Experience <= 0 {
-		return nil, fmt.Errorf("Experience needs to be greater than zero.")
+		return nil, fmt.Errorf("experience needs to be greater than zero.")
 	}
 
 	if !isUser(ctx, strings.TrimSpace(req.UserId)) {
