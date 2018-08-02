@@ -14,6 +14,7 @@ var (
 	heroListKey          = []byte("herolist")
 	defaultDeckKey       = []byte("default-deck")
 	defaultCollectionKey = []byte("default-collection")
+	defaultHeroesKey     = []byte("default-heroes")
 )
 
 func cardKey(id int64) []byte {

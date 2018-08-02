@@ -51,6 +51,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if err := ctx.Set(defaultDeckKey, &deckList); err != nil {
 		return err
 	}
+
+	heroInfoList := zb.HeroInfoList{
+		Heroes: req.DefaultHeroes,
+	}
+	if err := ctx.Set(defaultHeroesKey, &heroInfoList); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -131,6 +139,14 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 		return errors.Wrapf(err, "unable to save decks for userId: %s", req.UserId)
 	}
 
+	var heroInfoList zb.HeroInfoList
+	if err := ctx.Get(defaultHeroesKey, &heroInfoList); err != nil {
+		return errors.Wrapf(err, "unable to get default heroinfo")
+	}
+	if err := ctx.Set(userKeySpace.HeroInfoListKey(), &heroInfoList); err != nil {
+		return errors.Wrapf(err, "unable to save heroinfo for userId: %s", req.UserId)
+	}
+
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createaccount")
@@ -158,6 +174,15 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	}
 
 	if err := validateDeckCollections(userCollection.Cards, req.Deck.Cards); err != nil {
+		return err
+	}
+
+	var heroes zb.HeroInfoList
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return err
+	}
+
+	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
 		return err
 	}
 
@@ -210,6 +235,15 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	if err := validateDeckCollections(userCollection.Cards, req.Deck.Cards); err != nil {
 		return err
 	}
+
+	var heroes zb.HeroInfoList
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return err
+	}
+	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
+		return err
+	}
+
 	if err := editDeck(deckList.Decks, req.Deck); err != nil {
 		return err
 	}
@@ -350,6 +384,87 @@ func (z *ZombieBattleground) ListHero(ctx contract.StaticContext, req *zb.ListHe
 	}
 
 	return &zb.ListHeroResponse{Heroes: heroList.Heroes}, nil
+}
+
+func (z *ZombieBattleground) ListHeroInfo(ctx contract.StaticContext, req *zb.GetHeroInfoListRequest) (*zb.GetHeroInfoListResponse, error) {
+	userKeySpace := NewUserKeySpace(req.UserId)
+	var heroes zb.HeroInfoList
+
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return nil, err
+	}
+
+	return &zb.GetHeroInfoListResponse{Heroes: heroes.Heroes}, nil
+}
+
+func (z *ZombieBattleground) GetHeroInfo(ctx contract.StaticContext, req *zb.GetHeroInfoRequest) (*zb.GetHeroInfoResponse, error) {
+	userKeySpace := NewUserKeySpace(req.UserId)
+	var heroes zb.HeroInfoList
+
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return nil, err
+	}
+
+	hero := getHeroInfoById(heroes.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	return &zb.GetHeroInfoResponse{Hero: hero}, nil
+
+}
+
+func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddExperienceRequest) (*zb.AddExperienceResponse, error) {
+	userKeySpace := NewUserKeySpace(req.UserId)
+	var heroes zb.HeroInfoList
+
+	if req.Experience <= 0 {
+		return nil, fmt.Errorf("experience needs to be greater than zero.")
+	}
+
+	if !isUser(ctx, strings.TrimSpace(req.UserId)) {
+		return nil, fmt.Errorf("user is not verified")
+	}
+
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return nil, err
+	}
+
+	hero := getHeroInfoById(heroes.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	hero.Experience += req.Experience
+
+	if err := ctx.Set(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "addHeroExperience")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:addheroexperience")
+	}
+
+	return &zb.AddExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+
+}
+
+func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
+	userKeySpace := NewUserKeySpace(req.UserId)
+	var heroes zb.HeroInfoList
+
+	if err := ctx.Get(userKeySpace.HeroInfoListKey(), &heroes); err != nil {
+		return nil, err
+	}
+
+	hero := getHeroInfoById(heroes.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	return &zb.GetHeroSkillsResponse{HeroId: hero.HeroId, Skills: hero.Skills}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
