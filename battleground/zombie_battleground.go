@@ -464,7 +464,7 @@ func (z *ZombieBattleground) GetHeroAbilities(ctx contract.StaticContext, req *z
 		return nil, contract.ErrNotFound
 	}
 
-	return &zb.GetHeroAbilitiesResponse{Abilities: hero.Abilities}, nil
+	return &zb.GetHeroAbilitiesResponse{HeroId: hero.HeroId, Abilities: hero.Abilities}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})

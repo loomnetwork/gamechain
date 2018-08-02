@@ -134,7 +134,8 @@ message GetHeroAbilitiesRequest {
 }
 
 message GetHeroAbilitiesResponse {
-    repeated Ability abilities = 1;
+    int64 hero_id = 1;
+    repeated Ability abilities = 2;
 }
 
 
