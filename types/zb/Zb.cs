@@ -63,37 +63,38 @@ namespace Loom.Unity3d.Zb {
             "AxISCgpleHBlcmllbmNlGAIgASgDIjYKEkdldEhlcm9JbmZvUmVxdWVzdBIP",
             "Cgd1c2VyX2lkGAEgASgJEg8KB2hlcm9faWQYAiABKAMiOwoXR2V0SGVyb0Fi",
             "aWxpdGllc1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIPCgdoZXJvX2lkGAIg",
-            "ASgDIjcKGEdldEhlcm9BYmlsaXRpZXNSZXNwb25zZRIbCglhYmlsaXRpZXMY",
-            "ASADKAsyCC5BYmlsaXR5Il8KBVNraWxsEg0KBXRpdGxlGAEgASgJEhEKCXNr",
-            "aWxsVHlwZRgCIAEoBRIXCg9za2lsbFRhcmdldFR5cGUYAyABKAUSDAoEY29z",
-            "dBgEIAEoBRINCgV2YWx1ZRgFIAEoBSIhCghIZXJvTGlzdBIVCgZoZXJvZXMY",
-            "ASADKAsyBS5IZXJvIjQKEkNhcmRDb2xsZWN0aW9uTGlzdBIeCgVjYXJkcxgB",
-            "IAMoCzIPLkNhcmRDb2xsZWN0aW9uIiAKCERlY2tMaXN0EhQKBWRlY2tzGAEg",
-            "AygLMgUuRGVjayKoAQoLSW5pdFJlcXVlc3QSHAoNZGVmYXVsdF9kZWNrcxgB",
-            "IAMoCzIFLkRlY2sSKwoSZGVmYXVsdF9jb2xsZWN0aW9uGAIgAygLMg8uQ2Fy",
-            "ZENvbGxlY3Rpb24SIQoOZGVmYXVsdF9oZXJvZXMYAyADKAsyCS5IZXJvSW5m",
-            "bxIUCgVjYXJkcxgEIAMoCzIFLkNhcmQSFQoGaGVyb2VzGAUgAygLMgUuSGVy",
-            "byLpAQoUVXBzZXJ0QWNjb3VudFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRId",
-            "ChVwaG9uZV9udW1iZXJfdmVyaWZpZWQYAiABKAgSFwoPcmV3YXJkX3JlZGVl",
-            "bWVkGAMgASgIEhYKDmlzX2tpY2tzdGFydGVyGAQgASgIEg0KBWltYWdlGAUg",
-            "ASgJEhoKEmVtYWlsX25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2NvcmUY",
-            "ByABKAMSFAoMY3VycmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVyc2hp",
-            "cF90aWVyGAkgASgFIiQKEUdldEFjY291bnRSZXF1ZXN0Eg8KB3VzZXJfaWQY",
-            "ASABKAkiNAoOR2V0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIRCglk",
-            "ZWNrX25hbWUYAiABKAkiJgoPR2V0RGVja1Jlc3BvbnNlEhMKBGRlY2sYAiAB",
-            "KAsyBS5EZWNrIjkKEUNyZWF0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASAB",
-            "KAkSEwoEZGVjaxgCIAEoCzIFLkRlY2siNwoRRGVsZXRlRGVja1JlcXVlc3QS",
-            "DwoHdXNlcl9pZBgBIAEoCRIRCglkZWNrX25hbWUYAiABKAkiNwoPRWRpdERl",
-            "Y2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRl",
-            "Y2siNgoNRGVja3NSZXNwb25zZRIPCgd1c2VyX2lkGAEgASgJEhQKBWRlY2tz",
-            "GAIgAygLMgUuRGVjayIjChBMaXN0RGVja3NSZXF1ZXN0Eg8KB3VzZXJfaWQY",
-            "ASABKAkiKQoRTGlzdERlY2tzUmVzcG9uc2USFAoFZGVja3MYASADKAsyBS5E",
-            "ZWNrIhgKFkxpc3RDYXJkTGlicmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJy",
-            "YXJ5UmVzcG9uc2USFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhl",
-            "cm9SZXF1ZXN0IikKEExpc3RIZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygL",
-            "MgUuSGVybyInChRHZXRDb2xsZWN0aW9uUmVxdWVzdBIPCgd1c2VyX2lkGAEg",
-            "ASgJIjcKFUdldENvbGxlY3Rpb25SZXNwb25zZRIeCgVjYXJkcxgBIAMoCzIP",
-            "LkNhcmRDb2xsZWN0aW9uQhKqAg9Mb29tLlVuaXR5M2QuWmJiBnByb3RvMw=="));
+            "ASgDIkgKGEdldEhlcm9BYmlsaXRpZXNSZXNwb25zZRIPCgdoZXJvX2lkGAEg",
+            "ASgDEhsKCWFiaWxpdGllcxgCIAMoCzIILkFiaWxpdHkiXwoFU2tpbGwSDQoF",
+            "dGl0bGUYASABKAkSEQoJc2tpbGxUeXBlGAIgASgFEhcKD3NraWxsVGFyZ2V0",
+            "VHlwZRgDIAEoBRIMCgRjb3N0GAQgASgFEg0KBXZhbHVlGAUgASgFIiEKCEhl",
+            "cm9MaXN0EhUKBmhlcm9lcxgBIAMoCzIFLkhlcm8iNAoSQ2FyZENvbGxlY3Rp",
+            "b25MaXN0Eh4KBWNhcmRzGAEgAygLMg8uQ2FyZENvbGxlY3Rpb24iIAoIRGVj",
+            "a0xpc3QSFAoFZGVja3MYASADKAsyBS5EZWNrIqgBCgtJbml0UmVxdWVzdBIc",
+            "Cg1kZWZhdWx0X2RlY2tzGAEgAygLMgUuRGVjaxIrChJkZWZhdWx0X2NvbGxl",
+            "Y3Rpb24YAiADKAsyDy5DYXJkQ29sbGVjdGlvbhIhCg5kZWZhdWx0X2hlcm9l",
+            "cxgDIAMoCzIJLkhlcm9JbmZvEhQKBWNhcmRzGAQgAygLMgUuQ2FyZBIVCgZo",
+            "ZXJvZXMYBSADKAsyBS5IZXJvIukBChRVcHNlcnRBY2NvdW50UmVxdWVzdBIP",
+            "Cgd1c2VyX2lkGAEgASgJEh0KFXBob25lX251bWJlcl92ZXJpZmllZBgCIAEo",
+            "CBIXCg9yZXdhcmRfcmVkZWVtZWQYAyABKAgSFgoOaXNfa2lja3N0YXJ0ZXIY",
+            "BCABKAgSDQoFaW1hZ2UYBSABKAkSGgoSZW1haWxfbm90aWZpY2F0aW9uGAYg",
+            "ASgIEhEKCWVsb19zY29yZRgHIAEoAxIUCgxjdXJyZW50X3RpZXIYCCABKAUS",
+            "HAoUZ2FtZV9tZW1iZXJzaGlwX3RpZXIYCSABKAUiJAoRR2V0QWNjb3VudFJl",
+            "cXVlc3QSDwoHdXNlcl9pZBgBIAEoCSI0Cg5HZXREZWNrUmVxdWVzdBIPCgd1",
+            "c2VyX2lkGAEgASgJEhEKCWRlY2tfbmFtZRgCIAEoCSImCg9HZXREZWNrUmVz",
+            "cG9uc2USEwoEZGVjaxgCIAEoCzIFLkRlY2siOQoRQ3JlYXRlRGVja1JlcXVl",
+            "c3QSDwoHdXNlcl9pZBgBIAEoCRITCgRkZWNrGAIgASgLMgUuRGVjayI3ChFE",
+            "ZWxldGVEZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhEKCWRlY2tfbmFt",
+            "ZRgCIAEoCSI3Cg9FZGl0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIT",
+            "CgRkZWNrGAIgASgLMgUuRGVjayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJf",
+            "aWQYASABKAkSFAoFZGVja3MYAiADKAsyBS5EZWNrIiMKEExpc3REZWNrc1Jl",
+            "cXVlc3QSDwoHdXNlcl9pZBgBIAEoCSIpChFMaXN0RGVja3NSZXNwb25zZRIU",
+            "CgVkZWNrcxgBIAMoCzIFLkRlY2siGAoWTGlzdENhcmRMaWJyYXJ5UmVxdWVz",
+            "dCIxChdMaXN0Q2FyZExpYnJhcnlSZXNwb25zZRIWCgRzZXRzGAEgAygLMggu",
+            "Q2FyZFNldCIRCg9MaXN0SGVyb1JlcXVlc3QiKQoQTGlzdEhlcm9SZXNwb25z",
+            "ZRIVCgZoZXJvZXMYASADKAsyBS5IZXJvIicKFEdldENvbGxlY3Rpb25SZXF1",
+            "ZXN0Eg8KB3VzZXJfaWQYASABKAkiNwoVR2V0Q29sbGVjdGlvblJlc3BvbnNl",
+            "Eh4KBWNhcmRzGAEgAygLMg8uQ2FyZENvbGxlY3Rpb25CEqoCD0xvb20uVW5p",
+            "dHkzZC5aYmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -117,7 +118,7 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddExperienceResponse), global::Loom.Unity3d.Zb.AddExperienceResponse.Parser, new[]{ "HeroId", "Experience" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroInfoRequest), global::Loom.Unity3d.Zb.GetHeroInfoRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroAbilitiesRequest), global::Loom.Unity3d.Zb.GetHeroAbilitiesRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse), global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse.Parser, new[]{ "Abilities" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse), global::Loom.Unity3d.Zb.GetHeroAbilitiesResponse.Parser, new[]{ "HeroId", "Abilities" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Skill), global::Loom.Unity3d.Zb.Skill.Parser, new[]{ "Title", "SkillType", "SkillTargetType", "Cost", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.HeroList), global::Loom.Unity3d.Zb.HeroList.Parser, new[]{ "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardCollectionList), global::Loom.Unity3d.Zb.CardCollectionList.Parser, new[]{ "Cards" }, null, null, null),
@@ -4116,6 +4117,7 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetHeroAbilitiesResponse(GetHeroAbilitiesResponse other) : this() {
+      heroId_ = other.heroId_;
       abilities_ = other.abilities_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -4125,10 +4127,21 @@ namespace Loom.Unity3d.Zb {
       return new GetHeroAbilitiesResponse(this);
     }
 
+    /// <summary>Field number for the "hero_id" field.</summary>
+    public const int HeroIdFieldNumber = 1;
+    private long heroId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long HeroId {
+      get { return heroId_; }
+      set {
+        heroId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "abilities" field.</summary>
-    public const int AbilitiesFieldNumber = 1;
+    public const int AbilitiesFieldNumber = 2;
     private static readonly pb::FieldCodec<global::Loom.Unity3d.Zb.Ability> _repeated_abilities_codec
-        = pb::FieldCodec.ForMessage(10, global::Loom.Unity3d.Zb.Ability.Parser);
+        = pb::FieldCodec.ForMessage(18, global::Loom.Unity3d.Zb.Ability.Parser);
     private readonly pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> abilities_ = new pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Loom.Unity3d.Zb.Ability> Abilities {
@@ -4148,6 +4161,7 @@ namespace Loom.Unity3d.Zb {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (HeroId != other.HeroId) return false;
       if(!abilities_.Equals(other.abilities_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -4155,6 +4169,7 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (HeroId != 0L) hash ^= HeroId.GetHashCode();
       hash ^= abilities_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -4169,6 +4184,10 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+      if (HeroId != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(HeroId);
+      }
       abilities_.WriteTo(output, _repeated_abilities_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -4178,6 +4197,9 @@ namespace Loom.Unity3d.Zb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (HeroId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(HeroId);
+      }
       size += abilities_.CalculateSize(_repeated_abilities_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4189,6 +4211,9 @@ namespace Loom.Unity3d.Zb {
     public void MergeFrom(GetHeroAbilitiesResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.HeroId != 0L) {
+        HeroId = other.HeroId;
       }
       abilities_.Add(other.abilities_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4202,7 +4227,11 @@ namespace Loom.Unity3d.Zb {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
+          case 8: {
+            HeroId = input.ReadInt64();
+            break;
+          }
+          case 18: {
             abilities_.AddEntriesFrom(input, _repeated_abilities_codec);
             break;
           }
