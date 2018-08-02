@@ -22,6 +22,6 @@ func validateDeckHero(heroInfoList []*zb.HeroInfo, deckHero int64) error {
 		}
 	}
 
-	return fmt.Errorf("HeroId is invalid")
+	return fmt.Errorf("Hero: %d cannot be part of deck, since it is not owned by User.", deckHero)
 
 }
