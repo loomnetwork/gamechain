@@ -28,17 +28,17 @@ var getHeroInfoCmd = &cobra.Command{
 			UserId: getHeroInfoCmdArgs.userID,
 			HeroId: getHeroInfoCmdArgs.heroID,
 		}
-		result := zb.HeroInfo{}
+		result := zb.GetHeroInfoResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetHeroInfo", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
 
-		fmt.Printf("hero_id: %d\n", result.HeroId)
-		fmt.Printf("experience: %d\n", result.Experience)
-		fmt.Printf("level: %d\n", result.Level)
-		for _, skill := range result.Skills {
+		fmt.Printf("hero_id: %d\n", result.Hero.HeroId)
+		fmt.Printf("experience: %d\n", result.Hero.Experience)
+		fmt.Printf("level: %d\n", result.Hero.Level)
+		for _, skill := range result.Hero.Skills {
 			fmt.Printf("skill_title: %s\n", skill.Title)
 		}
 		return nil
