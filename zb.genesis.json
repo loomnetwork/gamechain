@@ -298,13 +298,51 @@
         ],
         "default_heroes": [
           {
+            "heroId": 0,
+            "experience": 0,
+            "level": 1,
+            "skills": [
+              {
+                "title": "Deffence",
+                "skillType": 4,
+                "skillTargetType": 0,
+                "cost": 2,
+                "value": 2
+              }
+            ]
+          },
+          {
             "heroId": 1,
-            "experience": 0
+            "experience": 0,
+            "level": 1,
+            "skills": [
+              {
+                "title": "Fireball",
+                "skillType": 2,
+                "skillTargetType": 0,
+                "cost": 2,
+                "value": 1
+              }
+            ]
+          },
+          {
+            "heroId": 2,
+            "experience": 2,
+            "level": 3,
+            "skills": [
+              {
+                "title": "Freeze target for 1 turn",
+                "skillType": 0,
+                "skillTargetType": 0,
+                "cost": 2,
+                "value": 1
+              }
+            ]
           }
         ],
         "default_decks": [
           {
-            "heroId": 4,
+            "heroId": 0,
             "name": "Default",
             "cards": [
               {
@@ -363,91 +401,37 @@
             "heroId": 0,
             "icon": "asdasd",
             "name": "Golem Hero",
-            "element": 2,
-            "skills": [
-              {
-                "title": "Deffence",
-                "skillType": 4,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 2
-              }
-            ]
+            "element": 2
           },
           {
             "heroId": 1,
             "icon": "asdasd",
             "name": "Pyro Hero",
-            "element": 0,
-            "skills": [
-              {
-                "title": "Fireball",
-                "skillType": 2,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 1
-              }
-            ]
+            "element": 0
           },
           {
             "heroId": 2,
             "icon": "asdasd",
             "name": "Water Hero",
-            "element": 1,
-            "skills": [
-              {
-                "title": "Freeze target for 1 turn",
-                "skillType": 0,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 1
-              }
-            ]
+            "element": 1
           },
           {
             "heroId": 3,
             "icon": "asdasd",
             "name": "Air Hero",
-            "element": 3,
-            "skills": [
-              {
-                "title": "Return Zombie",
-                "skillType": 5,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 0
-              }
-            ]
+            "element": 3
           },
           {
             "heroId": 4,
             "icon": "asdasd",
             "name": "Toxic Hero",
-            "element": 5,
-            "skills": [
-              {
-                "title": "Toxic Damage",
-                "skillType": 1,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 1
-              }
-            ]
+            "element": 5
           },
           {
             "heroId": 5,
             "icon": "asdasd",
             "name": "Life Hero",
-            "element": 4,
-            "skills": [
-              {
-                "title": "Healing",
-                "skillType": 3,
-                "skillTargetType": 0,
-                "cost": 2,
-                "value": 2
-              }
-            ]
+            "element": 4
           }
         ],
         "cards": [
