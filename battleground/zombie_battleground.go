@@ -182,6 +182,8 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return err
 	}
 
+	fmt.Println(heroes.Heroes)
+
 	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
 		return err
 	}
@@ -451,7 +453,7 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 
 }
 
-func (z *ZombieBattleground) GetHeroAbilities(ctx contract.StaticContext, req *zb.GetHeroAbilitiesRequest) (*zb.GetHeroAbilitiesResponse, error) {
+func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
 	userKeySpace := NewUserKeySpace(req.UserId)
 	var heroes zb.HeroInfoList
 
@@ -464,7 +466,7 @@ func (z *ZombieBattleground) GetHeroAbilities(ctx contract.StaticContext, req *z
 		return nil, contract.ErrNotFound
 	}
 
-	return &zb.GetHeroAbilitiesResponse{HeroId: hero.HeroId, Abilities: hero.Abilities}, nil
+	return &zb.GetHeroSkillsResponse{HeroId: hero.HeroId, Skills: hero.Skills}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
