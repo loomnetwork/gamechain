@@ -91,8 +91,58 @@ message Hero {
     string icon             = 2;
     string name             = 3;
     int32 element           = 4;
-    repeated Skill skills   = 5;
 }
+
+message HeroInfo {
+    int64 hero_id = 1;
+    int64 experience = 2;
+    int64 level = 3;
+    repeated Skill skills = 4;
+}
+
+message HeroInfoList {
+    repeated HeroInfo heroes = 1;
+}
+
+message GetHeroInfoListRequest {
+    string user_id = 1;
+}
+
+message GetHeroInfoListResponse {
+    repeated HeroInfo heroes = 1;
+}
+
+message AddExperienceRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+    int64 experience = 3;
+}
+
+message AddExperienceResponse {
+    int64 hero_id = 1;
+    int64 experience = 2;
+}
+
+message GetHeroInfoRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+}
+
+message GetHeroInfoResponse {
+    HeroInfo hero = 1;
+}
+
+message GetHeroSkillsRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+}
+
+message GetHeroSkillsResponse {
+    int64 hero_id = 1;
+    repeated Skill skills = 2;
+}
+
+
 
 message Skill {
     string title          = 1;
@@ -119,8 +169,9 @@ message DeckList {
 message InitRequest {
     repeated Deck default_decks                = 1;
     repeated CardCollection default_collection = 2;
-    repeated Card cards                        = 3;
-    repeated Hero heroes                       = 4;
+    repeated HeroInfo default_heroes           = 3;
+    repeated Card cards                        = 4;
+    repeated Hero heroes                       = 5;
 }
 
 message UpsertAccountRequest {
