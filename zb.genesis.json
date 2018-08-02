@@ -8,6 +8,10 @@
       "init": {
         "default_collection": [
           {
+            "card_name": "Quazi",
+            "amount": 4
+          },
+          {
             "card_name": "Banshee",
             "amount": 4
           },
@@ -446,2147 +450,1446 @@
         ],
         "cards": [
           {
-            "id": 1,
-            "element": "Air",
-            "name": "Banshee",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 2,
+            "kind": "CREATURE",
+            "name": "Pyromaz",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
+            "flavorText": "He's really into that old Prodigy song... Firestarter...",
+            "picture": "Pyromaz",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
             "health": 1,
-            "cost": 2,
-            "ability": "Feral",
-            "effects": [
+            "cost": 1,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "feral",
-                "duration": "permanent",
-                "target": "self"
+                "type": "MODIFICATOR_STATS",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "kind": "CREATURE",
+            "name": "Quazi",
+            "description": "\u003cb\u003eFeral\u003c/b\u003e, \u003cb\u003eOverflow\u003c/b\u003e 2, \u003cb\u003eEnd:\u003c/b\u003e deal 2 damage to this and adjecent zombies",
+            "picture": "embryo",
+            "rank": "MINION",
+            "type": "FERAL",
+            "health": 1,
+            "cost": 1,
+            "abilities": [
+              {
+                "type": "OVERFLOW_GOO",
+                "value": 2
+              },
+              {
+                "type": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
+                "value": 2
               }
             ]
           },
           {
             "id": 2,
-            "element": "Air",
-            "name": "Breezee",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "-",
-            "effects": [
-              {
-                "trigger": "death",
-                "effect": "attack_strength_buff",
-                "target": "friendly_selectable"
-              }
-            ]
+            "kind": "CREATURE",
+            "name": "Burrrnn",
+            "description": "\u003cb\u003eFeral\u003c/b\u003e",
+            "flavorText": "So he likes all the pretty bright colors, can you blame him?",
+            "picture": "Burrrnn",
+            "rank": "OFFICER",
+            "type": "FERAL",
+            "damage": 2,
+            "health": 2,
+            "cost": 3
           },
           {
             "id": 3,
-            "element": "Air",
-            "name": "Buffer",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Death: Give a friendly zombie +1 Attack",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Cynderman",
+            "description": "\u003cb\u003eEnter:\u003c/b\u003e 2 damage to a zombie",
+            "flavorText": "Hot, so very hot - all the time!",
+            "picture": "cynderman",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 3,
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "draw_card(x)"
+                "type": "DAMAGE_TARGET",
+                "value": 2
               }
             ]
           },
           {
             "id": 4,
-            "element": "Air",
-            "name": "Soothsayer",
-            "rank": "Minion",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Werezomb",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: A friendly zombie gets Feral",
+            "flavorText": "HOOOOOWWHOOO--UCH",
+            "picture": "Werezomb",
+            "rank": "OFFICER",
+            "type": "WALKER",
             "damage": 1,
             "health": 1,
-            "cost": 2,
-            "ability": "Entry: Draw a card.",
-            "effects": [
+            "cost": 3,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "lower_goo_cost",
-                "target": "friendly_random"
+                "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT"
               }
             ]
           },
           {
             "id": 5,
-            "element": "Air",
-            "name": "Wheezy",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
+            "kind": "CREATURE",
+            "name": "Modo",
+            "description": "\u003cb\u003eFeral\u003c/b\u003e, \u003cb\u003eOverflow\u003c/b\u003e 5, \u003cb\u003eEnd:\u003c/b\u003e deal 4 damage to this and adjacent zombies",
+            "flavorText": "Hot, so very hot - all the time!",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "FERAL",
+            "damage": 2,
             "health": 2,
-            "cost": 2,
-            "ability": "Enter: Lower the goo cost of a random card in your hand by 1.",
-            "effects": [
+            "cost": 3,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "return_to_hand",
-                "target": "friendly_selectable"
+                "type": "OVERFLOW_GOO",
+                "value": 5
+              },
+              {
+                "type": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
+                "value": 4
               }
             ]
           },
           {
             "id": 6,
-            "element": "Air",
-            "name": "Whiffer",
-            "rank": "Minion",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Fire-Maw",
+            "description": "\u003cb\u003eFeral, Flash\u003c/b\u003e",
+            "picture": "fire-maw",
+            "rank": "COMMANDER",
+            "type": "FERAL",
             "damage": 3,
-            "health": 2,
-            "cost": 2,
-            "ability": "Entry: Return a friendly zombie to your hand.",
-            "effects": [
+            "health": 3,
+            "cost": 5,
+            "abilities": [
               {
-                "trigger": "post_turn(x)",
-                "effect": "attack_strength_buff(x)",
-                "target": "self"
+                "type": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
+                "value": 2
               }
             ]
           },
           {
             "id": 7,
-            "element": "Air",
-            "name": "Whizpar",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Feral"
+            "kind": "CREATURE",
+            "name": "Zhampion",
+            "description": "\u003cb\u003eFeral, Entry:\u003c/b\u003e Spawn a two 1/1 enemy Pyromaz zombies ",
+            "picture": "Zhampion",
+            "rank": "COMMANDER",
+            "type": "FERAL",
+            "damage": 5,
+            "health": 2,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "SUMMON"
+              }
+            ]
           },
           {
             "id": 8,
-            "element": "Air",
-            "name": "Zhocker",
-            "rank": "Minion",
-            "type": "Walker",
-            "health": 2,
-            "cost": 1,
-            "ability": "Becomes 2/2 at the end of your turn."
+            "kind": "CREATURE",
+            "name": "Gargantua",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damageto all enemies",
+            "flavorText": "(sing) Under pressure... coming down on you...",
+            "picture": "Gargantua",
+            "rank": "GENERAL",
+            "type": "HEAVY",
+            "damage": 6,
+            "health": 8,
+            "cost": 11,
+            "abilities": [
+              {
+                "type": "MASSIVE_DAMAGE",
+                "value": 2
+              }
+            ]
           },
           {
             "id": 9,
-            "element": "Air",
-            "name": "Bouncer",
-            "rank": "Officer",
-            "type": "Heavy",
-            "damage": 2,
-            "health": 3,
-            "cost": 4,
-            "ability": "Heavy",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Cerberus",
+            "description": "\u003cb\u003eFeral, Flash x2\u003c/b\u003e",
+            "flavorText": "If you look closely enough, the one in the middle is the most good looking... er, least bad looking",
+            "picture": "Cerberus",
+            "rank": "GENERAL",
+            "type": "FERAL",
+            "damage": 8,
+            "health": 8,
+            "cost": 12,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "set_heavy",
-                "target": "self"
+                "type": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
+                "value": 3
               }
             ]
           },
           {
             "id": 10,
-            "element": "Air",
-            "name": "Dragger",
-            "rank": "Officer",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Izze",
+            "description": "\u003cb\u003eAttack: Freeze\u003c/b\u003e target",
+            "flavorText": "It would be a-lot Izzier if you just stay put!",
+            "picture": "Izze",
+            "rank": "MINION",
+            "type": "WALKER",
             "damage": 1,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Summon a zombie from your hand that costs 2 Goo or less.",
-            "effects": [
+            "health": 1,
+            "cost": 1,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "summon_zombie",
-                "target": "friendly_hand"
+                "type": "STUN",
+                "value": 1
               }
             ]
           },
           {
             "id": 11,
-            "element": "Air",
-            "name": "Guzt",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 3,
-            "ability": "When this takes damage and does not die, return it to your hand.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Znowman",
+            "description": "\u003cb\u003eHeavy\u003c/b\u003e, enemies that attack this become \u003cb\u003eFrozen\u003c/b\u003e",
+            "flavorText": "This guy won't let you go",
+            "picture": "Znowman",
+            "rank": "MINION",
+            "type": "HEAVY",
+            "health": 5,
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "on_attacked",
-                "effect": "return_to_hand",
-                "target": "self"
+                "type": "ENEMY_THAT_ATTACKS_BECOME_FROZEN"
               }
             ]
           },
           {
             "id": 12,
-            "element": "Air",
-            "name": "Pushhh",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 3,
-            "ability": "Entry: Return a zombie to hand"
+            "kind": "CREATURE",
+            "name": "Ozmoziz",
+            "description": "\u003cb\u003eEntry: Freeze\u003c/b\u003e a random ally, add \u003cb\u003eTainted Goo\u003c/b\u003e to your Hand",
+            "picture": "embryo",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 2,
+            "cost": 2,
+            "abilities": [
+              {
+                "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
+                "value": 1
+              },
+              {
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
+              }
+            ]
           },
           {
             "id": 13,
-            "element": "Air",
-            "name": "Two-rnado",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 6,
-            "cost": 5,
-            "ability": "Entry: Draw 2 cards."
-          },
-          {
-            "id": 14,
-            "element": "Air",
-            "name": "Zephyr",
-            "rank": "Officer",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Jetter",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e 1 damage to a zombie.",
+            "flavorText": "Most welcomed during hot summer days on the busy city streets",
+            "picture": "Jetter",
+            "rank": "OFFICER",
+            "type": "WALKER",
             "damage": 3,
             "health": 3,
             "cost": 4,
-            "ability": "Costs 1 Goo less for each Air zombie you have in play.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "pre_entry",
-                "effect": "reduce_goo_cost(x)",
-                "target": "self"
+                "type": "DAMAGE_TARGET",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "id": 14,
+            "kind": "CREATURE",
+            "name": "Freezzee",
+            "description": "\u003cb\u003eEntry: Freeze\u003c/b\u003e zombie and adjecent zombies, 2 damage if Frozen",
+            "flavorText": "How he loves decorating with ice sculptures... Everywhere!",
+            "picture": "Freezzee",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 3,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "STUN_OR_DAMAGE_ADJUSTMENTS",
+                "value": 2
               }
             ]
           },
           {
             "id": 15,
-            "element": "Air",
-            "name": "Draft",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 5,
-            "cost": 5,
-            "ability": "Entry: Draw a card from the enemy deck. (This removes the card form his deck.)",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Geyzer",
+            "description": "\u003cb\u003eEntry: Freeze\u003c/b\u003e 2 random allies, add \u003cb\u003eCorrupted Goo\u003c/b\u003e to your Hand",
+            "flavorText": "How he loves decorating with ice sculptures... Everywhere!",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 3,
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "draw_card",
-                "target": "enemy_hand"
+                "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
+                "value": 2
+              },
+              {
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
               }
             ]
           },
           {
             "id": 16,
-            "element": "Air",
-            "name": "MonZoon",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 6,
-            "health": 6,
-            "cost": 9,
-            "ability": "Costs 1 Goo less for each Air zombie in your hand."
+            "kind": "CREATURE",
+            "name": "Blizzard",
+            "description": "\u003cb\u003eEntry: Freeze\u003c/b\u003e all enemy zombies",
+            "picture": "Blizzard",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 3,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "FREEZE_UNITS",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 17,
-            "element": "Air",
-            "name": "Stormmcaller",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 5,
-            "cost": 6,
-            "ability": "Entry: damage 1 to 3 adjacent cards",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Froztbite",
+            "description": "\u003cb\u003eDelayed\u003c/b\u003e 1: +6 Atk",
+            "picture": "Froztbite",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "health": 6,
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "deal_damage",
-                "target": "adjacent"
+                "type": "DELAYED_GAIN_ATTACK",
+                "value": 6
               }
             ]
           },
           {
             "id": 18,
-            "element": "Air",
-            "name": "Zyclone",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 6,
-            "ability": "Entry: Return all other zombies in the battleground.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Zhatterer",
+            "description": "\u003cb\u003eEntry: Destroy\u003c/b\u003e a \u003cb\u003eFrozen\u003c/b\u003e zombie",
+            "flavorText": "Now where do you suppose it got that ice pick?",
+            "picture": "Zhatterer",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 3,
+            "cost": 5,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "return_to_hand",
-                "target": "all_except_self"
+                "type": "DESTROY_FROZEN_UNIT"
               }
             ]
           },
           {
             "id": 19,
-            "element": "Air",
-            "name": "Mind Flayer",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 5,
-            "health": 5,
-            "cost": 6,
-            "ability": "Entry: Select an enemy zombie to join your forces",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Maelstrom",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Return all zombies into their owners' decks",
+            "picture": "Maelstrom",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 8,
+            "health": 8,
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "summon_enemy_zombie",
-                "target": "enemy_random"
+                "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_DECKS"
               }
             ]
           },
           {
             "id": 20,
-            "element": "Air",
-            "name": "ZeuZ",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 8,
+            "kind": "CREATURE",
+            "name": "Tzunamy",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to all enemies, then Freeze them",
+            "flavorText": "Bringing a nice, big shower, cleaning an entire city at a time.",
+            "picture": "Tzunamy",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 6,
             "health": 7,
-            "cost": 10,
-            "ability": "Entry: Damage 3 all enemy zombies",
-            "effects": [
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "deal_damage",
-                "target": "enemy_all"
+                "type": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
+                "value": 2
               }
             ]
           },
           {
             "id": 21,
-            "element": "Earth",
-            "name": "Blocker",
-            "rank": "Minion",
-            "type": "Heavy",
-            "health": 3,
+            "kind": "CREATURE",
+            "name": "Rockky",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Water zombies",
+            "flavorText": "Addriaaannn!!! Addriaaaaaannnnn!!!",
+            "picture": "Rockky",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
             "cost": 1,
-            "ability": "Heavy"
+            "abilities": [
+              {
+                "type": "MODIFICATOR_STATS",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 22,
-            "element": "Earth",
-            "name": "Crumbz",
-            "rank": "Minion",
-            "type": "Heavy",
+            "kind": "CREATURE",
+            "name": "Bolderr",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a zombie",
+            "flavorText": "One more step, just one more step!",
+            "picture": "Bolderr",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 1,
             "health": 2,
-            "cost": 2,
-            "ability": "Heavy, Death: Draw a card.",
-            "effects": [
+            "cost": 3,
+            "abilities": [
               {
-                "trigger": "death",
-                "effect": "draw_card"
+                "type": "DAMAGE_TARGET",
+                "value": 1
               }
             ]
           },
           {
             "id": 23,
-            "element": "Earth",
-            "name": "Hardy",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 3,
+            "kind": "CREATURE",
+            "name": "Blocker",
+            "description": "\u003cb\u003eHeavy\u003c/b\u003e",
+            "flavorText": "Zzzzzz",
+            "picture": "Blocker",
+            "rank": "MINION",
+            "type": "HEAVY",
             "health": 3,
-            "cost": 3,
-            "ability": "Heavy"
+            "cost": 1
           },
           {
             "id": 24,
-            "element": "Earth",
-            "name": "Pebble",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "Entry: Deal 1 damage to an enemy zombie with 2 Defense or higher.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "deal_damage",
-                "target": "enemy_selectable"
-              }
-            ]
+            "kind": "CREATURE",
+            "name": "Slab",
+            "picture": "Slab",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 4,
+            "cost": 3
           },
           {
             "id": 25,
-            "element": "Earth",
-            "name": "Protector",
-            "rank": "Minion",
-            "type": "Heavy",
-            "damage": 1,
+            "kind": "CREATURE",
+            "name": "Pit",
+            "description": "\u003cb\u003eHeavy, Entry\u003c/b\u003e: Add a Tainted Goo to your Hand",
+            "picture": "embryo",
+            "rank": "MINION",
+            "type": "HEAVY",
             "health": 2,
-            "cost": 2,
-            "ability": "Heavy, Death: Give a random friendly zombie Heavy  ",
-            "effects": [
+            "cost": 1,
+            "abilities": [
               {
-                "trigger": "death",
-                "effect": "set_heavy",
-                "target": "friendly_random"
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
               }
             ]
           },
           {
             "id": 26,
-            "element": "Earth",
-            "name": "Rockky",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "Attack: 1 additional damage for water zombies",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Golem",
+            "description": "\u003cb\u003eHeavy\u003c/b\u003e",
+            "flavorText": "mmMMWhaaaaat?",
+            "picture": "Golem",
+            "rank": "OFFICER",
+            "type": "HEAVY",
+            "damage": 2,
+            "health": 6,
+            "cost": 4
+          },
+          {
+            "id": 27,
+            "kind": "CREATURE",
+            "name": "Walley",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e Adjacent zombies get Heavy",
+            "picture": "Walley",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 2,
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "pre_attack",
-                "effect": "attack_strength_boost",
-                "duration": "one_move",
-                "target": "self"
+                "type": "ADJACENT_UNITS_GET_HEAVY"
               }
             ]
           },
           {
-            "id": 27,
-            "element": "Earth",
-            "name": "Shale",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 2,
-            "health": 3,
-            "cost": 3,
-            "ability": "Feral"
-          },
-          {
             "id": 28,
-            "element": "Earth",
-            "name": "Slab",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 3,
-            "health": 4,
-            "cost": 3,
-            "ability": "-"
+            "kind": "CREATURE",
+            "name": "Tiny",
+            "description": "\u003cb\u003eHeavy\u003c/b\u003e",
+            "flavorText": "Znorlax, is that you?",
+            "picture": "Tiny",
+            "rank": "OFFICER",
+            "type": "HEAVY",
+            "health": 7,
+            "cost": 4
           },
           {
             "id": 29,
-            "element": "Earth",
-            "name": "Defender",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
+            "kind": "CREATURE",
+            "name": "Spiker",
+            "description": "\u003cb\u003eHeavy, Attack:\u003c/b\u003e +1 damage to \u003cb\u003eHeavy\u003c/b\u003e zombies",
+            "flavorText": "As long as the shell isn't blue, I don't think anybody will be upset",
+            "picture": "Spiker",
+            "rank": "OFFICER",
+            "type": "HEAVY",
+            "damage": 2,
             "health": 3,
-            "cost": 4,
-            "ability": "Death: Give a random friendly zombie +2 Defense."
+            "cost": 3,
+            "abilities": [
+              {
+                "type": "ADDITIONAL_DAMAGE_TO_HEAVY_IN_ATTACK",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 30,
-            "element": "Earth",
-            "name": "Golem",
-            "rank": "Officer",
-            "type": "Heavy",
-            "damage": 2,
-            "health": 6,
-            "cost": 4,
-            "ability": "Heavy"
+            "kind": "CREATURE",
+            "name": "Crater",
+            "description": "\u003cb\u003eHeavy, Entry\u003c/b\u003e: Add a Corrupted Goo to your Hand",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "HEAVY",
+            "damage": 1,
+            "health": 4,
+            "cost": 3,
+            "abilities": [
+              {
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
+              }
+            ]
           },
           {
             "id": 31,
-            "element": "Earth",
-            "name": "Groundy",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 5,
-            "health": 5,
+            "kind": "CREATURE",
+            "name": "Earthshaker",
+            "description": "\u003cb\u003eEntry: Destroy\u003c/b\u003e a \u003cb\u003eHeavy\u003c/b\u003e zombie",
+            "flavorText": "Meet thunder, and meet lightning!",
+            "picture": "Earthshaker",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 4,
+            "health": 4,
             "cost": 5,
-            "ability": "Entry: If this is your only zombie in the battleground, gain Heavy.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "set_heavy",
-                "target": "self"
+                "type": "DESTROY_UNIT_BY_TYPE"
               }
             ]
           },
           {
             "id": 32,
-            "element": "Earth",
-            "name": "Spiker",
-            "rank": "Officer",
-            "type": "Heavy",
-            "damage": 2,
+            "kind": "CREATURE",
+            "name": "IgneouZ",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e If yourOverlord has 10 Def or less, this gets +2 Def",
+            "flavorText": "Meet thunder, and meet lightning!",
+            "picture": "IgneouZ",
+            "rank": "COMMANDER",
+            "type": "HEAVY",
+            "damage": 3,
             "health": 3,
-            "cost": 3,
-            "ability": "Heavy, Attack: Deal +1 damage to other Heavy Zombies",
-            "effects": [
+            "cost": 4,
+            "abilities": [
               {
-                "trigger": "pre_attack",
-                "effect": "attack_strength_boost",
-                "duration": "one_move",
-                "target": "enemy_selectable"
+                "type": "TAKE_DEFENSE_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
+                "value": 2
               }
             ]
           },
           {
             "id": 33,
-            "element": "Earth",
-            "name": "Tiny",
-            "rank": "Officer",
-            "type": "Heavy",
-            "health": 7,
-            "cost": 4,
-            "ability": "Heavy"
+            "kind": "CREATURE",
+            "name": "Pyrite",
+            "description": "\u003cb\u003eHeavy, Delayed\u003c/b\u003e 2: This loses \u003cb\u003eHeavy\u003c/b\u003e but gains +4 Atk",
+            "flavorText": "Yes, he did shoot first",
+            "picture": "Pyrite",
+            "rank": "COMMANDER",
+            "type": "HEAVY",
+            "health": 8,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "DELAYED_LOSE_HEAVY_GAIN_ATTACK",
+                "value": 4
+              }
+            ]
           },
           {
             "id": 34,
-            "element": "Earth",
-            "name": "Walley",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 4,
-            "ability": "Make adjacent zombies Heavy",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Mountain",
+            "description": "\u003cb\u003eHeavy, Swing\u003c/b\u003e 4",
+            "flavorText": "When the mountain comes to you... you'll run!",
+            "picture": "Mountain",
+            "rank": "GENERAL",
+            "type": "HEAVY",
+            "damage": 6,
+            "health": 8,
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "set_heavy",
-                "duration": "while_alive",
-                "target": "friendly_adjacent"
+                "type": "SWING",
+                "value": 4
               }
             ]
           },
           {
             "id": 35,
-            "element": "Earth",
-            "name": "Bolderr",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 3,
-            "health": 5,
-            "cost": 5,
-            "ability": "Entry: attack target for 3 damage",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Gaea",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: All ally Earth zombies inplay get +1/+2",
+            "picture": "Gaea",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 5,
+            "health": 7,
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "kill",
-                "target": "enemy_selectable"
+                "type": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS"
               }
             ]
           },
           {
             "id": 36,
-            "element": "Earth",
-            "name": "Earthshaker",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 5,
-            "ability": "Entry: Destroy another Heavy zombie"
+            "kind": "CREATURE",
+            "name": "Whizpar",
+            "description": "\u003cb\u003eFeral\u003c/b\u003e",
+            "flavorText": "The unfriendly ghost...",
+            "picture": "Whizpar",
+            "rank": "MINION",
+            "type": "FERAL",
+            "damage": 1,
+            "health": 1,
+            "cost": 2
           },
           {
             "id": 37,
-            "element": "Earth",
-            "name": "IgneouZ",
-            "rank": "Commander",
-            "type": "Heavy",
-            "damage": 3,
-            "health": 3,
-            "cost": 4,
-            "ability": "Entry: If you have 10 life or less, this gets +2 Defense.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Wheezy",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e A random card in your hand gets -1 cost",
+            "flavorText": "Ommmmmmmmmmm",
+            "picture": "Wheezy",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 2,
+            "cost": 2,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "defense_boost",
-                "target": "self"
+                "type": "LOWER_COST_OF_CARD_IN_HAND"
               }
             ]
           },
           {
             "id": 38,
-            "element": "Earth",
-            "name": "Pyrite",
-            "rank": "Commander",
-            "type": "Heavy",
-            "health": 8,
+            "kind": "CREATURE",
+            "name": "Soothsayer",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card",
+            "flavorText": "You're better off listening to a fortune cookie",
+            "picture": "Soothsayer",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
             "cost": 2,
-            "ability": "Heavy, Loses Heavy after 2 turns, but gains +1 Attack.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "after_entry(x)",
-                "effect": "remove_heavy",
-                "target": "self"
+                "type": "DRAW_CARD"
               }
             ]
           },
           {
             "id": 39,
-            "element": "Earth",
-            "name": "Gaea",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 4,
-            "health": 5,
-            "cost": 10,
-            "ability": "Entry: Give all your Earth zombies in the battleground +2 Attack and +2 Defense."
-          },
-          {
-            "id": 40,
-            "element": "Earth",
-            "name": "Mountain",
-            "rank": "General",
-            "type": "Heavy",
-            "damage": 8,
-            "health": 8,
-            "cost": 10,
-            "ability": "Heavy, Attack: damage 2 adjacent targets for 4 dmg"
-          },
-          {
-            "id": 41,
-            "element": "Fire",
-            "name": "BlaZter",
-            "rank": "Minion",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Fumez",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e add \u003cb\u003eTainted Goo\u003c/b\u003e to your Hand",
+            "picture": "embryo",
+            "rank": "MINION",
+            "type": "WALKER",
             "damage": 1,
             "health": 1,
             "cost": 2,
-            "ability": "Entry: Deal 1 damage to an enemy zombie."
-          },
-          {
-            "id": 42,
-            "element": "Fire",
-            "name": "BurZt",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 4,
-            "health": 1,
-            "cost": 3,
-            "ability": "Feral, Cannot attack the enemy hero this turn",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "disable_hero_attack",
-                "duration": "one_turn",
-                "target": "enemy_hero"
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
               }
             ]
           },
           {
-            "id": 43,
-            "element": "Fire",
-            "name": "Ember",
-            "rank": "Minion",
-            "type": "Walker",
+            "id": 40,
+            "kind": "CREATURE",
+            "name": "Pushhh",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Return a zombie to its owner's hand",
+            "flavorText": "Like any adolescent child thatwishes you to leave him be... so GO AWAY!!",
+            "picture": "Pushhh",
+            "rank": "OFFICER",
+            "type": "WALKER",
             "damage": 3,
+            "health": 3,
+            "cost": 3,
+            "abilities": [
+              {
+                "type": "CARD_RETURN"
+              }
+            ]
+          },
+          {
+            "id": 41,
+            "kind": "CREATURE",
+            "name": "Ztormmcaller",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a zombie, \u003cb\u003eSwing\u003c/b\u003e 1",
+            "flavorText": "Thor's best student just got a little angrier...",
+            "picture": "ztormmcaller",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 3,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "SWING",
+                "value": 1
+              },
+              {
+                "type": "DAMAGE_TARGET",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "id": 42,
+            "kind": "CREATURE",
+            "name": "Bouncer",
+            "description": "\u003cb\u003eHeavy\u003c/b\u003e",
+            "flavorText": "ID please",
+            "picture": "Bouncer",
+            "rank": "OFFICER",
+            "type": "HEAVY",
+            "damage": 2,
+            "health": 3,
+            "cost": 4
+          },
+          {
+            "id": 43,
+            "kind": "CREATURE",
+            "name": "Gaz",
+            "description": "\u003cb\u003eGuard, Entry:\u003c/b\u003e add \u003cb\u003eCorrupted Goo\u003c/b\u003e to your Hand",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
             "health": 2,
-            "cost": 2,
-            "ability": "-"
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "SHILED"
+              },
+              {
+                "type": "ADD_CARD_BY_NAME_TO_HAND"
+              }
+            ]
           },
           {
             "id": 44,
-            "element": "Fire",
-            "name": "Firecaller",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Draw a card if there is a damaged zombie in the battleground.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Draft",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card from enemy deck",
+            "picture": "Draft",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 4,
+            "health": 5,
+            "cost": 5,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "draw_card",
-                "target": "friendly_hand"
+                "type": "DRAW_CARD"
               }
             ]
           },
           {
             "id": 45,
-            "element": "Fire",
-            "name": "Firewall",
-            "rank": "Minion",
-            "type": "Heavy",
-            "damage": 2,
-            "health": 1,
-            "cost": 2,
-            "ability": "Heavy"
+            "kind": "CREATURE",
+            "name": "MonZoon",
+            "description": "Costs 1 less for each Air zombie in your hand",
+            "picture": "MonZoon",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 6,
+            "health": 6,
+            "cost": 9
           },
           {
             "id": 46,
-            "element": "Fire",
-            "name": "Pyromaz",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "Attack: 1 additional damage to life zombie"
+            "kind": "CREATURE",
+            "name": "Zeuz",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to all enemy zombies",
+            "flavorText": "From mount Zolimpus in the sky - fear Ze-might of ZeuZ!",
+            "picture": "Zeuz",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 6,
+            "health": 6,
+            "cost": 11,
+            "abilities": [
+              {
+                "type": "MASSIVE_DAMAGE",
+                "value": 3
+              }
+            ]
           },
           {
             "id": 47,
-            "element": "Fire",
-            "name": "RabieZ",
-            "rank": "Minion",
-            "type": "Feral",
+            "kind": "CREATURE",
+            "name": "Azuraz",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
+            "flavorText": "Beeee yourself!",
+            "picture": "Azuraz",
+            "rank": "MINION",
+            "type": "WALKER",
             "damage": 1,
             "health": 1,
-            "cost": 2,
-            "ability": "Feral, Death: Give a random friendly minion Feral."
+            "cost": 1,
+            "abilities": [
+              {
+                "type": "MODIFICATOR_STATS",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 48,
-            "element": "Fire",
-            "name": "Sparky",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 2,
+            "kind": "CREATURE",
+            "name": "Bloomer",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card if you have a Life zombie in play",
+            "flavorText": "Turns out rotting flesh makes for some good fertilizer",
+            "picture": "Bloomer",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
             "health": 1,
-            "cost": 1,
-            "ability": "Feral, Deal 1 damage to this at the end of your turn."
+            "cost": 2,
+            "abilities": [
+              {
+                "type": "DRAW_CARD"
+              }
+            ]
           },
           {
             "id": 49,
-            "element": "Fire",
-            "name": "Alpha",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 4,
-            "cost": 5,
-            "ability": "Entry: All other Fire zombies in the battleground gain Feral.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Zap",
+            "description": "\u003cb\u003eOverflow 3\u003c/b\u003e, \u003cb\u003eEntry:\u003c/b\u003e Summon a 1/1 enemy zombie minion",
+            "flavorText": "Turns out rotting flesh makes for some good fertilizer",
+            "picture": "embryo",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 2,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "set_feral",
-                "duration": "while_alive",
-                "target": "friendly_all"
+                "type": "OVERFLOW_GOO",
+                "value": 3
+              },
+              {
+                "type": "SUMMON"
               }
             ]
           },
           {
             "id": 50,
-            "element": "Fire",
-            "name": "Burrrnn",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 2,
+            "kind": "CREATURE",
+            "name": "Shroom",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to a zombie",
+            "flavorText": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
+            "picture": "Shroom",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 4,
             "health": 2,
-            "cost": 3,
-            "ability": "Feral"
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "DAMAGE_TARGET",
+                "value": 2
+              }
+            ]
           },
           {
             "id": 51,
-            "element": "Fire",
-            "name": "Enrager",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 3,
+            "kind": "CREATURE",
+            "name": "Vindrom",
+            "description": "\u003cb\u003eAttack: Freeze\u003c/b\u003e zombie",
+            "flavorText": "BDSM much?!",
+            "picture": "Vindrom",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
             "health": 3,
-            "cost": 5,
-            "ability": "Feral, Entry: If you have 10 life or less this gets +2 Attack."
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "STUN",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 52,
-            "element": "Fire",
-            "name": "Rager",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 4,
-            "ability": "Entry: If this is your only zombie in the battleground, gain Feral."
+            "kind": "CREATURE",
+            "name": "Puffer",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e +1 Atk to all Life zombies in play",
+            "picture": "Puffer",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 2,
+            "cost": 3,
+            "abilities": [
+              {
+                "type": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 53,
-            "element": "Fire",
-            "name": "Werezomb",
-            "rank": "Officer",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Sapper",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e Gain 1 life for each damage this deals.",
+            "picture": "Sapper",
+            "rank": "OFFICER",
+            "type": "WALKER",
             "damage": 1,
-            "health": 1,
-            "cost": 3,
-            "ability": "Entry: Give a friendly zombie Feral."
+            "health": 4,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "GAIN_NUMBER_OF_LIFE_FOR_EACH_DAMAGE_THIS_DEALS",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 54,
-            "element": "Fire",
-            "name": "Zlinger",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 4,
-            "health": 4,
+            "kind": "CREATURE",
+            "name": "Keeper",
+            "description": "\u003cb\u003eEntry:\u003c/b\u003e Summon a 1/1 \u003cb\u003eFeral\u003c/b\u003e zombie",
+            "flavorText": "Down boy! Down!",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 3,
             "cost": 3,
-            "ability": "Feral, Entry: Deal 2 damage to your hero.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "deal_damage",
-                "target": "friendly_hero"
+                "type": "SUMMON"
               }
             ]
           },
           {
             "id": 55,
-            "element": "Fire",
-            "name": "Cynderman",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
+            "kind": "CREATURE",
+            "name": "Cactuz",
+            "description": "\u003cb\u003eOverflow\u003c/b\u003e 6, \u003cb\u003eEntry:\u003c/b\u003e Summon two 2/2 enemy zombie minions",
+            "flavorText": "Down boy! Down!",
+            "picture": "embryo",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 2,
             "health": 3,
-            "cost": 5,
-            "ability": "Enter: Damage a target for 2 damage"
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "OVERFLOW_GOO",
+                "value": 6
+              },
+              {
+                "type": "SUMMON"
+              }
+            ]
           },
           {
             "id": 56,
-            "element": "Fire",
-            "name": "Fire-Maw",
-            "rank": "Commander",
-            "type": "Feral",
-            "damage": 3,
-            "health": 3,
-            "cost": 6,
-            "ability": "Feral, Flash (attacks twice) ",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Shammann",
+            "description": "\u003cb\u003eTurn:\u003c/b\u003e summon a 2/2 zombie minion",
+            "flavorText": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
+            "picture": "Shammann",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 5,
+            "health": 6,
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "gain_move(x)",
-                "duration": "once",
-                "target": "self"
+                "type": "SUMMON"
               }
             ]
           },
           {
             "id": 57,
-            "element": "Fire",
-            "name": "Volcan",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 5,
-            "health": 5,
-            "cost": 6,
-            "ability": "Cannot Attack. At the end of your turn, deal 5 damage to a random enemy.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Z-Virus",
+            "description": "\u003cb\u003eDevour\u003c/b\u003e all ally zombies, gain their Atk and Def",
+            "flavorText": "Can you guess what 'Z' stands for?",
+            "picture": "Z-Virus",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "cost": 12,
+            "abilities": [
               {
-                "trigger": "before_turn_end",
-                "effect": "deal_damage",
-                "target": "enemy_random"
+                "type": "DEVOUR_ZOMBIE_AND_COMBINE_STATS"
               }
             ]
           },
           {
             "id": 58,
-            "element": "Fire",
-            "name": "Zhampion",
-            "rank": "Commander",
-            "type": "Feral",
-            "damage": 5,
-            "health": 2,
-            "cost": 5,
-            "ability": "Feral, Entry: If this is your only zombie in thebattleground,  it gains +2 Attack and +2 Defense."
+            "kind": "CREATURE",
+            "name": "Yggdrazil",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: Revive all Life zombie that died this match",
+            "flavorText": "Can you still call it Tree of Life ifit revives the dead? Can you even revive the dead? I'm so confuse...",
+            "picture": "Yggdrazil",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 4,
+            "health": 4,
+            "cost": 11,
+            "abilities": [
+              {
+                "type": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH"
+              }
+            ]
           },
           {
             "id": 59,
-            "element": "Fire",
-            "name": "Cerberus",
-            "rank": "General",
-            "type": "Feral",
-            "damage": 6,
-            "health": 6,
-            "cost": 8,
-            "ability": "Feral, Flash x 2"
+            "kind": "CREATURE",
+            "name": "Poizom",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Earth zombies",
+            "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
+            "picture": "Poizom",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 1,
+            "abilities": [
+              {
+                "type": "MODIFICATOR_STATS",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 60,
-            "element": "Fire",
-            "name": "Gargantua",
-            "rank": "General",
-            "type": "Heavy",
-            "damage": 6,
-            "health": 6,
-            "cost": 8,
-            "ability": "Entry: Damage all enemy zombies (including heros) for 2 Damage"
+            "kind": "CREATURE",
+            "name": "Hazmaz",
+            "description": "\u003cb\u003eFeral\u003c/b\u003e",
+            "flavorText": "Being cooped up inside a plastic suit is no fun - now time this by a 1,000 with all the extra gases, something's gotta give...",
+            "picture": "Hazmaz",
+            "rank": "MINION",
+            "type": "FERAL",
+            "damage": 1,
+            "health": 2,
+            "cost": 2
           },
           {
             "id": 61,
-            "element": "Item",
-            "name": "Bat",
-            "rank": "Minion",
-            "type": "Feral",
+            "kind": "CREATURE",
+            "name": "Zpitter",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: 1 damage random enemy",
+            "flavorText": "Sorry, but its mother never bothered to teach it any manners",
+            "picture": "Zpitter",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 2,
             "cost": 3,
-            "ability": "Deal 2 damage to a zombie and Distract it.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "distract",
-                "target": "target"
+                "type": "TAKE_DAMAGE_RANDOM_ENEMY",
+                "value": 1
               }
             ]
           },
           {
             "id": 62,
-            "element": "Item",
-            "name": "Molotov",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 3,
-            "cost": 4,
-            "ability": "Deal 3 damage to a zombie and its adjacent zombies"
+            "kind": "CREATURE",
+            "name": "Zeptic",
+            "description": "\u003cb\u003eOverflow\u003c/b\u003e 2, deal 2 damage to your Overlord",
+            "picture": "Zeptic",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 1,
+            "abilities": [
+              {
+                "type": "OVERFLOW_GOO",
+                "value": 2
+              },
+              {
+                "type": "ATTACK_OVERLORD",
+                "value": 2
+              }
+            ]
           },
           {
             "id": 63,
-            "element": "Item",
-            "name": "Stapler",
-            "rank": "Minion",
-            "type": "Feral",
-            "cost": 4,
-            "ability": "Heals a zombie for 4 HP",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Ghoul",
+            "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk",
+            "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one",
+            "picture": "Ghoul",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 3,
+            "health": 2,
+            "cost": 2,
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "heal",
-                "target": "friendly_selectable"
+                "type": "CHANGE_STAT",
+                "value": -1
               }
             ]
           },
           {
             "id": 64,
-            "element": "Item",
-            "name": "Super Goo Serum",
-            "rank": "Minion",
-            "type": "Feral",
-            "cost": 4,
-            "ability": "Give a friendly zombie +3/+3."
+            "kind": "CREATURE",
+            "name": "Zeeter",
+            "description": "\u003cb\u003eEntry: Devour\u003c/b\u003e an ally zombie, gain its Atk and Def",
+            "flavorText": "When you're hungry, you'll eat just about anything. Even the zombie next to you",
+            "picture": "Zeeter",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "DEVOUR_ZOMBIE_AND_COMBINE_STATS"
+              }
+            ]
           },
           {
             "id": 65,
-            "element": "Item",
-            "name": "Supply Drop",
-            "rank": "Minion",
-            "type": "Feral",
-            "cost": 3,
-            "ability": "Each playerputs a random zombie card from their deck to play.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Hazzard",
+            "description": "\u003cb\u003eOverflow\u003c/b\u003e 7, deal 4 damage to your Overlord",
+            "picture": "Hazzard",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "damage": 4,
+            "health": 4,
+            "cost": 5,
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "summon_zombie",
-                "target": "enemy_random"
+                "type": "OVERFLOW_GOO",
+                "value": 7
+              },
+              {
+                "type": "ATTACK_OVERLORD",
+                "value": 4
               }
             ]
           },
           {
             "id": 66,
-            "element": "Item",
-            "name": "Torch",
-            "rank": "Minion",
-            "type": "Feral",
-            "cost": 2,
-            "ability": "Entry: Destroy a zombie that costs 3 Goo or less."
+            "kind": "CREATURE",
+            "name": "Zludge",
+            "description": "\u003cb\u003eRage:\u003c/b\u003e +2 Atk",
+            "picture": "Zludge",
+            "rank": "COMMANDER",
+            "type": "WALKER",
+            "damage": 4,
+            "health": 4,
+            "cost": 5,
+            "abilities": [
+              {
+                "type": "RAGE",
+                "value": 2
+              }
+            ]
           },
           {
             "id": 67,
-            "element": "Item",
-            "name": "Whistle",
-            "rank": "Minion",
-            "type": "Feral",
-            "ability": "Draw a card."
+            "kind": "CREATURE",
+            "name": "Ectoplasm",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: Lose 1 Goo",
+            "picture": "Ectoplasm",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 2,
+            "cost": 1,
+            "abilities": [
+              {
+                "type": "LOSE_GOO",
+                "value": 1
+              }
+            ]
           },
           {
             "id": 68,
-            "element": "Item",
-            "name": "Beaker",
-            "rank": "Officer",
-            "type": "Feral",
-            "ability": "Get +1 Goo for this turn only.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "Cherno-bill",
+            "description": "\u003cb\u003eHeavy, Death:\u003c/b\u003e 3 damage to all zombies",
+            "flavorText": "Lumbering around ina world made of butter gets old real fast, maybe that's why he's sooo angry!",
+            "picture": "Cherno-bill",
+            "rank": "GENERAL",
+            "type": "HEAVY",
+            "damage": 7,
+            "health": 9,
+            "cost": 11,
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "add_goo",
-                "duration": "once"
+                "type": "MASSIVE_DAMAGE",
+                "value": 3
               }
             ]
           },
           {
             "id": 69,
-            "element": "Item",
-            "name": "Fire Extinguisher",
-            "rank": "Officer",
-            "type": "Feral",
-            "cost": 4,
-            "ability": "Entry: Disable (freeze) all enemy zombies.",
-            "effects": [
+            "kind": "CREATURE",
+            "name": "GooZilla",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: Return 4 goo, and use all your goo for 2X Attack / Defense",
+            "picture": "GooZilla",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 8,
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "freeze",
-                "target": "enemy_all"
+                "type": "OVERFLOW_GOO",
+                "value": 4
+              },
+              {
+                "type": "USE_ALL_GOO_TO_INCREASE_STATS",
+                "value": 2
               }
             ]
           },
           {
             "id": 70,
-            "element": "Item",
-            "name": "Junk Spear",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 3,
-            "health": 1,
+            "kind": "SPELL",
+            "name": "Chainsaw",
+            "description": "+4 Attack to zombie; \u003cb\u003eEnd:\u003c/b\u003e 4 damage to this zombie",
+            "flavorText": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
+            "picture": "Chainsaw",
+            "rank": "MINION",
+            "type": "WALKER",
             "cost": 4,
-            "ability": "Loses 1 Defense every time you attack. Entry: Gets +1 Defense for each zombie type you have in the battleground. ",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "lose_defense_on_attack_debuff",
-                "duration": "one_turn",
-                "target": "friendly_all"
+                "type": "UNIT_WEAPON",
+                "value": 4
               }
             ]
           },
           {
             "id": 71,
-            "element": "Item",
-            "name": "Lawnmower",
-            "rank": "Officer",
-            "type": "Feral",
-            "cost": 6,
-            "ability": "Entry: Deal 2 damage to all enemy zombies.",
-            "effects": [
+            "kind": "SPELL",
+            "name": "Goo Beaker",
+            "description": "Gain 1 empty Goo vials",
+            "picture": "goobeaker",
+            "rank": "MINION",
+            "type": "WALKER",
+            "cost": 2,
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "defense_boost(x)"
+                "type": "ADD_GOO_VIAL",
+                "value": 1
               }
             ]
           },
           {
             "id": 72,
-            "element": "Item",
-            "name": "Nail Bomb",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 10,
+            "kind": "SPELL",
+            "name": "Stapler",
+            "description": "Restore 4 Def to a zombie",
+            "flavorText": "No pain, no gain.",
+            "picture": "Stapler",
+            "rank": "MINION",
+            "type": "WALKER",
             "cost": 4,
-            "ability": "Damage target and 2 adjacent zombies for 5 damage."
+            "abilities": [
+              {
+                "type": "heal",
+                "value": 4
+              }
+            ]
           },
           {
             "id": 73,
-            "element": "Item",
-            "name": "Shovel",
-            "rank": "Officer",
-            "type": "Feral",
-            "cost": 3,
-            "ability": "Entry: Deal 4 damage to an enemy OR restore 5 health to a friendly character."
+            "kind": "SPELL",
+            "name": "Nail Bomb",
+            "description": "4 damage to a zombie, \u003cb\u003eSwing\u003c/b\u003e 4",
+            "flavorText": "When you really want to nail it!",
+            "picture": "NailBomb",
+            "rank": "MINION",
+            "type": "WALKER",
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "DAMAGE_TARGET_ADJUSTMENTS",
+                "value": 4
+              }
+            ]
           },
           {
             "id": 74,
-            "element": "Item",
-            "name": "Zed Kit",
-            "rank": "Officer",
-            "type": "Feral",
-            "cost": 2,
-            "ability": "Restore defense to each zombie you have for each zombie element type you have in the battleground."
+            "kind": "SPELL",
+            "name": "Goo Bottle",
+            "description": "Gain 2 empty Goo vials",
+            "flavorText": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
+            "picture": "goobottles",
+            "rank": "MINION",
+            "type": "WALKER",
+            "cost": 4,
+            "abilities": [
+              {
+                "type": "ADD_GOO_VIAL",
+                "value": 2
+              }
+            ]
           },
           {
             "id": 75,
-            "element": "Item",
+            "kind": "SPELL",
             "name": "Fresh Meat",
-            "rank": "Commander",
-            "type": "Feral",
+            "description": "\u003cb\u003eEntry\u003c/b\u003e: All enemy zombies get -3 Atk until the end of turn",
+            "picture": "FreshMeat",
+            "rank": "MINION",
+            "type": "WALKER",
             "cost": 5,
-            "ability": "Entry: Give all enemy zombies -3 attack until the end of your turn."
-          },
-          {
-            "id": 76,
-            "element": "Item",
-            "name": "Goo Bottles",
-            "rank": "Commander",
-            "type": "Feral",
-            "ability": "adds 2 full Goo vials",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "on_use",
-                "effect": "add_goo",
-                "duration": "once"
-              }
-            ]
-          },
-          {
-            "id": 77,
-            "element": "Item",
-            "name": "Leash",
-            "rank": "Commander",
-            "type": "Feral",
-            "cost": 8,
-            "ability": "Entry: Gain control of an enemy zombie."
-          },
-          {
-            "id": 78,
-            "element": "Item",
-            "name": "Shopping Cart",
-            "rank": "Commander",
-            "type": "Feral",
-            "cost": 6,
-            "ability": "Entry: All your zombies gain \"Swing\" (Swing: when attacking, deal damage to the target, as well as any adjacent zombies.)",
-            "effects": [
-              {
-                "trigger": "on_use",
-                "effect": "add_swing",
-                "target": "friendly_all"
-              }
-            ]
-          },
-          {
-            "id": 79,
-            "element": "Item",
-            "name": "Bulldozer",
-            "rank": "General",
-            "type": "Feral",
-            "cost": 10,
-            "ability": "Entry: Destroy all zombies in the battleground.",
-            "effects": [
-              {
-                "trigger": "on_use",
-                "effect": "kill",
-                "target": "enemy_all"
-              }
-            ]
-          },
-          {
-            "id": 80,
-            "element": "Item",
-            "name": "Chainsaw",
-            "rank": "General",
-            "type": "Feral",
-            "damage": 5,
-            "health": 3,
-            "cost": 2,
-            "ability": "Loses 1 HP on attack"
-          },
-          {
-            "id": 81,
-            "element": "Life",
-            "name": "Amber",
-            "rank": "Minion",
-            "type": "Walker",
-            "health": 3,
-            "cost": 2,
-            "ability": "Becomesa 3/3 at the end of your next turn."
-          },
-          {
-            "id": 82,
-            "element": "Life",
-            "name": "Azuraz",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "Attack: 1 additional damage to life zombies"
-          },
-          {
-            "id": 83,
-            "element": "Life",
-            "name": "Bark",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 3,
-            "ability": "-"
-          },
-          {
-            "id": 84,
-            "element": "Life",
-            "name": "Bloomer",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Draw a card if you have a life zombie in the battleground."
-          },
-          {
-            "id": 85,
-            "element": "Life",
-            "name": "Grower",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Your hero gains 2 life."
-          },
-          {
-            "id": 86,
-            "element": "Life",
-            "name": "Medic",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Restore 2life to a zombie."
-          },
-          {
-            "id": 87,
-            "element": "Life",
-            "name": "WiZp",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Death: gives 1 goo for next turn"
-          },
-          {
-            "id": 88,
-            "element": "Life",
-            "name": "EverlaZting",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 3,
-            "cost": 4,
-            "ability": "Death: Put this card back into your deck."
-          },
-          {
-            "id": 89,
-            "element": "Life",
-            "name": "Healz",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 3,
-            "cost": 4,
-            "ability": "Entry: Gain 3 life. If you have 10 life or less, gain 5 life instead."
-          },
-          {
-            "id": 90,
-            "element": "Life",
-            "name": "Keeper",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 1,
-            "health": 3,
-            "cost": 3,
-            "ability": "Entry: Summon a 1/1 Feral zombie.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "summon_special_zombie(1)"
-              }
-            ]
-          },
-          {
-            "id": 91,
-            "element": "Life",
-            "name": "Puffer",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: add 1 attack to all life zombies on the Battleground"
-          },
-          {
-            "id": 92,
-            "element": "Life",
-            "name": "Sapper",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 1,
-            "health": 4,
-            "cost": 5,
-            "ability": "Attack: Gain 1 life for each damage this deals."
-          },
-          {
-            "id": 93,
-            "element": "Life",
-            "name": "Shroom",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 4,
-            "health": 2,
-            "cost": 4,
-            "ability": "Entry: 2 damage to target"
-          },
-          {
-            "id": 94,
-            "element": "Life",
-            "name": "Weed",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Place another copy of this minion in the battleground.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "summon_duplicate",
-                "target": "self"
-              }
-            ]
-          },
-          {
-            "id": 95,
-            "element": "Life",
-            "name": "Blight",
-            "rank": "Commander",
-            "type": "Walker",
-            "health": 6,
-            "cost": 6,
-            "ability": "At the end of 3 turns, place 2 4/4 copies of this zombie in the battleground and discard this.",
-            "effects": [
-              {
-                "trigger": "after_entry(3)",
-                "effect": "summon_special_zombie(2)"
-              }
-            ]
-          },
-          {
-            "id": 96,
-            "element": "Life",
-            "name": "Rainz",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 3,
-            "health": 4,
-            "cost": 6,
-            "ability": "Entry: Restore 10 HP randomly split among all zombies in the battleground and your hero.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "random_heal(10)",
-                "target": "friendly_all_with_hero"
-              }
-            ]
-          },
-          {
-            "id": 97,
-            "element": "Life",
-            "name": "Vindrom",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 5,
-            "health": 5,
-            "cost": 6,
-            "ability": "Attack: disable enemy for 1 turn (entangle vines)"
-          },
-          {
-            "id": 98,
-            "element": "Life",
-            "name": "Zeeder",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 2,
-            "health": 5,
-            "cost": 5,
-            "ability": "At the end of your turn, summon a 0/2 zombie with Heavy."
-          },
-          {
-            "id": 99,
-            "element": "Life",
-            "name": "Shammann",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 5,
-            "health": 6,
-            "cost": 8,
-            "ability": "Turn: summons a 1/1 zombie minion start of each turn",
-            "effects": [
-              {
-                "trigger": "before_turn",
-                "effect": "summon_special_zombie(3)"
+                "type": "CHANGE_STAT_UNTILL_END_OF_TURN"
               }
             ]
           },
           {
             "id": 100,
-            "element": "Life",
-            "name": "Yggdrazil",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 11,
-            "ability": "Entry: Revive all life zombies that have died this game.",
-            "effects": [
-              {
-                "trigger": "entry"
-              }
-            ]
+            "kind": "CREATURE",
+            "name": "Zombie 1/1",
+            "picture": "Zombie",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 1,
+            "health": 1,
+            "cost": 1
           },
           {
             "id": 101,
-            "element": "Life",
-            "name": "Z-Virus",
-            "rank": "General",
-            "type": "Walker",
-            "cost": 7,
-            "ability": "Devour friendly zombies, and replace them with a zombie with their combined attack and defense.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "z_virus_ability"
-              }
-            ]
+            "kind": "CREATURE",
+            "name": "Zombie 2/2",
+            "picture": "Zombie",
+            "rank": "MINION",
+            "type": "WALKER",
+            "damage": 2,
+            "health": 2,
+            "cost": 1
           },
           {
             "id": 102,
-            "element": "Toxic",
-            "name": "Ectoplasm",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 3,
-            "health": 2,
-            "cost": 1,
-            "ability": "Entry: Lose 1 Goo."
-          },
-          {
-            "id": 103,
-            "element": "Toxic",
-            "name": "Germ",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 2,
-            "health": 1,
-            "cost": 1,
-            "ability": "-"
-          },
-          {
-            "id": 104,
-            "element": "Toxic",
-            "name": "Poizom",
-            "rank": "Minion",
-            "type": "Walker",
+            "kind": "CREATURE",
+            "name": "Zombie Feral",
+            "picture": "Zombie",
+            "rank": "MINION",
+            "type": "FERAL",
             "damage": 1,
             "health": 1,
-            "cost": 1,
-            "ability": "Attack: 1 additional damage to earth zombies"
+            "cost": 1
           },
           {
-            "id": 105,
-            "element": "Toxic",
-            "name": "Spikez",
-            "rank": "Minion",
-            "type": "Heavy",
-            "damage": 2,
-            "health": 2,
-            "cost": 3,
-            "ability": "Has +1 Attack on your opponent's turn."
+            "id": 51,
+            "kind": "CREATURE",
+            "name": "Armageddon",
+            "description": "MEGA KILLER",
+            "picture": "Zombie",
+            "rank": "GENERAL",
+            "type": "FERAL",
+            "damage": 300,
+            "health": 300
           },
           {
-            "id": 106,
-            "element": "Toxic",
-            "name": "Wazte",
-            "rank": "Minion",
-            "type": "Heavy",
-            "damage": 3,
-            "health": 3,
+            "id": 30,
+            "kind": "SPELL",
+            "name": "Tainted Goo",
+            "description": "\u003cb\u003eOverflow\u003c/b\u003e 3, disables 1 goo vial for next turn",
+            "picture": "taintedgoo",
+            "rank": "MINION",
+            "type": "WALKER",
             "cost": 2,
-            "ability": "Heavy, Entry: Lose 1 Goo ",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "reduce_goo"
+                "type": "OVERFLOW_GOO",
+                "value": 3
+              },
+              {
+                "type": "DISABLE_NEXT_TURN_GOO",
+                "value": -1
               }
             ]
           },
           {
-            "id": 107,
-            "element": "Toxic",
-            "name": "Zcavenger",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "If this kills a zombie, draw a card.",
-            "effects": [
-              {
-                "trigger": "on_enemy_killed",
-                "effect": "draw_card"
-              }
-            ]
-          },
-          {
-            "id": 108,
-            "element": "Toxic",
-            "name": "Zlimey",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 3,
-            "health": 1,
-            "cost": 1,
-            "ability": "Entry: Deal 2 damage to your hero."
-          },
-          {
-            "id": 109,
-            "element": "Toxic",
-            "name": "Zpitter",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Deal 1 damage randomly enemy"
-          },
-          {
-            "id": 110,
-            "element": "Toxic",
-            "name": "Azzazzin",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 5,
-            "health": 1,
-            "cost": 3,
-            "ability": "Feral, Can only attack zombies."
-          },
-          {
-            "id": 111,
-            "element": "Toxic",
-            "name": "Boomer",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
+            "id": 30,
+            "kind": "SPELL",
+            "name": "Corrupted Goo",
+            "description": "\u003cb\u003eOverflow\u003c/b\u003e 6, disables 2 goo vials for next turn",
+            "picture": "corruptedgoo",
+            "rank": "MINION",
+            "type": "WALKER",
             "cost": 4,
-            "ability": "Death: Adjacent zombies get +1/+1."
-          },
-          {
-            "id": 112,
-            "element": "Toxic",
-            "name": "Ghoul",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 2,
-            "cost": 2,
-            "ability": "Attack: looses 1DMG (not HP)"
-          },
-          {
-            "id": 113,
-            "element": "Toxic",
-            "name": "Polluter",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 4,
-            "ability": "Death: Gain 1 Goo."
-          },
-          {
-            "id": 114,
-            "element": "Toxic",
-            "name": "RelentleZZ",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 6,
-            "cost": 3,
-            "ability": "Entry: Deal 2 damage to this zombie."
-          },
-          {
-            "id": 115,
-            "element": "Toxic",
-            "name": "Zlopper",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 1,
-            "health": 4,
-            "cost": 3,
-            "ability": "Gains +1 Attack whenever you play a Toxic zombie."
-          },
-          {
-            "id": 116,
-            "element": "Toxic",
-            "name": "Hazmaz",
-            "rank": "Commander",
-            "type": "Feral",
-            "damage": 3,
-            "health": 3,
-            "cost": 4,
-            "ability": "Feral"
-          },
-          {
-            "id": 117,
-            "element": "Toxic",
-            "name": "Zeeter",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 2,
-            "health": 3,
-            "cost": 5,
-            "ability": "Entry: Destroy a friendly zombie and gain its base attack and damage.",
-            "effects": [
+            "abilities": [
               {
-                "trigger": "entry",
-                "effect": "zeeter_ability"
+                "type": "OVERFLOW_GOO",
+                "value": 6
+              },
+              {
+                "type": "DISABLE_NEXT_TURN_GOO",
+                "value": -2
               }
             ]
-          },
-          {
-            "id": 118,
-            "element": "Toxic",
-            "name": "Zludge",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 5,
-            "ability": "Rage: Whenever this gets damaged, it gets +2 Attack."
-          },
-          {
-            "id": 119,
-            "element": "Toxic",
-            "name": "Zteroid",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 5,
-            "health": 4,
-            "cost": 6,
-            "ability": "Death: Give all of your zombies in the battleground +2 Attack until end of turn."
-          },
-          {
-            "id": 120,
-            "element": "Toxic",
-            "name": "Cherno-bill",
-            "rank": "General",
-            "type": "Heavy",
-            "damage": 8,
-            "health": 8,
-            "cost": 7,
-            "ability": "Heavy, Death: Damage 2 to ALL zombies and heroes"
-          },
-          {
-            "id": 121,
-            "element": "Toxic",
-            "name": "GooZilla",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "ability": "Entry: Spend all your Goo. This has Attack and Defense equal to the spent Goo.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "set_goo(0)"
-              }
-            ]
-          },
-          {
-            "id": 122,
-            "element": "Water",
-            "name": "FroZen",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 2,
-            "ability": "Death: Draw a card if there is a frozen zombie in the battleground.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "deal_damage",
-                "target": "enemy_hero"
-              }
-            ]
-          },
-          {
-            "id": 123,
-            "element": "Water",
-            "name": "HoZer",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Gets +1 Attack if you have a Water Zombie in the battleground."
-          },
-          {
-            "id": 124,
-            "element": "Water",
-            "name": "Izze",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 1,
-            "ability": "Attack: disable enemy for 1 turn (freeze)"
-          },
-          {
-            "id": 125,
-            "element": "Water",
-            "name": "Slider",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 2,
-            "ability": "Entry: Distract an enemy zombie."
-          },
-          {
-            "id": 126,
-            "element": "Water",
-            "name": "Zhatterer",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 5,
-            "ability": "Entry: Destroy a frozen zombie.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "kill",
-                "target": "enemy_selectable"
-              }
-            ]
-          },
-          {
-            "id": 127,
-            "element": "Water",
-            "name": "Znowman",
-            "rank": "Minion",
-            "type": "Heavy",
-            "health": 5,
-            "cost": 4,
-            "ability": "Heavy, Zombies that attack this become frozen.",
-            "effects": [
-              {
-                "trigger": "on_attacked",
-                "effect": "freeze",
-                "target": "attacker"
-              }
-            ]
-          },
-          {
-            "id": 128,
-            "element": "Water",
-            "name": "Znowy",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 1,
-            "ability": "-"
-          },
-          {
-            "id": 129,
-            "element": "Water",
-            "name": "Ztalagmite",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 3,
-            "health": 3,
-            "cost": 3,
-            "ability": "Feral; Entry: Deal 1 damage to your hero."
-          },
-          {
-            "id": 130,
-            "element": "Water",
-            "name": "Igloo",
-            "rank": "Officer",
-            "type": "Heavy",
-            "damage": 4,
-            "health": 5,
-            "cost": 5,
-            "ability": "Heavy"
-          },
-          {
-            "id": 131,
-            "element": "Water",
-            "name": "Izicle",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 5,
-            "cost": 5,
-            "ability": "Entry: Deal 2 damage to an enemy if a Water Zombie on the Battleground."
-          },
-          {
-            "id": 132,
-            "element": "Water",
-            "name": "Jetter",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 4,
-            "ability": "Entry: 1 damage to enemy horde"
-          },
-          {
-            "id": 133,
-            "element": "Water",
-            "name": "Sub-Zero",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Freeze an enemy zombie and deal 1 damage to it."
-          },
-          {
-            "id": 134,
-            "element": "Water",
-            "name": "Vortex",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 4,
-            "cost": 4,
-            "ability": "Entry: Return an enemy zombie to its owner's deck.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "return_to_enemy_hand",
-                "target": "enemy_selectable"
-              }
-            ]
-          },
-          {
-            "id": 135,
-            "element": "Water",
-            "name": "Blizzard",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 5,
-            "ability": "Entry: Freeze all enemy zombies"
-          },
-          {
-            "id": 136,
-            "element": "Water",
-            "name": "Freezzee",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 6,
-            "ability": "Entry: Freeze target and 2 adjacent zombies, if frozen 3 damage"
-          },
-          {
-            "id": 137,
-            "element": "Water",
-            "name": "Froztbite",
-            "rank": "Commander",
-            "type": "Walker",
-            "health": 6,
-            "cost": 4,
-            "ability": "Becomes 6/6 at the start of your next turn."
-          },
-          {
-            "id": 138,
-            "element": "Water",
-            "name": "Zplash",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 6,
-            "ability": "Entry: Deal 1 damage to a random enemy for each water zombie you have in hand."
-          },
-          {
-            "id": 139,
-            "element": "Water",
-            "name": "Zpring",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 5,
-            "ability": "As long as this is in the battleground, you have 1 extra Goo every turn.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "add_goo",
-                "duration": "while_alive"
-              }
-            ]
-          },
-          {
-            "id": 140,
-            "element": "Water",
-            "name": "Maelstrom",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 6,
-            "health": 6,
-            "cost": 8,
-            "ability": "Entry: Shuffle all zombies in the battleground back into their owners' decks."
-          },
-          {
-            "id": 141,
-            "element": "Water",
-            "name": "Tsunami",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 8,
-            "health": 7,
-            "cost": 9,
-            "ability": "Entry: Creates a title wave and 2 damages all enemy targets"
-          },
-          {
-            "id": 142,
-            "element": "None",
-            "name": "Feeble",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Entry: Give an enemy zombie -1 Attack."
-          },
-          {
-            "id": 143,
-            "element": "None",
-            "name": "Drainer",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Opponent has 1 less Goo next turn.",
-            "effects": [
-              {
-                "trigger": "after_entry(1)",
-                "effect": "reduce_goo",
-                "target": "enemy"
-              }
-            ]
-          },
-          {
-            "id": 144,
-            "element": "None",
-            "name": "Drifter",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 1,
-            "health": 2,
-            "cost": 3,
-            "ability": "Entry: Opponent discards a card from hand at random.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "discard_from_hand",
-                "target": "enemy_hand"
-              }
-            ]
-          },
-          {
-            "id": 145,
-            "element": "None",
-            "name": "Trasher",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 2,
-            "health": 2,
-            "cost": 1,
-            "ability": "Entry: Both players discard the top card of their decks.",
-            "effects": [
-              {
-                "trigger": "entry",
-                "effect": "discard_from_top_of_deck",
-                "target": "enemy_deck"
-              }
-            ]
-          },
-          {
-            "id": 146,
-            "element": "None",
-            "name": "Ztalker",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 3,
-            "health": 1,
-            "cost": 1,
-            "ability": "Feral, When this dies, you take 3 damage."
-          },
-          {
-            "id": 147,
-            "element": "None",
-            "name": "Zinge",
-            "rank": "Minion",
-            "type": "Heavy",
-            "damage": 2,
-            "health": 3,
-            "cost": 3,
-            "ability": "Heavy, Weaken 1 to attacking zombie."
-          },
-          {
-            "id": 148,
-            "element": "None",
-            "name": "Doubt",
-            "rank": "Minion",
-            "type": "Walker",
-            "damage": 2,
-            "health": 1,
-            "cost": 2,
-            "ability": "Death: enemy zombies have -1 Attack until the end of your next turn."
-          },
-          {
-            "id": 149,
-            "element": "None",
-            "name": "Faded",
-            "rank": "Minion",
-            "type": "Feral",
-            "damage": 1,
-            "health": 1,
-            "cost": 2,
-            "ability": "Feral, Attack: Weaken 1."
-          },
-          {
-            "id": 150,
-            "element": "None",
-            "name": "Violator",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 3,
-            "cost": 5,
-            "ability": "Entry: Destroy a random enemy zombie that costs 2 or less."
-          },
-          {
-            "id": 151,
-            "element": "None",
-            "name": "Choker",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 2,
-            "health": 4,
-            "cost": 4,
-            "ability": "Entry: Opponent loses 1 Goo."
-          },
-          {
-            "id": 152,
-            "element": "None",
-            "name": "Corrupter",
-            "rank": "Officer",
-            "type": "Walker",
-            "damage": 3,
-            "health": 4,
-            "cost": 5,
-            "ability": "Entry: Weaken 2."
-          },
-          {
-            "id": 153,
-            "element": "None",
-            "name": "Defiler",
-            "rank": "Officer",
-            "type": "Feral",
-            "damage": 3,
-            "health": 4,
-            "cost": 5,
-            "ability": "After this attacks a hero, that hero loses 1 Goo until the end of his next turn."
-          },
-          {
-            "id": 154,
-            "element": "None",
-            "name": "Crippler",
-            "rank": "Officer",
-            "type": "Heavy",
-            "damage": 3,
-            "health": 6,
-            "cost": 4,
-            "ability": "Heavy, Weaken 2 to attacking zombie."
-          },
-          {
-            "id": 155,
-            "element": "None",
-            "name": "Zlendermaz",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 5,
-            "cost": 6,
-            "ability": "Entry: If you have a Void zombie in hand, destroy anenemy zombie."
-          },
-          {
-            "id": 156,
-            "element": "None",
-            "name": "Ztrangler",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 5,
-            "health": 5,
-            "cost": 7,
-            "ability": "Entry: Opponent loses 2 Goo."
-          },
-          {
-            "id": 157,
-            "element": "None",
-            "name": "Delirium",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 4,
-            "health": 4,
-            "cost": 6,
-            "ability": "Death: Opponent discards the top 2 cards of his deck."
-          },
-          {
-            "id": 158,
-            "element": "None",
-            "name": "Fear",
-            "rank": "Commander",
-            "type": "Feral",
-            "damage": 6,
-            "health": 3,
-            "cost": 6,
-            "ability": "Feral, Entry: All opponent zombies' Attack is reduced to 0 until end of turn."
-          },
-          {
-            "id": 159,
-            "element": "None",
-            "name": "Envy",
-            "rank": "Commander",
-            "type": "Walker",
-            "damage": 5,
-            "health": 7,
-            "cost": 6,
-            "ability": "Death: Opponent discards cards from hand until both players have the same number of cards.",
-            "effects": [
-              {
-                "trigger": "death",
-                "effect": "discard_from_hand(enemy.hand.count - friendly.hand.count)"
-              }
-            ]
-          },
-          {
-            "id": 160,
-            "element": "None",
-            "name": "Nightmare",
-            "rank": "General",
-            "type": "Walker",
-            "damage": 6,
-            "health": 6,
-            "cost": 10,
-            "ability": "Entry: Weaken 3 to all enemy zombies."
-          },
-          {
-            "id": 161,
-            "element": "None",
-            "name": "Oblivion",
-            "rank": "General",
-            "type": "Heavy",
-            "damage": 8,
-            "health": 8,
-            "cost": 10,
-            "ability": "Heavy, Death: Destroy all enemy zombies that cost 5 or less in the battleground."
           }
         ]
       }
