@@ -6,3 +6,24 @@
   All = true
   Condition = "contains"
   Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_card -k {{index $.AccountPrivKeyPathList 0}}"
+  Condition = "contains"
+  Expected = ["card library size: 8"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  Condition = "contains"
+  Expected = ["deck created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d NewDeck"
+  Condition = "contains"
+  Expected = ["deck name: NewDeck"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_decks -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  Condition = "contains"
+  Expected = ["deck size: 2"]
+
