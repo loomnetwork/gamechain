@@ -62,16 +62,15 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
-	DefaultHeroes: []*zb.HeroInfo{
+	DefaultHeroes: []*zb.Hero{
 		{
 			HeroId:     1,
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:           "Deffence",
-				SkillType:       4,
+				Skill:           4,
 				SkillTargetType: 0,
-				Cost:            2,
 				Value:           2,
 			}},
 		},
@@ -422,7 +421,7 @@ func TestCardOperations(t *testing.T) {
 	})
 
 	t.Run("ListHero", func(t *testing.T) {
-		heroResponse, err := c.ListHero(ctx, &zb.ListHeroRequest{})
+		heroResponse, err := c.ListHeroes(ctx, &zb.ListHeroRequest{})
 
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(heroResponse.Heroes))
