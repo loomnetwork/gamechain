@@ -91,45 +91,41 @@ message Hero {
     string icon             = 2;
     string name             = 3;
     int32 element           = 4;
+
+    int64 experience = 5;
+    int64 level = 6;
+    repeated Skill skills = 7;
+
+    int32 primary_skill = 8;
+    int32 secondary_skill = 9;
 }
 
-message HeroInfo {
-    int64 hero_id = 1;
-    int64 experience = 2;
-    int64 level = 3;
-    repeated Skill skills = 4;
-}
-
-message HeroInfoList {
-    repeated HeroInfo heroes = 1;
-}
-
-message GetHeroInfoListRequest {
+message ListHeroesForUserRequest {
     string user_id = 1;
 }
 
-message GetHeroInfoListResponse {
-    repeated HeroInfo heroes = 1;
+message ListHeroesForUserResponse {
+    repeated Hero heroes  = 1;
 }
 
-message AddExperienceRequest {
+message AddHeroExperienceRequest {
     string user_id = 1;
     int64 hero_id = 2;
     int64 experience = 3;
 }
 
-message AddExperienceResponse {
+message AddHeroExperienceResponse {
     int64 hero_id = 1;
     int64 experience = 2;
 }
 
-message GetHeroInfoRequest {
+message GetHeroForUserRequest {
     string user_id = 1;
     int64 hero_id = 2;
 }
 
-message GetHeroInfoResponse {
-    HeroInfo hero = 1;
+message GetHeroForUserResponse {
+    Hero hero = 1;
 }
 
 message GetHeroSkillsRequest {
@@ -142,14 +138,17 @@ message GetHeroSkillsResponse {
     repeated Skill skills = 2;
 }
 
-
-
 message Skill {
     string title          = 1;
-    int32 skillType       = 2;
+    int32 skill           = 2;
     int32 skillTargetType = 3;
-    int32 cost            = 4;
-    int32 value           = 5;
+    int32 value           = 4;
+
+    int32 cooldown = 5;
+    int32 initial_cooldown = 6;
+
+    int32 attack = 7;
+    int32 health = 8;
 }
 
 message HeroList {
@@ -169,7 +168,7 @@ message DeckList {
 message InitRequest {
     repeated Deck default_decks                = 1;
     repeated CardCollection default_collection = 2;
-    repeated HeroInfo default_heroes           = 3;
+    repeated Hero default_heroes           = 3;
     repeated Card cards                        = 4;
     repeated Hero heroes                       = 5;
 }
