@@ -9,14 +9,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var getHeroInfoCmdArgs struct {
+var getHeroForUserCmdArgs struct {
 	userID string
 	heroID int64
 }
 
-var getHeroInfoCmd = &cobra.Command{
-	Use:   "get_hero_info",
-	Short: "get hero info",
+var getHeroForUserCmd = &cobra.Command{
+	Use:   "get_hero_user",
+	Short: "get hero for user",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -24,13 +24,13 @@ var getHeroInfoCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetHeroInfoRequest{
-			UserId: getHeroInfoCmdArgs.userID,
-			HeroId: getHeroInfoCmdArgs.heroID,
+		req := zb.GetHeroForUserRequest{
+			UserId: getHeroForUserCmdArgs.userID,
+			HeroId: getHeroForUserCmdArgs.heroID,
 		}
-		result := zb.GetHeroInfoResponse{}
+		result := zb.GetHeroForUserResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("GetHeroInfo", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("GetHeroForUser", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
@@ -46,8 +46,8 @@ var getHeroInfoCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getHeroInfoCmd)
+	rootCmd.AddCommand(getHeroForUserCmd)
 
-	getHeroInfoCmd.Flags().StringVarP(&getHeroInfoCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	getHeroInfoCmd.Flags().Int64VarP(&getHeroInfoCmdArgs.heroID, "heroId", "", 1, "heroID of hero")
+	getHeroForUserCmd.Flags().StringVarP(&getHeroForUserCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	getHeroForUserCmd.Flags().Int64VarP(&getHeroForUserCmdArgs.heroID, "heroId", "", 1, "heroID of hero")
 }
