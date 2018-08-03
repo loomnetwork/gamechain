@@ -308,9 +308,8 @@
             "skills": [
               {
                 "title": "Deffence",
-                "skillType": 4,
+                "skill": 4,
                 "skillTargetType": 0,
-                "cost": 2,
                 "value": 2
               }
             ]
@@ -322,9 +321,8 @@
             "skills": [
               {
                 "title": "Fireball",
-                "skillType": 2,
+                "skill": 2,
                 "skillTargetType": 0,
-                "cost": 2,
                 "value": 1
               }
             ]
@@ -336,9 +334,47 @@
             "skills": [
               {
                 "title": "Freeze target for 1 turn",
-                "skillType": 0,
+                "skill": 0,
                 "skillTargetType": 0,
-                "cost": 2,
+                "value": 1
+              }
+            ]
+          },
+          {
+            "heroId": 3,
+            "experience": 0,
+            "level": 1,
+            "skills": [
+              {
+                "title": "PUSH",
+                "skill": 5,
+                "skillTargetType": 0,
+                "value": 1
+              }
+            ]
+          },
+          {
+            "heroId": 4,
+            "experience": 5,
+            "level": 1,
+            "skills": [
+              {
+                "title": "POISON DART",
+                "skill": 5,
+                "skillTargetType": 0,
+                "value": 1
+              }
+            ]
+          },
+          {
+            "heroId": 5,
+            "experience": 2,
+            "level": 1,
+            "skills": [
+              {
+                "title": "HEALING TOUCH",
+                "skill": 5,
+                "skillTargetType": 0,
                 "value": 1
               }
             ]
