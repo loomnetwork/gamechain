@@ -20,12 +20,12 @@ var addHeroExperienceCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := zb.AddExperienceRequest{
+		req := zb.AddHeroExperienceRequest{
 			UserId:     addHeroExperienceCmdArgs.userID,
 			HeroId:     addHeroExperienceCmdArgs.heroID,
 			Experience: addHeroExperienceCmdArgs.experience,
 		}
-		result := zb.AddExperienceResponse{}
+		result := zb.AddHeroExperienceResponse{}
 
 		_, err := commonTxObjs.contract.Call("AddHeroExperience", &req, signer, &result)
 		if err != nil {
