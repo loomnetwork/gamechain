@@ -64,6 +64,17 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultHeroes: []*zb.Hero{
 		{
+			HeroId:     0,
+			Experience: 0,
+			Level:      1,
+			Skills: []*zb.Skill{{
+				Title:           "Attack",
+				Skill:           3,
+				SkillTargetType: 0,
+				Value:           1,
+			}},
+		},
+		{
 			HeroId:     1,
 			Experience: 0,
 			Level:      2,
@@ -426,4 +437,96 @@ func TestCardOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(heroResponse.Heroes))
 	})
+}
+
+func TestHeroOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "7696b824516b283f81ea1747fbddbe73fe4b5fce0eac0728e47de41d8e306701"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId: "HeroUser",
+		Image:  "PathToImage",
+	}, t)
+
+	t.Run("ListHeroesForUser", func(t *testing.T) {
+		heroesResponse, err := c.ListHeroesForUser(ctx, &zb.ListHeroesForUserRequest{
+			UserId: "HeroUser",
+		})
+
+		assert.Nil(t, err)
+		assert.Equal(t, 2, len(heroesResponse.Heroes))
+	})
+
+	t.Run("GetHeroForUser", func(t *testing.T) {
+		heroResponse, err := c.GetHeroForUser(ctx, &zb.GetHeroForUserRequest{
+			UserId: "HeroUser",
+			HeroId: 1,
+		})
+
+		assert.Nil(t, err)
+		assert.NotNil(t, heroResponse.Hero)
+	})
+
+	t.Run("GetHeroForUser (Hero not exists)", func(t *testing.T) {
+		_, err := c.GetHeroForUser(ctx, &zb.GetHeroForUserRequest{
+			UserId: "HeroUser",
+			HeroId: 10,
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("AddHeroExperience", func(t *testing.T) {
+		resp, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     0,
+			Experience: 2,
+		})
+
+		assert.Nil(t, err)
+		assert.Equal(t, int64(2), resp.Experience)
+	})
+
+	t.Run("AddHeroExperience (Negative experience)", func(t *testing.T) {
+		_, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     0,
+			Experience: -2,
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("AddHeroExperience (Non existant hero)", func(t *testing.T) {
+		_, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     100,
+			Experience: 2,
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("GetHeroSkills", func(t *testing.T) {
+		skillResponse, err := c.GetHeroSkills(ctx, &zb.GetHeroSkillsRequest{
+			UserId: "HeroUser",
+			HeroId: 0,
+		})
+
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(skillResponse.Skills))
+	})
+
+	t.Run("GetHeroSkills (Non existant hero)", func(t *testing.T) {
+		_, err := c.GetHeroSkills(ctx, &zb.GetHeroSkillsRequest{
+			UserId: "HeroUser",
+			HeroId: 100,
+		})
+
+		assert.NotNil(t, err)
+	})
+
 }
