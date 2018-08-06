@@ -38,6 +38,7 @@ var getHeroSkillsCmd = &cobra.Command{
 		fmt.Printf("hero_id: %d\n", result.HeroId)
 		for _, skill := range result.Skills {
 			fmt.Printf("skill_title: %s\n", skill.Title)
+			fmt.Println(skill.SkillTargetType)
 		}
 		return nil
 	},
