@@ -14,7 +14,7 @@ var listHeroForUserCmdArgs struct {
 }
 
 var listHeroForUserCmd = &cobra.Command{
-	Use:   "list_hero_user",
+	Use:   "list_hero",
 	Short: "list hero for user",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
@@ -23,12 +23,12 @@ var listHeroForUserCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.ListHeroesForUserRequest{
+		req := zb.ListHeroesRequest{
 			UserId: listHeroForUserCmdArgs.userID,
 		}
-		result := zb.ListHeroesForUserResponse{}
+		result := zb.ListHeroesResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("ListHeroesForUser", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("ListHeroes", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
