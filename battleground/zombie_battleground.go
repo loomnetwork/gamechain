@@ -378,16 +378,16 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 }
 
 // ListHero return all the heros
-func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroRequest) (*zb.ListHeroResponse, error) {
+func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb.ListHeroLibraryRequest) (*zb.ListHeroLibraryResponse, error) {
 	var heroList zb.HeroList
 	if err := ctx.Get(heroListKey, &heroList); err != nil {
 		return nil, err
 	}
 
-	return &zb.ListHeroResponse{Heroes: heroList.Heroes}, nil
+	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil
 }
 
-func (z *ZombieBattleground) ListHeroesForUser(ctx contract.StaticContext, req *zb.ListHeroesForUserRequest) (*zb.ListHeroesForUserResponse, error) {
+func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroesRequest) (*zb.ListHeroesResponse, error) {
 	userKeySpace := NewUserKeySpace(req.UserId)
 	var heroes zb.HeroList
 
@@ -395,10 +395,10 @@ func (z *ZombieBattleground) ListHeroesForUser(ctx contract.StaticContext, req *
 		return nil, err
 	}
 
-	return &zb.ListHeroesForUserResponse{Heroes: heroes.Heroes}, nil
+	return &zb.ListHeroesResponse{Heroes: heroes.Heroes}, nil
 }
 
-func (z *ZombieBattleground) GetHeroForUser(ctx contract.StaticContext, req *zb.GetHeroForUserRequest) (*zb.GetHeroForUserResponse, error) {
+func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHeroRequest) (*zb.GetHeroResponse, error) {
 	userKeySpace := NewUserKeySpace(req.UserId)
 	var heroes zb.HeroList
 
@@ -411,7 +411,7 @@ func (z *ZombieBattleground) GetHeroForUser(ctx contract.StaticContext, req *zb.
 		return nil, contract.ErrNotFound
 	}
 
-	return &zb.GetHeroForUserResponse{Hero: hero}, nil
+	return &zb.GetHeroResponse{Hero: hero}, nil
 
 }
 
