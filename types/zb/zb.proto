@@ -139,16 +139,27 @@ message GetHeroSkillsResponse {
 }
 
 message Skill {
-    string title          = 1;
-    int32 skill           = 2;
-    int32 skillTargetType = 3;
-    int32 value           = 4;
+    enum SkillTargetType {
+         NONE = 0;
+         PLAYER = 1;
+         PLAYER_CARD = 2;
+         PLAYER_ALL_CARDS = 3;
+         OPPONENT = 4;
+         OPPONENT_CARD = 5;
+         OPPONENT_ALL_CARDS = 6;
+         ALL_CARDS = 7;
+    }
 
-    int32 cooldown = 5;
-    int32 initial_cooldown = 6;
+    string title                              = 1;
+    int32 skill                               = 2;
+    repeated SkillTargetType skill_target_type = 3;
+    int32 value                               = 4;
 
-    int32 attack = 7;
-    int32 health = 8;
+    int32 cooldown                            = 5;
+    int32 initial_cooldown                    = 6;
+
+    int32 attack                              = 7;
+    int32 health                              = 8;
 }
 
 message HeroList {
