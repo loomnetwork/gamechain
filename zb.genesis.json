@@ -309,7 +309,7 @@
               {
                 "title": "Deffence",
                 "skill": 4,
-                "skillTargetType": 0,
+                "skillTargetType": [0],
                 "value": 2
               }
             ]
@@ -322,7 +322,7 @@
               {
                 "title": "Fireball",
                 "skill": 2,
-                "skillTargetType": 0,
+                "skillTargetType": [1,2],
                 "value": 1
               }
             ]
@@ -335,7 +335,7 @@
               {
                 "title": "Freeze target for 1 turn",
                 "skill": 0,
-                "skillTargetType": 0,
+                "skillTargetType": [0],
                 "value": 1
               }
             ]
@@ -348,7 +348,7 @@
               {
                 "title": "PUSH",
                 "skill": 5,
-                "skillTargetType": 0,
+                "skillTargetType": [1,2],
                 "value": 1
               }
             ]
@@ -361,7 +361,7 @@
               {
                 "title": "POISON DART",
                 "skill": 5,
-                "skillTargetType": 0,
+                "skillTargetType": [0],
                 "value": 1
               }
             ]
@@ -374,7 +374,7 @@
               {
                 "title": "HEALING TOUCH",
                 "skill": 5,
-                "skillTargetType": 0,
+                "skillTargetType": [1,2],
                 "value": 1
               }
             ]
