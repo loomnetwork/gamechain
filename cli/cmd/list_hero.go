@@ -9,13 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var listHeroInfoCmdArgs struct {
+var listHeroForUserCmdArgs struct {
 	userID string
 }
 
-var listHeroInfoCmd = &cobra.Command{
-	Use:   "list_hero_info",
-	Short: "list hero info",
+var listHeroForUserCmd = &cobra.Command{
+	Use:   "list_hero",
+	Short: "list hero for user",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -23,12 +23,12 @@ var listHeroInfoCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetHeroInfoListRequest{
-			UserId: listHeroInfoCmdArgs.userID,
+		req := zb.ListHeroesRequest{
+			UserId: listHeroForUserCmdArgs.userID,
 		}
-		result := zb.GetHeroInfoListResponse{}
+		result := zb.ListHeroesResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("ListHeroInfo", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("ListHeroes", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ var listHeroInfoCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(listHeroInfoCmd)
+	rootCmd.AddCommand(listHeroForUserCmd)
 
-	listHeroInfoCmd.Flags().StringVarP(&listHeroInfoCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	listHeroForUserCmd.Flags().StringVarP(&listHeroForUserCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 }
