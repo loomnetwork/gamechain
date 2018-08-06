@@ -431,8 +431,8 @@ func TestCardOperations(t *testing.T) {
 		assert.Equal(t, 2, len(cardResponse.Sets[0].Cards))
 	})
 
-	t.Run("ListHero", func(t *testing.T) {
-		heroResponse, err := c.ListHeroes(ctx, &zb.ListHeroRequest{})
+	t.Run("ListHeroLibrary", func(t *testing.T) {
+		heroResponse, err := c.ListHeroLibrary(ctx, &zb.ListHeroLibraryRequest{})
 
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(heroResponse.Heroes))
@@ -451,8 +451,8 @@ func TestHeroOperations(t *testing.T) {
 		Image:  "PathToImage",
 	}, t)
 
-	t.Run("ListHeroesForUser", func(t *testing.T) {
-		heroesResponse, err := c.ListHeroesForUser(ctx, &zb.ListHeroesForUserRequest{
+	t.Run("ListHeroes", func(t *testing.T) {
+		heroesResponse, err := c.ListHeroes(ctx, &zb.ListHeroesRequest{
 			UserId: "HeroUser",
 		})
 
@@ -460,8 +460,8 @@ func TestHeroOperations(t *testing.T) {
 		assert.Equal(t, 2, len(heroesResponse.Heroes))
 	})
 
-	t.Run("GetHeroForUser", func(t *testing.T) {
-		heroResponse, err := c.GetHeroForUser(ctx, &zb.GetHeroForUserRequest{
+	t.Run("GetHero", func(t *testing.T) {
+		heroResponse, err := c.GetHero(ctx, &zb.GetHeroRequest{
 			UserId: "HeroUser",
 			HeroId: 1,
 		})
@@ -470,8 +470,8 @@ func TestHeroOperations(t *testing.T) {
 		assert.NotNil(t, heroResponse.Hero)
 	})
 
-	t.Run("GetHeroForUser (Hero not exists)", func(t *testing.T) {
-		_, err := c.GetHeroForUser(ctx, &zb.GetHeroForUserRequest{
+	t.Run("GetHero (Hero not exists)", func(t *testing.T) {
+		_, err := c.GetHero(ctx, &zb.GetHeroRequest{
 			UserId: "HeroUser",
 			HeroId: 10,
 		})
