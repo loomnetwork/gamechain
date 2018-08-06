@@ -101,11 +101,11 @@ message Hero {
     int32 secondary_skill = 9;
 }
 
-message ListHeroesForUserRequest {
+message ListHeroesRequest {
     string user_id = 1;
 }
 
-message ListHeroesForUserResponse {
+message ListHeroesResponse {
     repeated Hero heroes  = 1;
 }
 
@@ -120,12 +120,12 @@ message AddHeroExperienceResponse {
     int64 experience = 2;
 }
 
-message GetHeroForUserRequest {
+message GetHeroRequest {
     string user_id = 1;
     int64 hero_id = 2;
 }
 
-message GetHeroForUserResponse {
+message GetHeroResponse {
     Hero hero = 1;
 }
 
@@ -245,10 +245,10 @@ message ListCardLibraryResponse {
     repeated CardSet sets = 1;
 }
 
-message ListHeroRequest {
+message ListHeroLibraryRequest {
 }
 
-message ListHeroResponse {
+message ListHeroLibraryResponse {
     repeated Hero heroes  = 1;
 }
 
