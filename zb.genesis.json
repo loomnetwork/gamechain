@@ -308,7 +308,7 @@
             "skills": [
               {
                 "title": "Deffence",
-                "skill": "Skill0",
+                "skill": "HARDEN",
                 "skillTargetType": [0],
                 "value": 2
               }
@@ -321,7 +321,7 @@
             "skills": [
               {
                 "title": "Fireball",
-                "skill": "Skill1",
+                "skill": "FIRE_BOLT",
                 "skillTargetType": [1,2],
                 "value": 1
               }
@@ -334,7 +334,7 @@
             "skills": [
               {
                 "title": "Freeze target for 1 turn",
-                "skill": "Skill2",
+                "skill": "FREEZE",
                 "skillTargetType": [0],
                 "value": 1
               }
@@ -347,7 +347,7 @@
             "skills": [
               {
                 "title": "PUSH",
-                "skill": "Skill3",
+                "skill": "PUSH",
                 "skillTargetType": [1,2],
                 "value": 1
               }
@@ -360,7 +360,7 @@
             "skills": [
               {
                 "title": "POISON DART",
-                "skill": "Skill4",
+                "skill": "POISON_DART",
                 "skillTargetType": [0],
                 "value": 1
               }
@@ -373,7 +373,7 @@
             "skills": [
               {
                 "title": "HEALING TOUCH",
-                "skill": "Skill5",
+                "skill": "HEALING_TOUCH",
                 "skillTargetType": [1,2],
                 "value": 1
               }
