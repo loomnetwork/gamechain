@@ -54,52 +54,52 @@ namespace Loom.Unity3d.Zb {
             "EgwKBGljb24YAiABKAkSDAoEbmFtZRgDIAEoCRIPCgdlbGVtZW50GAQgASgJ",
             "EhIKCmV4cGVyaWVuY2UYBSABKAMSDQoFbGV2ZWwYBiABKAMSFgoGc2tpbGxz",
             "GAcgAygLMgYuU2tpbGwSFQoNcHJpbWFyeV9za2lsbBgIIAEoBRIXCg9zZWNv",
-            "bmRhcnlfc2tpbGwYCSABKAUiKwoYTGlzdEhlcm9lc0ZvclVzZXJSZXF1ZXN0",
-            "Eg8KB3VzZXJfaWQYASABKAkiMgoZTGlzdEhlcm9lc0ZvclVzZXJSZXNwb25z",
-            "ZRIVCgZoZXJvZXMYASADKAsyBS5IZXJvIlAKGEFkZEhlcm9FeHBlcmllbmNl",
-            "UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEg8KB2hlcm9faWQYAiABKAMSEgoK",
-            "ZXhwZXJpZW5jZRgDIAEoAyJAChlBZGRIZXJvRXhwZXJpZW5jZVJlc3BvbnNl",
-            "Eg8KB2hlcm9faWQYASABKAMSEgoKZXhwZXJpZW5jZRgCIAEoAyI5ChVHZXRI",
-            "ZXJvRm9yVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIPCgdoZXJvX2lk",
-            "GAIgASgDIi0KFkdldEhlcm9Gb3JVc2VyUmVzcG9uc2USEwoEaGVybxgBIAEo",
-            "CzIFLkhlcm8iOAoUR2V0SGVyb1NraWxsc1JlcXVlc3QSDwoHdXNlcl9pZBgB",
-            "IAEoCRIPCgdoZXJvX2lkGAIgASgDIkAKFUdldEhlcm9Ta2lsbHNSZXNwb25z",
-            "ZRIPCgdoZXJvX2lkGAEgASgDEhYKBnNraWxscxgCIAMoCzIGLlNraWxsIswC",
-            "CgVTa2lsbBINCgV0aXRsZRgBIAEoCRINCgVza2lsbBgCIAEoCRIxChFza2ls",
-            "bF90YXJnZXRfdHlwZRgDIAMoDjIWLlNraWxsLlNraWxsVGFyZ2V0VHlwZRIN",
-            "CgV2YWx1ZRgEIAEoBRIQCghjb29sZG93bhgFIAEoBRIYChBpbml0aWFsX2Nv",
-            "b2xkb3duGAYgASgFEg4KBmF0dGFjaxgHIAEoBRIOCgZoZWFsdGgYCCABKAUi",
-            "lgEKD1NraWxsVGFyZ2V0VHlwZRIICgROT05FEAASCgoGUExBWUVSEAESDwoL",
-            "UExBWUVSX0NBUkQQAhIUChBQTEFZRVJfQUxMX0NBUkRTEAMSDAoIT1BQT05F",
-            "TlQQBBIRCg1PUFBPTkVOVF9DQVJEEAUSFgoST1BQT05FTlRfQUxMX0NBUkRT",
-            "EAYSDQoJQUxMX0NBUkRTEAciIQoISGVyb0xpc3QSFQoGaGVyb2VzGAEgAygL",
-            "MgUuSGVybyI0ChJDYXJkQ29sbGVjdGlvbkxpc3QSHgoFY2FyZHMYASADKAsy",
-            "Dy5DYXJkQ29sbGVjdGlvbiIgCghEZWNrTGlzdBIUCgVkZWNrcxgBIAMoCzIF",
-            "LkRlY2sipAEKC0luaXRSZXF1ZXN0EhwKDWRlZmF1bHRfZGVja3MYASADKAsy",
-            "BS5EZWNrEisKEmRlZmF1bHRfY29sbGVjdGlvbhgCIAMoCzIPLkNhcmRDb2xs",
-            "ZWN0aW9uEh0KDmRlZmF1bHRfaGVyb2VzGAMgAygLMgUuSGVybxIUCgVjYXJk",
-            "cxgEIAMoCzIFLkNhcmQSFQoGaGVyb2VzGAUgAygLMgUuSGVybyLpAQoUVXBz",
-            "ZXJ0QWNjb3VudFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIdChVwaG9uZV9u",
-            "dW1iZXJfdmVyaWZpZWQYAiABKAgSFwoPcmV3YXJkX3JlZGVlbWVkGAMgASgI",
-            "EhYKDmlzX2tpY2tzdGFydGVyGAQgASgIEg0KBWltYWdlGAUgASgJEhoKEmVt",
-            "YWlsX25vdGlmaWNhdGlvbhgGIAEoCBIRCgllbG9fc2NvcmUYByABKAMSFAoM",
-            "Y3VycmVudF90aWVyGAggASgFEhwKFGdhbWVfbWVtYmVyc2hpcF90aWVyGAkg",
-            "ASgFIiQKEUdldEFjY291bnRSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiNAoO",
-            "R2V0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIRCglkZWNrX25hbWUY",
-            "AiABKAkiJgoPR2V0RGVja1Jlc3BvbnNlEhMKBGRlY2sYAiABKAsyBS5EZWNr",
-            "IjkKEUNyZWF0ZURlY2tSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVj",
-            "axgCIAEoCzIFLkRlY2siNwoRRGVsZXRlRGVja1JlcXVlc3QSDwoHdXNlcl9p",
-            "ZBgBIAEoCRIRCglkZWNrX25hbWUYAiABKAkiNwoPRWRpdERlY2tSZXF1ZXN0",
-            "Eg8KB3VzZXJfaWQYASABKAkSEwoEZGVjaxgCIAEoCzIFLkRlY2siNgoNRGVj",
-            "a3NSZXNwb25zZRIPCgd1c2VyX2lkGAEgASgJEhQKBWRlY2tzGAIgAygLMgUu",
-            "RGVjayIjChBMaXN0RGVja3NSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiKQoR",
-            "TGlzdERlY2tzUmVzcG9uc2USFAoFZGVja3MYASADKAsyBS5EZWNrIhgKFkxp",
-            "c3RDYXJkTGlicmFyeVJlcXVlc3QiMQoXTGlzdENhcmRMaWJyYXJ5UmVzcG9u",
-            "c2USFgoEc2V0cxgBIAMoCzIILkNhcmRTZXQiEQoPTGlzdEhlcm9SZXF1ZXN0",
-            "IikKEExpc3RIZXJvUmVzcG9uc2USFQoGaGVyb2VzGAEgAygLMgUuSGVybyIn",
-            "ChRHZXRDb2xsZWN0aW9uUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJIjcKFUdl",
-            "dENvbGxlY3Rpb25SZXNwb25zZRIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xs",
-            "ZWN0aW9uQhKqAg9Mb29tLlVuaXR5M2QuWmJiBnByb3RvMw=="));
+            "bmRhcnlfc2tpbGwYCSABKAUiJAoRTGlzdEhlcm9lc1JlcXVlc3QSDwoHdXNl",
+            "cl9pZBgBIAEoCSIrChJMaXN0SGVyb2VzUmVzcG9uc2USFQoGaGVyb2VzGAEg",
+            "AygLMgUuSGVybyJQChhBZGRIZXJvRXhwZXJpZW5jZVJlcXVlc3QSDwoHdXNl",
+            "cl9pZBgBIAEoCRIPCgdoZXJvX2lkGAIgASgDEhIKCmV4cGVyaWVuY2UYAyAB",
+            "KAMiQAoZQWRkSGVyb0V4cGVyaWVuY2VSZXNwb25zZRIPCgdoZXJvX2lkGAEg",
+            "ASgDEhIKCmV4cGVyaWVuY2UYAiABKAMiMgoOR2V0SGVyb1JlcXVlc3QSDwoH",
+            "dXNlcl9pZBgBIAEoCRIPCgdoZXJvX2lkGAIgASgDIiYKD0dldEhlcm9SZXNw",
+            "b25zZRITCgRoZXJvGAEgASgLMgUuSGVybyI4ChRHZXRIZXJvU2tpbGxzUmVx",
+            "dWVzdBIPCgd1c2VyX2lkGAEgASgJEg8KB2hlcm9faWQYAiABKAMiQAoVR2V0",
+            "SGVyb1NraWxsc1Jlc3BvbnNlEg8KB2hlcm9faWQYASABKAMSFgoGc2tpbGxz",
+            "GAIgAygLMgYuU2tpbGwizAIKBVNraWxsEg0KBXRpdGxlGAEgASgJEg0KBXNr",
+            "aWxsGAIgASgJEjEKEXNraWxsX3RhcmdldF90eXBlGAMgAygOMhYuU2tpbGwu",
+            "U2tpbGxUYXJnZXRUeXBlEg0KBXZhbHVlGAQgASgFEhAKCGNvb2xkb3duGAUg",
+            "ASgFEhgKEGluaXRpYWxfY29vbGRvd24YBiABKAUSDgoGYXR0YWNrGAcgASgF",
+            "Eg4KBmhlYWx0aBgIIAEoBSKWAQoPU2tpbGxUYXJnZXRUeXBlEggKBE5PTkUQ",
+            "ABIKCgZQTEFZRVIQARIPCgtQTEFZRVJfQ0FSRBACEhQKEFBMQVlFUl9BTExf",
+            "Q0FSRFMQAxIMCghPUFBPTkVOVBAEEhEKDU9QUE9ORU5UX0NBUkQQBRIWChJP",
+            "UFBPTkVOVF9BTExfQ0FSRFMQBhINCglBTExfQ0FSRFMQByIhCghIZXJvTGlz",
+            "dBIVCgZoZXJvZXMYASADKAsyBS5IZXJvIjQKEkNhcmRDb2xsZWN0aW9uTGlz",
+            "dBIeCgVjYXJkcxgBIAMoCzIPLkNhcmRDb2xsZWN0aW9uIiAKCERlY2tMaXN0",
+            "EhQKBWRlY2tzGAEgAygLMgUuRGVjayKkAQoLSW5pdFJlcXVlc3QSHAoNZGVm",
+            "YXVsdF9kZWNrcxgBIAMoCzIFLkRlY2sSKwoSZGVmYXVsdF9jb2xsZWN0aW9u",
+            "GAIgAygLMg8uQ2FyZENvbGxlY3Rpb24SHQoOZGVmYXVsdF9oZXJvZXMYAyAD",
+            "KAsyBS5IZXJvEhQKBWNhcmRzGAQgAygLMgUuQ2FyZBIVCgZoZXJvZXMYBSAD",
+            "KAsyBS5IZXJvIukBChRVcHNlcnRBY2NvdW50UmVxdWVzdBIPCgd1c2VyX2lk",
+            "GAEgASgJEh0KFXBob25lX251bWJlcl92ZXJpZmllZBgCIAEoCBIXCg9yZXdh",
+            "cmRfcmVkZWVtZWQYAyABKAgSFgoOaXNfa2lja3N0YXJ0ZXIYBCABKAgSDQoF",
+            "aW1hZ2UYBSABKAkSGgoSZW1haWxfbm90aWZpY2F0aW9uGAYgASgIEhEKCWVs",
+            "b19zY29yZRgHIAEoAxIUCgxjdXJyZW50X3RpZXIYCCABKAUSHAoUZ2FtZV9t",
+            "ZW1iZXJzaGlwX3RpZXIYCSABKAUiJAoRR2V0QWNjb3VudFJlcXVlc3QSDwoH",
+            "dXNlcl9pZBgBIAEoCSI0Cg5HZXREZWNrUmVxdWVzdBIPCgd1c2VyX2lkGAEg",
+            "ASgJEhEKCWRlY2tfbmFtZRgCIAEoCSImCg9HZXREZWNrUmVzcG9uc2USEwoE",
+            "ZGVjaxgCIAEoCzIFLkRlY2siOQoRQ3JlYXRlRGVja1JlcXVlc3QSDwoHdXNl",
+            "cl9pZBgBIAEoCRITCgRkZWNrGAIgASgLMgUuRGVjayI3ChFEZWxldGVEZWNr",
+            "UmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhEKCWRlY2tfbmFtZRgCIAEoCSI3",
+            "Cg9FZGl0RGVja1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRITCgRkZWNrGAIg",
+            "ASgLMgUuRGVjayI2Cg1EZWNrc1Jlc3BvbnNlEg8KB3VzZXJfaWQYASABKAkS",
+            "FAoFZGVja3MYAiADKAsyBS5EZWNrIiMKEExpc3REZWNrc1JlcXVlc3QSDwoH",
+            "dXNlcl9pZBgBIAEoCSIpChFMaXN0RGVja3NSZXNwb25zZRIUCgVkZWNrcxgB",
+            "IAMoCzIFLkRlY2siGAoWTGlzdENhcmRMaWJyYXJ5UmVxdWVzdCIxChdMaXN0",
+            "Q2FyZExpYnJhcnlSZXNwb25zZRIWCgRzZXRzGAEgAygLMgguQ2FyZFNldCIY",
+            "ChZMaXN0SGVyb0xpYnJhcnlSZXF1ZXN0IjAKF0xpc3RIZXJvTGlicmFyeVJl",
+            "c3BvbnNlEhUKBmhlcm9lcxgBIAMoCzIFLkhlcm8iJwoUR2V0Q29sbGVjdGlv",
+            "blJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCSI3ChVHZXRDb2xsZWN0aW9uUmVz",
+            "cG9uc2USHgoFY2FyZHMYASADKAsyDy5DYXJkQ29sbGVjdGlvbkISqgIPTG9v",
+            "bS5Vbml0eTNkLlpiYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -115,12 +115,12 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardSet), global::Loom.Unity3d.Zb.CardSet.Parser, new[]{ "Name", "Cards" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.CardLibrary), global::Loom.Unity3d.Zb.CardLibrary.Parser, new[]{ "Sets" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Hero), global::Loom.Unity3d.Zb.Hero.Parser, new[]{ "HeroId", "Icon", "Name", "Element", "Experience", "Level", "Skills", "PrimarySkill", "SecondarySkill" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroesForUserRequest), global::Loom.Unity3d.Zb.ListHeroesForUserRequest.Parser, new[]{ "UserId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroesForUserResponse), global::Loom.Unity3d.Zb.ListHeroesForUserResponse.Parser, new[]{ "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroesRequest), global::Loom.Unity3d.Zb.ListHeroesRequest.Parser, new[]{ "UserId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroesResponse), global::Loom.Unity3d.Zb.ListHeroesResponse.Parser, new[]{ "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddHeroExperienceRequest), global::Loom.Unity3d.Zb.AddHeroExperienceRequest.Parser, new[]{ "UserId", "HeroId", "Experience" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.AddHeroExperienceResponse), global::Loom.Unity3d.Zb.AddHeroExperienceResponse.Parser, new[]{ "HeroId", "Experience" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroForUserRequest), global::Loom.Unity3d.Zb.GetHeroForUserRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroForUserResponse), global::Loom.Unity3d.Zb.GetHeroForUserResponse.Parser, new[]{ "Hero" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroRequest), global::Loom.Unity3d.Zb.GetHeroRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroResponse), global::Loom.Unity3d.Zb.GetHeroResponse.Parser, new[]{ "Hero" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroSkillsRequest), global::Loom.Unity3d.Zb.GetHeroSkillsRequest.Parser, new[]{ "UserId", "HeroId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetHeroSkillsResponse), global::Loom.Unity3d.Zb.GetHeroSkillsResponse.Parser, new[]{ "HeroId", "Skills" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.Skill), global::Loom.Unity3d.Zb.Skill.Parser, new[]{ "Title", "Skill_", "SkillTargetType", "Value", "Cooldown", "InitialCooldown", "Attack", "Health" }, null, new[]{ typeof(global::Loom.Unity3d.Zb.Skill.Types.SkillTargetType) }, null),
@@ -140,8 +140,8 @@ namespace Loom.Unity3d.Zb {
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListDecksResponse), global::Loom.Unity3d.Zb.ListDecksResponse.Parser, new[]{ "Decks" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryRequest), global::Loom.Unity3d.Zb.ListCardLibraryRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListCardLibraryResponse), global::Loom.Unity3d.Zb.ListCardLibraryResponse.Parser, new[]{ "Sets" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroRequest), global::Loom.Unity3d.Zb.ListHeroRequest.Parser, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroResponse), global::Loom.Unity3d.Zb.ListHeroResponse.Parser, new[]{ "Heroes" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroLibraryRequest), global::Loom.Unity3d.Zb.ListHeroLibraryRequest.Parser, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.ListHeroLibraryResponse), global::Loom.Unity3d.Zb.ListHeroLibraryResponse.Parser, new[]{ "Heroes" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetCollectionRequest), global::Loom.Unity3d.Zb.GetCollectionRequest.Parser, new[]{ "UserId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Loom.Unity3d.Zb.GetCollectionResponse), global::Loom.Unity3d.Zb.GetCollectionResponse.Parser, new[]{ "Cards" }, null, null, null)
           }));
@@ -3004,11 +3004,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class ListHeroesForUserRequest : pb::IMessage<ListHeroesForUserRequest> {
-    private static readonly pb::MessageParser<ListHeroesForUserRequest> _parser = new pb::MessageParser<ListHeroesForUserRequest>(() => new ListHeroesForUserRequest());
+  public sealed partial class ListHeroesRequest : pb::IMessage<ListHeroesRequest> {
+    private static readonly pb::MessageParser<ListHeroesRequest> _parser = new pb::MessageParser<ListHeroesRequest>(() => new ListHeroesRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListHeroesForUserRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListHeroesRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3021,21 +3021,21 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserRequest() {
+    public ListHeroesRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserRequest(ListHeroesForUserRequest other) : this() {
+    public ListHeroesRequest(ListHeroesRequest other) : this() {
       userId_ = other.userId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserRequest Clone() {
-      return new ListHeroesForUserRequest(this);
+    public ListHeroesRequest Clone() {
+      return new ListHeroesRequest(this);
     }
 
     /// <summary>Field number for the "user_id" field.</summary>
@@ -3051,11 +3051,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ListHeroesForUserRequest);
+      return Equals(other as ListHeroesRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListHeroesForUserRequest other) {
+    public bool Equals(ListHeroesRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3105,7 +3105,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListHeroesForUserRequest other) {
+    public void MergeFrom(ListHeroesRequest other) {
       if (other == null) {
         return;
       }
@@ -3133,11 +3133,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class ListHeroesForUserResponse : pb::IMessage<ListHeroesForUserResponse> {
-    private static readonly pb::MessageParser<ListHeroesForUserResponse> _parser = new pb::MessageParser<ListHeroesForUserResponse>(() => new ListHeroesForUserResponse());
+  public sealed partial class ListHeroesResponse : pb::IMessage<ListHeroesResponse> {
+    private static readonly pb::MessageParser<ListHeroesResponse> _parser = new pb::MessageParser<ListHeroesResponse>(() => new ListHeroesResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListHeroesForUserResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListHeroesResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3150,21 +3150,21 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserResponse() {
+    public ListHeroesResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserResponse(ListHeroesForUserResponse other) : this() {
+    public ListHeroesResponse(ListHeroesResponse other) : this() {
       heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroesForUserResponse Clone() {
-      return new ListHeroesForUserResponse(this);
+    public ListHeroesResponse Clone() {
+      return new ListHeroesResponse(this);
     }
 
     /// <summary>Field number for the "heroes" field.</summary>
@@ -3179,11 +3179,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ListHeroesForUserResponse);
+      return Equals(other as ListHeroesResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListHeroesForUserResponse other) {
+    public bool Equals(ListHeroesResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3228,7 +3228,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListHeroesForUserResponse other) {
+    public void MergeFrom(ListHeroesResponse other) {
       if (other == null) {
         return;
       }
@@ -3596,11 +3596,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class GetHeroForUserRequest : pb::IMessage<GetHeroForUserRequest> {
-    private static readonly pb::MessageParser<GetHeroForUserRequest> _parser = new pb::MessageParser<GetHeroForUserRequest>(() => new GetHeroForUserRequest());
+  public sealed partial class GetHeroRequest : pb::IMessage<GetHeroRequest> {
+    private static readonly pb::MessageParser<GetHeroRequest> _parser = new pb::MessageParser<GetHeroRequest>(() => new GetHeroRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetHeroForUserRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetHeroRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3613,22 +3613,22 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserRequest() {
+    public GetHeroRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserRequest(GetHeroForUserRequest other) : this() {
+    public GetHeroRequest(GetHeroRequest other) : this() {
       userId_ = other.userId_;
       heroId_ = other.heroId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserRequest Clone() {
-      return new GetHeroForUserRequest(this);
+    public GetHeroRequest Clone() {
+      return new GetHeroRequest(this);
     }
 
     /// <summary>Field number for the "user_id" field.</summary>
@@ -3655,11 +3655,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GetHeroForUserRequest);
+      return Equals(other as GetHeroRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetHeroForUserRequest other) {
+    public bool Equals(GetHeroRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3718,7 +3718,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetHeroForUserRequest other) {
+    public void MergeFrom(GetHeroRequest other) {
       if (other == null) {
         return;
       }
@@ -3753,11 +3753,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class GetHeroForUserResponse : pb::IMessage<GetHeroForUserResponse> {
-    private static readonly pb::MessageParser<GetHeroForUserResponse> _parser = new pb::MessageParser<GetHeroForUserResponse>(() => new GetHeroForUserResponse());
+  public sealed partial class GetHeroResponse : pb::IMessage<GetHeroResponse> {
+    private static readonly pb::MessageParser<GetHeroResponse> _parser = new pb::MessageParser<GetHeroResponse>(() => new GetHeroResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetHeroForUserResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetHeroResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3770,21 +3770,21 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserResponse() {
+    public GetHeroResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserResponse(GetHeroForUserResponse other) : this() {
+    public GetHeroResponse(GetHeroResponse other) : this() {
       hero_ = other.hero_ != null ? other.hero_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetHeroForUserResponse Clone() {
-      return new GetHeroForUserResponse(this);
+    public GetHeroResponse Clone() {
+      return new GetHeroResponse(this);
     }
 
     /// <summary>Field number for the "hero" field.</summary>
@@ -3800,11 +3800,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GetHeroForUserResponse);
+      return Equals(other as GetHeroResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetHeroForUserResponse other) {
+    public bool Equals(GetHeroResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3854,7 +3854,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetHeroForUserResponse other) {
+    public void MergeFrom(GetHeroResponse other) {
       if (other == null) {
         return;
       }
@@ -6972,11 +6972,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class ListHeroRequest : pb::IMessage<ListHeroRequest> {
-    private static readonly pb::MessageParser<ListHeroRequest> _parser = new pb::MessageParser<ListHeroRequest>(() => new ListHeroRequest());
+  public sealed partial class ListHeroLibraryRequest : pb::IMessage<ListHeroLibraryRequest> {
+    private static readonly pb::MessageParser<ListHeroLibraryRequest> _parser = new pb::MessageParser<ListHeroLibraryRequest>(() => new ListHeroLibraryRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListHeroRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListHeroLibraryRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -6989,29 +6989,29 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroRequest() {
+    public ListHeroLibraryRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroRequest(ListHeroRequest other) : this() {
+    public ListHeroLibraryRequest(ListHeroLibraryRequest other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroRequest Clone() {
-      return new ListHeroRequest(this);
+    public ListHeroLibraryRequest Clone() {
+      return new ListHeroLibraryRequest(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ListHeroRequest);
+      return Equals(other as ListHeroLibraryRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListHeroRequest other) {
+    public bool Equals(ListHeroLibraryRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -7052,7 +7052,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListHeroRequest other) {
+    public void MergeFrom(ListHeroLibraryRequest other) {
       if (other == null) {
         return;
       }
@@ -7073,11 +7073,11 @@ namespace Loom.Unity3d.Zb {
 
   }
 
-  public sealed partial class ListHeroResponse : pb::IMessage<ListHeroResponse> {
-    private static readonly pb::MessageParser<ListHeroResponse> _parser = new pb::MessageParser<ListHeroResponse>(() => new ListHeroResponse());
+  public sealed partial class ListHeroLibraryResponse : pb::IMessage<ListHeroLibraryResponse> {
+    private static readonly pb::MessageParser<ListHeroLibraryResponse> _parser = new pb::MessageParser<ListHeroLibraryResponse>(() => new ListHeroLibraryResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ListHeroResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<ListHeroLibraryResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -7090,21 +7090,21 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroResponse() {
+    public ListHeroLibraryResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroResponse(ListHeroResponse other) : this() {
+    public ListHeroLibraryResponse(ListHeroLibraryResponse other) : this() {
       heroes_ = other.heroes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ListHeroResponse Clone() {
-      return new ListHeroResponse(this);
+    public ListHeroLibraryResponse Clone() {
+      return new ListHeroLibraryResponse(this);
     }
 
     /// <summary>Field number for the "heroes" field.</summary>
@@ -7119,11 +7119,11 @@ namespace Loom.Unity3d.Zb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ListHeroResponse);
+      return Equals(other as ListHeroLibraryResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ListHeroResponse other) {
+    public bool Equals(ListHeroLibraryResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -7168,7 +7168,7 @@ namespace Loom.Unity3d.Zb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ListHeroResponse other) {
+    public void MergeFrom(ListHeroLibraryResponse other) {
       if (other == null) {
         return;
       }
