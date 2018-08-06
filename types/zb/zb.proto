@@ -88,9 +88,10 @@ message CardLibrary {
 
 message Hero {
     int64 hero_id           = 1;
+
     string icon             = 2;
     string name             = 3;
-    int32 element           = 4;
+    string element           = 4;
 
     int64 experience = 5;
     int64 level = 6;
@@ -151,7 +152,7 @@ message Skill {
     }
 
     string title                              = 1;
-    int32 skill                               = 2;
+    string skill                               = 2;
     repeated SkillTargetType skill_target_type = 3;
     int32 value                               = 4;
 

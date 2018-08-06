@@ -51,7 +51,7 @@ namespace Loom.Unity3d.Zb {
             "ZRgBIAEoCRIOCgZhbW91bnQYAiABKAMiLQoHQ2FyZFNldBIMCgRuYW1lGAEg",
             "ASgJEhQKBWNhcmRzGAIgAygLMgUuQ2FyZCIlCgtDYXJkTGlicmFyeRIWCgRz",
             "ZXRzGAEgAygLMgguQ2FyZFNldCKvAQoESGVybxIPCgdoZXJvX2lkGAEgASgD",
-            "EgwKBGljb24YAiABKAkSDAoEbmFtZRgDIAEoCRIPCgdlbGVtZW50GAQgASgF",
+            "EgwKBGljb24YAiABKAkSDAoEbmFtZRgDIAEoCRIPCgdlbGVtZW50GAQgASgJ",
             "EhIKCmV4cGVyaWVuY2UYBSABKAMSDQoFbGV2ZWwYBiABKAMSFgoGc2tpbGxz",
             "GAcgAygLMgYuU2tpbGwSFQoNcHJpbWFyeV9za2lsbBgIIAEoBRIXCg9zZWNv",
             "bmRhcnlfc2tpbGwYCSABKAUiKwoYTGlzdEhlcm9lc0ZvclVzZXJSZXF1ZXN0",
@@ -65,7 +65,7 @@ namespace Loom.Unity3d.Zb {
             "CzIFLkhlcm8iOAoUR2V0SGVyb1NraWxsc1JlcXVlc3QSDwoHdXNlcl9pZBgB",
             "IAEoCRIPCgdoZXJvX2lkGAIgASgDIkAKFUdldEhlcm9Ta2lsbHNSZXNwb25z",
             "ZRIPCgdoZXJvX2lkGAEgASgDEhYKBnNraWxscxgCIAMoCzIGLlNraWxsIswC",
-            "CgVTa2lsbBINCgV0aXRsZRgBIAEoCRINCgVza2lsbBgCIAEoBRIxChFza2ls",
+            "CgVTa2lsbBINCgV0aXRsZRgBIAEoCRINCgVza2lsbBgCIAEoCRIxChFza2ls",
             "bF90YXJnZXRfdHlwZRgDIAMoDjIWLlNraWxsLlNraWxsVGFyZ2V0VHlwZRIN",
             "CgV2YWx1ZRgEIAEoBRIQCghjb29sZG93bhgFIAEoBRIYChBpbml0aWFsX2Nv",
             "b2xkb3duGAYgASgFEg4KBmF0dGFjaxgHIAEoBRIOCgZoZWFsdGgYCCABKAUi",
@@ -2736,12 +2736,12 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "element" field.</summary>
     public const int ElementFieldNumber = 4;
-    private int element_;
+    private string element_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Element {
+    public string Element {
       get { return element_; }
       set {
-        element_ = value;
+        element_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2830,7 +2830,7 @@ namespace Loom.Unity3d.Zb {
       if (HeroId != 0L) hash ^= HeroId.GetHashCode();
       if (Icon.Length != 0) hash ^= Icon.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Element != 0) hash ^= Element.GetHashCode();
+      if (Element.Length != 0) hash ^= Element.GetHashCode();
       if (Experience != 0L) hash ^= Experience.GetHashCode();
       if (Level != 0L) hash ^= Level.GetHashCode();
       hash ^= skills_.GetHashCode();
@@ -2861,9 +2861,9 @@ namespace Loom.Unity3d.Zb {
         output.WriteRawTag(26);
         output.WriteString(Name);
       }
-      if (Element != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(Element);
+      if (Element.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Element);
       }
       if (Experience != 0L) {
         output.WriteRawTag(40);
@@ -2899,8 +2899,8 @@ namespace Loom.Unity3d.Zb {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Element != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Element);
+      if (Element.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Element);
       }
       if (Experience != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Experience);
@@ -2935,7 +2935,7 @@ namespace Loom.Unity3d.Zb {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.Element != 0) {
+      if (other.Element.Length != 0) {
         Element = other.Element;
       }
       if (other.Experience != 0L) {
@@ -2974,8 +2974,8 @@ namespace Loom.Unity3d.Zb {
             Name = input.ReadString();
             break;
           }
-          case 32: {
-            Element = input.ReadInt32();
+          case 34: {
+            Element = input.ReadString();
             break;
           }
           case 40: {
@@ -4248,12 +4248,12 @@ namespace Loom.Unity3d.Zb {
 
     /// <summary>Field number for the "skill" field.</summary>
     public const int Skill_FieldNumber = 2;
-    private int skill_;
+    private string skill_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Skill_ {
+    public string Skill_ {
       get { return skill_; }
       set {
-        skill_ = value;
+        skill_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -4350,7 +4350,7 @@ namespace Loom.Unity3d.Zb {
     public override int GetHashCode() {
       int hash = 1;
       if (Title.Length != 0) hash ^= Title.GetHashCode();
-      if (Skill_ != 0) hash ^= Skill_.GetHashCode();
+      if (Skill_.Length != 0) hash ^= Skill_.GetHashCode();
       hash ^= skillTargetType_.GetHashCode();
       if (Value != 0) hash ^= Value.GetHashCode();
       if (Cooldown != 0) hash ^= Cooldown.GetHashCode();
@@ -4374,9 +4374,9 @@ namespace Loom.Unity3d.Zb {
         output.WriteRawTag(10);
         output.WriteString(Title);
       }
-      if (Skill_ != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Skill_);
+      if (Skill_.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Skill_);
       }
       skillTargetType_.WriteTo(output, _repeated_skillTargetType_codec);
       if (Value != 0) {
@@ -4410,8 +4410,8 @@ namespace Loom.Unity3d.Zb {
       if (Title.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
       }
-      if (Skill_ != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Skill_);
+      if (Skill_.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Skill_);
       }
       size += skillTargetType_.CalculateSize(_repeated_skillTargetType_codec);
       if (Value != 0) {
@@ -4443,7 +4443,7 @@ namespace Loom.Unity3d.Zb {
       if (other.Title.Length != 0) {
         Title = other.Title;
       }
-      if (other.Skill_ != 0) {
+      if (other.Skill_.Length != 0) {
         Skill_ = other.Skill_;
       }
       skillTargetType_.Add(other.skillTargetType_);
@@ -4477,8 +4477,8 @@ namespace Loom.Unity3d.Zb {
             Title = input.ReadString();
             break;
           }
-          case 16: {
-            Skill_ = input.ReadInt32();
+          case 18: {
+            Skill_ = input.ReadString();
             break;
           }
           case 26:
