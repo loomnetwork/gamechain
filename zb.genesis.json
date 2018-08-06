@@ -302,46 +302,174 @@
         ],
         "default_heroes": [
           {
-            "heroId": 0,
+            "hero_id": 0,
+            "icon": "icon",
+            "name": "Brakuus, The Guardian",
+            "element": "EARTH",
             "experience": 0,
-            "level": 1,
+            "level": 0,
             "skills": [
               {
-                "title": "Deffence",
-                "skillType": 4,
-                "skillTargetType": 0,
-                "cost": 2,
+                "title": "HARDEN",
+                "skill": "HARDEN",
+                "skill_target_type": [ 0 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
                 "value": 2
-              }
-            ]
-          },
-          {
-            "heroId": 1,
-            "experience": 0,
-            "level": 1,
-            "skills": [
+              },
               {
-                "title": "Fireball",
-                "skillType": 2,
-                "skillTargetType": 0,
-                "cost": 2,
+                "title": "STONESKIN",
+                "skill": "STONESKIN",
+                "skill_target_type": [ 0 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
                 "value": 1
               }
-            ]
+           ],
+           "primary_skill": 0,
+           "secondary_skill": 1
           },
           {
-            "heroId": 2,
-            "experience": 2,
-            "level": 3,
+            "hero_id": 1,
+            "icon": "icon",
+            "name": "Razu, The Fire Daemon",
+            "element": "FIRE",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "Fire Bolt",
+                "skill": "FIRE_BOLT",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Fireball",
+                "skill": "RABIES",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
+          },
+          {
+            "hero_id": 2,
+            "icon": "icon",
+            "name": "Vash'Kala, The Ancient One",
+            "element": "WATER",
+            "experience": 0,
+            "level": 0,
             "skills": [
               {
                 "title": "Freeze target for 1 turn",
-                "skillType": 0,
-                "skillTargetType": 0,
-                "cost": 2,
+                "skill": "FREEZE",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Ice bolt",
+                "skill": "ICE_BOLT",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 2
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
+          },
+          {
+            "hero_id": 3,
+            "icon": "icon",
+            "name": "Kalile, Tempest of Storms",
+            "element": "AIR",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "PUSH",
+                "skill": "PUSH",
+                "skill_target_type": [ 2, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 0
+              },
+              {
+                "title": "DRAW",
+                "skill": "DRAW",
+                "skill_target_type": [ 2, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 0
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
+          },
+          {
+            "hero_id": 4,
+            "icon": "icon",
+            "name": "Mhalik, Lord of Pestilence",
+            "element": "TOXIC",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "POISON DART",
+                "skill": "POISON_DART",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Toxic power",
+                "skill": "TOXIC_POWER",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1,
+                "attack": 2
+
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
+          },
+          {
+            "hero_id": 5,
+            "icon": "icon",
+            "name": "Valash, Natures Warden",
+            "element": "LIFE",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "HEALING TOUCH",
+                "skill": "HEALING_TOUCH",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "MEND",
+                "skill": "MEND",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
                 "value": 1
               }
-            ]
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           }
         ],
         "default_decks": [
@@ -402,40 +530,174 @@
         ],
         "heroes": [
           {
-            "heroId": 0,
-            "icon": "asdasd",
-            "name": "Golem Hero",
-            "element": 2
+            "hero_id": 0,
+            "icon": "icon",
+            "name": "Brakuus, The Guardian",
+            "element": "EARTH",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "HARDEN",
+                "skill": "HARDEN",
+                "skill_target_type": [ 0 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 2
+              },
+              {
+                "title": "STONESKIN",
+                "skill": "STONESKIN",
+                "skill_target_type": [ 0 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              }
+           ],
+           "primary_skill": 0,
+           "secondary_skill": 1
           },
           {
-            "heroId": 1,
-            "icon": "asdasd",
-            "name": "Pyro Hero",
-            "element": 0
+            "hero_id": 1,
+            "icon": "icon",
+            "name": "Razu, The Fire Daemon",
+            "element": "FIRE",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "Fire Bolt",
+                "skill": "FIRE_BOLT",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Fireball",
+                "skill": "RABIES",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "heroId": 2,
-            "icon": "asdasd",
-            "name": "Water Hero",
-            "element": 1
+            "hero_id": 2,
+            "icon": "icon",
+            "name": "Vash'Kala, The Ancient One",
+            "element": "WATER",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "Freeze target for 1 turn",
+                "skill": "FREEZE",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Ice bolt",
+                "skill": "ICE_BOLT",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 2
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "heroId": 3,
-            "icon": "asdasd",
-            "name": "Air Hero",
-            "element": 3
+            "hero_id": 3,
+            "icon": "icon",
+            "name": "Kalile, Tempest of Storms",
+            "element": "AIR",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "PUSH",
+                "skill": "PUSH",
+                "skill_target_type": [ 2, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 0
+              },
+              {
+                "title": "DRAW",
+                "skill": "DRAW",
+                "skill_target_type": [ 2, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 0
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "heroId": 4,
-            "icon": "asdasd",
-            "name": "Toxic Hero",
-            "element": 5
+            "hero_id": 4,
+            "icon": "icon",
+            "name": "Mhalik, Lord of Pestilence",
+            "element": "TOXIC",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "POISON DART",
+                "skill": "POISON_DART",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "Toxic power",
+                "skill": "TOXIC_POWER",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1,
+                "attack": 2
+
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "heroId": 5,
-            "icon": "asdasd",
-            "name": "Life Hero",
-            "element": 4
+            "hero_id": 5,
+            "icon": "icon",
+            "name": "Valash, Natures Warden",
+            "element": "LIFE",
+            "experience": 0,
+            "level": 0,
+            "skills": [
+              {
+                "title": "HEALING TOUCH",
+                "skill": "HEALING_TOUCH",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              },
+              {
+                "title": "MEND",
+                "skill": "MEND",
+                "skill_target_type": [ 1, 2, 4, 5 ],
+                "cooldown": 2,
+                "initial_cooldown": 2,
+                "value": 1
+              }
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           }
         ],
         "cards": [
