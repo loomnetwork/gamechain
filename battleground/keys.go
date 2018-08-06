@@ -22,6 +22,6 @@ func (u *UserKeySpace) CardCollectionKey() []byte {
 	return []byte("user:" + u.userId + ":collection")
 }
 
-func (u *UserKeySpace) HeroInfoListKey() []byte {
-	return []byte("user:" + u.userId + ":herolist")
+func (u *UserKeySpace) HeroesKey() []byte {
+	return []byte("user:" + u.userId + ":heroes")
 }
