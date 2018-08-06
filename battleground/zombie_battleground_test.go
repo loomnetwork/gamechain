@@ -69,7 +69,7 @@ var initRequest = zb.InitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title:           "Attack",
-				Skill:           3,
+				Skill:           "Skill0",
 				SkillTargetType: []zb.Skill_SkillTargetType{zb.Skill_ALL_CARDS, zb.Skill_PLAYER_CARD},
 				Value:           1,
 			}},
@@ -80,7 +80,7 @@ var initRequest = zb.InitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:           "Deffence",
-				Skill:           4,
+				Skill:           "Skill1",
 				SkillTargetType: []zb.Skill_SkillTargetType{zb.Skill_PLAYER, zb.Skill_OPPONENT_CARD},
 				Value:           2,
 			}},
@@ -91,13 +91,13 @@ var initRequest = zb.InitRequest{
 			HeroId:  0,
 			Icon:    "asdasd",
 			Name:    "Golem Hero",
-			Element: 2,
+			Element: "Earth",
 		},
 		{
 			HeroId:  1,
 			Icon:    "asdasd",
 			Name:    "Pyro Hero",
-			Element: 0,
+			Element: "Fire",
 		},
 	},
 	Cards: []*zb.Card{
