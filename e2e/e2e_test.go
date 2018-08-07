@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/loomnetwork/loomchain/e2e/common"
+	"github.com/loomnetwork/e2e/common"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,7 +42,8 @@ func TestE2E(t *testing.T) {
 		{"zb-4", "test_cases.toml", 4, 10, "../zb.genesis.json"},
 	}
 
-	common.LoomPath = "../../loomchain/loom"
+	// required to have loom binary
+	common.LoomPath = "loom"
 	common.ContractDir = "./contracts"
 	// required internal contract to resolve port conflicts
 	err := setupInternalContract(common.ContractDir)
