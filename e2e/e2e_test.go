@@ -38,7 +38,7 @@ func TestE2E(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		{"zb-1", "test_cases.toml", 1, 10, "../zb.genesis.json"},
+		// {"zb-1", "test_cases.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-4", "test_cases.toml", 4, 10, "../zb.genesis.json"},
 	}
 
