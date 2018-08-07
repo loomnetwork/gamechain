@@ -3,7 +3,6 @@ GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
-LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 
 all: build cli
 
@@ -33,7 +32,11 @@ proto: types/zb/zb.pb.go types/zb/zb.cs
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
-deps: $(PLUGIN_DIR)
+$(GOPATH)/bin/loom:
+	curl -o $@  https://private.delegatecall.com/loom/linux/latest/loom
+	chmod +x $@
+
+deps: $(PLUGIN_DIR) $(GOPATH)/bin/loom
 	cd $(PLUGIN_DIR) && git pull
 	go get \
 		github.com/golang/dep/cmd/dep \
@@ -45,11 +48,10 @@ deps: $(PLUGIN_DIR)
 		github.com/hashicorp/go-plugin \
 		github.com/google/uuid \
 		github.com/grpc-ecosystem/go-grpc-prometheus \
-		github.com/prometheus/client_golang/prometheus 
+		github.com/prometheus/client_golang/prometheus \
+		github.com/loomnetwork/e2e/common
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
-	if [ ! -d "$(LOOMCHAIN_DIR)" ]; then git clone git@github.com:loomnetwork/loomchain.git $(LOOMCHAIN_DIR); fi
 	go install github.com/golang/dep/cmd/dep
-	cd $(LOOMCHAIN_DIR) && make deps && make
 
 test:
 	go test -v ./...
