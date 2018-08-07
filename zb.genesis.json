@@ -319,7 +319,7 @@
               },
               {
                 "title": "STONESKIN",
-                "skill": "STONESKIN",
+                "skill": "STONE_SKIN",
                 "skill_target_type": [ 0 ],
                 "cooldown": 2,
                 "initial_cooldown": 2,
@@ -547,7 +547,7 @@
               },
               {
                 "title": "STONESKIN",
-                "skill": "STONESKIN",
+                "skill": "STONE_SKIN",
                 "skill_target_type": [ 0 ],
                 "cooldown": 2,
                 "initial_cooldown": 2,
