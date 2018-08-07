@@ -30,11 +30,13 @@ protoc-gen-gogo:
 
 proto: types/zb/zb.pb.go types/zb/zb.cs
 
+$(PLUGIN_DIR):
+	git clone -q git@github.com:loomnetwork/go-loom.git $@
+
 deps: $(PLUGIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
 	go get \
 		github.com/golang/dep/cmd/dep \
-		github.com/loomnetwork/go-loom \
 		github.com/gogo/protobuf/jsonpb \
 		github.com/gogo/protobuf/proto \
 		github.com/spf13/cobra \
