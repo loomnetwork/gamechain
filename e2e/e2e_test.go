@@ -14,6 +14,9 @@ import (
 )
 
 func setupInternalContract(dir string) error {
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		return err
+	}
 	binary, err := exec.LookPath("go")
 	if err != nil {
 		return err
