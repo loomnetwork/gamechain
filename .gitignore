@@ -28,3 +28,4 @@
 /bin
 protoc-gen-gogo
 genesis.json
+loom
