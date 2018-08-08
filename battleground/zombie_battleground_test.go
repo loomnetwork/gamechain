@@ -62,7 +62,7 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
-	DefaultHeroes: []*zb.Hero{
+	Heroes: []*zb.Hero{
 		{
 			HeroId:     0,
 			Experience: 0,
@@ -84,20 +84,6 @@ var initRequest = zb.InitRequest{
 				SkillTargetType: []zb.Skill_SkillTargetType{zb.Skill_PLAYER, zb.Skill_OPPONENT_CARD},
 				Value:           2,
 			}},
-		},
-	},
-	Heroes: []*zb.Hero{
-		{
-			HeroId:  0,
-			Icon:    "asdasd",
-			Name:    "Golem Hero",
-			Element: "Earth",
-		},
-		{
-			HeroId:  1,
-			Icon:    "asdasd",
-			Name:    "Pyro Hero",
-			Element: "Fire",
 		},
 	},
 	Cards: []*zb.Card{

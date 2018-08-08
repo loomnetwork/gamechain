@@ -53,9 +53,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	defaultHeroList := zb.HeroList{
-		Heroes: req.DefaultHeroes,
+		Heroes: req.Heroes,
 	}
-	addGlobalAttribToHeroesOfUser(defaultHeroList.Heroes, heroList.Heroes)
 	if err := ctx.Set(defaultHeroesKey, &defaultHeroList); err != nil {
 		return err
 	}
