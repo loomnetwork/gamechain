@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	"errors"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
@@ -13,13 +14,19 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 		maxAmountMap[collection.CardName] = collection.Amount
 	}
 
+	var error error = nil
+	var errorString = ""
 	for _, collection := range deckCollections {
 		if maxAmountMap[collection.CardName] < collection.Amount {
-			return fmt.Errorf("you cannot add more than %d for your card name: %s", maxAmountMap[collection.CardName], collection.CardName)
+			errorString += fmt.Sprintf("you cannot add more than %d for your card name: %s\n", maxAmountMap[collection.CardName], collection.CardName)
 		}
 	}
 
-	return nil
+	if errorString != "" {
+		error = errors.New(errorString)
+	}
+
+	return error
 }
 
 func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
