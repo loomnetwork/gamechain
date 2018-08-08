@@ -15,6 +15,9 @@
 # Gopath
 /vendor
 
+# VS Code
+.history
+
 # C# generated
 /types/zb/Zb.cs
 
