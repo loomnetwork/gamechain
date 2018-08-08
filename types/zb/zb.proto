@@ -180,9 +180,8 @@ message DeckList {
 message InitRequest {
     repeated Deck default_decks                = 1;
     repeated CardCollection default_collection = 2;
-    repeated Hero default_heroes           = 3;
-    repeated Card cards                        = 4;
-    repeated Hero heroes                       = 5;
+    repeated Card cards                        = 3;
+    repeated Hero heroes                       = 4;
 }
 
 message UpsertAccountRequest {
