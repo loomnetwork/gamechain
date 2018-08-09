@@ -14,19 +14,18 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 		maxAmountMap[collection.CardName] = collection.Amount
 	}
 
-	var error error = nil
 	var errorString = ""
 	for _, collection := range deckCollections {
 		if maxAmountMap[collection.CardName] < collection.Amount {
-			errorString += fmt.Sprintf("you cannot add more than %d for your card name: %s\n", maxAmountMap[collection.CardName], collection.CardName)
+			errorString += fmt.Sprintf("%s: %d ", collection.CardName, maxAmountMap[collection.CardName])
 		}
 	}
 
 	if errorString != "" {
-		error = errors.New(errorString)
+		return errors.New("Cannot add more than maximum for these cards: " + errorString)
+	} else {
+		return nil
 	}
-
-	return error
 }
 
 func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
