@@ -87,18 +87,20 @@ message CardLibrary {
 }
 
 message Hero {
-    int64 hero_id           = 1;
+    int64 hero_id = 1;
 
-    string icon             = 2;
-    string name             = 3;
-    string element           = 4;
+    string icon = 2;
+    string name = 3;
+    string short_description = 4;
+    string long_description = 5;
+    string element = 6;
 
-    int64 experience = 5;
-    int64 level = 6;
-    repeated Skill skills = 7;
+    int64 experience = 7;
+    int64 level = 8;
+    repeated Skill skills = 9;
 
-    int32 primary_skill = 8;
-    int32 secondary_skill = 9;
+    int32 primary_skill = 10;
+    int32 secondary_skill = 11;
 }
 
 message ListHeroesRequest {
@@ -151,16 +153,18 @@ message Skill {
          ALL_CARDS = 7;
     }
 
-    string title                              = 1;
-    string skill                               = 2;
-    repeated SkillTargetType skill_target_type = 3;
-    int32 value                               = 4;
+    string title = 1;
+    string skill = 2;
+    string icon_path = 3;
+    string description = 4;
+    repeated SkillTargetType skill_target_type = 5;
+    int32 value = 6;
 
-    int32 cooldown                            = 5;
-    int32 initial_cooldown                    = 6;
+    int32 cooldown = 7;
+    int32 initial_cooldown = 8;
 
-    int32 attack                              = 7;
-    int32 health                              = 8;
+    int32 attack = 9;
+    int32 health = 10;
 }
 
 message HeroList {

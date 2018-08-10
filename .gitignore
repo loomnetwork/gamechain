@@ -15,8 +15,12 @@
 # Gopath
 /vendor
 
+# VS Code
+.history
+
 # C# generated
 /types/zb/Zb.cs
+/types/zb/zb.pb.go
 
 # App specific
 /app.db
@@ -25,3 +29,4 @@
 /bin
 protoc-gen-gogo
 genesis.json
+loom

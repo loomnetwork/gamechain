@@ -8,147 +8,127 @@
       "init": {
         "default_collection": [
           {
+            "card_name": "Pyromaz",
+            "amount": 4
+          },
+          {
             "card_name": "Quazi",
             "amount": 4
           },
           {
-            "card_name": "Banshee",
+            "card_name": "Burrrnn",
             "amount": 4
           },
           {
-            "card_name": "Breezee",
+            "card_name": "Cynderman",
             "amount": 4
           },
           {
-            "card_name": "Buffer",
-            "amount": 2
-          },
-          {
-            "card_name": "Soothsayer",
-            "amount": 2
-          },
-          {
-            "card_name": "Wheezy",
-            "amount": 2
-          },
-          {
-            "card_name": "Whiffer",
-            "amount": 1
-          },
-          {
-            "card_name": "Whizpar",
-            "amount": 1
-          },
-          {
-            "card_name": "Zhocker",
-            "amount": 1
-          },
-          {
-            "card_name": "Bouncer",
+            "card_name": "Werezomb",
             "amount": 4
           },
           {
-            "card_name": "Dragger",
-            "amount": 2
-          },
-          {
-            "card_name": "Guzt",
-            "amount": 2
-          },
-          {
-            "card_name": "Pushhh",
-            "amount": 1
-          },
-          {
-            "card_name": "Two-rnado",
+            "card_name": "Modo",
             "amount": 4
           },
           {
-            "card_name": "Zephyr",
-            "amount": 2
-          },
-          {
-            "card_name": "Draft",
-            "amount": 2
-          },
-          {
-            "card_name": "MonZoon",
-            "amount": 2
-          },
-          {
-            "card_name": "Stormmcaller",
-            "amount": 1
-          },
-          {
-            "card_name": "Zyclone",
+            "card_name": "Fire-Maw",
             "amount": 4
           },
           {
-            "card_name": "Mind Flayer",
+            "card_name": "Zhampion",
             "amount": 4
           },
           {
-            "card_name": "ZeuZ",
+            "card_name": "Gargantua",
             "amount": 4
           },
           {
-            "card_name": "Blocker",
-            "amount": 2
-          },
-          {
-            "card_name": "Crumbz",
-            "amount": 2
-          },
-          {
-            "card_name": "Hardy",
-            "amount": 1
-          },
-          {
-            "card_name": "Pebble",
+            "card_name": "Cerberus",
             "amount": 4
           },
           {
-            "card_name": "Protector",
+            "card_name": "Izze",
+            "amount": 4
+          },
+          {
+            "card_name": "Znowman",
+            "amount": 4
+          },
+          {
+            "card_name": "Ozmoziz",
+            "amount": 4
+          },
+          {
+            "card_name": "Jetter",
+            "amount": 4
+          },
+          {
+            "card_name": "Freezzee",
+            "amount": 4
+          },
+          {
+            "card_name": "Geyzer",
+            "amount": 4
+          },
+          {
+            "card_name": "Blizzard",
+            "amount": 4
+          },
+          {
+            "card_name": "Froztbite",
+            "amount": 4
+          },
+          {
+            "card_name": "Zhatterer",
+            "amount": 4
+          },
+          {
+            "card_name": "Maelstrom",
+            "amount": 4
+          },
+          {
+            "card_name": "Tzunamy",
             "amount": 4
           },
           {
             "card_name": "Rockky",
-            "amount": 2
+            "amount": 4
           },
           {
-            "card_name": "Shale",
-            "amount": 2
+            "card_name": "Bolderr",
+            "amount": 4
+          },
+          {
+            "card_name": "Blocker",
+            "amount": 4
           },
           {
             "card_name": "Slab",
-            "amount": 2
+            "amount": 4
           },
           {
-            "card_name": "Defender",
-            "amount": 1
+            "card_name": "Pit",
+            "amount": 4
           },
           {
             "card_name": "Golem",
-            "amount": 1
+            "amount": 4
           },
           {
-            "card_name": "Groundy",
+            "card_name": "Walley",
+            "amount": 4
+          },
+          {
+            "card_name": "Tiny",
             "amount": 4
           },
           {
             "card_name": "Spiker",
-            "amount": 2
+            "amount": 4
           },
           {
-            "card_name": "Tiny",
-            "amount": 2
-          },
-          {
-            "card_name": "Walley",
-            "amount": 1
-          },
-          {
-            "card_name": "Bolderr",
+            "card_name": "Crater",
             "amount": 4
           },
           {
@@ -164,99 +144,155 @@
             "amount": 4
           },
           {
-            "card_name": "Gaea",
-            "amount": 4
-          },
-          {
             "card_name": "Mountain",
             "amount": 4
           },
           {
-            "card_name": "BlaZter",
+            "card_name": "Gaea",
             "amount": 4
           },
           {
-            "card_name": "BurZt",
+            "card_name": "Whizpar",
             "amount": 4
           },
           {
-            "card_name": "Ember",
+            "card_name": "Wheezy",
             "amount": 4
           },
           {
-            "card_name": "Firecaller",
+            "card_name": "Soothsayer",
             "amount": 4
           },
           {
-            "card_name": "Firewall",
+            "card_name": "Fumez",
             "amount": 4
           },
           {
-            "card_name": "Pyromaz",
+            "card_name": "Pushhh",
             "amount": 4
           },
           {
-            "card_name": "RabieZ",
+            "card_name": "Ztormmcaller",
             "amount": 4
           },
           {
-            "card_name": "Sparky",
+            "card_name": "Bouncer",
             "amount": 4
           },
           {
-            "card_name": "Alpha",
+            "card_name": "Gaz",
             "amount": 4
           },
           {
-            "card_name": "Burrrnn",
+            "card_name": "Draft",
             "amount": 4
           },
           {
-            "card_name": "Enrager",
+            "card_name": "MonZoon",
             "amount": 4
           },
           {
-            "card_name": "Rager",
+            "card_name": "Zeuz",
             "amount": 4
           },
           {
-            "card_name": "Werezomb",
+            "card_name": "Azuraz",
             "amount": 4
           },
           {
-            "card_name": "Zlinger",
+            "card_name": "Bloomer",
             "amount": 4
           },
           {
-            "card_name": "Cynderman",
+            "card_name": "Zap",
             "amount": 4
           },
           {
-            "card_name": "Fire-Maw",
+            "card_name": "Shroom",
             "amount": 4
           },
           {
-            "card_name": "Volcan",
+            "card_name": "Vindrom",
             "amount": 4
           },
           {
-            "card_name": "Zhampion",
+            "card_name": "Puffer",
             "amount": 4
           },
           {
-            "card_name": "Cerberus",
+            "card_name": "Sapper",
             "amount": 4
           },
           {
-            "card_name": "Gargantua",
+            "card_name": "Keeper",
             "amount": 4
           },
           {
-            "card_name": "Bat",
+            "card_name": "Cactuz",
             "amount": 4
           },
           {
-            "card_name": "Molotov",
+            "card_name": "Shammann",
+            "amount": 4
+          },
+          {
+            "card_name": "Z-Virus",
+            "amount": 4
+          },
+          {
+            "card_name": "Yggdrazil",
+            "amount": 4
+          },
+          {
+            "card_name": "Poizom",
+            "amount": 4
+          },
+          {
+            "card_name": "Hazmaz",
+            "amount": 4
+          },
+          {
+            "card_name": "Zpitter",
+            "amount": 4
+          },
+          {
+            "card_name": "Zeptic",
+            "amount": 4
+          },
+          {
+            "card_name": "Ghoul",
+            "amount": 4
+          },
+          {
+            "card_name": "Zeeter",
+            "amount": 4
+          },
+          {
+            "card_name": "Hazzard",
+            "amount": 4
+          },
+          {
+            "card_name": "Zludge",
+            "amount": 4
+          },
+          {
+            "card_name": "Ectoplasm",
+            "amount": 4
+          },
+          {
+            "card_name": "Cherno-bill",
+            "amount": 4
+          },
+          {
+            "card_name": "GooZilla",
+            "amount": 4
+          },
+          {
+            "card_name": "Chainsaw",
+            "amount": 4
+          },
+          {
+            "card_name": "Goo Beaker",
             "amount": 4
           },
           {
@@ -264,39 +300,39 @@
             "amount": 4
           },
           {
-            "card_name": "Super Goo Serum",
-            "amount": 4
-          },
-          {
-            "card_name": "Supply Drop",
-            "amount": 4
-          },
-          {
-            "card_name": "Torch",
-            "amount": 4
-          },
-          {
-            "card_name": "Whistle",
-            "amount": 4
-          },
-          {
-            "card_name": "Beaker",
-            "amount": 4
-          },
-          {
-            "card_name": "Fire Extinguisher",
-            "amount": 4
-          },
-          {
-            "card_name": "Junk Spear",
-            "amount": 4
-          },
-          {
-            "card_name": "Lawnmower",
-            "amount": 4
-          },
-          {
             "card_name": "Nail Bomb",
+            "amount": 4
+          },
+          {
+            "card_name": "Goo Bottle",
+            "amount": 4
+          },
+          {
+            "card_name": "Fresh Meat",
+            "amount": 4
+          },
+          {
+            "card_name": "Zombie 1/1",
+            "amount": 4
+          },
+          {
+            "card_name": "Zombie 2/2",
+            "amount": 4
+          },
+          {
+            "card_name": "Zombie Feral",
+            "amount": 4
+          },
+          {
+            "card_name": "Armageddon",
+            "amount": 4
+          },
+          {
+            "card_name": "Tainted Goo",
+            "amount": 4
+          },
+          {
+            "card_name": "Corrupted Goo",
             "amount": 4
           }
         ],
@@ -306,52 +342,52 @@
             "name": "Default",
             "cards": [
               {
-                "cardName": "Pyromaz",
+                "card_name": "Pyromaz",
                 "amount": 4
               },
               {
-                "cardName": "Burrrnn",
+                "card_name": "Burrrnn",
+                "amount": 2
+              },
+              {
+                "card_name": "Izze",
                 "amount": 4
               },
               {
-                "cardName": "Izze",
+                "card_name": "Zhatterer",
                 "amount": 4
               },
               {
-                "cardName": "Zhatterer",
+                "card_name": "Rockky",
                 "amount": 4
               },
               {
-                "cardName": "Rockky",
+                "card_name": "Blocker",
                 "amount": 4
               },
               {
-                "cardName": "Blocker",
-                "amount": 4
-              },
-              {
-                "cardName": "Cerberus",
+                "card_name": "Cerberus",
                 "amount": 1
               },
               {
-                "cardName": "Gargantua",
+                "card_name": "Gargantua",
                 "amount": 1
               },
               {
-                "cardName": "Zhampion",
+                "card_name": "Zhampion",
+                "amount": 2
+              },
+              {
+                "card_name": "Fire-Maw",
                 "amount": 1
               },
               {
-                "cardName": "Fire-Maw",
+                "card_name": "Modo",
                 "amount": 1
               },
               {
-                "cardName": "Modo",
-                "amount": 1
-              },
-              {
-                "cardName": "Werezomb",
-                "amount": 1
+                "card_name": "Werezomb",
+                "amount": 2
               }
             ]
           }
@@ -360,7 +396,9 @@
           {
             "hero_id": 0,
             "icon": "icon",
-            "name": "Brakuus, The Guardian",
+            "name": "Brakuus",
+            "short_description": "The Guardian",
+            "long_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin mollis cursus magna, ac faucibus arcu laoreet eu. Donec ex urna, aliquet eu lacus quis, scelerisque rutrum ipsum. ",
             "element": "EARTH",
             "experience": 0,
             "level": 0,
@@ -368,7 +406,9 @@
               {
                 "title": "HARDEN",
                 "skill": "HARDEN",
-                "skill_target_type": [ 0 ],
+                "icon_path": "overlordability_earth",
+                "description": "Add 2 Def to the Overlord.",
+                "skill_target_type": [0],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 2
@@ -376,27 +416,32 @@
               {
                 "title": "STONESKIN",
                 "skill": "STONE_SKIN",
-                "skill_target_type": [ 0 ],
+                "icon_path": "overlordability_earth_stone_skin",
+                "description": "Give a friendly zombie +1 Def.",
+                "skill_target_type": [0],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
               }
-           ],
-           "primary_skill": 0,
-           "secondary_skill": 1
+            ],
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
             "hero_id": 1,
             "icon": "icon",
-            "name": "Razu, The Fire Daemon",
+            "name": "Razu",
+            "short_description": "The Fire Daemon",
+            "long_description": "Maecenas tristique ac magna vel dapibus. Quisque orci mi, varius id quam at, aliquam condimentum dui. Fusce a sollicitudin tortor. Donec aliquet aliquam aliquet. Suspendisse at aliquam ipsum.",
             "element": "FIRE",
             "experience": 0,
-            "level": 0,
             "skills": [
               {
                 "title": "Fire Bolt",
                 "skill": "FIRE_BOLT",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_fire",
+                "description": "Deal 1 damage to target.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
@@ -404,7 +449,9 @@
               {
                 "title": "Fireball",
                 "skill": "RABIES",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_fire_rabies",
+                "description": "Give friendly zombie feral.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
@@ -416,7 +463,9 @@
           {
             "hero_id": 2,
             "icon": "icon",
-            "name": "Vash'Kala, The Ancient One",
+            "name": "Vash'Kala",
+            "short_description": "The Ancient One",
+            "long_description": "Vestibulum purus justo, dictum vitae iaculis a, maximus ut lacus. Aenean et cursus magna. Ut sit amet eros sodales, consequat lorem egestas, placerat eros.",
             "element": "WATER",
             "experience": 0,
             "level": 0,
@@ -424,7 +473,9 @@
               {
                 "title": "Freeze target for 1 turn",
                 "skill": "FREEZE",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_water",
+                "description": "Freeze an enemy zombie.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
@@ -432,7 +483,9 @@
               {
                 "title": "Ice bolt",
                 "skill": "ICE_BOLT",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_water_ice_bolt",
+                "description": "Deal 2 damage to a target zombie. If it survives, Freeze it.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 2
@@ -444,7 +497,9 @@
           {
             "hero_id": 3,
             "icon": "icon",
-            "name": "Kalile, Tempest of Storms",
+            "name": "Kalile",
+            "short_description": "Tempest of Storms",
+            "long_description": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla auctor nisi id sem efficitur, eget finibus erat cursus. Integer pulvinar elit ac rutrum scelerisque. ",
             "element": "AIR",
             "experience": 0,
             "level": 0,
@@ -452,7 +507,9 @@
               {
                 "title": "PUSH",
                 "skill": "PUSH",
-                "skill_target_type": [ 2, 5 ],
+                "icon_path": "overlordability_air_push",
+                "description": "Return a friendly zombie to your hand.",
+                "skill_target_type": [2, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 0
@@ -460,7 +517,9 @@
               {
                 "title": "DRAW",
                 "skill": "DRAW",
-                "skill_target_type": [ 2, 5 ],
+                "icon_path": "overlordability_air_draw",
+                "description": "Draw a card.",
+                "skill_target_type": [2, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 0
@@ -472,7 +531,9 @@
           {
             "hero_id": 4,
             "icon": "icon",
-            "name": "Mhalik, Lord of Pestilence",
+            "name": "Mhalik",
+            "short_description": "Lord of Pestilence",
+            "long_description": "Maecenas lacus est, rutrum non massa sit amet, ultricies feugiat risus. Nam a ligula ex. Fusce semper, nibh sit amet maximus volutpat, orci eros tincidunt eros, vitae commodo magna nunc vitae.",
             "element": "TOXIC",
             "experience": 0,
             "level": 0,
@@ -480,7 +541,9 @@
               {
                 "title": "POISON DART",
                 "skill": "POISON_DART",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_toxic",
+                "description": "Deal 1 damage to a target.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
@@ -488,12 +551,13 @@
               {
                 "title": "Toxic power",
                 "skill": "TOXIC_POWER",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_toxic_toxic_power",
+                "description": "Deal 1 damage to a zombie and give it +1 Atk.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1,
-                "attack": 2
-
+                "attack": 1
               }
             ],
             "primary_skill": 0,
@@ -502,7 +566,9 @@
           {
             "hero_id": 5,
             "icon": "icon",
-            "name": "Valash, Natures Warden",
+            "name": "Valash",
+            "short_description": "Natures Warden",
+            "long_description": "Vivamus sed tellus ac erat gravida tempor vel at mauris. Aliquam egestas eget dolor sed aliquet. Pellentesque aliquam vel eros id luctus. In iaculis orci sed aliquam pellentesque.",
             "element": "LIFE",
             "experience": 0,
             "level": 0,
@@ -510,7 +576,9 @@
               {
                 "title": "HEALING TOUCH",
                 "skill": "HEALING_TOUCH",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_life",
+                "description": "Restore 2 Def to a target.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
@@ -518,7 +586,9 @@
               {
                 "title": "MEND",
                 "skill": "MEND",
-                "skill_target_type": [ 1, 2, 4, 5 ],
+                "icon_path": "overlordability_life_mend",
+                "description": "Restore 4 Def to your Overlord.",
+                "skill_target_type": [1, 2, 4, 5],
                 "cooldown": 2,
                 "initial_cooldown": 2,
                 "value": 1
