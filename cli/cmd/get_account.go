@@ -33,6 +33,8 @@ var getAccountCmd = &cobra.Command{
 			return fmt.Errorf("error encountered while calling GetAccount: %s", err.Error())
 		}
 		fmt.Printf("User: %s\n", result.UserId)
+		fmt.Printf("Image: %s\n", result.Image)
+		fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
 		return nil
 	},
 }
