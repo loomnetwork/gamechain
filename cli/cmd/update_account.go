@@ -33,7 +33,10 @@ var updateAccountCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateAccount: %s", err.Error())
 		}
-		fmt.Printf("account created successfully")
+		fmt.Printf("Account updated successfully\n")
+		fmt.Printf("User: %s\n", result.UserId)
+		fmt.Printf("Image: %s\n", result.Image)
+		fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
 
 		return nil
 	},
