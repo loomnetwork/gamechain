@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"errors"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
@@ -30,6 +31,15 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 }
 
 func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
+	validatedDeck.Name = strings.TrimSpace(validatedDeck.Name)
+	if utf8.RuneCountInString(validatedDeck.Name) == 0 {
+		return errors.New("deck name can't be empty");
+	}
+
+	if utf8.RuneCountInString(validatedDeck.Name) > 48 {
+		return errors.New("deck name must is more than 48 characters");
+	}
+
 	for _, deck := range deckList {
 		if deck.Id != validatedDeck.Id && strings.EqualFold(deck.Name, validatedDeck.Name) {
 			return errors.New("deck name already exists")
