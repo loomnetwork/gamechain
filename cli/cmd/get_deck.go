@@ -11,7 +11,7 @@ import (
 
 var getDeckCmdArgs struct {
 	userID string
-	deckId int64
+	deckID int64
 }
 
 var getDeckCmd = &cobra.Command{
@@ -26,7 +26,7 @@ var getDeckCmd = &cobra.Command{
 
 		req := &zb.GetDeckRequest{
 			UserId: getDeckCmdArgs.userID,
-			DeckId: getDeckCmdArgs.deckId,
+			DeckId: getDeckCmdArgs.deckID,
 		}
 		var result zb.GetDeckResponse
 		_, err := commonTxObjs.contract.StaticCall("GetDeck", req, callerAddr, &result)
@@ -46,5 +46,5 @@ func init() {
 	rootCmd.AddCommand(getDeckCmd)
 
 	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	getDeckCmd.Flags().Int64VarP(&getDeckCmdArgs.deckId, "deckId", "", 0, "DeckId of account")
+	getDeckCmd.Flags().Int64VarP(&getDeckCmdArgs.deckID, "deckId", "", 0, "DeckId of account")
 }
