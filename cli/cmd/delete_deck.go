@@ -9,19 +9,19 @@ import (
 )
 
 var deleteDeckCmdArgs struct {
-	userID   string
-	deckName string
+	userID string
+	deckId int64
 }
 
 var deleteDeckCmd = &cobra.Command{
 	Use:   "delete_deck",
-	Short: "deletes deck for zombiebattleground by its name",
+	Short: "deletes deck for zombiebattleground by its id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
 		req := &zb.DeleteDeckRequest{
-			UserId:   deleteDeckCmdArgs.userID,
-			DeckName: deleteDeckCmdArgs.deckName,
+			UserId: deleteDeckCmdArgs.userID,
+			DeckId: deleteDeckCmdArgs.deckId,
 		}
 
 		_, err := commonTxObjs.contract.Call("DeleteDeck", req, signer, nil)
@@ -37,5 +37,5 @@ func init() {
 	rootCmd.AddCommand(deleteDeckCmd)
 
 	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.deckName, "deckName", "d", "NewDeck", "DeckName of account")
+	deleteDeckCmd.Flags().Int64VarP(&deleteDeckCmdArgs.deckId, "deckId", "", 0, "DeckId of account")
 }

@@ -156,52 +156,60 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 }
 
 // CreateDeck appends the given deck to user's deck list
-func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest) error {
+func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest)  (*zb.CreateDeckResponse, error) {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
 
 	if req.Deck == nil {
-		return fmt.Errorf("deck must not be nil")
+		return nil, fmt.Errorf("deck must not be nil")
 	}
 
 	if !isUser(ctx, userID) {
-		return fmt.Errorf("user is not verified")
+		return nil, fmt.Errorf("user is not verified")
 	}
 
 	var userCollection zb.CardCollectionList
 	if err := ctx.Get(userKeySpace.CardCollectionKey(), &userCollection); err != nil {
-		return errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
+		return nil, errors.Wrapf(err, "unable to get collection data for userId: %s", req.UserId)
 	}
 
 	if err := validateDeckCollections(userCollection.Cards, req.Deck.Cards); err != nil {
-		return err
+		return nil, err
 	}
 
 	var heroes zb.HeroList
 	if err := ctx.Get(userKeySpace.HeroesKey(), &heroes); err != nil {
-		return err
+		return nil, err
 	}
 
 	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
-		return err
+		return nil, err
 	}
 
 	var deckList zb.DeckList
 	err := ctx.Get(userKeySpace.DecksKey(), &deckList)
 	if err != nil && err != contract.ErrNotFound {
-		return err
+		return nil, err
 	}
 
-	// check if the name exists
-	for _, deck := range deckList.Decks {
-		if deck.Name == req.Deck.Name {
-			return errors.New("deck name already exists")
+	// allocate new deck id
+	var newDeckId int64 = 0
+	if len(deckList.Decks) != 0 {
+		for _, deck := range deckList.Decks {
+			if deck.Id > newDeckId {
+				newDeckId = deck.Id
+			}
 		}
+
+		newDeckId++;
 	}
+
+	req.Deck.Id = newDeckId;
+
 	deckList.Decks = mergeDeckSets(deckList.Decks, []*zb.Deck{req.Deck})
 
 	if err := ctx.Set(userKeySpace.DecksKey(), &deckList); err != nil {
-		return err
+		return nil, err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
@@ -209,10 +217,11 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createdeck")
 	}
-	return nil
+
+	return &zb.CreateDeckResponse{DeckId: newDeckId}, nil
 }
 
-// EditDeck edits the deck by name
+// EditDeck edits the deck by id
 func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequest) error {
 	if req.Deck == nil {
 		return fmt.Errorf("deck must not be nil")
@@ -259,7 +268,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	return nil
 }
 
-// DeleteDeck deletes a user's deck by name
+// DeleteDeck deletes a user's deck by id
 func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeckRequest) error {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
@@ -278,7 +287,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	}
 
 	var deleted bool
-	deckList.Decks, deleted = deleteDeckByName(deckList.Decks, req.DeckName)
+	deckList.Decks, deleted = deleteDeckById(deckList.Decks, req.DeckId)
 	if !deleted {
 		return fmt.Errorf("deck not found")
 	}
@@ -303,7 +312,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 	return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
 }
 
-// GetDeck returns the deck by given name
+// GetDeck returns the deck by given id
 func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeckRequest) (*zb.GetDeckResponse, error) {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
@@ -315,7 +324,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 		return nil, err
 	}
 
-	deck := getDeckByName(deckList.Decks, req.DeckName)
+	deck := getDeckById(deckList.Decks, req.DeckId)
 	if deck == nil {
 		return nil, contract.ErrNotFound
 	}

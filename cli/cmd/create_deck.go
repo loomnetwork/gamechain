@@ -30,11 +30,12 @@ var createDeckCmd = &cobra.Command{
 			UserId: createDeckCmdArgs.userID,
 		}
 
-		_, err := commonTxObjs.contract.Call("CreateDeck", req, signer, nil)
+		var result zb.CreateDeckResponse
+		_, err := commonTxObjs.contract.Call("CreateDeck", req, signer, &result)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deck created successfully")
+		fmt.Printf("deck created successfully with id %d", result.DeckId)
 		return nil
 
 	},
