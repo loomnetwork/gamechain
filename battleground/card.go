@@ -3,6 +3,7 @@ package battleground
 import (
 	"fmt"
 	"errors"
+	"strings"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
@@ -26,6 +27,16 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 	} else {
 		return nil
 	}
+}
+
+func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
+	for _, deck := range deckList {
+		if deck.Id != validatedDeck.Id && strings.EqualFold(deck.Name, validatedDeck.Name) {
+			return errors.New("deck name already exists")
+		}
+	}
+
+	return nil
 }
 
 func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
