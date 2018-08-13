@@ -139,6 +139,7 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
+			Id: 0,
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
@@ -288,13 +289,14 @@ func TestDeckOperations(t *testing.T) {
 		})
 		assert.Equal(t, nil, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(0), deckResponse.Decks[0].Id)
 		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 	})
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId:   "DeckUser",
-			DeckName: "NotExists",
+			DeckId: 0xDEADBEEF,
 		})
 		assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
 		assert.Equal(t, contract.ErrNotFound, err)
@@ -302,15 +304,18 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
-			UserId:   "DeckUser",
-			DeckName: "Default",
+			UserId: "DeckUser",
+			DeckId: 0,
 		})
 		assert.Nil(t, err)
+		assert.Equal(t, int64(0), deckResponse.Deck.Id)
 		assert.Equal(t, "Default", deckResponse.Deck.Name)
 	})
 
+	var createDeckResponse *zb.CreateDeckResponse
 	t.Run("AddDeck", func(t *testing.T) {
-		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+		var err error
+		createDeckResponse, err = c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
@@ -328,6 +333,7 @@ func TestDeckOperations(t *testing.T) {
 			},
 		})
 
+		assert.NotNil(t, createDeckResponse)
 		assert.Nil(t, err)
 
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
@@ -339,7 +345,7 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("AddDeck (Invalid Requested Amount)", func(t *testing.T) {
-		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
@@ -361,7 +367,7 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("AddDeck (Invalid Requested CardName)", func(t *testing.T) {
-		err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
@@ -383,9 +389,11 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("DeleteDeck", func(t *testing.T) {
+		assert.NotNil(t, createDeckResponse)
+		return
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
-			UserId:   "DeckUser",
-			DeckName: "NewDeck",
+			UserId: "DeckUser",
+			DeckId: createDeckResponse.DeckId,
 		})
 
 		assert.Nil(t, err)
@@ -394,7 +402,7 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId:   "DeckUser",
-			DeckName: "NotExists",
+			DeckId: 0xDEADBEEF,
 		})
 
 		assert.NotNil(t, err)

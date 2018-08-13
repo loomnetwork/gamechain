@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Loom.Unity3d.Zb";
+option csharp_namespace = "LoomNetwork.CZB.Protobuf";
 
 message Account {
     string user_id             = 1;
@@ -16,9 +16,10 @@ message Account {
 }
 
 message Deck {
-   string name = 1;
-   int64 hero_id = 2;
-   repeated CardCollection cards = 3;
+   int64 id = 1;
+   string name = 2;
+   int64 hero_id = 3;
+   repeated CardCollection cards = 4;
 }
 
 message Card {
@@ -209,7 +210,7 @@ message GetAccountRequest {
 
 message GetDeckRequest {
     string user_id = 1;
-    string deck_name = 2;
+    int64 deck_id = 2;
 }
 
 message GetDeckResponse {
@@ -221,9 +222,13 @@ message CreateDeckRequest {
     Deck deck = 2;
 }
 
+message CreateDeckResponse {
+    int64 deck_id = 1;
+}
+
 message DeleteDeckRequest {
     string user_id = 1;
-    string deck_name = 2;
+    int64 deck_id = 2;
 }
 
 message EditDeckRequest {
