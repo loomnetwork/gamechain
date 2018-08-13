@@ -338,6 +338,7 @@
         ],
         "default_decks": [
           {
+            "id": 0,
             "heroId": 0,
             "name": "Default",
             "cards": [

@@ -33,6 +33,7 @@ var listDecksCmd = &cobra.Command{
 		}
 		fmt.Printf("deck size: %d\n", len(result.Decks))
 		for _, deck := range result.Decks {
+			fmt.Printf("id: %d\n", deck.Id)
 			fmt.Printf("name: %s\n", deck.Name)
 			for _, card := range deck.Cards {
 				fmt.Printf("  card_name: %s, amount: %d\n", card.CardName, card.Amount)
