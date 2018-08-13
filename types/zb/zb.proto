@@ -24,7 +24,7 @@ message Deck {
 message Card {
     int64 id                   = 1;
     string kind                = 2;
-    string element             = 3;
+    string set                 = 3;
     string name                = 4;
     string description         = 5;
     string flavorText          = 6;
@@ -65,7 +65,10 @@ message Ability {
     string activity_type = 2;
     string call_type     = 3;
     string target_type   = 4;
-    int32 value          = 5;
+    string stat_type     = 5;
+    string set_type      = 6;
+    int32 value          = 7;
+    string buff_type     = 8;
 }
 
 message CardList {
