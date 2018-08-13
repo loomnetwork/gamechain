@@ -54,19 +54,19 @@ func isUser(ctx contract.Context, userID string) bool {
 	return ok
 }
 
-func deleteDeckByName(decklist []*zb.Deck, name string) ([]*zb.Deck, bool) {
-	newlist := make([]*zb.Deck, 0)
-	for _, deck := range decklist {
-		if deck.Name != name {
-			newlist = append(newlist, deck)
+func deleteDeckById(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
+	newList := make([]*zb.Deck, 0)
+	for _, deck := range deckList {
+		if deck.Id != id {
+			newList = append(newList, deck)
 		}
 	}
-	return newlist, len(newlist) != len(decklist)
+	return newList, len(newList) != len(deckList)
 }
 
-func getDeckByName(decklist []*zb.Deck, name string) *zb.Deck {
-	for _, deck := range decklist {
-		if deck.Name == name {
+func getDeckById(deckList []*zb.Deck, id int64) *zb.Deck {
+	for _, deck := range deckList {
+		if deck.Id == id {
 			return deck
 		}
 	}

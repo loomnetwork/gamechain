@@ -10,13 +10,13 @@ import (
 )
 
 var getDeckCmdArgs struct {
-	userID   string
-	deckName string
+	userID string
+	deckID int64
 }
 
 var getDeckCmd = &cobra.Command{
 	Use:   "get_deck",
-	Short: "gets deck for zombiebattleground by its name",
+	Short: "gets deck for zombiebattleground by its id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -25,8 +25,8 @@ var getDeckCmd = &cobra.Command{
 		}
 
 		req := &zb.GetDeckRequest{
-			UserId:   getDeckCmdArgs.userID,
-			DeckName: getDeckCmdArgs.deckName,
+			UserId: getDeckCmdArgs.userID,
+			DeckId: getDeckCmdArgs.deckID,
 		}
 		var result zb.GetDeckResponse
 		_, err := commonTxObjs.contract.StaticCall("GetDeck", req, callerAddr, &result)
@@ -34,6 +34,7 @@ var getDeckCmd = &cobra.Command{
 			return err
 		}
 		fmt.Printf("deck name: %v\n", result.Deck.Name)
+		fmt.Printf("deck id: %v\n", result.Deck.Id)
 		for _, card := range result.Deck.Cards {
 			fmt.Printf("card_name: %s, amount: %d\n", card.CardName, card.Amount)
 		}
@@ -45,5 +46,5 @@ func init() {
 	rootCmd.AddCommand(getDeckCmd)
 
 	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.deckName, "deckName", "d", "Default", "DeckId of account")
+	getDeckCmd.Flags().Int64VarP(&getDeckCmdArgs.deckID, "deckId", "", 0, "DeckId of account")
 }
