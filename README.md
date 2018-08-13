@@ -42,12 +42,12 @@ loom genkey -k priv
 # Get Decks
 ./bin/zb-cli get_decks -k priv -u loom
 
-# Get Deck by name
-./bin/zb-cli get_deck -k priv -u loom -d Default
+# Get Deck by id
+./bin/zb-cli get_deck -k priv -u loom --deckId 0
 
 # Add Deck
 ./bin/zb-cli create_deck -k priv -u loom -v "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": "Breezee", \"amount\": 1} ]}"
 
-# Delete Deck
-./bin/zb-cli delete_deck -k priv -u loom -d NewDeck
+# Delete Deck by id
+./bin/zb-cli delete_deck -k priv -u loom --deckId 0
 ```

@@ -3,6 +3,8 @@ package battleground
 import (
 	"fmt"
 	"errors"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
@@ -28,15 +30,34 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 	}
 }
 
+func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
+	validatedDeck.Name = strings.TrimSpace(validatedDeck.Name)
+	if len(validatedDeck.Name) == 0 {
+		return errors.New("deck name can't be empty");
+	}
+
+	if utf8.RuneCountInString(validatedDeck.Name) > 48 {
+		return errors.New("deck name is more than 48 characters");
+	}
+
+	for _, deck := range deckList {
+		if deck.Id != validatedDeck.Id && strings.EqualFold(deck.Name, validatedDeck.Name) {
+			return errors.New("deck name already exists")
+		}
+	}
+
+	return nil
+}
+
 func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
-	deckMap := make(map[string]*zb.Deck)
+	deckMap := make(map[int64]*zb.Deck)
 
 	for _, deck := range deckSet1 {
-		deckMap[deck.Name] = deck
+		deckMap[deck.Id] = deck
 	}
 
 	for _, deck := range deckSet2 {
-		deckMap[deck.Name] = deck
+		deckMap[deck.Id] = deck
 	}
 
 	newArray := make([]*zb.Deck, len(deckMap))
@@ -45,7 +66,7 @@ func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
 	for j := len(deckSet2) - 1; j >= 0; j -= 1 {
 		deck := deckSet2[j]
 
-		newDeck, ok := deckMap[deck.Name]
+		newDeck, ok := deckMap[deck.Id]
 		if !ok {
 			continue
 		}
@@ -53,13 +74,13 @@ func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
 		newArray[i] = newDeck
 		i++
 
-		delete(deckMap, deck.Name)
+		delete(deckMap, deck.Id)
 	}
 
 	for j := len(deckSet1) - 1; j >= 0; j -= 1 {
 		deck := deckSet1[j]
 
-		newDeck, ok := deckMap[deck.Name]
+		newDeck, ok := deckMap[deck.Id]
 		if !ok {
 			continue
 		}
@@ -67,24 +88,17 @@ func mergeDeckSets(deckSet1 []*zb.Deck, deckSet2 []*zb.Deck) []*zb.Deck {
 		newArray[i] = newDeck
 		i++
 
-		delete(deckMap, deck.Name)
+		delete(deckMap, deck.Id)
 	}
 
 	return newArray
 }
 
 func editDeck(deckSet []*zb.Deck, deck *zb.Deck) error {
-	var deckToEdit *zb.Deck
-
-	for _, deckInSet := range deckSet {
-		if deck.Name == deckInSet.Name {
-			deckToEdit = deckInSet
-			break
-		}
-	}
+	deckToEdit := getDeckById(deckSet, deck.Id)
 
 	if deckToEdit == nil {
-		return fmt.Errorf("Unable to find deck: %s", deck.Name)
+		return fmt.Errorf("Unable to find deck: %d", deck.Id)
 	}
 
 	deckToEdit.Cards = deck.Cards
