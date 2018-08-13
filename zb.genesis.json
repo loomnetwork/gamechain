@@ -409,7 +409,6 @@
                 "skill": "HARDEN",
                 "icon_path": "overlordability_earth",
                 "description": "Add 2 Def to the Overlord.",
-                "skill_type": 4,
                 "skill_target_type": [
                   0
                 ],
@@ -422,7 +421,6 @@
                 "skill": "STONE_SKIN",
                 "icon_path": "overlordability_earth_stone_skin",
                 "description": "Give a friendly zombie +1 Def.",
-                "skill_type": 4,
                 "skill_target_type": [
                   0
                 ],
@@ -449,7 +447,6 @@
                 "skill": "FIRE_BOLT",
                 "icon_path": "overlordability_fire",
                 "description": "Deal 1 damage to target.",
-                "skill_type": 2,
                 "skill_target_type": [
                   1,
                   2,
@@ -465,7 +462,6 @@
                 "skill": "RABIES",
                 "icon_path": "overlordability_fire_rabies",
                 "description": "Give friendly zombie feral.",
-                "skill_type": 2,
                 "skill_target_type": [
                   1,
                   2,
@@ -495,7 +491,6 @@
                 "skill": "FREEZE",
                 "icon_path": "overlordability_water",
                 "description": "Freeze an enemy zombie.",
-                "skill_type": 0,
                 "skill_target_type": [
                   1,
                   2,
@@ -511,7 +506,6 @@
                 "skill": "ICE_BOLT",
                 "icon_path": "overlordability_water_ice_bolt",
                 "description": "Deal 2 damage to a target zombie. If it survives, Freeze it.",
-                "skill_type": 0,
                 "skill_target_type": [
                   1,
                   2,
@@ -541,7 +535,6 @@
                 "skill": "PUSH",
                 "icon_path": "overlordability_air_push",
                 "description": "Return a friendly zombie to your hand.",
-                "skill_type": 5,
                 "skill_target_type": [
                   2,
                   5
@@ -555,7 +548,6 @@
                 "skill": "DRAW",
                 "icon_path": "overlordability_air_draw",
                 "description": "Draw a card.",
-                "skill_type": 5,
                 "skill_target_type": [
                   2,
                   5
@@ -583,7 +575,6 @@
                 "skill": "POISON_DART",
                 "icon_path": "overlordability_toxic",
                 "description": "Deal 1 damage to a target.",
-                "skill_type": 1,
                 "skill_target_type": [
                   1,
                   2,
@@ -599,7 +590,6 @@
                 "skill": "TOXIC_POWER",
                 "icon_path": "overlordability_toxic_toxic_power",
                 "description": "Deal 1 damage to a zombie and give it +1 Atk.",
-                "skill_type": 1,
                 "skill_target_type": [
                   1,
                   2,
@@ -630,7 +620,6 @@
                 "skill": "HEALING_TOUCH",
                 "icon_path": "overlordability_life",
                 "description": "Restore 2 Def to a target.",
-                "skill_type": 1,
                 "skill_target_type": [
                   1,
                   2,
@@ -646,7 +635,6 @@
                 "skill": "MEND",
                 "icon_path": "overlordability_life_mend",
                 "description": "Restore 4 Def to your Overlord.",
-                "skill_type": 1,
                 "skill_target_type": [
                   1,
                   2,
@@ -788,7 +776,6 @@
                 "activity_type": "active",
                 "call_type": "ENTRY",
                 "target_type": "player_card|opponent_card",
-                "affect_object_type": "none",
                 "value": 2,
                 "effect_type": "TARGET_FIRE",
                 "buff_type": "ENTRY"
@@ -905,7 +892,6 @@
                 "call_type": "PERMANENT",
                 "target_type": "player_card",
                 "value": 2,
-                "attack_info": "ANY",
                 "buff_type": "FLASH"
               }
             ],
@@ -978,7 +964,6 @@
                 "activity_type": "PASSIVE",
                 "call_type": "ENTRY",
                 "target_type": "OPPONENT_ALL_CARDS|opponent",
-                "affect_object_type": "none",
                 "value": 2,
                 "effect_type": "MASSIVE_FIRE",
                 "buff_type": "ENTRY"
@@ -1165,7 +1150,6 @@
                 "activity_type": "active",
                 "call_type": "ENTRY",
                 "target_type": "player_card|opponent_card",
-                "affect_object_type": "none",
                 "value": 1,
                 "effect_type": "TARGET_WATER",
                 "buff_type": "ENTRY"
@@ -1426,7 +1410,6 @@
                 "activity_type": "PASSIVE",
                 "call_type": "ENTRY",
                 "target_type": "OPPONENT_ALL_CARDS | OPPONENT",
-                "affect_object_type": "none",
                 "value": 2,
                 "effect_type": "MASSIVE_WATER_WAVE",
                 "buff_type": "ENTRY"
@@ -1502,7 +1485,6 @@
                 "activity_type": "active",
                 "call_type": "ENTRY",
                 "target_type": "player_card|opponent_card|player|opponent",
-                "affect_object_type": "none",
                 "value": 1,
                 "effect_type": "TARGET_ROCK",
                 "buff_type": "ENTRY"
@@ -1783,7 +1765,6 @@
                 "activity_type": "active",
                 "call_type": "ENTRY",
                 "target_type": "opponent_card|player_card",
-                "affect_object_type": "none",
                 "card_type": "HEAVY",
                 "buff_type": "ENTRY"
               }
@@ -3144,7 +3125,6 @@
                 "activity_type": "PASSIVE",
                 "call_type": "DEATH",
                 "target_type": "PLAYER_ALL_CARDS|OPPONENT_ALL_CARDS",
-                "affect_object_type": "none",
                 "value": 3,
                 "effect_type": "MASSIVE_TOXIC_ALL",
                 "buff_type": "DEATH"
