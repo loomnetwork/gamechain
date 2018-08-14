@@ -156,7 +156,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 }
 
 // CreateDeck appends the given deck to user's deck list
-func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest)  (*zb.CreateDeckResponse, error) {
+func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest) (*zb.CreateDeckResponse, error) {
 	userID := strings.TrimSpace(req.UserId)
 	userKeySpace := NewUserKeySpace(userID)
 
@@ -205,10 +205,10 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 			}
 		}
 
-		newDeckId++;
+		newDeckId++
 	}
 
-	req.Deck.Id = newDeckId;
+	req.Deck.Id = newDeckId
 
 	deckList.Decks = mergeDeckSets(deckList.Decks, []*zb.Deck{req.Deck})
 
@@ -254,9 +254,6 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
-		return err
-	}
-	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
 		return err
 	}
 
