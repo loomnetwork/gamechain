@@ -412,8 +412,8 @@
                 "skill_target_type": [
                   0
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 3,
+                "initial_cooldown": 3,
                 "value": 2
               },
               {
@@ -424,8 +424,8 @@
                 "skill_target_type": [
                   0
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1
               }
             ],
@@ -453,8 +453,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
@@ -468,8 +468,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1
               }
             ],
@@ -497,8 +497,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
@@ -512,8 +512,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 2
               }
             ],
@@ -539,8 +539,8 @@
                   2,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 6,
+                "initial_cooldown": 5,
                 "value": 0
               },
               {
@@ -552,8 +552,8 @@
                   2,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 0
               }
             ],
@@ -581,8 +581,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
@@ -596,8 +596,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1,
                 "attack": 1
               }
@@ -609,7 +609,7 @@
             "hero_id": 5,
             "icon": "icon",
             "name": "Valash",
-            "short_description": "Natures Warden",
+            "short_description": "Nature's Warden",
             "long_description": "",
             "element": "LIFE",
             "experience": 0,
@@ -626,8 +626,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
@@ -641,8 +641,8 @@
                   4,
                   5
                 ],
-                "cooldown": 2,
-                "initial_cooldown": 2,
+                "cooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1
               }
             ],
@@ -1142,7 +1142,7 @@
             "flavor_text": "Most welcomed during hot summer days on the busy city streets",
             "picture": "Jetter",
             "damage": 3,
-            "health": 3,
+            "health": 4,
             "type": "WALKER",
             "rank": "OFFICER",
             "abilities": [
@@ -1174,12 +1174,12 @@
             "id": 14,
             "kind": "CREATURE",
             "name": "Freezzee",
-            "cost": 5,
+            "cost": 4,
             "description": "<b>Entry: Freeze</b> zombie and adjecent zombies, 2 damage if Frozen",
             "flavor_text": "How he loves decorating with ice sculptures... Everywhere!",
             "picture": "Freezzee",
-            "damage": 3,
-            "health": 3,
+            "damage": 2,
+            "health": 2,
             "type": "WALKER",
             "rank": "OFFICER",
             "abilities": [
@@ -1254,12 +1254,12 @@
             "id": 12,
             "kind": "CREATURE",
             "name": "Blizzard",
-            "cost": 5,
+            "cost": 6,
             "description": "<b>Entry: Freeze</b> all enemy zombies",
             "flavor_text": "If you can't join them, FREEZE them!",
             "picture": "Blizzard",
             "damage": 3,
-            "health": 3,
+            "health": 4,
             "type": "WALKER",
             "rank": "COMMANDER",
             "abilities": [
@@ -1326,12 +1326,12 @@
             "id": 8,
             "kind": "CREATURE",
             "name": "Zhatterer",
-            "cost": 5,
+            "cost": 2,
             "description": "<b>Entry: Destroy</b> a <b>Frozen</b> zombie",
             "flavor_text": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
             "picture": "Zhatterer",
-            "damage": 3,
-            "health": 3,
+            "damage": 1,
+            "health": 2,
             "type": "WALKER",
             "rank": "MINION",
             "abilities": [
