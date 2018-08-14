@@ -80,7 +80,7 @@ func TestE2E(t *testing.T) {
 			time.Sleep(500 * time.Millisecond)
 
 			// clean up test data if successful
-			os.RemoveAll(config.BaseDir)
+			// os.RemoveAll(config.BaseDir)
 		})
 	}
 }
