@@ -892,6 +892,7 @@
                 "call_type": "PERMANENT",
                 "target_type": "player_card",
                 "value": 2,
+                "attack_info": "ANY",
                 "buff_type": "FLASH"
               }
             ],

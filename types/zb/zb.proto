@@ -81,6 +81,7 @@ message Ability {
     string card_type     = 16;
     int32 health         = 17;
     int32 damage         = 18;
+    string attack_info   = 19;
 }
 
 message CardList {
@@ -192,6 +193,7 @@ message CardCollectionList {
 
 message DeckList {
     repeated Deck decks = 1;
+    int64 last_modification_timestamp = 2;
 }
 
 // Request and Response
@@ -231,6 +233,7 @@ message GetDeckResponse {
 message CreateDeckRequest {
     string user_id = 1;
     Deck deck = 2;
+    int64 last_modification_timestamp = 3;
 }
 
 message CreateDeckResponse {
@@ -240,11 +243,13 @@ message CreateDeckResponse {
 message DeleteDeckRequest {
     string user_id = 1;
     int64 deck_id = 2;
+    int64 last_modification_timestamp = 3;
 }
 
 message EditDeckRequest {
     string user_id = 1;
     Deck deck      = 2;
+    int64 last_modification_timestamp = 3;
 }
 
 message DecksResponse {
@@ -258,6 +263,7 @@ message ListDecksRequest {
 
 message ListDecksResponse {
     repeated Deck decks = 1;
+    int64 last_modification_timestamp = 3;
 }
 
 message ListCardLibraryRequest {

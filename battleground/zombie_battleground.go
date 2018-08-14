@@ -211,6 +211,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	req.Deck.Id = newDeckId;
 
 	deckList.Decks = mergeDeckSets(deckList.Decks, []*zb.Deck{req.Deck})
+	deckList.LastModificationTimestamp = req.LastModificationTimestamp;
 
 	if err := ctx.Set(userKeySpace.DecksKey(), &deckList); err != nil {
 		return nil, err
@@ -263,6 +264,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	if err := editDeck(deckList.Decks, req.Deck); err != nil {
 		return err
 	}
+
+	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := ctx.Set(userKeySpace.DecksKey(), &deckList); err != nil {
 		return err
 	}
@@ -298,6 +301,8 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	if !deleted {
 		return fmt.Errorf("deck not found")
 	}
+
+	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := ctx.Set(userKeySpace.DecksKey(), &deckList); err != nil {
 		return err
 	}
@@ -316,7 +321,10 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 
-	return &zb.ListDecksResponse{Decks: deckList.Decks}, nil
+	return &zb.ListDecksResponse{
+		Decks: deckList.Decks,
+		LastModificationTimestamp: deckList.LastModificationTimestamp,
+	}, nil
 }
 
 // GetDeck returns the deck by given id
