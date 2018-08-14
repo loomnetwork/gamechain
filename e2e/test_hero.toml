@@ -1,0 +1,31 @@
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_hero_info -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["hero_id: 0", "experience: 0", "hero_id: 1", "experience: 0", "hero_id: 2", "experience: 2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli add_hero_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 0 -e 10"
+
+[[TestCases]]
+  RunCmd = "zb-cli add_hero_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1 -e 20"
+
+[[TestCases]]
+  RunCmd = "zb-cli add_hero_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 2 -e 30"
+
+[[TestCases]]
+  RunCmd = "zb-cli list_hero_info -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["hero_id: 0", "experience: 10", "hero_id: 1", "experience: 20", "hero_id: 2", "experience: 32"]
