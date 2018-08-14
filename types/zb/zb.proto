@@ -23,23 +23,24 @@ message Deck {
 }
 
 message Card {
-    int64 id                   = 1;
-    string kind                = 2;
-    string element             = 3;
-    string name                = 4;
-    string description         = 5;
-    string flavorText          = 6;
-    string picture             = 7;
-    string rank                = 8;
-    string type                = 9;
-    string rarity              = 10;
-    int32 damage               = 11;
-    int32 health               = 12;
-    int32 cost                 = 13;
-    string ability             = 14;
-    CardViewInfo card_view_info= 15;
-    repeated Effect effects    = 16;
-    repeated Ability abilities = 17;
+    int64 id                    = 1;
+    string kind                 = 2;
+    string set                  = 3;
+    string name                 = 4;
+    string description          = 5;
+    string flavor_text          = 6;
+    string picture              = 7;
+    string rank                 = 8;
+    string type                 = 9;
+    string rarity               = 10;
+    string frame                = 11;
+    int32 damage                = 12;
+    int32 health                = 13;
+    int32 cost                  = 14;
+    string ability              = 15;
+    CardViewInfo card_view_info = 16;
+    repeated Effect effects     = 17;
+    repeated Ability abilities  = 18;
 }
 
 message CardViewInfo {
@@ -66,7 +67,20 @@ message Ability {
     string activity_type = 2;
     string call_type     = 3;
     string target_type   = 4;
-    int32 value          = 5;
+    string stat_type     = 5;
+    string set_type      = 6;
+    int32 value          = 7;
+    string buff_type     = 8;
+    string effect_type   = 9;
+    string unit_type     = 10;
+    int32 count          = 11;
+    string name          = 12;
+    int32 turns          = 13;
+    int32 delay          = 14;
+    string unit_status   = 15;
+    string card_type     = 16;
+    int32 health         = 17;
+    int32 damage         = 18;
 }
 
 message CardList {
