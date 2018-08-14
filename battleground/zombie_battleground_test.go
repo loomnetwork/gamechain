@@ -89,7 +89,7 @@ var initRequest = zb.InitRequest{
 	Cards: []*zb.Card{
 		{
 			Id:      1,
-			Element: "Air",
+			Set:     "Air",
 			Name:    "Banshee",
 			Rank:    "Minion",
 			Type:    "Feral",
@@ -120,7 +120,7 @@ var initRequest = zb.InitRequest{
 		},
 		{
 			Id:      2,
-			Element: "Air",
+			Set:     "Air",
 			Name:    "Breezee",
 			Rank:    "Minion",
 			Type:    "Walker",

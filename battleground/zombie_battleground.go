@@ -361,29 +361,29 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 	if err := ctx.Get(cardListKey, &cardList); err != nil {
 		return nil, err
 	}
-	// convert to card list to card library view grouped by element
+	// convert to card list to card library view grouped by set
 	var category = make(map[string][]*zb.Card)
 	for _, card := range cardList.Cards {
-		if _, ok := category[card.Element]; !ok {
-			category[card.Element] = make([]*zb.Card, 0)
+		if _, ok := category[card.Set]; !ok {
+			category[card.Set] = make([]*zb.Card, 0)
 		}
-		category[card.Element] = append(category[card.Element], card)
+		category[card.Set] = append(category[card.Set], card)
 	}
-	// order the element by name
-	var elements []string
+	// order sets by name
+	var setNames []string
 	for k := range category {
-		elements = append(elements, k)
+		setNames = append(setNames, k)
 	}
-	sort.Strings(elements)
+	sort.Strings(setNames)
 
 	var sets []*zb.CardSet
-	for _, elem := range elements {
-		cards, ok := category[elem]
+	for _, setName := range setNames {
+		cards, ok := category[setName]
 		if !ok {
 			continue
 		}
 		set := &zb.CardSet{
-			Name:  elem,
+			Name:  setName,
 			Cards: cards,
 		}
 		sets = append(sets, set)

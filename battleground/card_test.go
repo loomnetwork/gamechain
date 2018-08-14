@@ -63,7 +63,7 @@ func loadcards(reader io.Reader) (*zb.CardList, error) {
 func cardFrom(record []string) (*zb.Card, error) {
 	var card zb.Card
 	card.Name = record[0]
-	card.Element = record[1]
+	card.Set = record[1]
 	card.Rank = record[2]
 	card.Type = record[3]
 	i, _ := strconv.ParseInt(record[4], 10, 32)
