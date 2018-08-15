@@ -192,10 +192,6 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 
-	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
-		return nil, err
-	}
-
 	// allocate new deck id
 	var newDeckId int64 = 0
 	if len(deckList.Decks) != 0 {
@@ -209,6 +205,10 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	}
 
 	req.Deck.Id = newDeckId
+
+	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
+		return nil, err
+	}
 
 	deckList.Decks = mergeDeckSets(deckList.Decks, []*zb.Deck{req.Deck})
 	deckList.LastModificationTimestamp = req.LastModificationTimestamp;
@@ -255,6 +255,10 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
+		return err
+	}
+
+	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
 		return err
 	}
 

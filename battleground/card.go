@@ -1,8 +1,8 @@
 package battleground
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"strings"
 	"unicode/utf8"
 
@@ -33,15 +33,20 @@ func validateDeckCollections(userCollections []*zb.CardCollection, deckCollectio
 func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 	validatedDeck.Name = strings.TrimSpace(validatedDeck.Name)
 	if len(validatedDeck.Name) == 0 {
-		return errors.New("deck name can't be empty");
+		return errors.New("deck name can't be empty")
 	}
 
 	if utf8.RuneCountInString(validatedDeck.Name) > 48 {
-		return errors.New("deck name is more than 48 characters");
+		return errors.New("deck name is more than 48 characters")
 	}
 
 	for _, deck := range deckList {
-		if deck.Id != validatedDeck.Id && strings.EqualFold(deck.Name, validatedDeck.Name) {
+		// Skip name validation for same deck id
+		if deck.Id == validatedDeck.Id {
+			continue
+		}
+
+		if strings.EqualFold(deck.Name, validatedDeck.Name) {
 			return errors.New("deck name already exists")
 		}
 	}
@@ -101,6 +106,7 @@ func editDeck(deckSet []*zb.Deck, deck *zb.Deck) error {
 		return fmt.Errorf("Unable to find deck: %d", deck.Id)
 	}
 
+	deckToEdit.Name = deck.Name
 	deckToEdit.Cards = deck.Cards
 	deckToEdit.HeroId = deck.HeroId
 
