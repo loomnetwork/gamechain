@@ -173,7 +173,7 @@ message Skill {
     string skill = 2;
     string icon_path = 3;
     string description = 4;
-    repeated SkillTargetType skill_target_type = 5;
+    string skill_targets = 5;
     int32 value = 6;
 
     int32 cooldown = 7;
