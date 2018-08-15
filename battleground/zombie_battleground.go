@@ -204,11 +204,11 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		newDeckId++
 	}
 
+	req.Deck.Id = newDeckId
+
 	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
 		return nil, err
 	}
-
-	req.Deck.Id = newDeckId
 
 	deckList.Decks = mergeDeckSets(deckList.Decks, []*zb.Deck{req.Deck})
 	deckList.LastModificationTimestamp = req.LastModificationTimestamp;

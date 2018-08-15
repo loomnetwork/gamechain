@@ -392,7 +392,7 @@ func TestDeckOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:   "NewDeck",
+				Name:   "Default",
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
 					{
