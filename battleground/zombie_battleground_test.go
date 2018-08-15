@@ -70,7 +70,7 @@ var initRequest = zb.InitRequest{
 			Skills: []*zb.Skill{{
 				Title:           "Attack",
 				Skill:           "Skill0",
-				SkillTargetType: []zb.Skill_SkillTargetType{zb.Skill_ALL_CARDS, zb.Skill_PLAYER_CARD},
+				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
 				Value:           1,
 			}},
 		},
@@ -81,7 +81,7 @@ var initRequest = zb.InitRequest{
 			Skills: []*zb.Skill{{
 				Title:           "Deffence",
 				Skill:           "Skill1",
-				SkillTargetType: []zb.Skill_SkillTargetType{zb.Skill_PLAYER, zb.Skill_OPPONENT_CARD},
+				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
 				Value:           2,
 			}},
 		},
