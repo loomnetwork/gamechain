@@ -139,7 +139,7 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
-			Id: 0,
+			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
@@ -295,7 +295,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
-			UserId:   "DeckUser",
+			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
 		})
 		assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
@@ -313,7 +313,7 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	var createDeckResponse *zb.CreateDeckResponse
-	t.Run("AddDeck", func(t *testing.T) {
+	t.Run("CreateDeck", func(t *testing.T) {
 		var err error
 		createDeckResponse, err = c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
@@ -344,7 +344,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.Equal(t, 2, len(deckResponse.Decks))
 	})
 
-	t.Run("AddDeck (Invalid Requested Amount)", func(t *testing.T) {
+	t.Run("CreateDeck (Invalid Requested Amount)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
@@ -366,7 +366,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	t.Run("AddDeck (Invalid Requested CardName)", func(t *testing.T) {
+	t.Run("CreateDeck (Invalid Requested CardName)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
@@ -388,6 +388,151 @@ func TestDeckOperations(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
+	t.Run("CreateDeck (Same name not allowed)", func(t *testing.T) {
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Name:   "NewDeck",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("CreateDeck (Same name with different case not allowed)", func(t *testing.T) {
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Name:   "nEWdECK",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("EditDeck", func(t *testing.T) {
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Id:     1,
+				Name:   "Edited",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.Nil(t, err)
+
+		getDeckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
+			UserId: "DeckUser",
+			DeckId: 1,
+		})
+
+		assert.Nil(t, err)
+
+		assert.Equal(t, "Edited", getDeckResponse.Deck.Name)
+	})
+
+	t.Run("EditDeck (attempt to set more number of cards)", func(t *testing.T) {
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Id:     1,
+				Name:   "Edited",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   100,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("EditDeck (same name while editing is allowed)", func(t *testing.T) {
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Id:     1,
+				Name:   "Edited",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("EditDeck (attempt to set duplicate name with different case)", func(t *testing.T) {
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb.Deck{
+				Id:     1,
+				Name:   "dEFAULT",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Breezee",
+					},
+					{
+						Amount:   1,
+						CardName: "Buffer",
+					},
+				},
+			},
+		})
+
+		assert.NotNil(t, err)
+	})
+
 	t.Run("DeleteDeck", func(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
 		return
@@ -401,7 +546,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
-			UserId:   "DeckUser",
+			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
 		})
 
