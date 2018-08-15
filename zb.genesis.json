@@ -409,9 +409,7 @@
                 "skill": "HARDEN",
                 "icon_path": "overlordability_earth",
                 "description": "Add 2 Def to the Overlord.",
-                "skill_target_type": [
-                  0
-                ],
+                "skill_targets": "",
                 "cooldown": 3,
                 "initial_cooldown": 3,
                 "value": 2
@@ -421,9 +419,7 @@
                 "skill": "STONE_SKIN",
                 "icon_path": "overlordability_earth_stone_skin",
                 "description": "Give a friendly zombie +1 Def.",
-                "skill_target_type": [
-                  0
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
@@ -447,12 +443,7 @@
                 "skill": "FIRE_BOLT",
                 "icon_path": "overlordability_fire",
                 "description": "Deal 1 damage to target.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
                 "value": 1
@@ -462,12 +453,7 @@
                 "skill": "RABIES",
                 "icon_path": "overlordability_fire_rabies",
                 "description": "Give friendly zombie feral.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "PLAYER_CARD",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
@@ -490,13 +476,8 @@
                 "title": "Freeze",
                 "skill": "FREEZE",
                 "icon_path": "overlordability_water",
-                "description": "Freeze an enemy zombie.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "description": "Freeze a zombie.",
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 3,
                 "initial_cooldown": 3,
                 "value": 1
@@ -506,12 +487,7 @@
                 "skill": "ICE_BOLT",
                 "icon_path": "overlordability_water_ice_bolt",
                 "description": "Deal 2 damage to a target zombie. If it survives, Freeze it.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 2
@@ -535,10 +511,7 @@
                 "skill": "PUSH",
                 "icon_path": "overlordability_air_push",
                 "description": "Return a friendly zombie to your hand.",
-                "skill_target_type": [
-                  2,
-                  5
-                ],
+                "skill_targets": "PLAYER_CARD",
                 "cooldown": 6,
                 "initial_cooldown": 5,
                 "value": 0
@@ -548,10 +521,7 @@
                 "skill": "DRAW",
                 "icon_path": "overlordability_air_draw",
                 "description": "Draw a card.",
-                "skill_target_type": [
-                  2,
-                  5
-                ],
+                "skill_targets": "",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 0
@@ -575,12 +545,7 @@
                 "skill": "POISON_DART",
                 "icon_path": "overlordability_toxic",
                 "description": "Deal 1 damage to a target.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
                 "value": 1
@@ -590,12 +555,7 @@
                 "skill": "TOXIC_POWER",
                 "icon_path": "overlordability_toxic_toxic_power",
                 "description": "Deal 1 damage to a zombie and give it +1 Atk.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1,
@@ -620,30 +580,20 @@
                 "skill": "HEALING_TOUCH",
                 "icon_path": "overlordability_life",
                 "description": "Restore 2 Def to a target.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
-                "value": 1
+                "value": 2
               },
               {
                 "title": "Mend",
                 "skill": "MEND",
                 "icon_path": "overlordability_life_mend",
                 "description": "Restore 4 Def to your Overlord.",
-                "skill_target_type": [
-                  1,
-                  2,
-                  4,
-                  5
-                ],
+                "skill_targets": "",
                 "cooldown": 4,
                 "initial_cooldown": 4,
-                "value": 1
+                "value": 4
               }
             ],
             "primary_skill": 0,
@@ -1291,7 +1241,7 @@
             "kind": "CREATURE",
             "name": "Froztbite",
             "cost": 4,
-            "description": "<b>Delayed</b> 1: +6 Atk",
+            "description": "<b>Delayed</b> 2: +6 Atk",
             "flavor_text": "He's been trying to get out for a millennia - thank you global warming!!",
             "picture": "Froztbite",
             "damage": 0,
@@ -1304,7 +1254,7 @@
                 "activity_type": "passive",
                 "call_type": "TURN",
                 "value": 6,
-                "delay": 1,
+                "delay": 2,
                 "buff_type": "DELAYED"
               }
             ],
@@ -1839,7 +1789,7 @@
                 "call_type": "TURN",
                 "value": 4,
                 "delay": 2,
-                "buff_type": "TURN"
+                "buff_type": "DELAYED"
               }
             ],
             "card_view_info": {
@@ -2459,7 +2409,7 @@
                 "type": "DAMAGE_TARGET",
                 "activity_type": "active",
                 "call_type": "ENTRY",
-                "target_type": "player_card|opponent_card|player|opponent",
+                "target_type": "player_card|opponent_card",
                 "value": 2,
                 "effect_type": "TARGET_LIFE",
                 "buff_type": "ENTRY"
@@ -2964,7 +2914,7 @@
             "kind": "CREATURE",
             "name": "Zeeter",
             "cost": 5,
-            "description": "<b>Entry: Devour Atk/Def</b> an ally zombie, get its Atk and Def",
+            "description": "<b>Entry: Devour Atk/Def</b> an ally zombie",
             "flavor_text": "Nam, naam nam nam namm nam...",
             "picture": "Zeeter",
             "damage": 1,
@@ -3078,7 +3028,7 @@
             "kind": "CREATURE",
             "name": "Ectoplasm",
             "cost": 1,
-            "description": "<b>Entry</b>: Lose 1 goo",
+            "description": "<b>Entry</b>: Lose 1 goo bottle",
             "flavor_text": "Wha'ch yu lookin at' ?! ",
             "picture": "Ectoplasm",
             "damage": 2,
