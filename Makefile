@@ -42,9 +42,6 @@ $(GOPATH)/bin/loom:
 	chmod +x $@
 
 deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
-	cd $(PLUGIN_DIR) && git pull
-	cd $(LOOMCHAIN_DIR) && git pull && make deps && make
-	cp $(LOOMCHAIN_DIR)/loom $(GOPATH)/bin
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/gogo/protobuf/jsonpb \
@@ -53,12 +50,14 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/pkg/errors \
 		github.com/stretchr/testify/assert\
 		github.com/hashicorp/go-plugin \
-		github.com/google/uuid \
 		github.com/grpc-ecosystem/go-grpc-prometheus \
 		github.com/prometheus/client_golang/prometheus \
 		github.com/loomnetwork/e2e
-	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 	go install github.com/golang/dep/cmd/dep
+	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
+	cd $(PLUGIN_DIR) && git pull
+	cd $(LOOMCHAIN_DIR) && git pull && make deps && make
+	cp $(LOOMCHAIN_DIR)/loom $(GOPATH)/bin
 
 test:
 	go test -v ./...
