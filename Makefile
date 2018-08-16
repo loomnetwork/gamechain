@@ -2,6 +2,7 @@ PKG = github.com/loomnetwork/zombie_battleground
 GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
+LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 
 all: build cli
@@ -33,12 +34,16 @@ proto: types/zb/zb.pb.go types/zb/zb.cs
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
+$(LOOMCHAIN_DIR):
+	git clone -q git@github.com:loomnetwork/loomchain.git $@
+
 $(GOPATH)/bin/loom:
 	curl -o $@  https://private.delegatecall.com/loom/linux/latest/loom
 	chmod +x $@
 
-deps: $(PLUGIN_DIR) $(GOPATH)/bin/loom
+deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	cd $(PLUGIN_DIR) && git pull
+	cd $(LOOMCHAIN_DIR) && make deps && make && make install
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/gogo/protobuf/jsonpb \

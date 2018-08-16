@@ -34,7 +34,6 @@ func setupInternalContract(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
-	t.Skip("skip e2e test")
 	tests := []struct {
 		name       string
 		testFile   string
@@ -81,7 +80,7 @@ func TestE2E(t *testing.T) {
 			time.Sleep(500 * time.Millisecond)
 
 			// clean up test data if successful
-			os.RemoveAll(config.BaseDir)
+			// os.RemoveAll(config.BaseDir)
 		})
 	}
 }
