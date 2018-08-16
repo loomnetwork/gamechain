@@ -34,7 +34,7 @@ func setupInternalContract(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
-	t.Skip("skip e2e test")
+	// t.Skip("skip e2e test")
 	tests := []struct {
 		name       string
 		testFile   string
