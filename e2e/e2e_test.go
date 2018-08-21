@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupInternalContract(dir string) error {
+func setupInternalPlugin(dir string) error {
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		return err
 	}
@@ -34,7 +34,6 @@ func setupInternalContract(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
-	t.Skip("skip e2e test")
 	tests := []struct {
 		name       string
 		testFile   string
@@ -50,7 +49,7 @@ func TestE2E(t *testing.T) {
 	common.LoomPath = "loom"
 	common.ContractDir = "./contracts"
 	// required internal contract to resolve port conflicts
-	err := setupInternalContract(common.ContractDir)
+	err := setupInternalPlugin(common.ContractDir)
 	assert.Nil(t, err)
 
 	for _, test := range tests {
