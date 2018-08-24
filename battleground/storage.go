@@ -3,13 +3,21 @@ package battleground
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/pkg/errors"
 )
 
 var (
+	cardPrefix       = []byte("card")
+	userPreifx       = []byte("user")
+	heroesPrefix     = []byte("heroes")
+	collectionPrefix = []byte("collection")
+	decksPrefix      = []byte("decks")
+
 	cardListKey          = []byte("cardlist")
 	heroListKey          = []byte("herolist")
 	defaultDeckKey       = []byte("default-deck")
@@ -17,8 +25,29 @@ var (
 	defaultHeroesKey     = []byte("default-heroes")
 )
 
+var (
+	ErrNotfound        = errors.New("not found")
+	ErrUserNotVerified = errors.New("user is not verified")
+)
+
+func userAccountKey(id string) []byte {
+	return util.PrefixKey(userPreifx, []byte(id))
+}
+
+func userDecksKey(id string) []byte {
+	return util.PrefixKey(userPreifx, []byte(id), decksPrefix)
+}
+
+func userCardCollectionKey(id string) []byte {
+	return util.PrefixKey(userPreifx, []byte(id), collectionPrefix)
+}
+
+func userHeroesKey(id string) []byte {
+	return util.PrefixKey(userPreifx, []byte(id), heroesPrefix)
+}
+
 func cardKey(id int64) []byte {
-	return util.PrefixKey([]byte("card"), []byte(strconv.FormatInt(id, 10)))
+	return util.PrefixKey(cardPrefix, []byte(strconv.FormatInt(id, 10)))
 }
 
 func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
@@ -30,13 +59,52 @@ func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
 	return nil
 }
 
-func loadCardList(ctx contract.Context) (*zb.CardList, error) {
+func loadCardList(ctx contract.StaticContext) (*zb.CardList, error) {
 	var cl zb.CardList
 	err := ctx.Get(cardListKey, &cl)
 	if err != nil {
 		return nil, err
 	}
 	return &cl, nil
+}
+
+func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
+	err := ctx.Get(userCardCollectionKey(userID), &userCollection)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &userCollection, nil
+}
+
+func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
+	return ctx.Set(userCardCollectionKey(userID), cardCollection)
+}
+
+func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
+	var deckList zb.DeckList
+	err := ctx.Get(userDecksKey(userID), &deckList)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &deckList, nil
+}
+
+func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
+	return ctx.Set(userDecksKey(userID), decks)
+}
+
+func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
+	var heroes zb.HeroList
+	err := ctx.Get(userHeroesKey(userID), &heroes)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &heroes, nil
+}
+
+func saveHeroes(ctx contract.Context, userID string, heroes *zb.HeroList) error {
+	return ctx.Set(userHeroesKey(userID), heroes)
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
@@ -67,6 +135,15 @@ func deleteDeckById(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
 func getDeckById(deckList []*zb.Deck, id int64) *zb.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
+			return deck
+		}
+	}
+	return nil
+}
+
+func getDeckByName(deckList []*zb.Deck, name string) *zb.Deck {
+	for _, deck := range deckList {
+		if strings.EqualFold(deck.Name, name) {
 			return deck
 		}
 	}
