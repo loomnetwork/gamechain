@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	OwnerRole = "owner"
+	OwnerRole = "user" // TODO: change to owner
 )
 
 var (
@@ -34,21 +34,39 @@ var (
 	ErrUserNotVerified = errors.New("user is not verified")
 )
 
-func userAccountKey(id string) []byte {
-	return util.PrefixKey(userPreifx, []byte(id))
+// Maintain compatability with version 1.
+// TODO: Remove these and the following user* prefix instead if we're about to wipe out the data
+func AccountKey(userID string) []byte {
+	return []byte("user:" + userID)
 }
 
-func userDecksKey(id string) []byte {
-	return util.PrefixKey(userPreifx, []byte(id), decksPrefix)
+func DecksKey(userID string) []byte {
+	return []byte("user:" + userID + ":decks")
 }
 
-func userCardCollectionKey(id string) []byte {
-	return util.PrefixKey(userPreifx, []byte(id), collectionPrefix)
+func CardCollectionKey(userID string) []byte {
+	return []byte("user:" + userID + ":collection")
 }
 
-func userHeroesKey(id string) []byte {
-	return util.PrefixKey(userPreifx, []byte(id), heroesPrefix)
+func HeroesKey(userID string) []byte {
+	return []byte("user:" + userID + ":heroes")
 }
+
+// func userAccountKey(id string) []byte {
+// 	return util.PrefixKey(userPreifx, []byte(id))
+// }
+
+// func userDecksKey(id string) []byte {
+// 	return util.PrefixKey(userPreifx, []byte(id), decksPrefix)
+// }
+
+// func userCardCollectionKey(id string) []byte {
+// 	return util.PrefixKey(userPreifx, []byte(id), collectionPrefix)
+// }
+
+// func userHeroesKey(id string) []byte {
+// 	return util.PrefixKey(userPreifx, []byte(id), heroesPrefix)
+// }
 
 func cardKey(id int64) []byte {
 	return util.PrefixKey(cardPrefix, []byte(strconv.FormatInt(id, 10)))
@@ -74,7 +92,7 @@ func loadCardList(ctx contract.StaticContext) (*zb.CardList, error) {
 
 func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardCollectionList, error) {
 	var userCollection zb.CardCollectionList
-	err := ctx.Get(userCardCollectionKey(userID), &userCollection)
+	err := ctx.Get(CardCollectionKey(userID), &userCollection)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
@@ -82,12 +100,12 @@ func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardColl
 }
 
 func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
-	return ctx.Set(userCardCollectionKey(userID), cardCollection)
+	return ctx.Set(CardCollectionKey(userID), cardCollection)
 }
 
 func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
 	var deckList zb.DeckList
-	err := ctx.Get(userDecksKey(userID), &deckList)
+	err := ctx.Get(DecksKey(userID), &deckList)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
@@ -95,12 +113,12 @@ func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) 
 }
 
 func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
-	return ctx.Set(userDecksKey(userID), decks)
+	return ctx.Set(DecksKey(userID), decks)
 }
 
 func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
 	var heroes zb.HeroList
-	err := ctx.Get(userHeroesKey(userID), &heroes)
+	err := ctx.Get(HeroesKey(userID), &heroes)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
@@ -108,7 +126,7 @@ func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error)
 }
 
 func saveHeroes(ctx contract.Context, userID string, heroes *zb.HeroList) error {
-	return ctx.Set(userHeroesKey(userID), heroes)
+	return ctx.Set(HeroesKey(userID), heroes)
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
@@ -126,7 +144,7 @@ func isOwner(ctx contract.Context, userID string) bool {
 	return ok
 }
 
-func deleteDeckById(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
+func deleteDeckByID(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
 	newList := make([]*zb.Deck, 0)
 	for _, deck := range deckList {
 		if deck.Id != id {
@@ -136,7 +154,7 @@ func deleteDeckById(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
 	return newList, len(newList) != len(deckList)
 }
 
-func getDeckById(deckList []*zb.Deck, id int64) *zb.Deck {
+func getDeckByID(deckList []*zb.Deck, id int64) *zb.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
 			return deck

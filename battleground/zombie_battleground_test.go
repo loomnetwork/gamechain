@@ -68,10 +68,10 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:           "Attack",
-				Skill:           "Skill0",
+				Title:        "Attack",
+				Skill:        "Skill0",
 				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
-				Value:           1,
+				Value:        1,
 			}},
 		},
 		{
@@ -79,10 +79,10 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:           "Deffence",
-				Skill:           "Skill1",
+				Title:        "Deffence",
+				Skill:        "Skill1",
 				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
-				Value:           2,
+				Value:        2,
 			}},
 		},
 	},
@@ -236,7 +236,7 @@ func TestAccountOperations(t *testing.T) {
 			Image:       "PathToImage2",
 			CurrentTier: 5,
 		})
-		assert.Equal(t, nil, err)
+		assert.Nil(t, err)
 		assert.Equal(t, int32(5), account.CurrentTier)
 		assert.Equal(t, "PathToImage2", account.Image)
 	})
@@ -535,7 +535,6 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck", func(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
-		return
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId: "DeckUser",
 			DeckId: createDeckResponse.DeckId,

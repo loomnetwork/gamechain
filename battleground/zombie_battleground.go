@@ -63,7 +63,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
-	if err := ctx.Get(userAccountKey(req.UserId), &account); err != nil {
+	if err := ctx.Get(AccountKey(req.UserId), &account); err != nil {
 		return nil, errors.Wrapf(err, "unable to retrieve account data for userId: %s", req.UserId)
 	}
 	return &account, nil
@@ -76,7 +76,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var account zb.Account
-	accountKey := userAccountKey(req.UserId)
+	accountKey := AccountKey(req.UserId)
 	if err := ctx.Get(accountKey, &account); err != nil {
 		return nil, errors.Wrapf(err, "unable to retrieve account data for userId: %s", req.UserId)
 	}
@@ -97,7 +97,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
 	// confirm owner doesnt exist already
-	if ctx.Has(userAccountKey(req.UserId)) {
+	if ctx.Has(AccountKey(req.UserId)) {
 		return errors.New("user already exists")
 	}
 
@@ -106,7 +106,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	account.Owner = ctx.Message().Sender.Bytes()
 	copyAccountInfo(&account, req)
 
-	if err := ctx.Set(userAccountKey(req.UserId), &account); err != nil {
+	if err := ctx.Set(AccountKey(req.UserId), &account); err != nil {
 		return errors.Wrapf(err, "error setting account information for userId: %s", req.UserId)
 	}
 	ctx.GrantPermission([]byte(req.UserId), []string{OwnerRole})
@@ -116,7 +116,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	if err := ctx.Get(defaultCollectionKey, &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
-	if err := ctx.Set(userCardCollectionKey(req.UserId), &collectionList); err != nil {
+	if err := ctx.Set(CardCollectionKey(req.UserId), &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to save card collection for userId: %s", req.UserId)
 	}
 
@@ -124,7 +124,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	if err := ctx.Get(defaultDeckKey, &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
-	if err := ctx.Set(userDecksKey(req.UserId), &deckList); err != nil {
+	if err := ctx.Set(DecksKey(req.UserId), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to save decks for userId: %s", req.UserId)
 	}
 
@@ -132,7 +132,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	if err := ctx.Get(defaultHeroesKey, &heroes); err != nil {
 		return errors.Wrapf(err, "unable to get default hero")
 	}
-	if err := ctx.Set(userHeroesKey(req.UserId), &heroes); err != nil {
+	if err := ctx.Set(HeroesKey(req.UserId), &heroes); err != nil {
 		return errors.Wrapf(err, "unable to save heroes for userId: %s", req.UserId)
 	}
 
@@ -238,7 +238,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	}
 
 	deckID := req.Deck.Id
-	existingDeck := getDeckById(deckList.Decks, deckID)
+	existingDeck := getDeckByID(deckList.Decks, deckID)
 	if existingDeck == nil {
 		return ErrNotfound
 	}
@@ -272,7 +272,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	}
 
 	var deleted bool
-	deckList.Decks, deleted = deleteDeckById(deckList.Decks, req.DeckId)
+	deckList.Decks, deleted = deleteDeckByID(deckList.Decks, req.DeckId)
 	if !deleted {
 		return fmt.Errorf("deck not found")
 	}
@@ -302,7 +302,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 	if err != nil {
 		return nil, err
 	}
-	deck := getDeckById(deckList.Decks, req.DeckId)
+	deck := getDeckByID(deckList.Decks, req.DeckId)
 	if deck == nil {
 		return nil, contract.ErrNotFound
 	}
