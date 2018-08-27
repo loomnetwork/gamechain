@@ -11,6 +11,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	OwnerRole = "owner"
+)
+
 var (
 	cardPrefix       = []byte("card")
 	userPreifx       = []byte("user")
@@ -117,8 +121,8 @@ func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
 	return json.Marshal(emitMsg)
 }
 
-func isUser(ctx contract.Context, userID string) bool {
-	ok, _ := ctx.HasPermission([]byte(userID), []string{"user"})
+func isOwner(ctx contract.Context, userID string) bool {
+	ok, _ := ctx.HasPermission([]byte(userID), []string{OwnerRole})
 	return ok
 }
 
