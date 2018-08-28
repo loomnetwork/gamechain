@@ -174,13 +174,14 @@ message Skill {
     string icon_path = 3;
     string description = 4;
     string skill_targets = 5;
-    int32 value = 6;
+    string element_targets = 6;
+    int32 value = 7;
 
-    int32 cooldown = 7;
-    int32 initial_cooldown = 8;
+    int32 cooldown = 8;
+    int32 initial_cooldown = 9;
 
-    int32 attack = 9;
-    int32 health = 10;
+    int32 attack = 10;
+    int32 health = 11;
 }
 
 message HeroList {
