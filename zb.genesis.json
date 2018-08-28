@@ -408,7 +408,7 @@
                 "title": "Harden",
                 "skill": "HARDEN",
                 "icon_path": "overlordability_earth",
-                "description": "Add 2 Def to the Overlord.",
+                "description": "Give +2 Def to your Overlord",
                 "skill_targets": "",
                 "cooldown": 3,
                 "initial_cooldown": 3,
@@ -418,8 +418,9 @@
                 "title": "Stoneskin",
                 "skill": "STONE_SKIN",
                 "icon_path": "overlordability_earth_stone_skin",
-                "description": "Give a friendly zombie +1 Def.",
+                "description": "Give an ally Earth zombie +1 Def",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
+                "element_targets": "EARTH",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
@@ -442,7 +443,7 @@
                 "title": "Fire Bolt",
                 "skill": "FIRE_BOLT",
                 "icon_path": "overlordability_fire",
-                "description": "Deal 1 damage to target.",
+                "description": "Deal 1 damage to target",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
@@ -452,8 +453,9 @@
                 "title": "Rabies",
                 "skill": "RABIES",
                 "icon_path": "overlordability_fire_rabies",
-                "description": "Give friendly zombie feral.",
+                "description": "Give an ally Fire zombie Feral",
                 "skill_targets": "PLAYER_CARD",
+                "element_targets": "FIRE",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
@@ -476,7 +478,7 @@
                 "title": "Freeze",
                 "skill": "FREEZE",
                 "icon_path": "overlordability_water",
-                "description": "Freeze a zombie.",
+                "description": "Freeze a zombie",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 3,
                 "initial_cooldown": 3,
@@ -486,7 +488,7 @@
                 "title": "Ice Bolt",
                 "skill": "ICE_BOLT",
                 "icon_path": "overlordability_water_ice_bolt",
-                "description": "Deal 2 damage to a target zombie. If it survives, Freeze it.",
+                "description": "Deal 2 damage to a target zombie. If it survives, Freeze it",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
                 "cooldown": 4,
                 "initial_cooldown": 4,
@@ -510,8 +512,9 @@
                 "title": "Push",
                 "skill": "PUSH",
                 "icon_path": "overlordability_air_push",
-                "description": "Return a friendly zombie to your hand.",
+                "description": "Return an ally Air zombie to your hand",
                 "skill_targets": "PLAYER_CARD",
+                "element_targets": "AIR",
                 "cooldown": 6,
                 "initial_cooldown": 5,
                 "value": 0
@@ -520,7 +523,7 @@
                 "title": "Draw",
                 "skill": "DRAW",
                 "icon_path": "overlordability_air_draw",
-                "description": "Draw a card.",
+                "description": "Draw a card",
                 "skill_targets": "",
                 "cooldown": 4,
                 "initial_cooldown": 4,
@@ -544,8 +547,8 @@
                 "title": "Poison Dart",
                 "skill": "POISON_DART",
                 "icon_path": "overlordability_toxic",
-                "description": "Deal 1 damage to a target.",
-                "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
+                "description": "Deal 1 damage to an enemy",
+                "skill_targets": "OPPONENT_CARD|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
                 "value": 1
@@ -554,8 +557,9 @@
                 "title": "Toxic Power",
                 "skill": "TOXIC_POWER",
                 "icon_path": "overlordability_toxic_toxic_power",
-                "description": "Deal 1 damage to a zombie and give it +1 Atk.",
+                "description": "Deal 1 damage to an ally Toxic zombie and give it +1 Atk",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
+                "element_targets": "TOXIC",
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1,
@@ -579,7 +583,7 @@
                 "title": "Healing Touch",
                 "skill": "HEALING_TOUCH",
                 "icon_path": "overlordability_life",
-                "description": "Restore 2 Def to a target.",
+                "description": "Restore 2 Def to an ally zombie",
                 "skill_targets": "OPPONENT_CARD|PLAYER_CARD|PLAYER|OPPONENT",
                 "cooldown": 3,
                 "initial_cooldown": 3,
@@ -589,11 +593,11 @@
                 "title": "Mend",
                 "skill": "MEND",
                 "icon_path": "overlordability_life_mend",
-                "description": "Restore 4 Def to your Overlord.",
+                "description": "Restore 2 Def to your Overlord",
                 "skill_targets": "",
                 "cooldown": 4,
                 "initial_cooldown": 4,
-                "value": 4
+                "value": 2
               }
             ],
             "primary_skill": 0,
@@ -645,7 +649,7 @@
             "kind": "CREATURE",
             "name": "Quazi",
             "cost": 1,
-            "description": "<b>Feral</b>, <b>Overflow</b> 2, <b>End:</b> 2 damage to this and adjecent zombies",
+            "description": "<b>Feral</b>, <b>Overflow</b> 2, <b>End:</b> 2 damage to this and adjacent zombies",
             "flavor_text": "Has a great fascination with church bells...",
             "picture": "Quazi",
             "damage": 0,
@@ -1125,7 +1129,7 @@
             "kind": "CREATURE",
             "name": "Freezzee",
             "cost": 4,
-            "description": "<b>Entry: Freeze</b> zombie and adjecent zombies, 2 damage if Frozen",
+            "description": "<b>Entry: Freeze</b> zombie and adjacent zombies, 2 damage if Frozen",
             "flavor_text": "How he loves decorating with ice sculptures... Everywhere!",
             "picture": "Freezzee",
             "damage": 2,
@@ -1322,7 +1326,7 @@
             "rank": "COMMANDER",
             "abilities": [
               {
-                "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_DECKS",
+                "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
                 "activity_type": "passive",
                 "call_type": "ENTRY",
                 "target_type": "opponent_all_cards|player_all_cards",
@@ -1435,7 +1439,7 @@
                 "type": "DAMAGE_TARGET",
                 "activity_type": "active",
                 "call_type": "ENTRY",
-                "target_type": "player_card|opponent_card|player|opponent",
+                "target_type": "player_card|opponent_card",
                 "value": 1,
                 "effect_type": "TARGET_ROCK",
                 "buff_type": "ENTRY"
@@ -1934,7 +1938,8 @@
                 "activity_type": "passive",
                 "call_type": "ENTRY",
                 "target_type": "player_card",
-                "buff_type": "ENTRY"
+                "buff_type": "ENTRY",
+                "value": -1
               }
             ],
             "card_view_info": {
@@ -2221,7 +2226,8 @@
                 "call_type": "IN_HAND",
                 "target_type": "player",
                 "set_type": "air",
-                "buff_type": "PERMANENT"
+                "buff_type": "PERMANENT",
+                "value": -1
               }
             ],
             "card_view_info": {
@@ -3253,7 +3259,7 @@
             "kind": "SPELL",
             "name": "Nail Bomb",
             "cost": 4,
-            "description": "Deal 4 damage to zombie and adjecent zombies",
+            "description": "Deal 4 damage to zombie and adjacent zombies",
             "flavor_text": "When you really want to nail it!",
             "picture": "NailBomb",
             "damage": 0,
@@ -3265,7 +3271,7 @@
                 "type": "DAMAGE_TARGET_ADJUSTMENTS",
                 "activity_type": "active",
                 "call_type": "ENTRY",
-                "target_type": "player_card|opponent_card|player|opponent",
+                "target_type": "player_card|opponent_card",
                 "value": 4,
                 "effect_type": "TARGET_ADJUSTMENTS_BOMB",
                 "buff_type": "SWING"
