@@ -1,0 +1,52 @@
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_decks -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["deck size: 1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v '{\"hero_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}'"
+  Condition = "contains"
+  Expected = ["deck created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_decks -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["deck size: 2", "Default", "NewDeck1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom --deckId 0"
+  All = true
+  Condition = "contains"
+  Expected = ["Default"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom --deckId 1"
+  All = true
+  Condition = "contains"
+  Expected = ["NewDeck1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v '{\"id\": 1, \"hero_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}'"
+  Condition = "contains"
+  Expected = ["deck edited successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli delete_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom --deckId 0"
+  Condition = "contains"
+  Expected = ["deck deleted successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli delete_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom --deckId 1"
+  Condition = "contains"
+  Expected = ["deck deleted successfully"]
