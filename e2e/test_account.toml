@@ -1,0 +1,24 @@
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli update_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v '{\"image\":\"newImage.jpg\", \"game_membership_tier\": 5}'"
+  Condition = "contains"
+  Expected = ["updated successfully"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["User: loom", "Image: newImage.jpg", "Game Membership Tier: 5"]
