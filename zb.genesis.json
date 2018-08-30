@@ -339,31 +339,31 @@
         "default_decks": [
           {
             "id": 0,
-            "heroId": 4,
+            "hero_id": 4,
             "name": "Default",
             "cards": [
               {
-                "card_name": "Pyromaz",
+                "card_name": "Poizom",
                 "amount": 4
               },
               {
-                "card_name": "Burrrnn",
+                "card_name": "Hazmaz",
                 "amount": 2
               },
               {
-                "card_name": "Izze",
-                "amount": 4
+                "card_name": "Zeeter",
+                "amount": 1
               },
               {
                 "card_name": "Zhatterer",
                 "amount": 4
               },
               {
-                "card_name": "Rockky",
-                "amount": 4
+                "card_name": "Zludge",
+                "amount": 1
               },
               {
-                "card_name": "Blocker",
+                "card_name": "Znowman",
                 "amount": 4
               },
               {
@@ -376,7 +376,7 @@
               },
               {
                 "card_name": "Zhampion",
-                "amount": 2
+                "amount": 1
               },
               {
                 "card_name": "Fire-Maw",
@@ -387,7 +387,31 @@
                 "amount": 1
               },
               {
-                "card_name": "Werezomb",
+                "card_name": "Ghoul",
+                "amount": 1
+              },
+              {
+                "card_name": "Hazzard",
+                "amount": 1
+              },
+              {
+                "card_name": "Ectoplasm",
+                "amount": 1
+              },
+              {
+                "card_name": "Bouncer",
+                "amount": 2
+              },
+              {
+                "card_name": "Stapler",
+                "amount": 1
+              },
+              {
+                "card_name": "Goo Bottles",
+                "amount": 1
+              },
+              {
+                "card_name": "Chainsaw",
                 "amount": 2
               }
             ]
@@ -1075,8 +1099,8 @@
             ],
             "card_view_info": {
               "position": {
-                "x": -0.1,
-                "y": 0,
+                "x": 0.17,
+                "y": -0.1,
                 "z": 0
               },
               "scale": {
