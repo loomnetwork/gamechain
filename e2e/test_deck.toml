@@ -68,10 +68,10 @@
   Expected = ["deck created successfully"]
 
 [[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
   RunCmd = "zb-cli get_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom --deckId 0"
   All = true
   Condition = "contains"
   Expected = ["NewDeck3"]
-
-[[TestCases]]
-  RunCmd = "checkapphash"
