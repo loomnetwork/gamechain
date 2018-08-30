@@ -6,3 +6,31 @@
   All = true
   Condition = "contains"
   Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_card -k {{index $.AccountPrivKeyPathList 0}}"
+  All = true
+  Condition = "contains"
+  Expected = ["card library size: 8"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  Condition = "contains"
+  Expected = ["deck created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d NewDeck"
+  All = true
+  Condition = "contains"
+  Expected = ["deck name: NewDeck"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_decks -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["deck size: 2"]
+
+[[TestCases]]
+  RunCmd = 'zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": \"Breezee\", \"amount\": 2} ]}"'
+  Condition = "contains"
+  Expected = ["deck edited successfully"]
