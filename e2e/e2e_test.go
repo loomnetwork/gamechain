@@ -41,10 +41,12 @@ func TestE2E(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		{"zb-1", "test_cases.toml", 1, 10, "../zb.genesis.json"},
-		{"zb-4", "test_cases.toml", 4, 10, "../zb.genesis.json"},
+		{"zb-account-1", "test_account.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-account-4", "test_account.toml", 4, 10, "../zb.genesis.json"},
 		{"zb-deck-1", "test_deck.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-deck-4", "test_deck.toml", 4, 10, "../zb.genesis.json"},
+		{"zb-hero-1", "test_hero.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-hero-4", "test_hero.toml", 4, 10, "../zb.genesis.json"},
 	}
 
 	// required to have loom binary
