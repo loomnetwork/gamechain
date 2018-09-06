@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "LoomNetwork.CZB.Protobuf";
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 
 message Account {
     string user_id             = 1;
