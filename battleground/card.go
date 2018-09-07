@@ -125,11 +125,13 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
 }
 
-func cardListFromDeck(deck *zb.Deck) (cards []*zb.Card) {
+func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 	for _, collection := range deck.Cards {
 		for i := int64(0); i < collection.Amount; i++ {
-			cards = append(cards, &zb.Card{
-				Name: collection.CardName,
+			cards = append(cards, &zb.CardInstance{
+				CardPrototype: &zb.CardPrototype{Name: collection.CardName},
+				Attack:        2,
+				Defence:       3,
 			})
 		}
 	}

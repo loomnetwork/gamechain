@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/stretchr/testify/assert"
 )
 
 var defaultDeck = zb.Deck{
@@ -58,6 +59,54 @@ func TestGameStateFunc(t *testing.T) {
 		},
 		CurrentActionIndex: -1, // must start with -1
 	}
-	gp := InitGameplay(state)
-	gp.play()
+	gp := NewGameplay(state)
+	err := gp.Wait()
+	assert.Nil(t, err)
+	// add more action
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.ActionType_END_TURN, PlayerId: uid1})
+	assert.Nil(t, err)
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.ActionType_CARD_ATTACK,
+		PlayerId:   uid2,
+		Action:     &zb.PlayerAction_CardAttack{},
+	})
+	assert.Nil(t, err)
 }
+
+func TestInvalidUserTurn(t *testing.T) {
+	var uid1 = "id1"
+	var uid2 = "id2"
+	state := zb.GameState{
+		Id: 1,
+		PlayerStates: []*zb.PlayerState{
+			&zb.PlayerState{Id: uid1},
+			&zb.PlayerState{Id: uid2},
+		},
+		PlayerActions: []*zb.PlayerAction{
+			&zb.PlayerAction{ActionType: zb.ActionType_DRAW_CARD, PlayerId: uid1},
+			&zb.PlayerAction{ActionType: zb.ActionType_END_TURN, PlayerId: uid1},
+			&zb.PlayerAction{ActionType: zb.ActionType_DRAW_CARD, PlayerId: uid2},
+			&zb.PlayerAction{ActionType: zb.ActionType_END_TURN, PlayerId: uid2},
+			&zb.PlayerAction{
+				ActionType: zb.ActionType_CARD_ATTACK,
+				PlayerId:   uid1,
+				Action:     &zb.PlayerAction_CardAttack{},
+			},
+		},
+		CurrentActionIndex: -1, // must start with -1
+	}
+	gp := NewGameplay(state)
+	err := gp.Wait()
+	assert.Nil(t, err)
+	// add more action
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.ActionType_END_TURN, PlayerId: uid2})
+	assert.Equal(t, err, errInvalidPlayer)
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.ActionType_END_TURN, PlayerId: uid1})
+	assert.Nil(t, err)
+}
+
+func TestInvalidAction(t *testing.T) {}
+
+func TestGameAddAction(t *testing.T) {}
+
+func TestGameResumeAtAction(t *testing.T) {}

@@ -8,7 +8,9 @@ import (
 )
 
 var (
-	errInvalidActivePlayer = errors.New("invalid active player")
+	errInvalidPlayer         = errors.New("invalid player")
+	errCurrentActionNotfound = errors.New("current action not found")
+	errInvalidAction         = errors.New("invalid action")
 )
 
 type stateFn func(*gameplay) stateFn
@@ -19,39 +21,86 @@ type gameplay struct {
 	errc    chan error
 }
 
-func InitGameplay(state zb.GameState) *gameplay {
+func NewGameplay(state zb.GameState) *gameplay {
 	// TODO: validate players
 
 	// TODO: shuffle cards
-	// state.Player1.CardInDeck = cardListFromDeck(state.Player1.Deck)
-	// state.Player2.CardInDeck = cardListFromDeck(state.Player2.Deck)
+	// for i := range state.PlayerStates {
+	// 	state.PlayerStates[i].CardInDeck = cardInstanceFromDeck(state.PlayerStates[i].Deck)
+	// }
 
-	return &gameplay{
+	g := &gameplay{
 		State: state,
 		errc:  make(chan error),
 	}
+	go g.run()
+	return g
 }
 
-func (g *gameplay) PlayAction(action *zb.PlayerAction) error {
+// Wait blocks until errc returns error or get closed
+func (g *gameplay) Wait() error {
+	select {
+	case err := <-g.errc:
+		return err
+	}
+}
+
+func (g *gameplay) AddAction(action *zb.PlayerAction) error {
 	if err := g.checkCurrentPlayer(action); err != nil {
 		return err
 	}
 	g.State.PlayerActions = append(g.State.PlayerActions, action)
-	return nil
+	// reset errc to make sure that game does not block
+	g.errc = make(chan error)
+	// resume the gameplay
+	go g.resume()
+	select {
+	case err := <-g.errc:
+		return err
+	}
 }
 
 func (g *gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	activePlayer := g.activePlayer()
 	if activePlayer.Id != action.PlayerId {
-		return errInvalidActivePlayer
+		return errInvalidPlayer
 	}
 	return nil
 }
 
-func (g *gameplay) play() {
+func (g *gameplay) run() {
 	for g.stateFn = gameStart; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
+	close(g.errc)
+	fmt.Printf("gameplay stopped at action index %d\n", g.State.CurrentActionIndex)
+}
+
+func (g *gameplay) resume() {
+	// get the current state
+	next := g.next()
+	if next == nil {
+		g.actionError(errCurrentActionNotfound)
+		return
+	}
+	var state stateFn
+	switch next.ActionType {
+	case zb.ActionType_CARD_ATTACK:
+		state = actionCardAttack
+	case zb.ActionType_DRAW_CARD:
+		state = actionDrawCard
+	case zb.ActionType_END_TURN:
+		state = actionEndTurn
+	default:
+		g.actionError(errInvalidAction)
+		return
+	}
+
+	fmt.Printf("gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
+	for g.stateFn = state; g.stateFn != nil; {
+		g.stateFn = g.stateFn(g)
+	}
+	close(g.errc)
 }
 
 func (g *gameplay) next() *zb.PlayerAction {
@@ -67,7 +116,6 @@ func (g *gameplay) peek() *zb.PlayerAction {
 	if g.State.CurrentActionIndex+1 > int64(len(g.State.PlayerActions)) {
 		return nil
 	}
-
 	action := g.State.PlayerActions[g.State.CurrentActionIndex+1]
 	return action
 }
@@ -81,31 +129,49 @@ func (g *gameplay) activePlayer() *zb.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
 }
 
+func (g *gameplay) changePlayerTurn() {
+	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
+}
+
+func (g *gameplay) actionError(err error) stateFn {
+	g.errc <- err
+	return nil
+}
+
+func (g *gameplay) isEnded() bool {
+	for _, player := range g.State.PlayerStates {
+		if player.Hp <= 0 {
+			return true
+		}
+	}
+	return false
+}
+
 func (g *gameplay) printState() {
 	state := g.State
-	fmt.Printf("============State Info=============\n")
-	fmt.Printf("Current Player: %v\n", state.CurrentPlayerIndex)
+	fmt.Printf("============StateInfo=============\n")
+	fmt.Printf("Current Player Index: %v\n", state.CurrentPlayerIndex)
 
 	for i, player := range g.State.PlayerStates {
 		if g.State.CurrentPlayerIndex == int32(i) {
-			fmt.Printf("Player1: %s 🧟\n", player.Id)
+			fmt.Printf("Player%d: %s 🧟\n", i, player.Id)
 		} else {
-			fmt.Printf("Player1: %s\n", player.Id)
+			fmt.Printf("Player%d: %s\n", i, player.Id)
 		}
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
 		// fmt.Printf("\tdeck: %v\n", state.Player1.Deck)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardInHand), player.CardInHand)
-		fmt.Printf("\tcard on field (%d): %v\n", len(player.CardOnBoard), player.CardOnBoard)
+		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardOnBoard), player.CardOnBoard)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardInDeck), player.CardInDeck)
 	}
 
 	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
 	for i, action := range state.PlayerActions {
 		if int64(i) == state.CurrentActionIndex {
-			fmt.Printf("\t>>> %v\n", action)
+			fmt.Printf("   -->> [%d] %v\n", i, action)
 		} else {
-			fmt.Printf("\t%v\n", action)
+			fmt.Printf("\t[%d] %v\n", i, action)
 		}
 	}
 	fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
@@ -114,7 +180,7 @@ func (g *gameplay) printState() {
 
 func gameStart(g *gameplay) stateFn {
 	fmt.Printf("state: %v\n", zb.ActionType_START_GAME)
-	if isEnded(g) {
+	if g.isEnded() {
 		return nil
 	}
 
@@ -135,7 +201,7 @@ func gameStart(g *gameplay) stateFn {
 
 func actionDrawCard(g *gameplay) stateFn {
 	fmt.Printf("state: %v\n", zb.ActionType_DRAW_CARD)
-	if isEnded(g) {
+	if g.isEnded() {
 		return nil
 	}
 	current := g.current()
@@ -145,15 +211,9 @@ func actionDrawCard(g *gameplay) stateFn {
 
 	// check player turn
 	if err := g.checkCurrentPlayer(current); err != nil {
-		return nil
+		return g.actionError(err)
 	}
-	// drawcard to the active player
-
-	// player := g.activePlayer()
-	// cards, deck := drawFromCardList(player.CardInDeck, 1)
-	// TODO: persist card to state
-	// fmt.Printf("--> drawn card: %v\n", cards)
-	// fmt.Printf("--> card in deck: %v\n", deck)
+	// TODO: drawcard
 
 	// determine the next action
 	g.printState()
@@ -167,6 +227,8 @@ func actionDrawCard(g *gameplay) stateFn {
 		return actionEndTurn
 	case zb.ActionType_DRAW_CARD:
 		return actionDrawCard
+	case zb.ActionType_CARD_ATTACK:
+		return actionCardAttack
 	default:
 		return nil
 	}
@@ -174,7 +236,7 @@ func actionDrawCard(g *gameplay) stateFn {
 
 func actionCardAttack(g *gameplay) stateFn {
 	fmt.Printf("state: %v\n", zb.ActionType_CARD_ATTACK)
-	if isEnded(g) {
+	if g.isEnded() {
 		return nil
 	}
 	// current action
@@ -185,39 +247,10 @@ func actionCardAttack(g *gameplay) stateFn {
 
 	// check player turn
 	if err := g.checkCurrentPlayer(current); err != nil {
-		return nil
+		return g.actionError(err)
 	}
 
-	// determine the next action
-	g.printState()
-	next := g.next()
-	if next == nil {
-		return nil
-	}
-
-	switch next.ActionType {
-	case zb.ActionType_END_TURN:
-		return actionEndTurn
-	default:
-		return nil
-	}
-}
-
-func actionEndTurn(g *gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.ActionType_END_TURN)
-	if isEnded(g) {
-		return nil
-	}
-	// current action
-	current := g.current()
-	if current == nil {
-		return nil
-	}
-	// check player turn
-	if err := g.checkCurrentPlayer(current); err != nil {
-		return nil
-	}
-	g.switchPlayerTurn()
+	// TODO: card attack
 
 	// determine the next action
 	g.printState()
@@ -231,32 +264,45 @@ func actionEndTurn(g *gameplay) stateFn {
 		return actionEndTurn
 	case zb.ActionType_DRAW_CARD:
 		return actionDrawCard
+	case zb.ActionType_CARD_ATTACK:
+		return actionCardAttack
 	default:
 		return nil
 	}
 }
 
-func (g *gameplay) switchPlayerTurn() {
-	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
-}
-
-// // drawCardFromDeck draw cards from active user decks and update user state
-// func (g *gameplay) drawCardFromDeck(player *zb.ActivePlayer, n int) (cards []*zb.Card) {
-// 	var player *zb.Player
-// 	if g.State.ActivePlayer == zb.ActivePlayer_player1 {
-// 		player = g.State.Player1
-// 	} else {
-// 		player = g.State.Player2
-// 	}
-
-// 	return
-// }
-
-func isEnded(g *gameplay) bool {
-	for _, player := range g.State.PlayerStates {
-		if player.Hp <= 0 {
-			return true
-		}
+func actionEndTurn(g *gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.ActionType_END_TURN)
+	if g.isEnded() {
+		return nil
 	}
-	return false
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.actionError(err)
+	}
+	// change player turn
+	g.changePlayerTurn()
+
+	// determine the next action
+	g.printState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.ActionType_END_TURN:
+		return actionEndTurn
+	case zb.ActionType_DRAW_CARD:
+		return actionDrawCard
+	case zb.ActionType_CARD_ATTACK:
+		return actionCardAttack
+	default:
+		return nil
+	}
 }
