@@ -124,3 +124,27 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 	}
 	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
 }
+
+func cardListFromDeck(deck *zb.Deck) (cards []*zb.Card) {
+	for _, collection := range deck.Cards {
+		for i := int64(0); i < collection.Amount; i++ {
+			cards = append(cards, &zb.Card{
+				Name: collection.CardName,
+			})
+		}
+	}
+	return
+}
+
+func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
+	var i int
+	for i = 0; i < n; i++ {
+		if i > len(cardlist)-1 {
+			break
+		}
+		cards = append(cards, cardlist[i])
+	}
+	// update cardlist
+	renaming = cardlist[i:]
+	return
+}
