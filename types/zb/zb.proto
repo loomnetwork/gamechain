@@ -439,7 +439,7 @@ enum ElementKind {
 }
 
 message GameState {
-    repeated PlayerState PlayerStates = 1;
+    repeated PlayerState playerStates = 1;
 }
 
 message AbilityInstance {
@@ -447,170 +447,170 @@ message AbilityInstance {
 }
 
 message Action {
-    PlayerActionType ActionType = 1;
-    oneof ActionData {
-        PlayerActionCardAttack CardAttack = 2;
-        PlayerActionDrawCard DrawCard = 3;
-        PlayerActionEndTurn EndTurn = 4;
-        PlayerActionMulligan Mulligan = 5;  
+    PlayerActionType actionType = 1;
+    oneof actionData {
+        PlayerActionCardAttack cardAttack = 2;
+        PlayerActionDrawCard drawCard = 3;
+        PlayerActionEndTurn endTurn = 4;
+        PlayerActionMulligan mulligan = 5;  
     };
 }
 
 message CardAbility {
-    CardAbilityType AbilityType = 1;
-    CardAbilityActivityType AbilityActivityType = 2;
-    CardAbilityTrigger CardAbilityTrigger = 3;
-    repeated AllowedTarget AllowedTargets = 4;
-    StatType AbilityStatType = 5;
-    ElementKind AbilitySetType = 6;
-    CardAbilityEffect CardAbilityEffect = 7;
-    AttackRestriction AttackRestriction = 8;
-    CardType TargetCardType = 9;
-    UnitSpecialStatus TargetUnitSpecialStatusType = 10;
-    CardType TargetUnitType = 11;
-    int32 Value = 12;
-    int32 Damage = 13;
-    int32 Health = 14;
-    string AttackInfo = 15;
-    string Name = 16;
-    int32 Turns = 17;
-    int32 Count = 18;
-    int32 Delay = 19;
+    CardAbilityType abilityType = 1;
+    CardAbilityActivityType abilityActivityType = 2;
+    CardAbilityTrigger cardAbilityTrigger = 3;
+    repeated AllowedTarget allowedTargets = 4;
+    StatType abilityStatType = 5;
+    ElementKind abilitySetType = 6;
+    CardAbilityEffect cardAbilityEffect = 7;
+    AttackRestriction attackRestriction = 8;
+    CardType targetCardType = 9;
+    UnitSpecialStatus targetUnitSpecialStatusType = 10;
+    CardType targetUnitType = 11;
+    int32 value = 12;
+    int32 damage = 13;
+    int32 health = 14;
+    string attackInfo = 15;
+    string name = 16;
+    int32 turns = 17;
+    int32 count = 18;
+    int32 delay = 19;
 }
 
 message CardInstance {
-    int32 InstanceId = 1;
-    CardPrototype Prototype = 2;
-    int32 Defence = 3;
-    int32 Attack = 4;
+    int32 instanceId = 1;
+    CardPrototype prototype = 2;
+    int32 defence = 3;
+    int32 attack = 4;
 }
 
 message CardPrototype {
-    int32 DataId = 1;
-    ElementKind CardSetType = 2;
-    string Name = 3;
-    int32 GooCost = 4;
-    string Description = 5;
-    string FlavorText = 6;
-    string Picture = 7;
-    string Frame = 8;
-    int32 InitialDamage = 9;
-    int32 InitialDefence = 10;
-    string Rank = 11;
-    string Type = 12;
-    repeated CardAbility Abilities = 13;
-    CardViewInfo CardViewInfo = 14;
-    CreatureRank CreatureRank = 15;
-    CreatureType CreatureType = 16;
-    CardType CardType = 17;
+    int32 dataId = 1;
+    ElementKind cardSetType = 2;
+    string name = 3;
+    int32 gooCost = 4;
+    string description = 5;
+    string flavorText = 6;
+    string picture = 7;
+    string frame = 8;
+    int32 initialDamage = 9;
+    int32 initialDefence = 10;
+    string rank = 11;
+    string type = 12;
+    repeated CardAbility abilities = 13;
+    CardViewInfo cardViewInfo = 14;
+    CreatureRank creatureRank = 15;
+    CreatureType creatureType = 16;
+    CardType cardType = 17;
 }
 
 message DataIdOwner {
-    int32 DataId = 1;
+    int32 dataId = 1;
 }
 
 // (interface IDeck)
 message CardDeck {
-    repeated CardPrototype Cards = 1;
+    repeated CardPrototype cards = 1;
 }
 
 message InstanceIdOwner {
-    int32 InstanceId = 1;
+    int32 instanceId = 1;
 }
 
 message OverlordInstance {
-    int32 InstanceId = 1;
-    OverlordPrototype Prototype = 2;
-    OverlordSkillInstance FirstSkill = 3;
-    OverlordSkillInstance SecondSkill = 4;
-    int32 Defence = 5;
-    int32 Goo = 6;
-    int32 MaxGoo = 7;
+    int32 instanceId = 1;
+    OverlordPrototype prototype = 2;
+    OverlordSkillInstance firstSkill = 3;
+    OverlordSkillInstance secondSkill = 4;
+    int32 defence = 5;
+    int32 goo = 6;
+    int32 maxGoo = 7;
 }
 
 message OverlordPrototype {
-    int32 HeroId = 1;
-    string Icon = 2;
-    string Name = 3;    
-    string ShortDescription = 4;
-    string LongDescription = 5;
-    int32 Experience = 6;
-    int32 Level = 7;
-    ElementKind Element = 8;
-    repeated OverlordSkillPrototype Skills = 9;
+    int32 heroId = 1;
+    string icon = 2;
+    string name = 3;    
+    string shortDescription = 4;
+    string longDescription = 5;
+    int32 experience = 6;
+    int32 level = 7;
+    ElementKind element = 8;
+    repeated OverlordSkillPrototype skills = 9;
 }
 
 message OverlordSkillInstance {
-    OverlordSkillPrototype Prototype = 1;
-    int32 Cooldown = 2;
+    OverlordSkillPrototype prototype = 1;
+    int32 cooldown = 2;
 }
 
 message OverlordSkillPrototype {
-    string Title = 1;
-    string Skill = 2;
-    string IconPath = 3;
-    string Description = 4;
-    int32 Cooldown = 5;
-    int32 InitialCooldown = 6;
-    int32 Parameter = 7;
-    int32 Attack = 8;
-    OverlordSkillKind OverlordSkillKind = 9;
-    repeated AllowedTarget SkillTargetTypes = 10;
-    repeated ElementKind ElementTargetTypes = 11;
+    string title = 1;
+    string skill = 2;
+    string iconPath = 3;
+    string description = 4;
+    int32 cooldown = 5;
+    int32 initialCooldown = 6;
+    int32 parameter = 7;
+    int32 attack = 8;
+    OverlordSkillKind overlordSkillKind = 9;
+    repeated AllowedTarget skillTargetTypes = 10;
+    repeated ElementKind elementTargetTypes = 11;
 }
 
 message PlayerAction {
-    int32 PlayerId = 1;
+    int32 playerId = 1;
 }
 
 message PlayerActionCardAttack {
-    int32 PlayerId = 1;
-    CardInstance Attacker = 2;
-    CardInstance Target = 3;
+    int32 playerId = 1;
+    CardInstance attacker = 2;
+    CardInstance target = 3;
 }
 
 message PlayerActionDrawCard {
-    int32 PlayerId = 1;
-    CardInstance CardInstance = 2;
+    int32 playerId = 1;
+    CardInstance cardInstance = 2;
 }
 
 message PlayerActionEndTurn  {
-    int32 PlayerId = 1;
+    int32 playerId = 1;
 }
 
 message PlayerActionMulligan {
-    int32 PlayerId = 1;
-    repeated CardInstance MulliganedCards = 2;
+    int32 playerId = 1;
+    repeated CardInstance mulliganedCards = 2;
 }
 
 message PlayerActionOutcome {
-    int32 PlayerId = 1;
-    GameState GameState = 2;
+    int32 playerId = 1;
+    GameState gameState = 2;
 }
 
 message PlayerActionUseCardAbility {
-    int32 PlayerId = 1;
-    CardInstance Card = 2;
-    Unit Target = 3;
+    int32 playerId = 1;
+    CardInstance card = 2;
+    Unit target = 3;
 }
 
 message PlayerActionUseOverlordSkill {
-    int32 PlayerId = 1;
+    int32 playerId = 1;
 }
 
 message PlayerState {
-    OverlordInstance OverlordInstance = 1;
-    repeated CardInstance CardsInHand = 2;
-    repeated CardInstance CardsOnBoard = 3;
-    CardDeck Deck = 4;
+    OverlordInstance overlordInstance = 1;
+    repeated CardInstance cardsInHand = 2;
+    repeated CardInstance cardsOnBoard = 3;
+    CardDeck deck = 4;
 }
 
 message StartGameAction {
-    repeated PlayerState PlayerStates = 1;
+    repeated PlayerState playerStates = 1;
 }
 
 message Unit {
-    int32 InstanceId = 1;
+    int32 instanceId = 1;
 }
 
 enum OverlordSkillKind {
