@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
+import "google/protobuf/any.proto";
 
 message Account {
     string user_id             = 1;
@@ -293,165 +294,165 @@ message GetCollectionResponse {
 // C# interfaces converted
 
 enum AllowedTarget {
-    None = 1;
-    Player = 2;
-    PlayerCard = 3;
-    PlayerAllCards = 4;
-    Opponent = 5;
-    OpponentCard = 6;
-    OpponentAllCards = 7;
-    AllCards = 8;
-    All = 9;
+    NoneAllowedTarget = 0;
+    Player = 1;
+    PlayerCard = 2;
+    PlayerAllCards = 3;
+    Opponent = 4;
+    OpponentCard = 5;
+    OpponentAllCards = 6;
+    AllCards = 7;
+    All = 8;
 }
 
 enum AttackRestriction {
-    None = 1;
-    OnlyNotAttackedByThisUnitInThisTurn = 2;
+    NoneAttackRestriction = 0;
+    OnlyNotAttackedByThisUnitInThisTurn = 1;
 }        
 
 enum CardAbilityActivityType {
-    Passive = 1;
-    Active = 2;
+    Passive = 0;
+    Active = 1;
 }
 
 enum CardAbilityEffect {
-    None = 1;
-    MassiveWaterWave = 2;
-    MassiveFire = 3;
-    MassiveLightning = 4;
-    MassiveToxicAll = 5;
-    TargetRock = 6;
-    TargetFire = 7;
-    TargetLife = 8;
-    TargetToxic = 9;
-    TargetWater = 10;
-    TargetAdjustmentsBomb = 11;
-    StunFreezes = 12;
-    StunOrDamageFreezes = 13;
-    TargetAdjustmentsAir = 14;
-    HealDirectly = 15;
-    Heal = 16;
+    NoneCardAbilityEffect = 0;
+    MassiveWaterWave = 1;
+    MassiveFire = 2;
+    MassiveLightning = 3;
+    MassiveToxicAll = 4;
+    TargetRock = 5;
+    TargetFire = 6;
+    TargetLife = 7;
+    TargetToxic = 8;
+    TargetWater = 9;
+    TargetAdjustmentsBomb = 10;
+    StunFreezes = 11;
+    StunOrDamageFreezes = 12;
+    TargetAdjustmentsAir = 13;
+    HealDirectly = 14;
+    HealCardAbilityEffect = 15;
 }
 
 enum CardAbilityTrigger {
-    Turn = 1;
-    Entry = 2;
-    End = 3;
-    Attack = 4;
-    Death = 5;
-    Permanent = 6;
-    GotDamage = 7;
-    AtDefence = 8;
-    InHand = 9;
+    Turn = 0;
+    Entry = 1;
+    End = 2;
+    Attack = 3;
+    Death = 4;
+    Permanent = 5;
+    GotDamage = 6;
+    AtDefence = 7;
+    InHand = 8;
 }
 
 enum CardAbilityType {
-    Heal = 1;
-    ModificatorStats = 2;
-    ChangeStat = 3;
-    Stun = 4;
-    StunOrDamageAdjustments = 5;
-    Spurt = 6;
-    AddGooVial = 7;
-    AddGooCarrier = 8;
-    Dot = 9;
-    Summon = 10;
-    SpellAttack = 11;
-    MassiveDamage = 12;
-    DamageTargetAdjustments = 13;
-    DamageTarget = 14;
-    CardReturn = 15;
-    Weapon = 16;
-    ChangeStatOfCreaturesByType = 17;
-    AttackNumberOfTimesPerTurn = 18;
-    DrawCard = 19;
-    DevourZombiesAndCombineStats = 20;
-    DestroyUnitByType = 21;
-    LowerCostOfCardInHand = 22;
-    OverflowGoo = 23;
-    LoseGoo = 24;
-    DisableNextTurnGoo = 25;
-    Rage = 26;
-    FreezeUnits = 27;
-    TakeDamageRandomEnemy = 28;
-    TakeControlEnemyUnit = 29;
-    Guard = 30;
-    DestroyFrozenUnit = 31;
-    UseAllGooToIncreaseStats = 32;
-    FirstUnitInPlay = 33;
-    AllyUnitsOfTypeInPlayGetStats = 34;
-    DamageEnemyUnitsAndFreezeThem = 35;
-    ReturnUnitsOnBoardToOwnersDecks = 36;
-    TakeUnitTypeToAdjacentAllyUnits = 37;
-    EnemyThatAttacksBecomeFrozen = 38;
-    TakeUnitTypeToAllyUnit = 39;
-    ReviveDiedUnitsOfTypeFromMatch = 40;
-    ChangeStatUntillEndOfTurn = 41;
-    AttackOverlord = 42;
-    AdjacentUnitsGetHeavy = 43;
-    FreezeNumberOfRandomAlly = 44;
-    AddCardByNameToHand = 45;
-    DealDamageToThisAndAdjacentUnits = 46;
-    Swing = 47;
-    TakeDefenceIfOverlordHasLessDefenceThan = 48;
-    GainNumberOfLifeForEachDamageThisDeals = 49;
-    AdditionalDamageToHeavyInAttack  = 50;
-    UnitWeapon = 51;
-    TakeDamageAtEndOfTurnToThis = 52;
-    DelayedLoseHeavyGainAttack =  53;
-    DelayedGainAttack = 54;
-    ReanimateUnit = 55;
-    PriorityAttack = 56;
-    DestroyTargetUnitAfterAttack = 57;
-    CostsLessIfCardTypeInHand = 58;
-    ReturnUnitsOnBoardToOwnersHands = 59;
+    HealCardAbilityType = 0;
+    ModificatorStats = 1;
+    ChangeStat = 2;
+    Stun = 3;
+    StunOrDamageAdjustments = 4;
+    Spurt = 5;
+    AddGooVial = 6;
+    AddGooCarrier = 7;
+    Dot = 8;
+    Summon = 9;
+    SpellAttack = 10;
+    MassiveDamage = 11;
+    DamageTargetAdjustments = 12;
+    DamageTarget = 13;
+    CardReturn = 14;
+    Weapon = 15;
+    ChangeStatOfCreaturesByType = 16;
+    AttackNumberOfTimesPerTurn = 17;
+    DrawCardCardAbilityType = 18;
+    DevourZombiesAndCombineStats = 19;
+    DestroyUnitByType = 20;
+    LowerCostOfCardInHand = 21;
+    OverflowGoo = 22;
+    LoseGoo = 23;
+    DisableNextTurnGoo = 24;
+    Rage = 25;
+    FreezeUnits = 26;
+    TakeDamageRandomEnemy = 27;
+    TakeControlEnemyUnit = 28;
+    Guard = 29;
+    DestroyFrozenUnit = 30;
+    UseAllGooToIncreaseStats = 31;
+    FirstUnitInPlay = 32;
+    AllyUnitsOfTypeInPlayGetStats = 33;
+    DamageEnemyUnitsAndFreezeThem = 34;
+    ReturnUnitsOnBoardToOwnersDecks = 35;
+    TakeUnitTypeToAdjacentAllyUnits = 36;
+    EnemyThatAttacksBecomeFrozen = 37;
+    TakeUnitTypeToAllyUnit = 38;
+    ReviveDiedUnitsOfTypeFromMatch = 39;
+    ChangeStatUntillEndOfTurn = 40;
+    AttackOverlord = 41;
+    AdjacentUnitsGetHeavy = 42;
+    FreezeNumberOfRandomAlly = 43;
+    AddCardByNameToHand = 44;
+    DealDamageToThisAndAdjacentUnits = 45;
+    Swing = 46;
+    TakeDefenceIfOverlordHasLessDefenceThan = 47;
+    GainNumberOfLifeForEachDamageThisDeals = 48;
+    AdditionalDamageToHeavyInAttack  = 49;
+    UnitWeapon = 50;
+    TakeDamageAtEndOfTurnToThis = 51;
+    DelayedLoseHeavyGainAttack =  52;
+    DelayedGainAttack = 53;
+    ReanimateUnit = 54;
+    PriorityAttack = 55;
+    DestroyTargetUnitAfterAttack = 56;
+    CostsLessIfCardTypeInHand = 57;
+    ReturnUnitsOnBoardToOwnersHands = 58;
 }
 
 enum CardType {
-    Creature = 1;
-    Spell = 2;
+    Creature = 0;
+    Spell = 1;
 }
 
 enum CreatureRank {
-    Minion = 1;
-    Officer = 2;
-    Commander = 3;
-    General = 4;
+    Minion = 0;
+    Officer = 1;
+    Commander = 2;
+    General = 3;
 }
 
 enum CreatureType {
-    Normal = 1;
-    Walker = 2;
-    Feral = 3;
-    Heavy = 4;
+    Normal = 0;
+    Walker = 1;
+    Feral = 2;
+    Heavy = 3;
 }
 
 enum ElementKind {
-    Fire = 1;
-    Water = 2;
-    Earth = 3;
-    Air = 4;
-    Life = 5;
-    Toxic = 6;
-    Item = 7;
-    Others = 8;
-    None = 9;
+    Fire = 0;
+    Water = 1;
+    Earth = 2;
+    Air = 3;
+    Life = 4;
+    Toxic = 5;
+    Item = 6;
+    Others = 7;
+    NoneElementKind = 8;
 }
 
 message GameState {
-    repeated IPlayerState PlayerStates = 1;
+    repeated PlayerState PlayerStates = 1;
 }
 
-message IAbilityInstance {
+message AbilityInstance {
 
 }
 
-message IAction {
+message Action {
     PlayerActionType ActionType = 1;
-    object ActionData = 2;
+    google.protobuf.Any ActionData = 2;
 }
 
-message ICardAbility {
+message CardAbility {
     CardAbilityType AbilityType = 1;
     CardAbilityActivityType AbilityActivityType = 2;
     CardAbilityTrigger CardAbilityTrigger = 3;
@@ -473,14 +474,14 @@ message ICardAbility {
     int32 Delay = 19;
 }
 
-message ICardInstance {
+message CardInstance {
     int32 InstanceId = 1;
-    ICardPrototype Prototype = 2;
+    CardPrototype Prototype = 2;
     int32 Defence = 3;
     int32 Attack = 4;
 }
 
-message ICardPrototype {
+message CardPrototype {
     int32 DataId = 1;
     ElementKind CardSetType = 2;
     string Name = 3;
@@ -493,36 +494,37 @@ message ICardPrototype {
     int32 InitialDefence = 10;
     string Rank = 11;
     string Type = 12;
-    repeated ICardAbility Abilities = 13;
+    repeated CardAbility Abilities = 13;
     CardViewInfo CardViewInfo = 14;
     CreatureRank CreatureRank = 15;
     CreatureType CreatureType = 16;
     CardType CardType = 17;
 }
 
-message IDataIdOwner {
+message DataIdOwner {
     int32 DataId = 1;
 }
 
-message IDeck {
-    repeated ICardPrototype Cards = 1;
+// (interface IDeck)
+message CardDeck {
+    repeated CardPrototype Cards = 1;
 }
 
-message IInstanceIdOwner {
+message InstanceIdOwner {
     int32 InstanceId = 1;
 }
 
-message IOverlordInstance {
+message OverlordInstance {
     int32 InstanceId = 1;
-    IOverlordPrototype Prototype = 2;
-    IOverlordSkillInstance FirstSkill = 3;
-    IOverlordSkillInstance SecondSkill = 4;
+    OverlordPrototype Prototype = 2;
+    OverlordSkillInstance FirstSkill = 3;
+    OverlordSkillInstance SecondSkill = 4;
     int32 Defence = 5;
     int32 Goo = 6;
     int32 MaxGoo = 7;
 }
 
-message IOverlordPrototype {
+message OverlordPrototype {
     int32 HeroId = 1;
     string Icon = 2;
     string Name = 3;    
@@ -531,15 +533,15 @@ message IOverlordPrototype {
     int32 Experience = 6;
     int32 Level = 7;
     ElementKind Element = 8;
-    repeated IOverlordSkillPrototype Skills = 9;
+    repeated OverlordSkillPrototype Skills = 9;
 }
 
-message IOverlordSkillInstance {
-    IOverlordSkillPrototype Prototype = 1;
+message OverlordSkillInstance {
+    OverlordSkillPrototype Prototype = 1;
     int32 Cooldown = 2;
 }
 
-message IOverlordSkillPrototype {
+message OverlordSkillPrototype {
     string Title = 1;
     string Skill = 2;
     string IconPath = 3;
@@ -553,127 +555,127 @@ message IOverlordSkillPrototype {
     repeated ElementKind ElementTargetTypes = 11;
 }
 
-message IPlayerAction {
+message PlayerAction {
     int32 PlayerId = 1;
 }
 
-message IPlayerActionCardAttack {
+message PlayerActionCardAttack {
     int32 PlayerId = 1;
-    ICardInstance Attacker = 2;
-    ICardInstance Target = 3;
+    CardInstance Attacker = 2;
+    CardInstance Target = 3;
 }
 
-message IPlayerActionDrawCard {
+message PlayerActionDrawCard {
     int32 PlayerId = 1;
-    ICardInstance CardInstance = 2;
+    CardInstance CardInstance = 2;
 }
 
-message IPlayerActionEndTurn  {
+message PlayerActionEndTurn  {
     int32 PlayerId = 1;
 }
 
-message IPlayerActionMulligan {
+message PlayerActionMulligan {
     int32 PlayerId = 1;
-    repeated ICardInstance MulliganedCards = 2;
+    repeated CardInstance MulliganedCards = 2;
 }
 
-message IPlayerActionOutcome {
+message PlayerActionOutcome {
     int32 PlayerId = 1;
     GameState GameState = 2;
 }
 
-message IPlayerActionUseCardAbility {
+message PlayerActionUseCardAbility {
     int32 PlayerId = 1;
-    ICardInstance Card = 2;
-    IUnit Target = 3;
+    CardInstance Card = 2;
+    Unit Target = 3;
 }
 
-message IPlayerActionUseOverlordSkill {
+message PlayerActionUseOverlordSkill {
     int32 PlayerId = 1;
 }
 
-message IPlayerState {
-    IOverlordInstance OverlordInstance = 1;
-    repeated ICardInstance CardsInHand = 2;
-    repeated ICardInstance CardsOnBoard = 3;
-    IDeck Deck = 4;
+message PlayerState {
+    OverlordInstance OverlordInstance = 1;
+    repeated CardInstance CardsInHand = 2;
+    repeated CardInstance CardsOnBoard = 3;
+    CardDeck Deck = 4;
 }
 
-message IStartGameAction {
-    repeated IPlayerState PlayerStates = 1;
+message StartGameAction {
+    repeated PlayerState PlayerStates = 1;
 }
 
-message IUnit {
+message Unit {
     int32 InstanceId = 1;
 }
 
 enum OverlordSkillKind {
-        None = 1;
+        NoneOverlordSkillKind = 0;
 
         // AIR
-        Push = 2;
-        Draw = 3;
-        WindShield = 4;
-        WindWall = 5;
-        Retreat = 6;
+        Push = 1;
+        Draw = 2;
+        WindShield = 3;
+        WindWall = 4;
+        Retreat = 5;
 
         // EARTH
-        Harden = 7;
-        StoneSkin = 8;
-        Fortify = 9;
-        Phalanx = 10;
-        Fortress = 11;
+        Harden = 6;
+        StoneSkin = 7;
+        Fortify = 8;
+        Phalanx = 9;
+        Fortress = 10;
 
         // FIRE
-        FireBolt = 12;
-        Rabies = 13;
-        Fireball = 14;
-        MassRabies = 15;
-        MeteorShower = 16;
+        FireBolt = 11;
+        Rabies = 12;
+        Fireball = 13;
+        MassRabies = 14;
+        MeteorShower = 15;
 
         // LIFE
-        HealingTouch = 17;
-        Mend = 18;
-        Ressurect = 19;
-        Enhance = 20;
-        Reanimate = 21;
+        HealingTouch = 16;
+        Mend = 17;
+        Ressurect = 18;
+        Enhance = 19;
+        Reanimate = 20;
 
         // TOXIC
-        PoisonDart = 22;
-        ToxicPower = 23;
-        Breakout = 24;
-        Infect = 25;
-        Epidemic = 26;
+        PoisonDart = 21;
+        ToxicPower = 22;
+        Breakout = 23;
+        Infect = 24;
+        Epidemic = 25;
 
         // WATER
-        Freeze = 27;
-        IceBolt = 28;
-        IceWall = 29;
-        Shatter = 30;
-        Blizzard = 31;
+        Freeze = 26;
+        IceBolt = 27;
+        IceWall = 28;
+        Shatter = 29;
+        Blizzard = 30;
 }
 
 enum OverlordSkillSelectionType {
-        Primary = 1;
-        Secondary = 2;
+        Primary = 0;
+        Secondary = 1;
 }
 
 enum PlayerActionType {
-        EndTurn = 1;
-        Mulligan = 2;
-        DrawCard = 3;
-        CardAttack = 4;
-        UseCardAbility = 5;
-        UseOverlordSkill = 6;
+        EndTurn = 0;
+        Mulligan = 1;
+        DrawCardPlayerActionType = 2;
+        CardAttack = 3;
+        UseCardAbility = 4;
+        UseOverlordSkill = 5;
 }
 
 enum StatType {
-        None = 1;
-        Health = 2;
-        Damage = 3;
+        NoneStatType = 0;
+        Health = 1;
+        Damage = 2;
 }
 
 enum UnitSpecialStatus {
-        None = 1;
-        Frozen = 2;
+        NoneUnitSpecialStatus = 0;
+        Frozen = 1;
 }
