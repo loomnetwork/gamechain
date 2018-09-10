@@ -449,10 +449,10 @@ message AbilityInstance {
 message Action {
     PlayerActionType ActionType = 1;
     oneof ActionData {
-        PlayerActionCardAttack PlayerActionCardAttack = 2;
-        PlayerActionDrawCard PlayerActionDrawCard = 3;
-        PlayerActionEndTurn PlayerActionEndTurn = 4;
-        PlayerActionMulligan PlayerActionMulligan = 5;  
+        PlayerActionCardAttack CardAttack = 2;
+        PlayerActionDrawCard DrawCard = 3;
+        PlayerActionEndTurn EndTurn = 4;
+        PlayerActionMulligan Mulligan = 5;  
     };
 }
 
