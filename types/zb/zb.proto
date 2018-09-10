@@ -610,72 +610,72 @@ message Unit {
 }
 
 enum OverlordSkillKind {
-        NoneOverlordSkillKind = 0;
+    NoneOverlordSkillKind = 0;
 
-        // AIR
-        Push = 1;
-        Draw = 2;
-        WindShield = 3;
-        WindWall = 4;
-        Retreat = 5;
+    // AIR
+    Push = 1;
+    Draw = 2;
+    WindShield = 3;
+    WindWall = 4;
+    Retreat = 5;
 
-        // EARTH
-        Harden = 6;
-        StoneSkin = 7;
-        Fortify = 8;
-        Phalanx = 9;
-        Fortress = 10;
+    // EARTH
+    Harden = 6;
+    StoneSkin = 7;
+    Fortify = 8;
+    Phalanx = 9;
+    Fortress = 10;
 
-        // FIRE
-        FireBolt = 11;
-        Rabies = 12;
-        Fireball = 13;
-        MassRabies = 14;
-        MeteorShower = 15;
+    // FIRE
+    FireBolt = 11;
+    Rabies = 12;
+    Fireball = 13;
+    MassRabies = 14;
+    MeteorShower = 15;
 
-        // LIFE
-        HealingTouch = 16;
-        Mend = 17;
-        Ressurect = 18;
-        Enhance = 19;
-        Reanimate = 20;
+    // LIFE
+    HealingTouch = 16;
+    Mend = 17;
+    Ressurect = 18;
+    Enhance = 19;
+    Reanimate = 20;
 
-        // TOXIC
-        PoisonDart = 21;
-        ToxicPower = 22;
-        Breakout = 23;
-        Infect = 24;
-        Epidemic = 25;
+    // TOXIC
+    PoisonDart = 21;
+    ToxicPower = 22;
+    Breakout = 23;
+    Infect = 24;
+    Epidemic = 25;
 
-        // WATER
-        Freeze = 26;
-        IceBolt = 27;
-        IceWall = 28;
-        Shatter = 29;
-        Blizzard = 30;
+    // WATER
+    Freeze = 26;
+    IceBolt = 27;
+    IceWall = 28;
+    Shatter = 29;
+    Blizzard = 30;
 }
 
 enum OverlordSkillSelectionType {
-        Primary = 0;
-        Secondary = 1;
+    Primary = 0;
+    Secondary = 1;
 }
 
 enum PlayerActionType {
-        EndTurn = 0;
-        Mulligan = 1;
-        DrawCardPlayerActionType = 2;
-        CardAttack = 3;
-        UseCardAbility = 4;
-        UseOverlordSkill = 5;
+    EndTurn = 0;
+    Mulligan = 1;
+    DrawCardPlayerActionType = 2;
+    CardAttack = 3;
+    UseCardAbility = 4;
+    UseOverlordSkill = 5;
 }
 
 enum StatType {
-        NoneStatType = 0;
-        Health = 1;
-        Damage = 2;
+    NoneStatType = 0;
+    Health = 1;
+    Damage = 2;
 }
 
 enum UnitSpecialStatus {
-        NoneUnitSpecialStatus = 0;
-        Frozen = 1;
+    NoneUnitSpecialStatus = 0;
+    Frozen = 1;
 }
