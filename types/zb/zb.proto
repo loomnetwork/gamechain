@@ -289,21 +289,24 @@ message GetCollectionResponse {
     repeated CardCollection cards = 1;
 }
 
+
+// C# interfaces converted
+
 enum AllowedTarget {
-        None = 1;
-        Player = 2;
-        PlayerCard = 3;
-        PlayerAllCards = 4;
-        Opponent = 5;
-        OpponentCard = 6;
-        OpponentAllCards = 7;
-        AllCards = 8;
-        All = 9;
+    None = 1;
+    Player = 2;
+    PlayerCard = 3;
+    PlayerAllCards = 4;
+    Opponent = 5;
+    OpponentCard = 6;
+    OpponentAllCards = 7;
+    AllCards = 8;
+    All = 9;
 }
 
 enum AttackRestriction {
-        None = 1;
-        OnlyNotAttackedByThisUnitInThisTurn = 2;
+    None = 1;
+    OnlyNotAttackedByThisUnitInThisTurn = 2;
 }        
 
 enum CardAbilityActivityType {
@@ -312,34 +315,34 @@ enum CardAbilityActivityType {
 }
 
 enum CardAbilityEffect {
-        None = 1;
-        MassiveWaterWave = 2;
-        MassiveFire = 3;
-        MassiveLightning = 4;
-        MassiveToxicAll = 5;
-        TargetRock = 6;
-        TargetFire = 7;
-        TargetLife = 8;
-        TargetToxic = 9;
-        TargetWater = 10;
-        TargetAdjustmentsBomb = 11;
-        StunFreezes = 12;
-        StunOrDamageFreezes = 13;
-        TargetAdjustmentsAir = 14;
-        HealDirectly = 15;
-        Heal = 16;
+    None = 1;
+    MassiveWaterWave = 2;
+    MassiveFire = 3;
+    MassiveLightning = 4;
+    MassiveToxicAll = 5;
+    TargetRock = 6;
+    TargetFire = 7;
+    TargetLife = 8;
+    TargetToxic = 9;
+    TargetWater = 10;
+    TargetAdjustmentsBomb = 11;
+    StunFreezes = 12;
+    StunOrDamageFreezes = 13;
+    TargetAdjustmentsAir = 14;
+    HealDirectly = 15;
+    Heal = 16;
 }
 
 enum CardAbilityTrigger {
-        Turn = 1;
-        Entry = 2;
-        End = 3;
-        Attack = 4;
-        Death = 5;
-        Permanent = 6;
-        GotDamage = 7;
-        AtDefence = 8;
-        InHand = 9;
+    Turn = 1;
+    Entry = 2;
+    End = 3;
+    Attack = 4;
+    Death = 5;
+    Permanent = 6;
+    GotDamage = 7;
+    AtDefence = 8;
+    InHand = 9;
 }
 
 enum CardAbilityType {
@@ -433,6 +436,10 @@ enum ElementKind {
     Item = 7;
     Others = 8;
     None = 9;
+}
+
+message GameState {
+    repeated IPlayerState PlayerStates = 1;
 }
 
 message IAbilityInstance {
