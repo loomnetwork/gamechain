@@ -85,11 +85,11 @@ func (g *gameplay) resume() {
 	}
 	var state stateFn
 	switch next.ActionType {
-	case zb.ActionType_CARD_ATTACK:
+	case zb.PlayerActionType_CardAttack:
 		state = actionCardAttack
-	case zb.ActionType_DRAW_CARD:
+	case zb.PlayerActionType_DrawCardPlayer:
 		state = actionDrawCard
-	case zb.ActionType_END_TURN:
+	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
 	default:
 		g.actionError(errInvalidAction)
@@ -161,9 +161,9 @@ func (g *gameplay) printState() {
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
 		// fmt.Printf("\tdeck: %v\n", state.Player1.Deck)
-		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardInHand), player.CardInHand)
-		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardOnBoard), player.CardOnBoard)
-		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardInDeck), player.CardInDeck)
+		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
+		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
+		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
 	}
 
 	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
@@ -179,7 +179,7 @@ func (g *gameplay) printState() {
 }
 
 func gameStart(g *gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.ActionType_START_GAME)
+	fmt.Printf("state: %v\n", zb.PlayerActionType_StartGame)
 	if g.isEnded() {
 		return nil
 	}
@@ -192,7 +192,7 @@ func gameStart(g *gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.ActionType_DRAW_CARD:
+	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
 	default:
 		return nil
@@ -200,7 +200,7 @@ func gameStart(g *gameplay) stateFn {
 }
 
 func actionDrawCard(g *gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.ActionType_DRAW_CARD)
+	fmt.Printf("state: %v\n", zb.PlayerActionType_DrawCardPlayer)
 	if g.isEnded() {
 		return nil
 	}
@@ -223,11 +223,11 @@ func actionDrawCard(g *gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.ActionType_END_TURN:
+	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.ActionType_DRAW_CARD:
+	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
-	case zb.ActionType_CARD_ATTACK:
+	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
 		return nil
@@ -235,7 +235,7 @@ func actionDrawCard(g *gameplay) stateFn {
 }
 
 func actionCardAttack(g *gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.ActionType_CARD_ATTACK)
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CardAttack)
 	if g.isEnded() {
 		return nil
 	}
@@ -260,11 +260,11 @@ func actionCardAttack(g *gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.ActionType_END_TURN:
+	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.ActionType_DRAW_CARD:
+	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
-	case zb.ActionType_CARD_ATTACK:
+	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
 		return nil
@@ -272,7 +272,7 @@ func actionCardAttack(g *gameplay) stateFn {
 }
 
 func actionEndTurn(g *gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.ActionType_END_TURN)
+	fmt.Printf("state: %v\n", zb.PlayerActionType_EndTurn)
 	if g.isEnded() {
 		return nil
 	}
@@ -296,11 +296,11 @@ func actionEndTurn(g *gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.ActionType_END_TURN:
+	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.ActionType_DRAW_CARD:
+	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
-	case zb.ActionType_CARD_ATTACK:
+	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
 		return nil
