@@ -4,7 +4,7 @@
       "vm": "plugin",
       "format": "plugin",
       "name": "ZombieBattleground",
-      "location": "zombiebattleground:1.0.0",
+      "location": "zombiebattleground.1.0.0",
       "init": {
         "default_collection": [
           {
