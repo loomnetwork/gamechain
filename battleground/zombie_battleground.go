@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 
@@ -460,6 +461,32 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	return &zb.FindMatchResponse{
 		Room: room,
 	}, nil
+}
+
+func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatchRequest) error {
+	// find the room available for the user to be filled in; otherwise, create a new one
+	roomlist, err := loadRoomList(ctx)
+	if err != nil {
+		return err
+	}
+	if len(roomlist.Rooms) == 0 {
+		return contract.ErrNotFound
+	}
+
+	room := roomlist.Rooms[0]
+	emitMsg := zb.EventRoom{
+		Room: room,
+	}
+
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, room.Topics[0])
+	}
+
+	return nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
