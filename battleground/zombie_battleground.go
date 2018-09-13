@@ -21,25 +21,32 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
+
+	version := req.Version
+	v, err := getVersionedObject(version)
+	if err != nil {
+		return err
+	}
+
 	// initialize card library
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
-	if err := ctx.Set(cardListKey, &cardList); err != nil {
+	if err := ctx.Set(v.MakeKey(cardListKey), &cardList); err != nil {
 		return err
 	}
 	// initialize heros
 	heroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(heroListKey, &heroList); err != nil {
+	if err := ctx.Set(v.MakeKey(heroListKey), &heroList); err != nil {
 		return err
 	}
 
 	cardCollectionList := zb.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
-	if err := ctx.Set(defaultCollectionKey, &cardCollectionList); err != nil {
+	if err := ctx.Set(v.MakeKey(defaultCollectionKey), &cardCollectionList); err != nil {
 		return err
 	}
 
@@ -47,14 +54,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	deckList := zb.DeckList{
 		Decks: req.DefaultDecks,
 	}
-	if err := ctx.Set(defaultDeckKey, &deckList); err != nil {
+	if err := ctx.Set(v.MakeKey(defaultDeckKey), &deckList); err != nil {
 		return err
 	}
 
 	defaultHeroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(defaultHeroesKey, &defaultHeroList); err != nil {
+	if err := ctx.Set(v.MakeKey(defaultHeroesKey), &defaultHeroList); err != nil {
 		return err
 	}
 

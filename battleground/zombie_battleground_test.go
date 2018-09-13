@@ -194,6 +194,7 @@ var initRequest = zb.InitRequest{
 			},
 		},
 	},
+	Version: "v1",
 }
 
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
