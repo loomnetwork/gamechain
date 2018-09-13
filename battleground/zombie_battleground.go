@@ -327,8 +327,15 @@ func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.G
 
 // ListCardLibrary list all the card library data
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
+
+	version := req.Version
+	v, err := getVersionedObject(version)
+	if err != nil {
+		return nil, err
+	}
+
 	var cardList zb.CardList
-	if err := ctx.Get(cardListKey, &cardList); err != nil {
+	if err := ctx.Get(v.MakeKey(cardListKey), &cardList); err != nil {
 		return nil, err
 	}
 	// convert to card list to card library view grouped by set

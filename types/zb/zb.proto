@@ -269,6 +269,7 @@ message ListDecksResponse {
 }
 
 message ListCardLibraryRequest {
+    string version = 1;
 }
 
 message ListCardLibraryResponse {
