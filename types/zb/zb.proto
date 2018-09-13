@@ -290,19 +290,31 @@ message GetCollectionResponse {
 }
 
 
-// Match Making
+//////////// Match Making /////////////
+
+message PlayerState {
+    string id = 1;
+    enum Status {
+        Waiting = 0;
+        Ready = 1;
+        Offline = 2;
+    }
+    Status status = 2;
+}
+
 message Room {
     // unique id
     int64 id = 1;
     // topics that message will be broadcast to
     repeated string topics = 2;
     // user ids who join the room
-    repeated string userIds = 3;
+    repeated PlayerState playerStates = 3;
     // room status
     enum Status {
         Waiting = 0;
         Ready = 1;
         Locked = 2;
+        Ended = 3;
     }
     Status status = 4;
 }

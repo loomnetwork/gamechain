@@ -35,5 +35,5 @@ var findMatchCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(findMatchCmd)
 
-	findMatchCmd.Flags().StringVarP(&createAccCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 }
