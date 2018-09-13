@@ -288,3 +288,33 @@ message GetCollectionRequest {
 message GetCollectionResponse {
     repeated CardCollection cards = 1;
 }
+
+
+// Match Making
+message Room {
+    // unique id
+    int64 id = 1;
+    // topics that message will be broadcast to
+    repeated string topics = 2;
+    // user ids who join the room
+    repeated string userIds = 3;
+    // room status
+    enum Status {
+        Waiting = 0;
+        Ready = 1;
+        Locked = 2;
+    }
+    Status status = 4;
+}
+
+message RoomList {
+    repeated Room rooms = 1;
+}
+
+message FindMatchRequest {
+    string userId = 1;
+}
+
+message FindMatchResponse {
+    Room room = 2;
+}

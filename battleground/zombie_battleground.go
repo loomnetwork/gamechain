@@ -427,4 +427,39 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 	return &zb.GetHeroSkillsResponse{HeroId: hero.HeroId, Skills: hero.Skills}, nil
 }
 
+func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
+	// find the room available for the user to be filled in; otherwise, create a new one
+	roomlist, err := loadRoomList(ctx)
+	ctx.Logger().Debug(fmt.Sprintf("-----> rool list %#v", roomlist))
+	if err != nil {
+		return nil, err
+	}
+	if len(roomlist.Rooms) == 0 {
+		room := zb.Room{
+			Id:      1, // fix for now
+			Topics:  []string{fmt.Sprintf("room:%d", 1)},
+			Status:  zb.Room_Waiting,
+			UserIds: []string{req.UserId},
+		}
+		roomlist.Rooms = append(roomlist.Rooms, &room)
+		err := saveLoomList(ctx, roomlist)
+		if err != nil {
+			return nil, err
+		}
+		return &zb.FindMatchResponse{
+			Room: &room,
+		}, nil
+	}
+
+	room := roomlist.Rooms[0]
+	if req.UserId != room.UserIds[0] {
+		room.UserIds = append(room.UserIds, req.UserId)
+	}
+
+	// the return result should include the topic for the client to subscribe to
+	return &zb.FindMatchResponse{
+		Room: room,
+	}, nil
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
