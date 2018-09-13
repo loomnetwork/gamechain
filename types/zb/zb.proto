@@ -307,6 +307,11 @@ message Room {
     Status status = 4;
 }
 
+// Event
+message EventRoom {
+    Room room = 1;
+}
+
 message RoomList {
     repeated Room rooms = 1;
 }
@@ -317,4 +322,8 @@ message FindMatchRequest {
 
 message FindMatchResponse {
     Room room = 2;
+}
+
+message StartMatchRequest {
+    string userId = 1;
 }
