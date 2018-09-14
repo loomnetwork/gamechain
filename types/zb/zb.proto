@@ -21,7 +21,7 @@ message Deck {
    int64 hero_id = 3;
    repeated CardCollection cards = 4;
 }
- 
+
 message Card {
     int64 id                    = 1;
     string kind                 = 2;
@@ -312,7 +312,7 @@ enum AllowedTarget {
 enum AttackRestriction {
     NoneAttackRestriction = 0;
     OnlyNotAttackedByThisUnitInThisTurn = 1;
-}        
+}
 
 enum CardAbilityActivityType {
     Passive = 0;
@@ -463,19 +463,20 @@ message PlayerAction {
         PlayerActionCardAttack cardAttack = 2;
         PlayerActionDrawCard drawCard = 3;
         PlayerActionEndTurn endTurn = 4;
-        PlayerActionMulligan mulligan = 5;  
+        PlayerActionMulligan mulligan = 5;
     };
 }
 
 
 enum PlayerActionType {
-    StartGame = 0; 
+    StartGame = 0;
     EndTurn = 1;
     Mulligan = 2;
     DrawCardPlayer = 3;
-    CardAttack = 4;
-    UseCardAbility = 5;
-    UseOverlordSkill = 6;
+    PlayCard = 4;
+    CardAttack = 5;
+    UseCardAbility = 6;
+    UseOverlordSkill = 7;
 }
 
 
@@ -554,7 +555,7 @@ message OverlordInstance {
 message OverlordPrototype {
     int32 heroId = 1;
     string icon = 2;
-    string name = 3;    
+    string name = 3;
     string shortDescription = 4;
     string longDescription = 5;
     int32 experience = 6;
