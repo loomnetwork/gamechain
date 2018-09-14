@@ -500,4 +500,31 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 	return nil
 }
 
+func (z *ZombieBattleground) SendAction(ctx contract.Context, req *zb.ActionRequest) error {
+	roomlist, err := loadRoomList(ctx)
+	if err != nil {
+		return err
+	}
+	if len(roomlist.Rooms) == 0 {
+		return contract.ErrNotFound
+	}
+
+	room := roomlist.Rooms[0]
+
+	emitMsg := zb.ActionEvent{
+		RoomId:  room.Id,
+		UserId:  req.UserId,
+		Message: req.Message,
+	}
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, room.Topics[0])
+	}
+
+	return nil
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
