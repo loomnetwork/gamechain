@@ -296,20 +296,17 @@ message PlayerState {
     string id = 1;
     enum Status {
         Waiting = 0;
-        Ready = 1;
-        Offline = 2;
+        Ready   = 1;
+        Playing = 2
+        Offline = 3;
     }
     Status status = 2;
 }
 
-message Room {
-    // unique id
+message Match {
     int64 id = 1;
-    // topics that message will be broadcast to
     repeated string topics = 2;
-    // user ids who join the room
     repeated PlayerState playerStates = 3;
-    // room status
     enum Status {
         Waiting = 0;
         Ready = 1;
@@ -320,12 +317,12 @@ message Room {
 }
 
 // Event
-message EventRoom {
-    Room room = 1;
+message EventMatch {
+    Match match = 1;
 }
 
-message RoomList {
-    repeated Room rooms = 1;
+message MatchList {
+    repeated Match matches = 1;
 }
 
 message FindMatchRequest {
@@ -333,7 +330,7 @@ message FindMatchRequest {
 }
 
 message FindMatchResponse {
-    Room room = 2;
+    Match match = 2;
 }
 
 message StartMatchRequest {
@@ -342,12 +339,12 @@ message StartMatchRequest {
 
 message ActionRequest {
     string userId = 1;
-    int64 roomId = 2;
+    int64 matchId = 2;
     string message = 3;
 }
 
 message ActionEvent {
     string userId = 1;
-    int64 roomId = 2;
+    int64 matchId = 2;
     string message = 3;
 }

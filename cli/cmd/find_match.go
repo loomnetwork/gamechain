@@ -26,7 +26,7 @@ var findMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("find match: topics: %v", resp.Room)
+		fmt.Printf("find match: %v", resp.Match)
 
 		return nil
 	},

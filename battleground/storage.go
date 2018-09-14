@@ -21,7 +21,7 @@ var (
 	heroesPrefix     = []byte("heroes")
 	collectionPrefix = []byte("collection")
 	decksPrefix      = []byte("decks")
-	roomsPrefix      = []byte("rooms")
+	matchesPrefix    = []byte("matches")
 
 	cardListKey          = []byte("cardlist")
 	heroListKey          = []byte("herolist")
@@ -184,16 +184,16 @@ func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.GameMembershipTier = req.GameMembershipTier
 }
 
-func saveLoomList(ctx contract.Context, roomList *zb.RoomList) error {
-	if err := ctx.Set(roomsPrefix, roomList); err != nil {
+func saveMatchList(ctx contract.Context, matchList *zb.MatchList) error {
+	if err := ctx.Set(matchesPrefix, matchList); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadRoomList(ctx contract.StaticContext) (*zb.RoomList, error) {
-	var rl zb.RoomList
-	err := ctx.Get(roomsPrefix, &rl)
+func loadMatchList(ctx contract.StaticContext) (*zb.MatchList, error) {
+	var rl zb.MatchList
+	err := ctx.Get(matchesPrefix, &rl)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}

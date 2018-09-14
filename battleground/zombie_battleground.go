@@ -430,15 +430,15 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
 	// find the room available for the user to be filled in; otherwise, create a new one
-	roomlist, err := loadRoomList(ctx)
+	matchlist, err := loadMatchList(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if len(roomlist.Rooms) == 0 {
-		room := zb.Room{
+	if len(matchlist.Matches) == 0 {
+		match := zb.Match{
 			Id:     1, // fixed for now
-			Topics: []string{fmt.Sprintf("room:%d", 1)},
-			Status: zb.Room_Waiting,
+			Topics: []string{fmt.Sprintf("match:%d", 1)},
+			Status: zb.Match_Waiting,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
 					Id:     req.UserId,
@@ -446,47 +446,45 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				},
 			},
 		}
-		roomlist.Rooms = append(roomlist.Rooms, &room)
-		if err := saveLoomList(ctx, roomlist); err != nil {
+		matchlist.Matches = append(matchlist.Matches, &match)
+		if err := saveMatchList(ctx, matchlist); err != nil {
 			return nil, err
 		}
 		return &zb.FindMatchResponse{
-			Room: &room,
+			Match: &match,
 		}, nil
 	}
 
-	room := roomlist.Rooms[0]
-	if req.UserId != room.PlayerStates[0].Id {
-		room.PlayerStates = append(room.PlayerStates, &zb.PlayerState{
+	match := matchlist.Matches[0]
+	if req.UserId != match.PlayerStates[0].Id {
+		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
 			Id:     req.UserId,
 			Status: zb.PlayerState_Ready,
 		})
 	}
 
-	if err := saveLoomList(ctx, roomlist); err != nil {
+	if err := saveMatchList(ctx, matchlist); err != nil {
 		return nil, err
 	}
 
-	// the return result should include the topic for the client to subscribe to
 	return &zb.FindMatchResponse{
-		Room: room,
+		Match: match,
 	}, nil
 }
 
 func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatchRequest) error {
-	// find the room available for the user to be filled in; otherwise, create a new one
-	roomlist, err := loadRoomList(ctx)
+	matchlist, err := loadMatchList(ctx)
 	if err != nil {
 		return err
 	}
-	if len(roomlist.Rooms) == 0 {
+	if len(matchlist.Matches) == 0 {
 		return contract.ErrNotFound
 	}
 
-	room := roomlist.Rooms[0]
-	room.Status = zb.Room_Ready
-	emitMsg := zb.EventRoom{
-		Room: room,
+	match := matchlist.Matches[0]
+	match.Status = zb.Match_Ready
+	emitMsg := zb.EventMatch{
+		Match: match,
 	}
 
 	data, err := json.Marshal(emitMsg)
@@ -494,25 +492,25 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 		return err
 	}
 	if err == nil {
-		ctx.EmitTopics(data, room.Topics[0])
+		ctx.EmitTopics(data, match.Topics[0])
 	}
 
 	return nil
 }
 
 func (z *ZombieBattleground) SendAction(ctx contract.Context, req *zb.ActionRequest) error {
-	roomlist, err := loadRoomList(ctx)
+	matchlist, err := loadMatchList(ctx)
 	if err != nil {
 		return err
 	}
-	if len(roomlist.Rooms) == 0 {
+	if len(matchlist.Matches) == 0 {
 		return contract.ErrNotFound
 	}
 
-	room := roomlist.Rooms[0]
+	match := matchlist.Matches[0]
 
 	emitMsg := zb.ActionEvent{
-		RoomId:  room.Id,
+		MatchId: match.Id,
 		UserId:  req.UserId,
 		Message: req.Message,
 	}
@@ -521,7 +519,7 @@ func (z *ZombieBattleground) SendAction(ctx contract.Context, req *zb.ActionRequ
 		return err
 	}
 	if err == nil {
-		ctx.EmitTopics(data, room.Topics[0])
+		ctx.EmitTopics(data, match.Topics[0])
 	}
 
 	return nil
