@@ -297,7 +297,7 @@ message PlayerState {
     enum Status {
         Waiting = 0;
         Ready   = 1;
-        Playing = 2
+        Playing = 2;
         Offline = 3;
     }
     Status status = 2;
