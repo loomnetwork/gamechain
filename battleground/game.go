@@ -25,9 +25,9 @@ func NewGameplay(state zb.GameState) *gameplay {
 	// TODO: validate players
 
 	// TODO: shuffle cards
-	// for i := range state.PlayerStates {
-	// 	state.PlayerStates[i].CardInDeck = cardInstanceFromDeck(state.PlayerStates[i].Deck)
-	// }
+	for i := range state.PlayerStates {
+		state.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(state.PlayerStates[i].Deck)
+	}
 
 	g := &gameplay{
 		State: state,
@@ -213,7 +213,16 @@ func actionDrawCard(g *gameplay) stateFn {
 	if err := g.checkCurrentPlayer(current); err != nil {
 		return g.actionError(err)
 	}
-	// TODO: drawcard
+
+	// draw card
+	// TODO: handle card limit in hand
+	// TODO: handle empty deck
+	if len(g.activePlayer().CardsInDeck) > 0 {
+		card := g.activePlayer().CardsInDeck[0]
+		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+		// remove card from CardsInDeck
+		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	}
 
 	// determine the next action
 	g.printState()
