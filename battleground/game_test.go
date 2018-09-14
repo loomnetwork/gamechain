@@ -79,8 +79,8 @@ func TestInvalidUserTurn(t *testing.T) {
 	state := zb.GameState{
 		Id: 1,
 		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{Id: uid1},
-			&zb.PlayerState{Id: uid2},
+			&zb.PlayerState{Id: uid1, Deck: &defaultDeck},
+			&zb.PlayerState{Id: uid2, Deck: &defaultDeck},
 		},
 		PlayerActions: []*zb.PlayerAction{
 			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCardPlayer, PlayerId: uid1},

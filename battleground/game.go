@@ -25,9 +25,9 @@ func NewGameplay(state zb.GameState) *gameplay {
 	// TODO: validate players
 
 	// TODO: shuffle cards
-	// for i := range state.PlayerStates {
-	// 	state.PlayerStates[i].CardInDeck = cardInstanceFromDeck(state.PlayerStates[i].Deck)
-	// }
+	for i := range state.PlayerStates {
+		state.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(state.PlayerStates[i].Deck)
+	}
 
 	g := &gameplay{
 		State: state,
@@ -89,6 +89,8 @@ func (g *gameplay) resume() {
 		state = actionCardAttack
 	case zb.PlayerActionType_DrawCardPlayer:
 		state = actionDrawCard
+	case zb.PlayerActionType_PlayCard:
+		state = actionPlayCard
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
 	default:
@@ -213,7 +215,16 @@ func actionDrawCard(g *gameplay) stateFn {
 	if err := g.checkCurrentPlayer(current); err != nil {
 		return g.actionError(err)
 	}
-	// TODO: drawcard
+
+	// draw card
+	// TODO: handle card limit in hand
+	// TODO: handle empty deck
+	if len(g.activePlayer().CardsInDeck) > 0 {
+		card := g.activePlayer().CardsInDeck[0]
+		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+		// remove card from CardsInDeck
+		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	}
 
 	// determine the next action
 	g.printState()
@@ -227,6 +238,52 @@ func actionDrawCard(g *gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
+	case zb.PlayerActionType_PlayCard:
+		return actionPlayCard
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	default:
+		return nil
+	}
+}
+
+func actionPlayCard(g *gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_PlayCard)
+	if g.isEnded() {
+		return nil
+	}
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.actionError(err)
+	}
+
+	// draw card
+	// TODO: handle card limit on board
+	if len(g.activePlayer().CardsInHand) > 0 {
+		card := g.activePlayer().CardsInHand[0]
+		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
+		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+	}
+
+	// determine the next action
+	g.printState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCardPlayer:
+		return actionDrawCard
+	case zb.PlayerActionType_PlayCard:
+		return actionPlayCard
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
@@ -264,6 +321,8 @@ func actionCardAttack(g *gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
+	case zb.PlayerActionType_PlayCard:
+		return actionPlayCard
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
@@ -300,6 +359,8 @@ func actionEndTurn(g *gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCardPlayer:
 		return actionDrawCard
+	case zb.PlayerActionType_PlayCard:
+		return actionPlayCard
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
