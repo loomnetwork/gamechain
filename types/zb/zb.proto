@@ -347,7 +347,6 @@ message AcceptMatchRequest {
 }
 
 message AcceptMatchResponse {
-    Match match = 1;
 }
 
 message RejectMatchRequest {
@@ -356,7 +355,6 @@ message RejectMatchRequest {
 }
 
 message RejectMatchResponse {
-    Match match = 1;
 }
 
 message LeaveMatchRequest {
@@ -365,7 +363,6 @@ message LeaveMatchRequest {
 }
 
 message LeaveMatchResponse {
-    Match match = 1;
 }
 
 message GetMatchRequest {
