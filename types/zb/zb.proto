@@ -295,10 +295,11 @@ message GetCollectionResponse {
 message PlayerState {
     string id = 1;
     enum Status {
-        Waiting  = 0;
-        Accepted = 1;
-        Playing  = 2;
-        Left     = 3;
+        NonStatus    = 0;
+        FindMatch    = 1;
+        AcceptMatch  = 2;
+        RejectMatch  = 3;
+        LeaveMatch   = 4;
     }
     Status status = 2;
 }
@@ -308,10 +309,10 @@ message Match {
     repeated string topics = 2;
     repeated PlayerState playerStates = 3;
     enum Status {
-        Waiting = 0;
-        Ready   = 1;
-        Locked  = 2;
-        Ended   = 3;
+        Created      = 0;
+        Matching     = 1;
+        Started      = 2;
+        PlayerLeft   = 3;
     }
     Status status = 4;
 }
@@ -324,16 +325,8 @@ message ActionEvent {
 }
 
 message MatchEvent {
-    MatchEventType eventType = 1;
-    Match match              = 2;
-    string userId            = 3;
-}
-
-enum MatchEventType {
-    FindMatch    = 0;
-    AcceptMatch  = 1;
-    LeaveMatch   = 2;
-    MatchStarted = 3;
+    Match match    = 1;
+    string userId  = 2;
 }
 
 message MatchList {
@@ -357,6 +350,15 @@ message AcceptMatchResponse {
     Match match = 1;
 }
 
+message RejectMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+}
+
+message RejectMatchResponse {
+    Match match = 1;
+}
+
 message LeaveMatchRequest {
     string userId = 1;
     int64 matchId = 2;
@@ -365,7 +367,6 @@ message LeaveMatchRequest {
 message LeaveMatchResponse {
     Match match = 1;
 }
-
 
 message GetMatchRequest {
     int64 matchId = 1;

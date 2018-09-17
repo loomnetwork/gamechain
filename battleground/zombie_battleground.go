@@ -438,7 +438,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		match := zb.Match{
 			Id:     1, // fixed for now
 			Topics: []string{fmt.Sprintf("match:%d", 1)},
-			Status: zb.Match_Waiting,
+			Status: zb.Match_Matching,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
 					Id: req.UserId,
@@ -487,7 +487,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	// update the player state on the match
 	for i := 0; i < len(match.PlayerStates); i++ {
 		if req.UserId == match.PlayerStates[i].Id {
-			match.PlayerStates[i].Status = zb.PlayerState_Accepted
+			match.PlayerStates[i].Status = zb.PlayerState_AcceptMatch
 		}
 	}
 	if err := saveMatch(ctx, match); err != nil {
@@ -496,9 +496,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 
 	// accept match
 	emitMsg := zb.MatchEvent{
-		EventType: zb.MatchEventType_AcceptMatch,
-		Match:     match,
-		UserId:    req.UserId,
+		Match:  match,
+		UserId: req.UserId,
 	}
 	data, err := json.Marshal(emitMsg)
 	if err != nil {
@@ -511,15 +510,19 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	// if all the users accept, emit MatchStarted
 	var allAccepted = true
 	for i := 0; i < len(match.PlayerStates); i++ {
-		if match.PlayerStates[i].Status != zb.PlayerState_Accepted {
+		if match.PlayerStates[i].Status != zb.PlayerState_AcceptMatch {
 			allAccepted = false
 			break
 		}
 	}
 	if allAccepted {
+		match.Status = zb.Match_Started
+		if err := saveMatch(ctx, match); err != nil {
+			return nil, err
+		}
+
 		emitMsg := zb.MatchEvent{
-			EventType: zb.MatchEventType_MatchStarted,
-			Match:     match,
+			Match: match,
 		}
 		data, err := json.Marshal(emitMsg)
 		if err != nil {
@@ -531,6 +534,48 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	}
 
 	return &zb.AcceptMatchResponse{
+		Match: match,
+	}, nil
+}
+
+func (z *ZombieBattleground) RejectMatch(ctx contract.Context, req *zb.RejectMatchRequest) (*zb.RejectMatchResponse, error) {
+	// match, err := loadMatch(ctx, req.MatchId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	matchlist, err := loadMatchList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if len(matchlist.Matches) == 0 {
+		return nil, contract.ErrNotFound
+	}
+	match := matchlist.Matches[0]
+
+	// update the player state on the match
+	for i := 0; i < len(match.PlayerStates); i++ {
+		if req.UserId == match.PlayerStates[i].Id {
+			match.PlayerStates[i].Status = zb.PlayerState_RejectMatch
+		}
+	}
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	// accept match
+	emitMsg := zb.MatchEvent{
+		Match:  match,
+		UserId: req.UserId,
+	}
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, match.Topics[0])
+	}
+
+	return &zb.RejectMatchResponse{
 		Match: match,
 	}, nil
 }
@@ -551,17 +596,18 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	// update the player state on the match
 	for i := 0; i < len(match.PlayerStates); i++ {
 		if req.UserId == match.PlayerStates[i].Id {
-			match.PlayerStates[i].Status = zb.PlayerState_Left
+			match.PlayerStates[i].Status = zb.PlayerState_LeaveMatch
 		}
 	}
+
+	match.Status = zb.Match_PlayerLeft
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
 
 	emitMsg := zb.MatchEvent{
-		EventType: zb.MatchEventType_LeaveMatch,
-		Match:     match,
-		UserId:    req.UserId,
+		Match:  match,
+		UserId: req.UserId,
 	}
 	data, err := json.Marshal(emitMsg)
 	if err != nil {
