@@ -533,9 +533,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		}
 	}
 
-	return &zb.AcceptMatchResponse{
-		Match: match,
-	}, nil
+	return &zb.AcceptMatchResponse{}, nil
 }
 
 func (z *ZombieBattleground) RejectMatch(ctx contract.Context, req *zb.RejectMatchRequest) (*zb.RejectMatchResponse, error) {
@@ -575,9 +573,7 @@ func (z *ZombieBattleground) RejectMatch(ctx contract.Context, req *zb.RejectMat
 		ctx.EmitTopics(data, match.Topics[0])
 	}
 
-	return &zb.RejectMatchResponse{
-		Match: match,
-	}, nil
+	return &zb.RejectMatchResponse{}, nil
 }
 
 func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
@@ -617,9 +613,7 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 		ctx.EmitTopics(data, match.Topics[0])
 	}
 
-	return &zb.LeaveMatchResponse{
-		Match: match,
-	}, nil
+	return &zb.LeaveMatchResponse{}, nil
 }
 
 func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {
