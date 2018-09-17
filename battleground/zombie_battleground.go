@@ -441,7 +441,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			Status: zb.Match_Matching,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
-					Id: req.UserId,
+					Id:            req.UserId,
+					CurrentAction: zb.PlayerActionType_FindMatch,
 				},
 			},
 		}
@@ -457,7 +458,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match := matchlist.Matches[0]
 	if req.UserId != match.PlayerStates[0].Id {
 		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-			Id: req.UserId,
+			Id:            req.UserId,
+			CurrentAction: zb.PlayerActionType_FindMatch,
 		})
 	}
 
@@ -490,7 +492,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_AcceptMatch
 		}
 	}
-	if err := saveMatch(ctx, match); err != nil {
+	if err := saveMatchList(ctx, matchlist); err != nil {
 		return nil, err
 	}
 
@@ -518,7 +520,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	}
 	if allAccepted {
 		match.Status = zb.Match_Started
-		if err := saveMatch(ctx, match); err != nil {
+		if err := saveMatchList(ctx, matchlist); err != nil {
 			return nil, err
 		}
 
@@ -558,7 +560,7 @@ func (z *ZombieBattleground) RejectMatch(ctx contract.Context, req *zb.RejectMat
 			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_RejectMatch
 		}
 	}
-	if err := saveMatch(ctx, match); err != nil {
+	if err := saveMatchList(ctx, matchlist); err != nil {
 		return nil, err
 	}
 
@@ -598,7 +600,7 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_StartMatch
 		}
 	}
-	if err := saveMatch(ctx, match); err != nil {
+	if err := saveMatchList(ctx, matchlist); err != nil {
 		return nil, err
 	}
 
@@ -639,7 +641,7 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	}
 
 	match.Status = zb.Match_PlayerLeft
-	if err := saveMatch(ctx, match); err != nil {
+	if err := saveMatchList(ctx, matchlist); err != nil {
 		return nil, err
 	}
 
