@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -51,6 +52,10 @@ func CardCollectionKey(userID string) []byte {
 
 func HeroesKey(userID string) []byte {
 	return []byte("user:" + userID + ":heroes")
+}
+
+func MatchKey(matchID int64) []byte {
+	return []byte(fmt.Sprintf("match:%d", matchID))
 }
 
 // func userAccountKey(id string) []byte {
@@ -198,4 +203,20 @@ func loadMatchList(ctx contract.StaticContext) (*zb.MatchList, error) {
 		return nil, err
 	}
 	return &rl, nil
+}
+
+func saveMatch(ctx contract.Context, match *zb.Match) error {
+	if err := ctx.Set(MatchKey(match.Id), match); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
+	var m zb.Match
+	err := ctx.Get(MatchKey(matchID), &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
 }

@@ -295,10 +295,10 @@ message GetCollectionResponse {
 message PlayerState {
     string id = 1;
     enum Status {
-        Waiting = 0;
-        Ready   = 1;
-        Playing = 2;
-        Offline = 3;
+        Waiting  = 0;
+        Accepted = 1;
+        Playing  = 2;
+        Left     = 3;
     }
     Status status = 2;
 }
@@ -309,16 +309,31 @@ message Match {
     repeated PlayerState playerStates = 3;
     enum Status {
         Waiting = 0;
-        Ready = 1;
-        Locked = 2;
-        Ended = 3;
+        Ready   = 1;
+        Locked  = 2;
+        Ended   = 3;
     }
     Status status = 4;
 }
 
-// Event
-message EventMatch {
-    Match match = 1;
+// Mock Action Event
+message ActionEvent {
+    string userId  = 1;
+    int64 matchId  = 2;
+    string message = 3;
+}
+
+message MatchEvent {
+    MatchEventType eventType = 1;
+    Match match              = 2;
+    string userId            = 3;
+}
+
+enum MatchEventType {
+    FindMatch    = 0;
+    AcceptMatch  = 1;
+    LeaveMatch   = 2;
+    MatchStarted = 3;
 }
 
 message MatchList {
@@ -330,21 +345,38 @@ message FindMatchRequest {
 }
 
 message FindMatchResponse {
-    Match match = 2;
+    Match match = 1;
 }
 
-message StartMatchRequest {
+message AcceptMatchRequest {
     string userId = 1;
+    int64 matchId = 2;
+}
+
+message AcceptMatchResponse {
+    Match match = 1;
+}
+
+message LeaveMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+}
+
+message LeaveMatchResponse {
+    Match match = 1;
+}
+
+
+message GetMatchRequest {
+    int64 matchId = 1;
+}
+
+message GetMatchResponse {
+    Match match = 1;
 }
 
 message ActionRequest {
-    string userId = 1;
-    int64 matchId = 2;
-    string message = 3;
-}
-
-message ActionEvent {
-    string userId = 1;
-    int64 matchId = 2;
+    string userId  = 1;
+    int64 matchId  = 2;
     string message = 3;
 }
