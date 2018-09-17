@@ -441,8 +441,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			Status: zb.Match_Waiting,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
-					Id:     req.UserId,
-					Status: zb.PlayerState_Ready,
+					Id: req.UserId,
 				},
 			},
 		}
@@ -458,8 +457,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match := matchlist.Matches[0]
 	if req.UserId != match.PlayerStates[0].Id {
 		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-			Id:     req.UserId,
-			Status: zb.PlayerState_Ready,
+			Id: req.UserId,
 		})
 	}
 
@@ -472,30 +470,129 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}, nil
 }
 
-func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatchRequest) error {
+func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMatchRequest) (*zb.AcceptMatchResponse, error) {
+	// match, err := loadMatch(ctx, req.MatchId)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	matchlist, err := loadMatchList(ctx)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if len(matchlist.Matches) == 0 {
-		return contract.ErrNotFound
+		return nil, contract.ErrNotFound
 	}
-
 	match := matchlist.Matches[0]
-	match.Status = zb.Match_Ready
-	emitMsg := zb.EventMatch{
-		Match: match,
+
+	// update the player state on the match
+	for i := 0; i < len(match.PlayerStates); i++ {
+		if req.UserId == match.PlayerStates[i].Id {
+			match.PlayerStates[i].Status = zb.PlayerState_Accepted
+		}
+	}
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
 	}
 
+	// accept match
+	emitMsg := zb.MatchEvent{
+		EventType: zb.MatchEventType_AcceptMatch,
+		Match:     match,
+		UserId:    req.UserId,
+	}
 	data, err := json.Marshal(emitMsg)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if err == nil {
 		ctx.EmitTopics(data, match.Topics[0])
 	}
 
-	return nil
+	// if all the users accept, emit MatchStarted
+	var allAccepted = true
+	for i := 0; i < len(match.PlayerStates); i++ {
+		if match.PlayerStates[i].Status != zb.PlayerState_Accepted {
+			allAccepted = false
+			break
+		}
+	}
+	if allAccepted {
+		emitMsg := zb.MatchEvent{
+			EventType: zb.MatchEventType_MatchStarted,
+			Match:     match,
+		}
+		data, err := json.Marshal(emitMsg)
+		if err != nil {
+			return nil, err
+		}
+		if err == nil {
+			ctx.EmitTopics(data, match.Topics[0])
+		}
+	}
+
+	return &zb.AcceptMatchResponse{
+		Match: match,
+	}, nil
+}
+
+func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
+	// match, err := loadMatch(ctx, req.MatchId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	matchlist, err := loadMatchList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if len(matchlist.Matches) == 0 {
+		return nil, contract.ErrNotFound
+	}
+	match := matchlist.Matches[0]
+	// update the player state on the match
+	for i := 0; i < len(match.PlayerStates); i++ {
+		if req.UserId == match.PlayerStates[i].Id {
+			match.PlayerStates[i].Status = zb.PlayerState_Left
+		}
+	}
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	emitMsg := zb.MatchEvent{
+		EventType: zb.MatchEventType_LeaveMatch,
+		Match:     match,
+		UserId:    req.UserId,
+	}
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, match.Topics[0])
+	}
+
+	return &zb.LeaveMatchResponse{
+		Match: match,
+	}, nil
+}
+
+func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {
+	// match, err := loadMatch(ctx, req.MatchId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	matchlist, err := loadMatchList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if len(matchlist.Matches) == 0 {
+		return nil, contract.ErrNotFound
+	}
+	match := matchlist.Matches[0]
+
+	return &zb.GetMatchResponse{
+		Match: match,
+	}, nil
 }
 
 func (z *ZombieBattleground) SendAction(ctx contract.Context, req *zb.ActionRequest) error {
