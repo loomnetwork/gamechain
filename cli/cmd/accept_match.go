@@ -26,7 +26,7 @@ var acceptMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("match id %d\n", resp.Match.Id)
+		fmt.Printf("match accepted")
 
 		return nil
 	},
