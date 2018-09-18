@@ -297,10 +297,6 @@ message PlayerState {
     PlayerActionType currentAction = 2;
 }
 
-message MatchList {
-    repeated Match matches = 1;
-}
-
 message Match {
     int64 id = 1;
     repeated string topics = 2;
@@ -350,7 +346,18 @@ message PlayerActionEvent {
     Match match    = 5;
 }
 
-//////////// Request Response /////////////
+message PendingMatchList {
+    repeated Match matches = 1;
+}
+
+message MatchList {
+    repeated Match matches = 1;
+}
+
+message MatchCount {
+    int64 currentId = 1;
+}
+
 message FindMatchRequest {
     string userId = 1;
 }
