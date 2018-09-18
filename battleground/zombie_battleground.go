@@ -429,8 +429,17 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
-	// TODO: Make sure user is eligible to call FindMatch
-	// if findUser(req.UserId).Status != NoneAction return error
+	// Make sure user is eligible to call FindMatch and not already matchmaking or playing
+	playersInMatchmaking, listErr := loadPlayersInMatchmakingList(ctx)
+	if listErr != nil && listErr != contract.ErrNotFound {
+		return nil, listErr
+	}
+
+	for _, userID := range playersInMatchmaking {
+		if req.UserId == userID {
+			return nil, errors.New("Player already in matchmaking, cannot join another match right now")
+		}
+	}
 
 	// find the room available for the user to be filled in; otherwise, create a new one
 	pendingMatchlist, err := loadPendingMatchList(ctx)
@@ -446,6 +455,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			Id:            req.UserId,
 			CurrentAction: zb.PlayerActionType_FindMatch,
 		})
+
+		addPlayerInMatchmakingList(ctx, req.UserId)
+		if err != nil {
+			return nil, err
+		}
 
 		// delete this match from pending list if it's full
 		if len(match.PlayerStates) > 1 {
@@ -465,9 +479,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// Otherwise get the latest match ID, create a new match and add the player to it
-	currentMatchID, err := loadMatchCount(ctx)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	currentMatchID, countErr := loadMatchCount(ctx)
+	if countErr != nil && countErr != contract.ErrNotFound {
+		return nil, countErr
 	}
 
 	match := &zb.Match{
@@ -482,6 +496,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		},
 	}
 	if err := saveMatchCount(ctx, match.Id); err != nil {
+		return nil, err
+	}
+
+	if err := addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
 		return nil, err
 	}
 
