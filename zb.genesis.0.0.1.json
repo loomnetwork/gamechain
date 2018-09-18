@@ -4,7 +4,7 @@
       "vm": "plugin",
       "format": "plugin",
       "name": "ZombieBattleground",
-      "location": "zombiebattleground:1.0.0",
+      "location": "zombiebattleground:0.0.1",
       "init": {
         "default_collection": [
           {
@@ -304,7 +304,7 @@
             "amount": 4
           },
           {
-            "card_name": "Goo Bottles",
+            "card_name": "Goo Bottle",
             "amount": 4
           },
           {
@@ -631,7 +631,7 @@
         "cards": [
           {
             "set": "Fire",
-            "id": 10,
+            "id": 0,
             "kind": "CREATURE",
             "name": "Pyromaz",
             "cost": 1,
@@ -669,7 +669,7 @@
           },
           {
             "set": "Fire",
-            "id": 146,
+            "id": 0,
             "kind": "CREATURE",
             "name": "Quazi",
             "cost": 1,
@@ -711,7 +711,7 @@
           },
           {
             "set": "Fire",
-            "id": 11,
+            "id": 1,
             "kind": "CREATURE",
             "name": "Burrrnn",
             "cost": 3,
@@ -737,7 +737,7 @@
           },
           {
             "set": "Fire",
-            "id": 12,
+            "id": 3,
             "kind": "CREATURE",
             "name": "Cynderman",
             "cost": 4,
@@ -774,7 +774,7 @@
           },
           {
             "set": "Fire",
-            "id": 38,
+            "id": 2,
             "kind": "CREATURE",
             "name": "Werezomb",
             "cost": 3,
@@ -810,7 +810,7 @@
           },
           {
             "set": "Fire",
-            "id": 147,
+            "id": 3,
             "kind": "CREATURE",
             "name": "Modo",
             "cost": 3,
@@ -852,7 +852,7 @@
           },
           {
             "set": "Fire",
-            "id": 14,
+            "id": 5,
             "kind": "CREATURE",
             "name": "Fire-Maw",
             "cost": 5,
@@ -889,7 +889,7 @@
           },
           {
             "set": "Fire",
-            "id": 67,
+            "id": 4,
             "kind": "CREATURE",
             "name": "Zhampion",
             "cost": 5,
@@ -926,7 +926,7 @@
           },
           {
             "set": "Fire",
-            "id": 13,
+            "id": 7,
             "kind": "CREATURE",
             "name": "Gargantua",
             "cost": 11,
@@ -963,7 +963,7 @@
           },
           {
             "set": "Fire",
-            "id": 37,
+            "id": 6,
             "kind": "CREATURE",
             "name": "Cerberus",
             "cost": 12,
@@ -997,7 +997,7 @@
           },
           {
             "set": "Water",
-            "id": 28,
+            "id": 9,
             "kind": "CREATURE",
             "name": "Izze",
             "cost": 1,
@@ -1035,7 +1035,7 @@
           },
           {
             "set": "Water",
-            "id": 49,
+            "id": 10,
             "kind": "CREATURE",
             "name": "Znowman",
             "cost": 4,
@@ -1069,7 +1069,7 @@
           },
           {
             "set": "Water",
-            "id": 152,
+            "id": 10,
             "kind": "CREATURE",
             "name": "Ozmoziz",
             "cost": 2,
@@ -1112,7 +1112,7 @@
           },
           {
             "set": "Water",
-            "id": 29,
+            "id": 11,
             "kind": "CREATURE",
             "name": "Jetter",
             "cost": 4,
@@ -1149,7 +1149,7 @@
           },
           {
             "set": "Water",
-            "id": 30,
+            "id": 14,
             "kind": "CREATURE",
             "name": "Freezzee",
             "cost": 4,
@@ -1186,7 +1186,7 @@
           },
           {
             "set": "Water",
-            "id": 153,
+            "id": 14,
             "kind": "CREATURE",
             "name": "Geyzer",
             "cost": 4,
@@ -1229,7 +1229,7 @@
           },
           {
             "set": "Water",
-            "id": 90,
+            "id": 12,
             "kind": "CREATURE",
             "name": "Blizzard",
             "cost": 6,
@@ -1265,7 +1265,7 @@
           },
           {
             "set": "Water",
-            "id": 139,
+            "id": 13,
             "kind": "CREATURE",
             "name": "Froztbite",
             "cost": 4,
@@ -1301,7 +1301,7 @@
           },
           {
             "set": "Water",
-            "id": 48,
+            "id": 8,
             "kind": "CREATURE",
             "name": "Zhatterer",
             "cost": 3,
@@ -1337,7 +1337,7 @@
           },
           {
             "set": "Water",
-            "id": 141,
+            "id": 15,
             "kind": "CREATURE",
             "name": "Maelstrom",
             "cost": 8,
@@ -1372,7 +1372,7 @@
           },
           {
             "set": "Water",
-            "id": 31,
+            "id": 16,
             "kind": "CREATURE",
             "name": "Tzunamy",
             "cost": 11,
@@ -1409,7 +1409,7 @@
           },
           {
             "set": "Earth",
-            "id": 5,
+            "id": 19,
             "kind": "CREATURE",
             "name": "Rockky",
             "cost": 1,
@@ -1447,7 +1447,7 @@
           },
           {
             "set": "Earth",
-            "id": 7,
+            "id": 23,
             "kind": "CREATURE",
             "name": "Bolderr",
             "cost": 3,
@@ -1484,7 +1484,7 @@
           },
           {
             "set": "Earth",
-            "id": 98,
+            "id": 17,
             "kind": "CREATURE",
             "name": "Blocker",
             "cost": 1,
@@ -1510,7 +1510,7 @@
           },
           {
             "set": "Earth",
-            "id": 101,
+            "id": 18,
             "kind": "CREATURE",
             "name": "Slab",
             "cost": 3,
@@ -1536,7 +1536,7 @@
           },
           {
             "set": "Earth",
-            "id": 144,
+            "id": 22,
             "kind": "CREATURE",
             "name": "Pit",
             "cost": 1,
@@ -1571,7 +1571,7 @@
           },
           {
             "set": "Earth",
-            "id": 6,
+            "id": 22,
             "kind": "CREATURE",
             "name": "Golem",
             "cost": 4,
@@ -1597,7 +1597,7 @@
           },
           {
             "set": "Earth",
-            "id": 9,
+            "id": 20,
             "kind": "CREATURE",
             "name": "Walley",
             "cost": 4,
@@ -1631,7 +1631,7 @@
           },
           {
             "set": "Earth",
-            "id": 35,
+            "id": 21,
             "kind": "CREATURE",
             "name": "Tiny",
             "cost": 4,
@@ -1657,7 +1657,7 @@
           },
           {
             "set": "Earth",
-            "id": 59,
+            "id": 22,
             "kind": "CREATURE",
             "name": "Spiker",
             "cost": 3,
@@ -1692,7 +1692,7 @@
           },
           {
             "set": "Earth",
-            "id": 145,
+            "id": 17,
             "kind": "CREATURE",
             "name": "Crater",
             "cost": 3,
@@ -1727,7 +1727,7 @@
           },
           {
             "set": "Earth",
-            "id": 36,
+            "id": 24,
             "kind": "CREATURE",
             "name": "Earthshaker",
             "cost": 5,
@@ -1763,7 +1763,7 @@
           },
           {
             "set": "Earth",
-            "id": 61,
+            "id": 24,
             "kind": "CREATURE",
             "name": "IgneouZ",
             "cost": 4,
@@ -1799,7 +1799,7 @@
           },
           {
             "set": "Earth",
-            "id": 103,
+            "id": 25,
             "kind": "CREATURE",
             "name": "Pyrite",
             "cost": 5,
@@ -1835,7 +1835,7 @@
           },
           {
             "set": "Earth",
-            "id": 8,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Mountain",
             "cost": 11,
@@ -1870,7 +1870,7 @@
           },
           {
             "set": "Earth",
-            "id": 104,
+            "id": 26,
             "kind": "CREATURE",
             "name": "Gaea",
             "cost": 11,
@@ -1907,7 +1907,7 @@
           },
           {
             "set": "Air",
-            "id": 1,
+            "id": 17,
             "kind": "CREATURE",
             "name": "Whizpar",
             "cost": 1,
@@ -1945,7 +1945,7 @@
           },
           {
             "set": "Air",
-            "id": 34,
+            "id": 18,
             "kind": "CREATURE",
             "name": "Wheezy",
             "cost": 2,
@@ -1981,7 +1981,7 @@
           },
           {
             "set": "Air",
-            "id": 50,
+            "id": 19,
             "kind": "CREATURE",
             "name": "Soothsayer",
             "cost": 2,
@@ -2016,7 +2016,7 @@
           },
           {
             "set": "Air",
-            "id": 142,
+            "id": 17,
             "kind": "CREATURE",
             "name": "Fumez",
             "cost": 2,
@@ -2051,7 +2051,7 @@
           },
           {
             "set": "Air",
-            "id": 2,
+            "id": 20,
             "kind": "CREATURE",
             "name": "Pushhh",
             "cost": 3,
@@ -2086,7 +2086,7 @@
           },
           {
             "set": "Air",
-            "id": 3,
+            "id": 21,
             "kind": "CREATURE",
             "name": "Ztormmcaller",
             "cost": 5,
@@ -2129,7 +2129,7 @@
           },
           {
             "set": "Air",
-            "id": 32,
+            "id": 17,
             "kind": "CREATURE",
             "name": "Bouncer",
             "cost": 4,
@@ -2155,7 +2155,7 @@
           },
           {
             "set": "Air",
-            "id": 143,
+            "id": 19,
             "kind": "CREATURE",
             "name": "Gaz",
             "cost": 4,
@@ -2197,7 +2197,7 @@
           },
           {
             "set": "Air",
-            "id": 96,
+            "id": 20,
             "kind": "CREATURE",
             "name": "Draft",
             "cost": 5,
@@ -2232,7 +2232,7 @@
           },
           {
             "set": "Air",
-            "id": 97,
+            "id": 20,
             "kind": "CREATURE",
             "name": "MonZoon",
             "cost": 9,
@@ -2269,7 +2269,7 @@
           },
           {
             "set": "Air",
-            "id": 4,
+            "id": 22,
             "kind": "CREATURE",
             "name": "Zeuz",
             "cost": 11,
@@ -2306,7 +2306,7 @@
           },
           {
             "set": "Air",
-            "id": 94,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Ztorm Shield",
             "cost": 6,
@@ -2347,7 +2347,7 @@
           },
           {
             "set": "Life",
-            "id": 19,
+            "id": 23,
             "kind": "CREATURE",
             "name": "Azuraz",
             "cost": 1,
@@ -2385,7 +2385,7 @@
           },
           {
             "set": "Life",
-            "id": 75,
+            "id": 24,
             "kind": "CREATURE",
             "name": "Bloomer",
             "cost": 2,
@@ -2420,7 +2420,7 @@
           },
           {
             "set": "Life",
-            "id": 148,
+            "id": 24,
             "kind": "CREATURE",
             "name": "Zap",
             "cost": 2,
@@ -2464,7 +2464,7 @@
           },
           {
             "set": "Life",
-            "id": 20,
+            "id": 25,
             "kind": "CREATURE",
             "name": "Shroom",
             "cost": 4,
@@ -2501,7 +2501,7 @@
           },
           {
             "set": "Life",
-            "id": 21,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Vindrom",
             "cost": 4,
@@ -2537,7 +2537,7 @@
           },
           {
             "set": "Life",
-            "id": 23,
+            "id": 26,
             "kind": "CREATURE",
             "name": "Puffer",
             "cost": 3,
@@ -2576,7 +2576,7 @@
           },
           {
             "set": "Life",
-            "id": 44,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Sapper",
             "cost": 4,
@@ -2611,7 +2611,7 @@
           },
           {
             "set": "Life",
-            "id": 45,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Keeper",
             "cost": 3,
@@ -2648,7 +2648,7 @@
           },
           {
             "set": "Life",
-            "id": 149,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Cactuz",
             "cost": 4,
@@ -2692,7 +2692,7 @@
           },
           {
             "set": "Life",
-            "id": 22,
+            "id": 28,
             "kind": "CREATURE",
             "name": "Shammann",
             "cost": 11,
@@ -2729,7 +2729,7 @@
           },
           {
             "set": "Life",
-            "id": 42,
+            "id": 29,
             "kind": "CREATURE",
             "name": "Z-Virus",
             "cost": 12,
@@ -2764,7 +2764,7 @@
           },
           {
             "set": "Life",
-            "id": 43,
+            "id": 27,
             "kind": "CREATURE",
             "name": "Yggdrazil",
             "cost": 11,
@@ -2800,7 +2800,7 @@
           },
           {
             "set": "Toxic",
-            "id": 24,
+            "id": 30,
             "kind": "CREATURE",
             "name": "Poizom",
             "cost": 1,
@@ -2838,7 +2838,7 @@
           },
           {
             "set": "Toxic",
-            "id": 26,
+            "id": 32,
             "kind": "CREATURE",
             "name": "Hazmaz",
             "cost": 2,
@@ -2865,7 +2865,7 @@
           },
           {
             "set": "Toxic",
-            "id": 46,
+            "id": 30,
             "kind": "CREATURE",
             "name": "Zpitter",
             "cost": 3,
@@ -2901,7 +2901,7 @@
           },
           {
             "set": "Toxic",
-            "id": 150,
+            "id": 30,
             "kind": "CREATURE",
             "name": "Zeptic",
             "cost": 1,
@@ -2944,7 +2944,7 @@
           },
           {
             "set": "Toxic",
-            "id": 25,
+            "id": 31,
             "kind": "CREATURE",
             "name": "Ghoul",
             "cost": 2,
@@ -2981,7 +2981,7 @@
           },
           {
             "set": "Toxic",
-            "id": 47,
+            "id": 32,
             "kind": "CREATURE",
             "name": "Zeeter",
             "cost": 5,
@@ -3017,7 +3017,7 @@
           },
           {
             "set": "Toxic",
-            "id": 151,
+            "id": 32,
             "kind": "CREATURE",
             "name": "Hazzard",
             "cost": 5,
@@ -3060,7 +3060,7 @@
           },
           {
             "set": "Toxic",
-            "id": 85,
+            "id": 32,
             "kind": "CREATURE",
             "name": "Zludge",
             "cost": 5,
@@ -3095,7 +3095,7 @@
           },
           {
             "set": "Toxic",
-            "id": 127,
+            "id": 30,
             "kind": "CREATURE",
             "name": "Ectoplasm",
             "cost": 1,
@@ -3130,7 +3130,7 @@
           },
           {
             "set": "Toxic",
-            "id": 27,
+            "id": 33,
             "kind": "CREATURE",
             "name": "Cherno-bill",
             "cost": 11,
@@ -3167,7 +3167,7 @@
           },
           {
             "set": "Toxic",
-            "id": 132,
+            "id": 33,
             "kind": "CREATURE",
             "name": "GooZilla",
             "cost": 8,
@@ -3209,7 +3209,7 @@
           },
           {
             "set": "Toxic",
-            "id": 129,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Zlopper",
             "cost": 7,
@@ -3248,7 +3248,7 @@
           },
           {
             "set": "Item",
-            "id": 18,
+            "id": 30,
             "kind": "SPELL",
             "name": "Chainsaw",
             "cost": 4,
@@ -3285,7 +3285,7 @@
           },
           {
             "set": "Item",
-            "id": 70,
+            "id": 30,
             "kind": "SPELL",
             "name": "Goo Beaker",
             "cost": 2,
@@ -3322,7 +3322,7 @@
           },
           {
             "set": "Item",
-            "id": 15,
+            "id": 34,
             "kind": "SPELL",
             "name": "Stapler",
             "cost": 4,
@@ -3359,7 +3359,7 @@
           },
           {
             "set": "Item",
-            "id": 16,
+            "id": 35,
             "kind": "SPELL",
             "name": "Nail Bomb",
             "cost": 4,
@@ -3396,7 +3396,7 @@
           },
           {
             "set": "Item",
-            "id": 17,
+            "id": 36,
             "kind": "SPELL",
             "name": "Goo Bottles",
             "cost": 4,
@@ -3433,7 +3433,7 @@
           },
           {
             "set": "Item",
-            "id": 117,
+            "id": 30,
             "kind": "SPELL",
             "name": "Fresh Meat",
             "cost": 5,
@@ -3544,7 +3544,7 @@
           },
           {
             "set": "Others",
-            "id": 155,
+            "id": 30,
             "kind": "SPELL",
             "name": "Tainted Goo",
             "cost": 2,
@@ -3587,7 +3587,7 @@
           },
           {
             "set": "Others",
-            "id": 156,
+            "id": 30,
             "kind": "SPELL",
             "name": "Corrupted Goo",
             "cost": 4,
@@ -3630,7 +3630,7 @@
           },
           {
             "set": "Others",
-            "id": 78,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Rainz",
             "cost": 6,
@@ -3667,7 +3667,7 @@
           },
           {
             "set": "Others",
-            "id": 125,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Blight",
             "cost": 6,
@@ -3694,7 +3694,7 @@
           },
           {
             "set": "Others",
-            "id": 131,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Zteroid",
             "cost": 6,
@@ -3721,7 +3721,7 @@
           },
           {
             "set": "Others",
-            "id": 108,
+            "id": 34,
             "kind": "CREATURE",
             "name": "BurZt",
             "cost": 3,
@@ -3748,7 +3748,7 @@
           },
           {
             "set": "Others",
-            "id": 135,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Vortex",
             "cost": 11,
@@ -3785,7 +3785,7 @@
           },
           {
             "set": "Others",
-            "id": 60,
+            "id": 34,
             "kind": "CREATURE",
             "name": "Defender",
             "cost": 8,
