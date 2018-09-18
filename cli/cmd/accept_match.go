@@ -9,7 +9,8 @@ import (
 )
 
 var acceptMatchCmdArgs struct {
-	userID string
+	userID  string
+	matchID int64
 }
 
 var acceptMatchCmd = &cobra.Command{
@@ -18,7 +19,8 @@ var acceptMatchCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.AcceptMatchRequest{
-			UserId: acceptMatchCmdArgs.userID,
+			UserId:  acceptMatchCmdArgs.userID,
+			MatchId: acceptMatchCmdArgs.matchID,
 		}
 		var resp zb.AcceptMatchResponse
 
@@ -34,6 +36,6 @@ var acceptMatchCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(acceptMatchCmd)
-
+	acceptMatchCmd.Flags().Int64VarP(&acceptMatchCmdArgs.matchID, "matchId", "m", 0, "Match Id")
 	acceptMatchCmd.Flags().StringVarP(&acceptMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 }
