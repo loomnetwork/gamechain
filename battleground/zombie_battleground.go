@@ -429,41 +429,65 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
+	// TODO: Make sure user is eligible to call FindMatch
+	// if findUser(req.UserId).Status != NoneAction return error
+
 	// find the room available for the user to be filled in; otherwise, create a new one
-	matchlist, err := loadMatchList(ctx)
+	pendingMatchlist, err := loadPendingMatchList(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if len(matchlist.Matches) == 0 {
-		match := zb.Match{
-			Id:     1, // fixed for now
-			Topics: []string{fmt.Sprintf("match:%d", 1)},
-			Status: zb.Match_Matching,
-			PlayerStates: []*zb.PlayerState{
-				&zb.PlayerState{
-					Id:            req.UserId,
-					CurrentAction: zb.PlayerActionType_FindMatch,
-				},
-			},
-		}
-		matchlist.Matches = append(matchlist.Matches, &match)
-		if err := saveMatchList(ctx, matchlist); err != nil {
-			return nil, err
-		}
-		return &zb.FindMatchResponse{
-			Match: &match,
-		}, nil
-	}
 
-	match := matchlist.Matches[0]
-	if req.UserId != match.PlayerStates[0].Id {
+	// add player to match if we can find one that is waiting for more players
+	// TODO: for now just pop the first match off the pending list
+	if len(pendingMatchlist.Matches) > 0 {
+		match := pendingMatchlist.Matches[0]
 		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
 			Id:            req.UserId,
 			CurrentAction: zb.PlayerActionType_FindMatch,
 		})
+
+		// delete this match from pending list if it's full
+		if len(match.PlayerStates) > 1 {
+			pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
+			if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
+				return nil, err
+			}
+
+			if err := saveMatch(ctx, match); err != nil {
+				return nil, err
+			}
+		}
+
+		return &zb.FindMatchResponse{
+			Match: match,
+		}, nil
 	}
 
-	if err := saveMatchList(ctx, matchlist); err != nil {
+	// Otherwise get the latest match ID, create a new match and add the player to it
+	currentMatchId, err := loadMatchCount(ctx)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+
+	match := &zb.Match{
+		Id:     currentMatchId + 1, // TODO: better IDs
+		Topics: []string{fmt.Sprintf("match:%d", len(pendingMatchlist.Matches)+1)},
+		Status: zb.Match_Matching,
+		PlayerStates: []*zb.PlayerState{
+			&zb.PlayerState{
+				Id:            req.UserId,
+				CurrentAction: zb.PlayerActionType_FindMatch,
+			},
+		},
+	}
+	if err := saveMatchCount(ctx, match.Id); err != nil {
+		return nil, err
+	}
+
+	pendingMatchlist.Matches = append(pendingMatchlist.Matches, match)
+
+	if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
 		return nil, err
 	}
 

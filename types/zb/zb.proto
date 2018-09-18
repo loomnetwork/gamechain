@@ -328,8 +328,16 @@ message PlayerActionEvent {
     Match match    = 5;
 }
 
+message PendingMatchList {
+    repeated Match matches = 1;
+}
+
 message MatchList {
     repeated Match matches = 1;
+}
+
+message MatchCount {
+    int64 currentId = 1;
 }
 
 message FindMatchRequest {
