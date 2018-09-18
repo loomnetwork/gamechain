@@ -429,7 +429,6 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
-	// IGNORE FOR TESTING
 	// Make sure user is eligible to call FindMatch and not already matchmaking or playing
 	// playersInMatchmaking, listErr := loadPlayersInMatchmakingList(ctx)
 	// if listErr != nil && listErr != contract.ErrNotFound {
@@ -442,7 +441,18 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// 	}
 	// }
 
-	// find the room available for the user to be filled in; otherwise, create a new one
+	match, err := loadUserMatch(ctx, req.UserId)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+
+	if match != nil && match.Status != zb.Match_Ended {
+		return &zb.FindMatchResponse{
+			Match: match,
+		}, nil
+	}
+
+	// find the match available for the user to be filled in; otherwise, create a new one
 	pendingMatchlist, err := loadPendingMatchList(ctx)
 	if err != nil {
 		return nil, err
@@ -452,53 +462,38 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// TODO: for now just pop the first match off the pending list
 	if len(pendingMatchlist.Matches) > 0 {
 		match := pendingMatchlist.Matches[0]
-		players, err := loadPlayersInMatchmakingList(ctx)
-		if err != nil {
+		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
+			Id:            req.UserId,
+			CurrentAction: zb.PlayerActionType_FindMatch,
+		})
+		// save user match
+		if err := saveUserMatch(ctx, req.UserId, match); err != nil {
 			return nil, err
 		}
-		found := false
-		for _, p := range players {
-			if p == req.UserId {
-				found = true
-				break
-			}
-		}
-		if !found {
-			match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-				Id:            req.UserId,
-				CurrentAction: zb.PlayerActionType_FindMatch,
-			})
 
-			if err = addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
+		// delete this match from pending list if it's full
+		if len(match.PlayerStates) > 1 {
+			pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
+			if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
 				return nil, err
 			}
-
-			// delete this match from pending list if it's full
-			if len(match.PlayerStates) > 1 {
-				pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
-				if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
-					return nil, err
-				}
-
-				if err := saveMatch(ctx, match); err != nil {
-					return nil, err
-				}
-			}
 		}
 
+		if err := saveMatch(ctx, match); err != nil {
+			return nil, err
+		}
 		return &zb.FindMatchResponse{
 			Match: match,
 		}, nil
 	}
 
 	// Otherwise get the latest match ID, create a new match and add the player to it
-	// currentMatchID, countErr := loadMatchCount(ctx)
-	// if countErr != nil && countErr != contract.ErrNotFound {
-	// return nil, countErr
-	// }
-
-	var nextID int64 = 1
-	match := &zb.Match{
+	currentMatchID, countErr := loadMatchCount(ctx)
+	if countErr != nil && countErr != contract.ErrNotFound {
+		return nil, countErr
+	}
+	nextID := currentMatchID + 1
+	match = &zb.Match{
 		Id:     nextID, // TODO: better IDs
 		Topics: []string{fmt.Sprintf("match:%d", nextID)},
 		Status: zb.Match_Matching,
@@ -509,13 +504,17 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			},
 		},
 	}
-	// if err := saveMatchCount(ctx, nextID); err != nil {
-	// 	return nil, err
-	// }
-
-	if err := addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
+	if err := saveMatchCount(ctx, nextID); err != nil {
 		return nil, err
 	}
+	// save user match
+	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
+		return nil, err
+	}
+
+	// if err := addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
+	// 	return nil, err
+	// }
 
 	pendingMatchlist.Matches = append(pendingMatchlist.Matches, match)
 
@@ -611,6 +610,8 @@ func (z *ZombieBattleground) RejectMatch(ctx contract.Context, req *zb.RejectMat
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
+	// delete user match
+	ctx.Delete(UserMatchKey(req.UserId))
 
 	emitMsg := zb.PlayerActionEvent{
 		PlayerActionType: zb.PlayerActionType_RejectMatch,
@@ -695,6 +696,8 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
+	// delete user match
+	ctx.Delete(UserMatchKey(req.UserId))
 
 	emitMsg := zb.PlayerActionEvent{
 		PlayerActionType: zb.PlayerActionType_LeaveMatch,

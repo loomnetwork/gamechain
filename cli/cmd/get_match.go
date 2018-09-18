@@ -44,5 +44,5 @@ var getMatchCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(getMatchCmd)
 
-	getMatchCmd.Flags().Int64VarP(&getMatchCmdArgs.MatchID, "id", "i", 0, "Match ID")
+	getMatchCmd.Flags().Int64VarP(&getMatchCmdArgs.MatchID, "matchId", "m", 0, "Match ID")
 }
