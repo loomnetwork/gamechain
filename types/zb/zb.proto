@@ -346,6 +346,10 @@ message PlayerActionEvent {
     Match match    = 5;
 }
 
+message PlayersInMatchmakingList {
+    repeated string userIDs = 1;
+}
+
 message PendingMatchList {
     repeated Match matches = 1;
 }

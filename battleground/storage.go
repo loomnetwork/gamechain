@@ -25,12 +25,13 @@ var (
 	matchesPrefix        = []byte("matches")
 	pendingMatchesPrefix = []byte("pending-matches")
 
-	cardListKey          = []byte("cardlist")
-	heroListKey          = []byte("herolist")
-	defaultDeckKey       = []byte("default-deck")
-	defaultCollectionKey = []byte("default-collection")
-	defaultHeroesKey     = []byte("default-heroes")
-	matchCountKey        = []byte("match-count")
+	cardListKey                 = []byte("cardlist")
+	heroListKey                 = []byte("herolist")
+	defaultDeckKey              = []byte("default-deck")
+	defaultCollectionKey        = []byte("default-collection")
+	defaultHeroesKey            = []byte("default-heroes")
+	matchCountKey               = []byte("match-count")
+	playersInMatchmakingListKey = []byte("players-matchmaking")
 )
 
 var (
@@ -253,4 +254,30 @@ func loadMatchCount(ctx contract.StaticContext) (int64, error) {
 		return 0, err
 	}
 	return count.CurrentId, nil
+}
+
+func addPlayerInMatchmakingList(ctx contract.Context, ID string) error {
+	IDs, err := loadPlayersInMatchmakingList(ctx)
+	if err != nil && err != contract.ErrNotFound {
+		return err
+	}
+
+	IDs = append(IDs, ID)
+
+	list := zb.PlayersInMatchmakingList{}
+	list.UserIDs = IDs
+	if err := ctx.Set(playersInMatchmakingListKey, &list); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadPlayersInMatchmakingList(ctx contract.StaticContext) ([]string, error) {
+	var list zb.PlayersInMatchmakingList
+	err := ctx.Get(playersInMatchmakingListKey, &list)
+	if err != nil {
+		return nil, err
+	}
+	return list.UserIDs, nil
 }
