@@ -306,6 +306,7 @@ message Match {
         Matching     = 1;
         Started      = 2;
         PlayerLeft   = 3;
+        Ended        = 4;
     }
     Status status = 4;
 }
@@ -318,7 +319,24 @@ enum PlayerActionType {
     LeaveMatch      = 4;
     AllAcceptMatch  = 5;
     StartMatch      = 6;
-    SendMessage     = 7;
+    EndTurn         = 7;
+    Mulligan        = 8;
+    DrawCardPlayer  = 9;
+    PlayCard        = 10;
+    CardAttack      = 11;
+    UseCardAbility  = 12;
+    UseOverlordSkill = 13;
+}
+
+message PlayerAction {
+    PlayerActionType actionType = 1;
+    string playerId = 6;
+    oneof action {
+        PlayerActionCardAttack cardAttack = 2;
+        PlayerActionDrawCard drawCard = 3;
+        PlayerActionEndTurn endTurn = 4;
+        PlayerActionMulligan mulligan = 5;
+    };
 }
 
 message PlayerActionEvent {
@@ -388,8 +406,387 @@ message GetMatchResponse {
     Match match = 1;
 }
 
-message ActionRequest {
-    string userId  = 1;
-    int64 matchId  = 2;
-    string message = 3;
+message PlayerActionRequest {
+    PlayerAction playerAction = 2;
+}
+
+message PlayerActionResponse {
+}
+
+
+//////////////// GAME PLAY //////////////////
+
+message GlobalState {
+    int64 current_game_id = 1;
+}
+
+// C# interfaces converted
+
+enum AllowedTarget {
+    NoneAllowedTarget = 0;
+    Player = 1;
+    PlayerCard = 2;
+    PlayerAllCards = 3;
+    Opponent = 4;
+    OpponentCard = 5;
+    OpponentAllCards = 6;
+    AllCards = 7;
+    All = 8;
+}
+
+enum AttackRestriction {
+    NoneAttackRestriction = 0;
+    OnlyNotAttackedByThisUnitInThisTurn = 1;
+}
+
+enum CardAbilityActivityType {
+    Passive = 0;
+    Active = 1;
+}
+
+enum CardAbilityEffect {
+    NoneCardAbilityEffect = 0;
+    MassiveWaterWave = 1;
+    MassiveFire = 2;
+    MassiveLightning = 3;
+    MassiveToxicAll = 4;
+    TargetRock = 5;
+    TargetFire = 6;
+    TargetLife = 7;
+    TargetToxic = 8;
+    TargetWater = 9;
+    TargetAdjustmentsBomb = 10;
+    StunFreezes = 11;
+    StunOrDamageFreezes = 12;
+    TargetAdjustmentsAir = 13;
+    HealDirectly = 14;
+    HealCardAbilityEffect = 15;
+}
+
+enum CardAbilityTrigger {
+    Turn = 0;
+    Entry = 1;
+    End = 2;
+    Attack = 3;
+    Death = 4;
+    Permanent = 5;
+    GotDamage = 6;
+    AtDefence = 7;
+    InHand = 8;
+}
+
+enum CardAbilityType {
+    HealCardAbilityType = 0;
+    ModificatorStats = 1;
+    ChangeStat = 2;
+    Stun = 3;
+    StunOrDamageAdjustments = 4;
+    Spurt = 5;
+    AddGooVial = 6;
+    AddGooCarrier = 7;
+    Dot = 8;
+    Summon = 9;
+    SpellAttack = 10;
+    MassiveDamage = 11;
+    DamageTargetAdjustments = 12;
+    DamageTarget = 13;
+    CardReturn = 14;
+    Weapon = 15;
+    ChangeStatOfCreaturesByType = 16;
+    AttackNumberOfTimesPerTurn = 17;
+    DrawCardCardAbilityType = 18;
+    DevourZombiesAndCombineStats = 19;
+    DestroyUnitByType = 20;
+    LowerCostOfCardInHand = 21;
+    OverflowGoo = 22;
+    LoseGoo = 23;
+    DisableNextTurnGoo = 24;
+    Rage = 25;
+    FreezeUnits = 26;
+    TakeDamageRandomEnemy = 27;
+    TakeControlEnemyUnit = 28;
+    Guard = 29;
+    DestroyFrozenUnit = 30;
+    UseAllGooToIncreaseStats = 31;
+    FirstUnitInPlay = 32;
+    AllyUnitsOfTypeInPlayGetStats = 33;
+    DamageEnemyUnitsAndFreezeThem = 34;
+    ReturnUnitsOnBoardToOwnersDecks = 35;
+    TakeUnitTypeToAdjacentAllyUnits = 36;
+    EnemyThatAttacksBecomeFrozen = 37;
+    TakeUnitTypeToAllyUnit = 38;
+    ReviveDiedUnitsOfTypeFromMatch = 39;
+    ChangeStatUntillEndOfTurn = 40;
+    AttackOverlord = 41;
+    AdjacentUnitsGetHeavy = 42;
+    FreezeNumberOfRandomAlly = 43;
+    AddCardByNameToHand = 44;
+    DealDamageToThisAndAdjacentUnits = 45;
+    Swing = 46;
+    TakeDefenceIfOverlordHasLessDefenceThan = 47;
+    GainNumberOfLifeForEachDamageThisDeals = 48;
+    AdditionalDamageToHeavyInAttack  = 49;
+    UnitWeapon = 50;
+    TakeDamageAtEndOfTurnToThis = 51;
+    DelayedLoseHeavyGainAttack =  52;
+    DelayedGainAttack = 53;
+    ReanimateUnit = 54;
+    PriorityAttack = 55;
+    DestroyTargetUnitAfterAttack = 56;
+    CostsLessIfCardTypeInHand = 57;
+    ReturnUnitsOnBoardToOwnersHands = 58;
+}
+
+enum CardType {
+    Creature = 0;
+    Spell = 1;
+}
+
+enum CreatureRank {
+    Minion = 0;
+    Officer = 1;
+    Commander = 2;
+    General = 3;
+}
+
+enum CreatureType {
+    Normal = 0;
+    Walker = 1;
+    Feral = 2;
+    Heavy = 3;
+}
+
+enum ElementKind {
+    Fire = 0;
+    Water = 1;
+    Earth = 2;
+    Air = 3;
+    Life = 4;
+    Toxic = 5;
+    Item = 6;
+    Others = 7;
+    NoneElementKind = 8;
+}
+
+message GameState {
+    int64 id                            = 1;
+    bool isEnded                        = 2;
+    int32 currentPlayerIndex            = 3;
+    repeated PlayerState playerStates   = 4;
+    int64 currentActionIndex            = 5;
+    repeated PlayerAction playerActions = 6;
+}
+
+message AbilityInstance {
+
+}
+
+
+message CardAbility {
+    CardAbilityType abilityType = 1;
+    CardAbilityActivityType abilityActivityType = 2;
+    CardAbilityTrigger cardAbilityTrigger = 3;
+    repeated AllowedTarget allowedTargets = 4;
+    StatType abilityStatType = 5;
+    ElementKind abilitySetType = 6;
+    CardAbilityEffect cardAbilityEffect = 7;
+    AttackRestriction attackRestriction = 8;
+    CardType targetCardType = 9;
+    UnitSpecialStatus targetUnitSpecialStatusType = 10;
+    CardType targetUnitType = 11;
+    int32 value = 12;
+    int32 damage = 13;
+    int32 health = 14;
+    string attackInfo = 15;
+    string name = 16;
+    int32 turns = 17;
+    int32 count = 18;
+    int32 delay = 19;
+}
+
+message CardInstance {
+    int32 instanceId = 1;
+    CardPrototype prototype = 2;
+    int32 defence = 3;
+    int32 attack = 4;
+}
+
+message CardPrototype {
+    int32 dataId = 1;
+    ElementKind cardSetType = 2;
+    string name = 3;
+    int32 gooCost = 4;
+    string description = 5;
+    string flavorText = 6;
+    string picture = 7;
+    string frame = 8;
+    int32 initialDamage = 9;
+    int32 initialDefence = 10;
+    string rank = 11;
+    string type = 12;
+    repeated CardAbility abilities = 13;
+    CardViewInfo cardViewInfo = 14;
+    CreatureRank creatureRank = 15;
+    CreatureType creatureType = 16;
+    CardType cardType = 17;
+}
+
+message DataIdOwner {
+    int32 dataId = 1;
+}
+
+// (interface IDeck)
+message CardDeck {
+    repeated CardPrototype cards = 1;
+}
+
+message InstanceIdOwner {
+    int32 instanceId = 1;
+}
+
+message OverlordInstance {
+    int32 instanceId = 1;
+    OverlordPrototype prototype = 2;
+    OverlordSkillInstance firstSkill = 3;
+    OverlordSkillInstance secondSkill = 4;
+    int32 defence = 5;
+    int32 goo = 6;
+    int32 maxGoo = 7;
+}
+
+message OverlordPrototype {
+    int32 heroId = 1;
+    string icon = 2;
+    string name = 3;
+    string shortDescription = 4;
+    string longDescription = 5;
+    int32 experience = 6;
+    int32 level = 7;
+    ElementKind element = 8;
+    repeated OverlordSkillPrototype skills = 9;
+}
+
+message OverlordSkillInstance {
+    OverlordSkillPrototype prototype = 1;
+    int32 cooldown = 2;
+}
+
+message OverlordSkillPrototype {
+    string title = 1;
+    string skill = 2;
+    string iconPath = 3;
+    string description = 4;
+    int32 cooldown = 5;
+    int32 initialCooldown = 6;
+    int32 parameter = 7;
+    int32 attack = 8;
+    OverlordSkillKind overlordSkillKind = 9;
+    repeated AllowedTarget skillTargetTypes = 10;
+    repeated ElementKind elementTargetTypes = 11;
+}
+
+message PlayerActionCardAttack {
+    string playerId = 1;
+    CardInstance attacker = 2;
+    CardInstance target = 3;
+}
+
+message PlayerActionDrawCard {
+    string playerId = 1;
+    CardInstance cardInstance = 2;
+}
+
+message PlayerActionEndTurn  {
+    string playerId = 1;
+}
+
+message PlayerActionMulligan {
+    string playerId = 1;
+    repeated CardInstance mulliganedCards = 2;
+}
+
+message PlayerActionOutcome {
+    string playerId = 1;
+    GameState gameState = 2;
+}
+
+message PlayerActionUseCardAbility {
+    string playerId = 1;
+    CardInstance card = 2;
+    Unit target = 3;
+}
+
+message PlayerActionUseOverlordSkill {
+    int32 playerId = 1;
+}
+
+
+message StartGameAction {
+    repeated PlayerState playerStates = 1;
+}
+
+message Unit {
+    int32 instanceId = 1;
+}
+
+enum OverlordSkillKind {
+    NoneOverlordSkillKind = 0;
+
+    // AIR
+    Push = 1;
+    Draw = 2;
+    WindShield = 3;
+    WindWall = 4;
+    Retreat = 5;
+
+    // EARTH
+    Harden = 6;
+    StoneSkin = 7;
+    Fortify = 8;
+    Phalanx = 9;
+    Fortress = 10;
+
+    // FIRE
+    FireBolt = 11;
+    Rabies = 12;
+    Fireball = 13;
+    MassRabies = 14;
+    MeteorShower = 15;
+
+    // LIFE
+    HealingTouch = 16;
+    Mend = 17;
+    Ressurect = 18;
+    Enhance = 19;
+    Reanimate = 20;
+
+    // TOXIC
+    PoisonDart = 21;
+    ToxicPower = 22;
+    Breakout = 23;
+    Infect = 24;
+    Epidemic = 25;
+
+    // WATER
+    Freeze = 26;
+    IceBolt = 27;
+    IceWall = 28;
+    Shatter = 29;
+    Blizzard = 30;
+}
+
+enum OverlordSkillSelectionType {
+    Primary = 0;
+    Secondary = 1;
+}
+
+enum StatType {
+    NoneStatType = 0;
+    Health = 1;
+    Damage = 2;
+}
+
+enum UnitSpecialStatus {
+    NoneUnitSpecialStatus = 0;
+    Frozen = 1;
 }
