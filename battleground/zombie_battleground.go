@@ -472,17 +472,17 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			if err = addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
 				return nil, err
 			}
-		}
 
-		// delete this match from pending list if it's full
-		if len(match.PlayerStates) > 1 {
-			pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
-			if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
-				return nil, err
-			}
+			// delete this match from pending list if it's full
+			if len(match.PlayerStates) > 1 {
+				pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
+				if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
+					return nil, err
+				}
 
-			if err := saveMatch(ctx, match); err != nil {
-				return nil, err
+				if err := saveMatch(ctx, match); err != nil {
+					return nil, err
+				}
 			}
 		}
 
