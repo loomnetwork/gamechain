@@ -9,8 +9,9 @@ import (
 )
 
 var sendActionCmdArgs struct {
-	userID  string
-	message string
+	matchID    int64
+	userID     string
+	actionType int32
 }
 
 var sendActionCmd = &cobra.Command{
@@ -18,13 +19,31 @@ var sendActionCmd = &cobra.Command{
 	Short: "send_action",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
+
 		var req = zb.PlayerActionRequest{
+			MatchId: sendActionCmdArgs.matchID,
 			PlayerAction: &zb.PlayerAction{
-				PlayerId: sendActionCmdArgs.userID,
+				ActionType: zb.PlayerActionType(sendActionCmdArgs.actionType),
+				PlayerId:   sendActionCmdArgs.userID,
 			},
 		}
 
-		_, err := commonTxObjs.contract.Call("SendAction", &req, signer, nil)
+		switch zb.PlayerActionType(sendActionCmdArgs.actionType) {
+		case zb.PlayerActionType_DrawCardPlayer:
+			req.PlayerAction.Action = &zb.PlayerAction_DrawCard{
+				DrawCard: &zb.PlayerActionDrawCard{
+					CardInstance: &zb.CardInstance{
+						InstanceId: 1,
+					},
+				},
+			}
+		case zb.PlayerActionType_EndTurn:
+			req.PlayerAction.Action = &zb.PlayerAction_EndTurn{}
+		default:
+			return fmt.Errorf("not support action type: %v", zb.PlayerActionType(sendActionCmdArgs.actionType))
+		}
+
+		_, err := commonTxObjs.contract.Call("SendPlayerAction", &req, signer, nil)
 		if err != nil {
 			return err
 		}
@@ -36,6 +55,7 @@ var sendActionCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(sendActionCmd)
+	sendActionCmd.Flags().Int64VarP(&sendActionCmdArgs.matchID, "matchId", "m", 0, "Match Id")
 	sendActionCmd.Flags().StringVarP(&sendActionCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	sendActionCmd.Flags().StringVarP(&sendActionCmdArgs.message, "message", "m", "hello loom", "Message")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.actionType, "actionType", "t", 0, "Player Action Type")
 }

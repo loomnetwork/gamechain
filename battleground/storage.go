@@ -61,6 +61,10 @@ func MatchKey(matchID int64) []byte {
 	return []byte(fmt.Sprintf("match:%d", matchID))
 }
 
+func GameStateKey(gameStateID int64) []byte {
+	return []byte(fmt.Sprintf("gamestate:%d", gameStateID))
+}
+
 // func userAccountKey(id string) []byte {
 // 	return util.PrefixKey(userPreifx, []byte(id))
 // }
@@ -280,4 +284,20 @@ func loadPlayersInMatchmakingList(ctx contract.StaticContext) ([]string, error) 
 		return nil, err
 	}
 	return list.UserIDs, nil
+}
+
+func saveGameState(ctx contract.Context, gs *zb.GameState) error {
+	if err := ctx.Set(GameStateKey(gs.Id), gs); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) {
+	var state zb.GameState
+	err := ctx.Get(GameStateKey(id), &state)
+	if err != nil {
+		return nil, err
+	}
+	return &state, nil
 }

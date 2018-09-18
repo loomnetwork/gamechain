@@ -342,8 +342,9 @@ message PlayerAction {
 message PlayerActionEvent {
     PlayerActionType playerActionType = 1;
     string userId  = 2;
-    string message = 4;
-    Match match    = 5;
+    string message = 3;
+    Match match    = 4;
+    PlayerAction playerAction = 5;
 }
 
 message PlayersInMatchmakingList {
@@ -407,10 +408,12 @@ message GetMatchRequest {
 }
 
 message GetMatchResponse {
-    Match match = 1;
+    Match match         = 1;
+    GameState gameState = 2;
 }
 
 message PlayerActionRequest {
+    int64 matchId = 1;
     PlayerAction playerAction = 2;
 }
 
