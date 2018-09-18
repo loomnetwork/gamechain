@@ -492,12 +492,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// Otherwise get the latest match ID, create a new match and add the player to it
-	currentMatchID, countErr := loadMatchCount(ctx)
-	if countErr != nil && countErr != contract.ErrNotFound {
-		return nil, countErr
-	}
+	// currentMatchID, countErr := loadMatchCount(ctx)
+	// if countErr != nil && countErr != contract.ErrNotFound {
+	// return nil, countErr
+	// }
 
-	nextID := currentMatchID + 1
+	var nextID int64 = 1
 	match := &zb.Match{
 		Id:     nextID, // TODO: better IDs
 		Topics: []string{fmt.Sprintf("match:%d", nextID)},
@@ -509,9 +509,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			},
 		},
 	}
-	if err := saveMatchCount(ctx, nextID); err != nil {
-		return nil, err
-	}
+	// if err := saveMatchCount(ctx, nextID); err != nil {
+	// 	return nil, err
+	// }
 
 	if err := addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
 		return nil, err
