@@ -452,13 +452,26 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// TODO: for now just pop the first match off the pending list
 	if len(pendingMatchlist.Matches) > 0 {
 		match := pendingMatchlist.Matches[0]
-		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-			Id:            req.UserId,
-			CurrentAction: zb.PlayerActionType_FindMatch,
-		})
-
-		if err = addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
+		players, err := loadPlayersInMatchmakingList(ctx)
+		if err != nil {
 			return nil, err
+		}
+		found := false
+		for _, p := range players {
+			if p == req.UserId {
+				found = true
+				break
+			}
+		}
+		if !found {
+			match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
+				Id:            req.UserId,
+				CurrentAction: zb.PlayerActionType_FindMatch,
+			})
+
+			if err = addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
+				return nil, err
+			}
 		}
 
 		// delete this match from pending list if it's full
@@ -484,9 +497,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, countErr
 	}
 
+	nextID := currentMatchID + 1
 	match := &zb.Match{
-		Id:     currentMatchID + 1, // TODO: better IDs
-		Topics: []string{fmt.Sprintf("match:%d", len(pendingMatchlist.Matches)+1)},
+		Id:     nextID, // TODO: better IDs
+		Topics: []string{fmt.Sprintf("match:%d", nextID)},
 		Status: zb.Match_Matching,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
@@ -495,7 +509,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			},
 		},
 	}
-	if err := saveMatchCount(ctx, match.Id); err != nil {
+	if err := saveMatchCount(ctx, nextID); err != nil {
 		return nil, err
 	}
 
