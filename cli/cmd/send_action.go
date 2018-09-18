@@ -18,9 +18,10 @@ var sendActionCmd = &cobra.Command{
 	Short: "send_action",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.ActionRequest{
-			UserId:  sendActionCmdArgs.userID,
-			Message: sendActionCmdArgs.message,
+		var req = zb.PlayerActionRequest{
+			PlayerAction: &zb.PlayerAction{
+				PlayerId: sendActionCmdArgs.userID,
+			},
 		}
 
 		_, err := commonTxObjs.contract.Call("SendAction", &req, signer, nil)
