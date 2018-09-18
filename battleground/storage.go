@@ -17,18 +17,20 @@ const (
 )
 
 var (
-	cardPrefix       = []byte("card")
-	userPreifx       = []byte("user")
-	heroesPrefix     = []byte("heroes")
-	collectionPrefix = []byte("collection")
-	decksPrefix      = []byte("decks")
-	matchesPrefix    = []byte("matches")
+	cardPrefix           = []byte("card")
+	userPreifx           = []byte("user")
+	heroesPrefix         = []byte("heroes")
+	collectionPrefix     = []byte("collection")
+	decksPrefix          = []byte("decks")
+	matchesPrefix        = []byte("matches")
+	pendingMatchesPrefix = []byte("pending-matches")
 
 	cardListKey          = []byte("cardlist")
 	heroListKey          = []byte("herolist")
 	defaultDeckKey       = []byte("default-deck")
 	defaultCollectionKey = []byte("default-collection")
 	defaultHeroesKey     = []byte("default-heroes")
+	matchCountKey        = []byte("match-count")
 )
 
 var (
@@ -189,6 +191,22 @@ func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.GameMembershipTier = req.GameMembershipTier
 }
 
+func savePendingMatchList(ctx contract.Context, pendingMatchList *zb.PendingMatchList) error {
+	if err := ctx.Set(pendingMatchesPrefix, pendingMatchList); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadPendingMatchList(ctx contract.StaticContext) (*zb.PendingMatchList, error) {
+	var rl zb.PendingMatchList
+	err := ctx.Get(pendingMatchesPrefix, &rl)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &rl, nil
+}
+
 func saveMatchList(ctx contract.Context, matchList *zb.MatchList) error {
 	if err := ctx.Set(matchesPrefix, matchList); err != nil {
 		return err
@@ -219,4 +237,20 @@ func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 		return nil, err
 	}
 	return &m, nil
+}
+
+func saveMatchCount(ctx contract.Context, ID int64) error {
+	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: ID}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadMatchCount(ctx contract.StaticContext) (int64, error) {
+	var count zb.MatchCount
+	err := ctx.Get(matchCountKey, &count)
+	if err != nil {
+		return 0, err
+	}
+	return count.CurrentId, nil
 }
