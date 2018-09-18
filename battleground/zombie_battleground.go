@@ -680,31 +680,30 @@ func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequ
 	}, nil
 }
 
-func (z *ZombieBattleground) SendAction(ctx contract.Context, req *zb.ActionRequest) error {
+func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {
 	matchlist, err := loadMatchList(ctx)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if len(matchlist.Matches) == 0 {
-		return contract.ErrNotFound
+		return nil, contract.ErrNotFound
 	}
 
 	match := matchlist.Matches[0]
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerActionType: zb.PlayerActionType_SendMessage,
-		UserId:           req.UserId,
-		Message:          req.Message,
+		PlayerActionType: req.PlayerAction.ActionType,
+		UserId:           req.PlayerAction.PlayerId,
 	}
 	data, err := json.Marshal(emitMsg)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if err == nil {
 		ctx.EmitTopics(data, match.Topics[0])
 	}
 
-	return nil
+	return &zb.PlayerActionResponse{}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
