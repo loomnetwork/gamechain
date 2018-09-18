@@ -465,13 +465,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// Otherwise get the latest match ID, create a new match and add the player to it
-	currentMatchId, err := loadMatchCount(ctx)
+	currentMatchID, err := loadMatchCount(ctx)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
 
 	match := &zb.Match{
-		Id:     currentMatchId + 1, // TODO: better IDs
+		Id:     currentMatchID + 1, // TODO: better IDs
 		Topics: []string{fmt.Sprintf("match:%d", len(pendingMatchlist.Matches)+1)},
 		Status: zb.Match_Matching,
 		PlayerStates: []*zb.PlayerState{
