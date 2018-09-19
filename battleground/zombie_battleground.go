@@ -447,8 +447,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	if match != nil && match.Status != zb.Match_Ended {
+		// load the latest match states
+		m, err := loadMatch(ctx, match.Id)
+		if err != nil {
+			return nil, err
+		}
 		return &zb.FindMatchResponse{
-			Match: match,
+			Match: m,
 		}, nil
 	}
 
