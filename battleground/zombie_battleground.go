@@ -125,6 +125,10 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	if err := ctx.Get(defaultDeckKey, &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
+	// update default deck with none-zero id
+	for i := 0; i < len(deckList.Decks); i++ {
+		deckList.Decks[i].Id = int64(i + 1)
+	}
 	if err := ctx.Set(DecksKey(req.UserId), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to save decks for userId: %s", req.UserId)
 	}
@@ -180,8 +184,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	if existing := getDeckByName(deckList.Decks, req.Deck.Name); existing != nil {
 		return nil, ErrDeckNameExists
 	}
-	// allocate new deck id
-	// TODO: check if this won't cause nondeterministic result
+	// allocate new deck id starting from 1
 	var newDeckID int64
 	if len(deckList.Decks) != 0 {
 		for _, deck := range deckList.Decks {
@@ -189,8 +192,8 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 				newDeckID = deck.Id
 			}
 		}
-		newDeckID++
 	}
+	newDeckID++
 	req.Deck.Id = newDeckID
 	deckList.Decks = append(deckList.Decks, req.Deck)
 	deckList.LastModificationTimestamp = req.LastModificationTimestamp
