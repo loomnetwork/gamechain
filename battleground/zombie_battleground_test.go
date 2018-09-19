@@ -289,7 +289,7 @@ func TestDeckOperations(t *testing.T) {
 		})
 		assert.Equal(t, nil, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
-		assert.Equal(t, int64(0), deckResponse.Decks[0].Id)
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
 		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 	})
 
@@ -305,10 +305,10 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("GetDeck", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
-			DeckId: 0,
+			DeckId: 1,
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int64(0), deckResponse.Deck.Id)
+		assert.Equal(t, int64(1), deckResponse.Deck.Id) // id should start from 1
 		assert.Equal(t, "Default", deckResponse.Deck.Name)
 	})
 
@@ -436,7 +436,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:     1,
+				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
@@ -456,7 +456,7 @@ func TestDeckOperations(t *testing.T) {
 
 		getDeckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
-			DeckId: 1,
+			DeckId: 2,
 		})
 
 		assert.Nil(t, err)
@@ -468,7 +468,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:     1,
+				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
@@ -491,7 +491,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:     1,
+				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
@@ -514,7 +514,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:     1,
+				Id:     2,
 				Name:   "dEFAULT",
 				HeroId: 1,
 				Cards: []*zb.CardCollection{
