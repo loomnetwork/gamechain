@@ -697,7 +697,7 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 		}
 	}
 
-	match.Status = zb.Match_PlayerLeft
+	match.Status = zb.Match_Ended
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
