@@ -21,9 +21,7 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
-
-	version := req.Version
-	v, err := getVersionedObject(version)
+	v, err := getVersionedObject(req.Version)
 	if err != nil {
 		return err
 	}
@@ -103,6 +101,11 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 }
 
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
+	v, err := getVersionedObject(req.Version)
+	if err != nil {
+		return err
+	}
+
 	// confirm owner doesnt exist already
 	if ctx.Has(AccountKey(req.UserId)) {
 		return errors.New("user already exists")
@@ -120,7 +123,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	// add default collection list
 	var collectionList zb.CardCollectionList
-	if err := ctx.Get(defaultCollectionKey, &collectionList); err != nil {
+	if err := ctx.Get(v.MakeKey(defaultCollectionKey), &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
 	if err := ctx.Set(CardCollectionKey(req.UserId), &collectionList); err != nil {
@@ -128,7 +131,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var deckList zb.DeckList
-	if err := ctx.Get(defaultDeckKey, &deckList); err != nil {
+	if err := ctx.Get(v.MakeKey(defaultDeckKey), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
 	if err := ctx.Set(DecksKey(req.UserId), &deckList); err != nil {
@@ -136,7 +139,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var heroes zb.HeroList
-	if err := ctx.Get(defaultHeroesKey, &heroes); err != nil {
+	if err := ctx.Get(v.MakeKey(defaultHeroesKey), &heroes); err != nil {
 		return errors.Wrapf(err, "unable to get default hero")
 	}
 	if err := ctx.Set(HeroesKey(req.UserId), &heroes); err != nil {
@@ -327,9 +330,7 @@ func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.G
 
 // ListCardLibrary list all the card library data
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
-
-	version := req.Version
-	v, err := getVersionedObject(version)
+	v, err := getVersionedObject(req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -370,8 +371,13 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 }
 
 func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb.ListHeroLibraryRequest) (*zb.ListHeroLibraryResponse, error) {
+	v, err := getVersionedObject(req.Version)
+	if err != nil {
+		return nil, err
+	}
+
 	var heroList zb.HeroList
-	if err := ctx.Get(heroListKey, &heroList); err != nil {
+	if err := ctx.Get(v.MakeKey(heroListKey), &heroList); err != nil {
 		return nil, err
 	}
 	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil
