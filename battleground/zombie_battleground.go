@@ -321,11 +321,12 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 
 // GetCollection returns the collection of the card own by the user
 func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.GetCollectionRequest) (*zb.GetCollectionResponse, error) {
-	collectionList, err := loadCardCollection(ctx, req.UserId)
+	v, err := getVersionedObject(req.Version)
 	if err != nil {
 		return nil, err
 	}
-	return &zb.GetCollectionResponse{Cards: collectionList.Cards}, nil
+	// call version dependent implementation
+	return v.GetCollection(ctx, req)
 }
 
 // ListCardLibrary list all the card library data
@@ -384,23 +385,21 @@ func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb
 }
 
 func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroesRequest) (*zb.ListHeroesResponse, error) {
-	heroList, err := loadHeroes(ctx, req.UserId)
+	v, err := getVersionedObject(req.Version)
 	if err != nil {
 		return nil, err
 	}
-	return &zb.ListHeroesResponse{Heroes: heroList.Heroes}, nil
+	// call version dependent implementation
+	return v.ListHeroes(ctx, req)
 }
 
 func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHeroRequest) (*zb.GetHeroResponse, error) {
-	heroList, err := loadHeroes(ctx, req.UserId)
+	v, err := getVersionedObject(req.Version)
 	if err != nil {
 		return nil, err
 	}
-	hero := getHeroById(heroList.Heroes, req.HeroId)
-	if hero == nil {
-		return nil, contract.ErrNotFound
-	}
-	return &zb.GetHeroResponse{Hero: hero}, nil
+	// call version dependent implementation
+	return v.GetHero(ctx, req)
 }
 
 func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddHeroExperienceRequest) (*zb.AddHeroExperienceResponse, error) {
