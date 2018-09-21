@@ -204,6 +204,15 @@ message InitRequest {
     repeated CardCollection default_collection = 2;
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
+    string version = 5;
+}
+
+message UpdateInitRequest {
+    repeated Deck default_decks                = 1;
+    repeated CardCollection default_collection = 2;
+    repeated Card cards                        = 3;
+    repeated Hero heroes                       = 4;
+    string version = 5;
 }
 
 message UpsertAccountRequest {
