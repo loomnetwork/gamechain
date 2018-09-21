@@ -668,3 +668,7 @@ func TestHeroOperations(t *testing.T) {
 	})
 
 }
+
+func TestUpdateInitDataOperations(t *testing.T) {
+
+}
