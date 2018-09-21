@@ -295,7 +295,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -647,6 +647,23 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 	for i := 0; i < len(match.PlayerStates); i++ {
 		if req.UserId == match.PlayerStates[i].Id {
 			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_StartMatch
+			// set the deck for player
+			decks, err := loadDecks(ctx, req.UserId)
+			if err != nil {
+				return nil, err
+			}
+			// TODO: easier findDeckById method
+			found := false
+			for _, deck := range decks.Decks {
+				if deck.Id == req.DeckId {
+					match.PlayerStates[i].Deck = deck
+					found = true
+					break
+				}
+			}
+			if !found {
+				return nil, fmt.Errorf("deck id %d not found", req.DeckId)
+			}
 		}
 	}
 	if err := saveMatch(ctx, match); err != nil {
@@ -661,13 +678,19 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 			break
 		}
 	}
+	var gamestate *zb.GameState
+	// This should be called once after all the users start the match
 	if allStart {
-		gamestate := zb.GameState{
+		// TODO: shuffle cards randomly
+		for i := 0; i < len(match.PlayerStates); i++ {
+			match.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(match.PlayerStates[i].Deck)
+		}
+		gamestate = &zb.GameState{
 			Id:                 match.Id,
 			CurrentActionIndex: -1,
 			PlayerStates:       match.PlayerStates,
 		}
-		if err := saveGameState(ctx, &gamestate); err != nil {
+		if err := saveGameState(ctx, gamestate); err != nil {
 			return nil, err
 		}
 	}
@@ -685,7 +708,9 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 		ctx.EmitTopics(data, match.Topics[0])
 	}
 
-	return &zb.StartMatchResponse{}, nil
+	return &zb.StartMatchResponse{
+		GameState: gamestate,
+	}, nil
 }
 
 func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
