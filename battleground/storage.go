@@ -69,6 +69,10 @@ func UserMatchKey(userID string) []byte {
 	return []byte("user:" + userID + ":match")
 }
 
+func MakeVersionedKey(version string, key []byte) []byte {
+	return util.PrefixKey([]byte(version), key)
+}
+
 // func userAccountKey(id string) []byte {
 // 	return util.PrefixKey(userPreifx, []byte(id))
 // }
