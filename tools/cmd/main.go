@@ -79,6 +79,8 @@ func main() {
 
 	outputTemplate("Enumerators.cs", ab, "csharpabilities.parse", "tools/cmd/templates/csharpabilities.parse")
 	outputTemplate("enums.sol", ab, "soliditybilities.parse", "tools/cmd/templates/soliditybilities.parse")
+	outputTemplate("enums.go", ab, "goabiilities.parse", "tools/cmd/templates/goabilities.parse")
+
 	//outputTemplate("-", ab, "soliditybilities.parse", "tools/cmd/templates/soliditybilities.parse")
 
 }
