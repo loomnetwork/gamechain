@@ -33,6 +33,27 @@ var fns = template.FuncMap{
 	},
 }
 
+func outputTemplate(outputfile string, ab *FileStruct, templateBaseName, templatefile string) {
+	filename := outputfile
+
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	t, err := template.New(templateBaseName).Funcs(fns).ParseFiles(templatefile)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("outputfile file -%s\n", filename)
+	err = t.Execute(f, ab)
+	if err != nil {
+		panic(err)
+	}
+
+	f.Sync()
+}
 func main() {
 	ab := &FileStruct{}
 
@@ -42,14 +63,6 @@ func main() {
 	}
 
 	json.Unmarshal(byteValue, &ab)
-	fmt.Printf("ab-%v\n", ab.Abilities[0].Types[0])
 
-	t, err := template.New("csharpabilities.parse").Funcs(fns).ParseFiles("tools/cmd/templates/csharpabilities.parse")
-	if err != nil {
-		panic(err)
-	}
-	err = t.Execute(os.Stdout, ab)
-	if err != nil {
-		panic(err)
-	}
+	outputTemplate("Enumerators.cs", ab, "csharpabilities.parse", "tools/cmd/templates/csharpabilities.parse")
 }
