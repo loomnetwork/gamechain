@@ -12,9 +12,6 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-//TODO an alternative to this method
-//https://github.com/GridProtectionAlliance/go2cs
-
 type Ability struct {
 	Name  string
 	Types []string
