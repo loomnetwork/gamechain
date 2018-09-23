@@ -3,7 +3,6 @@ GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
-LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 
 all: build cli
 
@@ -34,10 +33,8 @@ proto: types/zb/zb.pb.go types/zb/zb.cs
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
-$(LOOMCHAIN_DIR):
-	git clone -q git@github.com:loomnetwork/loomchain.git $@
 
-deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
+deps: $(PLUGIN_DIR) 
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/gogo/protobuf/jsonpb \
@@ -51,7 +48,6 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/prometheus/client_golang/prometheus \
 		github.com/loomnetwork/e2e
 	go install github.com/golang/dep/cmd/dep
-	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 
 test:
