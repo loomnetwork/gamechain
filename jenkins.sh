@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#ugh something about how the project is configured in jenkins
+cd src/github.com/loomnetwork/zombie_battleground
+
 export GOPATH=`pwd`
 export LOOM_VER=404
 
