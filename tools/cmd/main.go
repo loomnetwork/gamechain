@@ -12,22 +12,19 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+//TODO an alternative to this method
+//https://github.com/GridProtectionAlliance/go2cs
+
 type Ability struct {
 	Name  string
 	Types []string
 }
 
-func (seq *Ability) Next() (s string) {
-	s = seq.Types[0]
-	if len(seq.Types) > 1 {
-		seq.Types = seq.Types[1:]
-	}
-	return
-}
-
 //FileStruct abilities dataset from json
 type FileStruct struct {
-	Abilities []Ability
+	Abilities     []Ability
+	Actions       []Ability
+	StaticConfigs []Ability
 }
 
 var fns = template.FuncMap{
@@ -67,6 +64,7 @@ func outputTemplate(outputfile string, ab *FileStruct, templateBaseName, templat
 	outputTemple(f, ab, templateBaseName, templatefile)
 	f.Sync()
 }
+
 func main() {
 	ab := &FileStruct{}
 
@@ -77,8 +75,7 @@ func main() {
 
 	json.Unmarshal(byteValue, &ab)
 
-	//	outputTemplate("Enumerators.cs", ab, "csharpabilities.parse", "tools/cmd/templates/csharpabilities.parse")
-	//	outputTemplate("enums.sol", ab, "soliditybilities.parse", "tools/cmd/templates/soliditybilities.parse")
+	outputTemplate("Enumerators.cs", ab, "csharpabilities.parse", "tools/cmd/templates/csharpabilities.parse")
+	outputTemplate("enum.sol", ab, "soliditybilities.parse", "tools/cmd/templates/soliditybilities.parse")
 	outputTemplate("ability.go", ab, "goabilities.parse", "tools/cmd/templates/goabilities.parse")
-
 }
