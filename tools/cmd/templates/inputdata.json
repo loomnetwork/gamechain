@@ -22,6 +22,32 @@
             ]
         }
 
+    ],
+    "actions": [
+        {
+            "name": "Player",
+            "types": [
+                "StartGame",
+                "EndTurn",
+                "DrawCardPlayer",
+                "PlayCard",
+                "CardAttack",
+                "UseCardAbility"
+            ]
+        }
+        
+    ],
+    "staticConfigs": [
+        {
+            "name": "GameConfig",
+            "types": [
+                "Health",
+                "CustomDeck",
+                "AddCard",
+                "SetDeck"
+            ]
+        }
+        
     ]
 
 }
