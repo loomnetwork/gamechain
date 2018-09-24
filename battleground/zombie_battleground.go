@@ -407,7 +407,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 
 func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb.ListHeroLibraryRequest) (*zb.ListHeroLibraryResponse, error) {
 	var heroList zb.HeroList
-	if err := ctx.Get(heroListKey, &heroList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return nil, err
 	}
 	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil

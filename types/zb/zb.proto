@@ -285,6 +285,7 @@ message ListCardLibraryResponse {
 }
 
 message ListHeroLibraryRequest {
+    string version = 1;
 }
 
 message ListHeroLibraryResponse {

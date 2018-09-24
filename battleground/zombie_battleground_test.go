@@ -888,4 +888,7 @@ func TestUpdateInitDataOperations(t *testing.T) {
 
 		assert.Nil(t, err)
 	})
+
+	// ??: test with list cards also?
+
 }
