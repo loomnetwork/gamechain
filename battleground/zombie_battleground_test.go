@@ -12,6 +12,7 @@ import (
 )
 
 var initRequest = zb.InitRequest{
+	Version: "v1",
 	DefaultCollection: []*zb.CardCollection{
 		{
 			CardName: "Banshee",
@@ -430,8 +431,9 @@ func TestAccountOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "AccountUser",
-		Image:  "PathToImage",
+		UserId:  "AccountUser",
+		Image:   "PathToImage",
+		Version: "v1",
 	}, t)
 
 	t.Run("UpdateAccount", func(t *testing.T) {
@@ -463,8 +465,9 @@ func TestCardCollectionOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "CardUser",
-		Image:  "PathToImage",
+		UserId:  "CardUser",
+		Image:   "PathToImage",
+		Version: "v1",
 	}, t)
 
 	cardCollection, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
@@ -483,8 +486,9 @@ func TestDeckOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "DeckUser",
-		Image:  "PathToImage",
+		UserId:  "DeckUser",
+		Image:   "PathToImage",
+		Version: "v1",
 	}, t)
 
 	t.Run("ListDecks", func(t *testing.T) {
@@ -776,7 +780,9 @@ func TestCardOperations(t *testing.T) {
 	})
 
 	t.Run("ListHeroLibrary", func(t *testing.T) {
-		heroResponse, err := c.ListHeroLibrary(ctx, &zb.ListHeroLibraryRequest{})
+		heroResponse, err := c.ListHeroLibrary(ctx, &zb.ListHeroLibraryRequest{
+			Version: "v1",
+		})
 
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(heroResponse.Heroes))
