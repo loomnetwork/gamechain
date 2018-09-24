@@ -797,8 +797,9 @@ func TestHeroOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId: "HeroUser",
-		Image:  "PathToImage",
+		UserId:  "HeroUser",
+		Image:   "PathToImage",
+		Version: "v1",
 	}, t)
 
 	t.Run("ListHeroes", func(t *testing.T) {
