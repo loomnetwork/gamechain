@@ -9,12 +9,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var listCardCmdArgs struct {
+	version string
+}
+
 var listCardCmd = &cobra.Command{
 	Use:   "list_card",
 	Short: "list card",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		if rootCmdArgs.version == "" {
+		if listCardCmdArgs.version == "" {
 			return fmt.Errorf("version not specified")
 		}
 
@@ -27,7 +31,7 @@ var listCardCmd = &cobra.Command{
 		req := zb.ListCardLibraryRequest{}
 		result := zb.ListCardLibraryResponse{}
 
-		req.Version = rootCmdArgs.version
+		req.Version = listCardCmdArgs.version
 
 		_, err := commonTxObjs.contract.StaticCall("ListCardLibrary", &req, callerAddr, &result)
 		if err != nil {
@@ -45,4 +49,5 @@ var listCardCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(listCardCmd)
+	listCardCmd.Flags().StringVarP(&listCardCmdArgs.version, "version", "v", "", "Version")
 }

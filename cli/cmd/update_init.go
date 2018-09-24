@@ -12,7 +12,8 @@ import (
 )
 
 var updateInitCmdArgs struct {
-	file string
+	version string
+	file    string
 }
 
 var updateInitCmd = &cobra.Command{
@@ -35,11 +36,11 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())
 		}
 
-		if rootCmdArgs.version == "" {
+		if updateInitCmdArgs.version == "" {
 			return fmt.Errorf("version not specified")
 		}
 
-		updateInitData.Version = rootCmdArgs.version
+		updateInitData.Version = updateInitCmdArgs.version
 		_, err = commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateInit: %s", err.Error())
@@ -53,5 +54,6 @@ var updateInitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateInitCmd)
 
+	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "", "UserId of account")
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
 }

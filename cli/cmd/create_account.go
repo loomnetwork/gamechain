@@ -10,8 +10,9 @@ import (
 )
 
 var createAccCmdArgs struct {
-	userID string
-	value  string
+	userID  string
+	value   string
+	version string
 }
 
 var createAccountCmd = &cobra.Command{
@@ -21,11 +22,16 @@ var createAccountCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var accountData zb.UpsertAccountRequest
 
+		if createAccCmdArgs.version == "" {
+			return fmt.Errorf("version not specified")
+		}
+
 		if err := json.Unmarshal([]byte(createAccCmdArgs.value), &accountData); err != nil {
 			return fmt.Errorf("invalid JSON passed in value field. Error: %s", err.Error())
 		}
 
 		accountData.UserId = createAccCmdArgs.userID
+		accountData.Version = createAccCmdArgs.version
 
 		_, err := commonTxObjs.contract.Call("CreateAccount", &accountData, signer, nil)
 		if err != nil {
@@ -42,4 +48,6 @@ func init() {
 
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.value, "value", "v", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.version, "version", "v", "", "Version")
+
 }
