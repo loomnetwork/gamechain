@@ -438,56 +438,66 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// 	return nil, listErr
 	// }
 
-	// for _, userID := range playersInMatchmaking {
-	// 	if req.UserId == userID {
-	// 		return nil, errors.New("Player already in matchmaking, cannot join another match right now")
-	// 	}
-	// }
-
-	match, err := loadUserMatch(ctx, req.UserId)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-
-	if match != nil && match.Status != zb.Match_Ended {
-		// load the latest match states
-		m, err := loadMatch(ctx, match.Id)
-		if err != nil {
-			return nil, err
-		}
-		return &zb.FindMatchResponse{
-			Match: m,
-		}, nil
-	}
-
-	// find the match available for the user to be filled in; otherwise, create a new one
-	pendingMatchlist, err := loadPendingMatchList(ctx)
+	// load deck id
+	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
+	ctx.Logger().Info(fmt.Sprintf("%#v", dl))
+	deck := getDeckByID(dl.Decks, req.DeckId)
+	if deck == nil {
+		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
+	}
 
-	// add player to match if we can find one that is waiting for more players
-	// TODO: for now just pop the first match off the pending list
-	if len(pendingMatchlist.Matches) > 0 {
-		match := pendingMatchlist.Matches[0]
-		match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-			Id:            req.UserId,
-			CurrentAction: zb.PlayerActionType_FindMatch,
-		})
-		// save user match
-		if err := saveUserMatch(ctx, req.UserId, match); err != nil {
+	// register the user to match making pool
+	infos, err := loadMatchMakingInfoList(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var info *zb.MatchMakingInfo
+	for _, inf := range infos.Infos {
+		if inf.UserId == req.UserId {
+			continue
+		}
+		info = inf
+	}
+
+	// scan users in matchmakings
+	// opponentID, found := scanMatchMaking(ctx, req.UserId, nil)
+	if info == nil {
+		// save user info
+		info = &zb.MatchMakingInfo{
+			UserId: req.UserId,
+			Deck:   deck,
+		}
+		infos.Infos = append(infos.Infos, info)
+		if err := saveMatchMakingInfoList(ctx, infos); err != nil {
 			return nil, err
 		}
 
-		// delete this match from pending list if it's full
-		if len(match.PlayerStates) > 1 {
-			pendingMatchlist.Matches = pendingMatchlist.Matches[1:]
-			if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
-				return nil, err
-			}
+		// create and save a new match
+		// Otherwise get the latest match ID, create a new match and add the player to it
+		currentMatchID, countErr := loadMatchCount(ctx)
+		if countErr != nil && countErr != contract.ErrNotFound {
+			return nil, countErr
 		}
-
-		if err := saveMatch(ctx, match); err != nil {
+		nextID := currentMatchID + 1
+		match := &zb.Match{
+			Id:     nextID, // TODO: better IDs
+			Topics: []string{fmt.Sprintf("match:%d", nextID)},
+			Status: zb.Match_Matching,
+			PlayerStates: []*zb.PlayerState{
+				&zb.PlayerState{
+					Id:            req.UserId,
+					CurrentAction: zb.PlayerActionType_AcceptMatch,
+				},
+			},
+		}
+		if err := saveMatchCount(ctx, nextID); err != nil {
+			return nil, err
+		}
+		// save user match
+		if err := saveUserMatch(ctx, req.UserId, match); err != nil {
 			return nil, err
 		}
 		return &zb.FindMatchResponse{
@@ -495,39 +505,59 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}, nil
 	}
 
-	// Otherwise get the latest match ID, create a new match and add the player to it
-	currentMatchID, countErr := loadMatchCount(ctx)
-	if countErr != nil && countErr != contract.ErrNotFound {
-		return nil, countErr
-	}
-	nextID := currentMatchID + 1
-	match = &zb.Match{
-		Id:     nextID, // TODO: better IDs
-		Topics: []string{fmt.Sprintf("match:%d", nextID)},
-		Status: zb.Match_Matching,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
-				Id:            req.UserId,
-				CurrentAction: zb.PlayerActionType_FindMatch,
-			},
-		},
-	}
-	if err := saveMatchCount(ctx, nextID); err != nil {
+	// get and update the match
+	opponentID := info.UserId
+	match, err := loadUserMatch(ctx, opponentID)
+	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
-	// save user match
+	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
+		Id:            req.UserId,
+		CurrentAction: zb.PlayerActionType_AcceptMatch,
+	})
+	match.Status = zb.Match_Started
 	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
 		return nil, err
 	}
 
-	// if err := addPlayerInMatchmakingList(ctx, req.UserId); err != nil {
-	// 	return nil, err
-	// }
-
-	pendingMatchlist.Matches = append(pendingMatchlist.Matches, match)
-
-	if err := savePendingMatchList(ctx, pendingMatchlist); err != nil {
+	// remove info from mathc making list
+	newinfos := make([]*zb.MatchMakingInfo, 0)
+	for _, inf := range infos.Infos {
+		if inf.UserId == opponentID {
+			continue
+		}
+		newinfos = append(newinfos, inf)
+	}
+	infos.Infos = newinfos
+	if err := saveMatchMakingInfoList(ctx, infos); err != nil {
 		return nil, err
+	}
+
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	// create game state
+	gamestate := zb.GameState{
+		Id:                 match.Id,
+		CurrentActionIndex: -1,
+		PlayerStates:       match.PlayerStates,
+	}
+	if err := saveGameState(ctx, &gamestate); err != nil {
+		return nil, err
+	}
+
+	// accept match
+	emitMsg := zb.PlayerActionEvent{
+		PlayerActionType: zb.PlayerActionType_AllAcceptMatch,
+		Match:            match,
+	}
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, match.Topics[0])
 	}
 
 	return &zb.FindMatchResponse{
@@ -575,15 +605,6 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if allAccepted {
 		match.Status = zb.Match_Started
 		if err := saveMatch(ctx, match); err != nil {
-			return nil, err
-		}
-
-		gamestate := zb.GameState{
-			Id:                 match.Id,
-			CurrentActionIndex: -1,
-			PlayerStates:       match.PlayerStates,
-		}
-		if err := saveGameState(ctx, &gamestate); err != nil {
 			return nil, err
 		}
 
@@ -709,6 +730,7 @@ func (z *ZombieBattleground) StartMatch(ctx contract.Context, req *zb.StartMatch
 	}
 
 	return &zb.StartMatchResponse{
+		Match:     match,
 		GameState: gamestate,
 	}, nil
 }

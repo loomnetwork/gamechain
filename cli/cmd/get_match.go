@@ -32,9 +32,6 @@ var getMatchCmd = &cobra.Command{
 		}
 		if gamestate := resp.GameState; gamestate != nil {
 			fmt.Printf("gameStateID: %d\n", gamestate.Id)
-			for _, action := range gamestate.PlayerActions {
-				fmt.Printf("\taction: %#v\n", action)
-			}
 		}
 
 		return nil
