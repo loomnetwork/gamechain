@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -12,7 +13,7 @@ import (
 
 var updateInitCmdArgs struct {
 	version string
-	data    string
+	file    string
 }
 
 var updateInitCmd = &cobra.Command{
@@ -22,12 +23,21 @@ var updateInitCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var updateInitData zb.UpdateInitRequest
 
-		if err := json.Unmarshal([]byte(updateInitCmdArgs.data), &updateInitData); err != nil {
+		if updateInitCmdArgs.file == "" {
+			return fmt.Errorf("file name not provided")
+		}
+
+		f, err := ioutil.ReadFile(updateInitCmdArgs.file)
+		if err != nil {
+			return fmt.Errorf("error reading file: %s", err.Error())
+		}
+
+		if err := json.Unmarshal(f, &updateInitData); err != nil {
 			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())
 		}
 
 		updateInitData.Version = updateInitCmdArgs.version
-		_, err := commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
+		_, err = commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateInit: %s", err.Error())
 		}
@@ -41,5 +51,5 @@ func init() {
 	rootCmd.AddCommand(updateInitCmd)
 
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "1", "UserId of account")
-	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.data, "data", "d", "{}", "Init data to be updated in serialized json format")
+	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
 }
