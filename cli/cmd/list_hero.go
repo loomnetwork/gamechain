@@ -17,6 +17,10 @@ var listHeroForUserCmd = &cobra.Command{
 	Use:   "list_hero",
 	Short: "list hero for user",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if rootCmdArgs.version == "" {
+			return fmt.Errorf("version not specified")
+		}
+
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
