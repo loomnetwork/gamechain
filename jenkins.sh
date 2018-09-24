@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export GOPATH=/var/lib/jenkins/gopath-branches/gamechain-${GIT_BRANCH}
+export GOPATH=/var/lib/jenkins/gopath-branches/gamechain-${GIT_LOCAL_BRANCH}
 export LOOM_VER=404
 
 mkdir -p ${GOPATH}/bin ; true
