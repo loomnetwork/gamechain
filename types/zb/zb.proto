@@ -225,6 +225,7 @@ message UpsertAccountRequest {
     int64 elo_score            = 7;
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
+    string version = 10;
 }
 
 message GetAccountRequest {

@@ -22,27 +22,26 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
-	version := req.Version
 
 	// initialize card library
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
 	// initialize heros
 	heroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, heroListKey), &heroList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return err
 	}
 
 	cardCollectionList := zb.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultCollectionKey), &cardCollectionList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
 		return err
 	}
 
@@ -50,14 +49,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	deckList := zb.DeckList{
 		Decks: req.DefaultDecks,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultDeckKey), &deckList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
 		return err
 	}
 
 	defaultHeroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultHeroesKey), &defaultHeroList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultHeroesKey), &defaultHeroList); err != nil {
 		return err
 	}
 
@@ -65,27 +64,26 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 }
 
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
-	version := req.Version
 
 	// initialize card library
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
 	// initialize heros
 	heroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, heroListKey), &heroList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return err
 	}
 
 	cardCollectionList := zb.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultCollectionKey), &cardCollectionList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
 		return err
 	}
 
@@ -93,14 +91,14 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	deckList := zb.DeckList{
 		Decks: req.DefaultDecks,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultDeckKey), &deckList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
 		return err
 	}
 
 	defaultHeroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(version, defaultHeroesKey), &defaultHeroList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultHeroesKey), &defaultHeroList); err != nil {
 		return err
 	}
 
@@ -159,7 +157,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	// add default collection list
 	var collectionList zb.CardCollectionList
-	if err := ctx.Get(defaultCollectionKey, &collectionList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
 	if err := ctx.Set(CardCollectionKey(req.UserId), &collectionList); err != nil {
@@ -167,7 +165,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var deckList zb.DeckList
-	if err := ctx.Get(defaultDeckKey, &deckList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
 	// update default deck with none-zero id
@@ -179,7 +177,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var heroes zb.HeroList
-	if err := ctx.Get(defaultHeroesKey, &heroes); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultHeroesKey), &heroes); err != nil {
 		return errors.Wrapf(err, "unable to get default hero")
 	}
 	if err := ctx.Set(HeroesKey(req.UserId), &heroes); err != nil {

@@ -13,7 +13,6 @@ var rootCmdArgs struct {
 	privateKeyFilePath string
 	readURI            string
 	writeURI           string
-	version            string
 }
 
 var commonTxObjs struct {
@@ -78,7 +77,6 @@ func Execute() error {
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.privateKeyFilePath, "key", "k", "priv.key", "Private key file path")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.readURI, "readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.writeURI, "writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
-	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.version, "version", "v", "", "Version")
 
 	return rootCmd.Execute()
 }
