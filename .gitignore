@@ -20,7 +20,6 @@
 
 # Protobuf generated
 /types/zb/Zb.cs
-/types/zb/zb.pb.go
 
 # App specific
 /app.db
