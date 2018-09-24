@@ -11,7 +11,7 @@ import (
 
 var createAccCmdArgs struct {
 	userID  string
-	value   string
+	data    string
 	version string
 }
 
@@ -26,8 +26,8 @@ var createAccountCmd = &cobra.Command{
 			return fmt.Errorf("version not specified")
 		}
 
-		if err := json.Unmarshal([]byte(createAccCmdArgs.value), &accountData); err != nil {
-			return fmt.Errorf("invalid JSON passed in value field. Error: %s", err.Error())
+		if err := json.Unmarshal([]byte(createAccCmdArgs.data), &accountData); err != nil {
+			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())
 		}
 
 		accountData.UserId = createAccCmdArgs.userID
@@ -47,7 +47,7 @@ func init() {
 	rootCmd.AddCommand(createAccountCmd)
 
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.value, "value", "v", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.data, "data", "d", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.version, "version", "v", "", "Version")
 
 }
