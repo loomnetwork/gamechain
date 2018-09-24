@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#export GOPATH=`pwd`
-export GOPATH=/var/lib/jenkins/workspace/zombie_battleground_pr
+export GOPATH=/var/lib/jenkins/gopath-gamechain
 export LOOM_VER=404
 
 mkdir -p $GOPATH/bin
