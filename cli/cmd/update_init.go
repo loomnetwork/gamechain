@@ -33,7 +33,7 @@ var updateInitCmd = &cobra.Command{
 		}
 
 		if err := json.Unmarshal(f, &updateInitData); err != nil {
-			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())
+			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 
 		if updateInitCmdArgs.version == "" {
