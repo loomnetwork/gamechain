@@ -299,8 +299,8 @@ message PlayerState {
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsOnBoard = 5;
     repeated CardInstance cardsInDeck = 6;
-    Deck deck = 7;
-    int32 hp = 8;
+    Deck deck  = 7;
+    int32 hp   = 8;
     int32 mana = 9;
 }
 
@@ -316,6 +316,15 @@ message Match {
         Ended        = 4;
     }
     Status status = 4;
+}
+
+message MatchMakingInfoList {
+    repeated MatchMakingInfo infos = 1;
+}
+
+message MatchMakingInfo {
+    string userId = 1;
+    Deck deck = 2;
 }
 
 enum PlayerActionType {
@@ -372,6 +381,7 @@ message MatchCount {
 
 message FindMatchRequest {
     string userId = 1;
+    int64 deckId  = 2;
 }
 
 message FindMatchResponse {
@@ -401,7 +411,8 @@ message StartMatchRequest {
 }
 
 message StartMatchResponse {
-    GameState gameState = 1;
+    Match match = 1;
+    GameState gameState = 2;
 }
 
 message LeaveMatchRequest {

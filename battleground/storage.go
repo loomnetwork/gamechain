@@ -24,6 +24,7 @@ var (
 	decksPrefix          = []byte("decks")
 	matchesPrefix        = []byte("matches")
 	pendingMatchesPrefix = []byte("pending-matches")
+	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
 	heroListKey                 = []byte("herolist")
@@ -67,6 +68,10 @@ func GameStateKey(gameStateID int64) []byte {
 
 func UserMatchKey(userID string) []byte {
 	return []byte("user:" + userID + ":match")
+}
+
+func MatchMakingKey(userID string) []byte {
+	return []byte("matchmaking:" + userID)
 }
 
 // func userAccountKey(id string) []byte {
@@ -198,6 +203,43 @@ func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.EloScore = req.EloScore
 	account.CurrentTier = req.CurrentTier
 	account.GameMembershipTier = req.GameMembershipTier
+}
+
+func saveMatchMakingInfoList(ctx contract.Context, infos *zb.MatchMakingInfoList) error {
+	if err := ctx.Set(matchesPrefix, infos); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadMatchMakingInfoList(ctx contract.Context) (*zb.MatchMakingInfoList, error) {
+	var infos zb.MatchMakingInfoList
+	err := ctx.Get(matchesPrefix, &infos)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &infos, nil
+}
+
+type FindMatchFunc func() bool
+
+func scanMatchMaking(ctx contract.Context, userID string, fn FindMatchFunc) (string, bool) {
+	// Seems ctx.Range return nil and will panic
+	entries := ctx.Range(matchMakingPrefix)
+	if entries == nil {
+		return "", false
+	}
+	for _, entry := range entries {
+		// skip self
+		if userID == string(entry.Key[1:]) {
+			continue
+		}
+
+		// assume that we found the match
+		// TODO put more logic to match the user
+		return string(entry.Key[1:]), true
+	}
+	return "", false
 }
 
 func savePendingMatchList(ctx contract.Context, pendingMatchList *zb.PendingMatchList) error {
