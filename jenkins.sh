@@ -1,14 +1,18 @@
 #!/bin/bash
 
-export GOPATH=/var/lib/jenkins/gopath-gamechain
+export GOPATH=/var/lib/jenkins/gopath-branches/gamechain-${BRANCH_NAME}
 export LOOM_VER=404
 
+mkdir -p ${GOPATH}/bin ; true
+mkdir -p ${GOPATH}/src/github.com/loomnetwork ; true
+
+ln -sfn pwd ${GOPATH}/src/github.com/loomnetwork/zombie_battleground
+
 mkdir -p $GOPATH/bin
-export PATH=$PATH:$GOPATH/bin:/var/lib/jenkins/workspace/zombie_battleground_pr/bin #TODO make these paths less hard coded
+export PATH=$PATH:$GOPATH/bin
 
 wget https://private.delegatecall.com/loom/linux/build-${LOOM_VER}/loom -O ${GOPATH}/bin/loom
 chmod +x  ${GOPATH}/bin/loom
-go get github.com/loomnetwork/go-loom
 
 make deps
 make
