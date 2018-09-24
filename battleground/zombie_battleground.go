@@ -490,6 +490,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				&zb.PlayerState{
 					Id:            req.UserId,
 					CurrentAction: zb.PlayerActionType_AcceptMatch,
+					Deck:          deck,
 				},
 			},
 		}
@@ -514,6 +515,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
 		Id:            req.UserId,
 		CurrentAction: zb.PlayerActionType_AcceptMatch,
+		Deck:          deck,
 	})
 	match.Status = zb.Match_Started
 	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
@@ -535,6 +537,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
+	}
+
+	// manipulate cards in decks
+	for i := 0; i < len(match.PlayerStates); i++ {
+		match.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(match.PlayerStates[i].Deck)
 	}
 
 	// create game state
