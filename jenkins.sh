@@ -6,7 +6,7 @@ export LOOM_VER=404
 mkdir -p ${GOPATH}/bin ; true
 mkdir -p ${GOPATH}/src/github.com/loomnetwork ; true
 
-ln -sfn pwd ${GOPATH}/src/github.com/loomnetwork/zombie_battleground
+ln -sfn `pwd` ${GOPATH}/src/github.com/loomnetwork/zombie_battleground
 
 mkdir -p $GOPATH/bin
 export PATH=$PATH:$GOPATH/bin
