@@ -1,0 +1,12 @@
+package ability
+
+{{ with .Abilities }}
+{{ range . }}
+const ( {{- $name := .Name}}
+        {{- range  $i, $e := .Types }}
+        {{$name | ToUpper }}_{{$e }}  = iota  
+        {{- end }}
+)
+
+{{ end }} 
+{{ end }}

@@ -1,0 +1,53 @@
+{
+    "abilities": [
+        {
+            "name": "Activity",
+            "types": [
+                "PASSIVE",
+                "ACTIVE"
+            ]
+        },
+        {
+            "name": "Call",
+            "types": [
+                "TURN",
+                "ENTRY",
+                "END",
+                "ATTACK",
+                "DEATH",
+                "PERMANENT",
+                "GOT_DAMAGE",
+                "AT_DEFENCE",
+                "IN_HAND"
+            ]
+        }
+
+    ],
+    "actions": [
+        {
+            "name": "Player",
+            "types": [
+                "StartGame",
+                "EndTurn",
+                "DrawCardPlayer",
+                "PlayCard",
+                "CardAttack",
+                "UseCardAbility"
+            ]
+        }
+        
+    ],
+    "staticConfigs": [
+        {
+            "name": "GameConfig",
+            "types": [
+                "Health",
+                "CustomDeck",
+                "AddCard",
+                "SetDeck"
+            ]
+        }
+        
+    ]
+
+}
