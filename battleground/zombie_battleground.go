@@ -437,17 +437,18 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil {
 		return nil, err
 	}
-	ctx.Logger().Info(fmt.Sprintf("%#v", dl))
 	deck := getDeckByID(dl.Decks, req.DeckId)
 	if deck == nil {
 		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
 	}
 
 	// register the user to match making pool
+	// TODO: chan ge to scan users in matchmakings
 	infos, err := loadMatchMakingInfoList(ctx)
 	if err != nil {
 		return nil, err
 	}
+
 	var info *zb.MatchMakingInfo
 	for _, inf := range infos.Infos {
 		if inf.UserId == req.UserId {
@@ -456,8 +457,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		info = inf
 	}
 
-	// scan users in matchmakings
-	// opponentID, found := scanMatchMaking(ctx, req.UserId, nil)
 	if info == nil {
 		// save user info
 		info = &zb.MatchMakingInfo{
@@ -479,6 +478,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				},
 			},
 		}
+
 		if err := createMatch(ctx, match); err != nil {
 			return nil, err
 		}
@@ -504,11 +504,14 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Deck:          deck,
 	})
 	match.Status = zb.Match_Started
+
+	// save user match
+	// TODO: clean up the previous match?
 	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
 		return nil, err
 	}
 
-	// remove info from mathc making list
+	// remove info from match making list by making sure that only second player remove it once
 	newinfos := make([]*zb.MatchMakingInfo, 0)
 	for _, inf := range infos.Infos {
 		if inf.UserId == opponentID {
@@ -569,6 +572,43 @@ func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequ
 		Match:     match,
 		GameState: gameState,
 	}, nil
+}
+
+func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	// update the player state on the match
+	for i := 0; i < len(match.PlayerStates); i++ {
+		if req.UserId == match.PlayerStates[i].Id {
+			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_LeaveMatch
+		}
+	}
+
+	match.Status = zb.Match_Ended
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+	// delete user match
+	ctx.Delete(UserMatchKey(req.UserId))
+
+	// TODO: Change on gamestate
+
+	emitMsg := zb.PlayerActionEvent{
+		PlayerActionType: zb.PlayerActionType_LeaveMatch,
+		UserId:           req.UserId,
+		Match:            match,
+	}
+	data, err := json.Marshal(emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics(data, match.Topics[0])
+	}
+
+	return &zb.LeaveMatchResponse{}, nil
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {

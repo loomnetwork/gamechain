@@ -729,4 +729,23 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.NotNil(t, response.GameState)
 	})
+
+	t.Run("LeaveMatch", func(t *testing.T) {
+		_, err := c.LeaveMatch(ctx, &zb.LeaveMatchRequest{
+			MatchId: matchID,
+			UserId:  "player-1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetMatchAfterLeaving", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Ended, response.Match.Status, "match status should be 'ended'")
+		assert.NotNil(t, response.GameState)
+	})
 }
