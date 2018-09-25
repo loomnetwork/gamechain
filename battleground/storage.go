@@ -223,24 +223,24 @@ func loadMatchMakingInfoList(ctx contract.Context) (*zb.MatchMakingInfoList, err
 
 type FindMatchFunc func() bool
 
-func scanMatchMaking(ctx contract.Context, userID string, fn FindMatchFunc) (string, bool) {
-	// Seems ctx.Range return nil and will panic
-	entries := ctx.Range(matchMakingPrefix)
-	if entries == nil {
-		return "", false
-	}
-	for _, entry := range entries {
-		// skip self
-		if userID == string(entry.Key[1:]) {
-			continue
-		}
+// func scanMatchMaking(ctx contract.Context, userID string, fn FindMatchFunc) (string, bool) {
+// 	// Seems ctx.Range return nil and will panic
+// 	entries := ctx.Range(matchMakingPrefix)
+// 	if entries == nil {
+// 		return "", false
+// 	}
+// 	for _, entry := range entries {
+// 		// skip self
+// 		if userID == string(entry.Key[1:]) {
+// 			continue
+// 		}
 
-		// assume that we found the match
-		// TODO put more logic to match the user
-		return string(entry.Key[1:]), true
-	}
-	return "", false
-}
+// 		// assume that we found the match
+// 		// TODO put more logic to match the user
+// 		return string(entry.Key[1:]), true
+// 	}
+// 	return "", false
+// }
 
 func savePendingMatchList(ctx contract.Context, pendingMatchList *zb.PendingMatchList) error {
 	if err := ctx.Set(pendingMatchesPrefix, pendingMatchList); err != nil {
@@ -281,6 +281,16 @@ func saveMatch(ctx contract.Context, match *zb.Match) error {
 	return nil
 }
 
+func createMatch(ctx contract.Context, match *zb.Match) error {
+	nextID, err := nextMatchID(ctx)
+	if err != nil {
+		return err
+	}
+	match.Id = nextID
+	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	return saveMatch(ctx, match)
+}
+
 func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 	var m zb.Match
 	err := ctx.Get(MatchKey(matchID), &m)
@@ -290,17 +300,14 @@ func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 	return &m, nil
 }
 
-func saveMatchCount(ctx contract.Context, ID int64) error {
-	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: ID}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func loadMatchCount(ctx contract.StaticContext) (int64, error) {
+func nextMatchID(ctx contract.Context) (int64, error) {
 	var count zb.MatchCount
 	err := ctx.Get(matchCountKey, &count)
 	if err != nil {
+		return 0, err
+	}
+	count.CurrentId++
+	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: count.CurrentId}); err != nil {
 		return 0, err
 	}
 	return count.CurrentId, nil
