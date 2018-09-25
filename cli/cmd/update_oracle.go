@@ -28,7 +28,7 @@ var updateOracleCmd = &cobra.Command{
 				return errors.Wrap(err, "resolve old oracle address arg")
 			}
 		}
-		_, err = commonTxObjs.contract.Call("UpdateOracle", &zb.NewOracleValidator{
+		_, err = commonTxObjs.contract.Call("UpdateOracle", &zb.UpdateOracle{
 			NewOracle: newOracle.MarshalPB(),
 			OldOracle: oldOracle.MarshalPB(),
 		}, signer, nil)
