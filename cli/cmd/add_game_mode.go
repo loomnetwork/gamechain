@@ -12,7 +12,7 @@ var addGameModeCmdArgs struct {
 	name         string
 	description  string
 	version      string
-	gameModeType zb.GameModeType
+	gameModeType int
 }
 
 var addGameModeCmd = &cobra.Command{
@@ -20,12 +20,12 @@ var addGameModeCmd = &cobra.Command{
 	Short: "add a game mode for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req zb.AddGameModeRequest
+		var req zb.GameModeRequest
 
 		req.Name = addGameModeCmdArgs.name
 		req.Description = addGameModeCmdArgs.description
 		req.Version = addGameModeCmdArgs.version
-		req.GameModeType = addGameModeCmdArgs.gameModeType
+		req.GameModeType = zb.GameModeType(addGameModeCmdArgs.gameModeType)
 
 		_, err := commonTxObjs.contract.Call("AddGameMode", &req, signer, nil)
 		if err != nil {
@@ -39,9 +39,8 @@ var addGameModeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(addGameModeCmd)
-
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.name, "name", "n", "", "name for the new game mode")
-	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.name, "description", "d", "", "description")
-	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.name, "version", "v", "", "version number like “0.10.0”")
-	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.name, "gameModeType", "t", "", "type of game mode")
+	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.description, "description", "d", "", "description")
+	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
+	addGameModeCmd.Flags().IntVarP(&addGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
 }

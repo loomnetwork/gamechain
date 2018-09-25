@@ -435,16 +435,32 @@ message PlayerActionResponse {
 
 // Game Modes
 
+message GameMode {
+    string name = 1;
+    string description = 2;
+    string version = 3;
+    GameModeType game_mode_type = 4;
+    Address address = 5;
+    Address Owner = 6;
+}
+
+message GameModeList {
+    repeated GameMode game_modes = 1;
+}
+
 enum GameModeType {
     Community = 0;
     Loom = 1;
 }
 
-message AddGameModeRequest {
+message GameModeRequest {
     string name = 1;
     string description = 2;
     string version = 3;
     GameModeType game_mode_type = 4;
+}
+
+message ListGameModesRequest {
 }
 
 //////////////// GAME PLAY //////////////////
