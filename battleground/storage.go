@@ -221,28 +221,6 @@ func loadMatchMakingInfoList(ctx contract.Context) (*zb.MatchMakingInfoList, err
 	return &infos, nil
 }
 
-type FindMatchFunc func() bool
-
-// TODO: Not sure why ctx.Range cause panic
-// func scanMatchMaking(ctx contract.Context, userID string, fn FindMatchFunc) (string, bool) {
-// 	// Seems ctx.Range return nil and will panic
-// 	entries := ctx.Range(matchMakingPrefix)
-// 	if entries == nil {
-// 		return "", false
-// 	}
-// 	for _, entry := range entries {
-// 		// skip self
-// 		if userID == string(entry.Key[1:]) {
-// 			continue
-// 		}
-
-// 		// assume that we found the match
-// 		// TODO put more logic to match the user
-// 		return string(entry.Key[1:]), true
-// 	}
-// 	return "", false
-// }
-
 func savePendingMatchList(ctx contract.Context, pendingMatchList *zb.PendingMatchList) error {
 	if err := ctx.Set(pendingMatchesPrefix, pendingMatchList); err != nil {
 		return err
