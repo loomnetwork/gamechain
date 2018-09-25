@@ -307,6 +307,13 @@ message GetCollectionResponse {
 message PlayerState {
     string id = 1;
     PlayerActionType currentAction = 2;
+    OverlordInstance overlordInstance = 3;
+    repeated CardInstance cardsInHand = 4;
+    repeated CardInstance cardsOnBoard = 5;
+    repeated CardInstance cardsInDeck = 6;
+    Deck deck  = 7;
+    int32 hp   = 8;
+    int32 mana = 9;
 }
 
 message Match {
@@ -321,6 +328,15 @@ message Match {
         Ended        = 4;
     }
     Status status = 4;
+}
+
+message MatchMakingInfoList {
+    repeated MatchMakingInfo infos = 1;
+}
+
+message MatchMakingInfo {
+    string userId = 1;
+    Deck deck = 2;
 }
 
 enum PlayerActionType {
@@ -377,34 +393,11 @@ message MatchCount {
 
 message FindMatchRequest {
     string userId = 1;
+    int64 deckId  = 2;
 }
 
 message FindMatchResponse {
     Match match = 1;
-}
-
-message AcceptMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message AcceptMatchResponse {
-}
-
-message RejectMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message RejectMatchResponse {
-}
-
-message StartMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message StartMatchResponse {
 }
 
 message LeaveMatchRequest {
