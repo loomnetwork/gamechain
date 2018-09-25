@@ -24,6 +24,7 @@ var (
 	decksPrefix          = []byte("decks")
 	matchesPrefix        = []byte("matches")
 	pendingMatchesPrefix = []byte("pending-matches")
+	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
 	heroListKey                 = []byte("herolist")
@@ -204,6 +205,22 @@ func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.GameMembershipTier = req.GameMembershipTier
 }
 
+func saveMatchMakingInfoList(ctx contract.Context, infos *zb.MatchMakingInfoList) error {
+	if err := ctx.Set(matchesPrefix, infos); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadMatchMakingInfoList(ctx contract.Context) (*zb.MatchMakingInfoList, error) {
+	var infos zb.MatchMakingInfoList
+	err := ctx.Get(matchesPrefix, &infos)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &infos, nil
+}
+
 func savePendingMatchList(ctx contract.Context, pendingMatchList *zb.PendingMatchList) error {
 	if err := ctx.Set(pendingMatchesPrefix, pendingMatchList); err != nil {
 		return err
@@ -243,6 +260,16 @@ func saveMatch(ctx contract.Context, match *zb.Match) error {
 	return nil
 }
 
+func createMatch(ctx contract.Context, match *zb.Match) error {
+	nextID, err := nextMatchID(ctx)
+	if err != nil {
+		return err
+	}
+	match.Id = nextID
+	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	return saveMatch(ctx, match)
+}
+
 func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 	var m zb.Match
 	err := ctx.Get(MatchKey(matchID), &m)
@@ -252,17 +279,14 @@ func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 	return &m, nil
 }
 
-func saveMatchCount(ctx contract.Context, ID int64) error {
-	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: ID}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func loadMatchCount(ctx contract.StaticContext) (int64, error) {
+func nextMatchID(ctx contract.Context) (int64, error) {
 	var count zb.MatchCount
 	err := ctx.Get(matchCountKey, &count)
-	if err != nil {
+	if err != nil && err != contract.ErrNotFound {
+		return 0, err
+	}
+	count.CurrentId++
+	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: count.CurrentId}); err != nil {
 		return 0, err
 	}
 	return count.CurrentId, nil
