@@ -210,11 +210,11 @@ message InitRequest {
 }
 
 message Oracle {
-    string chain_id = 1;
-    string local    = 2;
+    string  chain_id = 1;
+    Address local    = 2;
 }
 
-message NewOracleValidator {
+message UpdateOracle {
     Address new_oracle = 1;
     Address old_oracle = 2;
 }
@@ -436,8 +436,8 @@ message PlayerActionResponse {
 // Game Modes
 
 enum GameModeType {
-    Loom = 0;
-    Community = 1;
+    Community = 0;
+    Loom = 1;
 }
 
 message AddGameModeRequest {
