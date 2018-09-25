@@ -39,8 +39,8 @@ var updateGameModeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(updateGameModeCmd)
-	addGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.name, "name", "n", "", "name for the game mode")
-	addGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.description, "description", "d", "", "description")
-	addGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
-	addGameModeCmd.Flags().IntVarP(&updateGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
+	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.name, "name", "n", "", "name for the game mode")
+	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.description, "description", "d", "", "description")
+	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
+	updateGameModeCmd.Flags().IntVarP(&updateGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
 }
