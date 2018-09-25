@@ -668,3 +668,65 @@ func TestHeroOperations(t *testing.T) {
 	})
 
 }
+
+func TestFindMatchOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId: "player-1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId: "player-2",
+	}, t)
+
+	t.Run("ListDecks", func(t *testing.T) {
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+			UserId: "player-1",
+		})
+		assert.Equal(t, nil, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
+
+	var matchID int64
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId: 1,
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId: 1,
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.NotNil(t, response.GameState)
+	})
+}
