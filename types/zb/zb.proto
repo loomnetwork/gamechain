@@ -204,6 +204,15 @@ message InitRequest {
     repeated CardCollection default_collection = 2;
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
+    string version = 5;
+}
+
+message UpdateInitRequest {
+    repeated Deck default_decks                = 1;
+    repeated CardCollection default_collection = 2;
+    repeated Card cards                        = 3;
+    repeated Hero heroes                       = 4;
+    string version = 5;
 }
 
 message UpsertAccountRequest {
@@ -216,6 +225,7 @@ message UpsertAccountRequest {
     int64 elo_score            = 7;
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
+    string version = 10;
 }
 
 message GetAccountRequest {
@@ -268,6 +278,7 @@ message ListDecksResponse {
 }
 
 message ListCardLibraryRequest {
+    string version = 1;
 }
 
 message ListCardLibraryResponse {
@@ -275,6 +286,7 @@ message ListCardLibraryResponse {
 }
 
 message ListHeroLibraryRequest {
+    string version = 1;
 }
 
 message ListHeroLibraryResponse {
