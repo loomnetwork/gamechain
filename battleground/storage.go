@@ -223,6 +223,7 @@ func loadMatchMakingInfoList(ctx contract.Context) (*zb.MatchMakingInfoList, err
 
 type FindMatchFunc func() bool
 
+// TODO: Not sure why ctx.Range cause panic
 // func scanMatchMaking(ctx contract.Context, userID string, fn FindMatchFunc) (string, bool) {
 // 	// Seems ctx.Range return nil and will panic
 // 	entries := ctx.Range(matchMakingPrefix)
@@ -303,7 +304,7 @@ func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
 func nextMatchID(ctx contract.Context) (int64, error) {
 	var count zb.MatchCount
 	err := ctx.Get(matchCountKey, &count)
-	if err != nil {
+	if err != nil && err != contract.ErrNotFound {
 		return 0, err
 	}
 	count.CurrentId++
