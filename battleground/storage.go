@@ -69,6 +69,10 @@ func UserMatchKey(userID string) []byte {
 	return []byte("user:" + userID + ":match")
 }
 
+func MakeVersionedKey(version string, key []byte) []byte {
+	return util.PrefixKey([]byte(version), key)
+}
+
 // func userAccountKey(id string) []byte {
 // 	return util.PrefixKey(userPreifx, []byte(id))
 // }
@@ -98,9 +102,9 @@ func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
 	return nil
 }
 
-func loadCardList(ctx contract.StaticContext) (*zb.CardList, error) {
+func loadCardList(ctx contract.StaticContext, version string) (*zb.CardList, error) {
 	var cl zb.CardList
-	err := ctx.Get(cardListKey, &cl)
+	err := ctx.Get(MakeVersionedKey(version, cardListKey), &cl)
 	if err != nil {
 		return nil, err
 	}

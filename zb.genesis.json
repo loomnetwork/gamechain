@@ -6,6 +6,7 @@
       "name": "ZombieBattleground",
       "location": "zombiebattleground:1.0.0",
       "init": {
+        "version" : "v1",
         "default_collection": [
           {
             "card_name": "Pyromaz",
