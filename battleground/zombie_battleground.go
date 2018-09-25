@@ -1,10 +1,10 @@
 package battleground
 
 import (
-	"encoding/json"
 	"fmt"
 	"sort"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
@@ -548,12 +548,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		PlayerActionType: zb.PlayerActionType_AllAcceptMatch,
 		Match:            match,
 	}
-	data, err := json.Marshal(emitMsg)
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
 	if err == nil {
-		ctx.EmitTopics(data, match.Topics[0])
+		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
 	return &zb.FindMatchResponse{
@@ -600,12 +600,12 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 		UserId:           req.UserId,
 		Match:            match,
 	}
-	data, err := json.Marshal(emitMsg)
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
 	if err == nil {
-		ctx.EmitTopics(data, match.Topics[0])
+		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
 	return &zb.LeaveMatchResponse{}, nil
@@ -645,12 +645,12 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
 	}
-	data, err := json.Marshal(emitMsg)
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
 	if err == nil {
-		ctx.EmitTopics(data, match.Topics[0])
+		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
 	return &zb.PlayerActionResponse{}, nil
