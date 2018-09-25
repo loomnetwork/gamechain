@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 
+import "github.com/loomnetwork/go-loom/types/types.proto";
+
 message Account {
     string user_id             = 1;
     bool phone_number_verified = 2;
@@ -204,6 +206,17 @@ message InitRequest {
     repeated CardCollection default_collection = 2;
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
+    Oracle   oracle                            = 5;
+}
+
+message Oracle {
+    string chain_id = 1;
+    string local    = 2;
+}
+
+message NewOracleValidator {
+    Address new_oracle = 1;
+    Address old_oracle = 2;
 }
 
 message UpsertAccountRequest {
@@ -420,6 +433,19 @@ message PlayerActionRequest {
 message PlayerActionResponse {
 }
 
+// Game Modes
+
+enum GameModeType {
+    Loom = 0;
+    Community = 1;
+}
+
+message AddGameModeRequest {
+    string name = 1;
+    string description = 2;
+    string version = 3;
+    GameModeType game_mode_type = 4;
+}
 
 //////////////// GAME PLAY //////////////////
 
