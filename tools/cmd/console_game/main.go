@@ -2,14 +2,12 @@ package main
 
 import (
 	"encoding/hex"
-	"testing"
 
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/battleground"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
-	"github.com/stretchr/testify/assert"
 )
 
 var initRequest = zb.InitRequest{
@@ -198,9 +196,8 @@ var initRequest = zb.InitRequest{
 	},
 }
 
-func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
+func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) {
 
-	c = &battleground.ZombieBattleground{}
 	pubKey, _ := hex.DecodeString(pubKeyHex)
 
 	addr = &loom.Address{
@@ -211,31 +208,53 @@ func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Addr
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
-	err := c.Init(*ctx, &battleground.initRequest)
-	assert.Nil(t, err)
+	err := c.Init(*ctx, &initRequest)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest, t *testing.T) {
+func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
-	assert.Nil(t, err)
+	if err != nil {
+		panic(err)
+	}
 }
 func setupZBContract() {
 
-	var c *battleground.ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
-	var ctx contract.Context
 
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+	setup(zvContract, pubKeyHexString, &addr, &ctx)
+	setupAccount(zvContract, ctx, &zb.UpsertAccountRequest{
 		UserId:  "AccountUser",
 		Image:   "PathToImage",
 		Version: "v1",
-	}, t)
+	})
 
 }
+func listItemsForPlayer(playerId int) []string {
+	res := []string{}
+
+	cardCollection, err := zvContract.GetCollection(ctx, &zb.GetCollectionRequest{
+		UserId: "AccountUser",
+	})
+	if err != nil {
+		panic(err)
+	}
+	for _, v := range cardCollection.Cards {
+		res = append(res, v.CardName)
+	}
+
+	return res
+}
+
+var zvContract *battleground.ZombieBattleground
+var ctx contract.Context
 
 func main() {
+	zvContract = &battleground.ZombieBattleground{}
+	setupZBContract()
 
 	runGocui()
 	return

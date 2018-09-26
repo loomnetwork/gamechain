@@ -79,7 +79,7 @@ func runGocui() {
 		log.Println("Failed to create board view:", err)
 		return
 	}
-	ov.Title = "ZugB - Console edition - Play Board"
+	ov.Title = "ZombieBattleground - Console edition - Play Board"
 	ov.FgColor = c.ColorGreen
 	// Let the view scroll if the output exceeds the visible area.
 	ov.Autoscroll = true
@@ -177,13 +177,15 @@ func runGocui() {
 	}
 
 	// Fill the list view.
-	for _, s := range listItems {
+	for _, s := range listItemsForPlayer(1) {
 		// Again, we can simply Fprint to a view.
 		_, err = fmt.Fprintln(lv, s)
 		if err != nil {
 			log.Println("Error writing to the list view:", err)
 			return
 		}
+	}
+	for _, s := range listItemsForPlayer(2) {
 		_, err = fmt.Fprintln(lv2, s)
 		if err != nil {
 			log.Println("Error writing to the list view:", err)
