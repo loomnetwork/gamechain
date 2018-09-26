@@ -375,6 +375,22 @@ func loadGameMode(ctx contract.StaticContext, name string) (*zb.GameMode, error)
 	return &gm, nil
 }
 
+func addGameModeToList(ctx contract.Context, gameMode *zb.GameMode) error {
+	gameModeList, err := loadGameModeList(ctx)
+	if gameModeList == nil {
+		gameModeList = &zb.GameModeList{GameModes: []*zb.GameMode{}}
+	} else if err != nil {
+		return err
+	}
+	gameModeList.GameModes = append(gameModeList.GameModes, gameMode)
+
+	if err = saveGameModeList(ctx, gameModeList); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error {
 	if err := ctx.Set(gameModeListKey, gameModeList); err != nil {
 		return err

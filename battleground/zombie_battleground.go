@@ -11,6 +11,7 @@ import (
 	"github.com/loomnetwork/go-loom/types"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
+	"github.com/prometheus/common/log"
 )
 
 type ZombieBattleground struct {
@@ -765,6 +766,7 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	}
 
 	if gameMode, _ := loadGameMode(ctx, req.Name); gameMode != nil {
+		log.Infof("%+v", gameMode)
 		return nil, errors.New("This game mode already exists")
 	}
 
@@ -778,6 +780,10 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	}
 
 	if err := saveGameMode(ctx, gameMode); err != nil {
+		return nil, err
+	}
+
+	if err := addGameModeToList(ctx, gameMode); err != nil {
 		return nil, err
 	}
 
