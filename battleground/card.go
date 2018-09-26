@@ -128,10 +128,9 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 	for _, collection := range deck.Cards {
 		for i := int64(0); i < collection.Amount; i++ {
+			// TODO: finalize that fields are needed
 			cards = append(cards, &zb.CardInstance{
 				Prototype: &zb.CardPrototype{Name: collection.CardName},
-				Attack:    2,
-				Defence:   3,
 			})
 		}
 	}
