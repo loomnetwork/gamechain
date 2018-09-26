@@ -5,8 +5,10 @@ import (
 	"sort"
 
 	"github.com/golang/protobuf/jsonpb"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/loomnetwork/go-loom/types"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
 )
@@ -22,6 +24,13 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
+
+	if req.Oracle != nil {
+		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
+		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
+			return errors.Wrap(err, "Error setting oracle")
+		}
+	}
 
 	// initialize card library
 	cardList := zb.CardList{
@@ -338,7 +347,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -698,6 +707,32 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	return &zb.PlayerActionResponse{}, nil
+}
+
+func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
+	if ctx.Has(oracleKey) {
+		if err := z.validateOracle(ctx, params.OldOracle); err != nil {
+			return errors.Wrap(err, "validating oracle")
+		}
+		ctx.GrantPermission([]byte(params.OldOracle.String()), []string{"old-oracle"})
+	}
+	ctx.GrantPermission([]byte(params.NewOracle.String()), []string{"oracle"})
+
+	if err := ctx.Set(oracleKey, params.NewOracle); err != nil {
+		return errors.Wrap(err, "setting new oracle")
+	}
+	return nil
+}
+
+func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Address) error {
+	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"oracle"}); !ok {
+		return errors.New("Oracle unverified")
+	}
+
+	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"old-oracle"}); ok {
+		return errors.New("This oracle is expired. Please use latest oracle")
+	}
+	return nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
