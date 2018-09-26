@@ -33,6 +33,7 @@ var (
 	defaultHeroesKey            = []byte("default-heroes")
 	matchCountKey               = []byte("match-count")
 	playersInMatchmakingListKey = []byte("players-matchmaking")
+	gameModeListKey             = []byte("gamemode-list")
 
 	oracleKey = []byte("oracle-key")
 )
@@ -74,6 +75,10 @@ func UserMatchKey(userID string) []byte {
 
 func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
+}
+
+func GameModeKey(name string) []byte {
+	return []byte("gamemode:" + name)
 }
 
 // func userAccountKey(id string) []byte {
@@ -350,4 +355,61 @@ func loadUserMatch(ctx contract.StaticContext, userID string) (*zb.Match, error)
 		return nil, err
 	}
 	return &m, nil
+}
+
+func saveGameMode(ctx contract.Context, gameMode *zb.GameMode) error {
+	if err := ctx.Set(GameModeKey(gameMode.Name), gameMode); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadGameMode(ctx contract.StaticContext, name string) (*zb.GameMode, error) {
+	var gm zb.GameMode
+	err := ctx.Get(GameModeKey(name), &gm)
+	if err != nil {
+		return nil, err
+	}
+
+	return &gm, nil
+}
+
+func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error {
+	if err := ctx.Set(gameModeListKey, gameModeList); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
+	var list zb.GameModeList
+	err := ctx.Get(gameModeListKey, &list)
+	if err != nil {
+		return nil, err
+	}
+
+	return &list, nil
+}
+
+func getGameModeFromList(gameModeList *zb.GameModeList, name string) *zb.GameMode {
+	for _, gameMode := range gameModeList.GameModes {
+		if strings.EqualFold(gameMode.Name, name) {
+			return gameMode
+		}
+	}
+
+	return nil
+}
+
+func deleteGameMode(gameModeList *zb.GameModeList, name string) (*zb.GameModeList, bool) {
+	newList := make([]*zb.GameMode, 0)
+	for _, gameMode := range gameModeList.GameModes {
+		if gameMode.Name != name {
+			newList = append(newList, gameMode)
+		}
+	}
+
+	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }

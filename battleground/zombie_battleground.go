@@ -734,4 +734,104 @@ func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Addr
 	return nil
 }
 
+func (z *ZombieBattleground) GetGameMode(ctx contract.StaticContext, req *zb.GetGameModeRequest) (*zb.GameMode, error) {
+	gameModeList, err := loadGameModeList(ctx) // we get the game mode list first, because deleted modes won't be in there
+	if err != nil {
+		return nil, err
+	}
+	gameMode := getGameModeFromList(gameModeList, req.Name)
+	if gameMode == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	return gameMode, nil
+}
+
+func (z *ZombieBattleground) ListGameModes(ctx contract.StaticContext, req *zb.ListGameModeRequest) (*zb.GameModeList, error) {
+	gameModeList, err := loadGameModeList(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return gameModeList, nil
+}
+
+func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
+	// if !isOwner(ctx, req.UserId) {
+	// 	return nil, ErrUserNotVerified
+	// }
+	if req.Name == "" {
+		return nil, errors.New("GameMode name cannot be empty")
+	}
+
+	if gameMode, err := loadGameMode(ctx, req.Name); gameMode != nil {
+		return nil, errors.New("This game mode already exists")
+	}
+
+	gameMode := &zb.GameMode{
+		Name:         req.Name,
+		Description:  req.Description,
+		Version:      req.Version,
+		Address:      &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}, // TODO!
+		Owner:        &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local},
+		GameModeType: zb.GameModeType_Community, // TODO!
+	}
+
+	if err := saveGameMode(ctx, gameMode); err != nil {
+		return nil, err
+	}
+
+	return gameMode, nil
+}
+
+func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
+	if req.Name == "" {
+		return nil, errors.New("GameMode name cannot be empty")
+	}
+
+	gameMode, err := loadGameMode(ctx, req.Name)
+	if err != nil {
+		return nil, errors.Wrap(err, "error while looking up game mode")
+	}
+
+	newGameMode := &zb.GameMode{
+		Name:         req.Name,
+		Description:  req.Description,
+		Version:      req.Version,
+		Address:      &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}, // TODO!
+		Owner:        gameMode.Owner,                                                        // owner cannot be changed
+		GameModeType: gameMode.GameModeType,                                                 // type cannot be changed
+	}
+
+	if err := saveGameMode(ctx, newGameMode); err != nil {
+		return nil, err
+	}
+
+	return newGameMode, nil
+}
+
+func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.DeleteGameModeRequest) error {
+	// TODO!
+	// if !isOwner(ctx, req.UserId) {
+	// 	return ErrUserNotVerified
+	// }
+
+	gameModeList, err := loadGameModeList(ctx)
+	if err != nil {
+		return err
+	}
+
+	var deleted bool
+	gameModeList, deleted = deleteGameMode(gameModeList, req.Name)
+	if !deleted {
+		return fmt.Errorf("game mode not found")
+	}
+
+	if err := saveGameModeList(ctx, gameModeList); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
