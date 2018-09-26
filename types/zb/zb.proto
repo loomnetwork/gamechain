@@ -324,8 +324,9 @@ message Match {
         Created      = 0;
         Matching     = 1;
         Started      = 2;
-        PlayerLeft   = 3;
-        Ended        = 4;
+        Playing      = 3;
+        PlayerLeft   = 4;
+        Ended        = 5;
     }
     Status status = 4;
 }
@@ -341,12 +342,6 @@ message MatchMakingInfo {
 
 enum PlayerActionType {
     NoneAction      = 0;
-    FindMatch       = 1;
-    AcceptMatch     = 2;
-    RejectMatch     = 3;
-    LeaveMatch      = 4;
-    AllAcceptMatch  = 5;
-    StartMatch      = 6;
     EndTurn         = 7;
     Mulligan        = 8;
     DrawCardPlayer  = 9;
@@ -357,7 +352,7 @@ enum PlayerActionType {
 }
 
 message PlayerAction {
-    PlayerActionType actionType = 1;
+    PlayerActionType actionType = 1; // not sure we really need this
     string playerId = 6;
     oneof action {
         PlayerActionCardAttack cardAttack = 2;
@@ -417,12 +412,21 @@ message GetMatchResponse {
     GameState gameState = 2;
 }
 
+message GetGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetGameStateResponse {
+    GameState gameState = 1;
+}
+
 message PlayerActionRequest {
     int64 matchId = 1;
     PlayerAction playerAction = 2;
 }
 
 message PlayerActionResponse {
+    GameState gameState = 1;
 }
 
 
