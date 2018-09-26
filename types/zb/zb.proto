@@ -207,12 +207,7 @@ message InitRequest {
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
     string version                             = 5;
-    Oracle oracle                              = 6;
-}
-
-message Oracle {
-    string  chain_id = 1;
-    Address local    = 2;
+    Address oracle                             = 6;
 }
 
 message UpdateOracle {
@@ -226,7 +221,7 @@ message UpdateInitRequest {
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
     string version                             = 5;
-    Oracle oracle                              = 6;
+    Address oracle                             = 6;
 }
 
 message UpsertAccountRequest {

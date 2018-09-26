@@ -33,6 +33,8 @@ var (
 	defaultHeroesKey            = []byte("default-heroes")
 	matchCountKey               = []byte("match-count")
 	playersInMatchmakingListKey = []byte("players-matchmaking")
+
+	oracleKey = []byte("oracle-key")
 )
 
 var (
