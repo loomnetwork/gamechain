@@ -1,5 +1,8 @@
 {
-    "oracle": "QjWhaN9qvpdI9MjS1YuL1GukwLc=",
+    "oracle": {
+      "chainId": "default",
+      "local": "iVxup0zz4MzFW67ncyUPrHsr3mQ="
+    },
     "default_collection": [
       {
         "card_name": "Pyromaz",
