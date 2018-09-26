@@ -11,13 +11,16 @@ build: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
-enum_gen: bin/zb-enum-gen
+tools: bin/zb-enum-gen bin/zb-console-game
 
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
 bin/zb-enum-gen:
-	go build -o $@ $(PKG)/tools/cmd
+	go build -o $@ tools/cmd/template/main.go
+
+bin/zb-console-game:
+	go build -o $@ tools/cmd/console_game/main.go
 
 contracts/zombiebattleground.1.0.0: proto
 	go build -o $@ $(PKG)/plugin
@@ -55,7 +58,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/grpc-ecosystem/go-grpc-prometheus \
 		github.com/prometheus/client_golang/prometheus \
 		github.com/loomnetwork/e2e \
-		github.com/iancoleman/strcase
+		github.com/iancoleman/strcase \
+		github.com/jroimartin/gocui
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
@@ -73,4 +77,4 @@ clean:
 		bin/zb-cli
 		bin/zb-enum-gen
 
-.PHONY: all clean test deps proto cli
+.PHONY: all clean test deps proto cli zb_console_game tools in/zb-enum-gen 
