@@ -106,8 +106,6 @@ func TestInvalidUserTurn(t *testing.T) {
 	gp := &Gameplay{
 		State: state,
 	}
-	// err := RunStateMachine(gp)
-	// assert.Nil(t, err)
 	// add more action
 	err := gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2})
 	assert.Equal(t, err, errInvalidPlayer)

@@ -991,3 +991,116 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response.GameState)
 	})
 }
+
+func TestGameStateOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	// make users have decks
+	t.Run("ListDecksPlayer1", func(t *testing.T) {
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
+	t.Run("ListDecksPlayer2", func(t *testing.T) {
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
+
+	var matchID int64
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId: 1,
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId: 1,
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.NotNil(t, response.GameState)
+	})
+
+	t.Run("SendEndturnPlayer2_Failed", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-2",
+			},
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, errInvalidPlayer, err)
+	})
+
+	t.Run("SendEndturnPlayer1_Success", func(t *testing.T) {
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-1",
+			},
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.EqualValues(t, 0, response.GameState.CurrentActionIndex, "1st action")
+		assert.EqualValues(t, 1, response.GameState.CurrentPlayerIndex, "player-2 should be active")
+	})
+	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-2",
+			},
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.EqualValues(t, 1, response.GameState.CurrentActionIndex, "1st action")
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active")
+	})
+}
