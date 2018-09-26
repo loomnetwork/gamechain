@@ -747,7 +747,7 @@ func (z *ZombieBattleground) GetGameMode(ctx contract.StaticContext, req *zb.Get
 	return gameMode, nil
 }
 
-func (z *ZombieBattleground) ListGameModes(ctx contract.StaticContext, req *zb.ListGameModeRequest) (*zb.GameModeList, error) {
+func (z *ZombieBattleground) ListGameModes(ctx contract.StaticContext, req *zb.ListGameModesRequest) (*zb.GameModeList, error) {
 	gameModeList, err := loadGameModeList(ctx)
 	if err != nil {
 		return nil, err
@@ -764,7 +764,7 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 		return nil, errors.New("GameMode name cannot be empty")
 	}
 
-	if gameMode, err := loadGameMode(ctx, req.Name); gameMode != nil {
+	if gameMode, _ := loadGameMode(ctx, req.Name); gameMode != nil {
 		return nil, errors.New("This game mode already exists")
 	}
 
