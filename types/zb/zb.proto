@@ -206,7 +206,8 @@ message InitRequest {
     repeated CardCollection default_collection = 2;
     repeated Card cards                        = 3;
     repeated Hero heroes                       = 4;
-    Oracle   oracle                            = 5;
+    string version                             = 5;
+    Oracle oracle                              = 6;
 }
 
 message Oracle {
@@ -219,6 +220,15 @@ message UpdateOracle {
     Address old_oracle = 2;
 }
 
+message UpdateInitRequest {
+    repeated Deck default_decks                = 1;
+    repeated CardCollection default_collection = 2;
+    repeated Card cards                        = 3;
+    repeated Hero heroes                       = 4;
+    string version                             = 5;
+    Oracle oracle                              = 6;
+}
+
 message UpsertAccountRequest {
     string user_id             = 1;
     bool phone_number_verified = 2;
@@ -229,6 +239,7 @@ message UpsertAccountRequest {
     int64 elo_score            = 7;
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
+    string version = 10;
 }
 
 message GetAccountRequest {
@@ -281,6 +292,7 @@ message ListDecksResponse {
 }
 
 message ListCardLibraryRequest {
+    string version = 1;
 }
 
 message ListCardLibraryResponse {
@@ -288,6 +300,7 @@ message ListCardLibraryResponse {
 }
 
 message ListHeroLibraryRequest {
+    string version = 1;
 }
 
 message ListHeroLibraryResponse {
@@ -308,6 +321,13 @@ message GetCollectionResponse {
 message PlayerState {
     string id = 1;
     PlayerActionType currentAction = 2;
+    OverlordInstance overlordInstance = 3;
+    repeated CardInstance cardsInHand = 4;
+    repeated CardInstance cardsOnBoard = 5;
+    repeated CardInstance cardsInDeck = 6;
+    Deck deck  = 7;
+    int32 hp   = 8;
+    int32 mana = 9;
 }
 
 message Match {
@@ -322,6 +342,15 @@ message Match {
         Ended        = 4;
     }
     Status status = 4;
+}
+
+message MatchMakingInfoList {
+    repeated MatchMakingInfo infos = 1;
+}
+
+message MatchMakingInfo {
+    string userId = 1;
+    Deck deck = 2;
 }
 
 enum PlayerActionType {
@@ -378,34 +407,11 @@ message MatchCount {
 
 message FindMatchRequest {
     string userId = 1;
+    int64 deckId  = 2;
 }
 
 message FindMatchResponse {
     Match match = 1;
-}
-
-message AcceptMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message AcceptMatchResponse {
-}
-
-message RejectMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message RejectMatchResponse {
-}
-
-message StartMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message StartMatchResponse {
 }
 
 message LeaveMatchRequest {

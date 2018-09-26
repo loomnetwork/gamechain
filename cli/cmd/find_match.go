@@ -10,6 +10,7 @@ import (
 
 var findMatchCmdArgs struct {
 	userID string
+	deckID int64
 }
 
 var findMatchCmd = &cobra.Command{
@@ -17,7 +18,10 @@ var findMatchCmd = &cobra.Command{
 	Short: "find match for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req zb.FindMatchRequest
+		var req = zb.FindMatchRequest{
+			UserId: findMatchCmdArgs.userID,
+			DeckId: findMatchCmdArgs.deckID,
+		}
 		var resp zb.FindMatchResponse
 
 		req.UserId = findMatchCmdArgs.userID
@@ -36,4 +40,5 @@ func init() {
 	rootCmd.AddCommand(findMatchCmd)
 
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 }
