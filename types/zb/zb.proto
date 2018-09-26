@@ -461,6 +461,14 @@ message GameModeRequest {
     GameModeType game_mode_type = 4;
 }
 
+message DeleteGameModeRequest {
+    string name = 1;
+}
+
+message GetGameModeRequest {
+    string name = 1;
+}
+
 message ListGameModesRequest {
 }
 
