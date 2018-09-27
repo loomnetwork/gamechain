@@ -636,12 +636,6 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	if err != nil {
 		return nil, err
 	}
-	// // update the player state on the match
-	// for i := 0; i < len(match.PlayerStates); i++ {
-	// 	if req.UserId == match.PlayerStates[i].Id {
-	// 		match.PlayerStates[i].CurrentAction = zb.PlayerActionType_LeaveMatch
-	// 	}
-	// }
 
 	match.Status = zb.Match_Ended
 	if err := saveMatch(ctx, match); err != nil {
@@ -668,8 +662,6 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {
-	// @LOCK: TODO: update Playing to match status when the first player update
-
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
