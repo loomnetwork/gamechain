@@ -991,3 +991,96 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response.GameState)
 	})
 }
+
+func TestGameModeOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+
+	var ID string
+
+	t.Run("Add Game Mode", func(t *testing.T) {
+		gameMode, err := c.AddGameMode(ctx, &zb.GameModeRequest{
+			Name:        "Test game mode",
+			Description: "Just a test",
+			Version:     "0.1",
+			Address:     "0xf16a25a1b4e6434bacf9d037d69d675dcf852691",
+		})
+		assert.Nil(t, err)
+		ID = gameMode.ID
+		assert.Equal(t, "Test game mode", gameMode.Name)
+		assert.Equal(t, "Just a test", gameMode.Description)
+		assert.Equal(t, "0.1", gameMode.Version)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
+	})
+
+	t.Run("Get Game Mode", func(t *testing.T) {
+		gameMode, err := c.GetGameMode(ctx, &zb.GetGameModeRequest{
+			ID: ID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, "Test game mode", gameMode.Name)
+		assert.Equal(t, "Just a test", gameMode.Description)
+		assert.Equal(t, "0.1", gameMode.Version)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
+	})
+
+	t.Run("Add another Game Mode", func(t *testing.T) {
+		gameMode, err := c.AddGameMode(ctx, &zb.GameModeRequest{
+			Name:        "Test game mode 2",
+			Description: "Just another test",
+			Version:     "0.1",
+			Address:     "0xf16a25a1b4e6434bacf9d037d69d675dcf852692",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, "Test game mode 2", gameMode.Name)
+		assert.Equal(t, "Just another test", gameMode.Description)
+		assert.Equal(t, "0.1", gameMode.Version)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
+	})
+
+	t.Run("Update a Game Mode", func(t *testing.T) {
+		gameMode, err := c.UpdateGameMode(ctx, &zb.UpdateGameModeRequest{
+			ID:          ID,
+			Name:        "Test game mode",
+			Description: "Changed description",
+			Version:     "0.2",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, "Test game mode", gameMode.Name)
+		assert.Equal(t, "Changed description", gameMode.Description)
+		assert.Equal(t, "0.2", gameMode.Version)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
+	})
+
+	t.Run("List Game Modes", func(t *testing.T) {
+		gameModeList, err := c.ListGameModes(ctx, &zb.ListGameModesRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, 2, len(gameModeList.GameModes))
+		assert.Equal(t, ID, gameModeList.GameModes[0].ID)
+		assert.Equal(t, "0.2", gameModeList.GameModes[0].Version)
+		assert.Equal(t, "Test game mode 2", gameModeList.GameModes[1].Name)
+	})
+
+	t.Run("Delete Game Mode", func(t *testing.T) {
+		err := c.DeleteGameMode(ctx, &zb.DeleteGameModeRequest{
+			ID: ID,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GameModeList should not contain deleted GameMode", func(t *testing.T) {
+		gameModeList, err := c.ListGameModes(ctx, &zb.ListGameModesRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(gameModeList.GameModes))
+		assert.NotEqual(t, ID, gameModeList.GameModes[0].ID)
+		assert.Equal(t, "Test game mode 2", gameModeList.GameModes[0].Name)
+	})
+}
