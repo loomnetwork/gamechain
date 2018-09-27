@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
@@ -11,6 +12,8 @@ var (
 	errInvalidPlayer         = errors.New("invalid player")
 	errCurrentActionNotfound = errors.New("current action not found")
 	errInvalidAction         = errors.New("invalid action")
+	errNotEnoughPlayer       = errors.New("not enough players")
+	errAlreadyTossCoin       = errors.New("already tossed coin")
 )
 
 type Gameplay struct {
@@ -21,9 +24,53 @@ type Gameplay struct {
 
 type stateFn func(*Gameplay) stateFn
 
-func RunStateMachine(g *Gameplay) error {
+// NewGamePlay initializes GamePlay with default game state and run to the  latest state
+func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
+	state := &zb.GameState{
+		Id:                 id,
+		CurrentActionIndex: -1, // use -1 to avoid confict with default value
+		PlayerStates:       players,
+		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
+	}
+	return GamePlayFrom(state)
+}
+
+// GamePlayFrom initializes and run game to the latest state
+func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
+	g := &Gameplay{State: state}
 	g.run()
-	return g.err
+	if g.err != nil {
+		return nil, g.err
+	}
+	return g, nil
+}
+
+// TossCoin decides who the first player is
+func (g *Gameplay) TossCoin(seed int64) error {
+	if len(g.State.PlayerStates) == 0 {
+		return errNotEnoughPlayer
+	}
+	// prevent modifiying already-init state
+	if g.State.CurrentPlayerIndex != -1 {
+		return errAlreadyTossCoin
+	}
+	
+	// TODO: test this function on multinode validators
+	r := rand.New(rand.NewSource(seed))
+	n := r.Int31n(int32(len(g.State.PlayerStates)))
+	g.State.CurrentPlayerIndex = n
+	return nil
+}
+
+// DrawCardFirsthand draw cards for player first hands
+// First player gets a total of 4 cards for his first hand (i.e. Mulligan +1)
+// Second player gets a total of 5 cards for his first hand (i.e. Mulligan +2)
+func (g *Gameplay) DrawCardFirsthand(seed int64) error {
+	// TODO: Check if the user already draw cards for his firsthand?
+	// r := rand.New(rand.NewSource(seed))
+	// first := g.State.CurrentActionIndex
+
+	return nil
 }
 
 func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
@@ -171,6 +218,8 @@ func gameStart(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
 	default:
 		return nil
 	}
