@@ -1064,7 +1064,7 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.NotNil(t, response.GameState)
 	})
-
+	
 	t.Run("SendEndturnPlayer2_Failed", func(t *testing.T) {
 		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
@@ -1104,3 +1104,5 @@ func TestGameStateOperations(t *testing.T) {
 		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active")
 	})
 }
+
+
