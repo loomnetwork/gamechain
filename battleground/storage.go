@@ -77,8 +77,8 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-func GameModeKey(name string) []byte {
-	return []byte("gamemode:" + name)
+func GameModeKey(ID string) []byte {
+	return []byte("gamemode:" + ID)
 }
 
 // func userAccountKey(id string) []byte {
@@ -357,17 +357,18 @@ func loadUserMatch(ctx contract.StaticContext, userID string) (*zb.Match, error)
 	return &m, nil
 }
 
+// TODO: do we need this at all? saving game mode twice right now, once in list and once here
 func saveGameMode(ctx contract.Context, gameMode *zb.GameMode) error {
-	if err := ctx.Set(GameModeKey(gameMode.Name), gameMode); err != nil {
+	if err := ctx.Set(GameModeKey(gameMode.ID), gameMode); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func loadGameMode(ctx contract.StaticContext, name string) (*zb.GameMode, error) {
+func loadGameMode(ctx contract.StaticContext, ID string) (*zb.GameMode, error) {
 	var gm zb.GameMode
-	err := ctx.Get(GameModeKey(name), &gm)
+	err := ctx.Get(GameModeKey(ID), &gm)
 	if err != nil {
 		return nil, err
 	}
@@ -409,9 +410,9 @@ func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
 	return &list, nil
 }
 
-func getGameModeFromList(gameModeList *zb.GameModeList, name string) *zb.GameMode {
+func getGameModeFromList(gameModeList *zb.GameModeList, ID string) *zb.GameMode {
 	for _, gameMode := range gameModeList.GameModes {
-		if strings.EqualFold(gameMode.Name, name) {
+		if gameMode.ID == ID {
 			return gameMode
 		}
 	}
@@ -419,10 +420,20 @@ func getGameModeFromList(gameModeList *zb.GameModeList, name string) *zb.GameMod
 	return nil
 }
 
-func deleteGameMode(gameModeList *zb.GameModeList, name string) (*zb.GameModeList, bool) {
+func getGameModeFromListByName(gameModeList *zb.GameModeList, name string) *zb.GameMode {
+	for _, gameMode := range gameModeList.GameModes {
+		if gameMode.ID == name {
+			return gameMode
+		}
+	}
+
+	return nil
+}
+
+func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList, bool) {
 	newList := make([]*zb.GameMode, 0)
 	for _, gameMode := range gameModeList.GameModes {
-		if gameMode.Name != name {
+		if gameMode.ID != ID {
 			newList = append(newList, gameMode)
 		}
 	}

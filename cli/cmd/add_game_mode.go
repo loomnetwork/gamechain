@@ -12,6 +12,7 @@ var addGameModeCmdArgs struct {
 	name         string
 	description  string
 	version      string
+	address      string
 	gameModeType int
 }
 
@@ -25,13 +26,16 @@ var addGameModeCmd = &cobra.Command{
 		req.Name = addGameModeCmdArgs.name
 		req.Description = addGameModeCmdArgs.description
 		req.Version = addGameModeCmdArgs.version
+		req.Address = addGameModeCmdArgs.address
 		req.GameModeType = zb.GameModeType(addGameModeCmdArgs.gameModeType)
 
-		_, err := commonTxObjs.contract.Call("AddGameMode", &req, signer, nil)
+		result := zb.GameMode{}
+
+		_, err := commonTxObjs.contract.Call("AddGameMode", &req, signer, &result)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("added game mode")
+		fmt.Printf("added game mode: %+v", result)
 
 		return nil
 	},
@@ -42,5 +46,6 @@ func init() {
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.name, "name", "n", "", "name for the new game mode")
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.description, "description", "d", "", "description")
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
+	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.address, "address", "a", "", "address of game mode")
 	addGameModeCmd.Flags().IntVarP(&addGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
 }
