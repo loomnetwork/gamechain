@@ -105,6 +105,16 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	return nil
 }
 
+func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.UpdateCardListRequest) error {
+	cardList := zb.CardList{
+		Cards: req.Cards,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	if err := ctx.Get(AccountKey(req.UserId), &account); err != nil {
@@ -338,7 +348,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -578,13 +588,15 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	gamestate := zb.GameState{
-		Id:                 match.Id,
-		CurrentActionIndex: -1,
-		PlayerStates:       match.PlayerStates,
-		CurrentPlayerIndex: 0,
+	gp, err := NewGamePlay(match.Id, match.PlayerStates)
+	if err != nil {
+		return nil, err
 	}
-	if err := saveGameState(ctx, &gamestate); err != nil {
+	// if err := gp.TossCoin(ctx.Now().Unix()); err != nil {
+	// 	return nil, err
+	// }
+	
+	if err := saveGameState(ctx, gp.State); err != nil {
 		return nil, err
 	}
 
@@ -634,12 +646,6 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	if err != nil {
 		return nil, err
 	}
-	// // update the player state on the match
-	// for i := 0; i < len(match.PlayerStates); i++ {
-	// 	if req.UserId == match.PlayerStates[i].Id {
-	// 		match.PlayerStates[i].CurrentAction = zb.PlayerActionType_LeaveMatch
-	// 	}
-	// }
 
 	match.Status = zb.Match_Ended
 	if err := saveMatch(ctx, match); err != nil {
@@ -666,8 +672,6 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {
-	// @LOCK: TODO: update Playing to match status when the first player update
-
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -687,7 +691,10 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp := &Gameplay{State: gamestate}
+	gp, err := GamePlayFrom(gamestate)
+	if err != nil {
+		return nil, err
+	}
 	gp.PrintState()
 	if err := gp.AddAction(req.PlayerAction); err != nil {
 		return nil, err

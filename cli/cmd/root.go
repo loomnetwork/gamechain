@@ -13,6 +13,7 @@ var rootCmdArgs struct {
 	privateKeyFilePath string
 	readURI            string
 	writeURI           string
+	chainID            string
 }
 
 var commonTxObjs struct {
@@ -39,8 +40,8 @@ func readKeyFile() error {
 	return nil
 }
 
-func connectToRPC(readURI string, writeURI string) error {
-	rpcClient := client.NewDAppChainRPCClient("default", writeURI, readURI)
+func connectToRPC(chainID, readURI, writeURI string) error {
+	rpcClient := client.NewDAppChainRPCClient(chainID, writeURI, readURI)
 
 	loomAddress, err := rpcClient.Resolve("ZombieBattleground")
 	if err != nil {
@@ -64,7 +65,7 @@ var rootCmd = &cobra.Command{
 			return fmt.Errorf("error while reading private key file: %s", err.Error())
 		}
 
-		err = connectToRPC(rootCmdArgs.readURI, rootCmdArgs.writeURI)
+		err = connectToRPC(rootCmdArgs.chainID, rootCmdArgs.readURI, rootCmdArgs.writeURI)
 		if err != nil {
 			return fmt.Errorf("error while establishing RPC connection: %s", err.Error())
 		}
@@ -77,6 +78,7 @@ func Execute() error {
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.privateKeyFilePath, "key", "k", "priv.key", "Private key file path")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.readURI, "readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.writeURI, "writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
+	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.chainID, "chainID", "c", "default", "Chain ID")
 
 	return rootCmd.Execute()
 }
