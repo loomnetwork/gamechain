@@ -105,6 +105,16 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	return nil
 }
 
+func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.UpdateCardListRequest) error {
+	cardList := zb.CardList{
+		Cards: req.Cards,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	if err := ctx.Get(AccountKey(req.UserId), &account); err != nil {
@@ -338,7 +348,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
