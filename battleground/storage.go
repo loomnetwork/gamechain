@@ -77,10 +77,6 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-func GameModeKey(ID string) []byte {
-	return []byte("gamemode:" + ID)
-}
-
 // func userAccountKey(id string) []byte {
 // 	return util.PrefixKey(userPreifx, []byte(id))
 // }
