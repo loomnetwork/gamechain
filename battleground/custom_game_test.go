@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"strings"
 	"testing"
@@ -10,21 +11,42 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/loomchain"
+	"github.com/loomnetwork/loomchain/eth/subs"
 	levm "github.com/loomnetwork/loomchain/evm"
 	"github.com/loomnetwork/loomchain/plugin"
+	registry "github.com/loomnetwork/loomchain/registry/factory"
 	"github.com/loomnetwork/loomchain/store"
 	lvm "github.com/loomnetwork/loomchain/vm"
 	"github.com/stretchr/testify/require"
-	abci "github.com/tendermint/tendermint/abci/types"
 )
 
+// Implements loomchain.EventHandler interface
+type fakeEventHandler struct {
+}
+
+func (eh *fakeEventHandler) Post(height uint64, e *loomchain.EventData) error {
+	return nil
+}
+
+func (eh *fakeEventHandler) EmitBlockTx(height uint64) error {
+	return nil
+}
+
+func (eh *fakeEventHandler) SubscriptionSet() *loomchain.SubscriptionSet {
+	return nil
+}
+
+func (eh *fakeEventHandler) EthSubscriptionSet() *subs.EthSubscriptionSet {
+	return nil
+}
+
 func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Address, *abi.ABI, error) {
-	contractName := "conquermode.json"
 	contractAddr := loom.Address{}
-	hexByteCode, err := ioutil.ReadFile("testdata/" + filename + ".bin")
-	if err != nil {
-		return contractAddr, nil, err
-	}
+	//hexByteCode, err := ioutil.ReadFile("testdata/" + filename + ".bin")
+	//if err != nil {
+	//	return contractAddr, nil, err
+	//}
+	hexByteCode := zbGameModeBIN
 	abiBytes, err := ioutil.ReadFile("testdata/" + filename + ".abi")
 	if err != nil {
 		return contractAddr, nil, err
@@ -34,6 +56,8 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 		return contractAddr, nil, err
 	}
 	byteCode := common.FromHex(string(hexByteCode))
+	fmt.Printf("vm-%v\n", vm)
+	fmt.Printf("caller-%v\n", caller)
 	_, contractAddr, err = vm.Create(caller, byteCode, loom.NewBigUIntFromInt(0))
 	if err != nil {
 		return contractAddr, nil, err
@@ -43,21 +67,20 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 
 func TestCustomGameMode(t *testing.T) {
 	loader := plugin.NewStaticLoader()
+	owner := loom.RootAddress("chain")
 
-	//Ok need to figure out how to do deploy without exposing ABCI and tendermint
-	block := abci.Header{
-		ChainID: "chain",
-		Height:  int64(34),
-		Time:    int64(123456789),
-	}
-	state := loomchain.NewStoreState(context.Background(), store.NewMemStore(), block)
+	state := loomchain.DummyNewStoreState(context.Background(), store.NewMemStore())
+
 	createRegistry, err := registry.NewRegistryFactory(registry.LatestRegistryVersion)
 	require.NoError(t, err)
-	vm := plugin.NewPluginVM(loader, state, createRegistry(state), &fakeEventHandler{}, nil, nil)
-	evm := levm.NewLoomVm(state, nil, nil)
-	evmContractAddr, evmContractABI, err := deployEVMContract(evm, "VMTestContract", owner)
+	vm := plugin.NewPluginVM(loader, state, createRegistry(state), &fakeEventHandler{}, nil, nil, nil)
+	evm := levm.NewLoomVm(state, nil, nil, nil)
+	evmContractAddr, evmContractABI, err := deployEVMContract(evm, "conquermode", owner)
 	require.NoError(t, err)
 
+	fmt.Printf("deployed contract -%v -%v \n", evmContractAddr, evmContractABI)
+
+	fmt.Printf("vm -%v\n", vm)
 	/*
 		var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 		pubKey, _ := hex.DecodeString(pubKeyHexString)
