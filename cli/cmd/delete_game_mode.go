@@ -9,7 +9,7 @@ import (
 )
 
 var deleteGameModeCmdArgs struct {
-	name string
+	ID string
 }
 
 var deleteGameModeCmd = &cobra.Command{
@@ -19,13 +19,13 @@ var deleteGameModeCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req zb.DeleteGameModeRequest
 
-		req.Name = deleteGameModeCmdArgs.name
+		req.ID = deleteGameModeCmdArgs.ID
 
 		_, err := commonTxObjs.contract.Call("DeleteGameMode", &req, signer, nil)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deleted game mode: %s", req.Name)
+		fmt.Printf("deleted game mode: %s", req.ID)
 
 		return nil
 	},
@@ -33,5 +33,5 @@ var deleteGameModeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deleteGameModeCmd)
-	deleteGameModeCmd.Flags().StringVarP(&deleteGameModeCmdArgs.name, "name", "n", "", "name of the game mode")
+	deleteGameModeCmd.Flags().StringVar(&deleteGameModeCmdArgs.ID, "id", "", "id of the game mode")
 }

@@ -10,7 +10,7 @@ import (
 )
 
 var getGameModeCmdArgs struct {
-	name string
+	ID string
 }
 
 var getGameModeCmd = &cobra.Command{
@@ -26,7 +26,7 @@ var getGameModeCmd = &cobra.Command{
 		var req zb.GetGameModeRequest
 		var gameMode = zb.GameMode{}
 
-		req.Name = getGameModeCmdArgs.name
+		req.ID = getGameModeCmdArgs.ID
 
 		_, err := commonTxObjs.contract.StaticCall("GetGameMode", &req, callerAddr, &gameMode)
 		if err != nil {
@@ -40,5 +40,5 @@ var getGameModeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(getGameModeCmd)
-	getGameModeCmd.Flags().StringVarP(&getGameModeCmdArgs.name, "name", "n", "", "name of the game mode")
+	getGameModeCmd.Flags().StringVar(&getGameModeCmdArgs.ID, "id", "", "id of the game mode")
 }

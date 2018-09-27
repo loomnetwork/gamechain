@@ -1,7 +1,11 @@
 package battleground
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"os"
 	"sort"
 
 	"github.com/golang/protobuf/jsonpb"
@@ -11,11 +15,12 @@ import (
 	"github.com/loomnetwork/go-loom/types"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
-	"github.com/prometheus/common/log"
 )
 
 type ZombieBattleground struct {
 }
+
+var secret string
 
 func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 	return plugin.Meta{
@@ -25,6 +30,12 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
+
+	secret = os.Getenv("SECRET_KEY")
+	if secret == "" {
+		secret = "justsowecantestwithoutenvvar"
+	}
+
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
 		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
@@ -740,7 +751,7 @@ func (z *ZombieBattleground) GetGameMode(ctx contract.StaticContext, req *zb.Get
 	if err != nil {
 		return nil, err
 	}
-	gameMode := getGameModeFromList(gameModeList, req.Name)
+	gameMode := getGameModeFromList(gameModeList, req.ID)
 	if gameMode == nil {
 		return nil, contract.ErrNotFound
 	}
@@ -764,17 +775,35 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	if req.Name == "" {
 		return nil, errors.New("GameMode name cannot be empty")
 	}
+	if req.Address == "" {
+		return nil, errors.New("GameMode address cannot be empty")
+	}
+	// TODO: what else needs to be validated?
 
-	if gameMode, _ := loadGameMode(ctx, req.Name); gameMode != nil {
-		log.Infof("%+v", gameMode)
-		return nil, errors.New("This game mode already exists")
+	gameModeList, err := loadGameModeList(ctx)
+	if err != nil && err == contract.ErrNotFound {
+		gameModeList = &zb.GameModeList{GameModes: []*zb.GameMode{}}
+	}
+	if gameMode := getGameModeFromListByName(gameModeList, req.Name); gameMode != nil {
+		return nil, errors.New("A game mode with that name already exists")
+	}
+
+	// create a GUID from the hash of the gameMode fields
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write([]byte(req.Name + req.Description + req.Version + req.Address))
+	ID := hex.EncodeToString(h.Sum(nil))
+
+	addr, err := loom.LocalAddressFromHexString(req.Address)
+	if err != nil {
+		return nil, err
 	}
 
 	gameMode := &zb.GameMode{
+		ID:           ID,
 		Name:         req.Name,
 		Description:  req.Description,
 		Version:      req.Version,
-		Address:      &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}, // TODO!
+		Address:      &types.Address{ChainId: "default", Local: addr}, // TODO: fix chainid
 		Owner:        &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local},
 		GameModeType: zb.GameModeType_Community, // TODO!
 	}
@@ -790,26 +819,35 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	return gameMode, nil
 }
 
-func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
+func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.UpdateGameModeRequest) (*zb.GameMode, error) {
 	if req.Name == "" {
 		return nil, errors.New("GameMode name cannot be empty")
 	}
 
-	gameMode, err := loadGameMode(ctx, req.Name)
+	gameModeList, err := loadGameModeList(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "error while looking up game mode")
+		return nil, err
+	}
+	gameMode := getGameModeFromList(gameModeList, req.ID)
+	if gameMode == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	addr, err := loom.LocalAddressFromHexString(req.Address)
+	if err != nil {
+		return nil, err
 	}
 
 	newGameMode := &zb.GameMode{
 		Name:         req.Name,
 		Description:  req.Description,
 		Version:      req.Version,
-		Address:      &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}, // TODO!
-		Owner:        gameMode.Owner,                                                        // owner cannot be changed
-		GameModeType: gameMode.GameModeType,                                                 // type cannot be changed
+		Address:      &types.Address{ChainId: "default", Local: addr}, // TODO: fix chainid
+		Owner:        gameMode.Owner,                                  // owner cannot be changed
+		GameModeType: gameMode.GameModeType,                           // type cannot be changed
 	}
 
-	if err := saveGameMode(ctx, newGameMode); err != nil {
+	if err := addGameModeToList(ctx, newGameMode); err != nil {
 		return nil, err
 	}
 
@@ -828,7 +866,7 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	}
 
 	var deleted bool
-	gameModeList, deleted = deleteGameMode(gameModeList, req.Name)
+	gameModeList, deleted = deleteGameMode(gameModeList, req.ID)
 	if !deleted {
 		return fmt.Errorf("game mode not found")
 	}

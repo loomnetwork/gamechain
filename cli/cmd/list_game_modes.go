@@ -27,12 +27,13 @@ var listGameModesCmd = &cobra.Command{
 		}
 
 		for _, gameMode := range result.GameModes {
+			fmt.Printf("ID: %s\n", gameMode.ID)
 			fmt.Printf("Name: %s\n", gameMode.Name)
 			fmt.Printf("Description: %s\n", gameMode.Description)
 			fmt.Printf("Version: %s\n", gameMode.Version)
 			fmt.Printf("GameModeType: %s\n", gameMode.GameModeType)
-			fmt.Printf("Address: %s\n", gameMode.Address)
-			fmt.Printf("Owner: %s\n", gameMode.Owner)
+			fmt.Printf("Address: %s\n", gameMode.Address.String())
+			fmt.Printf("Owner: %s\n", gameMode.Owner.String())
 		}
 		return nil
 	},
