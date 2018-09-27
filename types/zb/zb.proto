@@ -341,14 +341,14 @@ message MatchMakingInfo {
 }
 
 enum PlayerActionType {
-    NoneAction      = 0;
-    EndTurn         = 7;
-    Mulligan        = 8;
-    DrawCardPlayer  = 9;
-    PlayCard        = 10;
-    CardAttack      = 11;
-    UseCardAbility  = 12;
-    UseOverlordSkill = 13;
+    NoneAction       = 0;
+    EndTurn          = 1;
+    Mulligan         = 2;
+    DrawCard         = 3;
+    PlayCard         = 4;
+    CardAttack       = 5;
+    UseCardAbility   = 6;
+    UseOverlordSkill = 7;
 }
 
 message PlayerAction {

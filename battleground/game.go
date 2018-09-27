@@ -63,7 +63,7 @@ func (g *Gameplay) resume() {
 	switch next.ActionType {
 	case zb.PlayerActionType_CardAttack:
 		state = actionCardAttack
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		state = actionDrawCard
 	case zb.PlayerActionType_PlayCard:
 		state = actionPlayCard
@@ -169,7 +169,7 @@ func gameStart(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
 	default:
 		return nil
@@ -177,7 +177,7 @@ func gameStart(g *Gameplay) stateFn {
 }
 
 func actionDrawCard(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_DrawCardPlayer)
+	fmt.Printf("state: %v\n", zb.PlayerActionType_DrawCard)
 	if g.isEnded() {
 		return nil
 	}
@@ -211,7 +211,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
 	case zb.PlayerActionType_PlayCard:
 		return actionPlayCard
@@ -255,7 +255,7 @@ func actionPlayCard(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
 	case zb.PlayerActionType_PlayCard:
 		return actionPlayCard
@@ -294,7 +294,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
 	case zb.PlayerActionType_PlayCard:
 		return actionPlayCard
@@ -332,7 +332,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCardPlayer:
+	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
 	case zb.PlayerActionType_PlayCard:
 		return actionPlayCard
