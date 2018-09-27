@@ -578,13 +578,15 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	gamestate := zb.GameState{
-		Id:                 match.Id,
-		CurrentActionIndex: -1,
-		PlayerStates:       match.PlayerStates,
-		CurrentPlayerIndex: 0,
+	gp, err := NewGamePlay(match.Id, match.PlayerStates)
+	if err != nil {
+		return nil, err
 	}
-	if err := saveGameState(ctx, &gamestate); err != nil {
+	if err := gp.TossCoin(ctx.Now().Unix()); err != nil {
+		return nil, err
+	}
+	
+	if err := saveGameState(ctx, gp.State); err != nil {
 		return nil, err
 	}
 
@@ -687,7 +689,10 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp := &Gameplay{State: gamestate}
+	gp, err := GamePlayFrom(gamestate)
+	if err != nil {
+		return nil, err
+	}
 	gp.PrintState()
 	if err := gp.AddAction(req.PlayerAction); err != nil {
 		return nil, err
