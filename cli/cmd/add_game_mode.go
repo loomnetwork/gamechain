@@ -14,6 +14,7 @@ var addGameModeCmdArgs struct {
 	version      string
 	address      string
 	gameModeType int
+	oracle       string
 }
 
 var addGameModeCmd = &cobra.Command{
@@ -28,6 +29,7 @@ var addGameModeCmd = &cobra.Command{
 		req.Version = addGameModeCmdArgs.version
 		req.Address = addGameModeCmdArgs.address
 		req.GameModeType = zb.GameModeType(addGameModeCmdArgs.gameModeType)
+		req.Oracle = addGameModeCmdArgs.oracle
 
 		result := zb.GameMode{}
 
@@ -48,4 +50,5 @@ func init() {
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.address, "address", "a", "", "address of game mode")
 	addGameModeCmd.Flags().IntVarP(&addGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
+	addGameModeCmd.Flags().StringVarP(&addGameModeCmdArgs.oracle, "oracle", "o", "", "oracle address")
 }

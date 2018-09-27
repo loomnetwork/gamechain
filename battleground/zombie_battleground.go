@@ -769,9 +769,6 @@ func (z *ZombieBattleground) ListGameModes(ctx contract.StaticContext, req *zb.L
 }
 
 func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
-	// if !isOwner(ctx, req.UserId) {
-	// 	return nil, ErrUserNotVerified
-	// }
 	if req.Name == "" {
 		return nil, errors.New("GameMode name cannot be empty")
 	}
@@ -780,6 +777,7 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	}
 	// TODO: what else needs to be validated?
 
+	// check if game mode with this name already exists
 	gameModeList, err := loadGameModeList(ctx)
 	if err != nil && err == contract.ErrNotFound {
 		gameModeList = &zb.GameModeList{GameModes: []*zb.GameMode{}}
@@ -788,14 +786,33 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 		return nil, errors.New("A game mode with that name already exists")
 	}
 
-	// create a GUID from the hash of the gameMode fields
+	// create a GUID from the hash of gameMode name and address
 	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(req.Name + req.Description + req.Version + req.Address))
+	h.Write([]byte(req.Name + req.Address))
 	ID := hex.EncodeToString(h.Sum(nil))
 
 	addr, err := loom.LocalAddressFromHexString(req.Address)
 	if err != nil {
 		return nil, err
+	}
+
+	gameModeType := zb.GameModeType_Community
+	owner := &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}
+	// if request was made with a valid oracle, set type and owner to Loom
+	if req.Oracle != "" {
+		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
+		if err != nil {
+			return nil, err
+		}
+
+		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+
+		if err := z.validateOracle(ctx, oracleAddr); err != nil {
+			return nil, err
+		}
+
+		gameModeType = zb.GameModeType_Loom
+		owner = loom.RootAddress("default").MarshalPB()
 	}
 
 	gameMode := &zb.GameMode{
@@ -804,13 +821,11 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 		Description:  req.Description,
 		Version:      req.Version,
 		Address:      &types.Address{ChainId: "default", Local: addr}, // TODO: fix chainid
-		Owner:        &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local},
-		GameModeType: zb.GameModeType_Community, // TODO!
+		Owner:        owner,
+		GameModeType: gameModeType,
 	}
 
-	if err := saveGameMode(ctx, gameMode); err != nil {
-		return nil, err
-	}
+	ctx.GrantPermission([]byte(ID), []string{OwnerRole})
 
 	if err := addGameModeToList(ctx, gameMode); err != nil {
 		return nil, err
@@ -820,8 +835,20 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 }
 
 func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.UpdateGameModeRequest) (*zb.GameMode, error) {
-	if req.Name == "" {
-		return nil, errors.New("GameMode name cannot be empty")
+	// Require either oracle or owner permission to update a game mode
+	if req.Oracle != "" {
+		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
+		if err != nil {
+			return nil, err
+		}
+
+		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+
+		if err := z.validateOracle(ctx, oracleAddr); err != nil {
+			return nil, err
+		}
+	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+		return nil, ErrUserNotVerified
 	}
 
 	gameModeList, err := loadGameModeList(ctx)
@@ -833,32 +860,46 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.Update
 		return nil, contract.ErrNotFound
 	}
 
-	addr, err := loom.LocalAddressFromHexString(req.Address)
-	if err != nil {
+	if req.Name != "" {
+		gameMode.Name = req.Name
+	}
+	if req.Description != "" {
+		gameMode.Description = req.Description
+	}
+	if req.Version != "" {
+		gameMode.Version = req.Version
+	}
+	if req.Address != "" {
+		addr, err := loom.LocalAddressFromHexString(req.Address)
+		if err != nil {
+			return nil, err
+		}
+		gameMode.Address = &types.Address{ChainId: "default", Local: addr}
+	}
+
+	if err = saveGameModeList(ctx, gameModeList); err != nil {
 		return nil, err
 	}
 
-	newGameMode := &zb.GameMode{
-		Name:         req.Name,
-		Description:  req.Description,
-		Version:      req.Version,
-		Address:      &types.Address{ChainId: "default", Local: addr}, // TODO: fix chainid
-		Owner:        gameMode.Owner,                                  // owner cannot be changed
-		GameModeType: gameMode.GameModeType,                           // type cannot be changed
-	}
-
-	if err := addGameModeToList(ctx, newGameMode); err != nil {
-		return nil, err
-	}
-
-	return newGameMode, nil
+	return gameMode, nil
 }
 
 func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.DeleteGameModeRequest) error {
-	// TODO!
-	// if !isOwner(ctx, req.UserId) {
-	// 	return ErrUserNotVerified
-	// }
+	// Require either oracle or owner permission to delete a game mode
+	if req.Oracle != "" {
+		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
+		if err != nil {
+			return err
+		}
+
+		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+
+		if err := z.validateOracle(ctx, oracleAddr); err != nil {
+			return err
+		}
+	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+		return ErrUserNotVerified
+	}
 
 	gameModeList, err := loadGameModeList(ctx)
 	if err != nil {
