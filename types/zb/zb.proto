@@ -461,6 +461,7 @@ message GameModeRequest {
     string version = 3;
     string address = 4;
     GameModeType game_mode_type = 5;
+    string oracle = 6;
 }
 
 message UpdateGameModeRequest {
@@ -470,10 +471,12 @@ message UpdateGameModeRequest {
     string version = 4;
     string address = 5;
     GameModeType game_mode_type = 6;
+    string oracle = 7;
 }
 
 message DeleteGameModeRequest {
     string ID = 1;
+    string oracle = 2;
 }
 
 message GetGameModeRequest {

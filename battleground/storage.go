@@ -357,25 +357,6 @@ func loadUserMatch(ctx contract.StaticContext, userID string) (*zb.Match, error)
 	return &m, nil
 }
 
-// TODO: do we need this at all? saving game mode twice right now, once in list and once here
-func saveGameMode(ctx contract.Context, gameMode *zb.GameMode) error {
-	if err := ctx.Set(GameModeKey(gameMode.ID), gameMode); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func loadGameMode(ctx contract.StaticContext, ID string) (*zb.GameMode, error) {
-	var gm zb.GameMode
-	err := ctx.Get(GameModeKey(ID), &gm)
-	if err != nil {
-		return nil, err
-	}
-
-	return &gm, nil
-}
-
 func addGameModeToList(ctx contract.Context, gameMode *zb.GameMode) error {
 	gameModeList, err := loadGameModeList(ctx)
 	if gameModeList == nil {
@@ -422,7 +403,7 @@ func getGameModeFromList(gameModeList *zb.GameModeList, ID string) *zb.GameMode 
 
 func getGameModeFromListByName(gameModeList *zb.GameModeList, name string) *zb.GameMode {
 	for _, gameMode := range gameModeList.GameModes {
-		if gameMode.ID == name {
+		if gameMode.Name == name {
 			return gameMode
 		}
 	}
