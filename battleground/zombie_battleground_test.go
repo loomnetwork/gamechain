@@ -1187,7 +1187,7 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.EqualValues(t, 1, response.GameState.CurrentActionIndex, "1st action") 
-		assert.EqualValues(t, 1, response.GameState.CurrentPlayerIndex, "player-1 should be active") // @LOCK fixed test
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active") // @LOCK fixed test
 	})
 }
 

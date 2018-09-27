@@ -30,7 +30,7 @@ func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
-		CurrentPlayerIndex: 1, // @LOCK fixed for now. // use -1 to avoid confict with default value
+		CurrentPlayerIndex: 0, // @LOCK fixed for now. // use -1 to avoid confict with default value
 	}
 	return GamePlayFrom(state)
 }
