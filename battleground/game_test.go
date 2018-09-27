@@ -59,9 +59,9 @@ func TestGameStateFunc(t *testing.T) {
 			},
 		},
 		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCardPlayer, PlayerId: uid1},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid1},
 			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCardPlayer, PlayerId: uid2},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid2},
 			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2},
 			&zb.PlayerAction{
 				ActionType: zb.PlayerActionType_CardAttack,
@@ -109,7 +109,7 @@ func TestInvalidUserTurn(t *testing.T) {
 	// add more action
 	err := gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2})
 	assert.Equal(t, err, errInvalidPlayer)
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCardPlayer, PlayerId: uid1})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid1})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1})
 	assert.Nil(t, err)

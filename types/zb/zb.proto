@@ -345,7 +345,7 @@ enum PlayerActionType {
     EndTurn          = 1;
     Mulligan         = 2;
     DrawCard         = 3;
-    PlayCard         = 4;
+    CardPlay         = 4;
     CardAttack       = 5;
     UseCardAbility   = 6;
     UseOverlordSkill = 7;
@@ -359,6 +359,7 @@ message PlayerAction {
         PlayerActionDrawCard drawCard = 3;
         PlayerActionEndTurn endTurn = 4;
         PlayerActionMulligan mulligan = 5;
+        PlayerActionCardPlay cardPlay = 7;
     };
 }
 
@@ -705,6 +706,11 @@ message PlayerActionCardAttack {
     string playerId = 1;
     CardInstance attacker = 2;
     CardInstance target = 3;
+}
+
+message PlayerActionCardPlay {
+    string playerId   = 1;
+    CardInstance card = 2;
 }
 
 message PlayerActionDrawCard {

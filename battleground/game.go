@@ -65,8 +65,8 @@ func (g *Gameplay) resume() {
 		state = actionCardAttack
 	case zb.PlayerActionType_DrawCard:
 		state = actionDrawCard
-	case zb.PlayerActionType_PlayCard:
-		state = actionPlayCard
+	case zb.PlayerActionType_CardPlay:
+		state = actionCardPlay
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
 	default:
@@ -213,8 +213,8 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
-	case zb.PlayerActionType_PlayCard:
-		return actionPlayCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
@@ -222,8 +222,8 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 }
 
-func actionPlayCard(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_PlayCard)
+func actionCardPlay(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CardPlay)
 	if g.isEnded() {
 		return nil
 	}
@@ -257,8 +257,8 @@ func actionPlayCard(g *Gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
-	case zb.PlayerActionType_PlayCard:
-		return actionPlayCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
@@ -296,8 +296,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
-	case zb.PlayerActionType_PlayCard:
-		return actionPlayCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
@@ -334,8 +334,8 @@ func actionEndTurn(g *Gameplay) stateFn {
 		return actionEndTurn
 	case zb.PlayerActionType_DrawCard:
 		return actionDrawCard
-	case zb.PlayerActionType_PlayCard:
-		return actionPlayCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
 	default:
