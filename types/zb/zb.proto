@@ -215,6 +215,11 @@ message UpdateInitRequest {
     string version = 5;
 }
 
+message UpdateCardListRequest {
+    repeated Card cards = 1;
+    string version = 2;
+}
+
 message UpsertAccountRequest {
     string user_id             = 1;
     bool phone_number_verified = 2;
@@ -341,14 +346,14 @@ message MatchMakingInfo {
 }
 
 enum PlayerActionType {
-    NoneAction      = 0;
-    EndTurn         = 7;
-    Mulligan        = 8;
-    DrawCardPlayer  = 9;
-    PlayCard        = 10;
-    CardAttack      = 11;
-    UseCardAbility  = 12;
-    UseOverlordSkill = 13;
+    NoneAction       = 0;
+    EndTurn          = 1;
+    Mulligan         = 2;
+    DrawCard         = 3;
+    CardPlay         = 4;
+    CardAttack       = 5;
+    UseCardAbility   = 6;
+    UseOverlordSkill = 7;
 }
 
 message PlayerAction {
@@ -359,6 +364,7 @@ message PlayerAction {
         PlayerActionDrawCard drawCard = 3;
         PlayerActionEndTurn endTurn = 4;
         PlayerActionMulligan mulligan = 5;
+        PlayerActionCardPlay cardPlay = 7;
     };
 }
 
@@ -553,7 +559,7 @@ enum CardAbilityType {
     ReturnUnitsOnBoardToOwnersHands = 58;
 }
 
-enum CardType {
+enum CardKind {
     Creature = 0;
     Spell = 1;
 }
@@ -566,10 +572,10 @@ enum CreatureRank {
 }
 
 enum CreatureType {
-    Normal = 0;
-    Walker = 1;
-    Feral = 2;
-    Heavy = 3;
+    Walker = 0;
+    Feral = 1;
+    Heavy = 2;
+    None = 3;
 }
 
 enum ElementKind {
@@ -607,9 +613,9 @@ message CardAbility {
     ElementKind abilitySetType = 6;
     CardAbilityEffect cardAbilityEffect = 7;
     AttackRestriction attackRestriction = 8;
-    CardType targetCardType = 9;
+    CardKind targetCardType = 9;
     UnitSpecialStatus targetUnitSpecialStatusType = 10;
-    CardType targetUnitType = 11;
+    CardKind targetUnitType = 11;
     int32 value = 12;
     int32 damage = 13;
     int32 health = 14;
@@ -644,7 +650,8 @@ message CardPrototype {
     CardViewInfo cardViewInfo = 14;
     CreatureRank creatureRank = 15;
     CreatureType creatureType = 16;
-    CardType cardType = 17;
+    CardKind cardKind = 17;
+    string kind = 18;
 }
 
 message DataIdOwner {
@@ -705,6 +712,11 @@ message PlayerActionCardAttack {
     string playerId = 1;
     CardInstance attacker = 2;
     CardInstance target = 3;
+}
+
+message PlayerActionCardPlay {
+    string playerId   = 1;
+    CardInstance card = 2;
 }
 
 message PlayerActionDrawCard {

@@ -401,6 +401,79 @@ var updateInitRequest = zb.UpdateInitRequest{
 	},
 }
 
+var updateCardListRequest = zb.UpdateCardListRequest{
+	Version: "v2",
+	Cards: []*zb.Card{
+		{
+			Id:      1,
+			Set:     "Air",
+			Name:    "Banshee",
+			Rank:    "Minion",
+			Type:    "Feral",
+			Damage:  2,
+			Health:  1,
+			Cost:    2,
+			Ability: "Feral",
+			Effects: []*zb.Effect{
+				{
+					Trigger:  "entry",
+					Effect:   "feral",
+					Duration: "permanent",
+					Target:   "self",
+				},
+			},
+			CardViewInfo: &zb.CardViewInfo{
+				Position: &zb.Coordinates{
+					X: 1.5,
+					Y: 2.5,
+					Z: 3.5,
+				},
+				Scale: &zb.Coordinates{
+					X: 0.5,
+					Y: 0.5,
+					Z: 0.5,
+				},
+			},
+		},
+		{
+			Id:      2,
+			Set:     "Air",
+			Name:    "Breezee",
+			Rank:    "Minion",
+			Type:    "Walker",
+			Damage:  1,
+			Health:  1,
+			Cost:    1,
+			Ability: "-",
+			Effects: []*zb.Effect{
+				{
+					Trigger: "death",
+					Effect:  "attack_strength_buff",
+					Target:  "friendly_selectable",
+				},
+			},
+		},
+		{
+			Id:      3,
+			Set:     "Air",
+			Name:    "NewCard",
+			Rank:    "Minion",
+			Type:    "Walker",
+			Damage:  1,
+			Health:  1,
+			Cost:    1,
+			Ability: "-",
+			Effects: []*zb.Effect{
+				{
+					Trigger: "death",
+					Effect:  "attack_strength_buff",
+					Target:  "friendly_selectable",
+				},
+			},
+		},
+	},
+}
+
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
 
 	c = &ZombieBattleground{}
@@ -895,10 +968,23 @@ func TestUpdateInitDataOperations(t *testing.T) {
 
 		assert.Nil(t, err)
 	})
-
-	// ??: test with list cards also?
-
 }
+
+func TestUpdateCardListOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	t.Run("UpdateCardList", func(t *testing.T) {
+		err := c.UpdateCardList(ctx, &updateCardListRequest)
+
+		assert.Nil(t, err)
+	})
+}
+
 func TestFindMatchOperations(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
@@ -1064,7 +1150,7 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.NotNil(t, response.GameState)
 	})
-
+	
 	t.Run("SendEndturnPlayer2_Failed", func(t *testing.T) {
 		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
@@ -1100,7 +1186,9 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 1, response.GameState.CurrentActionIndex, "1st action")
-		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active")
+		assert.EqualValues(t, 1, response.GameState.CurrentActionIndex, "1st action") 
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active") // @LOCK fixed test
 	})
 }
+
+
