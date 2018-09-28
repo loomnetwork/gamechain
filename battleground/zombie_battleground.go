@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"unicode/utf8"
 
 	"github.com/golang/protobuf/jsonpb"
 	loom "github.com/loomnetwork/go-loom"
@@ -19,6 +20,12 @@ import (
 
 type ZombieBattleground struct {
 }
+
+const (
+	MaxGameModeNameChar        = 48
+	MaxGameModeDescriptionChar = 255
+	MaxGameModeVersionChar     = 16
+)
 
 var secret string
 
@@ -615,7 +622,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// if err := gp.TossCoin(ctx.Now().Unix()); err != nil {
 	// 	return nil, err
 	// }
-	
+
 	if err := saveGameState(ctx, gp.State); err != nil {
 		return nil, err
 	}
@@ -800,14 +807,36 @@ func (z *ZombieBattleground) ListGameModes(ctx contract.StaticContext, req *zb.L
 	return gameModeList, nil
 }
 
-func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
+func validateGameModeReq(req *zb.GameModeRequest) error {
 	if req.Name == "" {
-		return nil, errors.New("GameMode name cannot be empty")
+		return errors.New("GameMode name cannot be empty")
+	}
+	if utf8.RuneCountInString(req.Name) > MaxGameModeNameChar {
+		return errors.New("GameMode name too long")
+	}
+	if req.Description == "" {
+		return errors.New("GameMode Description cannot be empty")
+	}
+	if utf8.RuneCountInString(req.Description) > MaxGameModeDescriptionChar {
+		return errors.New("GameMode Description too long")
+	}
+	if req.Version == "" {
+		return errors.New("GameMode Version cannot be empty")
+	}
+	if utf8.RuneCountInString(req.Version) > MaxGameModeVersionChar {
+		return errors.New("GameMode Version too long")
 	}
 	if req.Address == "" {
-		return nil, errors.New("GameMode address cannot be empty")
+		return errors.New("GameMode address cannot be empty")
 	}
-	// TODO: what else needs to be validated?
+
+	return nil
+}
+
+func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeRequest) (*zb.GameMode, error) {
+	if err := validateGameModeReq(req); err != nil {
+		return nil, err
+	}
 
 	// check if game mode with this name already exists
 	gameModeList, err := loadGameModeList(ctx)
@@ -893,12 +922,21 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.Update
 	}
 
 	if req.Name != "" {
+		if utf8.RuneCountInString(req.Name) > MaxGameModeNameChar {
+			return nil, errors.New("GameMode name too long")
+		}
 		gameMode.Name = req.Name
 	}
 	if req.Description != "" {
+		if utf8.RuneCountInString(req.Description) > MaxGameModeDescriptionChar {
+			return nil, errors.New("GameMode Description too long")
+		}
 		gameMode.Description = req.Description
 	}
 	if req.Version != "" {
+		if utf8.RuneCountInString(req.Version) > MaxGameModeVersionChar {
+			return nil, errors.New("GameMode Version too long")
+		}
 		gameMode.Version = req.Version
 	}
 	if req.Address != "" {
