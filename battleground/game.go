@@ -175,13 +175,12 @@ func (g *Gameplay) PrintState() {
 
 	for i, player := range g.State.PlayerStates {
 		if g.State.CurrentPlayerIndex == int32(i) {
-			fmt.Printf("Player%d: %s 🧟\n", i, player.Id)
+			fmt.Printf("Player%d: %s 🧟\n", i+1, player.Id)
 		} else {
-			fmt.Printf("Player%d: %s\n", i, player.Id)
+			fmt.Printf("Player%d: %s\n", i+1, player.Id)
 		}
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
-		// fmt.Printf("\tdeck: %v\n", state.Player1.Deck)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
@@ -196,7 +195,7 @@ func (g *Gameplay) PrintState() {
 		}
 	}
 	fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
-	fmt.Printf("=========================\n")
+	fmt.Printf("==================================\n")
 }
 
 func gameStart(g *Gameplay) stateFn {
