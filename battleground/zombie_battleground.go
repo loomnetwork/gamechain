@@ -125,6 +125,16 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	return nil
 }
 
+func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.UpdateCardListRequest) error {
+	cardList := zb.CardList{
+		Cards: req.Cards,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
 	var account zb.Account
 	if err := ctx.Get(AccountKey(req.UserId), &account); err != nil {
@@ -536,9 +546,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			Status: zb.Match_Matching,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
-					Id:            req.UserId,
-					CurrentAction: zb.PlayerActionType_AcceptMatch,
-					Deck:          deck,
+					Id:   req.UserId,
+					Deck: deck,
 				},
 			},
 		}
@@ -563,9 +572,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-		Id:            req.UserId,
-		CurrentAction: zb.PlayerActionType_AcceptMatch,
-		Deck:          deck,
+		Id:   req.UserId,
+		Deck: deck,
 	})
 	match.Status = zb.Match_Started
 
@@ -595,22 +603,26 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// manipulate cards in decks
 	for i := 0; i < len(match.PlayerStates); i++ {
 		match.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(match.PlayerStates[i].Deck)
+		match.PlayerStates[i].Hp = 20
+		match.PlayerStates[i].Mana = 1
 	}
 
 	// create game state
-	gamestate := zb.GameState{
-		Id:                 match.Id,
-		CurrentActionIndex: -1,
-		PlayerStates:       match.PlayerStates,
+	gp, err := NewGamePlay(match.Id, match.PlayerStates)
+	if err != nil {
+		return nil, err
 	}
-	if err := saveGameState(ctx, &gamestate); err != nil {
+	// if err := gp.TossCoin(ctx.Now().Unix()); err != nil {
+	// 	return nil, err
+	// }
+	
+	if err := saveGameState(ctx, gp.State); err != nil {
 		return nil, err
 	}
 
 	// accept match
 	emitMsg := zb.PlayerActionEvent{
-		PlayerActionType: zb.PlayerActionType_AllAcceptMatch,
-		Match:            match,
+		Match: match,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -638,16 +650,21 @@ func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequ
 	}, nil
 }
 
+func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+	gameState, err := loadGameState(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetGameStateResponse{
+		GameState: gameState,
+	}, nil
+}
+
 func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
-	}
-	// update the player state on the match
-	for i := 0; i < len(match.PlayerStates); i++ {
-		if req.UserId == match.PlayerStates[i].Id {
-			match.PlayerStates[i].CurrentAction = zb.PlayerActionType_LeaveMatch
-		}
 	}
 
 	match.Status = zb.Match_Ended
@@ -660,9 +677,8 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	// TODO: Change on gamestate
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerActionType: zb.PlayerActionType_LeaveMatch,
-		UserId:           req.UserId,
-		Match:            match,
+		UserId: req.UserId,
+		Match:  match,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -695,19 +711,33 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+	gp, err := GamePlayFrom(gamestate)
+	if err != nil {
+		return nil, err
+	}
+	gp.PrintState()
+	if err := gp.AddAction(req.PlayerAction); err != nil {
+		return nil, err
+	}
+	gp.PrintState()
 
-	// just add player action and emit message
-	// TODO: need action validation
-	gamestate.PlayerActions = append(gamestate.PlayerActions, req.PlayerAction)
-	gamestate.CurrentActionIndex++
 	if err := saveGameState(ctx, gamestate); err != nil {
 		return nil, err
+	}
+
+	// update match status
+	if match.Status == zb.Match_Started {
+		match.Status = zb.Match_Playing
+		if err := saveMatch(ctx, match); err != nil {
+			return nil, err
+		}
 	}
 
 	emitMsg := zb.PlayerActionEvent{
 		PlayerActionType: req.PlayerAction.ActionType,
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
+		Match:            match,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -717,7 +747,9 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
-	return &zb.PlayerActionResponse{}, nil
+	return &zb.PlayerActionResponse{
+		GameState: gamestate,
+	}, nil
 }
 
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
