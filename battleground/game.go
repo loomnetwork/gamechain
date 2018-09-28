@@ -14,6 +14,7 @@ var (
 	errInvalidAction         = errors.New("invalid action")
 	errNotEnoughPlayer       = errors.New("not enough players")
 	errAlreadyTossCoin       = errors.New("already tossed coin")
+	errNoCurrentPlayer       = errors.New("no current player")
 )
 
 type Gameplay struct {
@@ -61,14 +62,22 @@ func (g *Gameplay) TossCoin(seed int64) error {
 	return nil
 }
 
-// DrawCardFirsthand draw cards for player first hands
-// First player gets a total of 4 cards for his first hand (i.e. Mulligan +1)
-// Second player gets a total of 5 cards for his first hand (i.e. Mulligan +2)
-func (g *Gameplay) DrawCardFirsthand(seed int64) error {
-	// TODO: Check if the user already draw cards for his firsthand?
-	// r := rand.New(rand.NewSource(seed))
-	// first := g.State.CurrentActionIndex
+// InitPlayers suffle cards in players' decks
+func (g *Gameplay) InitPlayers(seed int64) error {
+	if g.State.CurrentPlayerIndex < 0 {
+		return errNoCurrentPlayer
+	}
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		deck := g.State.PlayerStates[i].Deck
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, seed)
+		g.State.PlayerStates[i].Hp = 20
+		g.State.PlayerStates[i].Mana = 1
 
+		// draw cards 3 card for mulligan
+		n := 3
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:n]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[n:]
+	}
 	return nil
 }
 

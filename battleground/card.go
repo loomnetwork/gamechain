@@ -3,6 +3,7 @@ package battleground
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"strings"
 	"unicode/utf8"
 
@@ -135,6 +136,19 @@ func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 		}
 	}
 	return
+}
+
+func shuffleCardInDeck(deck *zb.Deck, seed int64) []*zb.CardInstance {
+	cards := cardInstanceFromDeck(deck)
+	r := rand.New(rand.NewSource(seed))
+	for i := 0; i < len(cards); i++ {
+		n := r.Intn(i + 1)
+		// do a swap
+		if i != n {
+			cards[n], cards[i] = cards[i], cards[n]
+		}
+	}
+	return cards
 }
 
 func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {

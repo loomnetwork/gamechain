@@ -607,22 +607,18 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 
-	// manipulate cards in decks
-	for i := 0; i < len(match.PlayerStates); i++ {
-		match.PlayerStates[i].CardsInDeck = cardInstanceFromDeck(match.PlayerStates[i].Deck)
-		match.PlayerStates[i].Hp = 20
-		match.PlayerStates[i].Mana = 1
-	}
-
 	// create game state
 	gp, err := NewGamePlay(match.Id, match.PlayerStates)
 	if err != nil {
 		return nil, err
 	}
-	if err := gp.TossCoin(ctx.Now().Unix()); err != nil {
+	seed := ctx.Now().Unix()
+	if err := gp.TossCoin(seed); err != nil {
 		return nil, err
 	}
-
+	if err := gp.InitPlayers(seed); err != nil {
+		return nil, err
+	}
 	if err := saveGameState(ctx, gp.State); err != nil {
 		return nil, err
 	}
