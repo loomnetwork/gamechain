@@ -51,3 +51,19 @@ loom genkey -k priv
 # Delete Deck by id
 ./bin/zb-cli delete_deck -k priv -u loom --deckId 0
 ```
+
+## Oracle
+
+Some transactions require oracle permissions. The oracle's private key is commited in the repo. Its address is:
+
+```
+loom genkey -k oracle.priv -a oracle.pub
+local address: 0x86f36D9f1BB6af96bA809d7aA7812251424641A5
+local address base64: hvNtnxu2r5a6gJ16p4EiUUJGQaU=
+```
+
+The oracle will be set automatically on chain init according the genesis file. On a chain that's already running, it can be updated with:
+
+```
+./bin/zb-cli update_oracle default:NEW_ORACLE_ADDRESS default:CURRENT_ORACLE_ADDRESS -k oracle.priv
+```
