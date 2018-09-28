@@ -1,0 +1,96 @@
+############ Create 1st match ############
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1"
+  All = true
+  Condition = "contains"
+  Expected = ["player-1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 1}} -u player-2"
+  All = true
+  Condition = "contains"
+  Expected = ["player-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1"
+  Condition = "contains"
+  Expected = ["MatchID: 1", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1"
+  Condition = "contains"
+  Expected = ["MatchID: 1", "Status: Started"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["MatchID: 1", "Status: Started", "Player1: player-1", "Player2: player-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-1", "Player2: player-2", "Current Action Index: -1"]
+
+
+############ Create 2nd match ############
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom-1 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom-1"
+  All = true
+  Condition = "contains"
+  Expected = ["loom-1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 1}} -u loom-2 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 1}} -u loom-2"
+  All = true
+  Condition = "contains"
+  Expected = ["loom-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-2 -d 1"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u loom-1 -d 1"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Started"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["MatchID: 2", "Status: Started", "Player1: loom-2", "Player2: loom-1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: loom-2", "Player2: loom-1", "Current Action Index: -1"]
