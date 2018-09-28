@@ -7,6 +7,10 @@
       "location": "zombiebattleground:1.0.0",
       "init": {
         "version" : "v1",
+        "oracle": {
+          "chainId": "default",
+          "local": "iVxup0zz4MzFW67ncyUPrHsr3mQ="
+        },
         "default_collection": [
           {
             "card_name": "Pyromaz",
