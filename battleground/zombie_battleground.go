@@ -783,9 +783,6 @@ func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Addr
 	}
 
 	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"old-oracle"}); ok {
-		if hack, _ := ctx.HasPermission([]byte(zo.String()), []string{"oracle"}); hack {
-			return nil
-		}
 		return errors.New("This oracle is expired. Please use latest oracle")
 	}
 	return nil
