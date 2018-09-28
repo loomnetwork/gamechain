@@ -858,7 +858,7 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 	}
 
 	gameModeType := zb.GameModeType_Community
-	owner := &types.Address{ChainId: "default", Local: ctx.Message().Sender.Local}
+	owner := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: ctx.Message().Sender.Local}
 	// if request was made with a valid oracle, set type and owner to Loom
 	if req.Oracle != "" {
 		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
@@ -866,14 +866,14 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 			return nil, err
 		}
 
-		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
 
 		if err := z.validateOracle(ctx, oracleAddr); err != nil {
 			return nil, err
 		}
 
 		gameModeType = zb.GameModeType_Loom
-		owner = loom.RootAddress("default").MarshalPB()
+		owner = loom.RootAddress(ctx.ContractAddress().ChainID).MarshalPB()
 	}
 
 	gameMode := &zb.GameMode{
@@ -881,7 +881,7 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb.GameModeR
 		Name:         req.Name,
 		Description:  req.Description,
 		Version:      req.Version,
-		Address:      &types.Address{ChainId: "default", Local: addr}, // TODO: fix chainid
+		Address:      &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: addr},
 		Owner:        owner,
 		GameModeType: gameModeType,
 	}
@@ -903,7 +903,7 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.Update
 			return nil, err
 		}
 
-		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
 
 		if err := z.validateOracle(ctx, oracleAddr); err != nil {
 			return nil, err
@@ -944,7 +944,7 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb.Update
 		if err != nil {
 			return nil, err
 		}
-		gameMode.Address = &types.Address{ChainId: "default", Local: addr}
+		gameMode.Address = &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: addr}
 	}
 
 	if err = saveGameModeList(ctx, gameModeList); err != nil {
@@ -962,7 +962,7 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 			return err
 		}
 
-		oracleAddr := &types.Address{ChainId: "default", Local: oracleLocal}
+		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
 
 		if err := z.validateOracle(ctx, oracleAddr); err != nil {
 			return err
