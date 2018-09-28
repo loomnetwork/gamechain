@@ -29,7 +29,7 @@ var sendActionCmd = &cobra.Command{
 		}
 
 		switch zb.PlayerActionType(sendActionCmdArgs.actionType) {
-		case zb.PlayerActionType_DrawCardPlayer:
+		case zb.PlayerActionType_DrawCard:
 			req.PlayerAction.Action = &zb.PlayerAction_DrawCard{
 				DrawCard: &zb.PlayerActionDrawCard{
 					CardInstance: &zb.CardInstance{
