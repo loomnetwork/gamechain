@@ -30,7 +30,7 @@ func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
-		CurrentPlayerIndex: 0, // @LOCK fixed for now. // use -1 to avoid confict with default value
+		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 	}
 	return GamePlayFrom(state)
 }
@@ -38,9 +38,8 @@ func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
 // GamePlayFrom initializes and run game to the latest state
 func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	g := &Gameplay{State: state}
-	g.run()
-	if g.err != nil {
-		return nil, g.err
+	if err := g.run(); err != nil {
+		return nil, err
 	}
 	return g, nil
 }
@@ -54,7 +53,7 @@ func (g *Gameplay) TossCoin(seed int64) error {
 	if g.State.CurrentPlayerIndex != -1 {
 		return errAlreadyTossCoin
 	}
-	
+
 	// TODO: test this function on multinode validators
 	r := rand.New(rand.NewSource(seed))
 	n := r.Int31n(int32(len(g.State.PlayerStates)))
@@ -78,10 +77,8 @@ func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 		return err
 	}
 	g.State.PlayerActions = append(g.State.PlayerActions, action)
-
 	// resume the Gameplay
-	g.resume()
-	return g.err
+	return g.resume()
 }
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
@@ -92,19 +89,19 @@ func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	return nil
 }
 
-func (g *Gameplay) run() {
+func (g *Gameplay) run() error {
 	for g.stateFn = gameStart; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
 	fmt.Printf("Gameplay stopped at action index %d, err=%v\n", g.State.CurrentActionIndex, g.err)
+	return g.err
 }
 
-func (g *Gameplay) resume() {
+func (g *Gameplay) resume() error {
 	// get the current state
 	next := g.next()
 	if next == nil {
-		g.captureErrorAndStop(errCurrentActionNotfound)
-		return
+		return errCurrentActionNotfound
 	}
 	var state stateFn
 	switch next.ActionType {
@@ -117,14 +114,14 @@ func (g *Gameplay) resume() {
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
 	default:
-		g.captureErrorAndStop(errInvalidAction)
-		return
+		return errInvalidAction
 	}
 
 	fmt.Printf("Gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
 	for g.stateFn = state; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
+	return g.err
 }
 
 func (g *Gameplay) next() *zb.PlayerAction {
