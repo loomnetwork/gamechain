@@ -6,7 +6,7 @@
       "name": "ZombieBattleground",
       "location": "zombiebattleground:1.0.0",
       "init": {
-        "version" : "v1",
+        "version": "v1",
         "oracle": {
           "chainId": "default",
           "local": "hvNtnxu2r5a6gJ16p4EiUUJGQaU="
@@ -201,6 +201,10 @@
             "amount": 4
           },
           {
+            "card_name": "Ztorm Shield",
+            "amount": 4
+          },
+          {
             "card_name": "Azuraz",
             "amount": 4
           },
@@ -293,6 +297,10 @@
             "amount": 4
           },
           {
+            "card_name": "Zlopper",
+            "amount": 4
+          },
+          {
             "card_name": "Chainsaw",
             "amount": 4
           },
@@ -314,30 +322,6 @@
           },
           {
             "card_name": "Fresh Meat",
-            "amount": 4
-          },
-          {
-            "card_name": "Zombie 1/1",
-            "amount": 4
-          },
-          {
-            "card_name": "Zombie 2/2",
-            "amount": 4
-          },
-          {
-            "card_name": "Zombie Feral",
-            "amount": 4
-          },
-          {
-            "card_name": "Armageddon",
-            "amount": 4
-          },
-          {
-            "card_name": "Tainted Goo",
-            "amount": 4
-          },
-          {
-            "card_name": "Corrupted Goo",
             "amount": 4
           }
         ],
@@ -453,6 +437,40 @@
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
+              },
+              {
+                "title": "Fortify",
+                "skill": "FORTIFY",
+                "icon_path": "overlordability_earth_fortify",
+                "description": "Give an ally Earth zombie Heavy",
+                "skill_targets": "",
+                "element_targets": "EARTH",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1
+              },
+              {
+                "title": "Phalanx",
+                "skill": "PHALANX",
+                "icon_path": "overlordability_earth_phalanx",
+                "description": "Give all ally Earth zombies +1 Def",
+                "skill_targets": "",
+                "element_targets": "EARTH",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1
+              },
+              {
+                "title": "Fortress",
+                "skill": "FORTRESS",
+                "icon_path": "overlordability_earth_fortress",
+                "description": "Give 2 random ally Earth zombies Heavy",
+                "skill_targets": "",
+                "element_targets": "EARTH",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1,
+                "count": 2
               }
             ],
             "primary_skill": 0,
@@ -488,6 +506,40 @@
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 1
+              },
+              {
+                "title": "Fireball",
+                "skill": "FIREBALL",
+                "icon_path": "overlordability_fire_rabies",
+                "description": "Deal 2 damage to a target",
+                "skill_targets": "PLAYER_CARD",
+                "element_targets": "FIRE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2
+              },
+              {
+                "title": "Mass Rabies",
+                "skill": "MASS_RABIES",
+                "icon_path": "overlordability_fire_mass_rabies",
+                "description": "Give 2 random ally Fire zombies Feral",
+                "skill_targets": "PLAYER_CARD",
+                "element_targets": "FIRE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1,
+                "count": 2
+              },
+              {
+                "title": "Meteor Shower",
+                "skill": "METEOR_SHOWER",
+                "icon_path": "overlordability_fire_meteor_shower",
+                "description": "Deal 2 damage to all zombies",
+                "skill_targets": "",
+                "element_targets": "FIRE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2
               }
             ],
             "primary_skill": 0,
@@ -522,6 +574,38 @@
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 2
+              },
+              {
+                "title": "Ice Wall",
+                "skill": "ICE_WALL",
+                "icon_path": "overlordability_water_ice_bolt",
+                "description": "Add 2 Def to target Water zombie or your Overlord",
+                "skill_targets": "OPPONENT_CARD|PLAYER_CARD",
+                "element_targets": "WATER",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2
+              },
+              {
+                "title": "Shatter",
+                "skill": "SHATTER",
+                "icon_path": "overlordability_water_ice_bolt",
+                "description": "Destroy a Frozen enemy zombie",
+                "skill_targets": "OPPONENT_CARD",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1
+              },
+              {
+                "title": "Blizzard",
+                "skill": "BLIZZARD",
+                "icon_path": "overlordability_water_ice_bolt",
+                "description": "Freeze 2 random zombie enemies",
+                "skill_targets": "",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2,
+                "count": 2
               }
             ],
             "primary_skill": 0,
@@ -541,7 +625,7 @@
                 "title": "Push",
                 "skill": "PUSH",
                 "icon_path": "overlordability_air_push",
-                "description": "Return an ally Air zombie to your hand",
+                "description": "Spend all your remaining goo. Return a zombie that costs equal to or less than the goo spent to its owner's hand",
                 "skill_targets": "PLAYER_CARD",
                 "element_targets": "AIR",
                 "cooldown": 6,
@@ -553,6 +637,37 @@
                 "skill": "DRAW",
                 "icon_path": "overlordability_air_draw",
                 "description": "Draw a card",
+                "skill_targets": "",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 0
+              },
+              {
+                "title": "Wind Shield",
+                "skill": "WIND_SHIELD",
+                "icon_path": "overlordability_air_wind_shield",
+                "description": "Give a random ally Air zombie Guard",
+                "skill_targets": "",
+                "element_targets": "AIR",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 0
+              },
+              {
+                "title": "Levitate",
+                "skill": "LEVITATE",
+                "icon_path": "overlordability_air_levitate",
+                "description": "Reduce the cost of a random card in your hand by 1",
+                "skill_targets": "",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1
+              },
+              {
+                "title": "Retreat",
+                "skill": "RETREAT",
+                "icon_path": "overlordability_air_retreat",
+                "description": "Return all zombies to their owner's hand",
                 "skill_targets": "",
                 "cooldown": 4,
                 "initial_cooldown": 4,
@@ -593,6 +708,40 @@
                 "initial_cooldown": 4,
                 "value": 1,
                 "attack": 1
+              },
+              {
+                "title": "Breakout",
+                "skill": "BREAKOUT",
+                "icon_path": "overlordability_toxic_toxic_power",
+                "description": "Deal 1 damage to 5 random enemies",
+                "skill_targets": "PLAYER_CARD",
+                "element_targets": "",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1,
+                "count": 5
+              },
+              {
+                "title": "Infect",
+                "skill": "INFECT",
+                "icon_path": "overlordability_toxic_toxic_power",
+                "description": "Destroy an ally Toxic zombie, deal its Atk to a random enemy zombie",
+                "skill_targets": "PLAYER_CARD",
+                "element_targets": "TOXIC",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1
+              },
+              {
+                "title": "Epidemic",
+                "skill": "EPIDEMIC",
+                "icon_path": "overlordability_toxic_toxic_power",
+                "description": "Destroy an 2 random Toxic zombies, deal their Atk to 2 enemy zombies",
+                "skill_targets": "PLAYER_CARD",
+                "element_targets": "TOXIC",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "count": 2
               }
             ],
             "primary_skill": 0,
@@ -627,6 +776,41 @@
                 "cooldown": 4,
                 "initial_cooldown": 4,
                 "value": 2
+              },
+              {
+                "title": "Resurrect",
+                "skill": "RESSURECT",
+                "icon_path": "overlordability_life_ressurect",
+                "description": "Reanimate a random 3 goo-cost ally Life zombie",
+                "skill_targets": "PLAYER",
+                "element_targets": "LIFE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 1,
+                "count": 3
+              },
+              {
+                "title": "Enhance",
+                "skill": "ENHANCE",
+                "icon_path": "overlordability_life_enhance",
+                "description": "Restore 2 Def to all ally Life zombies and your Overlord",
+                "skill_targets": "PLAYER",
+                "element_targets": "LIFE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2
+              },
+              {
+                "title": "Reanimate",
+                "skill": "REANIMATE",
+                "icon_path": "overlordability_life_reanimate",
+                "description": "Reanimate 2 random ally Life zombies",
+                "skill_targets": "PLAYER",
+                "element_targets": "LIFE",
+                "cooldown": 4,
+                "initial_cooldown": 4,
+                "value": 2,
+                "count": 2
               }
             ],
             "primary_skill": 0,
@@ -2990,7 +3174,7 @@
             "kind": "CREATURE",
             "name": "Zeeter",
             "cost": 5,
-            "description": "<b>Entry: Devour Atk/Def</b> an ally zombie",
+            "description": "Entry: Devour an ally zombie, get its Atk and Def",
             "flavor_text": "Nam, naam nam nam namm nam...",
             "picture": "Zeeter",
             "damage": 1,
