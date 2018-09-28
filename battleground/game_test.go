@@ -171,6 +171,22 @@ func TestInvalidUserTurn(t *testing.T) {
 	gp.PrintState()
 }
 
+func TestShuffleCards(t *testing.T) {
+	players := []*zb.PlayerState{
+		&zb.PlayerState{Id: "player-1", Deck: &defaultDeck1},
+		&zb.PlayerState{Id: "player-2", Deck: &defaultDeck2},
+	}
+	gp, err := NewGamePlay(3, players)
+	assert.Nil(t, err)
+	// @LOCK to check if same seed gives the same result
+	var seed int64 = 1000
+	err = gp.TossCoin(seed)
+	assert.Nil(t, err)
+	err = gp.InitPlayers(seed)
+	assert.Nil(t, err)
+	gp.PrintState()
+}
+
 func TestInvalidAction(t *testing.T) {}
 
 func TestGameAddAction(t *testing.T) {}
