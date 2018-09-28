@@ -380,7 +380,7 @@ func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error
 func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
 	var list zb.GameModeList
 	err := ctx.Get(gameModeListKey, &list)
-	if err != nil {
+	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
 
