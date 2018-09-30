@@ -1,7 +1,7 @@
 package battleground
 
 import (
-	"context"
+	"encoding/hex"
 	"fmt"
 	"strings"
 	"testing"
@@ -9,11 +9,15 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	loom "github.com/loomnetwork/go-loom"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	//	"github.com/loomnetwork/go-loom/plugin"
+
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
 	levm "github.com/loomnetwork/loomchain/evm"
-	"github.com/loomnetwork/loomchain/store"
+	plugin "github.com/loomnetwork/loomchain/plugin"
 	lvm "github.com/loomnetwork/loomchain/vm"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -64,39 +68,35 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 }
 
 func TestCustomGameMode(t *testing.T) {
-	//	loader := plugin.NewStaticLoader()
+
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
+
+	addr := loom.Address{
+		//ChainID: "default",
+		Local: loom.LocalAddressFromPublicKey(pubKey),
+	}
+
 	owner := loom.RootAddress("chain")
+	fakeCtx := plugin.CreateFakeContextWithEVM(addr, loom.RootAddress("chain"))
 
-	state := loomchain.DummyNewStoreState(context.Background(), store.NewMemStore())
-
-	//	createRegistry, err := registry.NewRegistryFactory(registry.LatestRegistryVersion)
-	//require.NoError(t, err)
-	//	vm := plugin.NewPluginVM(loader, state, createRegistry(state), &fakeEventHandler{}, nil, nil, nil)
-	evm := levm.NewLoomVm(state, nil, nil, nil)
+	evm := levm.NewLoomVm(fakeCtx.State, nil, nil, nil)
 	evmContractAddr, evmContractABI, err := deployEVMContract(evm, "conquermode", owner)
 	require.NoError(t, err)
 
 	fmt.Printf("deployed contract -%v -%v \n", evmContractAddr, evmContractABI)
 
-	//	fmt.Printf("vm -%v\n", vm)
-	/*
-		var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
-		pubKey, _ := hex.DecodeString(pubKeyHexString)
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(addr))
 
-		addr := &loom.Address{
-			Local: loom.LocalAddressFromPublicKey(pubKey),
-		}
+	cg := NewCustomGameMode(evmContractAddr)
+	fmt.Printf("getsomething from addr-%v\n", addr)
+	res, err := cg.GetSomething(gwCtx, evmContractAddr) //addr)
 
-		ctx := contract.WrapPluginContext(
-			plugin.CreateFakeContext(*addr, *addr),
-		)
-		contractAddr := loom.Address{}
-		cg := NewCustomGameMode(contractAddr)
-		res, err := cg.GetSomething(ctx, *addr)
-
-		assert.Equal(t, res.Int64(), 0)
-		assert.Equal(t, err, nil)
-	*/
+	assert.Equal(t, err, nil)
+	//if err != nil {
+	//	assert.FailNow(t, "error reading data in contract")
+	//}
+	assert.Equal(t, res.Int64(), int64(25))
 }
 
 // From Zombiebattleground game mode repo
