@@ -3,7 +3,6 @@ package battleground
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -13,8 +12,6 @@ import (
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
 	levm "github.com/loomnetwork/loomchain/evm"
-	"github.com/loomnetwork/loomchain/plugin"
-	registry "github.com/loomnetwork/loomchain/registry/factory"
 	"github.com/loomnetwork/loomchain/store"
 	lvm "github.com/loomnetwork/loomchain/vm"
 	"github.com/stretchr/testify/require"
@@ -47,10 +44,11 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 	//	return contractAddr, nil, err
 	//}
 	hexByteCode := zbGameModeBIN
-	abiBytes, err := ioutil.ReadFile("testdata/" + filename + ".abi")
-	if err != nil {
-		return contractAddr, nil, err
-	}
+	//	abiBytes, err := ioutil.ReadFile("testdata/" + filename + ".abi")
+	//	if err != nil {
+	//		return contractAddr, nil, err
+	//	}
+	abiBytes := zbGameModeABI
 	contractABI, err := abi.JSON(strings.NewReader(string(abiBytes)))
 	if err != nil {
 		return contractAddr, nil, err
@@ -66,21 +64,21 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 }
 
 func TestCustomGameMode(t *testing.T) {
-	loader := plugin.NewStaticLoader()
+	//	loader := plugin.NewStaticLoader()
 	owner := loom.RootAddress("chain")
 
 	state := loomchain.DummyNewStoreState(context.Background(), store.NewMemStore())
 
-	createRegistry, err := registry.NewRegistryFactory(registry.LatestRegistryVersion)
-	require.NoError(t, err)
-	vm := plugin.NewPluginVM(loader, state, createRegistry(state), &fakeEventHandler{}, nil, nil, nil)
+	//	createRegistry, err := registry.NewRegistryFactory(registry.LatestRegistryVersion)
+	//require.NoError(t, err)
+	//	vm := plugin.NewPluginVM(loader, state, createRegistry(state), &fakeEventHandler{}, nil, nil, nil)
 	evm := levm.NewLoomVm(state, nil, nil, nil)
 	evmContractAddr, evmContractABI, err := deployEVMContract(evm, "conquermode", owner)
 	require.NoError(t, err)
 
 	fmt.Printf("deployed contract -%v -%v \n", evmContractAddr, evmContractABI)
 
-	fmt.Printf("vm -%v\n", vm)
+	//	fmt.Printf("vm -%v\n", vm)
 	/*
 		var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 		pubKey, _ := hex.DecodeString(pubKeyHexString)
