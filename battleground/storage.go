@@ -33,6 +33,9 @@ var (
 	defaultHeroesKey            = []byte("default-heroes")
 	matchCountKey               = []byte("match-count")
 	playersInMatchmakingListKey = []byte("players-matchmaking")
+	gameModeListKey             = []byte("gamemode-list")
+
+	oracleKey = []byte("oracle-key")
 )
 
 var (
@@ -348,4 +351,69 @@ func loadUserMatch(ctx contract.StaticContext, userID string) (*zb.Match, error)
 		return nil, err
 	}
 	return &m, nil
+}
+
+func addGameModeToList(ctx contract.Context, gameMode *zb.GameMode) error {
+	gameModeList, err := loadGameModeList(ctx)
+	if gameModeList == nil {
+		gameModeList = &zb.GameModeList{GameModes: []*zb.GameMode{}}
+	} else if err != nil {
+		return err
+	}
+	gameModeList.GameModes = append(gameModeList.GameModes, gameMode)
+
+	if err = saveGameModeList(ctx, gameModeList); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error {
+	if err := ctx.Set(gameModeListKey, gameModeList); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
+	var list zb.GameModeList
+	err := ctx.Get(gameModeListKey, &list)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+
+	return &list, nil
+}
+
+func getGameModeFromList(gameModeList *zb.GameModeList, ID string) *zb.GameMode {
+	for _, gameMode := range gameModeList.GameModes {
+		if gameMode.ID == ID {
+			return gameMode
+		}
+	}
+
+	return nil
+}
+
+func getGameModeFromListByName(gameModeList *zb.GameModeList, name string) *zb.GameMode {
+	for _, gameMode := range gameModeList.GameModes {
+		if gameMode.Name == name {
+			return gameMode
+		}
+	}
+
+	return nil
+}
+
+func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList, bool) {
+	newList := make([]*zb.GameMode, 0)
+	for _, gameMode := range gameModeList.GameModes {
+		if gameMode.ID != ID {
+			newList = append(newList, gameMode)
+		}
+	}
+
+	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
