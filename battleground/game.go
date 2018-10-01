@@ -8,6 +8,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	mulliganCards = 3
+)
+
 var (
 	errInvalidPlayer         = errors.New("invalid player")
 	errCurrentActionNotfound = errors.New("current action not found")
@@ -26,13 +30,21 @@ type Gameplay struct {
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
+func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, error) {
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
+		Randomseed:         seed,
 	}
+	g := &Gameplay{State: state}
+	// init player hp and mana
+	g.initPlayer()
+	// add coin toss as the first action
+	g.addCoinToss()
+	// init cards in hand
+	g.addInitHands()
 	return GamePlayFrom(state)
 }
 
@@ -45,42 +57,29 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	return g, nil
 }
 
-// TossCoin decides who the first player is
-func (g *Gameplay) TossCoin(seed int64) error {
-	if len(g.State.PlayerStates) == 0 {
-		return errNotEnoughPlayer
-	}
-	// prevent modifiying already-init state
-	if g.State.CurrentPlayerIndex != -1 {
-		return errAlreadyTossCoin
-	}
-
-	// TODO: test this function on multinode validators
-	r := rand.New(rand.NewSource(seed))
-	n := r.Int31n(int32(len(g.State.PlayerStates)))
-	g.State.CurrentPlayerIndex = n
-	return nil
-}
-
-// InitPlayers suffle cards in players' decks
-func (g *Gameplay) InitPlayers(seed int64) error {
-	if g.State.CurrentPlayerIndex < 0 {
-		return errNoCurrentPlayer
-	}
+func (g *Gameplay) initPlayer() error {
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		deck := g.State.PlayerStates[i].Deck
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, seed)
 		g.State.PlayerStates[i].Hp = 20
 		g.State.PlayerStates[i].Mana = 1
-
-		// draw cards 3 card for mulligan
-		n := 3
-		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:n]
-		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[n:]
 	}
 	return nil
 }
 
+func (g *Gameplay) addCoinToss() error {
+	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CoinToss,
+	})
+	return nil
+}
+
+func (g *Gameplay) addInitHands() error {
+	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
+		ActionType: zb.PlayerActionType_InitHands,
+	})
+	return nil
+}
+
+// AddAction adds the given action and reruns the game state
 func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 	if err := g.checkCurrentPlayer(action); err != nil {
 		return err
@@ -91,6 +90,10 @@ func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 }
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
+	// skip checking for mulligan action
+	if action.ActionType == zb.PlayerActionType_Mulligan {
+		return nil
+	}
 	activePlayer := g.activePlayer()
 	if activePlayer.Id != action.PlayerId {
 		return errInvalidPlayer
@@ -122,6 +125,8 @@ func (g *Gameplay) resume() error {
 		state = actionCardPlay
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
+	case zb.PlayerActionType_Mulligan:
+		state = actionMulligan
 	default:
 		return errInvalidAction
 	}
@@ -221,10 +226,161 @@ func gameStart(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
+	case zb.PlayerActionType_CoinToss:
+		return actionCoinToss
+	default:
+		return nil
+	}
+}
+
+func actionCoinToss(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CoinToss)
+	if g.isEnded() {
+		return nil
+	}
+	// prevent modifiying already-init state
+	if len(g.State.PlayerStates) == 0 {
+		return g.captureErrorAndStop(errNotEnoughPlayer)
+	}
+	if g.State.CurrentPlayerIndex != -1 {
+		return g.captureErrorAndStop(errAlreadyTossCoin)
+	}
+
+	r := rand.New(rand.NewSource(g.State.Randomseed))
+	n := r.Int31n(int32(len(g.State.PlayerStates)))
+	g.State.CurrentPlayerIndex = n
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_InitHands:
+		return actionInitHands
+	default:
+		return nil
+	}
+}
+
+func actionInitHands(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_InitHands)
+	if g.isEnded() {
+		return nil
+	}
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// number of mulligan cards
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		deck := g.State.PlayerStates[i].Deck
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
+		// draw cards 3 card for mulligan
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_Mulligan:
+		return actionMulligan
+	default:
+		return nil
+	}
+}
+
+func actionMulligan(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_Mulligan)
+	if g.isEnded() {
+		return nil
+	}
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	mulligan := current.GetMulligan()
+	if mulligan == nil {
+		return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
+	}
+	var player *zb.PlayerState
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		if g.State.PlayerStates[i].Id == mulligan.PlayerId {
+			player = g.State.PlayerStates[i]
+		}
+	}
+	if player == nil {
+		return g.captureErrorAndStop(fmt.Errorf("player not found"))
+	}
+
+	// Check if all the mulliganed cards and number of card that can be mulligan
+	if len(mulligan.MulliganedCards) > mulliganCards {
+		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", mulliganCards))
+	}
+	for _, card := range mulligan.MulliganedCards {
+		_, found := containCardInCardList(card, player.CardsInHand)
+		if !found {
+			return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
+		}
+	}
+
+	// keep only the cards in in mulligan
+	keepCards := make([]*zb.CardInstance, 0)
+	for _, mcard := range mulligan.MulliganedCards {
+		card, found := containCardInCardList(mcard, player.CardsInHand)
+		if found {
+			keepCards = append(keepCards, card)
+		}
+	}
+
+	// if the card in hand not match with the keep card, draw new cards
+	rerollCards := make([]*zb.CardInstance, 0)
+	if len(keepCards) == 0 {
+		rerollCards = append(rerollCards, player.CardsInHand...)
+	} else {
+		for _, card := range player.CardsInHand {
+			_, found := containCardInCardList(card, keepCards)
+			if !found {
+				rerollCards = append(rerollCards, card)
+			}
+		}
+	}
+
+	// set card in hands
+	player.CardsInHand = keepCards
+	// place cards back to deck
+	player.CardsInDeck = append(player.CardsInDeck, rerollCards...)
+	// draw card to replace the reroll cards
+	for range rerollCards {
+		player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
+		// TODO: return to deck with random order
+		player.CardsInDeck = player.CardsInDeck[1:]
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_Mulligan:
+		return actionMulligan
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
 	default:
 		return nil
 	}
