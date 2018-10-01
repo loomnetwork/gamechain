@@ -608,15 +608,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	gp, err := NewGamePlay(match.Id, match.PlayerStates)
-	if err != nil {
-		return nil, err
-	}
 	seed := ctx.Now().Unix()
-	if err := gp.TossCoin(seed); err != nil {
-		return nil, err
-	}
-	if err := gp.InitPlayers(seed); err != nil {
+	gp, err := NewGamePlay(match.Id, match.PlayerStates, seed)
+	if err != nil {
 		return nil, err
 	}
 	if err := saveGameState(ctx, gp.State); err != nil {
