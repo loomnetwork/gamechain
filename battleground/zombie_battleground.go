@@ -375,7 +375,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -714,23 +714,24 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		return nil, errors.New("player not in the match")
 	}
 
+	// @LOCK: Ignore server side logic for now
 	gamestate, err := loadGameState(ctx, match.Id)
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate)
-	if err != nil {
-		return nil, err
-	}
-	gp.PrintState()
-	if err := gp.AddAction(req.PlayerAction); err != nil {
-		return nil, err
-	}
-	gp.PrintState()
+	// gp, err := GamePlayFrom(gamestate)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// gp.PrintState()
+	// if err := gp.AddAction(req.PlayerAction); err != nil {
+	// 	return nil, err
+	// }
+	// gp.PrintState()
 
-	if err := saveGameState(ctx, gamestate); err != nil {
-		return nil, err
-	}
+	// if err := saveGameState(ctx, gamestate); err != nil {
+	// 	return nil, err
+	// }
 
 	// update match status
 	if match.Status == zb.Match_Started {
