@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"encoding/hex"
+	"fmt"
 	"testing"
 
 	loom "github.com/loomnetwork/go-loom"
@@ -1041,6 +1042,7 @@ func TestFindMatchOperations(t *testing.T) {
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
+		fmt.Printf("---> response: %#v, err=%v\n", response, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
@@ -1174,7 +1176,6 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 0, response.GameState.CurrentActionIndex, "1st action")
 		assert.EqualValues(t, 1, response.GameState.CurrentPlayerIndex, "player-2 should be active")
 	})
 	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
@@ -1187,7 +1188,6 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 1, response.GameState.CurrentActionIndex, "1st action")
 		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active")
 	})
 }
