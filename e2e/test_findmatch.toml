@@ -44,7 +44,7 @@
   RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
   Condition = "contains"
   All = true
-  Expected = ["Player1: player-1", "Player2: player-2", "Current Action Index: -1"]
+  Expected = ["Player1: player-1", "Player2: player-2"]
 
 
 ############ Create 2nd match ############
@@ -93,4 +93,4 @@
   RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
   Condition = "contains"
   All = true
-  Expected = ["Player1: loom-2", "Player2: loom-1", "Current Action Index: -1"]
+  Expected = ["Player1: loom-2", "Player2: loom-1"]
