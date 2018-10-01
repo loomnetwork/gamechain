@@ -363,6 +363,8 @@ enum PlayerActionType {
     CardAttack       = 5;
     UseCardAbility   = 6;
     UseOverlordSkill = 7;
+    CoinToss         = 8;
+    InitHands        = 9;
 }
 
 message PlayerAction {
@@ -374,6 +376,8 @@ message PlayerAction {
         PlayerActionEndTurn endTurn = 4;
         PlayerActionMulligan mulligan = 5;
         PlayerActionCardPlay cardPlay = 7;
+        PlayerActionCoinToss coinToss = 8;
+        PlayerActionInitHands initHands = 9;
     };
 }
 
@@ -657,6 +661,7 @@ message GameState {
     repeated PlayerState playerStates   = 4;
     int64 currentActionIndex            = 5;
     repeated PlayerAction playerActions = 6;
+    int64 randomseed                    = 7;
 }
 
 message AbilityInstance {
@@ -766,6 +771,12 @@ message OverlordSkillPrototype {
     OverlordSkillKind overlordSkillKind = 9;
     repeated AllowedTarget skillTargetTypes = 10;
     repeated ElementKind elementTargetTypes = 11;
+}
+
+message PlayerActionCoinToss {
+}
+
+message PlayerActionInitHands {
 }
 
 message PlayerActionCardAttack {
