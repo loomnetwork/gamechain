@@ -40,155 +40,189 @@ var defaultDeck2 = zb.Deck{
 }
 
 func TestGameStateFunc(t *testing.T) {
-	var uid1 = "id1"
-	var uid2 = "id2"
+	player1 := "player-1"
+	player2 := "player-2"
+
 	state := &zb.GameState{
-		Id: 1,
+		Id:                 1,
+		CurrentPlayerIndex: -1,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
-				Id:   uid1,
-				Hp:   10,
-				Mana: 0,
+				Id:   player1,
+				Hp:   20,
+				Mana: 1,
 				Deck: &defaultDeck1,
 			},
 			&zb.PlayerState{
-				Id:   uid2,
-				Hp:   10,
-				Mana: 0,
+				Id:   player2,
+				Hp:   20,
+				Mana: 1,
 				Deck: &defaultDeck2,
 			},
 		},
 		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid1},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid2},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_CoinToss},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_InitHands},
+			&zb.PlayerAction{
+				ActionType: zb.PlayerActionType_Mulligan,
+				PlayerId:   player1,
+				Action: &zb.PlayerAction_Mulligan{
+					Mulligan: &zb.PlayerActionMulligan{
+						PlayerId:        player1,
+						MulliganedCards: nil,
+					},
+				},
+			},
+			&zb.PlayerAction{
+				ActionType: zb.PlayerActionType_Mulligan,
+				Action: &zb.PlayerAction_Mulligan{
+					Mulligan: &zb.PlayerActionMulligan{
+						PlayerId:        player2,
+						MulliganedCards: nil,
+					},
+				},
+				PlayerId: player2,
+			},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1},
+			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2},
 			&zb.PlayerAction{
 				ActionType: zb.PlayerActionType_CardAttack,
-				PlayerId:   uid1,
+				PlayerId:   player1,
 				Action:     &zb.PlayerAction_CardAttack{},
 			},
 		},
 		CurrentActionIndex: -1, // must start with -1
+		Randomseed:         0,
 	}
-	gp, err := GamePlayFrom(state)
+	gp := &Gameplay{State: state}
+	err := gp.run()
 	assert.Nil(t, err)
-	// 5 player actions should be added
-	assert.EqualValues(t, 4, gp.State.CurrentActionIndex)
-	// add more action
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1})
+	assert.EqualValues(t, len(gp.State.PlayerActions)-1, gp.State.CurrentActionIndex)
+	// // add more action
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{
-		ActionType: zb.PlayerActionType_CardAttack,
-		PlayerId:   uid2,
-		Action:     &zb.PlayerAction_CardAttack{},
+		ActionType: zb.PlayerActionType_CardPlay,
+		PlayerId:   player2,
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{},
+		},
 	})
 	assert.Nil(t, err)
-	// 2 more player actions should be added
-	assert.EqualValues(t, 6, gp.State.CurrentActionIndex)
-}
-
-func TestCardPlay(t *testing.T) {
-	var uid1 = "id1"
-	var uid2 = "id2"
-	state := &zb.GameState{
-		Id: 1,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
-				Id:   uid1,
-				Hp:   10,
-				Mana: 0,
-				Deck: &defaultDeck1,
-			},
-			&zb.PlayerState{
-				Id:   uid2,
-				Hp:   10,
-				Mana: 0,
-				Deck: &defaultDeck2,
-			},
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardPlay,
+		PlayerId:   player2,
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{},
 		},
-		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardPlay,
-				PlayerId:   uid1,
-				Action: &zb.PlayerAction_CardPlay{
-					CardPlay: &zb.PlayerActionCardPlay{
-						PlayerId: uid1,
-						Card:     &zb.CardInstance{InstanceId: 1},
-					},
-				},
-			},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardPlay,
-				PlayerId:   uid2,
-				Action: &zb.PlayerAction_CardPlay{
-					CardPlay: &zb.PlayerActionCardPlay{
-						PlayerId: uid1,
-						Card:     &zb.CardInstance{InstanceId: 2},
-					},
-				},
-			},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2},
-		},
-		CurrentActionIndex: -1, // must start with -1
-	}
-
-	gp, err := GamePlayFrom(state)
+	})
 	assert.Nil(t, err)
-	assert.NotNil(t, gp)
-	assert.EqualValues(t, 3, gp.State.CurrentActionIndex)
-	// @LOCK TODO check the card
-	// check card in board
-	// assert.Equal(t, 1, len(state.PlayerStates[0].CardsOnBoard))
-	// assert.EqualValues(t, 1, state.PlayerStates[0].CardsOnBoard[0].InstanceId)
-	// assert.Equal(t, 1, len(state.PlayerStates[1].CardsOnBoard))
-	// assert.EqualValues(t, 2, state.PlayerStates[1].CardsOnBoard[0].InstanceId)
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
+	assert.Nil(t, err)
+	gp.PrintState()
 }
 
 func TestInvalidUserTurn(t *testing.T) {
-	var uid1 = "id1"
-	var uid2 = "id2"
-	state := &zb.GameState{
-		Id: 2,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{Id: uid1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: uid2, Deck: &defaultDeck1},
-		},
-		PlayerActions:      []*zb.PlayerAction{},
-		CurrentActionIndex: -1, // must start with -1
-	}
-	gp := &Gameplay{
-		State: state,
-	}
-	// add more action
-	err := gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid2})
-	assert.Equal(t, err, errInvalidPlayer)
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: uid1})
-	assert.Nil(t, err)
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: uid1})
-	assert.Nil(t, err)
-	gp.PrintState()
-}
-
-func TestShuffleCards(t *testing.T) {
+	player1 := "player-1"
+	player2 := "player-2"
 	players := []*zb.PlayerState{
-		&zb.PlayerState{Id: "player-1", Deck: &defaultDeck1},
-		&zb.PlayerState{Id: "player-2", Deck: &defaultDeck2},
+		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
-	gp, err := NewGamePlay(3, players)
+	seed := int64(0)
+	gp, err := NewGamePlay(3, players, seed)
 	assert.Nil(t, err)
-	// @LOCK to check if same seed gives the same result
-	var seed int64 = 1000
-	err = gp.TossCoin(seed)
+	// add more action
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
+	assert.Equal(t, err, errInvalidPlayer)
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
 	assert.Nil(t, err)
-	err = gp.InitPlayers(seed)
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
 	gp.PrintState()
 }
 
-func TestInvalidAction(t *testing.T) {}
+func TestInitialGameplayWithMulligan(t *testing.T) {
+	player1 := "player-1"
+	player2 := "player-2"
+	players := []*zb.PlayerState{
+		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+	}
+	seed := int64(0)
+	gp, err := NewGamePlay(3, players, seed)
+	assert.Nil(t, err)
 
-func TestGameAddAction(t *testing.T) {}
+	// mulligan keep all the cards
+	player1Mulligan := gp.State.PlayerStates[0].CardsInHand
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
+				PlayerId:        player1,
+				MulliganedCards: player1Mulligan,
+			},
+		},
+	})
+	assert.Nil(t, err)
+	for _, card := range player1Mulligan {
+		_, found := containCardInCardList(card, gp.State.PlayerStates[0].CardsInHand)
+		assert.True(t, found, "mulliganed card should be player hand")
+	}
 
-func TestGameResumeAtAction(t *testing.T) {}
+	// mulligan keep only 2 of the card
+	player2Mulligan := gp.State.PlayerStates[1].CardsInHand[:2]
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
+		PlayerId:   player2,
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
+				PlayerId:        player2,
+				MulliganedCards: player2Mulligan,
+			},
+		},
+	})
+	assert.Nil(t, err)
+	for _, card := range player2Mulligan {
+		_, found := containCardInCardList(card, gp.State.PlayerStates[1].CardsInHand)
+		assert.True(t, found, "mulliganed card should be player hand")
+	}
+	gp.PrintState()
+}
+
+func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
+	player1 := "player-1"
+	player2 := "player-2"
+	players := []*zb.PlayerState{
+		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+	}
+	seed := int64(0)
+	gp, err := NewGamePlay(5, players, seed)
+	assert.Nil(t, err)
+
+	// mulligan keep only 2 of the card
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
+		PlayerId:   player2,
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
+				PlayerId: player2,
+				MulliganedCards: []*zb.CardInstance{
+					&zb.CardInstance{
+						Prototype: &zb.CardPrototype{Name: "test1"},
+					},
+					&zb.CardInstance{
+						Prototype: &zb.CardPrototype{Name: "test2"},
+					},
+					&zb.CardInstance{
+						Prototype: &zb.CardPrototype{Name: "test3"},
+					},
+				},
+			},
+		},
+	})
+	assert.NotNil(t, err)
+	gp.PrintState()
+}
