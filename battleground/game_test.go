@@ -68,7 +68,6 @@ func TestGameStateFunc(t *testing.T) {
 				PlayerId:   player1,
 				Action: &zb.PlayerAction_Mulligan{
 					Mulligan: &zb.PlayerActionMulligan{
-						PlayerId:        player1,
 						MulliganedCards: nil,
 					},
 				},
@@ -77,7 +76,6 @@ func TestGameStateFunc(t *testing.T) {
 				ActionType: zb.PlayerActionType_Mulligan,
 				Action: &zb.PlayerAction_Mulligan{
 					Mulligan: &zb.PlayerActionMulligan{
-						PlayerId:        player2,
 						MulliganedCards: nil,
 					},
 				},
@@ -119,6 +117,57 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Nil(t, err)
+
+	// card attack
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardAttack,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_CardAttack{
+			CardAttack: &zb.PlayerActionCardAttack{
+				Attacker: &zb.CardInstance{
+					InstanceId: 1,
+				},
+				AffectObjectType: zb.AffectObjectType_CARD,
+				Target: &zb.Unit{
+					InstanceId: 2,
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+	// card ability used
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardAbilityUsed,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_CardAbilityUsed{
+			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+				Card: &zb.CardInstance{
+					InstanceId: 1,
+				},
+				AffectObjectType: zb.AffectObjectType_CARD,
+				Target: &zb.Unit{
+					InstanceId: 2,
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+	// overload skill used
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_OverlordSkillUsed,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_OverlordSkillUsed{
+			OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
+				SkillId:          1,
+				AffectObjectType: zb.AffectObjectType_CARD,
+				Target: &zb.Unit{
+					InstanceId: 2,
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+
 	gp.PrintState()
 }
 
@@ -160,7 +209,6 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				PlayerId:        player1,
 				MulliganedCards: player1Mulligan,
 			},
 		},
@@ -178,7 +226,6 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				PlayerId:        player2,
 				MulliganedCards: player2Mulligan,
 			},
 		},
@@ -208,7 +255,6 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				PlayerId: player2,
 				MulliganedCards: []*zb.CardInstance{
 					&zb.CardInstance{
 						Prototype: &zb.CardPrototype{Name: "test1"},
