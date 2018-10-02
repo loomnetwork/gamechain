@@ -8,12 +8,17 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	mulliganCards = 3
+)
+
 var (
 	errInvalidPlayer         = errors.New("invalid player")
 	errCurrentActionNotfound = errors.New("current action not found")
 	errInvalidAction         = errors.New("invalid action")
 	errNotEnoughPlayer       = errors.New("not enough players")
 	errAlreadyTossCoin       = errors.New("already tossed coin")
+	errNoCurrentPlayer       = errors.New("no current player")
 )
 
 type Gameplay struct {
@@ -25,66 +30,70 @@ type Gameplay struct {
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState) (*Gameplay, error) {
+func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, error) {
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
-		CurrentPlayerIndex: 0, // @LOCK fixed for now. // use -1 to avoid confict with default value
+		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
+		Randomseed:         seed,
 	}
+	g := &Gameplay{State: state}
+	// init player hp and mana
+	g.initPlayer()
+	// add coin toss as the first action
+	g.addCoinToss()
+	// init cards in hand
+	g.addInitHands()
 	return GamePlayFrom(state)
 }
 
 // GamePlayFrom initializes and run game to the latest state
 func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	g := &Gameplay{State: state}
-	g.run()
-	if g.err != nil {
-		return nil, g.err
+	if err := g.run(); err != nil {
+		return nil, err
 	}
 	return g, nil
 }
 
-// TossCoin decides who the first player is
-func (g *Gameplay) TossCoin(seed int64) error {
-	if len(g.State.PlayerStates) == 0 {
-		return errNotEnoughPlayer
+func (g *Gameplay) initPlayer() error {
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		g.State.PlayerStates[i].Hp = 20
+		g.State.PlayerStates[i].Mana = 1
 	}
-	// prevent modifiying already-init state
-	if g.State.CurrentPlayerIndex != -1 {
-		return errAlreadyTossCoin
-	}
-	
-	// TODO: test this function on multinode validators
-	r := rand.New(rand.NewSource(seed))
-	n := r.Int31n(int32(len(g.State.PlayerStates)))
-	g.State.CurrentPlayerIndex = n
 	return nil
 }
 
-// DrawCardFirsthand draw cards for player first hands
-// First player gets a total of 4 cards for his first hand (i.e. Mulligan +1)
-// Second player gets a total of 5 cards for his first hand (i.e. Mulligan +2)
-func (g *Gameplay) DrawCardFirsthand(seed int64) error {
-	// TODO: Check if the user already draw cards for his firsthand?
-	// r := rand.New(rand.NewSource(seed))
-	// first := g.State.CurrentActionIndex
-
+func (g *Gameplay) addCoinToss() error {
+	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CoinToss,
+	})
 	return nil
 }
 
+func (g *Gameplay) addInitHands() error {
+	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
+		ActionType: zb.PlayerActionType_InitHands,
+	})
+	return nil
+}
+
+// AddAction adds the given action and reruns the game state
 func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 	if err := g.checkCurrentPlayer(action); err != nil {
 		return err
 	}
 	g.State.PlayerActions = append(g.State.PlayerActions, action)
-
 	// resume the Gameplay
-	g.resume()
-	return g.err
+	return g.resume()
 }
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
+	// skip checking for mulligan action
+	if action.ActionType == zb.PlayerActionType_Mulligan {
+		return nil
+	}
 	activePlayer := g.activePlayer()
 	if activePlayer.Id != action.PlayerId {
 		return errInvalidPlayer
@@ -92,39 +101,45 @@ func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	return nil
 }
 
-func (g *Gameplay) run() {
+func (g *Gameplay) run() error {
 	for g.stateFn = gameStart; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
 	fmt.Printf("Gameplay stopped at action index %d, err=%v\n", g.State.CurrentActionIndex, g.err)
+	return g.err
 }
 
-func (g *Gameplay) resume() {
+func (g *Gameplay) resume() error {
 	// get the current state
 	next := g.next()
 	if next == nil {
-		g.captureErrorAndStop(errCurrentActionNotfound)
-		return
+		return errCurrentActionNotfound
 	}
 	var state stateFn
 	switch next.ActionType {
-	case zb.PlayerActionType_CardAttack:
-		state = actionCardAttack
 	case zb.PlayerActionType_DrawCard:
 		state = actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		state = actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		state = actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		state = actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		state = actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
+	case zb.PlayerActionType_Mulligan:
+		state = actionMulligan
 	default:
-		g.captureErrorAndStop(errInvalidAction)
-		return
+		return errInvalidAction
 	}
 
 	fmt.Printf("Gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
 	for g.stateFn = state; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
+	return g.err
 }
 
 func (g *Gameplay) next() *zb.PlayerAction {
@@ -178,13 +193,12 @@ func (g *Gameplay) PrintState() {
 
 	for i, player := range g.State.PlayerStates {
 		if g.State.CurrentPlayerIndex == int32(i) {
-			fmt.Printf("Player%d: %s 🧟\n", i, player.Id)
+			fmt.Printf("Player%d: %s 🧟\n", i+1, player.Id)
 		} else {
-			fmt.Printf("Player%d: %s\n", i, player.Id)
+			fmt.Printf("Player%d: %s\n", i+1, player.Id)
 		}
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
-		// fmt.Printf("\tdeck: %v\n", state.Player1.Deck)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
@@ -199,7 +213,7 @@ func (g *Gameplay) PrintState() {
 		}
 	}
 	fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
-	fmt.Printf("=========================\n")
+	fmt.Printf("==================================\n")
 }
 
 func gameStart(g *Gameplay) stateFn {
@@ -216,10 +230,178 @@ func gameStart(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
+	case zb.PlayerActionType_CoinToss:
+		return actionCoinToss
+	default:
+		return nil
+	}
+}
+
+func actionCoinToss(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CoinToss)
+	if g.isEnded() {
+		return nil
+	}
+	// prevent modifiying already-init state
+	if len(g.State.PlayerStates) == 0 {
+		return g.captureErrorAndStop(errNotEnoughPlayer)
+	}
+	if g.State.CurrentPlayerIndex != -1 {
+		return g.captureErrorAndStop(errAlreadyTossCoin)
+	}
+
+	r := rand.New(rand.NewSource(g.State.Randomseed))
+	n := r.Int31n(int32(len(g.State.PlayerStates)))
+	g.State.CurrentPlayerIndex = n
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_InitHands:
+		return actionInitHands
+	default:
+		return nil
+	}
+}
+
+func actionInitHands(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_InitHands)
+	if g.isEnded() {
+		return nil
+	}
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// number of mulligan cards
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		deck := g.State.PlayerStates[i].Deck
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
+		// draw cards 3 card for mulligan
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_Mulligan:
+		return actionMulligan
+	// @LOCK: this should be removed when client start sending proper muligan cards
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	default:
+		return nil
+	}
+}
+
+func actionMulligan(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_Mulligan)
+	if g.isEnded() {
+		return nil
+	}
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	mulligan := current.GetMulligan()
+	if mulligan == nil {
+		return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
+	}
+	var player *zb.PlayerState
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		if g.State.PlayerStates[i].Id == current.PlayerId {
+			player = g.State.PlayerStates[i]
+		}
+	}
+	if player == nil {
+		return g.captureErrorAndStop(fmt.Errorf("player not found"))
+	}
+
+	// Check if all the mulliganed cards and number of card that can be mulligan
+	if len(mulligan.MulliganedCards) > mulliganCards {
+		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", mulliganCards))
+	}
+	for _, card := range mulligan.MulliganedCards {
+		_, found := containCardInCardList(card, player.CardsInHand)
+		if !found {
+			return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
+		}
+	}
+
+	// keep only the cards in in mulligan
+	keepCards := make([]*zb.CardInstance, 0)
+	for _, mcard := range mulligan.MulliganedCards {
+		card, found := containCardInCardList(mcard, player.CardsInHand)
+		if found {
+			keepCards = append(keepCards, card)
+		}
+	}
+
+	// if the card in hand not match with the keep card, draw new cards
+	rerollCards := make([]*zb.CardInstance, 0)
+	if len(keepCards) == 0 {
+		rerollCards = append(rerollCards, player.CardsInHand...)
+	} else {
+		for _, card := range player.CardsInHand {
+			_, found := containCardInCardList(card, keepCards)
+			if !found {
+				rerollCards = append(rerollCards, card)
+			}
+		}
+	}
+
+	// set card in hands
+	player.CardsInHand = keepCards
+	// place cards back to deck
+	player.CardsInDeck = append(player.CardsInDeck, rerollCards...)
+	// draw card to replace the reroll cards
+	for range rerollCards {
+		player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
+		// TODO: return to deck with random order
+		player.CardsInDeck = player.CardsInDeck[1:]
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_Mulligan:
+		return actionMulligan
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
 	default:
 		return nil
 	}
@@ -266,6 +448,10 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -310,6 +496,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -349,6 +539,96 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	default:
+		return nil
+	}
+}
+
+func actionCardAbilityUsed(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CardAbilityUsed)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.captureErrorAndStop(err)
+	}
+
+	// TODO: card ability
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCard:
+		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	default:
+		return nil
+	}
+}
+
+func actionOverloadSkillUsed(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_OverlordSkillUsed)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.captureErrorAndStop(err)
+	}
+
+	// TODO: overload skill
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCard:
+		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -387,6 +667,10 @@ func actionEndTurn(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
