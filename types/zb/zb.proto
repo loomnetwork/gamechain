@@ -788,44 +788,37 @@ message PlayerActionInitHands {
 }
 
 message PlayerActionCardPlay {
-    string playerId   = 1;
-    CardInstance card = 2;
+    CardInstance card = 1;
 }
 
 message PlayerActionCardAttack {
-    string playerId = 1;
-    CardInstance attacker = 2;
-    AffectObjectType affectObjectType = 3;
-    Unit target = 4;
+    CardInstance attacker = 1;
+    AffectObjectType affectObjectType = 2;
+    Unit target = 3;
 }
 
 message PlayerActionCardAbilityUsed {
-    string playerId = 1;
-    CardInstance card = 2;
-    AffectObjectType affectObjectType = 3;
-    CardKind cardKind = 4;
-    Unit target = 5;
-}
-
-message PlayerActionOverlordSkillUsed {
-    int32 playerId = 1;
-    int64 SkillId = 2;
-    AffectObjectType affectObjectType = 3;
+    CardInstance card = 1;
+    AffectObjectType affectObjectType = 2;
+    CardKind cardKind = 3;
     Unit target = 4;
 }
 
+message PlayerActionOverlordSkillUsed {
+    int64 SkillId = 1;
+    AffectObjectType affectObjectType = 2;
+    Unit target = 3;
+}
+
 message PlayerActionDrawCard {
-    string playerId = 1;
     CardInstance cardInstance = 2;
 }
 
 message PlayerActionEndTurn  {
-    string playerId = 1;
 }
 
 message PlayerActionMulligan {
-    string playerId = 1;
-    repeated CardInstance mulliganedCards = 2;
+    repeated CardInstance mulliganedCards = 1;
 }
 
 message PlayerActionOutcome {
