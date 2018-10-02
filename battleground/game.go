@@ -294,6 +294,13 @@ func actionInitHands(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_Mulligan:
 		return actionMulligan
+	// @LOCK: this should be removed when client start sending proper muligan cards
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
 	default:
 		return nil
 	}
