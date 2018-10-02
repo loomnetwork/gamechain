@@ -369,15 +369,17 @@ enum PlayerActionType {
 
 message PlayerAction {
     PlayerActionType actionType = 1; // not sure we really need this
-    string playerId = 6;
+    string playerId = 2;
     oneof action {
-        PlayerActionCardAttack cardAttack = 2;
-        PlayerActionDrawCard drawCard = 3;
-        PlayerActionEndTurn endTurn = 4;
-        PlayerActionMulligan mulligan = 5;
-        PlayerActionCardPlay cardPlay = 7;
-        PlayerActionCoinToss coinToss = 8;
-        PlayerActionInitHands initHands = 9;
+        PlayerActionCardAttack cardAttack               = 3;
+        PlayerActionDrawCard drawCard                   = 4;
+        PlayerActionEndTurn endTurn                     = 5;
+        PlayerActionMulligan mulligan                   = 6;
+        PlayerActionCardPlay cardPlay                   = 7;
+        PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
+        PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
+        PlayerActionCoinToss coinToss                   = 10;
+        PlayerActionInitHands initHands                 = 11;
     };
 }
 
@@ -624,8 +626,14 @@ enum CardAbilityType {
 }
 
 enum CardKind {
-    Creature = 0;
-    Spell = 1;
+    SPELL    = 0;
+    CREATURE = 1;
+}
+
+enum AffectObjectType {
+    PLAYER    = 0;
+    CHARACTER = 1;
+    CARD      = 2;
 }
 
 enum CreatureRank {
@@ -779,15 +787,31 @@ message PlayerActionCoinToss {
 message PlayerActionInitHands {
 }
 
-message PlayerActionCardAttack {
-    string playerId = 1;
-    CardInstance attacker = 2;
-    CardInstance target = 3;
-}
-
 message PlayerActionCardPlay {
     string playerId   = 1;
     CardInstance card = 2;
+}
+
+message PlayerActionCardAttack {
+    string playerId = 1;
+    CardInstance attacker = 2;
+    AffectObjectType affectObjectType = 3;
+    Unit target = 4;
+}
+
+message PlayerActionCardAbilityUsed {
+    string playerId = 1;
+    CardInstance card = 2;
+    AffectObjectType affectObjectType = 3;
+    CardKind cardKind = 4;
+    Unit target = 5;
+}
+
+message PlayerActionOverlordSkillUsed {
+    int32 playerId = 1;
+    int64 SkillId = 2;
+    AffectObjectType affectObjectType = 3;
+    Unit target = 4;
 }
 
 message PlayerActionDrawCard {
@@ -808,17 +832,6 @@ message PlayerActionOutcome {
     string playerId = 1;
     GameState gameState = 2;
 }
-
-message PlayerActionUseCardAbility {
-    string playerId = 1;
-    CardInstance card = 2;
-    Unit target = 3;
-}
-
-message PlayerActionUseOverlordSkill {
-    int32 playerId = 1;
-}
-
 
 message StartGameAction {
     repeated PlayerState playerStates = 1;
