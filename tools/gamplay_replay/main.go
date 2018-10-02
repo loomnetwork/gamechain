@@ -14,9 +14,8 @@ import (
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-var c *battleground.ZombieBattleground
+var zbContract *battleground.ZombieBattleground
 var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
-var addr loom.Address
 var ctx contract.Context
 
 func main() {
@@ -26,37 +25,53 @@ func main() {
 	}
 
 	var replayList []zb.PlayerActionEvent
-	json.Unmarshal(f, &replayList)
+	err = json.Unmarshal(f, &replayList)
+	if err != nil {
+		fmt.Println("error unmarshalling json: ", err)
+	}
+	zbContract = &battleground.ZombieBattleground{}
 
-	setup(c, pubKeyHexString, &addr, &ctx)
+	setupFakeContext()
 	// TODO: accounts
+	initialState := replayList[0]
+	err = initialiseStates(&initialState)
+	if err != nil {
+		fmt.Println("error initialising state: ", err)
+	}
 
-	startValidation(c, replayList)
+	err = startValidation(replayList[1:])
+	if err != nil {
+		fmt.Println("error while validating gameplay: ", err)
+	}
 }
 
-func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) {
+func setupFakeContext() {
 
-	c = &battleground.ZombieBattleground{}
-	pubKey, _ := hex.DecodeString(pubKeyHex)
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
 
-	addr = &loom.Address{
+	addr := &loom.Address{
 		Local: loom.LocalAddressFromPublicKey(pubKey),
 	}
 
-	*ctx = contract.WrapPluginContext(
+	ctx = contract.WrapPluginContext(
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
 	//err := c.Init(*ctx, &initRequest)
 }
 
-func startValidation(c *battleground.ZombieBattleground, replayActionList []zb.PlayerActionEvent) {
+func initialiseStates(initialiseState *zb.PlayerActionEvent) error {
+
+	return nil
+}
+
+func startValidation(replayActionList []zb.PlayerActionEvent) error {
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
 			MatchId:      1, // TODO: handle better
 			PlayerAction: replayAction.PlayerAction,
 		}
-		actionResp, err := c.SendPlayerAction(ctx, &actionReq)
+		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
 		if err != nil {
 			fmt.Println("error: ", err)
 		}
@@ -71,6 +86,7 @@ func startValidation(c *battleground.ZombieBattleground, replayActionList []zb.P
 		}
 
 	}
+	return nil
 }
 
 func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) error {
