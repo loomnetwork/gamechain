@@ -47,7 +47,7 @@ func (c *CustomGameMode) GetStaticConfigs(ctx contract.Context) (int64, error) {
 	}
 	for k, v := range *ret1 {
 		if k == 0 {
-			fmt.Printf("health----------------%v\n", v)
+			ctx.Logger().Info(fmt.Sprintf("health----------------%v\n", v))
 			return v.Int64(), nil
 		}
 	}
