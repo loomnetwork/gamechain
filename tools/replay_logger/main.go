@@ -14,7 +14,6 @@ import (
 
 	"github.com/Jeffail/gabs"
 	"github.com/gorilla/websocket"
-	"github.com/loomnetwork/delegatecall-loom/dcutil"
 )
 
 type ReplayEntry struct {
@@ -24,9 +23,15 @@ type ReplayEntry struct {
 	PlayerAction     interface{} `json:"playerAction"`
 }
 
-var wsURL = dcutil.GetEnv("WS_URL", "ws://localhost:9999/queryws")
+var (
+	wsURL string
+)
 
 func main() {
+	wsURL = os.Getenv("wsURL")
+	if len(wsURL) == 0 {
+		wsURL = "ws://localhost:9999/queryws"
+	}
 	log.Printf("wsURL - %s", wsURL)
 	wsLoop()
 }
