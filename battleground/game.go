@@ -117,12 +117,16 @@ func (g *Gameplay) resume() error {
 	}
 	var state stateFn
 	switch next.ActionType {
-	case zb.PlayerActionType_CardAttack:
-		state = actionCardAttack
 	case zb.PlayerActionType_DrawCard:
 		state = actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		state = actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		state = actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		state = actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		state = actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		state = actionEndTurn
 	case zb.PlayerActionType_Mulligan:
@@ -326,7 +330,7 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 	var player *zb.PlayerState
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		if g.State.PlayerStates[i].Id == mulligan.PlayerId {
+		if g.State.PlayerStates[i].Id == current.PlayerId {
 			player = g.State.PlayerStates[i]
 		}
 	}
