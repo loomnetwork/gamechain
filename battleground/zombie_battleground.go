@@ -611,14 +611,14 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	seed := ctx.Now().Unix()
 	var addr loom.Address
 	var addr2 *loom.Address
-	addr, err = loom.ParseAddress(req.CustomGame.String())
+	addr, err = loom.ParseAddress(req.CustomGame.Local.String())
 	if err != nil {
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("NewGamePlay-Address--%s", req.CustomGame.String()))
+	ctx.Logger().Info(fmt.Sprintf("NewGamePlay-Address--%s", req.CustomGame.Local.String()))
 	ctx.Logger().Info(fmt.Sprintf("NewGamePlayaddr2----%v\n", addr2))
 	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
 	if err != nil {
