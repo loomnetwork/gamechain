@@ -617,6 +617,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	} else {
 		addr2 = &addr
 	}
+
+	ctx.Logger().Info(fmt.Sprintf("NewGamePlay-Address--%s", req.CustomGame.String()))
 	ctx.Logger().Info(fmt.Sprintf("NewGamePlayaddr2----%v\n", addr2))
 	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
 	if err != nil {
