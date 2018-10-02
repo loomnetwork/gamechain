@@ -25,10 +25,10 @@ var (
 )
 
 type Gameplay struct {
-	State      *zb.GameState
-	stateFn    stateFn
-	err        error
-	CustomGame *CustomGameMode
+	State   *zb.GameState
+	stateFn stateFn
+	err     error
+	//	customGame *CustomGameMode
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -49,11 +49,11 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 	}
-	g := &Gameplay{State: state,
-		CustomGame: customGameMode}
+	g := &Gameplay{State: state}
+	//	CustomGame: customGameMode}
 
-	if g.CustomGame != nil {
-		err := g.CustomGame.UpdateInitialPlayerGameState(ctx, players)
+	if customGameMode != nil {
+		err := customGameMode.UpdateInitialPlayerGameState(ctx, players)
 		return nil, err
 	}
 
