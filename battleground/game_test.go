@@ -3,6 +3,9 @@ package battleground
 import (
 	"testing"
 
+	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/plugin"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/stretchr/testify/assert"
 )
@@ -171,8 +174,10 @@ func TestGameStateFunc(t *testing.T) {
 	gp.PrintState()
 }
 
-/*
 func TestInvalidUserTurn(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -180,7 +185,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctn, 3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -193,6 +198,9 @@ func TestInvalidUserTurn(t *testing.T) {
 }
 
 func TestInitialGameplayWithMulligan(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -200,7 +208,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -240,6 +248,9 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 }
 
 func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -247,7 +258,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(5, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
@@ -273,4 +284,3 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 	assert.NotNil(t, err)
 	gp.PrintState()
 }
-*/
