@@ -355,25 +355,31 @@ message MatchMakingInfo {
 }
 
 enum PlayerActionType {
-    NoneAction       = 0;
-    EndTurn          = 1;
-    Mulligan         = 2;
-    DrawCard         = 3;
-    CardPlay         = 4;
-    CardAttack       = 5;
-    UseCardAbility   = 6;
-    UseOverlordSkill = 7;
+    NoneAction        = 0;
+    EndTurn           = 1;
+    Mulligan          = 2;
+    DrawCard          = 3;
+    CardPlay          = 4;
+    CardAttack        = 5;
+    CardAbilityUsed   = 6;
+    OverlordSkillUsed = 7;
+    CoinToss          = 8;
+    InitHands         = 9;
 }
 
 message PlayerAction {
     PlayerActionType actionType = 1; // not sure we really need this
-    string playerId = 6;
+    string playerId = 2;
     oneof action {
-        PlayerActionCardAttack cardAttack = 2;
-        PlayerActionDrawCard drawCard = 3;
-        PlayerActionEndTurn endTurn = 4;
-        PlayerActionMulligan mulligan = 5;
-        PlayerActionCardPlay cardPlay = 7;
+        PlayerActionCardAttack cardAttack               = 3;
+        PlayerActionDrawCard drawCard                   = 4;
+        PlayerActionEndTurn endTurn                     = 5;
+        PlayerActionMulligan mulligan                   = 6;
+        PlayerActionCardPlay cardPlay                   = 7;
+        PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
+        PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
+        PlayerActionCoinToss coinToss                   = 10;
+        PlayerActionInitHands initHands                 = 11;
     };
 }
 
@@ -620,8 +626,14 @@ enum CardAbilityType {
 }
 
 enum CardKind {
-    Creature = 0;
-    Spell = 1;
+    SPELL    = 0;
+    CREATURE = 1;
+}
+
+enum AffectObjectType {
+    PLAYER    = 0;
+    CHARACTER = 1;
+    CARD      = 2;
 }
 
 enum CreatureRank {
@@ -657,6 +669,7 @@ message GameState {
     repeated PlayerState playerStates   = 4;
     int64 currentActionIndex            = 5;
     repeated PlayerAction playerActions = 6;
+    int64 randomseed                    = 7;
 }
 
 message AbilityInstance {
@@ -768,46 +781,50 @@ message OverlordSkillPrototype {
     repeated ElementKind elementTargetTypes = 11;
 }
 
-message PlayerActionCardAttack {
-    string playerId = 1;
-    CardInstance attacker = 2;
-    CardInstance target = 3;
+message PlayerActionCoinToss {
+}
+
+message PlayerActionInitHands {
 }
 
 message PlayerActionCardPlay {
-    string playerId   = 1;
-    CardInstance card = 2;
+    CardInstance card = 1;
+}
+
+message PlayerActionCardAttack {
+    CardInstance attacker = 1;
+    AffectObjectType affectObjectType = 2;
+    Unit target = 3;
+}
+
+message PlayerActionCardAbilityUsed {
+    CardInstance card = 1;
+    AffectObjectType affectObjectType = 2;
+    CardKind cardKind = 3;
+    Unit target = 4;
+}
+
+message PlayerActionOverlordSkillUsed {
+    int64 SkillId = 1;
+    AffectObjectType affectObjectType = 2;
+    Unit target = 3;
 }
 
 message PlayerActionDrawCard {
-    string playerId = 1;
     CardInstance cardInstance = 2;
 }
 
 message PlayerActionEndTurn  {
-    string playerId = 1;
 }
 
 message PlayerActionMulligan {
-    string playerId = 1;
-    repeated CardInstance mulliganedCards = 2;
+    repeated CardInstance mulliganedCards = 1;
 }
 
 message PlayerActionOutcome {
     string playerId = 1;
     GameState gameState = 2;
 }
-
-message PlayerActionUseCardAbility {
-    string playerId = 1;
-    CardInstance card = 2;
-    Unit target = 3;
-}
-
-message PlayerActionUseOverlordSkill {
-    int32 playerId = 1;
-}
-
 
 message StartGameAction {
     repeated PlayerState playerStates = 1;

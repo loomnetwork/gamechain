@@ -30,7 +30,14 @@ var findMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("find match: %v", resp.Match)
+		match := resp.Match
+		fmt.Printf("MatchID: %d\n", match.Id)
+		fmt.Printf("Status: %s\n", match.Status)
+		fmt.Printf("Topic: %v\n", match.Topics)
+		fmt.Printf("Players:\n")
+		for _, player := range match.PlayerStates {
+			fmt.Printf("\tPlayerID: %s\n", player.Id)
+		}
 
 		return nil
 	},
