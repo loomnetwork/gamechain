@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 
+	"github.com/loomnetwork/go-loom"
+
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
 )
@@ -22,15 +24,21 @@ var (
 )
 
 type Gameplay struct {
-	State   *zb.GameState
-	stateFn stateFn
-	err     error
+	State      *zb.GameState
+	stateFn    stateFn
+	err        error
+	CustomGame *CustomGameMode
 }
 
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, error) {
+func NewGamePlay(id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+	var customGameMode *CustomGameMode
+	if customGameAddress != nil {
+		customGameMode = NewCustomGameMode(*customGameAddress)
+	}
+
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
@@ -38,7 +46,8 @@ func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, er
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 	}
-	g := &Gameplay{State: state}
+	g := &Gameplay{State: state,
+		CustomGame: customGameMode}
 	// init player hp and mana
 	g.initPlayer()
 	// add coin toss as the first action
