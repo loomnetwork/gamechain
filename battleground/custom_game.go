@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
 // We will create one instance of this per deployed game mode
@@ -16,13 +17,24 @@ type CustomGameMode struct {
 	contractABI *abi.ABI
 }
 
-func (c *CustomGameMode) GetSomething(ctx contract.Context, owner loom.Address) (*big.Int, error) {
-	//	ownerAddr := common.BytesToAddress([]byte("0x000000000012321321123123"))
+func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, players []*zb.PlayerState) error {
+	hpVal, err := c.GetInitialHealth(ctx)
+	if err != nil {
+		return err
+	}
+	for _, v := range players {
+		v.Hp = int32(hpVal)
+	}
+	return nil
+}
+
+//Todo simple example to get bootstrapped
+func (c *CustomGameMode) GetInitialHealth(ctx contract.Context) (int64, error) {
 	var result *big.Int
 	if err := c.staticCallEVM(ctx, "costToEnter", &result); err != nil {
-		return nil, err
+		return 0, err
 	}
-	return result, nil
+	return result.Int64(), nil
 }
 
 func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {

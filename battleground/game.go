@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/loomnetwork/go-loom"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
@@ -33,7 +34,7 @@ type Gameplay struct {
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
 		customGameMode = NewCustomGameMode(*customGameAddress)
@@ -48,6 +49,12 @@ func NewGamePlay(id int64, players []*zb.PlayerState, seed int64, customGameAddr
 	}
 	g := &Gameplay{State: state,
 		CustomGame: customGameMode}
+
+	if g.CustomGame != nil {
+		err := g.CustomGame.UpdateInitialPlayerGameState(ctx, players)
+		return nil, err
+	}
+
 	// init player hp and mana
 	g.initPlayer()
 	// add coin toss as the first action
