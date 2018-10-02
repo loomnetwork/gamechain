@@ -355,16 +355,16 @@ message MatchMakingInfo {
 }
 
 enum PlayerActionType {
-    NoneAction       = 0;
-    EndTurn          = 1;
-    Mulligan         = 2;
-    DrawCard         = 3;
-    CardPlay         = 4;
-    CardAttack       = 5;
-    UseCardAbility   = 6;
-    UseOverlordSkill = 7;
-    CoinToss         = 8;
-    InitHands        = 9;
+    NoneAction        = 0;
+    EndTurn           = 1;
+    Mulligan          = 2;
+    DrawCard          = 3;
+    CardPlay          = 4;
+    CardAttack        = 5;
+    CardAbilityUsed   = 6;
+    OverlordSkillUsed = 7;
+    CoinToss          = 8;
+    InitHands         = 9;
 }
 
 message PlayerAction {
