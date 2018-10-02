@@ -90,13 +90,13 @@ func TestCustomGameMode(t *testing.T) {
 
 	cg := NewCustomGameMode(evmContractAddr)
 	fmt.Printf("getsomething from addr-%v\n", addr)
-	res, err := cg.GetInitialHealth(gwCtx) //addr)
+	res, err := cg.GetStaticConfigs(gwCtx) //addr)
 
 	assert.Equal(t, err, nil)
 	//if err != nil {
 	//	assert.FailNow(t, "error reading data in contract")
 	//}
-	assert.Equal(t, res, int64(25))
+	assert.Equal(t, res, int64(30))
 }
 
 // From Zombiebattleground game mode repo

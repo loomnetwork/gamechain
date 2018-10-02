@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"fmt"
 	"math/big"
 	"strings"
 
@@ -18,7 +19,7 @@ type CustomGameMode struct {
 }
 
 func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, players []*zb.PlayerState) error {
-	hpVal, err := c.GetInitialHealth(ctx)
+	hpVal, err := c.GetStaticConfigs(ctx)
 	if err != nil {
 		return err
 	}
@@ -29,12 +30,28 @@ func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, play
 }
 
 //Todo simple example to get bootstrapped
-func (c *CustomGameMode) GetInitialHealth(ctx contract.Context) (int64, error) {
-	var result *big.Int
-	if err := c.staticCallEVM(ctx, "costToEnter", &result); err != nil {
+func (c *CustomGameMode) GetStaticConfigs(ctx contract.Context) (int64, error) {
+
+	//  GetStaticConfigs()
+
+	var (
+		ret0 = new([]*big.Int)
+		ret1 = new([]*big.Int)
+	)
+	out := []interface{}{
+		ret0,
+		ret1,
+	}
+	if err := c.staticCallEVM(ctx, "getStaticConfigs", &out); err != nil {
 		return 0, err
 	}
-	return result.Int64(), nil
+	for k, v := range *ret1 {
+		if k == 0 {
+			fmt.Printf("health----------------%v\n", v)
+			return v.Int64(), nil
+		}
+	}
+	return 0, nil
 }
 
 func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
