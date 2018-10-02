@@ -54,7 +54,10 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 
 	if customGameMode != nil {
 		err := customGameMode.UpdateInitialPlayerGameState(ctx, players)
-		return nil, err
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+		}
+		//return nil, err
 	}
 
 	// init player hp and mana
