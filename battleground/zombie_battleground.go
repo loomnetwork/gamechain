@@ -375,7 +375,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -609,7 +609,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// create game state
 	seed := ctx.Now().Unix()
-	gp, err := NewGamePlay(match.Id, match.PlayerStates, seed)
+	gp, err := NewGamePlay(match.Id, match.PlayerStates, seed, nil)
 	if err != nil {
 		return nil, err
 	}
