@@ -30,3 +30,5 @@
 protoc-gen-gogo
 genesis.json
 loom
+replays/*
+!replays/.gitkeep
