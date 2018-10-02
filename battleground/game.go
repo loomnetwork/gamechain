@@ -299,6 +299,10 @@ func actionInitHands(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
 	default:
@@ -386,6 +390,12 @@ func actionMulligan(g *Gameplay) stateFn {
 		return actionMulligan
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
 	default:
@@ -434,6 +444,10 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -478,6 +492,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -517,6 +535,96 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	default:
+		return nil
+	}
+}
+
+func actionCardAbilityUsed(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_CardAbilityUsed)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.captureErrorAndStop(err)
+	}
+
+	// TODO: card ability
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCard:
+		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	default:
+		return nil
+	}
+}
+
+func actionOverloadSkillUsed(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_OverlordSkillUsed)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// check player turn
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.captureErrorAndStop(err)
+	}
+
+	// TODO: overload skill
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCard:
+		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
@@ -555,6 +663,10 @@ func actionEndTurn(g *Gameplay) stateFn {
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
 		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
 	default:
 		return nil
 	}
