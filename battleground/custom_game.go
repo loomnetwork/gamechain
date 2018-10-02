@@ -23,9 +23,11 @@ func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, play
 	if err != nil {
 		return err
 	}
-	for _, v := range players {
-		v.Hp = int32(hpVal)
+
+	for i := 0; i < len(players); i++ {
+		players[i].Hp = int32(hpVal)
 	}
+
 	return nil
 }
 

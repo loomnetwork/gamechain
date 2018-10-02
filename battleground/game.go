@@ -52,20 +52,21 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 	g := &Gameplay{State: state}
 	//	CustomGame: customGameMode}
 
-	if customGameMode != nil {
-		err := customGameMode.UpdateInitialPlayerGameState(ctx, players)
-		if err != nil {
-			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
-		}
-		//return nil, err
-	}
-
 	// init player hp and mana
 	g.initPlayer()
 	// add coin toss as the first action
 	g.addCoinToss()
 	// init cards in hand
 	g.addInitHands()
+
+	if customGameMode != nil {
+		err := customGameMode.UpdateInitialPlayerGameState(ctx, g.State.PlayerStates)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+		}
+		//return nil, err
+	}
+
 	return GamePlayFrom(state)
 }
 
