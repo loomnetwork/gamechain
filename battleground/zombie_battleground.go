@@ -609,7 +609,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// create game state
 	seed := ctx.Now().Unix()
-	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, nil)
+	var addr loom.Address
+	addr, err = loom.ParseAddress(req.CustomGame.String())
+	if err != nil {
+		return nil, err
+	}
+	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, &addr)
 	if err != nil {
 		return nil, err
 	}
