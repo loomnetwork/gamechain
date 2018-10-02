@@ -1,4 +1,4 @@
-package battleground
+package main
 
 import (
 	"encoding/hex"
@@ -22,12 +22,14 @@ func main() {
 	f, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		fmt.Println("Error: ", err)
+		return
 	}
 
 	var replayList []zb.PlayerActionEvent
 	err = json.Unmarshal(f, &replayList)
 	if err != nil {
 		fmt.Println("error unmarshalling json: ", err)
+		return
 	}
 
 	zbContract = &battleground.ZombieBattleground{}
@@ -38,11 +40,13 @@ func main() {
 	err = initialiseStates(&initialState)
 	if err != nil {
 		fmt.Println("error initialising state: ", err)
+		return
 	}
 
 	err = startValidation(replayList[1:])
 	if err != nil {
 		fmt.Println("error while validating gameplay: ", err)
+		return
 	}
 }
 
