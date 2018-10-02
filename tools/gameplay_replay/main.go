@@ -29,10 +29,11 @@ func main() {
 	if err != nil {
 		fmt.Println("error unmarshalling json: ", err)
 	}
+
 	zbContract = &battleground.ZombieBattleground{}
 
 	setupFakeContext()
-	// TODO: accounts
+
 	initialState := replayList[0]
 	err = initialiseStates(&initialState)
 	if err != nil {
@@ -46,7 +47,6 @@ func main() {
 }
 
 func setupFakeContext() {
-
 	pubKey, _ := hex.DecodeString(pubKeyHexString)
 
 	addr := &loom.Address{
@@ -56,11 +56,9 @@ func setupFakeContext() {
 	ctx = contract.WrapPluginContext(
 		plugin.CreateFakeContext(*addr, *addr),
 	)
-
-	//err := c.Init(*ctx, &initRequest)
 }
 
-func initialiseStates(initialiseState *zb.PlayerActionEvent) error {
+func initialiseStates(initialState *zb.PlayerActionEvent) error {
 
 	return nil
 }
