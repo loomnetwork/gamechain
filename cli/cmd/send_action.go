@@ -38,7 +38,9 @@ var sendActionCmd = &cobra.Command{
 				},
 			}
 		case zb.PlayerActionType_EndTurn:
-			req.PlayerAction.Action = &zb.PlayerAction_EndTurn{}
+			req.PlayerAction.Action = &zb.PlayerAction_EndTurn{
+				EndTurn: &zb.PlayerActionEndTurn{},
+			}
 		default:
 			return fmt.Errorf("not support action type: %v", zb.PlayerActionType(sendActionCmdArgs.actionType))
 		}
