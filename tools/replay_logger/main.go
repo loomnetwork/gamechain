@@ -112,8 +112,14 @@ func writeReplayFile(topic string, body []byte) error {
 
 	var replay zb.GameReplay
 	var event zb.PlayerActionEvent
-	replayJSON := json.NewDecoder(f)
-	_ = replayJSON.Decode(&replay)
+	if fi, _ := f.Stat(); fi.Size() > 0 {
+		if err := jsonpb.Unmarshal(f, &replay); err != nil {
+			log.Println(err)
+			return err
+		}
+	} else {
+		replay.Events = []*zb.PlayerActionEvent{}
+	}
 
 	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
 		return err
