@@ -18,12 +18,6 @@ import (
 	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-type GameReplay struct {
-	ReplayVersion string
-	RandomSeed    int
-	Events        []*zb.PlayerActionEvent
-}
-
 var (
 	wsURL string
 )
@@ -116,7 +110,7 @@ func writeReplayFile(topic string, body []byte) error {
 		return err
 	}
 
-	var replay GameReplay
+	var replay zb.GameReplay
 	var event zb.PlayerActionEvent
 	replayJSON := json.NewDecoder(f)
 	_ = replayJSON.Decode(&replay)
@@ -129,12 +123,13 @@ func writeReplayFile(topic string, body []byte) error {
 
 	f.Close()
 
-	result, err := json.Marshal(replay)
+	m := jsonpb.Marshaler{}
+	result, err := m.MarshalToString(&replay)
 	if err != nil {
 		return err
 	}
 
-	if err := ioutil.WriteFile(path, result, 0644); err != nil {
+	if err := ioutil.WriteFile(path, []byte(result), 0644); err != nil {
 		return err
 	}
 
