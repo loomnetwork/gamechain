@@ -89,7 +89,7 @@ func wsLoop() {
 				}
 
 				if err := writeReplayFile(topic, body); err != nil {
-					log.Print("Error writing replay file: ", err)
+					log.Println("Error writing replay file: ", err)
 				}
 			}
 		}
@@ -116,7 +116,6 @@ func writeReplayFile(topic string, body []byte) error {
 	_ = replayJSON.Decode(&replay)
 
 	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
-		log.Println(err)
 		return err
 	}
 	replay.Events = append(replay.Events, &event)
