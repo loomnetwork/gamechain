@@ -18,6 +18,7 @@ import (
 var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 
 func main() {
+	// read game replay json
 	f, err := os.Open(os.Args[1])
 	if err != nil {
 		log.Error("error opening json file: ", err)
@@ -34,17 +35,19 @@ func main() {
 	j, _ := json.Marshal(gameReplay)
 	fmt.Println(string(j))
 
+	// set up fake context
 	zbContract := &battleground.ZombieBattleground{}
-	log.Info("setting up fake context")
+	log.Info("Setting up fake context")
 	fakeCtx := setupFakeContext()
 
+	// initialise game chain
+	log.Info("Initialising gamechain")
 	initFile, err := os.Open("init.json")
 	if err != nil {
 		log.WithError(err).Error("error opening init.json")
 		return
 	}
 
-	log.Info("Initialising gamechain")
 	var initRequest zb.InitRequest
 	err = jsonpb.Unmarshal(initFile, &initRequest)
 	if err != nil {
@@ -60,6 +63,7 @@ func main() {
 
 	actionList := gameReplay.Events
 
+	// initialise game state
 	log.Info("Initialising states")
 	initialState := actionList[0]
 	err = initialiseStates(*fakeCtx, zbContract, initialState)
@@ -68,6 +72,7 @@ func main() {
 		return
 	}
 
+	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
 	log.Info(len(actionList))
 	err = replayAndValidate(*fakeCtx, zbContract, actionList[1:])
@@ -91,6 +96,7 @@ func setupFakeContext() *contract.Context {
 }
 
 func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, initialState *zb.PlayerActionEvent) error {
+	// set up user accounts
 	log.Info("Initialising user accounts")
 	playerStates := initialState.Match.PlayerStates
 	var err error
@@ -103,19 +109,44 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			return err
 		}
 	}
+
+	// initialise the game state
+	log.Info("Initialising game state")
+	err = zbContract.SetMatch(ctx, &zb.SetMatchRequest{
+		Match: initialState.Match,
+	})
+	if err != nil {
+		return err
+	}
+
+	gs := &zb.GameState{
+		IsEnded:            false,
+		CurrentPlayerIndex: 0,
+		PlayerStates:       initialState.Match.PlayerStates,
+		CurrentActionIndex: 1,
+		Randomseed:         1538556715, // TODO: get from json root
+		//PlayerActions:
+	}
+
+	err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
+		GameState: gs,
+	})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, replayActionList []*zb.PlayerActionEvent) error {
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
-			MatchId:      replayAction.Match.Id,
+			MatchId:      6, //replayAction.Match.Id,
 			PlayerAction: replayAction.PlayerAction,
 		}
 		log.Info("replaying action: ", actionReq)
 		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
 		if err != nil {
-			log.Error("error: ", err)
+			return err
 		}
 		newGameState := actionResp.GameState
 		newPlayerStates := newGameState.PlayerStates
