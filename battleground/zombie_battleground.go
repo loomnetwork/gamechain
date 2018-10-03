@@ -619,7 +619,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// accept match
 	emitMsg := zb.PlayerActionEvent{
-		Match: match,
+		Match:     match,
+		GameState: gp.State,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
