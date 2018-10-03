@@ -168,6 +168,18 @@ func TestGameStateFunc(t *testing.T) {
 	})
 	assert.Nil(t, err)
 
+	// leave match
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_LeaveMatch,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_LeaveMatch{
+			LeaveMatch: &zb.PlayerActionLeaveMatch{},
+		},
+	})
+	assert.Nil(t, err)
+	assert.True(t, gp.State.IsEnded)
+	assert.Equal(t, gp.State.Winner, player2)
+
 	gp.PrintState()
 }
 
