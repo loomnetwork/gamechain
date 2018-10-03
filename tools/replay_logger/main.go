@@ -21,6 +21,7 @@ type ReplayEntry struct {
 	UserID           string      `json:"userId"`
 	Match            interface{} `json:"match"`
 	PlayerAction     interface{} `json:"playerAction"`
+	GameState        interface{} `json:"gameState"`
 }
 
 var (
@@ -87,8 +88,11 @@ func wsLoop() {
 				encodedBody := result.Path("encoded_body").Data().(string)
 				body, _ := base64.StdEncoding.DecodeString(encodedBody)
 
-				fmt.Println(topic)
-				fmt.Println(string(body))
+				fmt.Println("Getting event with topic: ", topic)
+
+				if !strings.HasPrefix(topic, "match") {
+					continue
+				}
 
 				if err := writeReplayFile(topic, body); err != nil {
 					log.Println("Error writing replay file: ", err)
@@ -104,6 +108,8 @@ func writeReplayFile(topic string, body []byte) error {
 	pwd, _ := os.Getwd()
 	filename := fmt.Sprintf("replays/%s.json", topic)
 	path := filepath.Join(pwd, filename)
+
+	fmt.Println("Writing to file: ", path)
 
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
@@ -130,10 +136,6 @@ func writeReplayFile(topic string, body []byte) error {
 	if err := ioutil.WriteFile(path, result, 0644); err != nil {
 		return err
 	}
-
-	// if _, err = f.WriteString(string(result)); err != nil {
-	// 	return err
-	// }
 
 	return nil
 }
