@@ -21,6 +21,7 @@ type ReplayEntry struct {
 	UserID           string      `json:"userId"`
 	Match            interface{} `json:"match"`
 	PlayerAction     interface{} `json:"playerAction"`
+	GameState        interface{} `json:"gameState"`
 }
 
 var (

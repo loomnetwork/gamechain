@@ -389,6 +389,7 @@ message PlayerActionEvent {
     string message = 3;
     Match match    = 4;
     PlayerAction playerAction = 5;
+    GameState gameState = 6;
 }
 
 message PlayersInMatchmakingList {
