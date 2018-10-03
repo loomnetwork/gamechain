@@ -81,6 +81,7 @@ func main() {
 		fmt.Println("error while validating gameplay: ", err)
 		os.Exit(1)
 	}
+	log.Info("Gameplay validation complete!")
 }
 
 func setupFakeContext() *contract.Context {
