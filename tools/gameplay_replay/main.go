@@ -37,7 +37,29 @@ func main() {
 	zbContract := &battleground.ZombieBattleground{}
 	log.Info("setting up fake context")
 	fakeCtx := setupFakeContext()
+
+	initFile, err := os.Open("init.json")
+	if err != nil {
+		log.WithError(err).Error("error opening init.json")
+		return
+	}
+
+	log.Info("Initialising gamechain")
+	var initRequest zb.InitRequest
+	err = jsonpb.Unmarshal(initFile, &initRequest)
+	if err != nil {
+		log.WithError(err).Error("error unmarshalling init.json")
+		return
+	}
+
+	err = zbContract.Init(*fakeCtx, &initRequest)
+	if err != nil {
+		log.WithError(err).Error("error calling Init transaction")
+		return
+	}
+
 	actionList := gameReplay.Events
+
 	log.Info("Initialising states")
 	initialState := actionList[0]
 	err = initialiseStates(*fakeCtx, zbContract, initialState)
@@ -69,7 +91,18 @@ func setupFakeContext() *contract.Context {
 }
 
 func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, initialState *zb.PlayerActionEvent) error {
-
+	log.Info("Initialising user accounts")
+	playerStates := initialState.Match.PlayerStates
+	var err error
+	for _, ps := range playerStates {
+		err = zbContract.CreateAccount(ctx, &zb.UpsertAccountRequest{
+			UserId:  ps.Id,
+			Version: "v1",
+		})
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
