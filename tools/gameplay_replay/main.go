@@ -122,13 +122,15 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		return err
 	}
 
+	initialGameState := initialState.GameState
 	gs := &zb.GameState{
-		IsEnded:            initialState.GameState.IsEnded,
-		CurrentPlayerIndex: initialState.GameState.CurrentPlayerIndex,
-		PlayerStates:       initialState.Match.PlayerStates,
-		CurrentActionIndex: initialState.GameState.CurrentActionIndex,
-		Randomseed:         gameReplay.RandomSeed,
-		//PlayerActions:
+		Id:                 initialGameState.Id,
+		IsEnded:            initialGameState.IsEnded,
+		CurrentPlayerIndex: initialGameState.CurrentPlayerIndex,
+		PlayerStates:       initialGameState.PlayerStates,
+		CurrentActionIndex: initialGameState.CurrentActionIndex,
+		Randomseed:         initialGameState.Randomseed,
+		PlayerActions:      initialGameState.PlayerActions,
 	}
 
 	err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
@@ -156,7 +158,9 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		newGameState := actionResp.GameState
 		newPlayerStates := newGameState.PlayerStates
 
-		logPlayerStates := replayAction.Match.PlayerStates
+		logGameState := replayAction.GameState
+		logPlayerStates := logGameState.PlayerStates
+
 		log.Info("comparing states")
 		err = comparePlayerStates(newPlayerStates, logPlayerStates)
 		if err != nil {
@@ -171,8 +175,9 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 	for _, newPlayerState := range newPlayerStates {
 		for _, logPlayerState := range logPlayerStates {
 			if newPlayerState.Id == logPlayerState.Id {
+
 				fmt.Println("comparing state for user ", newPlayerState.Id)
-				// TODO: compare using some library??
+				// TODO: deep compare using some library??
 				// hp
 				if newPlayerState.Hp != logPlayerState.Hp {
 					return fmt.Errorf("hp doesn't match")
