@@ -13,15 +13,15 @@ import (
 	"strings"
 
 	"github.com/Jeffail/gabs"
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
+	"github.com/loomnetwork/zombie_battleground/types/zb"
 )
 
-type ReplayEntry struct {
-	PlayerActionType string      `json:"playerActionType"`
-	UserID           string      `json:"userId"`
-	Match            interface{} `json:"match"`
-	PlayerAction     interface{} `json:"playerAction"`
-	GameState        interface{} `json:"gameState"`
+type GameReplay struct {
+	ReplayVersion string
+	RandomSeed    int
+	Events        []*zb.PlayerActionEvent
 }
 
 var (
@@ -95,7 +95,7 @@ func wsLoop() {
 				}
 
 				if err := writeReplayFile(topic, body); err != nil {
-					log.Println("Error writing replay file: ", err)
+					log.Print("Error writing replay file: ", err)
 				}
 			}
 		}
@@ -116,15 +116,16 @@ func writeReplayFile(topic string, body []byte) error {
 		return err
 	}
 
-	var replay []ReplayEntry
-	var entry ReplayEntry
+	var replay GameReplay
+	var event zb.PlayerActionEvent
 	replayJSON := json.NewDecoder(f)
 	_ = replayJSON.Decode(&replay)
 
-	if err := json.Unmarshal(body, &entry); err != nil {
+	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
+		log.Println(err)
 		return err
 	}
-	replay = append(replay, entry)
+	replay.Events = append(replay.Events, &event)
 
 	f.Close()
 
