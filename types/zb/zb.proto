@@ -440,6 +440,11 @@ message GetMatchResponse {
     GameState gameState = 2;
 }
 
+message SetMatchRequest {
+    Match match         = 1;
+}
+
+
 message GetGameStateRequest {
     int64 matchId = 1;
 }
@@ -451,9 +456,6 @@ message GetGameStateResponse {
 message SetGameStateRequest {
     GameState gameState = 1;
 }
-
-message SetGameStateResponse {
-} 
 
 message PlayerActionRequest {
     int64 matchId = 1;
