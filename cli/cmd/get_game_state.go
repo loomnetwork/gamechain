@@ -12,7 +12,7 @@ var getGameStateCmdArgs struct {
 }
 
 var getGameStateCmd = &cobra.Command{
-	Use:   "get_gamestate",
+	Use:   "get_game_state",
 	Short: "sample get gamestate",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
