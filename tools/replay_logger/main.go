@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"encoding/base64"
 	"strings"
@@ -110,8 +111,12 @@ func writeReplayFile(topic string, body []byte) error {
 		return err
 	}
 
-	var replay zb.GameReplay
 	var event zb.PlayerActionEvent
+	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
+		return err
+	}
+
+	var replay zb.GameReplay
 	if fi, _ := f.Stat(); fi.Size() > 0 {
 		if err := jsonpb.Unmarshal(f, &replay); err != nil {
 			log.Println(err)
@@ -119,11 +124,14 @@ func writeReplayFile(topic string, body []byte) error {
 		}
 	} else {
 		replay.Events = []*zb.PlayerActionEvent{}
+		bodyJSON, _ := gabs.ParseJSON(body)
+		seed, err := strconv.ParseInt(bodyJSON.Path("gameState.randomseed").Data().(string), 10, 64)
+		if err != nil {
+			return err
+		}
+		replay.RandomSeed = seed
 	}
 
-	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
-		return err
-	}
 	replay.Events = append(replay.Events, &event)
 
 	f.Close()
