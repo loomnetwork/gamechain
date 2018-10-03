@@ -659,6 +659,15 @@ func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameS
 	}, nil
 }
 
+func (z *ZombieBattleground) SetGameState(ctx contract.Context, req *zb.SetGameStateRequest) (*zb.SetGameStateResponse, error) {
+	err := saveGameState(ctx, req.GameState)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.SetGameStateResponse{}, nil
+}
+
 func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {

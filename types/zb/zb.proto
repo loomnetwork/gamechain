@@ -448,6 +448,13 @@ message GetGameStateResponse {
     GameState gameState = 1;
 }
 
+message SetGameStateRequest {
+    GameState gameState = 1;
+}
+
+message SetGameStateResponse {
+} 
+
 message PlayerActionRequest {
     int64 matchId = 1;
     PlayerAction playerAction = 2;
