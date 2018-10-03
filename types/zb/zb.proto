@@ -365,6 +365,7 @@ enum PlayerActionType {
     OverlordSkillUsed = 7;
     CoinToss          = 8;
     InitHands         = 9;
+    LeaveMatch        = 10;
 }
 
 message PlayerAction {
@@ -380,6 +381,7 @@ message PlayerAction {
         PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
         PlayerActionCoinToss coinToss                   = 10;
         PlayerActionInitHands initHands                 = 11;
+        PlayerActionLeaveMatch leaveMatch               = 12;
     };
 }
 
@@ -423,14 +425,6 @@ message FindMatchResponse {
     Match match = 1;
 }
 
-message LeaveMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message LeaveMatchResponse {
-}
-
 message GetMatchRequest {
     int64 matchId = 1;
 }
@@ -454,6 +448,16 @@ message PlayerActionRequest {
 }
 
 message PlayerActionResponse {
+    GameState gameState = 1;
+}
+
+message EndMatchRequest {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
+}
+
+message EndMatchResponse {
     GameState gameState = 1;
 }
 
@@ -677,6 +681,7 @@ message GameState {
     int64 currentActionIndex            = 5;
     repeated PlayerAction playerActions = 6;
     int64 randomseed                    = 7;
+    string winner                       = 8;
 }
 
 message AbilityInstance {
@@ -792,6 +797,9 @@ message PlayerActionCoinToss {
 }
 
 message PlayerActionInitHands {
+}
+
+message PlayerActionLeaveMatch {
 }
 
 message PlayerActionCardPlay {
