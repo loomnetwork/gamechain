@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -11,6 +12,7 @@ import (
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/zombie_battleground/battleground"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
+	log "github.com/sirupsen/logrus"
 )
 
 var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
@@ -18,27 +20,35 @@ var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b056752
 func main() {
 	f, err := os.Open(os.Args[1])
 	if err != nil {
-		fmt.Println("error opening json file: ", err)
+		log.Error("error opening json file: ", err)
 		return
 	}
 
 	var gameReplay zb.GameReplay
 	err = jsonpb.Unmarshal(f, &gameReplay)
 	if err != nil {
-		fmt.Println("error unmarshalling json: ", err)
+		log.Error("error unmarshalling json: ", err)
 		return
 	}
 
+	j, _ := json.Marshal(gameReplay)
+	fmt.Println(string(j))
+
 	zbContract := &battleground.ZombieBattleground{}
+	log.Info("setting up fake context")
 	fakeCtx := setupFakeContext()
 	actionList := gameReplay.Events
+
+	log.Info("Initialising states")
 	initialState := actionList[0]
 	err = initialiseStates(initialState)
 	if err != nil {
-		fmt.Println("error initialising state: ", err)
+		log.Error("error initialising state: ", err)
 		return
 	}
 
+	log.Info("Starting replay and validate")
+	log.Info(len(actionList))
 	err = replayAndValidate(*fakeCtx, zbContract, actionList[1:])
 	if err != nil {
 		fmt.Println("error while validating gameplay: ", err)
@@ -67,21 +77,22 @@ func initialiseStates(initialState *zb.PlayerActionEvent) error {
 func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, replayActionList []*zb.PlayerActionEvent) error {
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
-			MatchId:      1, // TODO: handle better
+			MatchId:      3, // TODO: handle better
 			PlayerAction: replayAction.PlayerAction,
 		}
+		log.Info("replaying action: ", actionReq)
 		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
 		if err != nil {
-			fmt.Println("error: ", err)
+			log.Error("error: ", err)
 		}
 		newGameState := actionResp.GameState
 		newPlayerStates := newGameState.PlayerStates
 
 		logPlayerStates := replayAction.Match.PlayerStates
-
+		log.Info("comparing states")
 		err = comparePlayerStates(newPlayerStates, logPlayerStates)
 		if err != nil {
-			fmt.Println("player states do not match: ", err)
+			log.Error("player states do not match: ", err)
 		}
 
 	}
