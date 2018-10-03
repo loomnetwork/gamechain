@@ -375,7 +375,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -735,6 +735,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
 		Match:            match,
+		GameState:        gamestate,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
