@@ -394,6 +394,8 @@ message PlayerActionEvent {
 
 message GameReplay {
     repeated PlayerActionEvent events = 1;
+    string replayVersion = 3;
+    int32 randomSeed = 4;
 }
 
 message PlayersInMatchmakingList {
