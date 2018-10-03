@@ -26,12 +26,13 @@ var getMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("ID: %d, %v\n", resp.Match.Id, resp.Match.Status)
-		for _, player := range resp.Match.PlayerStates {
-			fmt.Printf("\tplayer: %#v\n", player)
-		}
-		if gamestate := resp.GameState; gamestate != nil {
-			fmt.Printf("gameStateID: %d\n", gamestate.Id)
+		match := resp.Match
+		fmt.Printf("MatchID: %d\n", match.Id)
+		fmt.Printf("Status: %s\n", match.Status)
+		fmt.Printf("Topic: %v\n", match.Topics)
+		fmt.Printf("Players:\n")
+		for i, player := range match.PlayerStates {
+			fmt.Printf("\tPlayer%d: %s\n", i+1, player.Id)
 		}
 
 		return nil
