@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/golang/protobuf/jsonpb"
+	"github.com/gogo/protobuf/jsonpb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -38,10 +38,9 @@ func main() {
 	log.Info("setting up fake context")
 	fakeCtx := setupFakeContext()
 	actionList := gameReplay.Events
-
 	log.Info("Initialising states")
 	initialState := actionList[0]
-	err = initialiseStates(initialState)
+	err = initialiseStates(*fakeCtx, zbContract, initialState)
 	if err != nil {
 		log.Error("error initialising state: ", err)
 		return
@@ -69,7 +68,7 @@ func setupFakeContext() *contract.Context {
 	return &ctx
 }
 
-func initialiseStates(initialState *zb.PlayerActionEvent) error {
+func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, initialState *zb.PlayerActionEvent) error {
 
 	return nil
 }
@@ -77,7 +76,7 @@ func initialiseStates(initialState *zb.PlayerActionEvent) error {
 func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, replayActionList []*zb.PlayerActionEvent) error {
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
-			MatchId:      3, // TODO: handle better
+			MatchId:      replayAction.Match.Id,
 			PlayerAction: replayAction.PlayerAction,
 		}
 		log.Info("replaying action: ", actionReq)
@@ -116,14 +115,23 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 				}
 
 				// current action
+				if newPlayerState.CurrentAction != logPlayerState.CurrentAction {
+					return fmt.Errorf("current action doesn't match")
+				}
 
 				// overlord instance
 
-				// cardsinhand
+				// cards in hand
+				if len(newPlayerState.CardsInHand) != len(logPlayerState.CardsInHand) {
+					return fmt.Errorf("card in hand don't match")
+				}
 
 				// cards in deck
-
+				if len(newPlayerState.CardsInDeck) != len(logPlayerState.CardsInDeck) {
+					return fmt.Errorf("card in deck don't match")
+				}
 				// deck
+
 			}
 		}
 	}
