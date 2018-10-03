@@ -66,12 +66,9 @@ func main() {
 		return
 	}
 
-	actionList := gameReplay.Events
-
 	// initialise game state
 	log.Info("Initialising states")
-	initialState := actionList[0]
-	err = initialiseStates(*fakeCtx, zbContract, initialState)
+	err = initialiseStates(*fakeCtx, zbContract, &gameReplay)
 	if err != nil {
 		log.Error("error initialising state: ", err)
 		os.Exit(1)
@@ -79,8 +76,7 @@ func main() {
 
 	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
-	log.Info(len(actionList))
-	err = replayAndValidate(*fakeCtx, zbContract, actionList[1:])
+	err = replayAndValidate(*fakeCtx, zbContract, &gameReplay)
 	if err != nil {
 		fmt.Println("error while validating gameplay: ", err)
 		os.Exit(1)
@@ -100,7 +96,9 @@ func setupFakeContext() *contract.Context {
 	return &ctx
 }
 
-func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, initialState *zb.PlayerActionEvent) error {
+func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay *zb.GameReplay) error {
+	actionList := gameReplay.Events
+	initialState := actionList[0]
 	// set up user accounts
 	log.Info("Initialising user accounts")
 	playerStates := initialState.Match.PlayerStates
@@ -125,11 +123,11 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	}
 
 	gs := &zb.GameState{
-		IsEnded:            false,
-		CurrentPlayerIndex: 0,
+		IsEnded:            initialState.GameState.IsEnded,
+		CurrentPlayerIndex: initialState.GameState.CurrentPlayerIndex,
 		PlayerStates:       initialState.Match.PlayerStates,
-		CurrentActionIndex: 1,
-		Randomseed:         1538556715, // TODO: get from json root
+		CurrentActionIndex: initialState.GameState.CurrentActionIndex,
+		Randomseed:         gameReplay.RandomSeed,
 		//PlayerActions:
 	}
 
@@ -142,10 +140,12 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	return nil
 }
 
-func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, replayActionList []*zb.PlayerActionEvent) error {
+func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay *zb.GameReplay) error {
+	actionList := gameReplay.Events
+	replayActionList := actionList[1:]
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
-			MatchId:      6, //replayAction.Match.Id,
+			MatchId:      replayAction.Match.Id,
 			PlayerAction: replayAction.PlayerAction,
 		}
 		log.Info("replaying action: ", actionReq)
