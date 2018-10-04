@@ -24,7 +24,8 @@ func main() {
 	}
 
 	// read game replay json
-	f, err := os.Open(os.Args[1])
+	fname := os.Args[1]
+	f, err := os.Open(fname)
 	if err != nil {
 		log.Error("error opening json file: ", err)
 		os.Exit(1)
@@ -66,22 +67,35 @@ func main() {
 		return
 	}
 
+	// log the game play being replayed
+	replayedGameReplay := zb.GameReplay{
+		ReplayVersion: gameReplay.ReplayVersion,
+		RandomSeed:    gameReplay.RandomSeed,
+	}
+
 	// initialise game state
 	log.Info("Initialising states")
-	err = initialiseStates(*fakeCtx, zbContract, &gameReplay)
+	err = initialiseStates(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
 	if err != nil {
-		log.Error("error initialising state: ", err)
+		log.WithError(err).Error("error initialising state")
 		os.Exit(1)
 	}
 
 	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
-	err = replayAndValidate(*fakeCtx, zbContract, &gameReplay)
+	err = replayAndValidate(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
 	if err != nil {
-		fmt.Println("error while validating gameplay: ", err)
-		os.Exit(1)
+		log.WithError(err).Error("error while validating gameplay")
+		//os.Exit(1)
 	}
-	log.Info("Gameplay validation complete!")
+
+	fnameReplayed := fname + "_replayed"
+	outFile, err := os.Create(fnameReplayed)
+	err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
+	if err != nil {
+		log.WithError(err).Error("error writing output to file")
+	}
+	log.Infof("Gameplay validation completed, output written to %s", fnameReplayed)
 }
 
 func setupFakeContext() *contract.Context {
@@ -97,7 +111,7 @@ func setupFakeContext() *contract.Context {
 	return &ctx
 }
 
-func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay *zb.GameReplay) error {
+func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
 	actionList := gameReplay.Events
 	initialState := actionList[0]
 	// set up user accounts
@@ -107,7 +121,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	for _, ps := range playerStates {
 		err = zbContract.CreateAccount(ctx, &zb.UpsertAccountRequest{
 			UserId:  ps.Id,
-			Version: "v1",
+			Version: gameReplay.ReplayVersion,
 		})
 		if err != nil {
 			return err
@@ -140,10 +154,21 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	if err != nil {
 		return err
 	}
+
+	playerEvent := &zb.PlayerActionEvent{
+		//PlayerActionType: initialState.PlayerAction.ActionType,
+		//UserId:           initialState.PlayerAction.PlayerId,
+		//PlayerAction:     initialState.PlayerAction,
+		Match:     initialState.Match,
+		GameState: initialState.GameState,
+	}
+
+	replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
+
 	return nil
 }
 
-func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay *zb.GameReplay) error {
+func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
 	actionList := gameReplay.Events
 	replayActionList := actionList[1:]
 	for _, replayAction := range replayActionList {
@@ -156,6 +181,16 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		if err != nil {
 			return err
 		}
+
+		playerEvent := &zb.PlayerActionEvent{
+			PlayerActionType: actionReq.PlayerAction.ActionType,
+			UserId:           actionReq.PlayerAction.PlayerId,
+			PlayerAction:     actionReq.PlayerAction,
+			Match:            actionResp.Match,
+			GameState:        actionResp.GameState,
+		}
+		replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
+
 		newGameState := actionResp.GameState
 		newPlayerStates := newGameState.PlayerStates
 
@@ -180,6 +215,9 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 				fmt.Println("comparing state for user ", newPlayerState.Id)
 				// TODO: deep compare using some library??
 				// hp
+				fmt.Printf("newPlayerState.Hp: %v\n", newPlayerState.Hp)
+				fmt.Printf("logPlayerState.Hp: %v\n", logPlayerState.Hp)
+
 				if newPlayerState.Hp != logPlayerState.Hp {
 					return fmt.Errorf("hp doesn't match")
 				}
@@ -206,7 +244,7 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 					return fmt.Errorf("card in deck don't match")
 				}
 				// deck
-
+				fmt.Println("----------")
 			}
 		}
 	}

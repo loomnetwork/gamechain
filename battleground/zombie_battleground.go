@@ -767,6 +767,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 
 	return &zb.PlayerActionResponse{
 		GameState: gamestate,
+		Match:     match,
 	}, nil
 }
 
