@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -38,9 +37,6 @@ func main() {
 		log.Error("error unmarshalling json: ", err)
 		os.Exit(1)
 	}
-
-	j, _ := json.Marshal(gameReplay)
-	fmt.Println(string(j))
 
 	// set up fake context
 	zbContract := &battleground.ZombieBattleground{}
@@ -122,9 +118,10 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	initialState := actionList[0]
 
 	// set up user accounts
-	log.Info("Initialising user accounts")
+	log.Info("Initialising user accounts and setting up match")
 	playerStates := initialState.Match.PlayerStates
 	var err error
+	var newMatch *zb.Match
 	for _, ps := range playerStates {
 		err = zbContract.CreateAccount(ctx, &zb.UpsertAccountRequest{
 			UserId:  ps.Id,
@@ -133,27 +130,55 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		if err != nil {
 			return err
 		}
+
+		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{
+			UserId: ps.Id,
+			Deck:   ps.Deck,
+		})
+		if err != nil {
+			return err
+		}
+
+		findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId:  ps.Id,
+			DeckId:  ps.Deck.Id,
+			Version: gameReplay.ReplayVersion,
+		})
+		if err != nil {
+			return err
+		}
+
+		// the second iteration of the loop should give us a useful match state
+		newMatch = findMatchResp.Match
 	}
 
 	// initialise the game state
 	log.Info("Initialising game state")
-	err = zbContract.SetMatch(ctx, &zb.SetMatchRequest{
-		Match: initialState.Match,
-	})
-	if err != nil {
-		return err
-	}
+	/*
+		err = zbContract.SetMatch(ctx, &zb.SetMatchRequest{
+			Match: initialState.Match,
+		})
+		if err != nil {
+			return err
+		}
 
-	err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
-		GameState: initialState.GameState,
+		err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
+			GameState: initialState.GameState,
+		})
+		if err != nil {
+			return err
+		}
+	*/
+	getGSResp, err := zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
+		MatchId: newMatch.Id,
 	})
 	if err != nil {
 		return err
 	}
 
 	playerEvent := &zb.PlayerActionEvent{
-		Match:     initialState.Match,
-		GameState: initialState.GameState,
+		Match:     newMatch,
+		GameState: getGSResp.GameState,
 	}
 
 	replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
@@ -166,7 +191,7 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 	replayActionList := actionList[1:]
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
-			MatchId:      replayAction.Match.Id,
+			MatchId:      1, //replayAction.Match.Id,
 			PlayerAction: replayAction.PlayerAction,
 		}
 		log.Info("replaying action: ", actionReq)
