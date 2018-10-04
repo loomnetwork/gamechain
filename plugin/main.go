@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/loomnetwork/go-loom/plugin"
-	"github.com/loomnetwork/zombie_battleground/battleground"
+	"github.com/loomnetwork/gamechain/battleground"
 )
 
 var Contract = battleground.Contract
