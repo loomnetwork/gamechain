@@ -93,6 +93,10 @@ func main() {
 	fnameTrimmed := strings.TrimSuffix(fname, ".json")
 	fnameReplayed := fnameTrimmed + "_replayed.json"
 	outFile, err := os.Create(fnameReplayed)
+	if err != nil {
+		log.WithError(err).Errorf("error creating file %s", fnameReplayed)
+	}
+
 	err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
 	if err != nil {
 		log.WithError(err).Error("error writing output to file")
