@@ -466,6 +466,7 @@ message PlayerActionRequest {
 
 message PlayerActionResponse {
     GameState gameState = 1;
+    Match match = 2;
 }
 
 // Game Modes
