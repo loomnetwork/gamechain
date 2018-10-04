@@ -557,6 +557,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 					Deck: deck,
 				},
 			},
+			Version: req.Version,
 		}
 
 		if err := createMatch(ctx, match); err != nil {
