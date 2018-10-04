@@ -1241,8 +1241,10 @@ func TestGameStateOperations(t *testing.T) {
 							InstanceId: 1,
 						},
 						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId: 2,
+							},
 						},
 					},
 				},
@@ -1335,8 +1337,10 @@ func TestGameStateOperations(t *testing.T) {
 							InstanceId: 1,
 						},
 						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId: 2,
+							},
 						},
 					},
 				},
