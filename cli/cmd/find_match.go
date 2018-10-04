@@ -9,8 +9,9 @@ import (
 )
 
 var findMatchCmdArgs struct {
-	userID string
-	deckID int64
+	userID  string
+	deckID  int64
+	version string
 }
 
 var findMatchCmd = &cobra.Command{
@@ -25,6 +26,7 @@ var findMatchCmd = &cobra.Command{
 		var resp zb.FindMatchResponse
 
 		req.UserId = findMatchCmdArgs.userID
+		req.Version = findMatchCmdArgs.version
 
 		_, err := commonTxObjs.contract.Call("FindMatch", &req, signer, &resp)
 		if err != nil {
@@ -48,4 +50,5 @@ func init() {
 
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
+	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 }
