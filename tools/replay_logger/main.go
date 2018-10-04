@@ -130,6 +130,8 @@ func writeReplayFile(topic string, body []byte) error {
 			return err
 		}
 		replay.RandomSeed = seed
+		version := bodyJSON.Path("match.version").Data().(string)
+		replay.ReplayVersion = version
 	}
 
 	replay.Events = append(replay.Events, &event)
