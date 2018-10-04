@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
 	loom "github.com/loomnetwork/go-loom"
@@ -89,7 +90,8 @@ func main() {
 		//os.Exit(1)
 	}
 
-	fnameReplayed := fname + "_replayed"
+	fnameTrimmed := strings.TrimSuffix(fname, ".json")
+	fnameReplayed := fnameTrimmed + "_replayed.json"
 	outFile, err := os.Create(fnameReplayed)
 	err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
 	if err != nil {
@@ -114,6 +116,7 @@ func setupFakeContext() *contract.Context {
 func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
 	actionList := gameReplay.Events
 	initialState := actionList[0]
+
 	// set up user accounts
 	log.Info("Initialising user accounts")
 	playerStates := initialState.Match.PlayerStates
@@ -137,28 +140,14 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		return err
 	}
 
-	initialGameState := initialState.GameState
-	gs := &zb.GameState{
-		Id:                 initialGameState.Id,
-		IsEnded:            initialGameState.IsEnded,
-		CurrentPlayerIndex: initialGameState.CurrentPlayerIndex,
-		PlayerStates:       initialGameState.PlayerStates,
-		CurrentActionIndex: initialGameState.CurrentActionIndex,
-		Randomseed:         initialGameState.Randomseed,
-		PlayerActions:      initialGameState.PlayerActions,
-	}
-
 	err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
-		GameState: gs,
+		GameState: initialState.GameState,
 	})
 	if err != nil {
 		return err
 	}
 
 	playerEvent := &zb.PlayerActionEvent{
-		//PlayerActionType: initialState.PlayerAction.ActionType,
-		//UserId:           initialState.PlayerAction.PlayerId,
-		//PlayerAction:     initialState.PlayerAction,
 		Match:     initialState.Match,
 		GameState: initialState.GameState,
 	}
@@ -179,7 +168,7 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		log.Info("replaying action: ", actionReq)
 		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
 		if err != nil {
-			return err
+			return fmt.Errorf("error sending action %v: %v", actionReq.PlayerAction, err)
 		}
 
 		playerEvent := &zb.PlayerActionEvent{
@@ -192,17 +181,34 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
 
 		newGameState := actionResp.GameState
-		newPlayerStates := newGameState.PlayerStates
 
 		logGameState := replayAction.GameState
-		logPlayerStates := logGameState.PlayerStates
 
-		log.Info("comparing states")
-		err = comparePlayerStates(newPlayerStates, logPlayerStates)
+		log.Info("Comparing game states")
+		err = compareGameStates(newGameState, logGameState)
 		if err != nil {
-			log.Error("player states do not match: ", err)
+			log.Error("game states do not match: ", err)
 		}
+	}
+	return nil
+}
 
+func compareGameStates(newGameState, logGameState *zb.GameState) error {
+	if newGameState.CurrentPlayerIndex != logGameState.CurrentPlayerIndex {
+		log.Error("currentPlayerIndex doesn't match")
+	}
+
+	if newGameState.CurrentActionIndex != logGameState.CurrentActionIndex {
+		log.Error("currentActionIndex doesn't match")
+	}
+
+	newPlayerStates := newGameState.PlayerStates
+	logPlayerStates := logGameState.PlayerStates
+
+	log.Info("Comparing player states")
+	err := comparePlayerStates(newPlayerStates, logPlayerStates)
+	if err != nil {
+		log.Error("player states do not match: ", err)
 	}
 	return nil
 }
@@ -212,12 +218,9 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 		for _, logPlayerState := range logPlayerStates {
 			if newPlayerState.Id == logPlayerState.Id {
 
-				fmt.Println("comparing state for user ", newPlayerState.Id)
+				fmt.Println("comparing player state for: ", newPlayerState.Id)
 				// TODO: deep compare using some library??
 				// hp
-				fmt.Printf("newPlayerState.Hp: %v\n", newPlayerState.Hp)
-				fmt.Printf("logPlayerState.Hp: %v\n", logPlayerState.Hp)
-
 				if newPlayerState.Hp != logPlayerState.Hp {
 					return fmt.Errorf("hp doesn't match")
 				}
