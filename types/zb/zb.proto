@@ -817,6 +817,7 @@ message PlayerActionCardAbilityUsed {
     AffectObjectType affectObjectType = 2;
     CardKind cardKind = 3;
     repeated Unit targets = 4;
+    string AbilityType = 5;
 }
 
 message PlayerActionOverlordSkillUsed {
