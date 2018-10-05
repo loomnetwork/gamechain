@@ -814,10 +814,9 @@ message PlayerActionCardAttack {
 
 message PlayerActionCardAbilityUsed {
     CardInstance card = 1;
-    AffectObjectType affectObjectType = 2;
-    CardKind cardKind = 3;
-    repeated Unit targets = 4;
-    string AbilityType = 5;
+    CardKind cardKind = 2;
+    repeated Unit targets = 3;
+    string AbilityType = 4;
 }
 
 message PlayerActionOverlordSkillUsed {
@@ -848,6 +847,7 @@ message StartGameAction {
 
 message Unit {
     int32 instanceId = 1;
+    AffectObjectType affectObjectType = 2;
 }
 
 enum OverlordSkillKind {

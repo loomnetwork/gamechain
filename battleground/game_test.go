@@ -144,10 +144,10 @@ func TestGameStateFunc(t *testing.T) {
 				Card: &zb.CardInstance{
 					InstanceId: 1,
 				},
-				AffectObjectType: zb.AffectObjectType_CARD,
 				Targets: []*zb.Unit{
 					&zb.Unit{
-						InstanceId: 2,
+						InstanceId:       2,
+						AffectObjectType: zb.AffectObjectType_CARD,
 					},
 				},
 			},
