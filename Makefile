@@ -1,4 +1,4 @@
-PKG = github.com/loomnetwork/zombie_battleground
+PKG = github.com/loomnetwork/gamechain
 GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
