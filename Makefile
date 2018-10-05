@@ -90,7 +90,7 @@ clean:
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
-		bin/zb-enum-gen
+		bin/zb-enum-gen \
 		bin/replay-logger
 
-.PHONY: all clean test deps proto cli zb_console_game tools in/zb-enum-gen abigen
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
