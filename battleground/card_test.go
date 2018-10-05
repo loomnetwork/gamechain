@@ -3,7 +3,7 @@ package battleground
 import (
 	"testing"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 

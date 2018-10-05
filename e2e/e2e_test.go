@@ -24,7 +24,7 @@ func setupInternalPlugin(dir string) error {
 
 	cmd := exec.Cmd{
 		Path: binary,
-		Args: []string{binary, "build", "-buildmode", "plugin", "-o", path.Join(dir, "zombiebattleground.so.1.0.0"), "github.com/loomnetwork/zombie_battleground/plugin"},
+		Args: []string{binary, "build", "-buildmode", "plugin", "-o", path.Join(dir, "zombiebattleground.so.1.0.0"), "github.com/loomnetwork/gamechain/plugin"},
 	}
 	if err := cmd.Run(); err != nil {
 		return err
@@ -72,7 +72,7 @@ func TestE2E(t *testing.T) {
 			cmd := exec.Cmd{
 				Dir:  config.BaseDir,
 				Path: binary,
-				Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/zombie_battleground/cli"},
+				Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
 			}
 			if err := cmd.Run(); err != nil {
 				t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
