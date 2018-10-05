@@ -35,10 +35,9 @@ type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
 func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
-	ctx.Logger().Info("NewGamePlay11---")
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
-		ctx.Logger().Info("NewGamePlay2---")
+		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
 		customGameMode = NewCustomGameMode(*customGameAddress)
 	}
 
@@ -63,8 +62,8 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		err := customGameMode.UpdateInitialPlayerGameState(ctx, g.State.PlayerStates)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return nil, err
 		}
-		//return nil, err
 	}
 
 	return GamePlayFrom(state)

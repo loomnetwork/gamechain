@@ -375,7 +375,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -612,6 +612,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	var addr loom.Address
 	var addr2 *loom.Address
 	var addrStr string
+	//TODO cleanup how we do this parsing
 	if req.CustomGame != nil {
 		addrStr = fmt.Sprintf("default:%s", req.CustomGame.Local.String())
 	}
@@ -623,8 +624,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("NewGamePlay-Address--%s", addrStr))
-	ctx.Logger().Info(fmt.Sprintf("NewGamePlayaddr2----%v\n", addr2))
 	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
 	if err != nil {
 		return nil, err
