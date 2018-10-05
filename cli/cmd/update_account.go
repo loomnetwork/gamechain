@@ -7,7 +7,7 @@ import (
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var updateAccCmdArgs struct {

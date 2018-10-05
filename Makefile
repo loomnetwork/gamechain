@@ -1,4 +1,4 @@
-PKG = github.com/loomnetwork/zombie_battleground
+PKG = github.com/loomnetwork/gamechain
 GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
@@ -11,7 +11,7 @@ build: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
-enum_gen: bin/zb-enum-gen
+tools: bin/zb-enum-gen bin/zb-console-game
 
 replay_logger: bin/replay-logger
 
@@ -19,7 +19,10 @@ bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
 bin/zb-enum-gen:
-	go build -o $@ $(PKG)/tools/cmd
+	go build -o $@ tools/cmd/template/main.go
+
+bin/zb-console-game:
+	go build -o $@ tools/cmd/console_game/main.go
 
 bin/replay-logger:
 	go build -o $@ $(PKG)/tools/replay_logger
@@ -61,11 +64,20 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/prometheus/client_golang/prometheus \
 		github.com/loomnetwork/e2e \
 		github.com/iancoleman/strcase \
+		github.com/jroimartin/gocui \
 		github.com/Jeffail/gabs \
 		github.com/gorilla/websocket
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
+
+abigen:
+	go build github.com/ethereum/go-ethereum/cmd/abigen
+	mkdir tmp_build || true
+	# Need to run truffle compile and compile over latest ABI for a zombie battleground solidity mode
+	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
+	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go 
+
 
 test:
 	go test -v ./...
@@ -77,8 +89,8 @@ clean:
 		types/zb/zb.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.1.0.0 \
-		bin/zb-cli
-		bin/zb-enum-gen
+		bin/zb-cli \
+		bin/zb-enum-gen \
 		bin/replay-logger
 
-.PHONY: all clean test deps proto cli
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
