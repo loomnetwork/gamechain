@@ -419,6 +419,7 @@ message MatchCount {
 message FindMatchRequest {
     string userId = 1;
     int64 deckId  = 2;
+    Address customGame = 3;
 }
 
 message FindMatchResponse {

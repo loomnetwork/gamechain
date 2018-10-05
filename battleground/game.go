@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/go-loom"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -25,12 +28,19 @@ type Gameplay struct {
 	State   *zb.GameState
 	stateFn stateFn
 	err     error
+	//	customGame *CustomGameMode
 }
 
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+	var customGameMode *CustomGameMode
+	if customGameAddress != nil {
+		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
+		customGameMode = NewCustomGameMode(*customGameAddress)
+	}
+
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
@@ -39,12 +49,23 @@ func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, er
 		Randomseed:         seed,
 	}
 	g := &Gameplay{State: state}
+	//	CustomGame: customGameMode}
+
 	// init player hp and mana
 	g.initPlayer()
 	// add coin toss as the first action
 	g.addCoinToss()
 	// init cards in hand
 	g.addInitHands()
+
+	if customGameMode != nil {
+		err := customGameMode.UpdateInitialPlayerGameState(ctx, g.State.PlayerStates)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return nil, err
+		}
+	}
+
 	return GamePlayFrom(state)
 }
 
