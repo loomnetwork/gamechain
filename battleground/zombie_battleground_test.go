@@ -1240,10 +1240,10 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.CardInstance{
 							InstanceId: 1,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: 2,
+								InstanceId:       2,
+								AffectObjectType: zb.AffectObjectType_CARD,
 							},
 						},
 					},
@@ -1336,10 +1336,10 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.CardInstance{
 							InstanceId: 1,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: 2,
+								InstanceId:       2,
+								AffectObjectType: zb.AffectObjectType_CARD,
 							},
 						},
 					},
@@ -1357,10 +1357,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_OverlordSkillUsed{
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
-						SkillId:          1,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: 2,
+							InstanceId:       2,
+							AffectObjectType: zb.AffectObjectType_CARD,
 						},
 					},
 				},
