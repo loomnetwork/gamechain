@@ -140,9 +140,10 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		}
 
 		findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
-			UserId:  ps.Id,
-			DeckId:  ps.Deck.Id,
-			Version: gameReplay.ReplayVersion,
+			UserId:     ps.Id,
+			DeckId:     ps.Deck.Id,
+			Version:    gameReplay.ReplayVersion,
+			RandomSeed: gameReplay.RandomSeed,
 		})
 		if err != nil {
 			return err

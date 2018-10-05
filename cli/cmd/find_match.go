@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/zombie_battleground/types/zb"
@@ -9,9 +10,10 @@ import (
 )
 
 var findMatchCmdArgs struct {
-	userID  string
-	deckID  int64
-	version string
+	userID     string
+	deckID     int64
+	version    string
+	randomSeed int64
 }
 
 var findMatchCmd = &cobra.Command{
@@ -27,6 +29,7 @@ var findMatchCmd = &cobra.Command{
 
 		req.UserId = findMatchCmdArgs.userID
 		req.Version = findMatchCmdArgs.version
+		req.RandomSeed = findMatchCmdArgs.randomSeed
 
 		_, err := commonTxObjs.contract.Call("FindMatch", &req, signer, &resp)
 		if err != nil {
@@ -51,4 +54,6 @@ func init() {
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
+	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.randomSeed, "randomSeed", "s", time.Now().Unix(), "Random Seed")
+
 }
