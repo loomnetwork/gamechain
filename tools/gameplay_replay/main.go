@@ -155,21 +155,6 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 
 	// initialise the game state
 	log.Info("Initialising game state")
-	/*
-		err = zbContract.SetMatch(ctx, &zb.SetMatchRequest{
-			Match: initialState.Match,
-		})
-		if err != nil {
-			return err
-		}
-
-		err = zbContract.SetGameState(ctx, &zb.SetGameStateRequest{
-			GameState: initialState.GameState,
-		})
-		if err != nil {
-			return err
-		}
-	*/
 	getGSResp, err := zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
 		MatchId: newMatch.Id,
 	})
