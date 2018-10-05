@@ -10,11 +10,11 @@ import (
 	"unicode/utf8"
 
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -375,7 +375,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -611,7 +611,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	seed := ctx.Now().Unix()
 	var addr loom.Address
 	var addr2 *loom.Address
-	addrStr := fmt.Sprintf("default:%s", req.CustomGame.Local.String())
+	var addrStr string
+	if req.CustomGame != nil {
+		addrStr = fmt.Sprintf("default:%s", req.CustomGame.Local.String())
+	}
+
 	addr, err = loom.ParseAddress(addrStr)
 	if err != nil {
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
