@@ -82,7 +82,7 @@ clean:
 		types/zb/zb.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.1.0.0 \
-		bin/zb-cli
+		bin/zb-cli \
 		bin/zb-enum-gen
 
 .PHONY: all clean test deps proto cli zb_console_game tools in/zb-enum-gen abigen
