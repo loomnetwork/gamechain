@@ -1,3 +1,5 @@
+// +build evm
+
 package battleground
 
 import (
@@ -10,12 +12,13 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+
 	//	"github.com/loomnetwork/go-loom/plugin"
 
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
 	levm "github.com/loomnetwork/loomchain/evm"
-	plugin "github.com/loomnetwork/loomchain/plugin"
+	"github.com/loomnetwork/loomchain/plugin"
 	lvm "github.com/loomnetwork/loomchain/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
