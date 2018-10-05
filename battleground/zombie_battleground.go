@@ -609,7 +609,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	seed := ctx.Now().Unix()
+	seed := req.RandomSeed
 	gp, err := NewGamePlay(match.Id, match.PlayerStates, seed)
 	if err != nil {
 		return nil, err
