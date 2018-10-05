@@ -635,7 +635,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// accept match
 	emitMsg := zb.PlayerActionEvent{
-		Match: match,
+		Match:     match,
+		GameState: gp.State,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -674,7 +675,7 @@ func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameS
 	}, nil
 }
 
-func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
+func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -687,21 +688,18 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	// delete user match
 	ctx.Delete(UserMatchKey(req.UserId))
 
-	// TODO: Change on gamestate
-
-	emitMsg := zb.PlayerActionEvent{
-		UserId: req.UserId,
-		Match:  match,
-	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	// @LOCK quick fix for now, need to update the game state properly
+	gamestate, err := loadGameState(ctx, match.Id)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
+	gamestate.Winner = req.WinnerId
+	gamestate.IsEnded = true
+	if err := saveGameState(ctx, gamestate); err != nil {
+		return nil, err
 	}
 
-	return &zb.LeaveMatchResponse{}, nil
+	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {
@@ -751,6 +749,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
 		Match:            match,
+		GameState:        gamestate,
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {

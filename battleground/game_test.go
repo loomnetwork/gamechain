@@ -147,9 +147,11 @@ func TestGameStateFunc(t *testing.T) {
 				Card: &zb.CardInstance{
 					InstanceId: 1,
 				},
-				AffectObjectType: zb.AffectObjectType_CARD,
-				Target: &zb.Unit{
-					InstanceId: 2,
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId:       2,
+						AffectObjectType: zb.AffectObjectType_CARD,
+					},
 				},
 			},
 		},
@@ -170,6 +172,18 @@ func TestGameStateFunc(t *testing.T) {
 		},
 	})
 	assert.Nil(t, err)
+
+	// leave match
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_LeaveMatch,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_LeaveMatch{
+			LeaveMatch: &zb.PlayerActionLeaveMatch{},
+		},
+	})
+	assert.Nil(t, err)
+	assert.True(t, gp.State.IsEnded)
+	assert.Equal(t, gp.State.Winner, player2)
 
 	gp.PrintState()
 }
