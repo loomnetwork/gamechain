@@ -1058,10 +1058,11 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response.GameState)
 	})
 
-	t.Run("LeaveMatch", func(t *testing.T) {
-		_, err := c.LeaveMatch(ctx, &zb.LeaveMatchRequest{
-			MatchId: matchID,
-			UserId:  "player-1",
+	t.Run("EndMatch", func(t *testing.T) {
+		_, err := c.EndMatch(ctx, &zb.EndMatchRequest{
+			MatchId:  matchID,
+			UserId:   "player-1",
+			WinnerId: "player-2",
 		})
 		assert.Nil(t, err)
 	})
@@ -1239,9 +1240,11 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.CardInstance{
 							InstanceId: 1,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId:       2,
+								AffectObjectType: zb.AffectObjectType_CARD,
+							},
 						},
 					},
 				},
@@ -1333,9 +1336,11 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.CardInstance{
 							InstanceId: 1,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId:       2,
+								AffectObjectType: zb.AffectObjectType_CARD,
+							},
 						},
 					},
 				},
@@ -1352,10 +1357,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_OverlordSkillUsed{
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
-						SkillId:          1,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: 2,
+							InstanceId:       2,
+							AffectObjectType: zb.AffectObjectType_CARD,
 						},
 					},
 				},
@@ -1363,6 +1368,28 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
+	})
+	t.Run("LeaveMatch", func(t *testing.T) {
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
+				PlayerId:   "player-2",
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+	})
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
 	})
 }
 
