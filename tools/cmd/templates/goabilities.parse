@@ -1,10 +1,13 @@
 package ability
-
-{{ with .Abilities }}
+{{ with .EnumDefinitions }}
 {{ range . }}
-const ( {{- $name := .Name}}
-        {{- range  $i, $e := .Types }}
-        {{$name | ToUpper }}_{{$e }}  = iota  
+{{- $name := .Name -}}
+
+type {{$name}} int32
+
+const ( 
+        {{- range  $i, $e := .Values }}
+        {{$name }}_{{$e}} {{$name}} = iota  
         {{- end }}
 )
 
