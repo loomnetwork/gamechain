@@ -3,7 +3,10 @@ package battleground
 import (
 	"testing"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/plugin"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -144,9 +147,11 @@ func TestGameStateFunc(t *testing.T) {
 				Card: &zb.CardInstance{
 					InstanceId: 1,
 				},
-				AffectObjectType: zb.AffectObjectType_CARD,
-				Target: &zb.Unit{
-					InstanceId: 2,
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId:       2,
+						AffectObjectType: zb.AffectObjectType_CARD,
+					},
 				},
 			},
 		},
@@ -168,10 +173,25 @@ func TestGameStateFunc(t *testing.T) {
 	})
 	assert.Nil(t, err)
 
+	// leave match
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_LeaveMatch,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_LeaveMatch{
+			LeaveMatch: &zb.PlayerActionLeaveMatch{},
+		},
+	})
+	assert.Nil(t, err)
+	assert.True(t, gp.State.IsEnded)
+	assert.Equal(t, gp.State.Winner, player2)
+
 	gp.PrintState()
 }
 
 func TestInvalidUserTurn(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -179,7 +199,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(3, players, seed)
+	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -192,6 +212,9 @@ func TestInvalidUserTurn(t *testing.T) {
 }
 
 func TestInitialGameplayWithMulligan(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -199,7 +222,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(3, players, seed)
+	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -239,6 +262,9 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 }
 
 func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
@@ -246,7 +272,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(5, players, seed)
+	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card

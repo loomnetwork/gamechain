@@ -19,7 +19,7 @@ import (
 	"github.com/Jeffail/gabs"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var (

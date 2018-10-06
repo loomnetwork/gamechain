@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/loomnetwork/zombie_battleground/cli/cmd"
+	"github.com/loomnetwork/gamechain/cli/cmd"
 )
 
 func main() {

@@ -366,6 +366,7 @@ enum PlayerActionType {
     OverlordSkillUsed = 7;
     CoinToss          = 8;
     InitHands         = 9;
+    LeaveMatch        = 10;
 }
 
 message PlayerAction {
@@ -381,6 +382,7 @@ message PlayerAction {
         PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
         PlayerActionCoinToss coinToss                   = 10;
         PlayerActionInitHands initHands                 = 11;
+        PlayerActionLeaveMatch leaveMatch               = 12;
     };
 }
 
@@ -420,18 +422,11 @@ message FindMatchRequest {
     int64 deckId  = 2;
     string version = 3;
     int64 randomSeed = 4;
+    Address customGame = 5;
 }
 
 message FindMatchResponse {
     Match match = 1;
-}
-
-message LeaveMatchRequest {
-    string userId = 1;
-    int64 matchId = 2;
-}
-
-message LeaveMatchResponse {
 }
 
 message GetMatchRequest {
@@ -468,6 +463,16 @@ message PlayerActionRequest {
 message PlayerActionResponse {
     GameState gameState = 1;
     Match match = 2;
+}
+
+message EndMatchRequest {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
+}
+
+message EndMatchResponse {
+    GameState gameState = 1;
 }
 
 // Game Modes
@@ -690,6 +695,7 @@ message GameState {
     int64 currentActionIndex            = 5;
     repeated PlayerAction playerActions = 6;
     int64 randomseed                    = 7;
+    string winner                       = 8;
 }
 
 message AbilityInstance {
@@ -807,6 +813,9 @@ message PlayerActionCoinToss {
 message PlayerActionInitHands {
 }
 
+message PlayerActionLeaveMatch {
+}
+
 message PlayerActionCardPlay {
     CardInstance card = 1;
 }
@@ -819,9 +828,9 @@ message PlayerActionCardAttack {
 
 message PlayerActionCardAbilityUsed {
     CardInstance card = 1;
-    AffectObjectType affectObjectType = 2;
-    CardKind cardKind = 3;
-    Unit target = 4;
+    CardKind cardKind = 2;
+    repeated Unit targets = 3;
+    string AbilityType = 4;
 }
 
 message PlayerActionOverlordSkillUsed {
@@ -852,6 +861,7 @@ message StartGameAction {
 
 message Unit {
     int32 instanceId = 1;
+    AffectObjectType affectObjectType = 2;
 }
 
 enum OverlordSkillKind {
