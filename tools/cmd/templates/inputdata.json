@@ -1,15 +1,15 @@
 {
-    "abilities": [
+    "enumDefinitions": [
         {
-            "name": "Activity",
-            "types": [
+            "name": "AbilityActivityType",
+            "values": [
                 "PASSIVE",
                 "ACTIVE"
             ]
         },
         {
-            "name": "Call",
-            "types": [
+            "name": "AbilityCallType",
+            "values": [
                 "TURN",
                 "ENTRY",
                 "END",
@@ -20,13 +20,10 @@
                 "AT_DEFENCE",
                 "IN_HAND"
             ]
-        }
-
-    ],
-    "actions": [
+        },
         {
-            "name": "Player",
-            "types": [
+            "name": "PlayerAction",
+            "values": [
                 "StartGame",
                 "EndTurn",
                 "DrawCardPlayer",
@@ -34,20 +31,13 @@
                 "CardAttack",
                 "UseCardAbility"
             ]
-        }
-        
-    ],
-    "staticConfigs": [
+        },
         {
-            "name": "GameConfig",
-            "types": [
-                "Health",
-                "CustomDeck",
-                "AddCard",
-                "SetDeck"
+            "name": "GameStateChangeAction",
+            "values": [
+                "SetPlayerDefense",
+                "SetPlayerGoo"
             ]
         }
-        
     ]
-
 }
