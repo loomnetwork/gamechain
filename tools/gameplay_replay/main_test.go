@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 func TestReplayAndValidate(t *testing.T) {

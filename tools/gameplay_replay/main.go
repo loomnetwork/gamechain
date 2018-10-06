@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/battleground"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/zombie_battleground/battleground"
-	"github.com/loomnetwork/zombie_battleground/types/zb"
 	log "github.com/sirupsen/logrus"
 )
 
