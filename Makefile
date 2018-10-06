@@ -19,7 +19,7 @@ bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
 bin/zb-enum-gen:
-	go build -o $@ tools/cmd/template/main.go
+	go build -o $@ tools/cmd/templates/main.go
 
 bin/zb-console-game:
 	go build -o $@ tools/cmd/console_game/main.go

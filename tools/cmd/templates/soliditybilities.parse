@@ -4,47 +4,17 @@
 pragma solidity ^0.4.24;
 
 contract ZUBGEnum {
-{{ with .Abilities }}
-{{ range . }}
-    enum Ability{{.Name}}  {
-        {{- with .Types -}}
-            {{range  $i, $e := . }}
-            {{- if $i}},{{end -}}
-            {{$e | ToLower | ToCamel }} 
-            {{- end -}}
-        {{- end -}}
+    {{- with .EnumDefinitions }}
+    {{ range . }}
+    enum {{.Name}}
+    {
+        {{- with .Values -}}
+            {{range  $i, $e := . -}}
+            {{- if $i}},{{end}}
+            {{$e}}
+            {{- end }}
+        {{- end}}
     }
-    Ability{{.Name}} {{.Name | ToLower }};
-{{ end }} 
-{{ end }}
-
-
-{{- with .Actions }}
-{{ range . }}
-    enum Action{{.Name}}  {
-        {{- with .Types -}}
-            {{range  $i, $e := . }}
-            {{- if $i}},{{end -}}
-            {{$e | ToLower | ToCamel }} 
-            {{- end -}}
-        {{- end -}}
-    }
-    Action{{.Name}} {{.Name | ToLower }};
-{{ end }} 
-{{ end }}
-
-{{- with .StaticConfigs }}
-{{ range . }}
-    enum Static{{.Name}}  {
-        {{- with .Types -}}
-            {{range  $i, $e := . }}
-            {{- if $i}},{{end -}}
-            {{$e | ToLower | ToCamel }} 
-            {{- end -}}
-        {{- end -}}
-    }
-    Static{{.Name}} {{.Name | ToLower }};
-{{ end }} 
-{{ end }}
-
+    {{end -}}
+    {{end}}
 }
