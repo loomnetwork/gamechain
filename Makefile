@@ -67,7 +67,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/jroimartin/gocui \
 		github.com/Jeffail/gabs \
 		github.com/gorilla/websocket \
-		github.com/sirupsen/logrus
+		github.com/sirupsen/logrus \
+		github.com/go-sql-driver/mysql
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
@@ -77,7 +78,7 @@ abigen:
 	mkdir tmp_build || true
 	# Need to run truffle compile and compile over latest ABI for a zombie battleground solidity mode
 	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
-	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go 
+	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go
 
 
 test:
