@@ -3,8 +3,9 @@ syntax = "proto3";
 option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 
 import "github.com/loomnetwork/go-loom/types/types.proto";
-// C# namespace neews to be added to types.proto?
+// C# namespace needs to be added to types.proto?
 //import "github.com/loomnetwork/unity-sdk/UnityProject/Assets/LoomSDK/Source/Protobuf/proto/loom.proto";
+
 message Account {
     string user_id             = 1;
     bool phone_number_verified = 2;
