@@ -10,11 +10,11 @@ import (
 	"unicode/utf8"
 
 	"github.com/golang/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
-	"github.com/loomnetwork/zombie_battleground/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -610,7 +610,26 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// create game state
 	seed := req.RandomSeed
-	gp, err := NewGamePlay(match.Id, match.PlayerStates, seed)
+	if seed == 0 {
+		seed = ctx.Now().Unix()
+	}
+
+	var addr loom.Address
+	var addr2 *loom.Address
+	var addrStr string
+	//TODO cleanup how we do this parsing
+	if req.CustomGame != nil {
+		addrStr = fmt.Sprintf("default:%s", req.CustomGame.Local.String())
+	}
+
+	addr, err = loom.ParseAddress(addrStr)
+	if err != nil {
+		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
+	} else {
+		addr2 = &addr
+	}
+
+	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
 	if err != nil {
 		return nil, err
 	}
@@ -660,7 +679,7 @@ func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameS
 	}, nil
 }
 
-func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatchRequest) (*zb.LeaveMatchResponse, error) {
+func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -673,21 +692,18 @@ func (z *ZombieBattleground) LeaveMatch(ctx contract.Context, req *zb.LeaveMatch
 	// delete user match
 	ctx.Delete(UserMatchKey(req.UserId))
 
-	// TODO: Change on gamestate
-
-	emitMsg := zb.PlayerActionEvent{
-		UserId: req.UserId,
-		Match:  match,
-	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	// @LOCK quick fix for now, need to update the game state properly
+	gamestate, err := loadGameState(ctx, match.Id)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
+	gamestate.Winner = req.WinnerId
+	gamestate.IsEnded = true
+	if err := saveGameState(ctx, gamestate); err != nil {
+		return nil, err
 	}
 
-	return &zb.LeaveMatchResponse{}, nil
+	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {

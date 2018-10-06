@@ -12,7 +12,7 @@ make
 
 Make sure you have [loom](github.com/loomnetwork/loomchain) binary.
 
-Run the follwing commands in the `zombie_battleground` directory:
+Run the follwing commands in the `gamechain` directory:
 ```
 loom init
 cp zb.genesis.json genesis.json
@@ -28,7 +28,7 @@ loom genkey -k priv
 # Note that setAccount and getAccount supports all fields defined in `UpsertAccountRequest`. To make example simple,
 # only two fields has been used.
 
-# In zombie_battleground directory, run:
+# In gamechain directory, run:
 
 # create account transaction
 ./bin/zb-cli create_account -k priv -u loom -v "{\"image\":\"Image\", \"game_membership_tier\": 1}"

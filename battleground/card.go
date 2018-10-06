@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 const (

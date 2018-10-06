@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/go-loom"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -25,12 +28,19 @@ type Gameplay struct {
 	State   *zb.GameState
 	stateFn stateFn
 	err     error
+	//	customGame *CustomGameMode
 }
 
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+	var customGameMode *CustomGameMode
+	if customGameAddress != nil {
+		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
+		customGameMode = NewCustomGameMode(*customGameAddress)
+	}
+
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
@@ -39,12 +49,23 @@ func NewGamePlay(id int64, players []*zb.PlayerState, seed int64) (*Gameplay, er
 		Randomseed:         seed,
 	}
 	g := &Gameplay{State: state}
+	//	CustomGame: customGameMode}
+
 	// init player hp and mana
 	g.initPlayer()
 	// add coin toss as the first action
 	g.addCoinToss()
 	// init cards in hand
 	g.addInitHands()
+
+	if customGameMode != nil {
+		err := customGameMode.UpdateInitialPlayerGameState(ctx, g.State.PlayerStates)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return nil, err
+		}
+	}
+
 	return GamePlayFrom(state)
 }
 
@@ -131,6 +152,8 @@ func (g *Gameplay) resume() error {
 		state = actionEndTurn
 	case zb.PlayerActionType_Mulligan:
 		state = actionMulligan
+	case zb.PlayerActionType_LeaveMatch:
+		state = actionLeaveMatch
 	default:
 		return errInvalidAction
 	}
@@ -189,6 +212,7 @@ func (g *Gameplay) isEnded() bool {
 func (g *Gameplay) PrintState() {
 	state := g.State
 	fmt.Printf("============StateInfo=============\n")
+	fmt.Printf("Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
 	fmt.Printf("Current Player Index: %v\n", state.CurrentPlayerIndex)
 
 	for i, player := range g.State.PlayerStates {
@@ -309,6 +333,8 @@ func actionInitHands(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -402,6 +428,8 @@ func actionMulligan(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -452,6 +480,8 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return actionCardAbilityUsed
 	case zb.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -500,6 +530,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return actionCardAbilityUsed
 	case zb.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -543,6 +575,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionCardAbilityUsed
 	case zb.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -586,6 +620,8 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		return actionCardAbilityUsed
 	case zb.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -629,6 +665,8 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 		return actionCardAbilityUsed
 	case zb.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
 	default:
 		return nil
 	}
@@ -650,6 +688,54 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 	// change player turn
 	g.changePlayerTurn()
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_DrawCard:
+		return actionDrawCard
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	case zb.PlayerActionType_LeaveMatch:
+		return actionLeaveMatch
+	default:
+		return nil
+	}
+}
+
+func actionLeaveMatch(g *Gameplay) stateFn {
+	fmt.Printf("state: %v\n", zb.PlayerActionType_LeaveMatch)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	// update the winner of the game
+	var winner string
+	for _, player := range g.State.PlayerStates {
+		if player.Id != current.PlayerId {
+			winner = player.Id
+		}
+	}
+	g.State.Winner = winner
+	g.State.IsEnded = true
 
 	// determine the next action
 	g.PrintState()

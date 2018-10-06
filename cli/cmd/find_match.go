@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/zombie_battleground/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
