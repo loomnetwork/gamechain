@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -86,7 +87,7 @@ func wsLoop() {
 
 		msgJSON, _ := gabs.ParseJSON(message)
 		result := msgJSON.Path("result")
-		log.Printf("result: %s", result.String())
+
 		results, _ := result.Children()
 		if len(results) != 0 {
 			pluginName := result.Path("plugin_name").Data().(string)
@@ -128,9 +129,11 @@ func wsLoop() {
 }
 
 func writeReplayFile(topic string, body []byte) ([]byte, error) {
-	pwd, _ := os.Getwd()
+	_, b, _, _ := runtime.Caller(0)
+	basepath := filepath.Dir(b)
+
 	filename := fmt.Sprintf("replays/%s.json", topic)
-	path := filepath.Join(pwd, filename)
+	path := filepath.Join(basepath, "../../", filename)
 
 	fmt.Println("Writing to file: ", path)
 
