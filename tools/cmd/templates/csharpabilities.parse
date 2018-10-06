@@ -5,22 +5,20 @@ namespace Loom.ZombieBattleground.Common
 {
     public class Enumerators
     {
-
         public const string JSONVersion = '0.1' //constant for what json file generated this 
 
-        {{ with .Abilities }}
+        {{- with .EnumDefinitions }}
         {{ range . }}
-            public enum Ability{{.Name}}Type
-            {
-                {{ with .Types }}
-                    {{range  $i, $e := . }}
-                    {{- if $i}},{{end}}
-                    {{$e}}
-                    {{- end }}
-                {{ end -}}
-            }
-        {{ end }} 
-        {{ end }}
-
+        public enum {{.Name}}
+        {
+            {{- with .Values -}}
+                {{range  $i, $e := . -}}
+                {{- if $i}},{{end}}
+                {{$e}}
+                {{- end }}
+            {{- end}}
+        }
+        {{end -}} 
+        {{end}}
     }
 }
