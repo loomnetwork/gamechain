@@ -28,7 +28,7 @@ type Gameplay struct {
 	State   *zb.GameState
 	stateFn stateFn
 	err     error
-	//	customGame *CustomGameMode
+	customGameMode *CustomGameMode
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -48,7 +48,10 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 	}
-	g := &Gameplay{State: state}
+	g := &Gameplay{
+		State: state,
+		customGameMode: customGameMode,
+	}
 	//	CustomGame: customGameMode}
 
 	// init player hp and mana
@@ -58,8 +61,8 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 	// init cards in hand
 	g.addInitHands()
 
-	if customGameMode != nil {
-		err := customGameMode.UpdateInitialPlayerGameState(ctx, g.State.PlayerStates)
+	if g.customGameMode != nil {
+		err := g.customGameMode.UpdateInitialPlayerGameState(ctx, g.State)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return nil, err

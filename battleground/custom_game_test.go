@@ -3,25 +3,23 @@
 package battleground
 
 import (
-	"encoding/hex"
 	"fmt"
-	"strings"
-	"testing"
-
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-ethereum/common/hexutil"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/plugin"
+	"github.com/stretchr/testify/assert"
+	"strings"
+	"testing"
 
 	//	"github.com/loomnetwork/go-loom/plugin"
 
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
-	levm "github.com/loomnetwork/loomchain/evm"
-	"github.com/loomnetwork/loomchain/plugin"
 	lvm "github.com/loomnetwork/loomchain/vm"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 // Implements loomchain.EventHandler interface
@@ -70,7 +68,7 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 	return contractAddr, &contractABI, nil
 }
 
-func TestCustomGameMode(t *testing.T) {
+/*func TestCustomGameMode(t *testing.T) {
 
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	pubKey, _ := hex.DecodeString(pubKeyHexString)
@@ -100,6 +98,58 @@ func TestCustomGameMode(t *testing.T) {
 	//	assert.FailNow(t, "error reading data in contract")
 	//}
 	assert.Equal(t, res, int64(30))
+}*/
+
+func createSimpleGame(t *testing.T) *Gameplay {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
+	player1 := "player-1"
+	player2 := "player-2"
+	players := []*zb.PlayerState{
+		{Id: player1, Deck: &defaultDeck1},
+		{Id: player2, Deck: &defaultDeck2},
+	}
+	seed := int64(0)
+	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
+
+	assert.Nil(t, err)
+
+	return gp
+}
+
+func TestDeserializeGameStateChangeActions(t *testing.T) {
+	gp := createSimpleGame(t)
+	cgm := NewCustomGameMode(loom.RootAddress("chain"))
+	buffer := common.FromHex("0x00000000000000000000000000000000000000000000000000000000000000000000000000000000080100000002070000000002060100000001050000000001")
+
+	err := cgm.deserializeAndApplyGameStateChangeActions(gp.State, buffer)
+	assert.Equal(t, err, nil)
+
+	assert.Equal(t, int32(5), gp.State.PlayerStates[0].Hp)
+	assert.Equal(t, int32(6), gp.State.PlayerStates[1].Hp)
+	assert.Equal(t, int32(7), gp.State.PlayerStates[0].Mana)
+	assert.Equal(t, int32(8), gp.State.PlayerStates[1].Mana)
+}
+
+func TestDeserializeGameStateChangeActionsUnknownAction(t *testing.T) {
+	gp := createSimpleGame(t)
+	cgm := NewCustomGameMode(loom.RootAddress("chain"))
+	buffer := common.FromHex("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000801000000020700000000020601000000010500000000F9")
+
+	err := cgm.deserializeAndApplyGameStateChangeActions(gp.State, buffer)
+	assert.NotEqual(t, err, nil)
+}
+
+func TestSerializeGameState(t *testing.T) {
+	gp := createSimpleGame(t)
+	cgm := NewCustomGameMode(loom.RootAddress("chain"))
+	bytes, err := cgm.serializeGameState(gp.State)
+	assert.Equal(t, err, nil)
+
+	bytesHex := hexutil.Encode(bytes)
+
+	assert.Equal(t, "0x01140114000000000000000005", bytesHex)
 }
 
 // From Zombiebattleground game mode repo
