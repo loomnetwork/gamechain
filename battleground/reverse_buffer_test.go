@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"github.com/stretchr/testify/assert"
 	"io"
-	"os"
 	"testing"
 )
 
@@ -57,8 +56,6 @@ func TestReverseBufferWriteOverrun(t *testing.T) {
 	assert.Equal(t, nil, err)
 	err = binary.Write(rb, binary.LittleEndian, int16(2))
 	assert.NotEqual(t, nil, err)
-
-	writeBufferToFileFile(rb)
 }
 
 func TestReverseBufferReadOverrun(t *testing.T) {
@@ -67,8 +64,6 @@ func TestReverseBufferReadOverrun(t *testing.T) {
 	var err error
 	err = binary.Read(rb, binary.LittleEndian, &num32)
 	assert.NotEqual(t, nil, err)
-
-	writeBufferToFileFile(rb)
 }
 
 func TestReverseBufferReadEOF(t *testing.T) {
@@ -79,12 +74,4 @@ func TestReverseBufferReadEOF(t *testing.T) {
 	assert.Equal(t, nil, err)
 	err = binary.Read(rb, binary.LittleEndian, &num16)
 	assert.Equal(t, io.EOF, err)
-
-	writeBufferToFileFile(rb)
-}
-
-func writeBufferToFileFile(reverseBuffer *ReverseBuffer) {
-	f, _ := os.Create("test.XXX")
-	defer f.Close()
-	f.Write(reverseBuffer.GetFilledSlice())
 }
