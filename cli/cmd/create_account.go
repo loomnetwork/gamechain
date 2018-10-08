@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -48,6 +48,6 @@ func init() {
 
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.data, "data", "d", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
-	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.version, "version", "v", "", "Version")
+	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.version, "version", "v", "v1", "Version")
 
 }

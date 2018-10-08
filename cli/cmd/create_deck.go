@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
 var createDeckCmdArgs struct {
-	userID string
-	value  string
+	userID  string
+	data    string
+	version string
 }
 
 var createDeckCmd = &cobra.Command{
@@ -21,13 +22,14 @@ var createDeckCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var deck zb.Deck
 
-		if err := json.Unmarshal([]byte(createDeckCmdArgs.value), &deck); err != nil {
+		if err := json.Unmarshal([]byte(createDeckCmdArgs.data), &deck); err != nil {
 			return err
 		}
 
 		req := &zb.CreateDeckRequest{
-			Deck:   &deck,
-			UserId: createDeckCmdArgs.userID,
+			Deck:    &deck,
+			UserId:  createDeckCmdArgs.userID,
+			Version: createDeckCmdArgs.version,
 		}
 
 		var result zb.CreateDeckResponse
@@ -45,5 +47,6 @@ func init() {
 	rootCmd.AddCommand(createDeckCmd)
 
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.value, "value", "v", "{\"hero_id\":1, \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}", "Deck data in serialized json format")
+	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.data, "data", "d", "{\"hero_id\":1, \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}", "Deck data in serialized json format")
+	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.version, "version", "v", "v1", "Version")
 }
