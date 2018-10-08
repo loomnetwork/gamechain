@@ -325,7 +325,7 @@ message PlayerState {
     PlayerActionType currentAction = 2;
     OverlordInstance overlordInstance = 3;
     repeated CardInstance cardsInHand = 4;
-    repeated CardInstance cardsOnBoard = 5;
+    repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
     Deck deck  = 7;
     int32 hp   = 8;
@@ -938,6 +938,7 @@ message HistoryData {
         HistoryInstance fullInstance = 2;
         HistoryInstance showInstance = 3;
         HistoryHide hideInstance = 4;
+        HistoryInstance changeInstance = 5;
     }
 }
 
@@ -954,4 +955,3 @@ message HistoryHide {
     int32 instanceId = 1;
     Zone zone = 2;
 }
-
