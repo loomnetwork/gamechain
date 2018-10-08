@@ -254,7 +254,7 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
-		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
+		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
 	}
 
@@ -433,6 +433,18 @@ func actionDrawCard(g *Gameplay) stateFn {
 		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
 	}
 
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_FullInstance{
+					FullInstance: &zb.HistoryInstance{},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
+
 	// determine the next action
 	g.PrintState()
 	next := g.next()
@@ -476,10 +488,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	// draw card
-	// TODO: handle card limit on board
+	// TODO: handle card limit
 	if len(g.activePlayer().CardsInHand) > 0 {
 		card := g.activePlayer().CardsInHand[0]
-		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
 		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
 	}
 
@@ -661,6 +673,18 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 	// change player turn
 	g.changePlayerTurn()
+
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_ChangeInstance{
+					ChangeInstance: &zb.HistoryInstance{},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()
