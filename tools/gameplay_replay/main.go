@@ -1,10 +1,16 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/hex"
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
+	"strconv"
 	"strings"
+
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/battleground"
@@ -15,27 +21,66 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+var (
+	pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	db              *sql.DB
+	readFromDB      bool
+)
 
 func main() {
-	if len(os.Args) == 0 {
-		log.Error("GamePlay JSON file not provided")
-		os.Exit(1)
-	}
-
-	// read game replay json
-	fname := os.Args[1]
-	f, err := os.Open(fname)
-	if err != nil {
-		log.Error("error opening json file: ", err)
-		os.Exit(1)
-	}
+	readFromDB, _ = strconv.ParseBool(os.Getenv("READ_FROM_DB"))
 
 	var gameReplay zb.GameReplay
-	err = jsonpb.Unmarshal(f, &gameReplay)
-	if err != nil {
-		log.Error("error unmarshalling json: ", err)
-		os.Exit(1)
+	var fname string
+
+	_, b, _, _ := runtime.Caller(0)
+	basepath := filepath.Dir(b)
+
+	if readFromDB {
+		var err error
+		db, err = connectToDb()
+		if err != nil {
+			log.Println(err)
+		}
+		defer db.Close()
+		if len(os.Args) == 0 {
+			log.Fatal("Need match id argument")
+		}
+		row := db.QueryRow("SELECT * FROM replays WHERE match_id = ?", os.Args[1])
+
+		var id int
+		var replayJSON string
+		err = row.Scan(&id, &replayJSON)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(replayJSON)
+		err = jsonpb.UnmarshalString(replayJSON, &gameReplay)
+		if err != nil {
+			log.Error("error unmarshalling json: ", err)
+			os.Exit(1)
+		}
+
+		fname = fmt.Sprintf("match%d.json", id)
+	} else {
+		if len(os.Args) == 0 {
+			log.Error("GamePlay JSON file not provided")
+			os.Exit(1)
+		}
+
+		// read game replay json
+		fname = os.Args[1]
+		path := filepath.Join(basepath, "../../replays", fname)
+		f, err := os.Open(path)
+		if err != nil {
+			log.Error("error opening json file: ", err)
+			os.Exit(1)
+		}
+		err = jsonpb.Unmarshal(f, &gameReplay)
+		if err != nil {
+			log.Error("error unmarshalling json: ", err)
+			os.Exit(1)
+		}
 	}
 
 	// set up fake context
@@ -45,7 +90,8 @@ func main() {
 
 	// initialise game chain
 	log.Info("Initialising gamechain")
-	initFile, err := os.Open("init.json")
+	initFilePath := filepath.Join(basepath, "init.json")
+	initFile, err := os.Open(initFilePath)
 	if err != nil {
 		log.WithError(err).Error("error opening init.json")
 		os.Exit(1)
@@ -88,16 +134,17 @@ func main() {
 
 	fnameTrimmed := strings.TrimSuffix(fname, ".json")
 	fnameReplayed := fnameTrimmed + "_replayed.json"
-	outFile, err := os.Create(fnameReplayed)
+	pathReplayed := filepath.Join(basepath, "../../replays", fnameReplayed)
+	outFile, err := os.Create(pathReplayed)
 	if err != nil {
-		log.WithError(err).Errorf("error creating file %s", fnameReplayed)
+		log.WithError(err).Errorf("error creating file %s", pathReplayed)
 	}
 
 	err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
 	if err != nil {
 		log.WithError(err).Error("error writing output to file")
 	}
-	log.Infof("Gameplay validation completed, output written to %s", fnameReplayed)
+	log.Infof("Gameplay validation completed, output written to %s", pathReplayed)
 }
 
 func setupFakeContext() *contract.Context {
@@ -267,4 +314,34 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 		}
 	}
 	return nil
+}
+
+func connectToDb() (*sql.DB, error) {
+	dbURL := os.Getenv("DATABASE_URL")
+	var dbName string
+	if dbURL == "" {
+		dbUserName := os.Getenv("DATABASE_USERNAME")
+		dbName = os.Getenv("DATABASE_NAME")
+		dbPass := os.Getenv("DATABASE_PASS")
+		dbHost := os.Getenv("DATABASE_HOST")
+		dbPort := os.Getenv("DATABASE_PORT")
+		if len(dbHost) == 0 {
+			dbHost = "127.0.0.1"
+		}
+		if len(dbUserName) == 0 {
+			dbUserName = "root"
+		}
+		if len(dbName) == 0 {
+			dbName = "zb_replays"
+		}
+		if len(dbPort) == 0 {
+			dbPort = "3306"
+		}
+		dbURL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUserName, dbPass, dbHost, dbPort, dbName)
+	}
+	db, err := sql.Open("mysql", dbURL)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
