@@ -69,7 +69,7 @@
   Expected = ["deck size: 0"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v '{\"hero_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}'"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"hero_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1"
   Condition = "contains"
   Expected = ["deck created successfully"]
 
