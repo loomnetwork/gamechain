@@ -261,6 +261,7 @@ message CreateDeckRequest {
     string user_id = 1;
     Deck deck = 2;
     int64 last_modification_timestamp = 3;
+    string version = 4;
 }
 
 message CreateDeckResponse {
@@ -277,6 +278,7 @@ message EditDeckRequest {
     string user_id = 1;
     Deck deck      = 2;
     int64 last_modification_timestamp = 3;
+    string version = 4;
 }
 
 message DecksResponse {
