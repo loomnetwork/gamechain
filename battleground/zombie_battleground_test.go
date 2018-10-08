@@ -4,10 +4,10 @@ import (
 	"encoding/hex"
 	"testing"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -612,6 +612,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, createDeckResponse)
@@ -642,6 +643,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -664,6 +666,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -686,6 +689,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -708,6 +712,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -731,6 +736,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.Nil(t, err)
@@ -763,6 +769,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -786,6 +793,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.Nil(t, err)
@@ -809,6 +817,7 @@ func TestDeckOperations(t *testing.T) {
 					},
 				},
 			},
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
