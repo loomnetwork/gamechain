@@ -63,7 +63,7 @@ func main() {
 
 		fname = fmt.Sprintf("match%d.json", id)
 	} else {
-		if len(os.Args) == 0 {
+		if len(os.Args) == 1 {
 			log.Error("GamePlay JSON file not provided")
 			os.Exit(1)
 		}
