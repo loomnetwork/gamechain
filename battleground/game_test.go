@@ -3,10 +3,10 @@ package battleground
 import (
 	"testing"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,6 +49,7 @@ func TestGameStateFunc(t *testing.T) {
 	state := &zb.GameState{
 		Id:                 1,
 		CurrentPlayerIndex: -1,
+		CurrentBlockIndex:  -1,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   player1,

@@ -25,9 +25,9 @@ var (
 )
 
 type Gameplay struct {
-	State   *zb.GameState
-	stateFn stateFn
-	err     error
+	State          *zb.GameState
+	stateFn        stateFn
+	err            error
 	customGameMode *CustomGameMode
 }
 
@@ -47,9 +47,10 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
+		CurrentBlockIndex:  -1,
 	}
 	g := &Gameplay{
-		State: state,
+		State:          state,
 		customGameMode: customGameMode,
 	}
 	//	CustomGame: customGameMode}
@@ -212,6 +213,13 @@ func (g *Gameplay) isEnded() bool {
 	return false
 }
 
+func (g *Gameplay) CurrentHistoryBlock() *zb.History {
+	if g.State.CurrentBlockIndex+1 > int64(len(g.State.Blocks)) {
+		return nil
+	}
+	return g.State.Blocks[g.State.CurrentBlockIndex]
+}
+
 func (g *Gameplay) PrintState() {
 	state := g.State
 	fmt.Printf("============StateInfo=============\n")
@@ -231,6 +239,16 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
 	}
 
+	fmt.Printf("History Block: count %v\n", len(state.Blocks))
+	for i, block := range state.Blocks {
+		if int64(i) == state.CurrentBlockIndex {
+			fmt.Printf("   -->> [%d] %v\n", i, block)
+		} else {
+			fmt.Printf("\t[%d] %v\n", i, block)
+		}
+	}
+	fmt.Printf("Current History Block Index: %v\n", state.CurrentBlockIndex)
+
 	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
 	for i, action := range state.PlayerActions {
 		if int64(i) == state.CurrentActionIndex {
@@ -248,6 +266,28 @@ func gameStart(g *Gameplay) stateFn {
 	if g.isEnded() {
 		return nil
 	}
+
+	players := make([]*zb.Player, len(g.State.PlayerStates))
+	for i := range g.State.PlayerStates {
+		players[i] = &zb.Player{
+			Id: g.State.PlayerStates[i].Id,
+		}
+	}
+
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_CreateGame{
+					CreateGame: &zb.HistoryCreateGame{
+						GameId:  g.State.Id,
+						Players: players,
+					},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()

@@ -397,7 +397,7 @@ message PlayerActionEvent {
     string message = 3;
     Match match    = 4;
     PlayerAction playerAction = 5;
-    GameState gameState = 6;
+    History block = 6;
 }
 
 message GameReplay {
@@ -540,16 +540,18 @@ message GlobalState {
 
 // C# interfaces converted
 
-enum AllowedTarget {
-    NoneAllowedTarget = 0;
-    Player = 1;
-    PlayerCard = 2;
-    PlayerAllCards = 3;
-    Opponent = 4;
-    OpponentCard = 5;
-    OpponentAllCards = 6;
-    AllCards = 7;
-    All = 8;
+message AllowedTarget {
+    enum target {
+        NoneAllowedTarget = 0;
+        Player = 1;
+        PlayerCard = 2;
+        PlayerAllCards = 3;
+        Opponent = 4;
+        OpponentCard = 5;
+        OpponentAllCards = 6;
+        AllCards = 7;
+        All = 8;
+    }
 }
 
 enum AttackRestriction {
@@ -701,6 +703,8 @@ message GameState {
     repeated PlayerAction playerActions = 6;
     int64 randomseed                    = 7;
     string winner                       = 8;
+    int64 CurrentBlockIndex             = 9;
+    repeated History blocks             = 10;
 }
 
 message AbilityInstance {
@@ -936,3 +940,50 @@ enum UnitSpecialStatus {
     NoneUnitSpecialStatus = 0;
     Frozen = 1;
 }
+
+
+// Replay
+
+message Player {
+    string id = 1;
+}
+
+message Zone {
+    enum type {
+        PLAY = 0;
+        DECK = 1;
+        HAND = 2;
+        GRAVEYARD = 3;
+        REMOVEFROMGAME = 4;
+        SETASIDE = 5;
+        SECRET = 6;
+    }
+}
+
+message History {
+    repeated HistoryData list = 1;
+}
+
+message HistoryData {
+    oneof data {
+        HistoryCreateGame createGame = 1;
+        HistoryInstance fullInstance = 2;
+        HistoryInstance showInstance = 3;
+        HistoryHide hideInstance = 4;
+    }
+}
+
+message HistoryCreateGame {
+    int64 gameId = 1;
+    repeated Player players = 2;
+}
+
+message HistoryInstance {
+    int32 instanceId = 1;
+}
+
+message HistoryHide {
+    int32 instanceId = 1;
+    Zone zone = 2;
+}
+
