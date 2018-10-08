@@ -161,8 +161,11 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 			return nil, err
 		}
 		replay.RandomSeed = seed
-		version := bodyJSON.Path("match.version").Data().(string)
-		replay.ReplayVersion = version
+		version := bodyJSON.Path("match.version").Data()
+		if version == nil {
+			version = "v1" //TODO: make sure we always have a version
+		}
+		replay.ReplayVersion = version.(string)
 	}
 
 	replay.Events = append(replay.Events, &event)
