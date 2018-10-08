@@ -14,54 +14,18 @@ import (
 var initRequest = zb.InitRequest{
 	Version: "v1",
 	DefaultCollection: []*zb.CardCollection{
-		{
-			CardName: "Banshee",
-			Amount:   4,
-		},
-		{
-			CardName: "Breezee",
-			Amount:   3,
-		},
-		{
-			CardName: "Buffer",
-			Amount:   5,
-		},
-		{
-			CardName: "Soothsayer",
-			Amount:   4,
-		},
-		{
-			CardName: "Wheezy",
-			Amount:   3,
-		},
-		{
-			CardName: "Whiffer",
-			Amount:   5,
-		},
-		{
-			CardName: "Whizpar",
-			Amount:   4,
-		},
-		{
-			CardName: "Zhocker",
-			Amount:   3,
-		},
-		{
-			CardName: "Bouncer",
-			Amount:   5,
-		},
-		{
-			CardName: "Dragger",
-			Amount:   4,
-		},
-		{
-			CardName: "Guzt",
-			Amount:   3,
-		},
-		{
-			CardName: "Pushhh",
-			Amount:   5,
-		},
+		{CardName: "Banshee", Amount: 4},
+		{CardName: "Breezee", Amount: 3},
+		{CardName: "Buffer", Amount: 5},
+		{CardName: "Soothsayer", Amount: 4},
+		{CardName: "Wheezy", Amount: 3},
+		{CardName: "Whiffer", Amount: 5},
+		{CardName: "Whizpar", Amount: 4},
+		{CardName: "Zhocker", Amount: 3},
+		{CardName: "Bouncer", Amount: 5},
+		{CardName: "Dragger", Amount: 4},
+		{CardName: "Guzt", Amount: 3},
+		{CardName: "Pushhh", Amount: 5},
 	},
 	Heroes: []*zb.Hero{
 		{
@@ -144,54 +108,18 @@ var initRequest = zb.InitRequest{
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
-				{
-					CardName: "Banshee",
-					Amount:   2,
-				},
-				{
-					CardName: "Breezee",
-					Amount:   2,
-				},
-				{
-					CardName: "Buffer",
-					Amount:   2,
-				},
-				{
-					CardName: "Soothsayer",
-					Amount:   2,
-				},
-				{
-					CardName: "Wheezy",
-					Amount:   2,
-				},
-				{
-					CardName: "Whiffer",
-					Amount:   2,
-				},
-				{
-					CardName: "Whizpar",
-					Amount:   1,
-				},
-				{
-					CardName: "Zhocker",
-					Amount:   1,
-				},
-				{
-					CardName: "Bouncer",
-					Amount:   1,
-				},
-				{
-					CardName: "Dragger",
-					Amount:   1,
-				},
-				{
-					CardName: "Guzt",
-					Amount:   1,
-				},
-				{
-					CardName: "Pushhh",
-					Amount:   1,
-				},
+				{CardName: "Banshee", Amount: 2},
+				{CardName: "Breezee", Amount: 2},
+				{CardName: "Buffer", Amount: 2},
+				{CardName: "Soothsayer", Amount: 2},
+				{CardName: "Wheezy", Amount: 2},
+				{CardName: "Whiffer", Amount: 2},
+				{CardName: "Whizpar", Amount: 1},
+				{CardName: "Zhocker", Amount: 1},
+				{CardName: "Bouncer", Amount: 1},
+				{CardName: "Dragger", Amount: 1},
+				{CardName: "Guzt", Amount: 1},
+				{CardName: "Pushhh", Amount: 1},
 			},
 		},
 	},
@@ -200,54 +128,18 @@ var initRequest = zb.InitRequest{
 var updateInitRequest = zb.UpdateInitRequest{
 	Version: "v2",
 	DefaultCollection: []*zb.CardCollection{
-		{
-			CardName: "Banshee",
-			Amount:   4,
-		},
-		{
-			CardName: "Breezee",
-			Amount:   3,
-		},
-		{
-			CardName: "Buffer",
-			Amount:   5,
-		},
-		{
-			CardName: "Soothsayer",
-			Amount:   4,
-		},
-		{
-			CardName: "Wheezy",
-			Amount:   3,
-		},
-		{
-			CardName: "Whiffer",
-			Amount:   5,
-		},
-		{
-			CardName: "Whizpar",
-			Amount:   4,
-		},
-		{
-			CardName: "Zhocker",
-			Amount:   3,
-		},
-		{
-			CardName: "Bouncer",
-			Amount:   5,
-		},
-		{
-			CardName: "Dragger",
-			Amount:   4,
-		},
-		{
-			CardName: "Guzt",
-			Amount:   3,
-		},
-		{
-			CardName: "Pushhh",
-			Amount:   5,
-		},
+		{CardName: "Banshee", Amount: 4},
+		{CardName: "Breezee", Amount: 3},
+		{CardName: "Buffer", Amount: 5},
+		{CardName: "Soothsayer", Amount: 4},
+		{CardName: "Wheezy", Amount: 3},
+		{CardName: "Whiffer", Amount: 5},
+		{CardName: "Whizpar", Amount: 4},
+		{CardName: "Zhocker", Amount: 3},
+		{CardName: "Bouncer", Amount: 5},
+		{CardName: "Dragger", Amount: 4},
+		{CardName: "Guzt", Amount: 3},
+		{CardName: "Pushhh", Amount: 5},
 	},
 	Heroes: []*zb.Hero{
 		{
@@ -348,54 +240,18 @@ var updateInitRequest = zb.UpdateInitRequest{
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
-				{
-					CardName: "Banshee",
-					Amount:   2,
-				},
-				{
-					CardName: "Breezee",
-					Amount:   2,
-				},
-				{
-					CardName: "Buffer",
-					Amount:   2,
-				},
-				{
-					CardName: "Soothsayer",
-					Amount:   2,
-				},
-				{
-					CardName: "Wheezy",
-					Amount:   2,
-				},
-				{
-					CardName: "Whiffer",
-					Amount:   2,
-				},
-				{
-					CardName: "Whizpar",
-					Amount:   1,
-				},
-				{
-					CardName: "Zhocker",
-					Amount:   1,
-				},
-				{
-					CardName: "Bouncer",
-					Amount:   1,
-				},
-				{
-					CardName: "Dragger",
-					Amount:   1,
-				},
-				{
-					CardName: "Guzt",
-					Amount:   1,
-				},
-				{
-					CardName: "Pushhh",
-					Amount:   1,
-				},
+				{CardName: "Banshee", Amount: 2},
+				{CardName: "Breezee", Amount: 2},
+				{CardName: "Buffer", Amount: 2},
+				{CardName: "Soothsayer", Amount: 2},
+				{CardName: "Wheezy", Amount: 2},
+				{CardName: "Whiffer", Amount: 2},
+				{CardName: "Whizpar", Amount: 1},
+				{CardName: "Zhocker", Amount: 1},
+				{CardName: "Bouncer", Amount: 1},
+				{CardName: "Dragger", Amount: 1},
+				{CardName: "Guzt", Amount: 1},
+				{CardName: "Pushhh", Amount: 1},
 			},
 		},
 	},
