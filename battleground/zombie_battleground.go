@@ -382,7 +382,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -616,9 +616,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	seed := req.RandomSeed
-	if seed == 0 {
-		seed = ctx.Now().Unix()
+	match.RandomSeed = req.RandomSeed
+	if match.RandomSeed == 0 {
+		match.RandomSeed = ctx.Now().Unix()
 	}
 
 	var addr loom.Address

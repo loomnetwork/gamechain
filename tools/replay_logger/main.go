@@ -156,7 +156,7 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	} else {
 		replay.Events = []*zb.PlayerActionEvent{}
 		bodyJSON, _ := gabs.ParseJSON(body)
-		seed, err := strconv.ParseInt(bodyJSON.Path("gameState.randomseed").Data().(string), 10, 64)
+		seed, err := strconv.ParseInt(bodyJSON.Path("match.randomSeed").Data().(string), 10, 64)
 		if err != nil {
 			return nil, err
 		}
