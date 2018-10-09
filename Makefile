@@ -46,6 +46,7 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
+	sed -i.bak 's/global::Loom.Client.Internal.Protobuf.TypesReflection.Descriptor/global::Loom.Client.Internal.Protobuf.LoomReflection.Descriptor/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
 proto: types/zb/zb.pb.go types/zb/zb.cs
 
