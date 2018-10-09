@@ -1282,6 +1282,30 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 	})
+	t.Run("SendRankBuff", func(t *testing.T) {
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_RankBuff,
+				PlayerId:   "player-1",
+				Action: &zb.PlayerAction_RankBuff{
+					RankBuff: &zb.PlayerActionRankBuff{
+						Card: &zb.CardInstance{
+							InstanceId: 1,
+						},
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId:       2,
+								AffectObjectType: zb.AffectObjectType_CARD,
+							},
+						},
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+	})
 	t.Run("SendEndturnPlayer1_Success2", func(t *testing.T) {
 		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
