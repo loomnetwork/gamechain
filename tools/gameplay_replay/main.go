@@ -202,7 +202,8 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 
 	// initialise the game state
 	log.Info("Initialising game state")
-	getGSResp, err := zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
+	// @LOCK to compare result?
+	_, err = zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
 		MatchId: newMatch.Id,
 	})
 	if err != nil {
@@ -210,8 +211,9 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	}
 
 	playerEvent := &zb.PlayerActionEvent{
-		Match:     newMatch,
-		GameState: getGSResp.GameState,
+		Match: newMatch,
+		// @LOCK to change to history data
+		// GameState: getGSResp.GameState,
 	}
 
 	replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
@@ -238,13 +240,16 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 			UserId:           actionReq.PlayerAction.PlayerId,
 			PlayerAction:     actionReq.PlayerAction,
 			Match:            actionResp.Match,
-			GameState:        actionResp.GameState,
+			// @LOCK to change to history data
+			// GameState: actionResp.GameState,
 		}
 		replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
 
 		newGameState := actionResp.GameState
 
-		logGameState := replayAction.GameState
+		// @LOCK to change to history data
+		// logGameState := replayAction.GameState
+		var logGameState *zb.GameState
 
 		log.Info("Comparing game states")
 		err = compareGameStates(newGameState, logGameState)

@@ -48,7 +48,7 @@ func TestGameStateFunc(t *testing.T) {
 
 	state := &zb.GameState{
 		Id:                 1,
-		CurrentPlayerIndex: -1,
+		CurrentPlayerIndex: 0, // fixed the current player to this test
 		CurrentBlockIndex:  -1,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
@@ -65,8 +65,6 @@ func TestGameStateFunc(t *testing.T) {
 			},
 		},
 		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_CoinToss},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_InitHands},
 			&zb.PlayerAction{
 				ActionType: zb.PlayerActionType_Mulligan,
 				PlayerId:   player1,
