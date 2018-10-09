@@ -387,6 +387,7 @@ message PlayerAction {
         PlayerActionCoinToss coinToss                   = 10;
         PlayerActionInitHands initHands                 = 11;
         PlayerActionLeaveMatch leaveMatch               = 12;
+        PlayerActionRankBuff rankBuff                   = 13;
     };
 }
 
@@ -822,6 +823,12 @@ message PlayerActionLeaveMatch {
 
 message PlayerActionCardPlay {
     CardInstance card = 1;
+    int32 position = 2;
+}
+
+message PlayerActionRankBuff {
+    CardInstance card = 1;
+    repeated Unit targets = 2;
 }
 
 message PlayerActionCardAttack {
