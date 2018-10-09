@@ -248,15 +248,15 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	}
 	// validate user card collection
 
-	// validating against card collection
+	// validating against default card collection
 	// TODO: ideally validate against user card collection
-	var cardCollection zb.CardCollectionList
-	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardCollection); err != nil {
-		return nil, errors.Wrapf(err, "unable to get card collection list")
+	var defaultCollection zb.CardCollectionList
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
+		return nil, errors.Wrapf(err, "unable to get default collectionlist")
 	}
 
 	// make sure the given cards and amount must be a subset of user's cards
-	if err := validateDeckCollections(cardCollection.Cards, req.Deck.Cards); err != nil {
+	if err := validateDeckCollections(defaultCollection.Cards, req.Deck.Cards); err != nil {
 		return nil, err
 	}
 
@@ -307,13 +307,13 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 	// validate user card collection
-	// validating against card collection
+	// validating against default card collection
 	// TODO: ideally validate against user card collection
-	var cardCollection zb.CardCollectionList
-	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardCollection); err != nil {
-		return errors.Wrapf(err, "unable to get card collection list")
+	var defaultCollection zb.CardCollectionList
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
+		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
-	if err := validateDeckCollections(cardCollection.Cards, req.Deck.Cards); err != nil {
+	if err := validateDeckCollections(defaultCollection.Cards, req.Deck.Cards); err != nil {
 		return err
 	}
 
