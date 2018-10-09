@@ -82,7 +82,7 @@ abigen:
 
 
 test:
-	go test -v ./...
+	go test -v ./... -tags evm
 
 clean:
 	go clean
