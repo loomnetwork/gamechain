@@ -81,8 +81,10 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, deckCard := range deck.Cards {
-			var cardDetails *zb.Card
-			cardDetails = getCardDetails(cardList, deckCard)
+			cardDetails, err := getCardDetails(&cardList, deckCard)
+			if err != nil {
+				return err // TODO
+			}
 			cardInstance := &zb.CardInstance{
 				//InstanceId:
 				Attack:  cardDetails.Damage,
@@ -92,6 +94,15 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 		}
 	}
 	return nil
+}
+
+func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {
+	for _, card := range cardList.Cards {
+		if card.Name == deckCard.CardName {
+			return card, nil
+		}
+	}
+	return nil, fmt.Errorf("card not found in card library")
 }
 
 // GamePlayFrom initializes and run game to the latest state
