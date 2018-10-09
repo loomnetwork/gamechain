@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/battleground"
@@ -126,9 +127,9 @@ func main() {
 
 	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
-	err = replayAndValidate(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
-	if err != nil {
-		log.WithError(err).Error("error while validating gameplay")
+	errs := replayAndValidate(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
+	if len(errs) != 0 {
+		log.Errorf("errors while validating gameplay: %v", errs)
 		//os.Exit(1)
 	}
 
@@ -144,7 +145,13 @@ func main() {
 	if err != nil {
 		log.WithError(err).Error("error writing output to file")
 	}
-	log.Infof("Gameplay validation completed, output written to %s", pathReplayed)
+
+	if len(errs) != 0 {
+		log.Infof("Gameplay validation completed but with errors: %s", errs)
+	} else {
+		log.Info("Gameplay validation completed without errors")
+	}
+	log.Infof("Output written to %s", pathReplayed)
 }
 
 func setupFakeContext() *contract.Context {
@@ -175,12 +182,13 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			Version: gameReplay.ReplayVersion,
 		})
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "error creating user account")
 		}
 
 		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{
-			UserId: ps.Id,
-			Deck:   ps.Deck,
+			UserId:  ps.Id,
+			Deck:    ps.Deck,
+			Version: gameReplay.ReplayVersion,
 		})
 		if err != nil {
 			return err
@@ -219,9 +227,10 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	return nil
 }
 
-func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
+func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) []error {
 	actionList := gameReplay.Events
 	replayActionList := actionList[1:]
+	var errs []error
 	for _, replayAction := range replayActionList {
 		actionReq := zb.PlayerActionRequest{
 			MatchId:      1, //replayAction.Match.Id,
@@ -230,7 +239,8 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		log.Info("replaying action: ", actionReq)
 		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
 		if err != nil {
-			return fmt.Errorf("error sending action %v: %v", actionReq.PlayerAction, err)
+			errs = append(errs, fmt.Errorf("error sending action %v: %v", actionReq.PlayerAction, err))
+			return errs
 		}
 
 		playerEvent := &zb.PlayerActionEvent{
@@ -249,10 +259,11 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		log.Info("Comparing game states")
 		err = compareGameStates(newGameState, logGameState)
 		if err != nil {
+			errs = append(errs, err)
 			log.Error("game states do not match: ", err)
 		}
 	}
-	return nil
+	return errs
 }
 
 func compareGameStates(newGameState, logGameState *zb.GameState) error {
