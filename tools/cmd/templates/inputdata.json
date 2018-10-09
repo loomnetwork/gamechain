@@ -39,6 +39,14 @@
                 "SetPlayerDefense",
                 "SetPlayerGoo"
             ]
+        },
+        {
+            "name": "CustomUiElement",
+            "values": [
+                "None",
+                "Label",
+                "Button"
+            ]
         }
     ]
 }

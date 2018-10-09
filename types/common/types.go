@@ -40,5 +40,13 @@ const (
         GameStateChangeAction_SetPlayerGoo GameStateChangeAction = iota
 )
 
+type CustomUiElement int32
+
+const (
+        CustomUiElement_None CustomUiElement = iota
+        CustomUiElement_Label CustomUiElement = iota
+        CustomUiElement_Button CustomUiElement = iota
+)
+
  
 

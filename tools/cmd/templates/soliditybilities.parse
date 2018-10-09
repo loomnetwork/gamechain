@@ -3,7 +3,7 @@
 
 pragma solidity ^0.4.24;
 
-contract ZBEnum {
+library ZBEnum {
     {{- with .EnumDefinitions }}
     {{ range . }}
     enum {{.Name}}

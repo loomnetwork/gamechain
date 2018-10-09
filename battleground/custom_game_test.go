@@ -4,22 +4,22 @@ package battleground
 
 import (
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/plugin"
-	"github.com/stretchr/testify/assert"
+	"github.com/loomnetwork/go-ethereum/common/hexutil"
 	"strings"
 	"testing"
 
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/loomnetwork/go-loom"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	//	"github.com/loomnetwork/go-loom/plugin"
 
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
+	"github.com/loomnetwork/loomchain/plugin"
 	lvm "github.com/loomnetwork/loomchain/vm"
+	"github.com/stretchr/testify/assert"
 )
 
 // Implements loomchain.EventHandler interface
@@ -101,7 +101,7 @@ func deployEVMContract(vm lvm.VM, filename string, caller loom.Address) (loom.Ad
 }*/
 
 func createSimpleGame(t *testing.T) *Gameplay {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	fakeCtx := plugin.CreateFakeContextWithEVM(loom.RootAddress("chain"), loom.RootAddress("chain"))
 	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 
 	player1 := "player-1"
@@ -141,6 +141,36 @@ func TestDeserializeGameStateChangeActionsUnknownAction(t *testing.T) {
 	assert.NotEqual(t, err, nil)
 }
 
+func TestDeserializeCustomUiElements(t *testing.T) {
+	cgm := NewCustomGameMode(loom.RootAddress("chain"))
+	buffer := common.FromHex("0x000000000000000000000000000000000000000000000000736f6d6546756e6374696f6e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c436c69636b204d65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000096000000c80000001e0000001900000002536f6d65205665727920436f6f6c207465787421000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000096000000c8000000e60000001900000001")
+
+	uiElements, err := cgm.deserializeCustomUi(buffer)
+	assert.Equal(t, err, nil)
+
+	assert.Equal(
+		t,
+		zb.Rect{
+			Position: &zb.Vector2Int {	X: 25,	Y: 230},
+			Size_: &zb.Vector2Int {	X: 200,	Y: 150},
+		},
+		*uiElements[0].Rect)
+	label := uiElements[0].UiElement.(*zb.CustomGameModeCustomUiElement_Label)
+	assert.Equal(t, "Some Very Cool text!", label.Label.Text)
+
+	assert.Equal(
+		t,
+		zb.Rect{
+			Position: &zb.Vector2Int {	X: 25,	Y: 30},
+			Size_: &zb.Vector2Int {	X: 200,	Y: 150},
+		},
+		*uiElements[1].Rect)
+
+	button := uiElements[1].UiElement.(*zb.CustomGameModeCustomUiElement_Button)
+	assert.Equal(t, "Click Me", button.Button.Title)
+	assert.Equal(t, "someFunction", button.Button.OnClickFunctionName)
+}
+
 func TestSerializeGameState(t *testing.T) {
 	gp := createSimpleGame(t)
 	cgm := NewCustomGameMode(loom.RootAddress("chain"))
@@ -150,6 +180,20 @@ func TestSerializeGameState(t *testing.T) {
 	bytesHex := hexutil.Encode(bytes)
 
 	assert.Equal(t, "0x01140114000000000000000005", bytesHex)
+}
+
+func TestDeserializeStrings(t *testing.T) {
+	buffer := common.FromHex("0x436f6f6c20427574746f6e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b")
+	rb := NewReverseBuffer(buffer)
+	str, err := deserializeString(rb)
+	assert.Equal(t, err, nil)
+	assert.Equal(t, str, "Cool Button")
+
+	buffer = common.FromHex("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006f6c20427574746f6e20300000000000000000000000000000000000000000003720436f6f6c20427574746f6e203820436f6f6c20427574746f6e203920436f746f6e203520436f6f6c20427574746f6e203620436f6f6c20427574746f6e2020427574746f6e203320436f6f6c20427574746f6e203420436f6f6c20427574436f6f6c20427574746f6e203120436f6f6c20427574746f6e203220436f6f6c000000000000000000000000000000000000000000000000000000000000008b")
+	rb = NewReverseBuffer(buffer)
+	str, err = deserializeString(rb)
+	assert.Equal(t, err, nil)
+	assert.Equal(t, str, "Cool Button 1 Cool Button 2 Cool Button 3 Cool Button 4 Cool Button 5 Cool Button 6 Cool Button 7 Cool Button 8 Cool Button 9 Cool Button 0")
 }
 
 // From Zombiebattleground game mode repo
