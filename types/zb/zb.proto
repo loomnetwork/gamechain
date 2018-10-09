@@ -371,6 +371,7 @@ enum PlayerActionType {
     CoinToss          = 8;
     InitHands         = 9;
     LeaveMatch        = 10;
+    RankBuff          = 11;
 }
 
 message PlayerAction {
