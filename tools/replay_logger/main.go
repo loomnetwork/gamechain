@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,10 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
+	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
 
 	"encoding/base64"
 	"strings"
@@ -19,7 +24,9 @@ import (
 )
 
 var (
-	wsURL string
+	wsURL    string
+	saveToDB bool
+	db       *sql.DB
 )
 
 func main() {
@@ -28,6 +35,17 @@ func main() {
 		wsURL = "ws://localhost:9999/queryws"
 	}
 	log.Printf("wsURL - %s", wsURL)
+	saveToDB, _ = strconv.ParseBool(os.Getenv("SAVE_TO_DB"))
+
+	if saveToDB {
+		var err error
+		db, err = connectToDb()
+		if err != nil {
+			log.Println(err)
+		}
+		defer db.Close()
+	}
+
 	wsLoop()
 }
 
@@ -69,7 +87,7 @@ func wsLoop() {
 
 		msgJSON, _ := gabs.ParseJSON(message)
 		result := msgJSON.Path("result")
-		log.Printf("result: %s", result.String())
+
 		results, _ := result.Children()
 		if len(results) != 0 {
 			pluginName := result.Path("plugin_name").Data().(string)
@@ -88,36 +106,68 @@ func wsLoop() {
 					continue
 				}
 
-				if err := writeReplayFile(topic, body); err != nil {
+				replay, err := writeReplayFile(topic, body)
+				if err != nil {
 					log.Println("Error writing replay file: ", err)
 				}
+
+				if saveToDB {
+					matchID, err := strconv.ParseInt(topic[5:], 10, 64)
+					if err != nil {
+						log.Println(err)
+					}
+					log.Printf("Saving replay with match ID %d to DB", matchID)
+					_, err = db.Exec(`INSERT INTO replays set match_id=?, replay_json=? ON DUPLICATE KEY UPDATE replay_json = ?`, matchID, replay, replay)
+					if err != nil {
+						log.Println("Error saving replay to DB: ", err)
+					}
+				}
+
 			}
 		}
-
-		log.Printf("recv: %s", message)
 	}
 }
 
-func writeReplayFile(topic string, body []byte) error {
-	pwd, _ := os.Getwd()
+func writeReplayFile(topic string, body []byte) ([]byte, error) {
+	_, b, _, _ := runtime.Caller(0)
+	basepath := filepath.Dir(b)
+
 	filename := fmt.Sprintf("replays/%s.json", topic)
-	path := filepath.Join(pwd, filename)
+	path := filepath.Join(basepath, "../../", filename)
 
 	fmt.Println("Writing to file: ", path)
 
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	var event zb.PlayerActionEvent
+	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
+		return nil, err
 	}
 
 	var replay zb.GameReplay
-	var event zb.PlayerActionEvent
-	replayJSON := json.NewDecoder(f)
-	_ = replayJSON.Decode(&replay)
-
-	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
-		return err
+	if fi, _ := f.Stat(); fi.Size() > 0 {
+		if err := jsonpb.Unmarshal(f, &replay); err != nil {
+			log.Println(err)
+			return nil, err
+		}
+	} else {
+		replay.Events = []*zb.PlayerActionEvent{}
+		bodyJSON, _ := gabs.ParseJSON(body)
+		seed, err := strconv.ParseInt(bodyJSON.Path("gameState.randomseed").Data().(string), 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		replay.RandomSeed = seed
+		version := bodyJSON.Path("match.version").Data()
+		if version == nil {
+			version = "v1" //TODO: make sure we always have a version
+		}
+		replay.ReplayVersion = version.(string)
 	}
+
 	replay.Events = append(replay.Events, &event)
 
 	f.Close()
@@ -125,12 +175,46 @@ func writeReplayFile(topic string, body []byte) error {
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(&replay)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if err := ioutil.WriteFile(path, []byte(result), 0644); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return []byte(result), nil
+}
+
+func connectToDb() (*sql.DB, error) {
+	dbURL := os.Getenv("DATABASE_URL")
+	var dbName string
+	if dbURL == "" {
+		dbUserName := os.Getenv("DATABASE_USERNAME")
+		dbName = os.Getenv("DATABASE_NAME")
+		dbPass := os.Getenv("DATABASE_PASS")
+		dbHost := os.Getenv("DATABASE_HOST")
+		dbPort := os.Getenv("DATABASE_PORT")
+		if len(dbHost) == 0 {
+			dbHost = "127.0.0.1"
+		}
+		if len(dbUserName) == 0 {
+			dbUserName = "root"
+		}
+		if len(dbName) == 0 {
+			dbName = "zb_replays"
+		}
+		if len(dbPort) == 0 {
+			dbPort = "3306"
+		}
+		dbURL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUserName, dbPass, dbHost, dbPort, dbName)
+	}
+	db, err := sql.Open("mysql", dbURL)
+	if err != nil {
+		return nil, err
+	}
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
