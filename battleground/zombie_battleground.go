@@ -564,6 +564,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 					Deck: deck,
 				},
 			},
+			Version: req.Version,
 		}
 
 		if err := createMatch(ctx, match); err != nil {
@@ -615,7 +616,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	seed := ctx.Now().Unix()
+	seed := req.RandomSeed
+	if seed == 0 {
+		seed = ctx.Now().Unix()
+	}
+
 	var addr loom.Address
 	var addr2 *loom.Address
 	var addrStr string
@@ -767,6 +772,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 
 	return &zb.PlayerActionResponse{
 		GameState: gamestate,
+		Match:     match,
 	}, nil
 }
 
