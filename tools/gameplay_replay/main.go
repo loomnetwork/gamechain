@@ -179,8 +179,9 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		}
 
 		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{
-			UserId: ps.Id,
-			Deck:   ps.Deck,
+			UserId:  ps.Id,
+			Deck:    ps.Deck,
+			Version: gameReplay.ReplayVersion,
 		})
 		if err != nil {
 			return err
