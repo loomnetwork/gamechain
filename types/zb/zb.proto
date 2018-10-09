@@ -368,9 +368,7 @@ enum PlayerActionType {
     CardAttack        = 5;
     CardAbilityUsed   = 6;
     OverlordSkillUsed = 7;
-    CoinToss          = 8;
-    InitHands         = 9;
-    LeaveMatch        = 10;
+    LeaveMatch        = 8;
 }
 
 message PlayerAction {
@@ -384,8 +382,6 @@ message PlayerAction {
         PlayerActionCardPlay cardPlay                   = 7;
         PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
         PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
-        PlayerActionCoinToss coinToss                   = 10;
-        PlayerActionInitHands initHands                 = 11;
         PlayerActionLeaveMatch leaveMatch               = 12;
         PlayerActionRankBuff rankBuff                   = 13;
     };
@@ -814,12 +810,6 @@ message OverlordSkillPrototype {
     OverlordSkillKind overlordSkillKind = 9;
     repeated AllowedTarget skillTargetTypes = 10;
     repeated ElementKind elementTargetTypes = 11;
-}
-
-message PlayerActionCoinToss {
-}
-
-message PlayerActionInitHands {
 }
 
 message PlayerActionLeaveMatch {
