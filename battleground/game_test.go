@@ -3,10 +3,10 @@ package battleground
 import (
 	"testing"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -167,6 +167,26 @@ func TestGameStateFunc(t *testing.T) {
 				AffectObjectType: zb.AffectObjectType_CARD,
 				Target: &zb.Unit{
 					InstanceId: 2,
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+
+	// rankbuff
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_RankBuff,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_RankBuff{
+			RankBuff: &zb.PlayerActionRankBuff{
+				Card: &zb.CardInstance{
+					InstanceId: 1,
+				},
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId:       2,
+						AffectObjectType: zb.AffectObjectType_CARD,
+					},
 				},
 			},
 		},
