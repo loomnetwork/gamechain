@@ -271,6 +271,7 @@ message CreateDeckRequest {
     string user_id = 1;
     Deck deck = 2;
     int64 last_modification_timestamp = 3;
+    string version = 4;
 }
 
 message CreateDeckResponse {
@@ -287,6 +288,7 @@ message EditDeckRequest {
     string user_id = 1;
     Deck deck      = 2;
     int64 last_modification_timestamp = 3;
+    string version = 4;
 }
 
 message DecksResponse {
@@ -355,6 +357,7 @@ message Match {
         Ended        = 5;
     }
     Status status = 4;
+    string version = 5;
 }
 
 message MatchMakingInfoList {
@@ -394,6 +397,7 @@ message PlayerAction {
         PlayerActionCoinToss coinToss                   = 10;
         PlayerActionInitHands initHands                 = 11;
         PlayerActionLeaveMatch leaveMatch               = 12;
+        PlayerActionRankBuff rankBuff                   = 13;
     };
 }
 
@@ -408,8 +412,8 @@ message PlayerActionEvent {
 
 message GameReplay {
     repeated PlayerActionEvent events = 1;
-    string replayVersion = 3;
-    int32 randomSeed = 4;
+    string replayVersion = 2;
+    int64 randomSeed = 3;
 }
 
 message PlayersInMatchmakingList {
@@ -431,7 +435,9 @@ message MatchCount {
 message FindMatchRequest {
     string userId = 1;
     int64 deckId  = 2;
-    Address customGame = 3;
+    string version = 3;
+    int64 randomSeed = 4;
+    Address customGame = 5;
 }
 
 message FindMatchResponse {
@@ -447,11 +453,20 @@ message GetMatchResponse {
     GameState gameState = 2;
 }
 
+message SetMatchRequest {
+    Match match         = 1;
+}
+
+
 message GetGameStateRequest {
     int64 matchId = 1;
 }
 
 message GetGameStateResponse {
+    GameState gameState = 1;
+}
+
+message SetGameStateRequest {
     GameState gameState = 1;
 }
 
@@ -462,6 +477,7 @@ message PlayerActionRequest {
 
 message PlayerActionResponse {
     GameState gameState = 1;
+    Match match = 2;
 }
 
 message EndMatchRequest {
@@ -847,6 +863,12 @@ message PlayerActionLeaveMatch {
 
 message PlayerActionCardPlay {
     CardInstance card = 1;
+    int32 position = 2;
+}
+
+message PlayerActionRankBuff {
+    CardInstance card = 1;
+    repeated Unit targets = 2;
 }
 
 message PlayerActionCardAttack {
