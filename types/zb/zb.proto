@@ -348,6 +348,7 @@ message Match {
     }
     Status status = 4;
     string version = 5;
+    int64 randomSeed = 6;
 }
 
 message MatchMakingInfoList {
