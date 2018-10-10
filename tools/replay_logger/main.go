@@ -132,12 +132,17 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	_, b, _, _ := runtime.Caller(0)
 	basepath := filepath.Dir(b)
 
-	filename := fmt.Sprintf("replays/%s.json", topic)
-	path := filepath.Join(basepath, "../../", filename)
+	path := filepath.Join(basepath, "../../replays/")
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.Mkdir(path, os.ModePerm)
+	}
+
+	filename := fmt.Sprintf("%s.json", topic)
+	path = filepath.Join(path, filename)
 
 	fmt.Println("Writing to file: ", path)
 
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +183,7 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	if err := ioutil.WriteFile(path, []byte(result), 0644); err != nil {
+	if err := ioutil.WriteFile(path, []byte(result), os.ModePerm); err != nil {
 		return nil, err
 	}
 
