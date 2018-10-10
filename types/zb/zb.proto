@@ -564,6 +564,10 @@ message CallCustomGameModeFunctionRequest {
     string functionName = 2;
 }
 
+message StaticCallCustomGameModeFunctionResponse {
+    bytes output = 1;
+}
+
 message CustomGameModeCustomUiLabel {
     string text = 1;
 }
