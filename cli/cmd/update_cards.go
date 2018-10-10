@@ -54,6 +54,6 @@ var updateCardsCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateCardsCmd)
 
-	updateCardsCmd.Flags().StringVarP(&updateCardsCmdArgs.version, "version", "v", "", "Version")
+	updateCardsCmd.Flags().StringVarP(&updateCardsCmdArgs.version, "version", "v", "v1", "Version")
 	updateCardsCmd.Flags().StringVarP(&updateCardsCmdArgs.file, "file", "f", "", "File containing cards data to be updated in serialized json format")
 }

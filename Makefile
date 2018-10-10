@@ -15,6 +15,8 @@ tools: bin/zb-enum-gen bin/zb-console-game
 
 replay_logger: bin/replay-logger
 
+gameplay_replay: proto bin/gameplay-replay
+
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
@@ -26,6 +28,9 @@ bin/zb-console-game:
 
 bin/replay-logger:
 	go build -o $@ $(PKG)/tools/replay_logger
+
+bin/gameplay-replay:
+	go build -o $@ $(PKG)/tools/gameplay_replay
 
 contracts/zombiebattleground.1.0.0: proto
 	go build -o $@ $(PKG)/plugin
@@ -41,6 +46,7 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
+	sed -i.bak 's/global::Loom.Client.Internal.Protobuf.TypesReflection.Descriptor/global::Loom.Client.Internal.Protobuf.LoomReflection.Descriptor/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
 proto: types/zb/zb.pb.go types/zb/zb.cs
 
@@ -66,7 +72,9 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/iancoleman/strcase \
 		github.com/jroimartin/gocui \
 		github.com/Jeffail/gabs \
-		github.com/gorilla/websocket
+		github.com/gorilla/websocket \
+		github.com/sirupsen/logrus \
+		github.com/go-sql-driver/mysql
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
@@ -76,7 +84,7 @@ abigen:
 	mkdir tmp_build || true
 	# Need to run truffle compile and compile over latest ABI for a zombie battleground solidity mode
 	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
-	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go 
+	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go
 
 
 test:
@@ -91,6 +99,7 @@ clean:
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
-		bin/replay-logger
+		bin/replay-logger \
+		bin/gameplay-replay
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
