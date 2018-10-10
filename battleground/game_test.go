@@ -198,7 +198,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -221,7 +221,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -271,7 +271,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card

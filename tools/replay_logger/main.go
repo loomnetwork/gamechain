@@ -146,36 +146,21 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer f.Close()
 
 	var event zb.PlayerActionEvent
 	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
 		return nil, err
 	}
 
-	var replay zb.GameReplay
+	var replay zb.History
 	if fi, _ := f.Stat(); fi.Size() > 0 {
 		if err := jsonpb.Unmarshal(f, &replay); err != nil {
 			log.Println(err)
 			return nil, err
 		}
-	} else {
-		replay.Events = []*zb.PlayerActionEvent{}
-		bodyJSON, _ := gabs.ParseJSON(body)
-		seed, err := strconv.ParseInt(bodyJSON.Path("match.randomSeed").Data().(string), 10, 64)
-		if err != nil {
-			return nil, err
-		}
-		replay.RandomSeed = seed
-		version := bodyJSON.Path("match.version").Data()
-		if version == nil {
-			version = "v1" //TODO: make sure we always have a version
-		}
-		replay.ReplayVersion = version.(string)
 	}
-
-	replay.Events = append(replay.Events, &event)
-
-	f.Close()
+	replay.List = append(replay.List, event.Block.List...)
 
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(&replay)
