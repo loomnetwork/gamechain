@@ -88,11 +88,16 @@ func populateDeckCards(ctx contract.Context, deck *zb.Deck, version string) ([]*
 			//InstanceId:
 			Attack:  cardDetails.Damage,
 			Defence: cardDetails.Health,
+			Prototype: &zb.CardPrototype{
+				Name: cardDetails.Name,
+			},
 		}
 		cardInstanceList = append(cardInstanceList, cardInstance)
 	}
 
-	ctx.Logger().Log(cardInstanceList)
+	for _, c := range cardInstanceList {
+		ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
+	}
 
 	return cardInstanceList, nil
 }
