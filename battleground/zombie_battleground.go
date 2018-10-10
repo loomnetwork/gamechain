@@ -475,6 +475,16 @@ func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb
 	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil
 }
 
+func (z *ZombieBattleground) UpdateHeroLibrary(ctx contract.Context, req *zb.UpdateHeroLibraryRequest) (*zb.UpdateHeroLibraryResponse, error) {
+	var heroList = zb.HeroList{
+		Heroes: req.Heroes,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
+		return nil, err
+	}
+	return &zb.UpdateHeroLibraryResponse{}, nil
+}
+
 func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroesRequest) (*zb.ListHeroesResponse, error) {
 	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
