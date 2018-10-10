@@ -34,7 +34,13 @@ type Gameplay struct {
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context,
+	id int64,
+	verion string,
+	players []*zb.PlayerState,
+	seed int64,
+	customGameAddress *loom.Address,
+) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
 		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
@@ -48,13 +54,13 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 		CurrentBlockIndex:  -1,
+		Version:            verion,
 	}
 	g := &Gameplay{
 		State:          state,
 		customGameMode: customGameMode,
 	}
 
-	// init player hp and mana
 	if err := g.createGame(); err != nil {
 		return nil, err
 	}
@@ -103,7 +109,8 @@ func (g *Gameplay) createGame() error {
 	ps := make([]*zb.Player, len(g.State.PlayerStates))
 	for i := range g.State.PlayerStates {
 		ps[i] = &zb.Player{
-			Id: g.State.PlayerStates[i].Id,
+			Id:   g.State.PlayerStates[i].Id,
+			Deck: g.State.PlayerStates[i].Deck,
 		}
 	}
 	// record history data
@@ -112,8 +119,10 @@ func (g *Gameplay) createGame() error {
 			{
 				Data: &zb.HistoryData_CreateGame{
 					CreateGame: &zb.HistoryCreateGame{
-						GameId:  g.State.Id,
-						Players: ps,
+						GameId:     g.State.Id,
+						Players:    ps,
+						Randomseed: g.State.Randomseed,
+						Version:    g.State.Version,
 					},
 				},
 			},
@@ -495,6 +504,20 @@ func actionCardPlay(g *Gameplay) stateFn {
 		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
 	}
 
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_FullInstance{
+					FullInstance: &zb.HistoryInstance{
+						InstanceId: 1, // TODO change to the actual card id
+					},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
+
 	// determine the next action
 	g.PrintState()
 	next := g.next()
@@ -673,18 +696,6 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 	// change player turn
 	g.changePlayerTurn()
-
-	// record history data
-	g.State.Blocks = append(g.State.Blocks, &zb.History{
-		List: []*zb.HistoryData{
-			{
-				Data: &zb.HistoryData_ChangeInstance{
-					ChangeInstance: &zb.HistoryInstance{},
-				},
-			},
-		},
-	})
-	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()

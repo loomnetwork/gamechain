@@ -702,6 +702,7 @@ message GameState {
     string winner                       = 8;
     int64 CurrentBlockIndex             = 9;
     repeated History blocks             = 10;
+    string version                      = 11;
 }
 
 message AbilityInstance {
@@ -937,6 +938,7 @@ enum UnitSpecialStatus {
 
 message Player {
     string id = 1;
+    Deck deck = 2; // TODO Change to card instance
 }
 
 message Zone {
@@ -968,6 +970,8 @@ message HistoryData {
 message HistoryCreateGame {
     int64 gameId = 1;
     repeated Player players = 2;
+    int64 randomseed = 3;
+    string version = 4;
 }
 
 message HistoryInstance {
