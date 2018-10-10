@@ -34,7 +34,7 @@ type Gameplay struct {
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address, version string) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
 		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
@@ -91,6 +91,8 @@ func populateDeckCards(ctx contract.Context, deck *zb.Deck, version string) ([]*
 		}
 		cardInstanceList = append(cardInstanceList, cardInstance)
 	}
+
+	ctx.Logger().Log(cardInstanceList)
 
 	return cardInstanceList, nil
 }
