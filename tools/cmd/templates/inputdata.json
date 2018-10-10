@@ -37,7 +37,8 @@
             "values": [
                 "None",
                 "SetPlayerDefense",
-                "SetPlayerGoo"
+                "SetPlayerGoo",
+                "SetPlayerDeckCards"
             ]
         },
         {

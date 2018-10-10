@@ -1,14 +1,11 @@
 package battleground
 
 import (
-	"encoding/binary"
-	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/loomnetwork/gamechain/types/common"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -110,132 +107,6 @@ func (c *CustomGameMode) callGetCustomUi(ctx contract.StaticContext) (serialized
 	}
 
 	return serializedCustomUi, nil
-}
-
-func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, err error) {
-	rb := NewReverseBuffer(make([]byte, 256))
-	if err = binary.Write(rb, binary.BigEndian, int64(state.Id)); err != nil {
-		return nil, err
-	}
-	if err = binary.Write(rb, binary.BigEndian, byte(state.CurrentPlayerIndex)); err != nil {
-		return nil, err
-	}
-	for _, playerState := range state.PlayerStates {
-		if err = binary.Write(rb, binary.BigEndian, byte(playerState.Hp)); err != nil {
-			return nil, err
-		}
-		if err = binary.Write(rb, binary.BigEndian, byte(playerState.Mana)); err != nil {
-			return nil, err
-		}
-	}
-
-	return rb.GetFilledSlice(), nil
-}
-
-func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(state *zb.GameState, serializedActions []byte) (err error) {
-	rb := NewReverseBuffer(serializedActions)
-	for {
-		var action battleground.GameStateChangeAction
-		if err = binary.Read(rb, binary.BigEndian, &action); err != nil {
-			return
-		}
-
-		mustBreak := false
-		switch action {
-		case battleground.GameStateChangeAction_None:
-			mustBreak = true
-		case battleground.GameStateChangeAction_SetPlayerDefense:
-			var playerIndex byte
-			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
-				return
-			}
-
-			var newDefense byte
-			if err = binary.Read(rb, binary.BigEndian, &newDefense); err != nil {
-				return
-			}
-
-			state.PlayerStates[playerIndex].Hp = int32(newDefense)
-		case battleground.GameStateChangeAction_SetPlayerGoo:
-			var playerIndex byte
-			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
-				return
-			}
-
-			var newGoo byte
-			if err = binary.Read(rb, binary.BigEndian, &newGoo); err != nil {
-				return
-			}
-
-			state.PlayerStates[playerIndex].Mana = int32(newGoo)
-		default:
-			return errors.New(fmt.Sprintf("Unknown game state change action %d", action))
-		}
-
-		if mustBreak {
-			return nil
-		}
-	}
-}
-
-func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
-	rb := NewReverseBuffer(serializedCustomUi)
-	for {
-		var elementType battleground.CustomUiElement
-		if err = binary.Read(rb, binary.BigEndian, &elementType); err != nil {
-			return
-		}
-
-		mustBreak := false
-		switch elementType {
-		case battleground.CustomUiElement_None:
-			mustBreak = true
-		case battleground.CustomUiElement_Label:
-			var element zb.CustomGameModeCustomUiElement
-			var label zb.CustomGameModeCustomUiLabel
-
-			rect, err := deserializeRect(rb)
-			if err != nil {
-				return nil, err
-			}
-			element.Rect = &rect
-
-			if label.Text, err = deserializeString(rb); err != nil {
-				return nil, err
-			}
-
-			element.UiElement = &zb.CustomGameModeCustomUiElement_Label { Label: &label }
-
-			uiElements = append(uiElements, &element)
-		case battleground.CustomUiElement_Button:
-			var element zb.CustomGameModeCustomUiElement
-			var button zb.CustomGameModeCustomUiButton
-
-			rect, err := deserializeRect(rb)
-			if err != nil {
-				return nil, err
-			}
-			element.Rect = &rect
-
-			if button.Title, err = deserializeString(rb); err != nil {
-				return nil, err
-			}
-
-			if button.OnClickFunctionName, err = deserializeString(rb); err != nil {
-				return nil, err
-			}
-
-			element.UiElement = &zb.CustomGameModeCustomUiElement_Button { Button: &button }
-
-			uiElements = append(uiElements, &element)
-		default:
-			return nil, errors.New(fmt.Sprintf("Unknown custom UI element type %d", elementType))
-		}
-
-		if mustBreak {
-			return
-		}
-	}
 }
 
 // From Zombiebattleground game mode repo
