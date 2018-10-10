@@ -41,12 +41,6 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		customGameMode = NewCustomGameMode(*customGameAddress)
 	}
 
-	err := populateDeckCards(ctx, players, version)
-	if err != nil {
-		ctx.Logger().Error(fmt.Sprintf("error while populating cards in deck: %v", err))
-		return nil, err
-	}
-
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
@@ -78,29 +72,27 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 	return GamePlayFrom(state)
 }
 
-func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, version string) error {
+func populateDeckCards(ctx contract.Context, deck *zb.Deck, version string) ([]*zb.CardInstance, error) {
 	var cardList zb.CardList
 	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
-		return err
+		return nil, err
 	}
-
-	for _, playerState := range playerStates {
-		deck := playerState.Deck
-		for _, deckCard := range deck.Cards {
-			cardDetails, err := getCardDetails(&cardList, deckCard)
-			if err != nil {
-				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
-			}
-
-			cardInstance := &zb.CardInstance{
-				//InstanceId:
-				Attack:  cardDetails.Damage,
-				Defence: cardDetails.Health,
-			}
-			playerState.CardsInHand = append(playerState.CardsInHand, cardInstance)
+	var cardInstanceList []*zb.CardInstance
+	for _, deckCard := range deck.Cards {
+		cardDetails, err := getCardDetails(&cardList, deckCard)
+		if err != nil {
+			return nil, fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
 		}
+
+		cardInstance := &zb.CardInstance{
+			//InstanceId:
+			Attack:  cardDetails.Damage,
+			Defence: cardDetails.Health,
+		}
+		cardInstanceList = append(cardInstanceList, cardInstance)
 	}
-	return nil
+
+	return cardInstanceList, nil
 }
 
 func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {

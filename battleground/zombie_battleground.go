@@ -556,12 +556,18 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			return nil, err
 		}
 
+		cardsInHand, err := populateDeckCards(ctx, deck, req.Version)
+		if err != nil {
+			return nil, err
+		}
+
 		match := &zb.Match{
 			Status: zb.Match_Matching,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
-					Id:   req.UserId,
-					Deck: deck,
+					Id:          req.UserId,
+					Deck:        deck,
+					CardsInHand: cardsInHand,
 				},
 			},
 			Version: req.Version,
@@ -586,9 +592,16 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
+
+	cardsInHand, err := populateDeckCards(ctx, deck, req.Version)
+	if err != nil {
+		return nil, err
+	}
+
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-		Id:   req.UserId,
-		Deck: deck,
+		Id:          req.UserId,
+		Deck:        deck,
+		CardsInHand: cardsInHand,
 	})
 	match.Status = zb.Match_Started
 
