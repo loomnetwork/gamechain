@@ -1056,6 +1056,53 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 }
 
+func TestUpdateHeroLibraryOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var updateHeroLibraryRequest = zb.UpdateHeroLibraryRequest{
+		Version: "v2",
+		Heroes: []*zb.Hero{
+			{
+				HeroId:           1,
+				Name:             "Hero1v2",
+				ShortDescription: "Hero1v2",
+			},
+			{
+				HeroId:           2,
+				Name:             "Hero2v2",
+				ShortDescription: "Hero2v2",
+			},
+			{
+				HeroId:           3,
+				Name:             "Hero3v2",
+				ShortDescription: "Hero2v2",
+			},
+		},
+	}
+
+	t.Run("Update hero library v2", func(t *testing.T) {
+		_, err := c.UpdateHeroLibrary(ctx, &updateHeroLibraryRequest)
+		assert.Nil(t, err)
+	})
+	t.Run("Check hero library v2", func(t *testing.T) {
+		req := zb.ListHeroLibraryRequest{Version: "v2"}
+		resp, err := c.ListHeroLibrary(ctx, &req)
+		assert.Nil(t, err)
+		assert.NotNil(t, resp)
+		assert.EqualValues(t, updateHeroLibraryRequest.Heroes, resp.Heroes)
+	})
+	t.Run("Check not exsiting version v3", func(t *testing.T) {
+		req := zb.ListHeroLibraryRequest{Version: "v3"}
+		_, err := c.ListHeroLibrary(ctx, &req)
+		assert.NotNil(t, err)
+	})
+}
+
 func TestFindMatchOperations(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
