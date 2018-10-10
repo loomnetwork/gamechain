@@ -12,7 +12,7 @@ var callGameModeCustomGameModeFunctionArgs struct {
 	Function string
 }
 
-var allGameModeCustomGameModeFunctionCmd = &cobra.Command{
+var callGameModeCustomGameModeFunctionCmd = &cobra.Command{
 	Use:   "call_game_mode_custom_function",
 	Short: "calls a custom function on a game mode",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -47,7 +47,7 @@ var allGameModeCustomGameModeFunctionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(allGameModeCustomGameModeFunctionCmd)
-	allGameModeCustomGameModeFunctionCmd.Flags().StringVar(&callGameModeCustomGameModeFunctionArgs.ID, "id", "", "id of the game mode")
-	allGameModeCustomGameModeFunctionCmd.Flags().StringVar(&callGameModeCustomGameModeFunctionArgs.Function, "function", "", "function name to call")
+	rootCmd.AddCommand(callGameModeCustomGameModeFunctionCmd)
+	callGameModeCustomGameModeFunctionCmd.Flags().StringVar(&callGameModeCustomGameModeFunctionArgs.ID, "id", "", "id of the game mode")
+	callGameModeCustomGameModeFunctionCmd.Flags().StringVar(&callGameModeCustomGameModeFunctionArgs.Function, "function", "", "function name to call")
 }

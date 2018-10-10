@@ -62,6 +62,16 @@ func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*
 	return uiElements, nil
 }
 
+func (c *CustomGameMode) StaticCallFunction(ctx contract.StaticContext, method string) ([]byte, error) {
+	// crude way to call a function with no inputs and outputs without an ABI
+	input := crypto.Keccak256([]byte(method + "()"))[:4]
+
+	ctx.Logger().Info(fmt.Sprintf("methodCallAbi ----------------%v\n", input))
+
+	var evmOut []byte
+	return evmOut, contract.StaticCallEVM(ctx, c.tokenAddr, input, &evmOut)
+}
+
 func (c *CustomGameMode) CallFunction(ctx contract.Context, method string) (err error) {
 	// crude way to call a function with no inputs and outputs without an ABI
 	input := crypto.Keccak256([]byte(method + "()"))[:4]

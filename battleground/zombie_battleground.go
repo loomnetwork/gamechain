@@ -838,13 +838,29 @@ func (z *ZombieBattleground) GetGameMode(ctx contract.StaticContext, req *zb.Get
 	return gameMode, nil
 }
 
+func (z *ZombieBattleground) StaticCallCustomGameModeFunction(ctx contract.StaticContext, req *zb.CallCustomGameModeFunctionRequest) (*zb.StaticCallCustomGameModeFunctionResponse, error) {
+	output, err := NewCustomGameMode(loom.Address{
+		ChainID: req.Address.ChainId,
+		Local:   req.Address.Local,
+	}).StaticCallFunction(ctx, req.FunctionName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := &zb.StaticCallCustomGameModeFunctionResponse{
+		Output: output,
+	}
+
+	return response, nil
+}
+
 func (z *ZombieBattleground) CallCustomGameModeFunction(ctx contract.Context, req *zb.CallCustomGameModeFunctionRequest) error {
 	err := NewCustomGameMode(loom.Address{
 		ChainID: req.Address.ChainId,
 		Local:   req.Address.Local,
 	}).CallFunction(ctx, req.FunctionName)
 
-	return nil
 	if err != nil {
 		return err
 	}
