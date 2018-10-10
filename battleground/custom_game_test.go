@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/stretchr/testify/require"
 	"io"
 	"strings"
