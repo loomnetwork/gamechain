@@ -3,7 +3,6 @@ package battleground
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"io"
 	"math/big"
