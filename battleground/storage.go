@@ -3,7 +3,6 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -43,8 +42,6 @@ var (
 	ErrUserNotVerified = errors.New("user is not verified")
 )
 
-// Maintain compatability with version 1.
-// TODO: Remove these and the following user* prefix instead if we're about to wipe out the data
 func AccountKey(userID string) []byte {
 	return []byte("user:" + userID)
 }
@@ -77,33 +74,8 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-// func userAccountKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id))
-// }
-
-// func userDecksKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), decksPrefix)
-// }
-
-// func userCardCollectionKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), collectionPrefix)
-// }
-
-// func userHeroesKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), heroesPrefix)
-// }
-
-func cardKey(id int64) []byte {
-	return util.PrefixKey(cardPrefix, []byte(strconv.FormatInt(id, 10)))
-}
-
-func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
-	for _, card := range cardList.Cards {
-		if err := ctx.Set(cardKey(card.Id), card); err != nil {
-			return err
-		}
-	}
-	return nil
+func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
+	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
 
 func loadCardList(ctx contract.StaticContext, version string) (*zb.CardList, error) {
