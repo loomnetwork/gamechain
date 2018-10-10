@@ -1005,6 +1005,55 @@ func TestUpdateCardListOperations(t *testing.T) {
 		_, err := c.GetCardList(ctx, &req)
 		assert.NotNil(t, err)
 	})
+	// create deck with new card version
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "user1",
+		Image:   "PathToImage",
+		Version: "v1",
+	}, t)
+	t.Run("Create deck", func(t *testing.T) {
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "user1",
+			Deck: &zb.Deck{
+				Name:   "deck1",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Banshee",
+					},
+					{
+						Amount:   3,
+						CardName: "NewCard",
+					},
+				},
+			},
+			Version: "v2",
+		})
+		assert.Nil(t, err)
+	})
+	t.Run("Create deck with wrong card version", func(t *testing.T) {
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
+			UserId: "user1",
+			Deck: &zb.Deck{
+				Name:   "deck2",
+				HeroId: 1,
+				Cards: []*zb.CardCollection{
+					{
+						Amount:   1,
+						CardName: "Azuraz",
+					},
+					{
+						Amount:   1,
+						CardName: "Puffer",
+					},
+				},
+			},
+			Version: "v2",
+		})
+		assert.NotNil(t, err)
+	})
+
 }
 
 func TestFindMatchOperations(t *testing.T) {
