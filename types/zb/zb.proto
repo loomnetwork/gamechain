@@ -231,6 +231,14 @@ message UpdateCardListRequest {
     string version = 2;
 }
 
+message GetCardListRequest {
+    string version = 1;
+}
+
+message GetCardListResponse {
+    repeated Card cards = 1;
+}
+
 message UpsertAccountRequest {
     string user_id             = 1;
     bool phone_number_verified = 2;
