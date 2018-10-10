@@ -441,81 +441,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 	},
 }
 
-var updateCardListRequest = zb.UpdateCardListRequest{
-	Version: "v2",
-	Cards: []*zb.Card{
-		{
-			Id:      1,
-			Set:     "Air",
-			Name:    "Banshee",
-			Rank:    "Minion",
-			Type:    "Feral",
-			Damage:  2,
-			Health:  1,
-			Cost:    2,
-			Ability: "Feral",
-			Effects: []*zb.Effect{
-				{
-					Trigger:  "entry",
-					Effect:   "feral",
-					Duration: "permanent",
-					Target:   "self",
-				},
-			},
-			CardViewInfo: &zb.CardViewInfo{
-				Position: &zb.Coordinates{
-					X: 1.5,
-					Y: 2.5,
-					Z: 3.5,
-				},
-				Scale: &zb.Coordinates{
-					X: 0.5,
-					Y: 0.5,
-					Z: 0.5,
-				},
-			},
-		},
-		{
-			Id:      2,
-			Set:     "Air",
-			Name:    "Azuraz",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
-				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
-				},
-			},
-		},
-		{
-			Id:      3,
-			Set:     "Air",
-			Name:    "NewCard",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
-				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
-				},
-			},
-		},
-	},
-}
-
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
-
 	c = &ZombieBattleground{}
 	pubKey, _ := hex.DecodeString(pubKeyHex)
 
@@ -1024,10 +950,60 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var updateCardListRequest = zb.UpdateCardListRequest{
+		Version: "v2",
+		Cards: []*zb.Card{
+			{
+				Id:      1,
+				Set:     "Air",
+				Name:    "Banshee",
+				Rank:    "Minion",
+				Type:    "Feral",
+				Damage:  2,
+				Health:  1,
+				Cost:    2,
+				Ability: "Feral",
+			},
+			{
+				Id:      2,
+				Set:     "Air",
+				Name:    "Azuraz",
+				Rank:    "Minion",
+				Type:    "Walker",
+				Damage:  1,
+				Health:  1,
+				Cost:    1,
+				Ability: "-",
+			},
+			{
+				Id:      3,
+				Set:     "Air",
+				Name:    "NewCard",
+				Rank:    "Minion",
+				Type:    "Walker",
+				Damage:  1,
+				Health:  1,
+				Cost:    1,
+				Ability: "-",
+			},
+		},
+	}
+
 	t.Run("UpdateCardList", func(t *testing.T) {
 		err := c.UpdateCardList(ctx, &updateCardListRequest)
-
 		assert.Nil(t, err)
+	})
+	t.Run("Check card v2", func(t *testing.T) {
+		req := zb.GetCardListRequest{Version: "v2"}
+		resp, err := c.GetCardList(ctx, &req)
+		assert.Nil(t, err)
+		assert.NotNil(t, resp)
+		assert.EqualValues(t, updateCardListRequest.Cards, resp.Cards)
+	})
+	t.Run("Check not exsiting version v3", func(t *testing.T) {
+		req := zb.GetCardListRequest{Version: "v3"}
+		_, err := c.GetCardList(ctx, &req)
+		assert.NotNil(t, err)
 	})
 }
 

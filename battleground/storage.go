@@ -42,8 +42,6 @@ var (
 	ErrUserNotVerified = errors.New("user is not verified")
 )
 
-// Maintain compatability with version 1.
-// TODO: Remove these and the following user* prefix instead if we're about to wipe out the data
 func AccountKey(userID string) []byte {
 	return []byte("user:" + userID)
 }
