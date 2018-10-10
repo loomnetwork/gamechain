@@ -556,18 +556,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			return nil, err
 		}
 
-		cardsInHand, err := populateDeckCards(ctx, deck, req.Version)
-		if err != nil {
-			return nil, err
-		}
-
 		match := &zb.Match{
 			Status: zb.Match_Matching,
 			PlayerStates: []*zb.PlayerState{
 				&zb.PlayerState{
-					Id:          req.UserId,
-					Deck:        deck,
-					CardsInHand: cardsInHand,
+					Id:   req.UserId,
+					Deck: deck,
 				},
 			},
 			Version: req.Version,
@@ -593,15 +587,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 
-	cardsInHand, err := populateDeckCards(ctx, deck, req.Version)
-	if err != nil {
-		return nil, err
-	}
-
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-		Id:          req.UserId,
-		Deck:        deck,
-		CardsInHand: cardsInHand,
+		Id:   req.UserId,
+		Deck: deck,
 	})
 	match.Status = zb.Match_Started
 
@@ -647,6 +635,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
+	}
+
+	err = populateDeckCards(ctx, match.PlayerStates, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
 	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)

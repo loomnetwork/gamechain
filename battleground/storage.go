@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -416,4 +416,45 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	}
 
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
+}
+
+func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, version string) error {
+	var cardList zb.CardList
+	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
+		return fmt.Errorf("error getting card library: %s", err)
+	}
+	var cardInstanceList []*zb.CardInstance
+	for _, playerState := range playerStates {
+		deck := playerState.Deck
+		for _, deckCard := range deck.Cards {
+			cardDetails, err := getCardDetails(&cardList, deckCard)
+			if err != nil {
+				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
+			}
+
+			cardInstance := &zb.CardInstance{
+				//InstanceId:
+				Attack:  cardDetails.Damage,
+				Defence: cardDetails.Health,
+				Prototype: &zb.CardPrototype{
+					Name: cardDetails.Name,
+				},
+			}
+			playerState.CardsInHand = append(playerState.CardsInHand, cardInstance)
+		}
+	}
+	for _, c := range cardInstanceList {
+		ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
+	}
+
+	return nil
+}
+
+func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {
+	for _, card := range cardList.Cards {
+		if card.Name == deckCard.CardName {
+			return card, nil
+		}
+	}
+	return nil, fmt.Errorf("card not found in card library")
 }
