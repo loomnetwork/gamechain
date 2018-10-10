@@ -636,7 +636,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
+	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2, req.Version)
 	if err != nil {
 		return nil, err
 	}
