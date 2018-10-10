@@ -41,6 +41,12 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		customGameMode = NewCustomGameMode(*customGameAddress)
 	}
 
+	err := populateDeckCards(ctx, players, version)
+	if err != nil {
+		ctx.Logger().Error(fmt.Sprintf("error while populating cards in deck: %v", err))
+		return nil, err
+	}
+
 	state := &zb.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
@@ -83,8 +89,9 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 		for _, deckCard := range deck.Cards {
 			cardDetails, err := getCardDetails(&cardList, deckCard)
 			if err != nil {
-				return err // TODO
+				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
 			}
+
 			cardInstance := &zb.CardInstance{
 				//InstanceId:
 				Attack:  cardDetails.Damage,
