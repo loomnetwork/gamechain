@@ -21,6 +21,19 @@ var (
 	ErrDeckNameTooLong = fmt.Errorf("deck name is more than %d characters", MaxDeckNameChar)
 )
 
+func validateCardLibrary(cards []*zb.Card, deckCollections []*zb.CardCollection) error {
+	cardmap := make(map[string]interface{})
+	for _, card := range cards {
+		cardmap[card.Name] = struct{}{}
+	}
+	for _, collection := range deckCollections {
+		if _, ok := cardmap[collection.CardName]; !ok {
+			return fmt.Errorf("card %s not found in card library", collection.CardName)
+		}
+	}
+	return nil
+}
+
 func validateDeckCollections(userCollections []*zb.CardCollection, deckCollections []*zb.CardCollection) error {
 	maxAmountMap := make(map[string]int64)
 	for _, collection := range userCollections {
