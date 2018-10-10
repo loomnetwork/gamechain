@@ -1518,3 +1518,48 @@ func TestGameModeOperations(t *testing.T) {
 		assert.Equal(t, "Test game mode 2", gameModeList.GameModes[0].Name)
 	})
 }
+
+func TestPopulateDeckCards(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	getDeckResp1, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+		UserId: "player-1",
+		DeckId: 1,
+	})
+
+	getDeckResp2, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+		UserId: "player-2",
+		DeckId: 1,
+	})
+
+	playerStates := []*zb.PlayerState{
+		&zb.PlayerState{
+			Id:   "player-1",
+			Deck: getDeckResp1.Deck,
+		},
+		&zb.PlayerState{
+			Id:   "player-2",
+			Deck: getDeckResp2.Deck,
+		},
+	}
+
+	err := populateDeckCards(ctx, playerStates, "v1")
+	t.Log(playerStates)
+	assert.Nil(t, err)
+	assert.NotNil(t, playerStates[0].CardsInHand)
+	assert.NotNil(t, playerStates[1].CardsInHand)
+
+}

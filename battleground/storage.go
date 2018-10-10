@@ -423,7 +423,6 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
 		return fmt.Errorf("error getting card library: %s", err)
 	}
-	var cardInstanceList []*zb.CardInstance
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, deckCard := range deck.Cards {
@@ -442,9 +441,9 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 			}
 			playerState.CardsInHand = append(playerState.CardsInHand, cardInstance)
 		}
-	}
-	for _, c := range cardInstanceList {
-		ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
+		for _, c := range playerState.CardsInHand {
+			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
+		}
 	}
 
 	return nil
