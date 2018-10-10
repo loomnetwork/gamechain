@@ -37,7 +37,6 @@ func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 }
 
 func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) error {
-
 	secret = os.Getenv("SECRET_KEY")
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
@@ -91,7 +90,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 }
 
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
-
 	// initialize card library
 	cardList := zb.CardList{
 		Cards: req.Cards,
@@ -136,10 +134,15 @@ func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.Update
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
-		return err
+	return saveCardList(ctx, req.Version, &cardList)
+}
+
+func (z *ZombieBattleground) GetCardList(ctx contract.Context, req *zb.GetCardListRequest) (*zb.GetCardListResponse, error) {
+	cardlist, err := loadCardList(ctx, req.Version)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+	return &zb.GetCardListResponse{Cards: cardlist.Cards}, nil
 }
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
