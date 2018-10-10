@@ -72,45 +72,6 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 	return GamePlayFrom(state)
 }
 
-func populateDeckCards(ctx contract.Context, deck *zb.Deck, version string) ([]*zb.CardInstance, error) {
-	var cardList zb.CardList
-	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
-		return nil, err
-	}
-	var cardInstanceList []*zb.CardInstance
-	for _, deckCard := range deck.Cards {
-		cardDetails, err := getCardDetails(&cardList, deckCard)
-		if err != nil {
-			return nil, fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
-		}
-
-		cardInstance := &zb.CardInstance{
-			//InstanceId:
-			Attack:  cardDetails.Damage,
-			Defence: cardDetails.Health,
-			Prototype: &zb.CardPrototype{
-				Name: cardDetails.Name,
-			},
-		}
-		cardInstanceList = append(cardInstanceList, cardInstance)
-	}
-
-	for _, c := range cardInstanceList {
-		ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
-	}
-
-	return cardInstanceList, nil
-}
-
-func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {
-	for _, card := range cardList.Cards {
-		if card.Name == deckCard.CardName {
-			return card, nil
-		}
-	}
-	return nil, fmt.Errorf("card not found in card library")
-}
-
 // GamePlayFrom initializes and run game to the latest state
 func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	g := &Gameplay{State: state}
