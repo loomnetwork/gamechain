@@ -461,6 +461,17 @@ message PlayerActionResponse {
     Match match = 2;
 }
 
+message BundlePlayerActionRequest {
+    int64 matchId = 1;
+    repeated PlayerAction playerActions = 2;
+}
+
+message BundlePlayerActionResponse {
+    GameState gameState = 1;
+    Match match = 2;
+    repeated HistoryData history = 3;
+}
+
 message EndMatchRequest {
     int64 matchId   = 1;
     string userId   = 2;
@@ -957,7 +968,7 @@ message History {
 message HistoryData {
     oneof data {
         HistoryCreateGame createGame = 1;
-        HistoryInstance fullInstance = 2;
+        HistoryFullInstance fullInstance = 2;
         HistoryInstance showInstance = 3;
         HistoryHide hideInstance = 4;
         HistoryInstance changeInstance = 5;
@@ -971,6 +982,13 @@ message HistoryCreateGame {
     string version = 4;
 }
 
+message HistoryFullInstance {
+    int32 instanceId = 1;
+    int32 attack = 2;
+    int32 defense = 3;
+    int32 health = 4;
+}
+
 message HistoryInstance {
     int32 instanceId = 1;
     int32 value = 2;
@@ -978,7 +996,6 @@ message HistoryInstance {
         Health = 0;
         Attack = 1;
         Defence = 2;
-        // more changes needed
     }
 }
 

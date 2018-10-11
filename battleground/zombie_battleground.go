@@ -776,6 +776,44 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}, nil
 }
 
+func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *zb.BundlePlayerActionRequest) (*zb.BundlePlayerActionResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	gamestate, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := GamePlayFrom(gamestate)
+	if err != nil {
+		return nil, err
+	}
+	gp.PrintState()
+	if err := gp.AddBundleAction(req.PlayerActions...); err != nil {
+		return nil, err
+	}
+	gp.PrintState()
+
+	if err := saveGameState(ctx, gamestate); err != nil {
+		return nil, err
+	}
+
+	// update match status
+	if match.Status == zb.Match_Started {
+		match.Status = zb.Match_Playing
+		if err := saveMatch(ctx, match); err != nil {
+			return nil, err
+		}
+	}
+
+	return &zb.BundlePlayerActionResponse{
+		GameState: gamestate,
+		Match:     match,
+		History:   gp.history,
+	}, nil
+}
+
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
 	if ctx.Has(oracleKey) {
 		if params.OldOracle.String() == params.NewOracle.String() {

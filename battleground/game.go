@@ -139,6 +139,14 @@ func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 	return g.resume()
 }
 
+func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
+	for _, action := range actions {
+		g.State.PlayerActions = append(g.State.PlayerActions, action)
+	}
+	// resume the Gameplay
+	return g.resume()
+}
+
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	// skip checking for mulligan action
 	if action.ActionType == zb.PlayerActionType_Mulligan {
@@ -430,7 +438,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_FullInstance{
-			FullInstance: &zb.HistoryInstance{},
+			FullInstance: &zb.HistoryFullInstance{
+				InstanceId: 1, // TODO change to the actual card id
+				Attack:     1,
+				Defense:    1,
+			},
 		},
 	})
 
@@ -487,8 +499,11 @@ func actionCardPlay(g *Gameplay) stateFn {
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_FullInstance{
-			FullInstance: &zb.HistoryInstance{
+			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: 1, // TODO change to the actual card id
+				Attack:     1,
+				Defense:    1,
+				Health:     1,
 			},
 		},
 	})
@@ -538,6 +553,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 	// TODO: card attack
 
+	// record history data
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_ChangeInstance{
+			ChangeInstance: &zb.HistoryInstance{
+				InstanceId: 1, // TODO change to the actual card id
+				Value:      2,
+			},
+		},
+	})
+
 	// determine the next action
 	g.PrintState()
 	next := g.next()
@@ -582,6 +607,8 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 	}
 
 	// TODO: card ability
+
+	// TODO: record history data
 
 	// determine the next action
 	g.PrintState()
