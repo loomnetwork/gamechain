@@ -49,7 +49,6 @@ func TestGameStateFunc(t *testing.T) {
 	state := &zb.GameState{
 		Id:                 1,
 		CurrentPlayerIndex: 0, // fixed the current player to this test
-		CurrentBlockIndex:  -1,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   player1,

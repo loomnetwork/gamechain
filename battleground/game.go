@@ -29,6 +29,7 @@ type Gameplay struct {
 	stateFn        stateFn
 	err            error
 	customGameMode *CustomGameMode
+	history        []*zb.HistoryData
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -53,7 +54,6 @@ func NewGamePlay(ctx contract.Context,
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
-		CurrentBlockIndex:  -1,
 		Version:            verion,
 	}
 	g := &Gameplay{
@@ -72,8 +72,10 @@ func NewGamePlay(ctx contract.Context,
 			return nil, err
 		}
 	}
-
-	return GamePlayFrom(state)
+	if err := g.run(); err != nil {
+		return nil, err
+	}
+	return g, nil
 }
 
 // GamePlayFrom initializes and run game to the latest state
@@ -114,21 +116,16 @@ func (g *Gameplay) createGame() error {
 		}
 	}
 	// record history data
-	g.State.Blocks = append(g.State.Blocks, &zb.History{
-		List: []*zb.HistoryData{
-			{
-				Data: &zb.HistoryData_CreateGame{
-					CreateGame: &zb.HistoryCreateGame{
-						GameId:     g.State.Id,
-						Players:    ps,
-						Randomseed: g.State.Randomseed,
-						Version:    g.State.Version,
-					},
-				},
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_CreateGame{
+			CreateGame: &zb.HistoryCreateGame{
+				GameId:     g.State.Id,
+				Players:    ps,
+				Randomseed: g.State.Randomseed,
+				Version:    g.State.Version,
 			},
 		},
 	})
-	g.State.CurrentBlockIndex++
 	return nil
 }
 
@@ -241,13 +238,6 @@ func (g *Gameplay) isEnded() bool {
 	return false
 }
 
-func (g *Gameplay) CurrentHistoryBlock() *zb.History {
-	if g.State.CurrentBlockIndex+1 > int64(len(g.State.Blocks)) {
-		return nil
-	}
-	return g.State.Blocks[g.State.CurrentBlockIndex]
-}
-
 func (g *Gameplay) PrintState() {
 	state := g.State
 	fmt.Printf("============StateInfo=============\n")
@@ -267,15 +257,10 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
 	}
 
-	fmt.Printf("History Block: count %v\n", len(state.Blocks))
-	for i, block := range state.Blocks {
-		if int64(i) == state.CurrentBlockIndex {
-			fmt.Printf("   -->> [%d] %v\n", i, block)
-		} else {
-			fmt.Printf("\t[%d] %v\n", i, block)
-		}
+	fmt.Printf("History : count %v\n", len(g.history))
+	for i, block := range g.history {
+		fmt.Printf("\t[%d] %v\n", i, block)
 	}
-	fmt.Printf("Current History Block Index: %v\n", state.CurrentBlockIndex)
 
 	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
 	for i, action := range state.PlayerActions {
@@ -443,16 +428,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// record history data
-	g.State.Blocks = append(g.State.Blocks, &zb.History{
-		List: []*zb.HistoryData{
-			{
-				Data: &zb.HistoryData_FullInstance{
-					FullInstance: &zb.HistoryInstance{},
-				},
-			},
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_FullInstance{
+			FullInstance: &zb.HistoryInstance{},
 		},
 	})
-	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()
@@ -505,18 +485,13 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	// record history data
-	g.State.Blocks = append(g.State.Blocks, &zb.History{
-		List: []*zb.HistoryData{
-			{
-				Data: &zb.HistoryData_FullInstance{
-					FullInstance: &zb.HistoryInstance{
-						InstanceId: 1, // TODO change to the actual card id
-					},
-				},
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_FullInstance{
+			FullInstance: &zb.HistoryInstance{
+				InstanceId: 1, // TODO change to the actual card id
 			},
 		},
 	})
-	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()
