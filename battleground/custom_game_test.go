@@ -5,24 +5,26 @@ package battleground
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/stretchr/testify/require"
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/stretchr/testify/require"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+
 	//	"github.com/loomnetwork/go-loom/plugin"
 
 	"github.com/loomnetwork/loomchain"
 	"github.com/loomnetwork/loomchain/eth/subs"
+	levm "github.com/loomnetwork/loomchain/evm"
 	"github.com/loomnetwork/loomchain/plugin"
 	lvm "github.com/loomnetwork/loomchain/vm"
-	levm "github.com/loomnetwork/loomchain/evm"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -174,8 +176,8 @@ func TestDeserializeCustomUiElements(t *testing.T) {
 	assert.Equal(
 		t,
 		zb.Rect{
-			Position: &zb.Vector2Int {	X: 25,	Y: 230},
-			Size_: &zb.Vector2Int {	X: 200,	Y: 150},
+			Position: &zb.Vector2Int{X: 25, Y: 230},
+			Size_:    &zb.Vector2Int{X: 200, Y: 150},
 		},
 		*uiElements[0].Rect)
 	label := uiElements[0].UiElement.(*zb.CustomGameModeCustomUiElement_Label)
@@ -184,8 +186,8 @@ func TestDeserializeCustomUiElements(t *testing.T) {
 	assert.Equal(
 		t,
 		zb.Rect{
-			Position: &zb.Vector2Int {	X: 25,	Y: 30},
-			Size_: &zb.Vector2Int {	X: 200,	Y: 150},
+			Position: &zb.Vector2Int{X: 25, Y: 30},
+			Size_:    &zb.Vector2Int{X: 200, Y: 150},
 		},
 		*uiElements[1].Rect)
 
@@ -255,14 +257,13 @@ func TestMemoryLeak(t *testing.T) {
 	owner := loom.RootAddress("chain")
 	fakeCtx := plugin.CreateFakeContextWithEVM(addr, loom.RootAddress("chain"))
 
-	evm := levm.NewLoomVm(fakeCtx.State, nil, nil, nil)
+	evm := levm.NewLoomVm(fakeCtx.State, nil, nil, nil, false)
 	evmContractAddr, evmContractABI, err := deployEVMContract(evm, testMemoryLeakBIN, owner)
 	require.NoError(t, err)
 
 	fmt.Printf("deployed contract -%v -%v \n", evmContractAddr, evmContractABI)
 
 	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(addr))
-
 
 	player1 := "player-1"
 	player2 := "player-2"
