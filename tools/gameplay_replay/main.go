@@ -112,8 +112,8 @@ func main() {
 
 	// log the game play being replayed
 	replayedGameReplay := zb.GameReplay{
-		ReplayVersion: gameReplay.ReplayVersion,
-		RandomSeed:    gameReplay.RandomSeed,
+		Events: gameReplay.Events,
+		Blocks: gameReplay.Blocks,
 	}
 
 	// initialise game state
@@ -172,7 +172,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 	for _, ps := range playerStates {
 		err = zbContract.CreateAccount(ctx, &zb.UpsertAccountRequest{
 			UserId:  ps.Id,
-			Version: gameReplay.ReplayVersion,
+			Version: gameReplay.Events[0].Match.Version,
 		})
 		if err != nil {
 			return err
@@ -181,7 +181,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId:  ps.Id,
 			Deck:    ps.Deck,
-			Version: gameReplay.ReplayVersion,
+			Version: gameReplay.Events[0].Match.Version,
 		})
 		if err != nil {
 			return err
@@ -190,8 +190,8 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId:     ps.Id,
 			DeckId:     ps.Deck.Id,
-			Version:    gameReplay.ReplayVersion,
-			RandomSeed: gameReplay.RandomSeed,
+			Version:    gameReplay.Events[0].Match.Version,
+			RandomSeed: gameReplay.Events[0].Match.RandomSeed,
 		})
 		if err != nil {
 			return err
