@@ -184,10 +184,7 @@ var initRequest = zb.InitRequest{
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
-				{
-					CardName: "Banshee",
-					Amount:   2,
-				},
+
 				{
 					CardName: "Azuraz",
 					Amount:   2,
@@ -204,30 +201,17 @@ var initRequest = zb.InitRequest{
 					CardName: "Wheezy",
 					Amount:   2,
 				},
-				{
-					CardName: "Whiffer",
-					Amount:   2,
-				},
+
 				{
 					CardName: "Whizpar",
 					Amount:   1,
 				},
-				{
-					CardName: "Zhocker",
-					Amount:   1,
-				},
+
 				{
 					CardName: "Bouncer",
 					Amount:   1,
 				},
-				{
-					CardName: "Dragger",
-					Amount:   1,
-				},
-				{
-					CardName: "Guzt",
-					Amount:   1,
-				},
+
 				{
 					CardName: "Pushhh",
 					Amount:   1,
@@ -1143,8 +1127,9 @@ func TestFindMatchOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-1",
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1155,14 +1140,16 @@ func TestFindMatchOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-2",
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
+
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
@@ -1237,8 +1224,9 @@ func TestGameStateOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-1",
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1249,8 +1237,9 @@ func TestGameStateOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-2",
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)

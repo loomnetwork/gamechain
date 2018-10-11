@@ -22,12 +22,12 @@
   Expected = ["player-2"]
 
 [[TestCases]]
-  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1"
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1 -v v1"
   Condition = "contains"
   Expected = ["MatchID: 1", "Status: Matching"]
 
 [[TestCases]]
-  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1"
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1 -v v1"
   Condition = "contains"
   Expected = ["MatchID: 1", "Status: Started"]
 
@@ -71,12 +71,12 @@
   Expected = ["loom-2"]
 
 [[TestCases]]
-  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-2 -d 1"
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-2 -d 1 -v v1"
   Condition = "contains"
   Expected = ["MatchID: 2", "Status: Matching"]
 
 [[TestCases]]
-  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u loom-1 -d 1"
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u loom-1 -d 1 -v v1"
   Condition = "contains"
   Expected = ["MatchID: 2", "Status: Started"]
 
