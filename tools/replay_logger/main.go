@@ -153,14 +153,15 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	var replay zb.History
+	var replay zb.GameReplay
 	if fi, _ := f.Stat(); fi.Size() > 0 {
 		if err := jsonpb.Unmarshal(f, &replay); err != nil {
 			log.Println(err)
 			return nil, err
 		}
 	}
-	replay.List = append(replay.List, event.Block.List...)
+	replay.Blocks = append(replay.Blocks, event.Block.List...)
+	replay.Events = append(replay.Events, &event)
 
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(&replay)
