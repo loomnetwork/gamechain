@@ -1,4 +1,4 @@
-package ability
+package battleground
 {{ with .EnumDefinitions }}
 {{ range . }}
 {{- $name := .Name -}}

@@ -38,6 +38,15 @@ const (
         GameStateChangeAction_None GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerDefense GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerGoo GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerDeckCards GameStateChangeAction = iota
+)
+
+type CustomUiElement int32
+
+const (
+        CustomUiElement_None CustomUiElement = iota
+        CustomUiElement_Label CustomUiElement = iota
+        CustomUiElement_Button CustomUiElement = iota
 )
 
  
