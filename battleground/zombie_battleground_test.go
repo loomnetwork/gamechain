@@ -184,10 +184,7 @@ var initRequest = zb.InitRequest{
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
-				{
-					CardName: "Banshee",
-					Amount:   2,
-				},
+
 				{
 					CardName: "Azuraz",
 					Amount:   2,
@@ -204,30 +201,17 @@ var initRequest = zb.InitRequest{
 					CardName: "Wheezy",
 					Amount:   2,
 				},
-				{
-					CardName: "Whiffer",
-					Amount:   2,
-				},
+
 				{
 					CardName: "Whizpar",
 					Amount:   1,
 				},
-				{
-					CardName: "Zhocker",
-					Amount:   1,
-				},
+
 				{
 					CardName: "Bouncer",
 					Amount:   1,
 				},
-				{
-					CardName: "Dragger",
-					Amount:   1,
-				},
-				{
-					CardName: "Guzt",
-					Amount:   1,
-				},
+
 				{
 					CardName: "Pushhh",
 					Amount:   1,
@@ -1056,6 +1040,53 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 }
 
+func TestUpdateHeroLibraryOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var updateHeroLibraryRequest = zb.UpdateHeroLibraryRequest{
+		Version: "v2",
+		Heroes: []*zb.Hero{
+			{
+				HeroId:           1,
+				Name:             "Hero1v2",
+				ShortDescription: "Hero1v2",
+			},
+			{
+				HeroId:           2,
+				Name:             "Hero2v2",
+				ShortDescription: "Hero2v2",
+			},
+			{
+				HeroId:           3,
+				Name:             "Hero3v2",
+				ShortDescription: "Hero2v2",
+			},
+		},
+	}
+
+	t.Run("Update hero library v2", func(t *testing.T) {
+		_, err := c.UpdateHeroLibrary(ctx, &updateHeroLibraryRequest)
+		assert.Nil(t, err)
+	})
+	t.Run("Check hero library v2", func(t *testing.T) {
+		req := zb.ListHeroLibraryRequest{Version: "v2"}
+		resp, err := c.ListHeroLibrary(ctx, &req)
+		assert.Nil(t, err)
+		assert.NotNil(t, resp)
+		assert.EqualValues(t, updateHeroLibraryRequest.Heroes, resp.Heroes)
+	})
+	t.Run("Check not exsiting version v3", func(t *testing.T) {
+		req := zb.ListHeroLibraryRequest{Version: "v3"}
+		_, err := c.ListHeroLibrary(ctx, &req)
+		assert.NotNil(t, err)
+	})
+}
+
 func TestFindMatchOperations(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
@@ -1096,8 +1127,9 @@ func TestFindMatchOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-1",
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1108,14 +1140,16 @@ func TestFindMatchOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-2",
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
+
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
@@ -1190,8 +1224,9 @@ func TestGameStateOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-1",
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1202,8 +1237,9 @@ func TestGameStateOperations(t *testing.T) {
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId: 1,
-			UserId: "player-2",
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)

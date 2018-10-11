@@ -475,6 +475,16 @@ func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb
 	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil
 }
 
+func (z *ZombieBattleground) UpdateHeroLibrary(ctx contract.Context, req *zb.UpdateHeroLibraryRequest) (*zb.UpdateHeroLibraryResponse, error) {
+	var heroList = zb.HeroList{
+		Heroes: req.Heroes,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
+		return nil, err
+	}
+	return &zb.UpdateHeroLibraryResponse{}, nil
+}
+
 func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroesRequest) (*zb.ListHeroesResponse, error) {
 	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
@@ -606,6 +616,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
+
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
 		Id:   req.UserId,
 		Deck: deck,
@@ -654,6 +665,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
+	}
+
+	err = populateDeckCards(ctx, match.PlayerStates, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
 	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
