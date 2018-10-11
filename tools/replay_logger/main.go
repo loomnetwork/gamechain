@@ -161,7 +161,7 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 		}
 	}
 	replay.Blocks = append(replay.Blocks, event.Block.List...)
-	replay.Events = append(replay.Events, &event)
+	replay.Actions = append(replay.Actions, event.PlayerAction)
 
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(&replay)
