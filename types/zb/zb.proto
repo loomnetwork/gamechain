@@ -975,6 +975,13 @@ message HistoryCreateGame {
 
 message HistoryInstance {
     int32 instanceId = 1;
+    int32 value = 2;
+    enum change {
+        Health = 0;
+        Attack = 1;
+        Defence = 2;
+        // more changes needed
+    }
 }
 
 message HistoryHide {
