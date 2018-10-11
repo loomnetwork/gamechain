@@ -397,12 +397,6 @@ message PlayerActionEvent {
     History block = 6;
 }
 
-message GameReplay {
-    repeated PlayerActionEvent events = 1;
-    string replayVersion = 2;
-    int64 randomSeed = 3;
-}
-
 message PlayersInMatchmakingList {
     repeated string userIDs = 1;
 }
@@ -935,6 +929,11 @@ enum UnitSpecialStatus {
 
 
 // Replay
+
+message GameReplay {
+    repeated PlayerActionEvent events = 1;
+    repeated HistoryData blocks       = 2;
+}
 
 message Player {
     string id = 1;
