@@ -447,7 +447,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 		List: []*zb.HistoryData{
 			{
 				Data: &zb.HistoryData_FullInstance{
-					FullInstance: &zb.HistoryInstance{},
+					FullInstance: &zb.HistoryInstance{
+						InstanceId: 1, // TODO change to the actual card id
+						Attack:     1,
+						Defense:    1,
+					},
 				},
 			},
 		},
@@ -511,6 +515,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 				Data: &zb.HistoryData_FullInstance{
 					FullInstance: &zb.HistoryInstance{
 						InstanceId: 1, // TODO change to the actual card id
+						Attack:     1,
+						Defense:    1,
 					},
 				},
 			},
@@ -563,6 +569,22 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 	// TODO: card attack
 
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_FullInstance{
+					FullInstance: &zb.HistoryInstance{
+						InstanceId: 1, // TODO change to the actual card id
+						Attack:     1,
+						Defense:    1,
+					},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
+
 	// determine the next action
 	g.PrintState()
 	next := g.next()
@@ -607,6 +629,22 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 	}
 
 	// TODO: card ability
+
+	// record history data
+	g.State.Blocks = append(g.State.Blocks, &zb.History{
+		List: []*zb.HistoryData{
+			{
+				Data: &zb.HistoryData_FullInstance{
+					FullInstance: &zb.HistoryInstance{
+						InstanceId: 1, // TODO change to the actual card id
+						Attack:     1,
+						Defense:    1,
+					},
+				},
+			},
+		},
+	})
+	g.State.CurrentBlockIndex++
 
 	// determine the next action
 	g.PrintState()
