@@ -27,6 +27,9 @@ bin/zb-console-game:
 bin/replay-logger:
 	go build -o $@ $(PKG)/tools/replay_logger
 
+bin/gameplay-replay:
+	go build -o $@ $(PKG)/tools/gameplay_replay
+
 contracts/zombiebattleground.1.0.0: proto
 	go build -o $@ $(PKG)/plugin
 
