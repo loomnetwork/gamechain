@@ -647,7 +647,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// accept match
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
-		Block: gp.CurrentHistoryBlock(),
+		Block: &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -760,7 +760,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
 		Match:            match,
-		Block:            gp.CurrentHistoryBlock(),
+		Block:            &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {

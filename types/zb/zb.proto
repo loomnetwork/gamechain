@@ -694,9 +694,7 @@ message GameState {
     repeated PlayerAction playerActions = 6;
     int64 randomseed                    = 7;
     string winner                       = 8;
-    int64 CurrentBlockIndex             = 9;
-    repeated History blocks             = 10;
-    string version                      = 11;
+    string version                      = 9;
 }
 
 message AbilityInstance {
@@ -931,8 +929,8 @@ enum UnitSpecialStatus {
 // Replay
 
 message GameReplay {
-    repeated PlayerAction actions = 1;
-    repeated HistoryData blocks   = 2;
+    repeated PlayerAction actions = 5;
+    repeated HistoryData blocks   = 6;
 }
 
 message Player {
