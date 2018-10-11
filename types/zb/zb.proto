@@ -58,6 +58,16 @@ message Coordinates {
     float z = 3;
 }
 
+message Vector2Int {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Rect {
+    Vector2Int position = 1;
+    Vector2Int size = 2;
+}
+
 message Effect {
     string trigger  = 1;
     string effect   = 2;
@@ -547,6 +557,40 @@ message GetGameModeRequest {
 }
 
 message ListGameModesRequest {
+}
+
+message GetCustomGameModeCustomUiRequest {
+     Address address = 1;
+}
+
+message GetCustomGameModeCustomUiResponse {
+    repeated CustomGameModeCustomUiElement uiElements = 1;
+}
+
+message CallCustomGameModeFunctionRequest {
+    Address address = 1;
+    string functionName = 2;
+}
+
+message StaticCallCustomGameModeFunctionResponse {
+    bytes output = 1;
+}
+
+message CustomGameModeCustomUiLabel {
+    string text = 1;
+}
+
+message CustomGameModeCustomUiButton {
+    string title = 1;
+    string onClickFunctionName = 2;
+}
+
+message CustomGameModeCustomUiElement {
+    Rect rect = 1;
+    oneof uiElement {
+        CustomGameModeCustomUiLabel label = 2;
+        CustomGameModeCustomUiButton button = 3;
+    }
 }
 
 //////////////// GAME PLAY //////////////////
