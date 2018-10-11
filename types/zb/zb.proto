@@ -931,8 +931,8 @@ enum UnitSpecialStatus {
 // Replay
 
 message GameReplay {
-    repeated PlayerActionEvent events = 1;
-    repeated HistoryData blocks       = 2;
+    repeated PlayerAction actions = 1;
+    repeated HistoryData blocks   = 2;
 }
 
 message Player {
