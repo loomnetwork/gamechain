@@ -329,6 +329,14 @@ message ListHeroLibraryResponse {
     repeated Hero heroes  = 1;
 }
 
+message UpdateHeroLibraryRequest {
+    string version = 1;
+    repeated Hero heroes  = 2;
+}
+
+message UpdateHeroLibraryResponse {
+}
+
 message GetCollectionRequest {
     string user_id = 1;
 }
