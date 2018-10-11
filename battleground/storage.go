@@ -414,7 +414,7 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 			playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 		}
 		for _, c := range playerState.CardsInDeck {
-			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v", c.Prototype.Name, c.Attack))
+			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v\n", c.Prototype.Name, c.Attack))
 		}
 	}
 
