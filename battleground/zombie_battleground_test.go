@@ -1100,12 +1100,12 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		playerStates := response.Match.PlayerStates
-		assert.NotEmpty(t, playerStates[0].CardsInHand)
-		assert.NotEmpty(t, playerStates[1].CardsInHand)
-		assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInHand),
-			"CardsInHand should have same number of cards as in deck")
-		assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInHand),
-			"CardsInHand should have same number of cards as in deck")
+		assert.NotEmpty(t, playerStates[0].CardsInDeck)
+		assert.NotEmpty(t, playerStates[1].CardsInDeck)
+		assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck),
+			"CardsInDeck should have same number of cards as in deck")
+		assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck),
+			"CardsInDeck should have same number of cards as in deck")
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
@@ -1611,8 +1611,8 @@ func TestPopulateDeckCards(t *testing.T) {
 	}
 	err := populateDeckCards(ctx, playerStates, "v1")
 	assert.Nil(t, err)
-	assert.NotNil(t, playerStates[0].CardsInHand)
-	assert.NotNil(t, playerStates[1].CardsInHand)
-	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInHand))
-	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInHand))
+	assert.NotNil(t, playerStates[0].CardsInDeck)
+	assert.NotNil(t, playerStates[1].CardsInDeck)
+	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck))
+	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck))
 }
