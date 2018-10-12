@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"encoding/hex"
+	"fmt"
 	"testing"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -148,17 +149,12 @@ var initRequest = zb.InitRequest{
 			HeroId: 2,
 			Name:   "Default",
 			Cards: []*zb.CardCollection{
-				{CardName: "Banshee", Amount: 2},
-				{CardName: "Breezee", Amount: 2},
-				{CardName: "Buffer", Amount: 2},
+				{CardName: "Azuraz", Amount: 2},
+				{CardName: "Puffer", Amount: 2},
 				{CardName: "Soothsayer", Amount: 2},
 				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whiffer", Amount: 2},
 				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Zhocker", Amount: 1},
 				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Dragger", Amount: 1},
-				{CardName: "Guzt", Amount: 1},
 				{CardName: "Pushhh", Amount: 1},
 			},
 		},
@@ -1005,6 +1001,8 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
+		fmt.Println("--------------------------")
+		fmt.Printf("%+v", response)
 		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
@@ -1018,6 +1016,8 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
+		fmt.Println("--------------------------")
+		fmt.Printf("%+v", response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
