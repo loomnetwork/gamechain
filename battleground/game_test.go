@@ -171,6 +171,26 @@ func TestGameStateFunc(t *testing.T) {
 	})
 	assert.Nil(t, err)
 
+	// rankbuff
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_RankBuff,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_RankBuff{
+			RankBuff: &zb.PlayerActionRankBuff{
+				Card: &zb.CardInstance{
+					InstanceId: 1,
+				},
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId:       2,
+						AffectObjectType: zb.AffectObjectType_CARD,
+					},
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+
 	// leave match
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_LeaveMatch,
@@ -295,4 +315,44 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 	})
 	assert.NotNil(t, err)
 	gp.PrintState()
+}
+
+func TestPopulateDeckCards(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+	getDeckResp1, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+		UserId: "player-1",
+		DeckId: 1,
+	})
+	getDeckResp2, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+		UserId: "player-2",
+		DeckId: 1,
+	})
+	playerStates := []*zb.PlayerState{
+		&zb.PlayerState{
+			Id:   "player-1",
+			Deck: getDeckResp1.Deck,
+		},
+		&zb.PlayerState{
+			Id:   "player-2",
+			Deck: getDeckResp2.Deck,
+		},
+	}
+	err := populateDeckCards(ctx, playerStates, "v1")
+	assert.Nil(t, err)
+	assert.NotNil(t, playerStates[0].CardsInDeck)
+	assert.NotNil(t, playerStates[1].CardsInDeck)
+	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck))
+	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck))
 }

@@ -37,7 +37,16 @@
             "values": [
                 "None",
                 "SetPlayerDefense",
-                "SetPlayerGoo"
+                "SetPlayerGoo",
+                "SetPlayerDeckCards"
+            ]
+        },
+        {
+            "name": "CustomUiElement",
+            "values": [
+                "None",
+                "Label",
+                "Button"
             ]
         }
     ]

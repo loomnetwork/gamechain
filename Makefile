@@ -15,6 +15,8 @@ tools: bin/zb-enum-gen bin/zb-console-game
 
 replay_logger: bin/replay-logger
 
+gameplay_replay: proto bin/gameplay-replay
+
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
@@ -85,7 +87,7 @@ abigen:
 
 
 test:
-	go test -v ./...
+	go test -v ./... -tags evm
 
 clean:
 	go clean
@@ -96,6 +98,7 @@ clean:
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
-		bin/replay-logger
+		bin/replay-logger \
+		bin/gameplay-replay
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
