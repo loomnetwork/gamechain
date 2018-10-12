@@ -43,60 +43,19 @@ var defaultDeck2 = zb.Deck{
 }
 
 func TestGameStateFunc(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
-
-	state := &zb.GameState{
-		Id:                 1,
-		CurrentPlayerIndex: 0, // fixed the current player to this test
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
-				Id:   player1,
-				Hp:   20,
-				Mana: 1,
-				Deck: &defaultDeck1,
-			},
-			&zb.PlayerState{
-				Id:   player2,
-				Hp:   20,
-				Mana: 1,
-				Deck: &defaultDeck2,
-			},
-		},
-		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
-				PlayerId:   player1,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
-						MulliganedCards: nil,
-					},
-				},
-			},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
-						MulliganedCards: nil,
-					},
-				},
-				PlayerId: player2,
-			},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardAttack,
-				PlayerId:   player1,
-				Action:     &zb.PlayerAction_CardAttack{},
-			},
-		},
-		CurrentActionIndex: -1, // must start with -1
-		Randomseed:         0,
+	players := []*zb.PlayerState{
+		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
-	gp := &Gameplay{State: state}
-	err := gp.run()
+	seed := int64(0)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
-	assert.EqualValues(t, len(gp.State.PlayerActions)-1, gp.State.CurrentActionIndex)
+
 	// // add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
