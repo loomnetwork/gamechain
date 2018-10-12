@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/battleground"
@@ -185,7 +186,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			Version: game.Version,
 		})
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "error creating user account")
 		}
 
 		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{

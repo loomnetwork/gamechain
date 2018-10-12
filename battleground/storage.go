@@ -3,12 +3,11 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -43,8 +42,6 @@ var (
 	ErrUserNotVerified = errors.New("user is not verified")
 )
 
-// Maintain compatability with version 1.
-// TODO: Remove these and the following user* prefix instead if we're about to wipe out the data
 func AccountKey(userID string) []byte {
 	return []byte("user:" + userID)
 }
@@ -77,33 +74,8 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-// func userAccountKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id))
-// }
-
-// func userDecksKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), decksPrefix)
-// }
-
-// func userCardCollectionKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), collectionPrefix)
-// }
-
-// func userHeroesKey(id string) []byte {
-// 	return util.PrefixKey(userPreifx, []byte(id), heroesPrefix)
-// }
-
-func cardKey(id int64) []byte {
-	return util.PrefixKey(cardPrefix, []byte(strconv.FormatInt(id, 10)))
-}
-
-func saveCardList(ctx contract.Context, cardList *zb.CardList) error {
-	for _, card := range cardList.Cards {
-		if err := ctx.Set(cardKey(card.Id), card); err != nil {
-			return err
-		}
-	}
-	return nil
+func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
+	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
 
 func loadCardList(ctx contract.StaticContext, version string) (*zb.CardList, error) {
@@ -416,4 +388,44 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	}
 
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
+}
+
+func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, version string) error {
+	var cardList zb.CardList
+	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
+		return fmt.Errorf("error getting card library: %s", err)
+	}
+	for _, playerState := range playerStates {
+		deck := playerState.Deck
+		for _, deckCard := range deck.Cards {
+			cardDetails, err := getCardDetails(&cardList, deckCard)
+			if err != nil {
+				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
+			}
+
+			cardInstance := &zb.CardInstance{
+				//InstanceId:
+				Attack:  cardDetails.Damage,
+				Defence: cardDetails.Health,
+				Prototype: &zb.CardPrototype{
+					Name: cardDetails.Name,
+				},
+			}
+			playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
+		}
+		for _, c := range playerState.CardsInDeck {
+			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v\n", c.Prototype.Name, c.Attack))
+		}
+	}
+
+	return nil
+}
+
+func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {
+	for _, card := range cardList.Cards {
+		if card.Name == deckCard.CardName {
+			return card, nil
+		}
+	}
+	return nil, fmt.Errorf("card not found in card library")
 }

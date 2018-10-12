@@ -58,6 +58,16 @@ message Coordinates {
     float z = 3;
 }
 
+message Vector2Int {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Rect {
+    Vector2Int position = 1;
+    Vector2Int size = 2;
+}
+
 message Effect {
     string trigger  = 1;
     string effect   = 2;
@@ -231,6 +241,14 @@ message UpdateCardListRequest {
     string version = 2;
 }
 
+message GetCardListRequest {
+    string version = 1;
+}
+
+message GetCardListResponse {
+    repeated Card cards = 1;
+}
+
 message UpsertAccountRequest {
     string user_id             = 1;
     bool phone_number_verified = 2;
@@ -311,6 +329,14 @@ message ListHeroLibraryResponse {
     repeated Hero heroes  = 1;
 }
 
+message UpdateHeroLibraryRequest {
+    string version = 1;
+    repeated Hero heroes  = 2;
+}
+
+message UpdateHeroLibraryResponse {
+}
+
 message GetCollectionRequest {
     string user_id = 1;
 }
@@ -369,7 +395,10 @@ enum PlayerActionType {
     CardAttack        = 5;
     CardAbilityUsed   = 6;
     OverlordSkillUsed = 7;
-    LeaveMatch        = 8;
+    CoinToss          = 8;
+    InitHands         = 9;
+    LeaveMatch        = 10;
+    RankBuff          = 11;
 }
 
 message PlayerAction {
@@ -532,6 +561,40 @@ message GetGameModeRequest {
 }
 
 message ListGameModesRequest {
+}
+
+message GetCustomGameModeCustomUiRequest {
+     Address address = 1;
+}
+
+message GetCustomGameModeCustomUiResponse {
+    repeated CustomGameModeCustomUiElement uiElements = 1;
+}
+
+message CallCustomGameModeFunctionRequest {
+    Address address = 1;
+    string functionName = 2;
+}
+
+message StaticCallCustomGameModeFunctionResponse {
+    bytes output = 1;
+}
+
+message CustomGameModeCustomUiLabel {
+    string text = 1;
+}
+
+message CustomGameModeCustomUiButton {
+    string title = 1;
+    string onClickFunctionName = 2;
+}
+
+message CustomGameModeCustomUiElement {
+    Rect rect = 1;
+    oneof uiElement {
+        CustomGameModeCustomUiLabel label = 2;
+        CustomGameModeCustomUiButton button = 3;
+    }
 }
 
 //////////////// GAME PLAY //////////////////
