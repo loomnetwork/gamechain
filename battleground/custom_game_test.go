@@ -117,7 +117,7 @@ func createSimpleGame(t *testing.T) *Gameplay {
 		{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
 
 	assert.Nil(t, err)
 
@@ -272,7 +272,7 @@ func TestMemoryLeak(t *testing.T) {
 		{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 5, players, seed, &evmContractAddr)
+	gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, &evmContractAddr)
 	assert.Nil(t, err)
 
 	fmt.Printf("getsomething from addr-%v\n", addr)
