@@ -356,8 +356,9 @@ message PlayerState {
     repeated CardInstance cardsOnBoard = 5;
     repeated CardInstance cardsInDeck = 6;
     Deck deck  = 7;
-    int32 hp   = 8;
-    int32 mana = 9;
+    int32 defense   = 8;
+    int32 currentGoo = 9;
+    int32 gooVials = 10;
 }
 
 message Match {

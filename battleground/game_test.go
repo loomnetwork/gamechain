@@ -52,14 +52,16 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   player1,
-				Hp:   20,
-				Mana: 1,
+				Defense:   20,
+				CurrentGoo: 0,
+				GooVials: 0,
 				Deck: &defaultDeck1,
 			},
 			&zb.PlayerState{
 				Id:   player2,
-				Hp:   20,
-				Mana: 1,
+				Defense:   20,
+				CurrentGoo: 0,
+				GooVials: 0,
 				Deck: &defaultDeck2,
 			},
 		},

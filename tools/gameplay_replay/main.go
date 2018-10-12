@@ -293,14 +293,19 @@ func comparePlayerStates(newPlayerStates, logPlayerStates []*zb.PlayerState) err
 
 				fmt.Println("comparing player state for: ", newPlayerState.Id)
 				// TODO: deep compare using some library??
-				// hp
-				if newPlayerState.Hp != logPlayerState.Hp {
-					return fmt.Errorf("hp doesn't match")
+				// defense
+				if newPlayerState.Defense != logPlayerState.Defense {
+					return fmt.Errorf("defense doesn't match")
 				}
 
-				// mana
-				if newPlayerState.Mana != logPlayerState.Mana {
-					return fmt.Errorf("mana doesn't match")
+				// current goo
+				if newPlayerState.CurrentGoo != logPlayerState.CurrentGoo {
+					return fmt.Errorf("current goo doesn't match")
+				}
+
+				// goo vials
+				if newPlayerState.GooVials != logPlayerState.GooVials {
+					return fmt.Errorf("goo vials doesn't match")
 				}
 
 				// current action
