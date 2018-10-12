@@ -433,21 +433,22 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 	// draw card
 	// TODO: handle card limit in hand
-	// TODO: handle empty deck
-	if len(g.activePlayer().CardsInDeck) > 0 {
-		card := g.activePlayer().CardsInDeck[0]
-		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	if len(g.activePlayer().CardsInDeck) < 1 {
+		return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
 	}
+
+	card := g.activePlayer().CardsInDeck[0]
+	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+	// remove card from CardsInDeck
+	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_FullInstance{
 			FullInstance: &zb.HistoryFullInstance{
-				InstanceId: 1, // TODO change to the actual card id
-				Attack:     1,
-				Defense:    1,
+				InstanceId: card.InstanceId,
+				Attack:     card.Attack,
+				Defense:    card.Defence,
 			},
 		},
 	})
@@ -498,20 +499,20 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	// draw card
 	// TODO: handle card limit
-	if len(g.activePlayer().CardsInHand) > 0 {
-		card := g.activePlayer().CardsInHand[0]
-		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+	if len(g.activePlayer().CardsInHand) < 1 {
+		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
 	}
+	card := g.activePlayer().CardsInHand[0]
+	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
+	g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_FullInstance{
 			FullInstance: &zb.HistoryFullInstance{
-				InstanceId: 1, // TODO change to the actual card id
-				Attack:     1,
-				Defense:    1,
-				Health:     1,
+				InstanceId: card.InstanceId,
+				Attack:     card.Attack,
+				Defense:    card.Defence,
 			},
 		},
 	})
