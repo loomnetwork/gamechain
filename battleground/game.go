@@ -459,6 +459,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
+	// check if player has already drawn a card after starting new turn
+	if g.activePlayer().HasDrawnCard {
+		return nil
+	}
+
 	// draw card
 	// TODO: handle card limit in hand
 	// TODO: handle empty deck
@@ -468,6 +473,9 @@ func actionDrawCard(g *Gameplay) stateFn {
 		// remove card from CardsInDeck
 		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
 	}
+
+	// card drawn, don't allow another draw until next turn
+	g.activePlayer().HasDrawnCard = true
 
 	// determine the next action
 	g.PrintState()
@@ -707,6 +715,9 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 	// change player turn
 	g.changePlayerTurn()
+
+	// allow the new player to draw card on new turn
+	g.activePlayer().HasDrawnCard = false
 
 	// determine the next action
 	g.PrintState()

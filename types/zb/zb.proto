@@ -358,6 +358,7 @@ message PlayerState {
     Deck deck  = 7;
     int32 hp   = 8;
     int32 mana = 9;
+    bool hasDrawnCard = 10;
 }
 
 message Match {
