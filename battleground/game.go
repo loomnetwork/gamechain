@@ -54,7 +54,7 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 	}
 	//	CustomGame: customGameMode}
 
-	// init player hp and mana
+	// init player defense and goo
 	g.initPlayer()
 	// add coin toss as the first action
 	g.addCoinToss()
@@ -83,8 +83,9 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 
 func (g *Gameplay) initPlayer() error {
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].Hp = 20
-		g.State.PlayerStates[i].Mana = 1
+		g.State.PlayerStates[i].Defense = 20
+		g.State.PlayerStates[i].CurrentGoo = 0
+		g.State.PlayerStates[i].GooVials = 0
 	}
 	return nil
 }
@@ -207,7 +208,7 @@ func (g *Gameplay) captureErrorAndStop(err error) stateFn {
 
 func (g *Gameplay) isEnded() bool {
 	for _, player := range g.State.PlayerStates {
-		if player.Hp <= 0 {
+		if player.Defense <= 0 {
 			return true
 		}
 	}
@@ -226,8 +227,9 @@ func (g *Gameplay) PrintState() {
 		} else {
 			fmt.Printf("Player%d: %s\n", i+1, player.Id)
 		}
-		fmt.Printf("\thp: %v\n", player.Hp)
-		fmt.Printf("\tmana: %v\n", player.Mana)
+		fmt.Printf("\tdefense: %v\n", player.Defense)
+		fmt.Printf("\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Printf("\tgoo vials: %v\n", player.GooVials)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)

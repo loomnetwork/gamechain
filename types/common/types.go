@@ -37,7 +37,8 @@ type GameStateChangeAction int32
 const (
         GameStateChangeAction_None GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerDefense GameStateChangeAction = iota
-        GameStateChangeAction_SetPlayerGoo GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerCurrentGoo GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerGooVials GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerDeckCards GameStateChangeAction = iota
 )
 
