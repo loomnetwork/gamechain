@@ -241,7 +241,7 @@ func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBatt
 		return fmt.Errorf("expected history len: %d, get %d", len(historyBlock), len(resp.History))
 	}
 	for i := 0; i < len(resp.History); i++ {
-		if !reflect.DeepEqual(resp.History[i], replayedGameReplay.Blocks[i]) {
+		if !reflect.DeepEqual(resp.History[i], historyBlock[i]) {
 			log.Errorf("different history blocks: %d", i)
 			return fmt.Errorf("different history blocks: %d", i)
 		}
