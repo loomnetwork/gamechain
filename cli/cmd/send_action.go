@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -34,6 +34,18 @@ var sendActionCmd = &cobra.Command{
 				DrawCard: &zb.PlayerActionDrawCard{
 					CardInstance: &zb.CardInstance{
 						InstanceId: 1,
+					},
+				},
+			}
+		case zb.PlayerActionType_CardAttack:
+			req.PlayerAction.Action = &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 3,
+					},
+					AffectObjectType: 0,
+					Target: &zb.Unit{
+						InstanceId: 4,
 					},
 				},
 			}
