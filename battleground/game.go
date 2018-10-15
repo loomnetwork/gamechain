@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	mulliganCards = 3
+	mulliganCards   = 3
+	maxCardsOnBoard = 6
+	maxCardsInHand  = 10
 )
 
 var (
@@ -467,7 +469,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// draw card
-	// TODO: handle card limit in hand
+	// handle card limit in hand
+	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
+		// TODO: assgin g.err
+		return nil
+	}
 	// TODO: handle empty deck
 	if len(g.activePlayer().CardsInDeck) > 0 {
 		card := g.activePlayer().CardsInDeck[0]
