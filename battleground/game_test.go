@@ -346,7 +346,7 @@ func TestDrawCard(t *testing.T) {
 			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
+		gp, err := NewGamePlay(gwCtx, 4, players, seed, nil)
 		assert.Nil(t, err)
 		// add more action
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
