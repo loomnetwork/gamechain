@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 
 	"github.com/loomnetwork/go-loom"
@@ -582,6 +583,14 @@ func actionCardAttack(g *Gameplay) stateFn {
 	}
 
 	// TODO: card attack
+
+	// Attacker         *CardInstance    `protobuf:"bytes,1,opt,name=attacker" json:"attacker,omitempty"`
+	// AffectObjectType AffectObjectType `protobuf:"varint,2,opt,name=affectObjectType,proto3,enum=AffectObjectType" json:"affectObjectType,omitempty"`
+	// Target           *Unit            `protobuf:"bytes,3,opt,name=target" json:"target,omitempty"`
+
+	log.Printf("action: %v\n", current)
+	log.Printf("ATTACKER: %v\n", current.GetCardAttack().Attacker)
+	log.Printf("TARGET: %v\n", current.GetCardAttack().Target)
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
