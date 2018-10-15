@@ -37,7 +37,7 @@ type stateFn func(*Gameplay) stateFn
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
 func NewGamePlay(ctx contract.Context,
 	id int64,
-	verion string,
+	version string,
 	players []*zb.PlayerState,
 	seed int64,
 	customGameAddress *loom.Address,
@@ -54,7 +54,7 @@ func NewGamePlay(ctx contract.Context,
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
-		Version:            verion,
+		Version:            version,
 	}
 	g := &Gameplay{
 		State:          state,
