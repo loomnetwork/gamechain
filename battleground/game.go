@@ -228,6 +228,7 @@ func (g *Gameplay) PrintState() {
 		}
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
+		fmt.Printf("\thas drawn card: %v\n", player.HasDrawnCard)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
@@ -461,6 +462,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 	// check if player has already drawn a card after starting new turn
 	if g.activePlayer().HasDrawnCard {
+		g.err = errInvalidAction
 		return nil
 	}
 
