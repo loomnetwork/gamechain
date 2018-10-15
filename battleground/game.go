@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	mulliganCards = 3
+	mulliganCards   = 3
+	maxCardsOnBoard = 6
+	maxCardsInHand  = 10
 )
 
 var (
@@ -376,7 +378,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", mulliganCards))
 	}
 	for _, card := range mulligan.MulliganedCards {
-		_, found := containCardInCardList(card, player.CardsInHand)
+		_, _, found := findCardInCardList(card, player.CardsInHand)
 		if !found {
 			return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
 		}
@@ -385,7 +387,7 @@ func actionMulligan(g *Gameplay) stateFn {
 	// keep only the cards in in mulligan
 	keepCards := make([]*zb.CardInstance, 0)
 	for _, mcard := range mulligan.MulliganedCards {
-		card, found := containCardInCardList(mcard, player.CardsInHand)
+		_, card, found := findCardInCardList(mcard, player.CardsInHand)
 		if found {
 			keepCards = append(keepCards, card)
 		}
@@ -397,7 +399,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		rerollCards = append(rerollCards, player.CardsInHand...)
 	} else {
 		for _, card := range player.CardsInHand {
-			_, found := containCardInCardList(card, keepCards)
+			_, _, found := findCardInCardList(card, keepCards)
 			if !found {
 				rerollCards = append(rerollCards, card)
 			}
@@ -513,12 +515,27 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
+	cardPlay := current.GetCardPlay()
+
 	// draw card
-	// TODO: handle card limit on board
-	if len(g.activePlayer().CardsInHand) > 0 {
-		card := g.activePlayer().CardsInHand[0]
+	activeCardsInHand := g.activePlayer().CardsInHand
+	if len(activeCardsInHand) > 0 {
+		cardIndex, card, found := findCardInCardList(cardPlay.Card, activeCardsInHand)
+		if !found {
+			// card not found in hand
+			// TODO: assign g.err
+			return nil
+		}
+
+		// check card limit on board
+		if len(g.activePlayer().CardsOnBoard)+1 > maxCardsOnBoard {
+			// TODO: assign g.err
+			return nil
+		}
+		// put card on board
 		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
-		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+		// remove card from hand
+		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 	}
 
 	// determine the next action

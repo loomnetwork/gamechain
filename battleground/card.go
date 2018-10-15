@@ -132,11 +132,11 @@ func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []
 	return
 }
 
-func containCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (*zb.CardInstance, bool) {
-	for _, c := range cards {
+func findCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+	for i, c := range cards {
 		if card.Prototype.Name == c.Prototype.Name {
-			return c, true
+			return i, c, true
 		}
 	}
-	return nil, false
+	return -1, nil, false
 }
