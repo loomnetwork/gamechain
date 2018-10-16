@@ -43,62 +43,19 @@ var defaultDeck2 = zb.Deck{
 }
 
 func TestGameStateFunc(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
 	player1 := "player-1"
 	player2 := "player-2"
-
-	state := &zb.GameState{
-		Id:                 1,
-		CurrentPlayerIndex: -1,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
-				Id:   player1,
-				Hp:   20,
-				Mana: 1,
-				Deck: &defaultDeck1,
-			},
-			&zb.PlayerState{
-				Id:   player2,
-				Hp:   20,
-				Mana: 1,
-				Deck: &defaultDeck2,
-			},
-		},
-		PlayerActions: []*zb.PlayerAction{
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_CoinToss},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_InitHands},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
-				PlayerId:   player1,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
-						MulliganedCards: nil,
-					},
-				},
-			},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
-						MulliganedCards: nil,
-					},
-				},
-				PlayerId: player2,
-			},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1},
-			&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2},
-			&zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardAttack,
-				PlayerId:   player1,
-				Action:     &zb.PlayerAction_CardAttack{},
-			},
-		},
-		CurrentActionIndex: -1, // must start with -1
-		Randomseed:         0,
+	players := []*zb.PlayerState{
+		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
-	gp := &Gameplay{State: state}
-	err := gp.run()
+	seed := int64(0)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
-	assert.EqualValues(t, len(gp.State.PlayerActions)-1, gp.State.CurrentActionIndex)
+
 	// // add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
@@ -219,7 +176,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -242,7 +199,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -292,7 +249,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 5, players, seed, nil)
+	gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
@@ -357,4 +314,50 @@ func TestPopulateDeckCards(t *testing.T) {
 	assert.NotNil(t, playerStates[1].CardsInDeck)
 	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck))
 	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck))
+}
+
+func TestDrawCard(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
+	player1 := "player-1"
+	player2 := "player-2"
+
+	// DrawCard cannot be called twice for the same turn
+	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		// add more action
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Equal(t, errInvalidAction, err)
+
+	})
+
+	t.Run("DrawCard after Endturn", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		// add more action
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player2})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+	})
 }
