@@ -516,8 +516,12 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	cardPlay := current.GetCardPlay()
+	card := cardPlay.Card
+	if g.activePlayer().Mana < card.Prototype.GooCost {
+		g.err = errInvalidAction
+		return nil
+	}
 
-	// draw card
 	activeCardsInHand := g.activePlayer().CardsInHand
 	if len(activeCardsInHand) > 0 {
 		cardIndex, card, found := findCardInCardList(cardPlay.Card, activeCardsInHand)
@@ -536,6 +540,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
 		// remove card from hand
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+
+		// reduce mana
+		g.activePlayer().Mana -= card.Prototype.GooCost
 	}
 
 	// determine the next action
