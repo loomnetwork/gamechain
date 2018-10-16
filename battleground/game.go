@@ -441,16 +441,23 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// draw card
-<<<<<<< HEAD
-	// TODO: handle card limit in hand
 	if len(g.activePlayer().CardsInDeck) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
+	}
+
+	// handle card limit in hand
+	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
+		// TODO: assgin g.err
+		return nil
 	}
 
 	card := g.activePlayer().CardsInDeck[0]
 	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
 	// remove card from CardsInDeck
 	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+
+	// card drawn, don't allow another draw until next turn
+	g.activePlayer().HasDrawnCard = true
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
@@ -462,23 +469,6 @@ func actionDrawCard(g *Gameplay) stateFn {
 			},
 		},
 	})
-=======
-	// handle card limit in hand
-	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
-		// TODO: assgin g.err
-		return nil
-	}
-	// TODO: handle empty deck
-	if len(g.activePlayer().CardsInDeck) > 0 {
-		card := g.activePlayer().CardsInDeck[0]
-		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
-	}
->>>>>>> add max card limits
-
-	// card drawn, don't allow another draw until next turn
-	g.activePlayer().HasDrawnCard = true
 
 	// determine the next action
 	g.PrintState()
