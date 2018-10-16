@@ -1297,7 +1297,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: 1,
+							InstanceId: 8,
 						},
 					},
 				},
