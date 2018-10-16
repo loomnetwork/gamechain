@@ -592,6 +592,12 @@ func actionCardAttack(g *Gameplay) stateFn {
 	log.Printf("ATTACKER: %v\n", current.GetCardAttack().Attacker)
 	log.Printf("TARGET: %v\n", current.GetCardAttack().Target)
 
+	for _, card := range g.activePlayer().CardsOnBoard {
+		if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+			fmt.Println("ATTACKER FOUND")
+		}
+	}
+
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_ChangeInstance{

@@ -32,9 +32,7 @@ var sendActionCmd = &cobra.Command{
 		case zb.PlayerActionType_DrawCard:
 			req.PlayerAction.Action = &zb.PlayerAction_DrawCard{
 				DrawCard: &zb.PlayerActionDrawCard{
-					CardInstance: &zb.CardInstance{
-						InstanceId: 1,
-					},
+					CardInstance: &zb.CardInstance{},
 				},
 			}
 		case zb.PlayerActionType_CardAttack:
@@ -43,7 +41,7 @@ var sendActionCmd = &cobra.Command{
 					Attacker: &zb.CardInstance{
 						InstanceId: 3,
 					},
-					AffectObjectType: 0,
+					AffectObjectType: zb.AffectObjectType_CARD,
 					Target: &zb.Unit{
 						InstanceId: 4,
 					},

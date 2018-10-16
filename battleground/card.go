@@ -109,17 +109,16 @@ func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 	return
 }
 
-func shuffleCardInDeck(deck *zb.Deck, seed int64) []*zb.CardInstance {
-	cards := cardInstanceFromDeck(deck)
+func shuffleCardInDeck(deck []*zb.CardInstance, seed int64) []*zb.CardInstance {
 	r := rand.New(rand.NewSource(seed))
-	for i := 0; i < len(cards); i++ {
+	for i := 0; i < len(deck); i++ {
 		n := r.Intn(i + 1)
 		// do a swap
 		if i != n {
-			cards[n], cards[i] = cards[i], cards[n]
+			deck[n], deck[i] = deck[i], deck[n]
 		}
 	}
-	return cards
+	return deck
 }
 
 func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
