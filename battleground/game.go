@@ -525,31 +525,31 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 	*/
 
-	// TODO: handle card limit
-	if len(g.activePlayer().CardsInHand) < 1 {
-		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
+	// check card limit on board
+	if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
+		return g.captureErrorAndStop(errors.New("number of cards in play exceeds max limit"))
 	}
 
 	activeCardsInHand := g.activePlayer().CardsInHand
-	if len(activeCardsInHand) > 0 {
-		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
-		if !found {
-			// card not found in hand
-			return g.captureErrorAndStop(errors.New("card not found in hand"))
-		}
-
-		// check card limit on board
-		if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
-			return g.captureErrorAndStop(errors.New("number of cards in play exceeds max limit"))
-		}
-		// put card on board
-		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-		// remove card from hand
-		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-		g.activePlayer().CardsInHand = activeCardsInHand
-		// deduct mana/goo
-		//g.activePlayer().Mana -= card.Prototype.GooCost
+	// TODO: handle card limit
+	if len(activeCardsInHand) < 1 {
+		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
 	}
+
+	// get card instance from cardsInHand list
+	cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
+	if !found {
+		return g.captureErrorAndStop(errors.New("card not found in hand"))
+	}
+
+	// put card on board
+	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
+	// remove card from hand
+	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+	g.activePlayer().CardsInHand = activeCardsInHand
+
+	// deduct mana/goo
+	//g.activePlayer().Mana -= card.Prototype.GooCost
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
