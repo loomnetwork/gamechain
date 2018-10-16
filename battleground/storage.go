@@ -397,19 +397,20 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 	}
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
-		for _, deckCard := range deck.Cards {
+		for i, deckCard := range deck.Cards {
 			cardDetails, err := getCardDetails(&cardList, deckCard)
 			if err != nil {
 				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
 			}
 
 			cardInstance := &zb.CardInstance{
-				//InstanceId:
-				Attack:  cardDetails.Damage,
-				Defense: cardDetails.Health,
+				InstanceId: int32(i),
+				Attack:     cardDetails.Damage,
+				Defense:    cardDetails.Health,
 				Prototype: &zb.CardPrototype{
 					Name: cardDetails.Name,
 				},
+				Owner: playerState.Id,
 			}
 			playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 		}

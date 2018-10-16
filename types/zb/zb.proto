@@ -805,6 +805,7 @@ message CardInstance {
     CardPrototype prototype = 2;
     int32 defense = 3;
     int32 attack = 4;
+    string owner = 5;
 }
 
 message CardPrototype {
