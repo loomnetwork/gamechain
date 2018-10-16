@@ -24,6 +24,9 @@ var (
 	errNotEnoughPlayer       = errors.New("not enough players")
 	errAlreadyTossCoin       = errors.New("already tossed coin")
 	errNoCurrentPlayer       = errors.New("no current player")
+	errCardNotFoundInHand    = errors.New("card not found in hand")
+	errLimitExceeded         = errors.New("max card limit exceeded")
+	errNoCardsInHand         = errors.New("Can't play card. No cards in hand")
 )
 
 type Gameplay struct {
@@ -527,19 +530,19 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	// check card limit on board
 	if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
-		return g.captureErrorAndStop(errors.New("number of cards in play exceeds max limit"))
+		return g.captureErrorAndStop(errLimitExceeded)
 	}
 
 	activeCardsInHand := g.activePlayer().CardsInHand
 	// TODO: handle card limit
-	if len(activeCardsInHand) < 1 {
-		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
+	if len(activeCardsInHand) == 0 {
+		return g.captureErrorAndStop(errNoCardsInHand)
 	}
 
 	// get card instance from cardsInHand list
 	cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 	if !found {
-		return g.captureErrorAndStop(errors.New("card not found in hand"))
+		return g.captureErrorAndStop(errCardNotFoundInHand)
 	}
 
 	// put card on board

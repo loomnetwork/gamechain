@@ -373,3 +373,113 @@ func TestDrawCard(t *testing.T) {
 		assert.Nil(t, err)
 	})
 }
+
+func TestCardPlay(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
+	player1 := "player-1"
+	player2 := "player-2"
+	t.Run("Normal Card Play", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: 22,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Card not found in hand", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: -1,
+					},
+				},
+			},
+		})
+		assert.Equal(t, errCardNotFoundInHand, err)
+	})
+
+	t.Run("CardPlay from empty hand", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: 22,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: 28,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: 25,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: 28,
+					},
+				},
+			},
+		})
+		assert.Equal(t, errNoCardsInHand, err)
+	})
+
+}
