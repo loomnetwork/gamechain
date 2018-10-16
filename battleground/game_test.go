@@ -63,7 +63,13 @@ func TestGameStateFunc(t *testing.T) {
 		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_CardPlay{
-			CardPlay: &zb.PlayerActionCardPlay{},
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.CardInstance{
+					Prototype: &zb.CardPrototype{
+						Name: "Geyzer",
+					},
+				},
+			},
 		},
 	})
 	assert.Nil(t, err)
@@ -71,7 +77,13 @@ func TestGameStateFunc(t *testing.T) {
 		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_CardPlay{
-			CardPlay: &zb.PlayerActionCardPlay{},
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.CardInstance{
+					Prototype: &zb.CardPrototype{
+						Name: "Jetter",
+					},
+				},
+			},
 		},
 	})
 	assert.Nil(t, err)
@@ -215,7 +227,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	for _, card := range player1Mulligan {
-		_, found := containCardInCardList(card, gp.State.PlayerStates[0].CardsInHand)
+		_, _, found := findCardInCardList(card, gp.State.PlayerStates[0].CardsInHand)
 		assert.True(t, found, "mulliganed card should be player hand")
 	}
 
@@ -232,7 +244,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	for _, card := range player2Mulligan {
-		_, found := containCardInCardList(card, gp.State.PlayerStates[1].CardsInHand)
+		_, _, found := findCardInCardList(card, gp.State.PlayerStates[1].CardsInHand)
 		assert.True(t, found, "mulliganed card should be player hand")
 	}
 	gp.PrintState()
