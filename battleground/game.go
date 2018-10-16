@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	mulliganCards = 3
+	mulliganCards   = 3
+	maxCardsOnBoard = 6
+	maxCardsInHand  = 10
 )
 
 var (
@@ -262,6 +264,7 @@ func (g *Gameplay) PrintState() {
 		}
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
+		fmt.Printf("\thas drawn card: %v\n", player.HasDrawnCard)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
@@ -431,16 +434,30 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
+	// check if player has already drawn a card after starting new turn
+	if g.activePlayer().HasDrawnCard {
+		g.err = errInvalidAction
+		return nil
+	}
+
 	// draw card
-	// TODO: handle card limit in hand
 	if len(g.activePlayer().CardsInDeck) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
+	}
+
+	// handle card limit in hand
+	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
+		// TODO: assgin g.err
+		return nil
 	}
 
 	card := g.activePlayer().CardsInDeck[0]
 	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
 	// remove card from CardsInDeck
 	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+
+	// card drawn, don't allow another draw until next turn
+	g.activePlayer().HasDrawnCard = true
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
@@ -715,6 +732,9 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 	// change player turn
 	g.changePlayerTurn()
+
+	// allow the new player to draw card on new turn
+	g.activePlayer().HasDrawnCard = false
 
 	// determine the next action
 	g.PrintState()
