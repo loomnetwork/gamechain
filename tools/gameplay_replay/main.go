@@ -3,12 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
-	"runtime"
+	"reflect"
 	"strconv"
-	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pkg/errors"
@@ -23,19 +22,22 @@ import (
 )
 
 var (
+	genesisFile = flag.String("genesis", "tools/gameplay_replay/init.json", "path to genesis file")
+)
+
+var (
 	pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	db              *sql.DB
 	readFromDB      bool
 )
 
 func main() {
+	flag.Parse()
+
 	readFromDB, _ = strconv.ParseBool(os.Getenv("READ_FROM_DB"))
 
 	var gameReplay zb.GameReplay
 	var fname string
-
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
 
 	if readFromDB {
 		var err error
@@ -71,12 +73,14 @@ func main() {
 
 		// read game replay json
 		fname = os.Args[1]
-		path := filepath.Join(basepath, "../../replays", fname)
-		f, err := os.Open(path)
+		// path := filepath.Join(basepath, "../../replays", fname)
+		f, err := os.Open(fname)
 		if err != nil {
 			log.Error("error opening json file: ", err)
 			os.Exit(1)
 		}
+		defer f.Close()
+
 		err = jsonpb.Unmarshal(f, &gameReplay)
 		if err != nil {
 			log.Error("error unmarshalling json: ", err)
@@ -90,13 +94,14 @@ func main() {
 	fakeCtx := setupFakeContext()
 
 	// initialise game chain
-	log.Info("Initialising gamechain")
-	initFilePath := filepath.Join(basepath, "init.json")
-	initFile, err := os.Open(initFilePath)
+	log.Info("Initialising gamechain using init.json")
+	// initFilePath := filepath.Join(basepath, "init.json")
+	initFile, err := os.Open(*genesisFile)
 	if err != nil {
 		log.WithError(err).Error("error opening init.json")
 		os.Exit(1)
 	}
+	defer initFile.Close()
 
 	var initRequest zb.InitRequest
 	err = jsonpb.Unmarshal(initFile, &initRequest)
@@ -113,8 +118,8 @@ func main() {
 
 	// log the game play being replayed
 	replayedGameReplay := zb.GameReplay{
-		ReplayVersion: gameReplay.ReplayVersion,
-		RandomSeed:    gameReplay.RandomSeed,
+		Actions: gameReplay.Actions,
+		Blocks:  gameReplay.Blocks,
 	}
 
 	// initialise game state
@@ -127,31 +132,25 @@ func main() {
 
 	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
-	errs := replayAndValidate(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
-	if len(errs) != 0 {
-		log.Errorf("errors while validating gameplay: %v", errs)
-		//os.Exit(1)
-	}
-
-	fnameTrimmed := strings.TrimSuffix(fname, ".json")
-	fnameReplayed := fnameTrimmed + "_replayed.json"
-	pathReplayed := filepath.Join(basepath, "../../replays", fnameReplayed)
-	outFile, err := os.Create(pathReplayed)
+	err = replayAndValidate(*fakeCtx, zbContract, &gameReplay, &replayedGameReplay)
 	if err != nil {
-		log.WithError(err).Errorf("error creating file %s", pathReplayed)
+		log.WithError(err).Error("error while validating gameplay")
+		os.Exit(1)
 	}
 
-	err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
-	if err != nil {
-		log.WithError(err).Error("error writing output to file")
-	}
+	// fnameTrimmed := strings.TrimSuffix(fname, ".json")
+	// fnameReplayed := fnameTrimmed + "_replayed.json"
+	// pathReplayed := filepath.Join(basepath, "../../replays", fnameReplayed)
+	// outFile, err := os.Create(pathReplayed)
+	// if err != nil {
+	// 	log.WithError(err).Errorf("error creating file %s", pathReplayed)
+	// }
 
-	if len(errs) != 0 {
-		log.Infof("Gameplay validation completed but with errors: %s", errs)
-	} else {
-		log.Info("Gameplay validation completed without errors")
-	}
-	log.Infof("Output written to %s", pathReplayed)
+	// err = new(jsonpb.Marshaler).Marshal(outFile, &replayedGameReplay)
+	// if err != nil {
+	// 	log.WithError(err).Error("error writing output to file")
+	// }
+	// log.Infof("Gameplay validation completed, output written to %s", pathReplayed)
 }
 
 func setupFakeContext() *contract.Context {
@@ -168,18 +167,23 @@ func setupFakeContext() *contract.Context {
 }
 
 func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
-	actionList := gameReplay.Events
-	initialState := actionList[0]
+	if len(gameReplay.Blocks) == 0 {
+		return fmt.Errorf("no history data")
+	}
+	initialblock := gameReplay.Blocks[0]
+	game := initialblock.GetCreateGame()
+	if game == nil {
+		return fmt.Errorf("expected createGame in the first history block")
+	}
 
 	// set up user accounts
 	log.Info("Initialising user accounts and setting up match")
-	playerStates := initialState.Match.PlayerStates
 	var err error
 	var newMatch *zb.Match
-	for _, ps := range playerStates {
+	for _, ps := range game.Players {
 		err = zbContract.CreateAccount(ctx, &zb.UpsertAccountRequest{
 			UserId:  ps.Id,
-			Version: gameReplay.ReplayVersion,
+			Version: game.Version,
 		})
 		if err != nil {
 			return errors.Wrapf(err, "error creating user account")
@@ -188,7 +192,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		err = zbContract.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId:  ps.Id,
 			Deck:    ps.Deck,
-			Version: gameReplay.ReplayVersion,
+			Version: game.Version,
 		})
 		if err != nil {
 			return err
@@ -197,8 +201,8 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId:     ps.Id,
 			DeckId:     ps.Deck.Id,
-			Version:    gameReplay.ReplayVersion,
-			RandomSeed: gameReplay.RandomSeed,
+			Version:    game.Version,
+			RandomSeed: game.Randomseed,
 		})
 		if err != nil {
 			return err
@@ -210,60 +214,41 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 
 	// initialise the game state
 	log.Info("Initialising game state")
-	getGSResp, err := zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
+	_, err = zbContract.GetGameState(ctx, &zb.GetGameStateRequest{
 		MatchId: newMatch.Id,
 	})
 	if err != nil {
 		return err
 	}
-
-	playerEvent := &zb.PlayerActionEvent{
-		Match:     newMatch,
-		GameState: getGSResp.GameState,
-	}
-
-	replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
-
 	return nil
 }
 
-func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) []error {
-	actionList := gameReplay.Events
-	replayActionList := actionList[1:]
-	var errs []error
-	for _, replayAction := range replayActionList {
-		actionReq := zb.PlayerActionRequest{
-			MatchId:      1, //replayAction.Match.Id,
-			PlayerAction: replayAction.PlayerAction,
-		}
-		log.Info("replaying action: ", actionReq)
-		actionResp, err := zbContract.SendPlayerAction(ctx, &actionReq)
-		if err != nil {
-			errs = append(errs, fmt.Errorf("error sending action %v: %v", actionReq.PlayerAction, err))
-			return errs
-		}
+func replayAndValidate(ctx contract.Context, zbContract *battleground.ZombieBattleground, gameReplay, replayedGameReplay *zb.GameReplay) error {
+	req := zb.BundlePlayerActionRequest{
+		MatchId:       1,
+		PlayerActions: gameReplay.Actions,
+	}
+	resp, err := zbContract.SendBundlePlayerAction(ctx, &req)
+	if err != nil {
+		return err
+	}
 
-		playerEvent := &zb.PlayerActionEvent{
-			PlayerActionType: actionReq.PlayerAction.ActionType,
-			UserId:           actionReq.PlayerAction.PlayerId,
-			PlayerAction:     actionReq.PlayerAction,
-			Match:            actionResp.Match,
-			GameState:        actionResp.GameState,
-		}
-		replayedGameReplay.Events = append(replayedGameReplay.Events, playerEvent)
+	historyBlock := replayedGameReplay.Blocks[1:]
 
-		newGameState := actionResp.GameState
-
-		logGameState := replayAction.GameState
-
-		log.Info("Comparing game states")
-		err = compareGameStates(newGameState, logGameState)
-		if err != nil {
-			errs = append(errs, err)
-			log.Error("game states do not match: ", err)
+	// validate history from recorded game replay and contract call
+	log.Info("Comparing history blocks")
+	if len(resp.History) != len(historyBlock) {
+		return fmt.Errorf("expected history len: %d, get %d", len(historyBlock), len(resp.History))
+	}
+	for i := 0; i < len(resp.History); i++ {
+		if !reflect.DeepEqual(resp.History[i], historyBlock[i]) {
+			log.Errorf("different history blocks: %d", i)
+			return fmt.Errorf("different history blocks: %d", i)
 		}
 	}
-	return errs
+
+	log.Info("Comparing complete - no difference")
+	return nil
 }
 
 func compareGameStates(newGameState, logGameState *zb.GameState) error {
