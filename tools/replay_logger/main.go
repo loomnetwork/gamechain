@@ -132,15 +132,21 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	_, b, _, _ := runtime.Caller(0)
 	basepath := filepath.Dir(b)
 
-	filename := fmt.Sprintf("replays/%s.json", topic)
-	path := filepath.Join(basepath, "../../", filename)
+	path := filepath.Join(basepath, "../../replays/")
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.Mkdir(path, os.ModePerm)
+	}
+
+	filename := fmt.Sprintf("%s.json", topic)
+	path = filepath.Join(path, filename)
 
 	fmt.Println("Writing to file: ", path)
 
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return nil, err
 	}
+	defer f.Close()
 
 	var event zb.PlayerActionEvent
 	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
@@ -153,24 +159,11 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 			log.Println(err)
 			return nil, err
 		}
-	} else {
-		replay.Events = []*zb.PlayerActionEvent{}
-		bodyJSON, _ := gabs.ParseJSON(body)
-		seed, err := strconv.ParseInt(bodyJSON.Path("gameState.randomseed").Data().(string), 10, 64)
-		if err != nil {
-			return nil, err
-		}
-		replay.RandomSeed = seed
-		version := bodyJSON.Path("match.version").Data()
-		if version == nil {
-			version = "v1" //TODO: make sure we always have a version
-		}
-		replay.ReplayVersion = version.(string)
 	}
-
-	replay.Events = append(replay.Events, &event)
-
-	f.Close()
+	replay.Blocks = append(replay.Blocks, event.Block.List...)
+	if event.PlayerAction != nil {
+		replay.Actions = append(replay.Actions, event.PlayerAction)
+	}
 
 	m := jsonpb.Marshaler{}
 	result, err := m.MarshalToString(&replay)
@@ -178,7 +171,7 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	if err := ioutil.WriteFile(path, []byte(result), 0644); err != nil {
+	if err := ioutil.WriteFile(path, []byte(result), os.ModePerm); err != nil {
 		return nil, err
 	}
 

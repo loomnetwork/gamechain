@@ -29,12 +29,19 @@ type Gameplay struct {
 	stateFn        stateFn
 	err            error
 	customGameMode *CustomGameMode
+	history        []*zb.HistoryData
 }
 
 type stateFn func(*Gameplay) stateFn
 
 // NewGamePlay initializes GamePlay with default game state and run to the  latest state
-func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed int64, customGameAddress *loom.Address) (*Gameplay, error) {
+func NewGamePlay(ctx contract.Context,
+	id int64,
+	version string,
+	players []*zb.PlayerState,
+	seed int64,
+	customGameAddress *loom.Address,
+) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
 		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
@@ -47,19 +54,16 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
+		Version:            version,
 	}
 	g := &Gameplay{
 		State:          state,
 		customGameMode: customGameMode,
 	}
-	//	CustomGame: customGameMode}
 
-	// init player hp and mana
-	g.initPlayer()
-	// add coin toss as the first action
-	g.addCoinToss()
-	// init cards in hand
-	g.addInitHands()
+	if err := g.createGame(); err != nil {
+		return nil, err
+	}
 
 	if g.customGameMode != nil {
 		err := g.customGameMode.UpdateInitialPlayerGameState(ctx, g.State)
@@ -68,8 +72,10 @@ func NewGamePlay(ctx contract.Context, id int64, players []*zb.PlayerState, seed
 			return nil, err
 		}
 	}
-
-	return GamePlayFrom(state)
+	if err := g.run(); err != nil {
+		return nil, err
+	}
+	return g, nil
 }
 
 // GamePlayFrom initializes and run game to the latest state
@@ -81,24 +87,44 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	return g, nil
 }
 
-func (g *Gameplay) initPlayer() error {
+func (g *Gameplay) createGame() error {
+	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].Hp = 20
 		g.State.PlayerStates[i].Mana = 1
 	}
-	return nil
-}
+	// coin toss for the first player
+	r := rand.New(rand.NewSource(g.State.Randomseed))
+	n := r.Int31n(int32(len(g.State.PlayerStates)))
+	g.State.CurrentPlayerIndex = n
 
-func (g *Gameplay) addCoinToss() error {
-	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
-		ActionType: zb.PlayerActionType_CoinToss,
-	})
-	return nil
-}
+	// init hands
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		deck := g.State.PlayerStates[i].Deck
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
+		// draw cards 3 card for mulligan
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+	}
 
-func (g *Gameplay) addInitHands() error {
-	g.State.PlayerActions = append(g.State.PlayerActions, &zb.PlayerAction{
-		ActionType: zb.PlayerActionType_InitHands,
+	// add history data
+	ps := make([]*zb.Player, len(g.State.PlayerStates))
+	for i := range g.State.PlayerStates {
+		ps[i] = &zb.Player{
+			Id:   g.State.PlayerStates[i].Id,
+			Deck: g.State.PlayerStates[i].Deck,
+		}
+	}
+	// record history data
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_CreateGame{
+			CreateGame: &zb.HistoryCreateGame{
+				GameId:     g.State.Id,
+				Players:    ps,
+				Randomseed: g.State.Randomseed,
+				Version:    g.State.Version,
+			},
+		},
 	})
 	return nil
 }
@@ -109,6 +135,14 @@ func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 		return err
 	}
 	g.State.PlayerActions = append(g.State.PlayerActions, action)
+	// resume the Gameplay
+	return g.resume()
+}
+
+func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
+	for _, action := range actions {
+		g.State.PlayerActions = append(g.State.PlayerActions, action)
+	}
 	// resume the Gameplay
 	return g.resume()
 }
@@ -229,8 +263,13 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\thp: %v\n", player.Hp)
 		fmt.Printf("\tmana: %v\n", player.Mana)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
-		fmt.Printf("\tcard on board (%d): %v\n", len(player.CardsOnBoard), player.CardsOnBoard)
+		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+	}
+
+	fmt.Printf("History : count %v\n", len(g.history))
+	for i, block := range g.history {
+		fmt.Printf("\t[%d] %v\n", i, block)
 	}
 
 	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
@@ -259,75 +298,8 @@ func gameStart(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_CoinToss:
-		return actionCoinToss
-	default:
-		return nil
-	}
-}
-
-func actionCoinToss(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_CoinToss)
-	if g.isEnded() {
-		return nil
-	}
-	// prevent modifiying already-init state
-	if len(g.State.PlayerStates) == 0 {
-		return g.captureErrorAndStop(errNotEnoughPlayer)
-	}
-	if g.State.CurrentPlayerIndex != -1 {
-		return g.captureErrorAndStop(errAlreadyTossCoin)
-	}
-
-	r := rand.New(rand.NewSource(g.State.Randomseed))
-	n := r.Int31n(int32(len(g.State.PlayerStates)))
-	g.State.CurrentPlayerIndex = n
-
-	// determine the next action
-	g.PrintState()
-	next := g.next()
-	if next == nil {
-		return nil
-	}
-
-	switch next.ActionType {
-	case zb.PlayerActionType_InitHands:
-		return actionInitHands
-	default:
-		return nil
-	}
-}
-
-func actionInitHands(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_InitHands)
-	if g.isEnded() {
-		return nil
-	}
-	current := g.current()
-	if current == nil {
-		return nil
-	}
-
-	// number of mulligan cards
-	for i := 0; i < len(g.State.PlayerStates); i++ {
-		deck := g.State.PlayerStates[i].Deck
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
-		// draw cards 3 card for mulligan
-		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
-		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
-	}
-
-	// determine the next action
-	g.PrintState()
-	next := g.next()
-	if next == nil {
-		return nil
-	}
-
-	switch next.ActionType {
 	case zb.PlayerActionType_Mulligan:
 		return actionMulligan
-	// @LOCK: this should be removed when client start sending proper muligan cards
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -461,13 +433,25 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 	// draw card
 	// TODO: handle card limit in hand
-	// TODO: handle empty deck
-	if len(g.activePlayer().CardsInDeck) > 0 {
-		card := g.activePlayer().CardsInDeck[0]
-		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	if len(g.activePlayer().CardsInDeck) < 1 {
+		return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
 	}
+
+	card := g.activePlayer().CardsInDeck[0]
+	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+	// remove card from CardsInDeck
+	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+
+	// record history data
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_FullInstance{
+			FullInstance: &zb.HistoryFullInstance{
+				InstanceId: card.InstanceId,
+				Attack:     card.Attack,
+				Defense:    card.Defence,
+			},
+		},
+	})
 
 	// determine the next action
 	g.PrintState()
@@ -514,12 +498,24 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	// draw card
-	// TODO: handle card limit on board
-	if len(g.activePlayer().CardsInHand) > 0 {
-		card := g.activePlayer().CardsInHand[0]
-		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
-		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+	// TODO: handle card limit
+	if len(g.activePlayer().CardsInHand) < 1 {
+		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
 	}
+	card := g.activePlayer().CardsInHand[0]
+	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
+	g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+
+	// record history data
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_FullInstance{
+			FullInstance: &zb.HistoryFullInstance{
+				InstanceId: card.InstanceId,
+				Attack:     card.Attack,
+				Defense:    card.Defence,
+			},
+		},
+	})
 
 	// determine the next action
 	g.PrintState()
@@ -568,6 +564,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 	// TODO: card attack
 
+	// record history data
+	g.history = append(g.history, &zb.HistoryData{
+		Data: &zb.HistoryData_ChangeInstance{
+			ChangeInstance: &zb.HistoryInstance{
+				InstanceId: 1, // TODO change to the actual card id
+				Value:      2,
+			},
+		},
+	})
+
 	// determine the next action
 	g.PrintState()
 	next := g.next()
@@ -614,6 +620,8 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 	}
 
 	// TODO: card ability
+
+	// TODO: record history data
 
 	// determine the next action
 	g.PrintState()
