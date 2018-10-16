@@ -353,12 +353,13 @@ message PlayerState {
     PlayerActionType currentAction = 2;
     OverlordInstance overlordInstance = 3;
     repeated CardInstance cardsInHand = 4;
-    repeated CardInstance cardsOnBoard = 5;
+    repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
     Deck deck  = 7;
     int32 defense   = 8;
     int32 currentGoo = 9;
     int32 gooVials = 10;
+    bool hasDrawnCard = 11;
 }
 
 message Match {
@@ -375,6 +376,7 @@ message Match {
     }
     Status status = 4;
     string version = 5;
+    int64 randomSeed = 6;
 }
 
 message MatchMakingInfoList {
@@ -412,8 +414,6 @@ message PlayerAction {
         PlayerActionCardPlay cardPlay                   = 7;
         PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
         PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
-        PlayerActionCoinToss coinToss                   = 10;
-        PlayerActionInitHands initHands                 = 11;
         PlayerActionLeaveMatch leaveMatch               = 12;
         PlayerActionRankBuff rankBuff                   = 13;
     };
@@ -425,13 +425,7 @@ message PlayerActionEvent {
     string message = 3;
     Match match    = 4;
     PlayerAction playerAction = 5;
-    GameState gameState = 6;
-}
-
-message GameReplay {
-    repeated PlayerActionEvent events = 1;
-    string replayVersion = 2;
-    int64 randomSeed = 3;
+    History block = 6;
 }
 
 message PlayersInMatchmakingList {
@@ -496,6 +490,17 @@ message PlayerActionRequest {
 message PlayerActionResponse {
     GameState gameState = 1;
     Match match = 2;
+}
+
+message BundlePlayerActionRequest {
+    int64 matchId = 1;
+    repeated PlayerAction playerActions = 2;
+}
+
+message BundlePlayerActionResponse {
+    GameState gameState = 1;
+    Match match = 2;
+    repeated HistoryData history = 3;
 }
 
 message EndMatchRequest {
@@ -602,7 +607,8 @@ message GlobalState {
 
 // C# interfaces converted
 
-enum AllowedTarget {
+message AllowedTarget {
+    enum target {
     NoneAllowedTarget = 0;
     Player = 1;
     PlayerCard = 2;
@@ -612,6 +618,7 @@ enum AllowedTarget {
     OpponentAllCards = 6;
     AllCards = 7;
     All = 8;
+    }
 }
 
 enum AttackRestriction {
@@ -763,6 +770,7 @@ message GameState {
     repeated PlayerAction playerActions = 6;
     int64 randomseed                    = 7;
     string winner                       = 8;
+    string version                      = 9;
 }
 
 message AbilityInstance {
@@ -872,12 +880,6 @@ message OverlordSkillPrototype {
     OverlordSkillKind overlordSkillKind = 9;
     repeated AllowedTarget skillTargetTypes = 10;
     repeated ElementKind elementTargetTypes = 11;
-}
-
-message PlayerActionCoinToss {
-}
-
-message PlayerActionInitHands {
 }
 
 message PlayerActionLeaveMatch {
@@ -997,4 +999,72 @@ enum StatType {
 enum UnitSpecialStatus {
     NoneUnitSpecialStatus = 0;
     Frozen = 1;
+}
+
+
+// Replay
+
+message GameReplay {
+    repeated PlayerAction actions = 5;
+    repeated HistoryData blocks   = 6;
+}
+
+message Player {
+    string id = 1;
+    Deck deck = 2; // TODO Change to card instance
+}
+
+message Zone {
+    enum type {
+        PLAY = 0;
+        DECK = 1;
+        HAND = 2;
+        GRAVEYARD = 3;
+        REMOVEFROMGAME = 4;
+        SETASIDE = 5;
+        SECRET = 6;
+    }
+}
+
+message History {
+    repeated HistoryData list = 1;
+}
+
+message HistoryData {
+    oneof data {
+        HistoryCreateGame createGame = 1;
+        HistoryFullInstance fullInstance = 2;
+        HistoryInstance showInstance = 3;
+        HistoryHide hideInstance = 4;
+        HistoryInstance changeInstance = 5;
+    }
+}
+
+message HistoryCreateGame {
+    int64 gameId = 1;
+    repeated Player players = 2;
+    int64 randomseed = 3;
+    string version = 4;
+}
+
+message HistoryFullInstance {
+    int32 instanceId = 1;
+    int32 attack = 2;
+    int32 defense = 3;
+    int32 health = 4;
+}
+
+message HistoryInstance {
+    int32 instanceId = 1;
+    int32 value = 2;
+    enum change {
+        Health = 0;
+        Attack = 1;
+        Defence = 2;
+    }
+}
+
+message HistoryHide {
+    int32 instanceId = 1;
+    Zone zone = 2;
 }

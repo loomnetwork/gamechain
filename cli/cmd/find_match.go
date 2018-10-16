@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
