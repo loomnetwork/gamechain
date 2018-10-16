@@ -315,3 +315,49 @@ func TestPopulateDeckCards(t *testing.T) {
 	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck))
 	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck))
 }
+
+func TestDrawCard(t *testing.T) {
+	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+
+	player1 := "player-1"
+	player2 := "player-2"
+
+	// DrawCard cannot be called twice for the same turn
+	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		// add more action
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Equal(t, errInvalidAction, err)
+
+	})
+
+	t.Run("DrawCard after Endturn", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
+			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		assert.Nil(t, err)
+		// add more action
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player2})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		assert.Nil(t, err)
+	})
+}
