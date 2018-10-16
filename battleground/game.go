@@ -63,6 +63,9 @@ func NewGamePlay(ctx contract.Context,
 		customGameMode: customGameMode,
 	}
 
+	if err := g.createGame(); err != nil {
+		return nil, err
+	}
 
 	if g.customGameMode != nil {
 		err := g.customGameMode.UpdateInitialPlayerGameState(ctx, g.State)
