@@ -464,7 +464,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})
@@ -528,7 +528,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})
