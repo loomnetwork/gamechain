@@ -18,10 +18,15 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 	}
 	for _, playerState := range state.PlayerStates {
 		// Generic state
-		if err = binary.Write(rb, binary.BigEndian, byte(playerState.Hp)); err != nil {
+		if err = binary.Write(rb, binary.BigEndian, byte(playerState.Defense)); err != nil {
 			return nil, err
 		}
-		if err = binary.Write(rb, binary.BigEndian, byte(playerState.Mana)); err != nil {
+
+		if err = binary.Write(rb, binary.BigEndian, byte(playerState.CurrentGoo)); err != nil {
+			return nil, err
+		}
+
+		if err = binary.Write(rb, binary.BigEndian, byte(playerState.GooVials)); err != nil {
 			return nil, err
 		}
 
@@ -83,19 +88,31 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(state *zb.Gam
 				return
 			}
 
-			state.PlayerStates[playerIndex].Hp = int32(newDefense)
-		case battleground.GameStateChangeAction_SetPlayerGoo:
+			state.PlayerStates[playerIndex].Defense = int32(newDefense)
+		case battleground.GameStateChangeAction_SetPlayerCurrentGoo:
 			var playerIndex byte
 			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
 				return
 			}
 
-			var newGoo byte
-			if err = binary.Read(rb, binary.BigEndian, &newGoo); err != nil {
+			var newCurrentGoo byte
+			if err = binary.Read(rb, binary.BigEndian, &newCurrentGoo); err != nil {
 				return
 			}
 
-			state.PlayerStates[playerIndex].Mana = int32(newGoo)
+			state.PlayerStates[playerIndex].CurrentGoo = int32(newCurrentGoo)
+		case battleground.GameStateChangeAction_SetPlayerGooVials:
+			var playerIndex byte
+			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
+				return
+			}
+
+			var newGooVials byte
+			if err = binary.Read(rb, binary.BigEndian, &newGooVials); err != nil {
+				return
+			}
+
+			state.PlayerStates[playerIndex].GooVials = int32(newGooVials)
 		case battleground.GameStateChangeAction_SetPlayerDeckCards:
 			var playerIndex byte
 			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {

@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	mulliganCards   = 3
+	mulliganCards = 3
 	maxCardsOnBoard = 6
 	maxCardsInHand  = 10
 )
@@ -92,8 +92,9 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 func (g *Gameplay) createGame() error {
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].Hp = 20
-		g.State.PlayerStates[i].Mana = 1
+		g.State.PlayerStates[i].Defense = 20
+		g.State.PlayerStates[i].CurrentGoo = 0
+		g.State.PlayerStates[i].GooVials = 0
 	}
 	// coin toss for the first player
 	r := rand.New(rand.NewSource(g.State.Randomseed))
@@ -243,7 +244,7 @@ func (g *Gameplay) captureErrorAndStop(err error) stateFn {
 
 func (g *Gameplay) isEnded() bool {
 	for _, player := range g.State.PlayerStates {
-		if player.Hp <= 0 {
+		if player.Defense <= 0 {
 			return true
 		}
 	}
@@ -262,8 +263,9 @@ func (g *Gameplay) PrintState() {
 		} else {
 			fmt.Printf("Player%d: %s\n", i+1, player.Id)
 		}
-		fmt.Printf("\thp: %v\n", player.Hp)
-		fmt.Printf("\tmana: %v\n", player.Mana)
+		fmt.Printf("\tdefense: %v\n", player.Defense)
+		fmt.Printf("\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Printf("\tgoo vials: %v\n", player.GooVials)
 		fmt.Printf("\thas drawn card: %v\n", player.HasDrawnCard)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
@@ -451,10 +453,10 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return nil
 	}
 
-	card := g.activePlayer().CardsInDeck[0]
-	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-	// remove card from CardsInDeck
-	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+		card := g.activePlayer().CardsInDeck[0]
+		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+		// remove card from CardsInDeck
+		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
 
 	// card drawn, don't allow another draw until next turn
 	g.activePlayer().HasDrawnCard = true
@@ -465,7 +467,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})
@@ -519,9 +521,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 	if len(g.activePlayer().CardsInHand) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
 	}
-	card := g.activePlayer().CardsInHand[0]
+		card := g.activePlayer().CardsInHand[0]
 	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-	g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
@@ -529,7 +531,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})

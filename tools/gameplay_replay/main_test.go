@@ -27,8 +27,9 @@ func TestComparePlayerTestsFailing(t *testing.T) {
 	newPlayerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:            "test1",
-			Hp:            20,
-			Mana:          1,
+			Defense:       20,
+			CurrentGoo:    0,
+			GooVials:      0,
 			CurrentAction: zb.PlayerActionType_DrawCard,
 		},
 	}
@@ -36,8 +37,9 @@ func TestComparePlayerTestsFailing(t *testing.T) {
 	logPlayerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:            "test1",
-			Hp:            21, // different
-			Mana:          1,
+			Defense:       21,
+			CurrentGoo:    0,
+			GooVials:      0,
 			CurrentAction: zb.PlayerActionType_DrawCard,
 		},
 	}
@@ -50,8 +52,9 @@ func TestComparePlayerTests(t *testing.T) {
 	newPlayerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:            "test1",
-			Hp:            20,
-			Mana:          1,
+			Defense:       20,
+			CurrentGoo:    0,
+			GooVials:      0,
 			CurrentAction: zb.PlayerActionType_DrawCard,
 		},
 	}
@@ -59,8 +62,9 @@ func TestComparePlayerTests(t *testing.T) {
 	logPlayerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:            "test1",
-			Hp:            20,
-			Mana:          1,
+			Defense:       20,
+			CurrentGoo:    0,
+			GooVials:      0,
 			CurrentAction: zb.PlayerActionType_DrawCard,
 		},
 	}

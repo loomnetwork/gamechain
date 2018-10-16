@@ -102,7 +102,7 @@ func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 				Prototype:  &zb.CardPrototype{Name: collection.CardName},
 				InstanceId: 3, //TODO
 				Attack:     4, //TODO
-				Defence:    5, //TODO
+				Defense:    5, //TODO
 			})
 		}
 	}
