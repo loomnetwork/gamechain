@@ -406,7 +406,7 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 			cardInstance := &zb.CardInstance{
 				//InstanceId:
 				Attack:  cardDetails.Damage,
-				Defence: cardDetails.Health,
+				Defense: cardDetails.Health,
 				Prototype: &zb.CardPrototype{
 					Name: cardDetails.Name,
 				},
