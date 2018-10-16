@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	mulliganCards   = 3
-	maxCardsOnBoard = 6
-	maxCardsInHand  = 10
+	mulliganCards  = 3
+	maxCardsInPlay = 6
+	maxCardsInHand = 10
 )
 
 var (
@@ -516,11 +516,14 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	cardPlay := current.GetCardPlay()
 	card := cardPlay.Card
-	if g.activePlayer().Mana < card.Prototype.GooCost {
-		g.err = errInvalidAction
-		return nil
-	}
 
+	/*
+		// check for available Mana
+		if g.activePlayer().Mana < card.Prototype.GooCost {
+			g.err = errInvalidAction
+			return nil
+		}
+	*/
 	// TODO: handle card limit
 	if len(g.activePlayer().CardsInHand) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
@@ -528,7 +531,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	activeCardsInHand := g.activePlayer().CardsInHand
 	if len(activeCardsInHand) > 0 {
-		cardIndex, card, found := findCardInCardList(cardPlay.Card, activeCardsInHand)
+
+		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 		if !found {
 			// card not found in hand
 			// TODO: assign g.err
@@ -536,17 +540,17 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// check card limit on board
-		if len(g.activePlayer().CardsOnBoard)+1 > maxCardsOnBoard {
+		if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
 			// TODO: assign g.err
 			return nil
 		}
 		// put card on board
-		g.activePlayer().CardsOnBoard = append(g.activePlayer().CardsOnBoard, card)
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
 		// remove card from hand
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 
-		// reduce mana
-		g.activePlayer().Mana -= card.Prototype.GooCost
+		// deduct mana/goo
+		//g.activePlayer().Mana -= card.Prototype.GooCost
 	}
 
 	// record history data

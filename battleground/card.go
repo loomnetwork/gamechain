@@ -95,15 +95,17 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 }
 
 func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
+	instanceID := int32(0)
 	for _, collection := range deck.Cards {
 		for i := int64(0); i < collection.Amount; i++ {
 			// TODO: finalize that fields are needed
 			cards = append(cards, &zb.CardInstance{
 				Prototype:  &zb.CardPrototype{Name: collection.CardName},
-				InstanceId: 3, //TODO
-				Attack:     4, //TODO
-				Defence:    5, //TODO
+				InstanceId: instanceID, //TODO
+				Attack:     4,          //TODO
+				Defence:    5,          //TODO
 			})
+			instanceID++
 		}
 	}
 	return
@@ -138,6 +140,15 @@ func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []
 func findCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
 	for i, c := range cards {
 		if card.Prototype.Name == c.Prototype.Name {
+			return i, c, true
+		}
+	}
+	return -1, nil, false
+}
+
+func findCardInCardListInstanceID(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+	for i, c := range cards {
+		if card.InstanceId == c.InstanceId {
 			return i, c, true
 		}
 	}
