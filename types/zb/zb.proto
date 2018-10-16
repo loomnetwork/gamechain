@@ -803,7 +803,7 @@ message CardAbility {
 message CardInstance {
     int32 instanceId = 1;
     CardPrototype prototype = 2;
-    int32 defence = 3;
+    int32 defense = 3;
     int32 attack = 4;
 }
 
@@ -846,7 +846,7 @@ message OverlordInstance {
     OverlordPrototype prototype = 2;
     OverlordSkillInstance firstSkill = 3;
     OverlordSkillInstance secondSkill = 4;
-    int32 defence = 5;
+    int32 defense = 5;
     int32 goo = 6;
     int32 maxGoo = 7;
 }
@@ -1060,7 +1060,7 @@ message HistoryInstance {
     enum change {
         Health = 0;
         Attack = 1;
-        Defence = 2;
+        Defense = 2;
     }
 }
 
