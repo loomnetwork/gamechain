@@ -609,15 +609,15 @@ message GlobalState {
 
 message AllowedTarget {
     enum target {
-    NoneAllowedTarget = 0;
-    Player = 1;
-    PlayerCard = 2;
-    PlayerAllCards = 3;
-    Opponent = 4;
-    OpponentCard = 5;
-    OpponentAllCards = 6;
-    AllCards = 7;
-    All = 8;
+        NoneAllowedTarget = 0;
+        Player = 1;
+        PlayerCard = 2;
+        PlayerAllCards = 3;
+        Opponent = 4;
+        OpponentCard = 5;
+        OpponentAllCards = 6;
+        AllCards = 7;
+        All = 8;
     }
 }
 
