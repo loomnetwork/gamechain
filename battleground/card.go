@@ -99,7 +99,10 @@ func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
 		for i := int64(0); i < collection.Amount; i++ {
 			// TODO: finalize that fields are needed
 			cards = append(cards, &zb.CardInstance{
-				Prototype: &zb.CardPrototype{Name: collection.CardName},
+				Prototype:  &zb.CardPrototype{Name: collection.CardName},
+				InstanceId: 3, //TODO
+				Attack:     4, //TODO
+				Defence:    5, //TODO
 			})
 		}
 	}

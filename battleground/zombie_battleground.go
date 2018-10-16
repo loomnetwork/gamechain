@@ -402,7 +402,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -647,9 +647,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create game state
-	seed := req.RandomSeed
-	if seed == 0 {
-		seed = ctx.Now().Unix()
+	match.RandomSeed = req.RandomSeed
+	if match.RandomSeed == 0 {
+		match.RandomSeed = ctx.Now().Unix()
 	}
 
 	var addr loom.Address
@@ -672,7 +672,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 
-	gp, err := NewGamePlay(ctx, match.Id, match.PlayerStates, seed, addr2)
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)
 	if err != nil {
 		return nil, err
 	}
@@ -682,8 +682,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// accept match
 	emitMsg := zb.PlayerActionEvent{
-		Match:     match,
-		GameState: gp.State,
+		Match: match,
+		Block: &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -796,7 +796,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		UserId:           req.PlayerAction.PlayerId,
 		PlayerAction:     req.PlayerAction,
 		Match:            match,
-		GameState:        gamestate,
+		Block:            &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -809,6 +809,44 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	return &zb.PlayerActionResponse{
 		GameState: gamestate,
 		Match:     match,
+	}, nil
+}
+
+func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *zb.BundlePlayerActionRequest) (*zb.BundlePlayerActionResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	gamestate, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := GamePlayFrom(gamestate)
+	if err != nil {
+		return nil, err
+	}
+	gp.PrintState()
+	if err := gp.AddBundleAction(req.PlayerActions...); err != nil {
+		return nil, err
+	}
+	gp.PrintState()
+
+	if err := saveGameState(ctx, gamestate); err != nil {
+		return nil, err
+	}
+
+	// update match status
+	if match.Status == zb.Match_Started {
+		match.Status = zb.Match_Playing
+		if err := saveMatch(ctx, match); err != nil {
+			return nil, err
+		}
+	}
+
+	return &zb.BundlePlayerActionResponse{
+		GameState: gamestate,
+		Match:     match,
+		History:   gp.history,
 	}, nil
 }
 
