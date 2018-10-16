@@ -268,6 +268,7 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+		fmt.Println() // extra line
 	}
 
 	fmt.Printf("History : count %v\n", len(g.history))
@@ -518,12 +519,12 @@ func actionCardPlay(g *Gameplay) stateFn {
 	card := cardPlay.Card
 
 	/*
-		// check for available Mana
+		// check for available Mana/Goo
 		if g.activePlayer().Mana < card.Prototype.GooCost {
-			g.err = errInvalidAction
-			return nil
+			return g.captureErrorAndStop(errors.New("insufficient goo"))
 		}
 	*/
+
 	// TODO: handle card limit
 	if len(g.activePlayer().CardsInHand) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
@@ -531,24 +532,21 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	activeCardsInHand := g.activePlayer().CardsInHand
 	if len(activeCardsInHand) > 0 {
-
 		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 		if !found {
 			// card not found in hand
-			// TODO: assign g.err
-			return nil
+			return g.captureErrorAndStop(errors.New("card not found in hand"))
 		}
 
 		// check card limit on board
 		if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
-			// TODO: assign g.err
-			return nil
+			return g.captureErrorAndStop(errors.New("number of cards in play exceeds max limit"))
 		}
 		// put card on board
 		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
 		// remove card from hand
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-
+		g.activePlayer().CardsInHand = activeCardsInHand
 		// deduct mana/goo
 		//g.activePlayer().Mana -= card.Prototype.GooCost
 	}

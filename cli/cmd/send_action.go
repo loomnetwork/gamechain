@@ -3,15 +3,16 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
 var sendActionCmdArgs struct {
-	matchID    int64
-	userID     string
-	actionType int32
+	matchID            int64
+	userID             string
+	actionType         int32
+	cardPlayInstanceID int32
 }
 
 var sendActionCmd = &cobra.Command{
@@ -34,6 +35,14 @@ var sendActionCmd = &cobra.Command{
 				DrawCard: &zb.PlayerActionDrawCard{
 					CardInstance: &zb.CardInstance{
 						InstanceId: 1,
+					},
+				},
+			}
+		case zb.PlayerActionType_CardPlay:
+			req.PlayerAction.Action = &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: sendActionCmdArgs.cardPlayInstanceID,
 					},
 				},
 			}
@@ -60,4 +69,5 @@ func init() {
 	sendActionCmd.Flags().Int64VarP(&sendActionCmdArgs.matchID, "matchId", "m", 0, "Match Id")
 	sendActionCmd.Flags().StringVarP(&sendActionCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.actionType, "actionType", "t", 0, "Player Action Type")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.cardPlayInstanceID, "instanceId", "i", 1, "card instance id for card play")
 }
