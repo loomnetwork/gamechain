@@ -410,7 +410,8 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 					Attack:     cardDetails.Damage,
 					Defense:    cardDetails.Health,
 					Prototype: &zb.CardPrototype{
-						Name: cardDetails.Name,
+						Name:    cardDetails.Name,
+						GooCost: cardDetails.Cost,
 					},
 					Owner: playerState.Id,
 				}

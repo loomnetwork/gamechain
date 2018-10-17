@@ -26,6 +26,7 @@ var (
 	errCardNotFoundInHand    = errors.New("card not found in hand")
 	errLimitExceeded         = errors.New("max card limit exceeded")
 	errNoCardsInHand         = errors.New("Can't play card. No cards in hand")
+	errInsufficientGoo       = errors.New("insufficient goo")
 )
 
 type Gameplay struct {
@@ -538,10 +539,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 	cardPlay := current.GetCardPlay()
 	card := cardPlay.Card
 
+	// check for available Goo
 	/*
-		// check for available Mana/Goo
-		if g.activePlayer().Mana < card.Prototype.GooCost {
-			return g.captureErrorAndStop(errors.New("insufficient goo"))
+		if g.activePlayer().CurrentGoo < card.Prototype.GooCost {
+			return g.captureErrorAndStop(errInsufficientGoo)
 		}
 	*/
 
@@ -568,8 +569,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 	g.activePlayer().CardsInHand = activeCardsInHand
 
-	// deduct mana/goo
-	//g.activePlayer().Mana -= card.Prototype.GooCost
+	// deduct goo
+	//g.activePlayer().CurrentGoo -= card.Prototype.GooCost
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
