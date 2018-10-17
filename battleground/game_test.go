@@ -31,19 +31,19 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 
 	// // add more action
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
-	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_CardPlay,
-		PlayerId:   player2,
+		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					InstanceId: 19,
+					InstanceId: 2,
 				},
 			},
 		},
 	})
+	assert.Nil(t, err)
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_CardPlay,
@@ -67,11 +67,11 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardAttack{
 			CardAttack: &zb.PlayerActionCardAttack{
 				Attacker: &zb.CardInstance{
-					InstanceId: 13,
+					InstanceId: 2,
 				},
 				AffectObjectType: zb.AffectObjectType_CARD,
 				Target: &zb.Unit{
-					InstanceId: 19,
+					InstanceId: 13,
 				},
 			},
 		},
