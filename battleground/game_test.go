@@ -5,7 +5,6 @@ import (
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -43,8 +42,14 @@ var defaultDeck2 = zb.Deck{
 }
 
 func TestGameStateFunc(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	player1 := "player-1"
 	player2 := "player-2"
@@ -53,7 +58,7 @@ func TestGameStateFunc(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// // add more action
@@ -166,8 +171,14 @@ func TestGameStateFunc(t *testing.T) {
 }
 
 func TestInvalidUserTurn(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	player1 := "player-1"
 	player2 := "player-2"
@@ -176,7 +187,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -189,8 +200,14 @@ func TestInvalidUserTurn(t *testing.T) {
 }
 
 func TestInitialGameplayWithMulligan(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	player1 := "player-1"
 	player2 := "player-2"
@@ -199,7 +216,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -239,8 +256,14 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 }
 
 func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	player1 := "player-1"
 	player2 := "player-2"
@@ -249,7 +272,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
+	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
@@ -317,8 +340,14 @@ func TestPopulateDeckCards(t *testing.T) {
 }
 
 func TestDrawCard(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
+	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	player1 := "player-1"
 	player2 := "player-2"
@@ -330,7 +359,7 @@ func TestDrawCard(t *testing.T) {
 			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 3, "v1", players, seed, nil)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		// add more action
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
@@ -346,7 +375,7 @@ func TestDrawCard(t *testing.T) {
 			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		// add more action
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})

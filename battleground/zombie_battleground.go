@@ -671,11 +671,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	err = populateDeckCards(ctx, match.PlayerStates, req.Version)
-	if err != nil {
-		return nil, err
-	}
-
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)
 	if err != nil {
 		return nil, err
