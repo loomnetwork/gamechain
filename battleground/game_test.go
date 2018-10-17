@@ -65,9 +65,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					Prototype: &zb.CardPrototype{
-						Name: "Geyzer",
-					},
+					InstanceId: 8,
 				},
 			},
 		},
@@ -79,9 +77,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					Prototype: &zb.CardPrototype{
-						Name: "Jetter",
-					},
+					InstanceId: 2,
 				},
 			},
 		},
