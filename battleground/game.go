@@ -522,7 +522,6 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 func actionCardPlay(g *Gameplay) stateFn {
 	fmt.Printf("state: %v\n", zb.PlayerActionType_CardPlay)
-	(*g.ctx).Logger().Log("cardplay")
 	if g.isEnded() {
 		return nil
 	}
