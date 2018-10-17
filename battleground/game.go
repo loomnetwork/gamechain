@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"math/rand"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
@@ -66,6 +65,11 @@ func NewGamePlay(ctx contract.Context,
 		customGameMode: customGameMode,
 	}
 
+	err := populateDeckCards(ctx, players, version)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := g.createGame(); err != nil {
 		return nil, err
 	}
@@ -95,8 +99,9 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 func (g *Gameplay) createGame() error {
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].Hp = 20
-		g.State.PlayerStates[i].Mana = 1
+		g.State.PlayerStates[i].Defense = 20
+		g.State.PlayerStates[i].CurrentGoo = 0
+		g.State.PlayerStates[i].GooVials = 0
 	}
 	// coin toss for the first player
 	r := rand.New(rand.NewSource(g.State.Randomseed))
@@ -105,8 +110,7 @@ func (g *Gameplay) createGame() error {
 
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		deck := g.State.PlayerStates[i].Deck
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
@@ -235,6 +239,16 @@ func (g *Gameplay) activePlayer() *zb.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
 }
 
+func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
+	for i, p := range g.State.PlayerStates {
+		if int32(i) != g.State.CurrentPlayerIndex {
+			return p
+		}
+	}
+
+	return nil
+}
+
 func (g *Gameplay) changePlayerTurn() {
 	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
 }
@@ -246,7 +260,7 @@ func (g *Gameplay) captureErrorAndStop(err error) stateFn {
 
 func (g *Gameplay) isEnded() bool {
 	for _, player := range g.State.PlayerStates {
-		if player.Hp <= 0 {
+		if player.Defense <= 0 {
 			return true
 		}
 	}
@@ -265,8 +279,9 @@ func (g *Gameplay) PrintState() {
 		} else {
 			fmt.Printf("Player%d: %s\n", i+1, player.Id)
 		}
-		fmt.Printf("\thp: %v\n", player.Hp)
-		fmt.Printf("\tmana: %v\n", player.Mana)
+		fmt.Printf("\tdefense: %v\n", player.Defense)
+		fmt.Printf("\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Printf("\tgoo vials: %v\n", player.GooVials)
 		fmt.Printf("\thas drawn card: %v\n", player.HasDrawnCard)
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
@@ -469,7 +484,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})
@@ -560,7 +575,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 			FullInstance: &zb.HistoryFullInstance{
 				InstanceId: card.InstanceId,
 				Attack:     card.Attack,
-				Defense:    card.Defence,
+				Defense:    card.Defense,
 			},
 		},
 	})
@@ -610,7 +625,45 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
-	// TODO: card attack
+	var attacker *zb.CardInstance
+	var target *zb.CardInstance
+	var attackerIndex int
+	var targetIndex int
+
+	for i, card := range g.activePlayer().CardsInPlay {
+		if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+			attacker = card
+			attackerIndex = i
+			break
+		}
+		return g.captureErrorAndStop(errors.New("Attacker not found"))
+	}
+
+	for i, card := range g.activePlayerOpponent().CardsInPlay {
+		if card.InstanceId == current.GetCardAttack().Target.InstanceId {
+			target = card
+			targetIndex = i
+			break
+		}
+		return g.captureErrorAndStop(errors.New("Target not found"))
+	}
+
+	attacker.Defense -= target.Attack
+	target.Defense -= attacker.Attack
+
+	fmt.Println("=========================")
+	fmt.Println("Attacker Atk: ", attacker.Attack)
+	fmt.Println("Attacker Def: ", attacker.Defense)
+	fmt.Println("Target Atk: ", target.Attack)
+	fmt.Println("Target Def: ", target.Defense)
+	fmt.Println("=========================")
+
+	if attacker.Defense <= 0 {
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
+	}
+	if target.Defense <= 0 {
+		g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
+	}
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{

@@ -142,6 +142,7 @@ var initRequest = zb.InitRequest{
 		{Id: 48, Name: "Zhatterer", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Water"},
 		{Id: 141, Name: "Maelstrom", Damage: 5, Health: 5, Kind: "CREATURE", Set: "Water"},
 		{Id: 31, Name: "Tzunamy", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"},
+		{Id: 999999, Name: "Germs", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"}, // added this card for TestDeserializeGameStateChangeActions2 test
 	},
 	DefaultDecks: []*zb.Deck{
 		{
