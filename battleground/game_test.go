@@ -5,7 +5,6 @@ import (
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -40,7 +39,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					InstanceId: 8,
+					InstanceId: 19,
 				},
 			},
 		},
@@ -52,7 +51,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					InstanceId: 2,
+					InstanceId: 13,
 				},
 			},
 		},
@@ -517,17 +516,25 @@ func TestCardAttack(t *testing.T) {
 }
 
 func TestCardPlay(t *testing.T) {
-	fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	t.Run("Normal Card Play", func(t *testing.T) {
 		players := []*zb.PlayerState{
-			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -535,7 +542,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 22,
+						InstanceId: 8,
 					},
 				},
 			},
@@ -544,11 +551,11 @@ func TestCardPlay(t *testing.T) {
 	})
 	t.Run("Card not found in hand", func(t *testing.T) {
 		players := []*zb.PlayerState{
-			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 4, "v1", players, seed, nil)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -565,11 +572,11 @@ func TestCardPlay(t *testing.T) {
 	})
 	t.Run("CardPlay from empty hand", func(t *testing.T) {
 		players := []*zb.PlayerState{
-			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(gwCtx, 5, "v1", players, seed, nil)
+		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -577,7 +584,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 22,
+						InstanceId: 8,
 					},
 				},
 			},
@@ -589,7 +596,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 28,
+						InstanceId: 2,
 					},
 				},
 			},
@@ -601,7 +608,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 25,
+						InstanceId: 3,
 					},
 				},
 			},
@@ -613,7 +620,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 28,
+						InstanceId: 2,
 					},
 				},
 			},
