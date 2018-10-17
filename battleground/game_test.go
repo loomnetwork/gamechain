@@ -320,12 +320,12 @@ func TestPopulateDeckCards(t *testing.T) {
 	for _, cardCollection := range playerStates[0].Deck.Cards {
 		s0 += cardCollection.Amount
 	}
-	assert.Equal(t, s0, len(playerStates[0].CardsInDeck))
+	assert.Equal(t, s0, int64(len(playerStates[0].CardsInDeck)))
 
 	for _, cardCollection := range playerStates[1].Deck.Cards {
 		s1 += cardCollection.Amount
 	}
-	assert.Equal(t, s1, len(playerStates[1].CardsInDeck))
+	assert.Equal(t, s1, int64(len(playerStates[1].CardsInDeck)))
 }
 
 func TestDrawCard(t *testing.T) {
