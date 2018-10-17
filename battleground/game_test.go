@@ -67,11 +67,11 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardAttack{
 			CardAttack: &zb.PlayerActionCardAttack{
 				Attacker: &zb.CardInstance{
-					InstanceId: 1,
+					InstanceId: 13,
 				},
 				AffectObjectType: zb.AffectObjectType_CARD,
 				Target: &zb.Unit{
-					InstanceId: 2,
+					InstanceId: 19,
 				},
 			},
 		},

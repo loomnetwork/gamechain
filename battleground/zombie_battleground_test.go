@@ -1187,28 +1187,6 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 	})
-	t.Run("SendCardAttackPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
-			MatchId: matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardAttack,
-				PlayerId:   "player-1",
-				Action: &zb.PlayerAction_CardAttack{
-					CardAttack: &zb.PlayerActionCardAttack{
-						Attacker: &zb.CardInstance{
-							InstanceId: 1,
-						},
-						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
-						},
-					},
-				},
-			},
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-	})
 	t.Run("SendCardAbilityPlayer1", func(t *testing.T) {
 		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
@@ -1298,7 +1276,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: 8,
+							InstanceId: 13,
 						},
 					},
 				},
@@ -1316,11 +1294,11 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardAttack{
 					CardAttack: &zb.PlayerActionCardAttack{
 						Attacker: &zb.CardInstance{
-							InstanceId: 1,
+							InstanceId: 13,
 						},
 						AffectObjectType: zb.AffectObjectType_CARD,
 						Target: &zb.Unit{
-							InstanceId: 2,
+							InstanceId: 8,
 						},
 					},
 				},
