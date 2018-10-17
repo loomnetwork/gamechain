@@ -315,8 +315,17 @@ func TestPopulateDeckCards(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, playerStates[0].CardsInDeck)
 	assert.NotNil(t, playerStates[1].CardsInDeck)
-	assert.Equal(t, len(playerStates[0].Deck.Cards), len(playerStates[0].CardsInDeck))
-	assert.Equal(t, len(playerStates[1].Deck.Cards), len(playerStates[1].CardsInDeck))
+	s0 := int64(0) // sum of number of cards
+	s1 := int64(0)
+	for _, cardCollection := range playerStates[0].Deck.Cards {
+		s0 += cardCollection.Amount
+	}
+	assert.Equal(t, s0, len(playerStates[0].CardsInDeck))
+
+	for _, cardCollection := range playerStates[1].Deck.Cards {
+		s1 += cardCollection.Amount
+	}
+	assert.Equal(t, s1, len(playerStates[1].CardsInDeck))
 }
 
 func TestDrawCard(t *testing.T) {
