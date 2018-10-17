@@ -2,18 +2,16 @@ package battleground
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 )
 
 const (
-	mulliganCards = 3
+	mulliganCards   = 3
 	maxCardsOnBoard = 6
 	maxCardsInHand  = 10
 )
@@ -238,6 +236,16 @@ func (g *Gameplay) activePlayer() *zb.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
 }
 
+func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
+	for i, p := range g.State.PlayerStates {
+		if int32(i) != g.State.CurrentPlayerIndex {
+			return p
+		}
+	}
+
+	return nil
+}
+
 func (g *Gameplay) changePlayerTurn() {
 	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
 }
@@ -458,10 +466,10 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return nil
 	}
 
-		card := g.activePlayer().CardsInDeck[0]
-		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	card := g.activePlayer().CardsInDeck[0]
+	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+	// remove card from CardsInDeck
+	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
 
 	// card drawn, don't allow another draw until next turn
 	g.activePlayer().HasDrawnCard = true
@@ -526,9 +534,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 	if len(g.activePlayer().CardsInHand) < 1 {
 		return g.captureErrorAndStop(errors.New("Can't play card. No cards in hand"))
 	}
-		card := g.activePlayer().CardsInHand[0]
+	card := g.activePlayer().CardsInHand[0]
 	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-		g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
+	g.activePlayer().CardsInHand = g.activePlayer().CardsInHand[1:]
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
@@ -586,20 +594,44 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
-	// TODO: card attack
+	var attacker *zb.CardInstance
+	var target *zb.CardInstance
+	var attackerIndex int
+	var targetIndex int
 
-	// Attacker         *CardInstance    `protobuf:"bytes,1,opt,name=attacker" json:"attacker,omitempty"`
-	// AffectObjectType AffectObjectType `protobuf:"varint,2,opt,name=affectObjectType,proto3,enum=AffectObjectType" json:"affectObjectType,omitempty"`
-	// Target           *Unit            `protobuf:"bytes,3,opt,name=target" json:"target,omitempty"`
-
-	log.Printf("action: %v\n", current)
-	log.Printf("ATTACKER: %v\n", current.GetCardAttack().Attacker)
-	log.Printf("TARGET: %v\n", current.GetCardAttack().Target)
-
-	for _, card := range g.activePlayer().CardsInPlay {
+	for i, card := range g.activePlayer().CardsInPlay {
 		if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
-			fmt.Println("ATTACKER FOUND")
+			attacker = card
+			attackerIndex = i
+			break
 		}
+		return g.captureErrorAndStop(errors.New("Attacker not found"))
+	}
+
+	for i, card := range g.activePlayerOpponent().CardsInPlay {
+		if card.InstanceId == current.GetCardAttack().Target.InstanceId {
+			target = card
+			targetIndex = i
+			break
+		}
+		return g.captureErrorAndStop(errors.New("Target not found"))
+	}
+
+	attacker.Defense -= target.Attack
+	target.Defense -= attacker.Attack
+
+	fmt.Println("=========================")
+	fmt.Println("Attacker Atk: ", attacker.Attack)
+	fmt.Println("Attacker Def: ", attacker.Defense)
+	fmt.Println("Target Atk: ", target.Attack)
+	fmt.Println("Target Def: ", target.Defense)
+	fmt.Println("=========================")
+
+	if attacker.Defense <= 0 {
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
+	}
+	if target.Defense <= 0 {
+		g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
 	}
 
 	// record history data

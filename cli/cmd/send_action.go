@@ -12,6 +12,8 @@ var sendActionCmdArgs struct {
 	matchID    int64
 	userID     string
 	actionType int32
+	attackerID int32
+	targetID   int32
 }
 
 var sendActionCmd = &cobra.Command{
@@ -39,11 +41,11 @@ var sendActionCmd = &cobra.Command{
 			req.PlayerAction.Action = &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.CardInstance{
-						InstanceId: 3,
+						InstanceId: sendActionCmdArgs.attackerID,
 					},
 					AffectObjectType: zb.AffectObjectType_CARD,
 					Target: &zb.Unit{
-						InstanceId: 4,
+						InstanceId: sendActionCmdArgs.targetID,
 					},
 				},
 			}
@@ -70,4 +72,6 @@ func init() {
 	sendActionCmd.Flags().Int64VarP(&sendActionCmdArgs.matchID, "matchId", "m", 0, "Match Id")
 	sendActionCmd.Flags().StringVarP(&sendActionCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.actionType, "actionType", "t", 0, "Player Action Type")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.attackerID, "attackerID", "a", 0, "Attacker ID")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.targetID, "targetID", "r", 0, "Target ID")
 }
