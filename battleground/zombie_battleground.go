@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"os"
 	"sort"
 	"unicode/utf8"
@@ -703,11 +704,9 @@ func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequ
 	if err != nil {
 		return nil, err
 	}
-	gameState, _ := loadGameState(ctx, req.MatchId)
 
 	return &zb.GetMatchResponse{
-		Match:     match,
-		GameState: gameState,
+		Match: match,
 	}, nil
 }
 
@@ -792,18 +791,16 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerActionType: req.PlayerAction.ActionType,
-		UserId:           req.PlayerAction.PlayerId,
-		PlayerAction:     req.PlayerAction,
-		Match:            match,
-		Block:            &zb.History{List: gp.history},
+		Match:        match,
+		PlayerAction: req.PlayerAction,
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
 	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
+		ctx.EmitTopics(data, match.Topics...)
 	}
 
 	return &zb.PlayerActionResponse{
