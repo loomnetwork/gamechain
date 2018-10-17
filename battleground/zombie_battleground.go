@@ -550,6 +550,10 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
+	if req.Version == "" {
+		req.Version = "v1"
+	}
+
 	// load deck id
 	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
@@ -665,11 +669,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
-	}
-
-	err = populateDeckCards(ctx, match.PlayerStates, req.Version)
-	if err != nil {
-		return nil, err
 	}
 
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)

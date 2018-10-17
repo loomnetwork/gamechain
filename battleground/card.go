@@ -94,34 +94,16 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
 }
 
-func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
-	instanceID := int32(0)
-	for _, collection := range deck.Cards {
-		for i := int64(0); i < collection.Amount; i++ {
-			// TODO: finalize that fields are needed
-			cards = append(cards, &zb.CardInstance{
-				Prototype:  &zb.CardPrototype{Name: collection.CardName},
-				InstanceId: instanceID, //TODO
-				Attack:     4,          //TODO
-				Defence:    5,          //TODO
-			})
-			instanceID++
-		}
-	}
-	return
-}
-
-func shuffleCardInDeck(deck *zb.Deck, seed int64) []*zb.CardInstance {
-	cards := cardInstanceFromDeck(deck)
+func shuffleCardInDeck(deck []*zb.CardInstance, seed int64) []*zb.CardInstance {
 	r := rand.New(rand.NewSource(seed))
-	for i := 0; i < len(cards); i++ {
+	for i := 0; i < len(deck); i++ {
 		n := r.Intn(i + 1)
 		// do a swap
 		if i != n {
-			cards[n], cards[i] = cards[i], cards[n]
+			deck[n], deck[i] = deck[i], deck[n]
 		}
 	}
-	return cards
+	return deck
 }
 
 func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
