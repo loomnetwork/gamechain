@@ -64,6 +64,11 @@ func NewGamePlay(ctx contract.Context,
 		customGameMode: customGameMode,
 	}
 
+	err := populateDeckCards(ctx, players, version)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := g.createGame(); err != nil {
 		return nil, err
 	}
@@ -104,8 +109,7 @@ func (g *Gameplay) createGame() error {
 
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		deck := g.State.PlayerStates[i].Deck
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(deck, g.State.Randomseed)
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
@@ -592,7 +596,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	log.Printf("ATTACKER: %v\n", current.GetCardAttack().Attacker)
 	log.Printf("TARGET: %v\n", current.GetCardAttack().Target)
 
-	for _, card := range g.activePlayer().CardsOnBoard {
+	for _, card := range g.activePlayer().CardsInPlay {
 		if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
 			fmt.Println("ATTACKER FOUND")
 		}
