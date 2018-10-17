@@ -9,38 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var defaultDeck1 = zb.Deck{
-	Id:     1,
-	HeroId: 1,
-	Name:   "Default1",
-	Cards: []*zb.CardCollection{
-		{CardName: "Pyromaz", Amount: 4},
-		{CardName: "Quazi", Amount: 4},
-		{CardName: "Burrrnn", Amount: 4},
-		{CardName: "Cynderman", Amount: 4},
-		{CardName: "Werezomb", Amount: 4},
-		{CardName: "Modo", Amount: 4},
-		{CardName: "Fire-Maw", Amount: 4},
-		{CardName: "Zhampion", Amount: 2},
-	},
-}
-
-var defaultDeck2 = zb.Deck{
-	Id:     2,
-	HeroId: 2,
-	Name:   "Default2",
-	Cards: []*zb.CardCollection{
-		{CardName: "Gargantua", Amount: 4},
-		{CardName: "Cerberus", Amount: 4},
-		{CardName: "Izze", Amount: 4},
-		{CardName: "Znowman", Amount: 4},
-		{CardName: "Ozmoziz", Amount: 4},
-		{CardName: "Jetter", Amount: 4},
-		{CardName: "Freezzee", Amount: 4},
-		{CardName: "Geyzer", Amount: 2},
-	},
-}
-
 func TestGameStateFunc(t *testing.T) {
 	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
 	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
@@ -51,11 +19,14 @@ func TestGameStateFunc(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
-		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		{Id: player1, Deck: deckList.Decks[0]},
+		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
@@ -180,11 +151,14 @@ func TestInvalidUserTurn(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
-		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		{Id: player1, Deck: deckList.Decks[0]},
+		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
@@ -209,11 +183,14 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
-		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		{Id: player1, Deck: deckList.Decks[0]},
+		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
@@ -265,11 +242,14 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
-		&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-		&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+		{Id: player1, Deck: deckList.Decks[0]},
+		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil)
@@ -349,14 +329,17 @@ func TestDrawCard(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 
 	// DrawCard cannot be called twice for the same turn
 	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
 		players := []*zb.PlayerState{
-			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
@@ -371,8 +354,8 @@ func TestDrawCard(t *testing.T) {
 
 	t.Run("DrawCard after Endturn", func(t *testing.T) {
 		players := []*zb.PlayerState{
-			&zb.PlayerState{Id: player1, Deck: &defaultDeck1},
-			&zb.PlayerState{Id: player2, Deck: &defaultDeck2},
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil)
