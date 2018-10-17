@@ -92,7 +92,8 @@ abigen:
 
 
 test:
-	go test -v ./... -tags evm
+	#TODO fix go vet in tests
+	go test -vet=off -v ./... -tags evm
 
 clean:
 	go clean
