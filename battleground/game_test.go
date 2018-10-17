@@ -10,8 +10,6 @@ import (
 )
 
 func TestGameStateFunc(t *testing.T) {
-	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -142,8 +140,6 @@ func TestGameStateFunc(t *testing.T) {
 }
 
 func TestInvalidUserTurn(t *testing.T) {
-	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -174,8 +170,6 @@ func TestInvalidUserTurn(t *testing.T) {
 }
 
 func TestInitialGameplayWithMulligan(t *testing.T) {
-	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -233,8 +227,6 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 }
 
 func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
-	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -320,8 +312,6 @@ func TestPopulateDeckCards(t *testing.T) {
 }
 
 func TestDrawCard(t *testing.T) {
-	// fakeCtx := plugin.CreateFakeContext(loom.RootAddress("chain"), loom.RootAddress("chain"))
-	// gwCtx := contract.WrapPluginContext(fakeCtx.WithAddress(loom.RootAddress("chain")))
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -371,5 +361,139 @@ func TestDrawCard(t *testing.T) {
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
 		assert.Nil(t, err)
+	})
+}
+func TestCardAttack(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
+	player1 := "player-1"
+	player2 := "player-2"
+
+	t.Run("Both cards are damaged and survive", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: 1,
+			Defense:    3,
+			Attack:     2,
+		})
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Defense:    5,
+			Attack:     1,
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_CARD,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Defense)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Defense)
+	})
+
+	t.Run("Target is killed", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: 1,
+			Defense:    3,
+			Attack:     2,
+		})
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Defense:    1,
+			Attack:     1,
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_CARD,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Defense)
+		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
+	})
+
+	t.Run("Attacker and target are killed", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: 1,
+			Defense:    1,
+			Attack:     1,
+		})
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Defense:    1,
+			Attack:     1,
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_CARD,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Zero(t, len(gp.State.PlayerStates[0].CardsInPlay))
+		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
 	})
 }
