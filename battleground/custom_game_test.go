@@ -111,11 +111,14 @@ func createSimpleGame(t *testing.T) *Gameplay {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb.PlayerState{
-		{Id: player1, Deck: &defaultDeck1},
-		{Id: player2, Deck: &defaultDeck2},
+		{Id: player1, Deck: deckList.Decks[0]},
+		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil)
