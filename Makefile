@@ -5,9 +5,11 @@ PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 
-all: build cli
+all: build-ext cli
 
 build: contracts/zombiebattleground.so.1.0.0
+
+build-ext: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
@@ -34,6 +36,9 @@ bin/gameplay-replay:
 
 contracts/zombiebattleground.so.1.0.0: proto
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
+
+contracts/zombiebattleground.1.0.0: proto
+	go build -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
 	go build github.com/gogo/protobuf/protoc-gen-gogo
@@ -96,6 +101,7 @@ clean:
 		types/zb/zb.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
+		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
 		bin/replay-logger \
