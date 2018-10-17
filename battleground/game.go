@@ -658,13 +658,6 @@ func actionCardAttack(g *Gameplay) stateFn {
 		attacker.Defense -= target.Attack
 		target.Defense -= attacker.Attack
 
-		fmt.Println("=========================")
-		fmt.Println("Attacker Atk: ", attacker.Attack)
-		fmt.Println("Attacker Def: ", attacker.Defense)
-		fmt.Println("Target Atk: ", target.Attack)
-		fmt.Println("Target Def: ", target.Defense)
-		fmt.Println("=========================")
-
 		if attacker.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
 		}
