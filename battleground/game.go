@@ -630,39 +630,47 @@ func actionCardAttack(g *Gameplay) stateFn {
 	var attackerIndex int
 	var targetIndex int
 
-	for i, card := range g.activePlayer().CardsInPlay {
-		if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
-			attacker = card
-			attackerIndex = i
-			break
+	if current.GetCardAttack().AffectObjectType == zb.AffectObjectType_CARD {
+		if len(g.activePlayer().CardsInPlay) <= 0 {
+			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
 		}
-		return g.captureErrorAndStop(errors.New("Attacker not found"))
-	}
-
-	for i, card := range g.activePlayerOpponent().CardsInPlay {
-		if card.InstanceId == current.GetCardAttack().Target.InstanceId {
-			target = card
-			targetIndex = i
-			break
+		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
+			return g.captureErrorAndStop(errors.New("No cards on board to attack"))
 		}
-		return g.captureErrorAndStop(errors.New("Target not found"))
-	}
+		for i, card := range g.activePlayer().CardsInPlay {
+			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+				attacker = card
+				attackerIndex = i
+				break
+			}
+			return g.captureErrorAndStop(errors.New("Attacker not found"))
+		}
 
-	attacker.Defense -= target.Attack
-	target.Defense -= attacker.Attack
+		for i, card := range g.activePlayerOpponent().CardsInPlay {
+			if card.InstanceId == current.GetCardAttack().Target.InstanceId {
+				target = card
+				targetIndex = i
+				break
+			}
+			return g.captureErrorAndStop(errors.New("Target not found"))
+		}
 
-	fmt.Println("=========================")
-	fmt.Println("Attacker Atk: ", attacker.Attack)
-	fmt.Println("Attacker Def: ", attacker.Defense)
-	fmt.Println("Target Atk: ", target.Attack)
-	fmt.Println("Target Def: ", target.Defense)
-	fmt.Println("=========================")
+		attacker.Defense -= target.Attack
+		target.Defense -= attacker.Attack
 
-	if attacker.Defense <= 0 {
-		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
-	}
-	if target.Defense <= 0 {
-		g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
+		fmt.Println("=========================")
+		fmt.Println("Attacker Atk: ", attacker.Attack)
+		fmt.Println("Attacker Def: ", attacker.Defense)
+		fmt.Println("Target Atk: ", target.Attack)
+		fmt.Println("Target Def: ", target.Defense)
+		fmt.Println("=========================")
+
+		if attacker.Defense <= 0 {
+			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
+		}
+		if target.Defense <= 0 {
+			g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
+		}
 	}
 
 	// record history data
