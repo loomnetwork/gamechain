@@ -83,5 +83,5 @@ func init() {
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.actionType, "actionType", "t", 0, "Player Action Type")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.cardPlayInstanceID, "instanceId", "i", 1, "card instance id for card play")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.attackerID, "attackerID", "a", 0, "Attacker ID")
-	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.targetID, "targetID", "r", 0, "Target ID")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.targetID, "targetID", "g", 0, "Target ID")
 }

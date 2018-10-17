@@ -34,6 +34,7 @@ type Gameplay struct {
 	err            error
 	customGameMode *CustomGameMode
 	history        []*zb.HistoryData
+	ctx            *contract.Context
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -63,6 +64,7 @@ func NewGamePlay(ctx contract.Context,
 	g := &Gameplay{
 		State:          state,
 		customGameMode: customGameMode,
+		ctx:            &ctx,
 	}
 
 	err := populateDeckCards(ctx, players, version)
@@ -520,6 +522,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 func actionCardPlay(g *Gameplay) stateFn {
 	fmt.Printf("state: %v\n", zb.PlayerActionType_CardPlay)
+	(*g.ctx).Logger().Log("cardplay")
 	if g.isEnded() {
 		return nil
 	}
