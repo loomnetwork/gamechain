@@ -1032,7 +1032,6 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
@@ -1052,7 +1051,6 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Ended, response.Match.Status, "match status should be 'ended'")
-		assert.NotNil(t, response.GameState)
 	})
 }
 
@@ -1128,7 +1126,6 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	// Note: since the toss coin seed is always 0 for testing, we always get 0 as the first player
