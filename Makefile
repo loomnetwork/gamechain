@@ -34,8 +34,8 @@ bin/replay-logger:
 bin/gameplay-replay:
 	go build -o $@ $(PKG)/tools/gameplay_replay
 
-contracts/zombiebattleground.1.0.0: proto
-	go build -o $@ $(PKG)/plugin
+contracts/zombiebattleground.so.1.0.0: proto
+	go build -buildmode=plugin -o $@ $(PKG)/plugin
 
 contracts/zombiebattleground.1.0.0: proto
 	go build -o $@ $(PKG)/plugin
