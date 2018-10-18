@@ -94,32 +94,16 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
 }
 
-func cardInstanceFromDeck(deck *zb.Deck) (cards []*zb.CardInstance) {
-	for _, collection := range deck.Cards {
-		for i := int64(0); i < collection.Amount; i++ {
-			// TODO: finalize that fields are needed
-			cards = append(cards, &zb.CardInstance{
-				Prototype:  &zb.CardPrototype{Name: collection.CardName},
-				InstanceId: 3, //TODO
-				Attack:     4, //TODO
-				Defense:    5, //TODO
-			})
-		}
-	}
-	return
-}
-
-func shuffleCardInDeck(deck *zb.Deck, seed int64) []*zb.CardInstance {
-	cards := cardInstanceFromDeck(deck)
+func shuffleCardInDeck(deck []*zb.CardInstance, seed int64) []*zb.CardInstance {
 	r := rand.New(rand.NewSource(seed))
-	for i := 0; i < len(cards); i++ {
+	for i := 0; i < len(deck); i++ {
 		n := r.Intn(i + 1)
 		// do a swap
 		if i != n {
-			cards[n], cards[i] = cards[i], cards[n]
+			deck[n], deck[i] = deck[i], deck[n]
 		}
 	}
-	return cards
+	return deck
 }
 
 func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
@@ -135,11 +119,20 @@ func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []
 	return
 }
 
-func containCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (*zb.CardInstance, bool) {
-	for _, c := range cards {
+func findCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+	for i, c := range cards {
 		if card.Prototype.Name == c.Prototype.Name {
-			return c, true
+			return i, c, true
 		}
 	}
-	return nil, false
+	return -1, nil, false
+}
+
+func findCardInCardListInstanceID(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+	for i, c := range cards {
+		if card.InstanceId == c.InstanceId {
+			return i, c, true
+		}
+	}
+	return -1, nil, false
 }

@@ -360,6 +360,7 @@ message PlayerState {
     int32 currentGoo = 9;
     int32 gooVials = 10;
     bool hasDrawnCard = 11;
+    repeated CardInstance cardsInGraveyard = 12;
 }
 
 message Match {
@@ -805,6 +806,7 @@ message CardInstance {
     CardPrototype prototype = 2;
     int32 defense = 3;
     int32 attack = 4;
+    string owner = 5;
 }
 
 message CardPrototype {
