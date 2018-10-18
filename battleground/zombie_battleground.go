@@ -402,7 +402,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -665,11 +665,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
-	}
-
-	err = populateDeckCards(ctx, match.PlayerStates, req.Version)
-	if err != nil {
-		return nil, err
 	}
 
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)

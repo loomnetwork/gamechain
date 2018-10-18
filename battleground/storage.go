@@ -395,23 +395,29 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
 		return fmt.Errorf("error getting card library: %s", err)
 	}
+	instanceID := int32(0) // unique instance IDs for cards
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
-		for _, deckCard := range deck.Cards {
-			cardDetails, err := getCardDetails(&cardList, deckCard)
-			if err != nil {
-				return fmt.Errorf("unable to get card %s from card library: %s", deckCard.CardName, err.Error())
-			}
+		for _, cardAmounts := range deck.Cards {
+			for i := int64(0); i < cardAmounts.Amount; i++ {
+				cardDetails, err := getCardDetails(&cardList, cardAmounts.CardName)
+				if err != nil {
+					return fmt.Errorf("unable to get card %s from card library: %s", cardAmounts.CardName, err.Error())
+				}
 
-			cardInstance := &zb.CardInstance{
-				//InstanceId:
-				Attack:  cardDetails.Damage,
-				Defense: cardDetails.Health,
-				Prototype: &zb.CardPrototype{
-					Name: cardDetails.Name,
-				},
+				cardInstance := &zb.CardInstance{
+					InstanceId: instanceID,
+					Attack:     cardDetails.Damage,
+					Defense:    cardDetails.Health,
+					Prototype: &zb.CardPrototype{
+						Name:    cardDetails.Name,
+						GooCost: cardDetails.Cost,
+					},
+					Owner: playerState.Id,
+				}
+				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
+				instanceID++
 			}
-			playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 		}
 		for _, c := range playerState.CardsInDeck {
 			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v\n", c.Prototype.Name, c.Attack))
@@ -421,9 +427,9 @@ func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, ver
 	return nil
 }
 
-func getCardDetails(cardList *zb.CardList, deckCard *zb.CardCollection) (*zb.Card, error) {
+func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 	for _, card := range cardList.Cards {
-		if card.Name == deckCard.CardName {
+		if card.Name == cardName {
 			return card, nil
 		}
 	}

@@ -142,6 +142,7 @@ var initRequest = zb.InitRequest{
 		{Id: 48, Name: "Zhatterer", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Water"},
 		{Id: 141, Name: "Maelstrom", Damage: 5, Health: 5, Kind: "CREATURE", Set: "Water"},
 		{Id: 31, Name: "Tzunamy", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"},
+		{Id: 999999, Name: "Germs", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"}, // added this card for TestDeserializeGameStateChangeActions2 test
 	},
 	DefaultDecks: []*zb.Deck{
 		{
@@ -1177,29 +1178,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: 1,
-						},
-					},
-				},
-			},
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-	})
-	t.Run("SendCardAttackPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
-			MatchId: matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardAttack,
-				PlayerId:   "player-1",
-				Action: &zb.PlayerAction_CardAttack{
-					CardAttack: &zb.PlayerActionCardAttack{
-						Attacker: &zb.CardInstance{
-							InstanceId: 1,
-						},
-						AffectObjectType: zb.AffectObjectType_CARD,
-						Target: &zb.Unit{
-							InstanceId: 2,
+							InstanceId: 8,
 						},
 					},
 				},
@@ -1297,7 +1276,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: 1,
+							InstanceId: 13,
 						},
 					},
 				},
@@ -1315,11 +1294,11 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardAttack{
 					CardAttack: &zb.PlayerActionCardAttack{
 						Attacker: &zb.CardInstance{
-							InstanceId: 1,
+							InstanceId: 13,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_CHARACTER,
 						Target: &zb.Unit{
-							InstanceId: 2,
+							InstanceId: 8,
 						},
 					},
 				},
@@ -1486,5 +1465,69 @@ func TestGameModeOperations(t *testing.T) {
 		assert.Equal(t, 1, len(gameModeList.GameModes))
 		assert.NotEqual(t, ID, gameModeList.GameModes[0].ID)
 		assert.Equal(t, "Test game mode 2", gameModeList.GameModes[0].Name)
+	})
+}
+
+func TestCardPlayOperations(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	var matchID int64
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("SendCardPlayPlayer1", func(t *testing.T) {
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: matchID,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardPlay,
+				PlayerId:   "player-1",
+				Action: &zb.PlayerAction_CardPlay{
+					CardPlay: &zb.PlayerActionCardPlay{
+						Card: &zb.CardInstance{
+							InstanceId: 8,
+						},
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
 	})
 }
