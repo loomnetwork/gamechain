@@ -634,7 +634,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 	var attackerIndex int
 	var targetIndex int
 
-	if current.GetCardAttack().AffectObjectType == zb.AffectObjectType_CARD {
+	switch current.GetCardAttack().AffectObjectType {
+	case zb.AffectObjectType_CHARACTER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
 		}
@@ -669,6 +670,26 @@ func actionCardAttack(g *Gameplay) stateFn {
 		if target.Defense <= 0 {
 			g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
 			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
+		}
+
+	case zb.AffectObjectType_PLAYER:
+		if len(g.activePlayer().CardsInPlay) <= 0 {
+			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+		}
+		for i, card := range g.activePlayer().CardsInPlay {
+			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+				attacker = card
+				attackerIndex = i
+				break
+			}
+			return g.captureErrorAndStop(errors.New("Attacker not found"))
+		}
+
+		g.activePlayerOpponent().Defense -= attacker.Attack
+
+		if g.activePlayerOpponent().Defense <= 0 {
+			g.State.Winner = g.activePlayer().Id
+			g.State.IsEnded = true
 		}
 	}
 

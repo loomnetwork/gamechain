@@ -1296,7 +1296,7 @@ func TestGameStateOperations(t *testing.T) {
 						Attacker: &zb.CardInstance{
 							InstanceId: 13,
 						},
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_CHARACTER,
 						Target: &zb.Unit{
 							InstanceId: 8,
 						},
