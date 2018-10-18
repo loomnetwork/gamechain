@@ -402,7 +402,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -550,10 +550,6 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
-	if req.Version == "" {
-		req.Version = "v1"
-	}
-
 	// load deck id
 	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
