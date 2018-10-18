@@ -7,7 +7,7 @@ LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 
 all: build-ext cli
 
-build: contracts/zombiebattleground.1.0.0
+build: contracts/zombiebattleground.so.1.0.0
 
 build-ext: contracts/zombiebattleground.1.0.0
 
