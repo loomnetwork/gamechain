@@ -472,6 +472,8 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Defense)
 		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
+		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInGraveyard))
+		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId)
 	})
 
 	t.Run("Attacker and target are killed", func(t *testing.T) {
@@ -512,6 +514,10 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Zero(t, len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
+		assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInGraveyard))
+		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInGraveyard))
+		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInGraveyard[0].InstanceId)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId)
 	})
 }
 

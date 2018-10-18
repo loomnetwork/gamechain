@@ -289,6 +289,7 @@ func (g *Gameplay) PrintState() {
 		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
 		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
 		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+		fmt.Printf("\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
 		fmt.Println() // extra line
 	}
 
@@ -663,9 +664,11 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 		if attacker.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
+			g.activePlayer().CardsInGraveyard = append(g.activePlayer().CardsInGraveyard, attacker)
 		}
 		if target.Defense <= 0 {
 			g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
+			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
 		}
 	}
 

@@ -355,11 +355,12 @@ message PlayerState {
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
-    Deck deck  = 7;
-    int32 defense   = 8;
-    int32 currentGoo = 9;
-    int32 gooVials = 10;
-    bool hasDrawnCard = 11;
+    repeated CardInstance cardsInGraveyard = 7;
+    Deck deck  = 8;
+    int32 defense   = 9;
+    int32 currentGoo = 10;
+    int32 gooVials = 11;
+    bool hasDrawnCard = 12;
 }
 
 message Match {
