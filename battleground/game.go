@@ -540,13 +540,6 @@ func actionCardPlay(g *Gameplay) stateFn {
 	cardPlay := current.GetCardPlay()
 	card := cardPlay.Card
 
-	// check for available Goo
-	/*
-		if g.activePlayer().CurrentGoo < card.Prototype.GooCost {
-			return g.captureErrorAndStop(errInsufficientGoo)
-		}
-	*/
-
 	// check card limit on board
 	if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
 		return g.captureErrorAndStop(errLimitExceeded)
@@ -569,9 +562,6 @@ func actionCardPlay(g *Gameplay) stateFn {
 	// remove card from hand
 	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 	g.activePlayer().CardsInHand = activeCardsInHand
-
-	// deduct goo
-	//g.activePlayer().CurrentGoo -= card.Prototype.GooCost
 
 	// record history data
 	g.history = append(g.history, &zb.HistoryData{
