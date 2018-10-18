@@ -49,9 +49,13 @@ func (rb *ReverseBuffer) Write(p []byte) (n int, err error) {
 	length := len(p)
 
 	low := rb.remainingBytes - length
-	err = rb.checkOverrun(low)
+	resized, err := rb.resizeIfNeeded(-low)
 	if err != nil {
 		return 0, err
+	}
+
+	if resized {
+		low = rb.remainingBytes - length
 	}
 
 	copy(rb.buffer[low:rb.remainingBytes], p[:])
@@ -80,6 +84,33 @@ func (rb *ReverseBuffer) Seek(offset int64, whence int) (int64, error) {
 	rb.remainingBytes = newRemainingBytes
 
 	return int64(len(rb.buffer) - rb.remainingBytes), nil
+}
+
+func (rb *ReverseBuffer) resizeIfNeeded(minimumIncreaseBy int) (resized bool, err error) {
+	if minimumIncreaseBy <= 0 {
+		return false, nil
+	}
+
+	currentLength := len(rb.buffer)
+	minNewLength := currentLength + minimumIncreaseBy
+
+	var newLength int
+	if currentLength == 0 {
+		newLength = minNewLength
+	} else {
+		newLength = currentLength
+	}
+
+	for newLength < minNewLength {
+		newLength *= 2
+	}
+
+	newBuffer := make([]byte, newLength)
+	copy(newBuffer[currentLength:newLength], rb.buffer[:])
+	rb.remainingBytes += newLength - currentLength
+	rb.buffer = newBuffer
+
+	return true, nil
 }
 
 func (e ErrBufferOverrun) Error() string {

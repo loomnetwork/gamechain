@@ -48,14 +48,32 @@ func TestReverseBufferWriteString(t *testing.T) {
 	assert.Equal(t, []byte { 'T', 'e', 's', 't', ' ', '1', '2', '3', 8, 0, 0, 0 }, slice)
 }
 
-func TestReverseBufferWriteOverrun(t *testing.T) {
-	rb := NewReverseBuffer(make([]byte, 3))
+func TestReverseBufferResize(t *testing.T) {
+	rb := NewReverseBuffer(make([]byte, 2))
 
 	var err error
 	err = binary.Write(rb, binary.LittleEndian, int16(1))
 	assert.Equal(t, nil, err)
+	assert.Equal(t, 2, len(rb.buffer))
+	assert.Equal(t, 0, rb.remainingBytes)
 	err = binary.Write(rb, binary.LittleEndian, int16(2))
-	assert.NotEqual(t, nil, err)
+	assert.Equal(t, nil, err)
+	assert.Equal(t, 4, len(rb.buffer))
+	assert.Equal(t, 0, rb.remainingBytes)
+	err = binary.Write(rb, binary.LittleEndian, int16(3))
+	assert.Equal(t, nil, err)
+	assert.Equal(t, 8, len(rb.buffer))
+	assert.Equal(t, 2, rb.remainingBytes)
+}
+
+func TestReverseBufferResizeFromZero(t *testing.T) {
+	rb := NewReverseBuffer(make([]byte, 0))
+
+	var err error
+	err = binary.Write(rb, binary.LittleEndian, int16(1))
+	assert.Equal(t, nil, err)
+	assert.Equal(t, 2, len(rb.buffer))
+	assert.Equal(t, 0, rb.remainingBytes)
 }
 
 func TestReverseBufferReadOverrun(t *testing.T) {
