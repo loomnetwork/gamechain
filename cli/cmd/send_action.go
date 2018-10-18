@@ -15,6 +15,7 @@ var sendActionCmdArgs struct {
 	cardPlayInstanceID int32
 	attackerID         int32
 	targetID           int32
+	objectType         int32
 }
 
 var sendActionCmd = &cobra.Command{
@@ -39,12 +40,19 @@ var sendActionCmd = &cobra.Command{
 				},
 			}
 		case zb.PlayerActionType_CardAttack:
+			var otype zb.AffectObjectType
+			switch sendActionCmdArgs.objectType {
+			case 0:
+				otype = zb.AffectObjectType_PLAYER
+			case 1:
+				otype = zb.AffectObjectType_CHARACTER
+			}
 			req.PlayerAction.Action = &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.CardInstance{
 						InstanceId: sendActionCmdArgs.attackerID,
 					},
-					AffectObjectType: zb.AffectObjectType_CARD,
+					AffectObjectType: otype,
 					Target: &zb.Unit{
 						InstanceId: sendActionCmdArgs.targetID,
 					},
@@ -84,4 +92,5 @@ func init() {
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.cardPlayInstanceID, "instanceId", "i", 1, "card instance id for card play")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.attackerID, "attackerID", "a", 0, "Attacker ID")
 	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.targetID, "targetID", "g", 0, "Target ID")
+	sendActionCmd.Flags().Int32VarP(&sendActionCmdArgs.objectType, "objectType", "o", 0, "Object Type")
 }

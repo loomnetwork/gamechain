@@ -69,7 +69,7 @@ func TestGameStateFunc(t *testing.T) {
 				Attacker: &zb.CardInstance{
 					InstanceId: 2,
 				},
-				AffectObjectType: zb.AffectObjectType_CARD,
+				AffectObjectType: zb.AffectObjectType_CHARACTER,
 				Target: &zb.Unit{
 					InstanceId: 13,
 				},
@@ -422,7 +422,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CARD,
+					AffectObjectType: zb.AffectObjectType_CHARACTER,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -462,7 +462,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CARD,
+					AffectObjectType: zb.AffectObjectType_CHARACTER,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -504,7 +504,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CARD,
+					AffectObjectType: zb.AffectObjectType_CHARACTER,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -518,6 +518,72 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInGraveyard))
 		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInGraveyard[0].InstanceId)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId)
+	})
+
+	t.Run("Opponent overlord is attacked", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: 1,
+			Defense:    3,
+			Attack:     2,
+		})
+		gp.State.PlayerStates[1].Defense = 3
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_PLAYER,
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[1].Defense)
+	})
+
+	t.Run("Opponent overlord is attacked and defeated", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
+		assert.Nil(t, err)
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: 1,
+			Defense:    3,
+			Attack:     2,
+		})
+		gp.State.PlayerStates[1].Defense = 1
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_PLAYER,
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(-1), gp.State.PlayerStates[1].Defense)
+		assert.Equal(t, "player-1", gp.State.Winner)
+		assert.True(t, gp.isEnded())
 	})
 }
 
