@@ -39,7 +39,9 @@ const (
         GameStateChangeAction_SetPlayerDefense GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerCurrentGoo GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerGooVials GameStateChangeAction = iota
-        GameStateChangeAction_SetPlayerDeckCards GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerInitialDeckCards GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerCardsInDeck GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerCardsInHand GameStateChangeAction = iota
 )
 
 type CustomUiElement int32

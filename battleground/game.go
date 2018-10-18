@@ -77,13 +77,6 @@ func NewGamePlay(ctx contract.Context,
 		return nil, err
 	}
 
-	if g.customGameMode != nil {
-		err := g.customGameMode.UpdateInitialPlayerGameState(ctx, g.State)
-		if err != nil {
-			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
-			return nil, err
-		}
-	}
 	if err := g.run(); err != nil {
 		return nil, err
 	}
@@ -99,7 +92,7 @@ func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
 	return g, nil
 }
 
-func (g *Gameplay) createGame() error {
+func (g *Gameplay) createGame(ctx contract.Context) error {
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].Defense = 20
@@ -111,12 +104,28 @@ func (g *Gameplay) createGame() error {
 	n := r.Int31n(int32(len(g.State.PlayerStates)))
 	g.State.CurrentPlayerIndex = n
 
+	if g.customGameMode != nil {
+		err := g.customGameMode.CallOnMatchStartingBeforeInitialDraw(ctx, g.State)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return err
+		}
+	}
+
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+	}
+
+	if g.customGameMode != nil {
+		err := g.customGameMode.CallOnMatchStartingAfterInitialDraw(ctx, g.State)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return err
+		}
 	}
 
 	// add history data

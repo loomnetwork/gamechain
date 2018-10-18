@@ -29,23 +29,12 @@ func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
 	}
 }
 
-func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, gameState *zb.GameState) (err error) {
-	serializedGameState, err := c.serializeGameState(gameState)
-	if err != nil {
-		return
-	}
+func (c *CustomGameMode) CallOnMatchStartingBeforeInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "onMatchStartingBeforeInitialDraw", gameState)
+}
 
-	serializedGameStateChangeActions, err := c.callOnMatchStarting(ctx, serializedGameState)
-	if err != nil {
-		return
-	}
-
-	err = c.deserializeAndApplyGameStateChangeActions(gameState, serializedGameStateChangeActions)
-	if err != nil {
-		return
-	}
-
-	return
+func (c *CustomGameMode) CallOnMatchStartingAfterInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "onMatchStartingAfterInitialDraw", gameState)
 }
 
 func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
@@ -62,16 +51,6 @@ func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*
 	return uiElements, nil
 }
 
-func (c *CustomGameMode) StaticCallFunction(ctx contract.StaticContext, method string) ([]byte, error) {
-	// crude way to call a function with no inputs and outputs without an ABI
-	input := crypto.Keccak256([]byte(method + "()"))[:4]
-
-	ctx.Logger().Info(fmt.Sprintf("methodCallAbi ----------------%v\n", input))
-
-	var evmOut []byte
-	return evmOut, contract.StaticCallEVM(ctx, c.tokenAddr, input, &evmOut)
-}
-
 func (c *CustomGameMode) CallFunction(ctx contract.Context, method string) (err error) {
 	// crude way to call a function with no inputs and outputs without an ABI
 	input := crypto.Keccak256([]byte(method + "()"))[:4]
@@ -80,6 +59,25 @@ func (c *CustomGameMode) CallFunction(ctx contract.Context, method string) (err 
 
 	var evmOut []byte
 	return contract.CallEVM(ctx, c.tokenAddr, input, &evmOut)
+}
+
+func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookName string, gameState *zb.GameState) (err error) {
+	serializedGameState, err := c.serializeGameState(gameState)
+	if err != nil {
+		return
+	}
+
+	serializedGameStateChangeActions, err := c.callMatchHook(ctx, matchHookName, serializedGameState)
+	if err != nil {
+		return
+	}
+
+	err = c.deserializeAndApplyGameStateChangeActions(gameState, serializedGameStateChangeActions)
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 func (c *CustomGameMode) staticCallEVM(ctx contract.StaticContext, method string, result interface{}, params ...interface{}) error {
@@ -103,8 +101,8 @@ func (c *CustomGameMode) callEVM(ctx contract.Context, method string, params ...
 	return evmOut, contract.CallEVM(ctx, c.tokenAddr, input, &evmOut)
 }
 
-func (c *CustomGameMode) callOnMatchStarting(ctx contract.Context, serializedGameState []byte) (serializedGameStateChangeActions []byte, err error) {
-	if err := c.staticCallEVM(ctx, "onMatchStarting", &serializedGameStateChangeActions, serializedGameState); err != nil {
+func (c *CustomGameMode) callMatchHook(ctx contract.Context, matchHookName string, serializedGameState []byte) (serializedGameStateChangeActions []byte, err error) {
+	if serializedGameStateChangeActions, err = c.callEVM(ctx, matchHookName, serializedGameState); err != nil {
 		return nil, err
 	}
 
@@ -266,7 +264,7 @@ const zbGameModeABI = `
           "type": "bytes"
         }
       ],
-      "name": "onMatchStarting",
+      "name": "onMatchStartingBeforeInitialDraw",
       "outputs": [
         {
           "name": "",

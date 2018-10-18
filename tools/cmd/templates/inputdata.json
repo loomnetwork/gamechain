@@ -39,7 +39,9 @@
                 "SetPlayerDefense",
                 "SetPlayerCurrentGoo",
                 "SetPlayerGooVials",
-                "SetPlayerDeckCards"
+                "SetPlayerInitialDeckCards",
+                "SetPlayerCardsInDeck",
+                "SetPlayerCardsInHand"
             ]
         },
         {

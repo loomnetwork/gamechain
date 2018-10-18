@@ -30,7 +30,7 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 			return nil, err
 		}
 
-		// Deck
+		// Deck info
 		if err = binary.Write(rb, binary.BigEndian, int64(playerState.Deck.Id)); err != nil {
 			return nil, err
 		}
@@ -43,22 +43,200 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 			return nil, err
 		}
 
-		if err = binary.Write(rb, binary.BigEndian, uint8(len(playerState.Deck.Cards))); err != nil {
+		// Deck cards
+		if err = c.serializeCardCollectionArray(rb, playerState.Deck.Cards); err != nil {
 			return nil, err
 		}
 
-		for _, card := range playerState.Deck.Cards {
-			if err = serializeString(rb, card.CardName); err != nil {
-				return nil, err
-			}
+		if err = c.serializeCardInstanceArray(rb, playerState.CardsInDeck); err != nil {
+			return nil, err
+		}
 
-			if err = binary.Write(rb, binary.BigEndian, int64(card.Amount)); err != nil {
-				return nil, err
-			}
+		if err = c.serializeCardInstanceArray(rb, playerState.CardsInHand); err != nil {
+			return nil, err
 		}
 	}
 
 	return rb.GetFilledSlice(), nil
+}
+
+func (c *CustomGameMode) serializeCardCollection(rb *ReverseBuffer, card *zb.CardCollection) (err error) {
+	if err = serializeString(rb, card.CardName); err != nil {
+		return err
+	}
+
+	if err = binary.Write(rb, binary.BigEndian, uint64(card.Amount)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *CustomGameMode) deserializeCardCollection(rb *ReverseBuffer) (card *zb.CardCollection, err error) {
+	name, err := deserializeString(rb)
+	if err != nil {
+		return nil, err
+	}
+
+	var amount int64
+	if err = binary.Read(rb, binary.BigEndian, &amount); err != nil {
+		return nil, err
+	}
+
+	return &zb.CardCollection{
+		CardName: name,
+		Amount: amount,
+	}, nil
+}
+
+func (c *CustomGameMode) serializeCardCollectionArray(rb *ReverseBuffer, cards []*zb.CardCollection) (err error) {
+	if err = binary.Write(rb, binary.BigEndian, uint64(len(cards))); err != nil {
+		return err
+	}
+
+	for _, card := range cards {
+		if err = c.serializeCardCollection(rb, card); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (c *CustomGameMode) deserializeCardCollectionArray(rb *ReverseBuffer) (cards []*zb.CardCollection, err error) {
+	var cardCount uint64
+	if err = binary.Read(rb, binary.BigEndian, &cardCount); err != nil {
+		return
+	}
+
+	cards = make([]*zb.CardCollection, cardCount)
+	for i := uint64(0); i < cardCount; i++ {
+		cards[i], err = c.deserializeCardCollection(rb)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return cards, nil
+}
+
+func (c *CustomGameMode) serializeCardPrototype(rb *ReverseBuffer, card *zb.CardPrototype) (err error) {
+	if err = serializeString(rb, card.Name); err != nil {
+		return err
+	}
+
+	if err = binary.Write(rb, binary.BigEndian, uint8(card.GooCost)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *CustomGameMode) deserializeCardPrototype(rb *ReverseBuffer) (card *zb.CardPrototype, err error) {
+	name, err := deserializeString(rb)
+	if err != nil {
+		return nil, err
+	}
+
+	var gooCost uint8
+	if err = binary.Read(rb, binary.BigEndian, &gooCost); err != nil {
+		return nil, err
+	}
+
+	return &zb.CardPrototype{
+		Name: name,
+		GooCost: int32(gooCost),
+	}, nil
+}
+
+func (c *CustomGameMode) serializeCardInstance(rb *ReverseBuffer, card *zb.CardInstance) (err error) {
+	if err = binary.Write(rb, binary.BigEndian, int32(card.InstanceId)); err != nil {
+		return err
+	}
+
+	if err = c.serializeCardPrototype(rb, card.Prototype); err != nil {
+		return err
+	}
+
+	if err = binary.Write(rb, binary.BigEndian, int32(card.Defense)); err != nil {
+		return err
+	}
+
+	if err = binary.Write(rb, binary.BigEndian, int32(card.Attack)); err != nil {
+		return err
+	}
+
+	if err = serializeString(rb, card.Owner); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *CustomGameMode) deserializeCardInstance(rb *ReverseBuffer) (card *zb.CardInstance, err error) {
+	var instanceId int32
+	if err = binary.Read(rb, binary.BigEndian, &instanceId); err != nil {
+		return nil, err
+	}
+
+	var cardPrototype *zb.CardPrototype
+	if cardPrototype, err = c.deserializeCardPrototype(rb); err != nil {
+		return nil, err
+	}
+
+	var defense int32
+	if err = binary.Read(rb, binary.BigEndian, &defense); err != nil {
+		return nil, err
+	}
+
+	var attack int32
+	if err = binary.Read(rb, binary.BigEndian, &attack); err != nil {
+		return nil, err
+	}
+
+	owner, err := deserializeString(rb)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.CardInstance{
+		InstanceId: instanceId,
+		Prototype: cardPrototype,
+		Defense: defense,
+		Attack: attack,
+		Owner: owner,
+	}, nil
+}
+
+func (c *CustomGameMode) serializeCardInstanceArray(rb *ReverseBuffer, cards []*zb.CardInstance) (err error) {
+	if err = binary.Write(rb, binary.BigEndian, uint64(len(cards))); err != nil {
+		return err
+	}
+
+	for _, card := range cards {
+		if err = c.serializeCardInstance(rb, card); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (c *CustomGameMode) deserializeCardInstanceArray(rb *ReverseBuffer) (cards []*zb.CardInstance, err error) {
+	var cardCount uint64
+	if err = binary.Read(rb, binary.BigEndian, &cardCount); err != nil {
+		return
+	}
+
+	cards = make([]*zb.CardInstance, cardCount)
+	for i := uint64(0); i < cardCount; i++ {
+		cards[i], err = c.deserializeCardInstance(rb)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return cards, nil
 }
 
 func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(state *zb.GameState, serializedActions []byte) (err error) {
@@ -113,36 +291,36 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(state *zb.Gam
 			}
 
 			state.PlayerStates[playerIndex].GooVials = int32(newGooVials)
-		case battleground.GameStateChangeAction_SetPlayerDeckCards:
+		case battleground.GameStateChangeAction_SetPlayerInitialDeckCards:
 			var playerIndex byte
 			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
 				return
 			}
 
-			var cardCount byte
-			if err = binary.Read(rb, binary.BigEndian, &cardCount); err != nil {
+			state.PlayerStates[playerIndex].Deck.Cards, err = c.deserializeCardCollectionArray(rb)
+			if err != nil {
+				return err
+			}
+		case battleground.GameStateChangeAction_SetPlayerCardsInDeck:
+			var playerIndex byte
+			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
 				return
 			}
 
-			cards := make([]*zb.CardCollection, cardCount)
-			for i := byte(0); i < cardCount; i++ {
-				name, err := deserializeString(rb)
-				if err != nil {
-					return err
-				}
-
-				var amount int64
-				if err = binary.Read(rb, binary.BigEndian, &amount); err != nil {
-					return err
-				}
-
-				cards[i] = &zb.CardCollection{
-					CardName: name,
-					Amount: amount,
-				}
+			state.PlayerStates[playerIndex].CardsInDeck, err = c.deserializeCardInstanceArray(rb)
+			if err != nil {
+				return err
+			}
+		case battleground.GameStateChangeAction_SetPlayerCardsInHand:
+			var playerIndex byte
+			if err = binary.Read(rb, binary.BigEndian, &playerIndex); err != nil {
+				return
 			}
 
-			state.PlayerStates[playerIndex].Deck.Cards = cards
+			state.PlayerStates[playerIndex].CardsInHand, err = c.deserializeCardInstanceArray(rb)
+			if err != nil {
+				return err
+			}
 		default:
 			return errors.New(fmt.Sprintf("Unknown game state change action %d", action))
 		}
