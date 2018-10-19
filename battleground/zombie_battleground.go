@@ -712,6 +712,8 @@ func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.Ge
 		return nil, err
 	}
 
+	ctx.Logger().Info(fmt.Sprintf("gameState: %+v", gameState))
+
 	return &zb.GetGameStateResponse{
 		GameState: gameState,
 	}, nil
@@ -749,6 +751,9 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+
+	ctx.Logger().Info(fmt.Sprintf("REQ: %+v", req))
+
 	// check if the user is in the match
 	found := false
 	for _, player := range match.PlayerStates {

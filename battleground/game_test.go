@@ -170,7 +170,8 @@ func TestInvalidUserTurn(t *testing.T) {
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Equal(t, err, errInvalidPlayer)
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+	cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
@@ -344,6 +345,7 @@ func TestDrawCard(t *testing.T) {
 
 	// DrawCard cannot be called twice for the same turn
 	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
+		t.Skip("Skipping this while we let the client decide CardDraw")
 		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
@@ -352,9 +354,11 @@ func TestDrawCard(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		// add more action
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		cardID = gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 		assert.Equal(t, errInvalidAction, err)
 
 	})
@@ -368,15 +372,18 @@ func TestDrawCard(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil)
 		assert.Nil(t, err)
 		// add more action
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player2})
+		cardID = gp.State.PlayerStates[1].CardsInDeck[0].InstanceId
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player2, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1})
+		cardID = gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
+		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
 		assert.Nil(t, err)
 	})
 }
