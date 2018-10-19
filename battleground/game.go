@@ -119,7 +119,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed, i)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
@@ -467,15 +467,16 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// check player turn
-	if err := g.checkCurrentPlayer(current); err != nil {
-		return g.captureErrorAndStop(err)
-	}
+	// TODO: for now, skip player check so we dont break client logic at match start due to mulligans
+	// if err := g.checkCurrentPlayer(current); err != nil {
+	// 	return g.captureErrorAndStop(err)
+	// }
 
 	// check if player has already drawn a card after starting new turn
-	if g.activePlayer().HasDrawnCard {
-		g.err = errInvalidAction
-		return nil
-	}
+	// if g.activePlayer().HasDrawnCard {
+	// 	g.err = errInvalidAction
+	// 	return nil
+	// }
 
 	// draw card
 	if len(g.activePlayer().CardsInDeck) < 1 {
@@ -488,10 +489,30 @@ func actionDrawCard(g *Gameplay) stateFn {
 		return nil
 	}
 
-	card := g.activePlayer().CardsInDeck[0]
-	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+	// TODO: for now we just trust the client and draw the card it tells us
+	// card := g.activePlayer().CardsInDeck[0]
+	// if card.InstanceId != current.GetDrawCard().CardInstance.InstanceId {
+	// 	return g.captureErrorAndStop(errors.New("Client drew a card but server could not verify it"))
+	// }
+
+	var cardIndexInDeck int
+	var card *zb.CardInstance
+	for i, cardInDeck := range g.activePlayer().CardsInDeck {
+		if cardInDeck.InstanceId == current.GetDrawCard().CardInstance.InstanceId {
+			card = cardInDeck
+			cardIndexInDeck = i
+			g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
+			break
+		}
+	}
+
+	if card == nil {
+		return g.captureErrorAndStop(errors.New("Can't draw card. Card not found in deck"))
+	}
+
 	// remove card from CardsInDeck
-	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	// g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	g.activePlayer().CardsInDeck = append(g.activePlayer().CardsInDeck[:cardIndexInDeck], g.activePlayer().CardsInDeck[cardIndexInDeck+1:]...)
 
 	// card drawn, don't allow another draw until next turn
 	g.activePlayer().HasDrawnCard = true
