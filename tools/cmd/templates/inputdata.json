@@ -39,9 +39,12 @@
                 "SetPlayerDefense",
                 "SetPlayerCurrentGoo",
                 "SetPlayerGooVials",
-                "SetPlayerInitialDeckCards",
                 "SetPlayerCardsInDeck",
-                "SetPlayerCardsInHand"
+                "SetPlayerCardsInHand",
+                "SetPlayerInitialCardsInHandCount",
+                "SetPlayerMaxCardsInPlay",
+                "SetPlayerMaxCardsInHand",
+                "SetPlayerMaxGooVials"
             ]
         },
         {
