@@ -14,6 +14,7 @@ const (
 	mulliganCards  = 3
 	maxCardsInPlay = 6
 	maxCardsInHand = 10
+	maxGooVials = 10
 )
 
 var (
@@ -73,7 +74,7 @@ func NewGamePlay(ctx contract.Context,
 		return nil, err
 	}
 
-	if err := g.createGame(); err != nil {
+	if err := g.createGame(ctx); err != nil {
 		return nil, err
 	}
 
@@ -98,6 +99,10 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		g.State.PlayerStates[i].Defense = 20
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
+		g.State.PlayerStates[i].InitialCardsInHandCount = mulliganCards
+		g.State.PlayerStates[i].MaxCardsInPlay = maxCardsInPlay
+		g.State.PlayerStates[i].MaxCardsInHand = maxCardsInHand
+		g.State.PlayerStates[i].MaxGooVials = maxGooVials
 	}
 	// coin toss for the first player
 	r := rand.New(rand.NewSource(g.State.Randomseed))
@@ -116,8 +121,8 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
 		// draw cards 3 card for mulligan
-		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
-		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
 	}
 
 	if g.customGameMode != nil {
@@ -379,8 +384,8 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 
 	// Check if all the mulliganed cards and number of card that can be mulligan
-	if len(mulligan.MulliganedCards) > mulliganCards {
-		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", mulliganCards))
+	if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
+		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
 	}
 	for _, card := range mulligan.MulliganedCards {
 		_, _, found := findCardInCardList(card, player.CardsInHand)
@@ -478,7 +483,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// handle card limit in hand
-	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
+	if len(g.activePlayer().CardsInHand) + 1 > int(g.activePlayer().MaxCardsInHand) {
 		// TODO: assgin g.err
 		return nil
 	}
@@ -550,7 +555,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 	card := cardPlay.Card
 
 	// check card limit on board
-	if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
+	if len(g.activePlayer().CardsInPlay) + 1 > int(g.activePlayer().MaxCardsInPlay) {
 		return g.captureErrorAndStop(errLimitExceeded)
 	}
 
