@@ -113,7 +113,7 @@ func (g *Gameplay) createGame() error {
 
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed)
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed, i)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
@@ -475,6 +475,11 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	card := g.activePlayer().CardsInDeck[0]
+
+	if card.InstanceId != current.GetDrawCard().CardInstance.InstanceId {
+		return g.captureErrorAndStop(errors.New("Client drew a card but server could not verify it"))
+	}
+
 	g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
 	// remove card from CardsInDeck
 	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
