@@ -94,8 +94,8 @@ func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
 	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
 }
 
-func shuffleCardInDeck(deck []*zb.CardInstance, seed int64) []*zb.CardInstance {
-	r := rand.New(rand.NewSource(seed))
+func shuffleCardInDeck(deck []*zb.CardInstance, seed int64, playerIndex int) []*zb.CardInstance {
+	r := rand.New(rand.NewSource(seed + int64(playerIndex)))
 	for i := 0; i < len(deck); i++ {
 		n := r.Intn(i + 1)
 		// do a swap
