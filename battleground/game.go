@@ -490,6 +490,9 @@ func actionDrawCard(g *Gameplay) stateFn {
 			g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
 			break
 		}
+	}
+
+	if card == nil {
 		return g.captureErrorAndStop(errors.New("Can't draw card. Card not found in deck"))
 	}
 
