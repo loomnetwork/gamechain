@@ -345,6 +345,7 @@ func TestDrawCard(t *testing.T) {
 
 	// DrawCard cannot be called twice for the same turn
 	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
+		t.Skip("Skipping this while we let the client decide CardDraw")
 		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
