@@ -31,12 +31,13 @@ var (
 )
 
 type Gameplay struct {
-	State          *zb.GameState
-	stateFn        stateFn
-	err            error
-	customGameMode *CustomGameMode
-	history        []*zb.HistoryData
-	ctx            *contract.Context
+	State                  *zb.GameState
+	stateFn                stateFn
+	err                    error
+	customGameMode         *CustomGameMode
+	history                []*zb.HistoryData
+	ctx                    *contract.Context
+	ClientSideRuleOverride bool //disables all checks to ensure the client can work before server is fully implemented
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -48,6 +49,7 @@ func NewGamePlay(ctx contract.Context,
 	players []*zb.PlayerState,
 	seed int64,
 	customGameAddress *loom.Address,
+	clientSideRuleOverride bool,
 ) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
@@ -64,9 +66,10 @@ func NewGamePlay(ctx contract.Context,
 		Version:            version,
 	}
 	g := &Gameplay{
-		State:          state,
-		customGameMode: customGameMode,
-		ctx:            &ctx,
+		State:                  state,
+		customGameMode:         customGameMode,
+		ctx:                    &ctx,
+		ClientSideRuleOverride: clientSideRuleOverride,
 	}
 
 	err := populateDeckCards(ctx, players, version)
@@ -85,8 +88,8 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
-	g := &Gameplay{State: state}
+func GamePlayFrom(state *zb.GameState, override bool) (*Gameplay, error) {
+	g := &Gameplay{State: state, ClientSideRuleOverride: override}
 	if err := g.run(); err != nil {
 		return nil, err
 	}
@@ -573,41 +576,60 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	cardPlay := current.GetCardPlay()
-	card := cardPlay.Card
 
-	// check card limit on board
-	if len(g.activePlayer().CardsInPlay) + 1 > int(g.activePlayer().MaxCardsInPlay) {
-		return g.captureErrorAndStop(errLimitExceeded)
-	}
+	if !g.ClientSideRuleOverride {
+		card := cardPlay.Card
 
-	activeCardsInHand := g.activePlayer().CardsInHand
-	// TODO: handle card limit
-	if len(activeCardsInHand) == 0 {
-		return g.captureErrorAndStop(errNoCardsInHand)
-	}
+		// check card limit on board
+		if len(g.activePlayer().CardsInPlay)+1 > int(g.activePlayer().MaxCardsInPlay) {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errLimitExceeded.Error())
+			} else {
+				return g.captureErrorAndStop(errLimitExceeded)
+			}
+		}
 
-	// get card instance from cardsInHand list
-	cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
-	if !found {
-		return g.captureErrorAndStop(errCardNotFoundInHand)
-	}
+		activeCardsInHand := g.activePlayer().CardsInHand
+		// TODO: handle card limit
+		if len(activeCardsInHand) == 0 {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
+			} else {
+				return g.captureErrorAndStop(errNoCardsInHand)
+			}
+		}
 
-	// put card on board
-	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-	// remove card from hand
-	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-	g.activePlayer().CardsInHand = activeCardsInHand
+		// get card instance from cardsInHand list
+		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
+		if !found {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errCardNotFoundInHand)
+			}
+		}
 
-	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_FullInstance{
-			FullInstance: &zb.HistoryFullInstance{
-				InstanceId: card.InstanceId,
-				Attack:     card.Attack,
-				Defense:    card.Defense,
+		// put card on board
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
+		// remove card from hand
+		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+		g.activePlayer().CardsInHand = activeCardsInHand
+
+		// record history data
+		g.history = append(g.history, &zb.HistoryData{
+			Data: &zb.HistoryData_FullInstance{
+				FullInstance: &zb.HistoryFullInstance{
+					InstanceId: card.InstanceId,
+					Attack:     card.Attack,
+					Defense:    card.Defense,
+				},
 			},
-		},
-	})
+		})
+	}
 
 	// determine the next action
 	g.PrintState()
@@ -662,10 +684,28 @@ func actionCardAttack(g *Gameplay) stateFn {
 	switch current.GetCardAttack().AffectObjectType {
 	case zb.AffectObjectType_CHARACTER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
-			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+			if g.ClientSideRuleOverride {
+				fmt.Printf("No cards on board to attack with")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+			}
 		}
 		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
-			return g.captureErrorAndStop(errors.New("No cards on board to attack"))
+			if g.ClientSideRuleOverride {
+				fmt.Printf("No cards on board to attack with")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
+			}
 		}
 		for i, card := range g.activePlayer().CardsInPlay {
 			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
@@ -673,7 +713,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 				attackerIndex = i
 				break
 			}
-			return g.captureErrorAndStop(errors.New("Attacker not found"))
+			if g.ClientSideRuleOverride {
+				fmt.Printf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("Attacker not found"))
+			}
 		}
 
 		for i, card := range g.activePlayerOpponent().CardsInPlay {
@@ -699,7 +748,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 	case zb.AffectObjectType_PLAYER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
-			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+			if g.ClientSideRuleOverride {
+				fmt.Printf("No cards on board to attack with")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+			}
 		}
 		for i, card := range g.activePlayer().CardsInPlay {
 			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
@@ -707,7 +765,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 				attackerIndex = i
 				break
 			}
-			return g.captureErrorAndStop(errors.New("Attacker not found"))
+			if g.ClientSideRuleOverride {
+				fmt.Printf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("Attacker not found"))
+			}
 		}
 
 		g.activePlayerOpponent().Defense -= attacker.Attack

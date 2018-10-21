@@ -518,6 +518,12 @@ message EndMatchResponse {
     GameState gameState = 1;
 }
 
+message MatchEndEvent {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
+}
+
 // Game Modes
 
 message GameMode {
