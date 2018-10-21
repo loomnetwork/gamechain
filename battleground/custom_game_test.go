@@ -121,7 +121,7 @@ func createSimpleGame(t *testing.T) *Gameplay {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil)
+	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, false)
 
 	assert.Nil(t, err)
 

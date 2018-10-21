@@ -19,6 +19,7 @@ import (
 )
 
 type ZombieBattleground struct {
+	ClientSideRuleOverride bool //disables all checks to ensure the client can work before server is fully implemented
 }
 
 const (
@@ -40,6 +41,10 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	secret = os.Getenv("SECRET_KEY")
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
+	}
+	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
+	if disableClientSideOverride == "false" {
+		z.ClientSideRuleOverride = false
 	}
 
 	if req.Oracle != nil {
@@ -667,7 +672,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)
+	fmt.Printf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride)
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -1130,4 +1136,4 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	return nil
 }
 
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
+var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{ClientSideRuleOverride: true})
