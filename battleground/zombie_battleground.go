@@ -45,6 +45,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
 	if disableClientSideOverride == "false" {
 		z.ClientSideRuleOverride = false
+	} else {
+		z.ClientSideRuleOverride = true
 	}
 
 	if req.Oracle != nil {
@@ -672,7 +674,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	fmt.Printf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride)
+	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride))
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
@@ -749,6 +751,21 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
+	//TODO obviously this will need to change drastically once the logic is on the server
+	emitMsg := zb.MatchEndEvent{
+		UserId:   req.GetUserId(),
+		MatchId:  req.MatchId,
+		WinnerId: req.WinnerId,
+	}
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics([]byte(data), match.Topics...)
+	}
+	fmt.Printf("MatchEnded-%v\n", emitMsg)
+
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
 
@@ -775,7 +792,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate)
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -827,7 +844,7 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate)
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}

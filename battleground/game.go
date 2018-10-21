@@ -94,8 +94,8 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState) (*Gameplay, error) {
-	g := &Gameplay{State: state}
+func GamePlayFrom(state *zb.GameState, override bool) (*Gameplay, error) {
+	g := &Gameplay{State: state, ClientSideRuleOverride: override}
 	if err := g.run(); err != nil {
 		return nil, err
 	}
