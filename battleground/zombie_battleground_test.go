@@ -316,7 +316,7 @@ func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequ
 }
 
 func TestAccountOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
 	var ctx contract.Context
@@ -350,7 +350,7 @@ func TestAccountOperations(t *testing.T) {
 }
 
 func TestCardCollectionOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "8996b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
 	var addr loom.Address
 	var ctx contract.Context
@@ -371,7 +371,7 @@ func TestCardCollectionOperations(t *testing.T) {
 }
 
 func TestDeckOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "7796b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
 	var addr loom.Address
 	var ctx contract.Context
@@ -660,7 +660,7 @@ func TestDeckOperations(t *testing.T) {
 }
 
 func TestCardOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -688,7 +688,7 @@ func TestCardOperations(t *testing.T) {
 }
 
 func TestHeroOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "7696b824516b283f81ea1747fbddbe73fe4b5fce0eac0728e47de41d8e306701"
 	var addr loom.Address
 	var ctx contract.Context
@@ -781,7 +781,7 @@ func TestHeroOperations(t *testing.T) {
 }
 
 func TestUpdateInitDataOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -796,7 +796,7 @@ func TestUpdateInitDataOperations(t *testing.T) {
 }
 
 func TestUpdateCardListOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -910,7 +910,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 }
 
 func TestUpdateHeroLibraryOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -957,7 +957,7 @@ func TestUpdateHeroLibraryOperations(t *testing.T) {
 }
 
 func TestFindMatchOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -1058,7 +1058,7 @@ func TestFindMatchOperations(t *testing.T) {
 }
 
 func TestGameStateOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -1376,7 +1376,7 @@ func TestGameStateOperations(t *testing.T) {
 }
 
 func TestGameModeOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
@@ -1469,7 +1469,7 @@ func TestGameModeOperations(t *testing.T) {
 }
 
 func TestCardPlayOperations(t *testing.T) {
-	var c *ZombieBattleground
+	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
 	var ctx contract.Context
