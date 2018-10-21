@@ -19,6 +19,7 @@ import (
 )
 
 type ZombieBattleground struct {
+	ClientSideRuleOverride bool //disables all checks to ensure the client can work before server is fully implemented
 }
 
 const (
@@ -40,6 +41,12 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	secret = os.Getenv("SECRET_KEY")
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
+	}
+	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
+	if disableClientSideOverride == "false" {
+		z.ClientSideRuleOverride = false
+	} else {
+		z.ClientSideRuleOverride = true
 	}
 
 	if req.Oracle != nil {
@@ -667,7 +674,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2)
+	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride))
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -743,6 +751,21 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
+	//TODO obviously this will need to change drastically once the logic is on the server
+	emitMsg := zb.MatchEndEvent{
+		UserId:   req.GetUserId(),
+		MatchId:  req.MatchId,
+		WinnerId: req.WinnerId,
+	}
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics([]byte(data), match.Topics...)
+	}
+	fmt.Printf("MatchEnded-%v\n", emitMsg)
+
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
 
@@ -769,7 +792,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate)
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -821,7 +844,7 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate)
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -1113,4 +1136,4 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	return nil
 }
 
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
+var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{ClientSideRuleOverride: true})
