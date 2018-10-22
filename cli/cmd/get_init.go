@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -23,13 +24,17 @@ var getInitCmd = &cobra.Command{
 		}
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
+		callerAddr := loom.Address{
+			ChainID: commonTxObjs.rpcClient.GetChainID(),
+			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+		}
 
 		req := zb.GetInitRequest{
 			Version: getInitCmdArgs.version,
 		}
 		result := zb.GetInitResponse{}
 
-		_, err := commonTxObjs.contract.Call("GetInit", &req, signer, &result)
+		_, err := commonTxObjs.contract.StaticCall("GetInit", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}

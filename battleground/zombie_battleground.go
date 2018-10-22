@@ -174,7 +174,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	return nil
 }
 
-func (z *ZombieBattleground) GetInit(ctx contract.Context, req *zb.GetInitRequest) (*zb.GetInitResponse, error) {
+func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInitRequest) (*zb.GetInitResponse, error) {
 	var cardList zb.CardList
 	var heroList zb.HeroList
 	var defaultHeroList zb.HeroList
