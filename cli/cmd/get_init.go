@@ -38,7 +38,7 @@ var getInitCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println(j)
+		fmt.Println(string(j))
 		return nil
 	},
 }
