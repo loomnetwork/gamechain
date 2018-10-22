@@ -39,12 +39,12 @@ func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
 	}
 }
 
-func (c *CustomGameMode) CallOnMatchStartingBeforeInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
-	return c.callAndApplyMatchHook(ctx, "onMatchStartingBeforeInitialDraw", gameState)
+func (c *CustomGameMode) CallHookBeforeMatchStart(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "beforeMatchStart", gameState)
 }
 
-func (c *CustomGameMode) CallOnMatchStartingAfterInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
-	return c.callAndApplyMatchHook(ctx, "onMatchStartingAfterInitialDraw", gameState)
+func (c *CustomGameMode) CallHookAfterInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "afterInitialDraw", gameState)
 }
 
 func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
@@ -202,122 +202,6 @@ const zbGameModeABI = `
       "type": "event"
     },
     {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_from",
-          "type": "address"
-        }
-      ],
-      "name": "MatchedStarted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "player1Addr",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "player2Addr",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "winner",
-          "type": "uint256"
-        }
-      ],
-      "name": "MatchFinished",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "tokens",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardTokens",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "cardID",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardCard",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "packCount",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "packType",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardPack",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_from",
-          "type": "address"
-        }
-      ],
-      "name": "UserRegistered",
-      "type": "event"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "name",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
         {
@@ -325,13 +209,8 @@ const zbGameModeABI = `
           "type": "bytes"
         }
       ],
-      "name": "onMatchStartingBeforeInitialDraw",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
+      "name": "beforeMatchStart",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -344,13 +223,8 @@ const zbGameModeABI = `
           "type": "bytes"
         }
       ],
-      "name": "onMatchStartingAfterInitialDraw",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
+      "name": "afterInitialDraw",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
