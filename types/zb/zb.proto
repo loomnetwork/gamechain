@@ -535,6 +535,9 @@ message MatchEndEvent {
     string winnerId = 3;
 }
 
+message ClearMatchPoolRequest {
+
+}
 
 // Game Modes
 
