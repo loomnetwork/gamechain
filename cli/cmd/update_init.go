@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var updateInitCmdArgs struct {
-	version string
-	file    string
+	version    string
+	file       string
+	oldVersion string
 }
 
 var updateInitCmd = &cobra.Command{
@@ -41,6 +41,7 @@ var updateInitCmd = &cobra.Command{
 		}
 
 		updateInitData.Version = updateInitCmdArgs.version
+		updateInitData.OldVersion = updateInitCmdArgs.oldVersion
 		_, err = commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateInit: %s", err.Error())
@@ -56,4 +57,5 @@ func init() {
 
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "", "UserId of account")
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
+	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.oldVersion, "old_version", "o", "", "Old version to copy heroes from")
 }

@@ -105,8 +105,15 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 	// initialize heros
-	heroList := zb.HeroList{
-		Heroes: req.Heroes,
+	var heroList zb.HeroList
+	if req.OldVersion == "" {
+		heroList = zb.HeroList{
+			Heroes: req.Heroes,
+		}
+	} else {
+		if err := ctx.Get(MakeVersionedKey(req.OldVersion, heroListKey), &heroList); err != nil {
+			return err
+		}
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return err

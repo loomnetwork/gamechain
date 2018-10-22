@@ -294,6 +294,115 @@ var updateInitRequest = zb.UpdateInitRequest{
 	},
 }
 
+var updateInitRequestWithOldHeroes = zb.UpdateInitRequest{
+	Version:    "v2",
+	OldVersion: "v1",
+	DefaultCollection: []*zb.CardCollection{
+		{CardName: "Banshee", Amount: 4},
+		{CardName: "Breezee", Amount: 3},
+		{CardName: "Buffer", Amount: 5},
+		{CardName: "Soothsayer", Amount: 4},
+		{CardName: "Wheezy", Amount: 3},
+		{CardName: "Whiffer", Amount: 5},
+		{CardName: "Whizpar", Amount: 4},
+		{CardName: "Zhocker", Amount: 3},
+		{CardName: "Bouncer", Amount: 5},
+		{CardName: "Dragger", Amount: 4},
+		{CardName: "Guzt", Amount: 3},
+		{CardName: "Pushhh", Amount: 5},
+	},
+	Cards: []*zb.Card{
+		{
+			Id:      1,
+			Set:     "Air",
+			Name:    "Banshee",
+			Rank:    "Minion",
+			Type:    "Feral",
+			Damage:  2,
+			Health:  1,
+			Cost:    2,
+			Ability: "Feral",
+			Effects: []*zb.Effect{
+				{
+					Trigger:  "entry",
+					Effect:   "feral",
+					Duration: "permanent",
+					Target:   "self",
+				},
+			},
+			CardViewInfo: &zb.CardViewInfo{
+				Position: &zb.Coordinates{
+					X: 1.5,
+					Y: 2.5,
+					Z: 3.5,
+				},
+				Scale: &zb.Coordinates{
+					X: 0.5,
+					Y: 0.5,
+					Z: 0.5,
+				},
+			},
+		},
+		{
+			Id:      2,
+			Set:     "Air",
+			Name:    "Azuraz",
+			Rank:    "Minion",
+			Type:    "Walker",
+			Damage:  1,
+			Health:  1,
+			Cost:    1,
+			Ability: "-",
+			Effects: []*zb.Effect{
+				{
+					Trigger: "death",
+					Effect:  "attack_strength_buff",
+					Target:  "friendly_selectable",
+				},
+			},
+		},
+		{
+			Id:      3,
+			Set:     "Air",
+			Name:    "NewCard",
+			Rank:    "Minion",
+			Type:    "Walker",
+			Damage:  1,
+			Health:  1,
+			Cost:    1,
+			Ability: "-",
+			Effects: []*zb.Effect{
+				{
+					Trigger: "death",
+					Effect:  "attack_strength_buff",
+					Target:  "friendly_selectable",
+				},
+			},
+		},
+	},
+	DefaultDecks: []*zb.Deck{
+		{
+			Id:     0,
+			HeroId: 2,
+			Name:   "Default",
+			Cards: []*zb.CardCollection{
+				{CardName: "Banshee", Amount: 2},
+				{CardName: "Breezee", Amount: 2},
+				{CardName: "Buffer", Amount: 2},
+				{CardName: "Soothsayer", Amount: 2},
+				{CardName: "Wheezy", Amount: 2},
+				{CardName: "Whiffer", Amount: 2},
+				{CardName: "Whizpar", Amount: 1},
+				{CardName: "Zhocker", Amount: 1},
+				{CardName: "Bouncer", Amount: 1},
+				{CardName: "Dragger", Amount: 1},
+				{CardName: "Guzt", Amount: 1},
+				{CardName: "Pushhh", Amount: 1},
+			},
+		},
+	},
+}
+
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
 	c = &ZombieBattleground{}
 	pubKey, _ := hex.DecodeString(pubKeyHex)
@@ -790,6 +899,20 @@ func TestUpdateInitDataOperations(t *testing.T) {
 
 	t.Run("UpdateInit", func(t *testing.T) {
 		err := c.UpdateInit(ctx, &updateInitRequest)
+
+		assert.Nil(t, err)
+	})
+}
+func TestUpdateInitDataOperationsWithOldHeroes(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	t.Run("UpdateInit", func(t *testing.T) {
+		err := c.UpdateInit(ctx, &updateInitRequestWithOldHeroes)
 
 		assert.Nil(t, err)
 	})
