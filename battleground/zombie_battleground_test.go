@@ -294,7 +294,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 	},
 }
 
-var updateInitRequestWithOldHeroes = zb.UpdateInitRequest{
+var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	Version:    "v2",
 	OldVersion: "v1",
 	DefaultCollection: []*zb.CardCollection{
@@ -902,20 +902,20 @@ func TestUpdateInitDataOperations(t *testing.T) {
 
 		assert.Nil(t, err)
 	})
-}
-func TestUpdateInitDataOperationsWithOldHeroes(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
-	var ctx contract.Context
 
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	t.Run("UpdateInit", func(t *testing.T) {
-		err := c.UpdateInit(ctx, &updateInitRequestWithOldHeroes)
+	t.Run("UpdateInit with old card data", func(t *testing.T) {
+		err := c.UpdateInit(ctx, &updateInitRequestWithoutHeroes)
 
 		assert.Nil(t, err)
 	})
+
+	t.Run("UpdateInit with old card data but without old version (failing)", func(t *testing.T) {
+		updateInitRequestWithoutHeroes.OldVersion = ""
+		err := c.UpdateInit(ctx, &updateInitRequestWithoutHeroes)
+
+		assert.NotNil(t, err)
+	})
+
 }
 
 func TestUpdateCardListOperations(t *testing.T) {
