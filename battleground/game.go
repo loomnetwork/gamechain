@@ -113,7 +113,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	g.State.CurrentPlayerIndex = n
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallOnMatchStartingBeforeInitialDraw(ctx, g.State)
+		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g.State)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
@@ -129,7 +129,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	}
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallOnMatchStartingAfterInitialDraw(ctx, g.State)
+		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g.State)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
