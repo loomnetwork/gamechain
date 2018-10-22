@@ -711,7 +711,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride))
+	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
