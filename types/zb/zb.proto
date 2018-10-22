@@ -234,6 +234,7 @@ message UpdateInitRequest {
     repeated Hero heroes                       = 4;
     string version                             = 5;
     Address oracle                             = 6;
+    string oldVersion                          = 7;
 }
 
 message UpdateCardListRequest {
