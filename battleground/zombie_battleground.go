@@ -788,6 +788,11 @@ func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequ
 	}, nil
 }
 
+func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearMatchPoolRequest) error {
+	err := saveMatchMakingInfoList(ctx, &zb.MatchMakingInfoList{})
+	return err
+}
+
 func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
 	gameState, err := loadGameState(ctx, req.MatchId)
 	if err != nil {
