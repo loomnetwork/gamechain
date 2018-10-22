@@ -604,6 +604,17 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
 	}
 
+	// validate deck against card library
+	var cardList zb.CardList
+	if err = ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+		return nil, fmt.Errorf("error getting card library: %s", err)
+	}
+
+	err = validateCardLibrary(cardList.Cards, deck.Cards)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid deck")
+	}
+
 	// register the user to match making pool
 	// TODO: chan ge to scan users in matchmakings
 	infos, err := loadMatchMakingInfoList(ctx)
