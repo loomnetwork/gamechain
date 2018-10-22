@@ -55,7 +55,7 @@ var updateInitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateInitCmd)
 
-	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "", "UserId of account")
+	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "", "Version to update")
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
-	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.oldVersion, "old_version", "o", "", "Old version to copy heroes from")
+	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.oldVersion, "old_version", "o", "", "Old version to copy missing keys from")
 }

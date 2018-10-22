@@ -105,9 +105,13 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 
 	// initialize card library
 	cardList.Cards = req.Cards
-	if req.Cards == nil && req.OldVersion != "" {
-		if err := ctx.Get(MakeVersionedKey(req.OldVersion, cardListKey), &cardList); err != nil {
-			return err
+	if req.Cards == nil {
+		if req.OldVersion != "" {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, cardListKey), &cardList); err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("'cards' key missing, old version not specified")
 		}
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
@@ -117,13 +121,18 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	// initialize heros
 	heroList.Heroes = req.Heroes
 	defaultHeroList.Heroes = req.Heroes
-	if req.Heroes == nil && req.OldVersion != "" {
-		if err := ctx.Get(MakeVersionedKey(req.OldVersion, heroListKey), &heroList); err != nil {
-			return err
+	if req.Heroes == nil {
+		if req.OldVersion != "" {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, heroListKey), &heroList); err != nil {
+				return err
+			}
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultHeroesKey), &defaultHeroList); err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("'heroes' key missing, old version not specified")
 		}
-		if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultHeroesKey), &defaultHeroList); err != nil {
-			return err
-		}
+
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return err
@@ -133,10 +142,15 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	cardCollectionList.Cards = req.DefaultCollection
-	if req.DefaultCollection == nil && req.OldVersion != "" {
-		if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultCollectionKey), &cardCollectionList); err != nil {
-			return err
+	if req.DefaultCollection == nil {
+		if req.OldVersion != "" {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultCollectionKey), &cardCollectionList); err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("'default_collection' key missing, old version not specified")
 		}
+
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
 		return err
@@ -144,9 +158,13 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 
 	// initialize default deck
 	deckList.Decks = req.DefaultDecks
-	if req.DefaultDecks == nil && req.OldVersion != "" {
-		if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultDeckKey), &deckList); err != nil {
-			return err
+	if req.DefaultDecks == nil {
+		if req.OldVersion != "" {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultDeckKey), &deckList); err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("'default_decks' key missing, old version not specified")
 		}
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
@@ -428,7 +446,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
