@@ -8,9 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var clearMatchPoolCmdArgs struct {
-}
-
 var clearMatchPoolCmd = &cobra.Command{
 	Use:   "clear_match_pool",
 	Short: "clears out the matchmaking pool from the contract",
@@ -23,7 +20,7 @@ var clearMatchPoolCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deck deleted successfully")
+		fmt.Printf("Matchmaking pool cleared successfully")
 		return nil
 	},
 }
