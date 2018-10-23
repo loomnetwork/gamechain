@@ -237,6 +237,20 @@ message UpdateInitRequest {
     string oldVersion                          = 7;
 }
 
+message GetInitRequest {
+    string version = 1;
+}
+
+message GetInitResponse {
+    repeated Deck default_decks                = 1;
+    repeated CardCollection default_collection = 2;
+    repeated Card cards                        = 3;
+    repeated Hero heroes                       = 4;
+    repeated Hero default_heroes               = 5;
+    string version                             = 6;
+    Address oracle                             = 7;
+}
+
 message UpdateCardListRequest {
     repeated Card cards = 1;
     string version = 2;
@@ -523,6 +537,10 @@ message MatchEndEvent {
     int64 matchId   = 1;
     string userId   = 2;
     string winnerId = 3;
+}
+
+message ClearMatchPoolRequest {
+
 }
 
 // Game Modes

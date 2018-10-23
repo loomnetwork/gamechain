@@ -174,6 +174,43 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	return nil
 }
 
+func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInitRequest) (*zb.GetInitResponse, error) {
+	var cardList zb.CardList
+	var heroList zb.HeroList
+	var defaultHeroList zb.HeroList
+	var cardCollectionList zb.CardCollectionList
+	var deckList zb.DeckList
+
+	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+		return nil, errors.Wrap(err, "error getting cardList")
+	}
+
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
+		return nil, errors.Wrap(err, "error getting heroList")
+	}
+
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultHeroesKey), &defaultHeroList); err != nil {
+		return nil, errors.Wrap(err, "error getting default heroList")
+	}
+
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
+		return nil, errors.Wrap(err, "error getting default collectionList")
+	}
+
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
+		return nil, errors.Wrap(err, "error getting default deckList")
+	}
+
+	return &zb.GetInitResponse{
+		Cards:             cardList.Cards,
+		Heroes:            heroList.Heroes,
+		DefaultHeroes:     defaultHeroList.Heroes,
+		DefaultDecks:      deckList.Decks,
+		DefaultCollection: cardCollectionList.Cards,
+		Version:           req.Version,
+	}, nil
+}
+
 func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.UpdateCardListRequest) error {
 	cardList := zb.CardList{
 		Cards: req.Cards,
@@ -446,7 +483,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -749,6 +786,11 @@ func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMat
 		Match:     match,
 		GameState: gameState,
 	}, nil
+}
+
+func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearMatchPoolRequest) error {
+	err := saveMatchMakingInfoList(ctx, &zb.MatchMakingInfoList{})
+	return err
 }
 
 func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
