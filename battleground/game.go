@@ -14,6 +14,7 @@ const (
 	mulliganCards  = 3
 	maxCardsInPlay = 6
 	maxCardsInHand = 10
+	maxGooVials = 10
 )
 
 var (
@@ -76,17 +77,10 @@ func NewGamePlay(ctx contract.Context,
 		return nil, err
 	}
 
-	if err := g.createGame(); err != nil {
+	if err := g.createGame(ctx); err != nil {
 		return nil, err
 	}
 
-	if g.customGameMode != nil {
-		err := g.customGameMode.UpdateInitialPlayerGameState(ctx, g.State)
-		if err != nil {
-			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
-			return nil, err
-		}
-	}
 	if err := g.run(); err != nil {
 		return nil, err
 	}
@@ -102,24 +96,44 @@ func GamePlayFrom(state *zb.GameState, override bool) (*Gameplay, error) {
 	return g, nil
 }
 
-func (g *Gameplay) createGame() error {
+func (g *Gameplay) createGame(ctx contract.Context) error {
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].Defense = 20
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
+		g.State.PlayerStates[i].InitialCardsInHandCount = mulliganCards
+		g.State.PlayerStates[i].MaxCardsInPlay = maxCardsInPlay
+		g.State.PlayerStates[i].MaxCardsInHand = maxCardsInHand
+		g.State.PlayerStates[i].MaxGooVials = maxGooVials
 	}
 	// coin toss for the first player
 	r := rand.New(rand.NewSource(g.State.Randomseed))
 	n := r.Int31n(int32(len(g.State.PlayerStates)))
 	g.State.CurrentPlayerIndex = n
 
+	if g.customGameMode != nil {
+		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g.State)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return err
+		}
+	}
+
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed, i)
 		// draw cards 3 card for mulligan
-		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:mulliganCards]
-		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[mulliganCards:]
+		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
+		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
+	}
+
+	if g.customGameMode != nil {
+		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g.State)
+		if err != nil {
+			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
+			return err
+		}
 	}
 
 	// add history data
@@ -373,8 +387,8 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 
 	// Check if all the mulliganed cards and number of card that can be mulligan
-	if len(mulligan.MulliganedCards) > mulliganCards {
-		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", mulliganCards))
+	if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
+		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
 	}
 	for _, card := range mulligan.MulliganedCards {
 		_, _, found := findCardInCardList(card, player.CardsInHand)
@@ -473,7 +487,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// handle card limit in hand
-	if len(g.activePlayer().CardsInHand)+1 > maxCardsInHand {
+	if len(g.activePlayer().CardsInHand) + 1 > int(g.activePlayer().MaxCardsInHand) {
 		// TODO: assgin g.err
 		return nil
 	}
@@ -562,57 +576,60 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	cardPlay := current.GetCardPlay()
-	card := cardPlay.Card
 
-	// check card limit on board
-	if len(g.activePlayer().CardsInPlay)+1 > maxCardsInPlay {
-		if g.ClientSideRuleOverride {
-			fmt.Printf("ClientSideRuleOverride-" + errLimitExceeded.Error())
-		} else {
-			return g.captureErrorAndStop(errLimitExceeded)
-		}
-	}
+	if !g.ClientSideRuleOverride {
+		card := cardPlay.Card
 
-	activeCardsInHand := g.activePlayer().CardsInHand
-	// TODO: handle card limit
-	if len(activeCardsInHand) == 0 {
-		if g.ClientSideRuleOverride {
-			fmt.Printf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
-		} else {
-			return g.captureErrorAndStop(errNoCardsInHand)
-		}
-	}
-
-	// get card instance from cardsInHand list
-	cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
-	if !found {
-		if g.ClientSideRuleOverride {
-			fmt.Printf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
-			next := g.next()
-			if next == nil {
-				return nil
+		// check card limit on board
+		if len(g.activePlayer().CardsInPlay)+1 > int(g.activePlayer().MaxCardsInPlay) {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errLimitExceeded.Error())
+			} else {
+				return g.captureErrorAndStop(errLimitExceeded)
 			}
-		} else {
-			return g.captureErrorAndStop(errCardNotFoundInHand)
 		}
-	}
 
-	// put card on board
-	g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
-	// remove card from hand
-	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-	g.activePlayer().CardsInHand = activeCardsInHand
+		activeCardsInHand := g.activePlayer().CardsInHand
+		// TODO: handle card limit
+		if len(activeCardsInHand) == 0 {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
+			} else {
+				return g.captureErrorAndStop(errNoCardsInHand)
+			}
+		}
 
-	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_FullInstance{
-			FullInstance: &zb.HistoryFullInstance{
-				InstanceId: card.InstanceId,
-				Attack:     card.Attack,
-				Defense:    card.Defense,
+		// get card instance from cardsInHand list
+		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
+		if !found {
+			if g.ClientSideRuleOverride {
+				fmt.Printf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errCardNotFoundInHand)
+			}
+		}
+
+		// put card on board
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
+		// remove card from hand
+		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+		g.activePlayer().CardsInHand = activeCardsInHand
+
+		// record history data
+		g.history = append(g.history, &zb.HistoryData{
+			Data: &zb.HistoryData_FullInstance{
+				FullInstance: &zb.HistoryFullInstance{
+					InstanceId: card.InstanceId,
+					Attack:     card.Attack,
+					Defense:    card.Defense,
+				},
 			},
-		},
-	})
+		})
+	}
 
 	// determine the next action
 	g.PrintState()

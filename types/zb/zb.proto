@@ -376,6 +376,10 @@ message PlayerState {
     int32 gooVials = 10;
     bool hasDrawnCard = 11;
     repeated CardInstance cardsInGraveyard = 12;
+    int32 initialCardsInHandCount = 13;
+    int32 maxCardsInPlay = 14;
+    int32 maxCardsInHand = 15;
+    int32 maxGooVials = 16;
 }
 
 message Match {
@@ -601,7 +605,7 @@ message GetCustomGameModeCustomUiResponse {
 
 message CallCustomGameModeFunctionRequest {
     Address address = 1;
-    string functionName = 2;
+    bytes callData = 2;
 }
 
 message StaticCallCustomGameModeFunctionResponse {
@@ -614,7 +618,7 @@ message CustomGameModeCustomUiLabel {
 
 message CustomGameModeCustomUiButton {
     string title = 1;
-    string onClickFunctionName = 2;
+    bytes callData = 2;
 }
 
 message CustomGameModeCustomUiElement {
