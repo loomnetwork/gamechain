@@ -793,7 +793,7 @@ func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearM
 	return err
 }
 
-func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
 	gameState, err := loadGameState(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
