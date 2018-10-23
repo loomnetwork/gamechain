@@ -483,7 +483,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -748,7 +748,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		addr2 = &addr
 	}
 
-	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%b\n", z.ClientSideRuleOverride))
+	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
 	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
@@ -775,7 +775,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}, nil
 }
 
-func (z *ZombieBattleground) GetMatch(ctx contract.Context, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {
+func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -793,7 +793,7 @@ func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearM
 	return err
 }
 
-func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
 	gameState, err := loadGameState(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -994,28 +994,11 @@ func (z *ZombieBattleground) GetGameMode(ctx contract.StaticContext, req *zb.Get
 	return gameMode, nil
 }
 
-func (z *ZombieBattleground) StaticCallCustomGameModeFunction(ctx contract.StaticContext, req *zb.CallCustomGameModeFunctionRequest) (*zb.StaticCallCustomGameModeFunctionResponse, error) {
-	output, err := NewCustomGameMode(loom.Address{
-		ChainID: req.Address.ChainId,
-		Local:   req.Address.Local,
-	}).StaticCallFunction(ctx, req.FunctionName)
-
-	if err != nil {
-		return nil, err
-	}
-
-	response := &zb.StaticCallCustomGameModeFunctionResponse{
-		Output: output,
-	}
-
-	return response, nil
-}
-
 func (z *ZombieBattleground) CallCustomGameModeFunction(ctx contract.Context, req *zb.CallCustomGameModeFunctionRequest) error {
 	err := NewCustomGameMode(loom.Address{
 		ChainID: req.Address.ChainId,
 		Local:   req.Address.Local,
-	}).CallFunction(ctx, req.FunctionName)
+	}).CallFunction(ctx, req.CallData)
 
 	if err != nil {
 		return err

@@ -1,8 +1,11 @@
 package battleground
 
 import (
+	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/loomnetwork/go-loom/plugin/types"
+	"runtime"
+	"runtime/debug"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -15,40 +18,42 @@ import (
 type CustomGameMode struct {
 	// Address of game mode contract deployed to Loom EVM.
 	tokenAddr   loom.Address
-	contractABI *abi.ABI
 }
 
-func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
-	erc20ABI, err := abi.JSON(strings.NewReader(zbGameModeABI))
+var zbCustomGameModeABI *abi.ABI
+var zbGameStateChangesEventTopic string
+
+func init() {
+	gameModeAbi, err := abi.JSON(strings.NewReader(zbGameModeABI))
 	if err != nil {
 		panic(err)
 	}
+
+	zbCustomGameModeABI = &gameModeAbi
+	zbGameStateChangesEventTopic = zbCustomGameModeABI.Events[zbGameStateChangesEventName].Id().String()
+}
+
+func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
 	return &CustomGameMode{
 		tokenAddr:   tokenAddr,
-		contractABI: &erc20ABI,
 	}
 }
 
-func (c *CustomGameMode) UpdateInitialPlayerGameState(ctx contract.Context, gameState *zb.GameState) (err error) {
-	serializedGameState, err := c.serializeGameState(gameState)
-	if err != nil {
-		return
-	}
+func (c *CustomGameMode) CallHookBeforeMatchStart(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "beforeMatchStart", gameState)
+}
 
-	serializedGameStateChangeActions, err := c.callOnMatchStarting(ctx, serializedGameState)
-	if err != nil {
-		return
-	}
-
-	err = c.deserializeAndApplyGameStateChangeActions(gameState, serializedGameStateChangeActions)
-	if err != nil {
-		return
-	}
-
-	return
+func (c *CustomGameMode) CallHookAfterInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
+	return c.callAndApplyMatchHook(ctx, "afterInitialDraw", gameState)
 }
 
 func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = recoverFromHook(err, "getCustomUi", r)
+		}
+	}()
+
 	serializedCustomUi, err := c.callGetCustomUi(ctx)
 	if err != nil {
 		return
@@ -62,28 +67,46 @@ func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*
 	return uiElements, nil
 }
 
-func (c *CustomGameMode) StaticCallFunction(ctx contract.StaticContext, method string) ([]byte, error) {
-	// crude way to call a function with no inputs and outputs without an ABI
-	input := crypto.Keccak256([]byte(method + "()"))[:4]
-
-	ctx.Logger().Info(fmt.Sprintf("methodCallAbi ----------------%v\n", input))
-
-	var evmOut []byte
-	return evmOut, contract.StaticCallEVM(ctx, c.tokenAddr, input, &evmOut)
+func (c *CustomGameMode) CallFunction(ctx contract.Context, abiInput []byte) (err error) {
+	_, e := c.callEVMRaw(ctx, abiInput)
+	return e
 }
 
-func (c *CustomGameMode) CallFunction(ctx contract.Context, method string) (err error) {
-	// crude way to call a function with no inputs and outputs without an ABI
-	input := crypto.Keccak256([]byte(method + "()"))[:4]
+func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookName string, gameState *zb.GameState) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = recoverFromHook(err, matchHookName, r)
+		}
+	}()
 
-	ctx.Logger().Info(fmt.Sprintf("methodCallAbi ----------------%v\n", input))
+	serializedGameState, err := c.serializeGameState(gameState)
+	if err != nil {
+		return
+	}
 
-	var evmOut []byte
-	return contract.CallEVM(ctx, c.tokenAddr, input, &evmOut)
+	serializedGameStateChangeActions, err := c.callMatchHook(ctx, matchHookName, serializedGameState)
+	if err != nil {
+		ctx.Logger().Error(fmt.Sprintf("Error in match hook %s: \n%v\n", matchHookName, err))
+		return
+	}
+
+	err = c.deserializeAndApplyGameStateChangeActions(gameState, serializedGameStateChangeActions)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func recoverFromHook(err error, hookName string, r interface{}) error {
+	stackBuffer := debug.Stack()
+	runtime.Stack(stackBuffer, false)
+	err = errors.New(fmt.Sprintf("! Error in custom mode hook - %s\n%v\n%s", hookName, r, string(stackBuffer)))
+	return err
 }
 
 func (c *CustomGameMode) staticCallEVM(ctx contract.StaticContext, method string, result interface{}, params ...interface{}) error {
-	input, err := c.contractABI.Pack(method, params...)
+	input, err := zbCustomGameModeABI.Pack(method, params...)
 	if err != nil {
 		return err
 	}
@@ -91,24 +114,68 @@ func (c *CustomGameMode) staticCallEVM(ctx contract.StaticContext, method string
 	if err := contract.StaticCallEVM(ctx, c.tokenAddr, input, &output); err != nil {
 		return err
 	}
-	return c.contractABI.Unpack(result, method, output)
+	return zbCustomGameModeABI.Unpack(result, method, output)
 }
 
-func (c *CustomGameMode) callEVM(ctx contract.Context, method string, params ...interface{}) ([]byte, error) {
-	input, err := c.contractABI.Pack(method, params...)
+func (c *CustomGameMode) staticCallEVMRaw(ctx contract.StaticContext, abiInput []byte) ([]byte, error) {
+	var output []byte
+	if err := contract.StaticCallEVM(ctx, c.tokenAddr, abiInput, &output); err != nil {
+		return nil, err
+	}
+	return output, nil
+}
+
+func (c *CustomGameMode) callEVM(ctx contract.Context, method string, params ...interface{}) (*types.EvmTxReceipt, error) {
+	input, err := zbCustomGameModeABI.Pack(method, params...)
 	if err != nil {
 		return nil, err
 	}
-	var evmOut []byte
-	return evmOut, contract.CallEVM(ctx, c.tokenAddr, input, &evmOut)
+
+	return c.callEVMRaw(ctx, input)
 }
 
-func (c *CustomGameMode) callOnMatchStarting(ctx contract.Context, serializedGameState []byte) (serializedGameStateChangeActions []byte, err error) {
-	if err := c.staticCallEVM(ctx, "onMatchStarting", &serializedGameStateChangeActions, serializedGameState); err != nil {
+func (c *CustomGameMode) callEVMRaw(ctx contract.Context, abiInput []byte) (*types.EvmTxReceipt, error) {
+	var evmOut []byte
+	err := contract.CallEVM(ctx, c.tokenAddr, abiInput, &evmOut)
+	if err != nil {
 		return nil, err
 	}
 
-	return serializedGameStateChangeActions, nil
+	receipt, err := ctx.GetEvmTxReceipt(evmOut)
+	if err != nil {
+		return nil, err
+	}
+	return &receipt, nil
+}
+
+func (c *CustomGameMode) callMatchHook(ctx contract.Context, matchHookName string, serializedGameState []byte) (serializedGameStateChangeActions []byte, err error) {
+	txReceipt, err := c.callEVM(ctx, matchHookName, serializedGameState)
+	if err != nil {
+		return nil, err
+	}
+
+	// ZBGameMode contract has default implementations of the hooks that don't emit any events.
+	// So it is fine if the receipt has no logs, but if there are some, at least one of them must be GameStateChanges.
+	if len(txReceipt.Logs) == 0 {
+		return make([]byte, 0, 0), nil
+	}
+
+	var gameStateChangesLog *types.EventData = nil
+	logsLoop:
+	for _, log := range txReceipt.Logs {
+		for _, logTopic := range log.Topics {
+			if logTopic == zbGameStateChangesEventTopic {
+				gameStateChangesLog = log
+				break logsLoop
+			}
+		}
+	}
+
+	if gameStateChangesLog == nil {
+		return nil, errors.New(fmt.Sprintf("Expected event %s", zbGameStateChangesEventName))
+	}
+
+	return gameStateChangesLog.EncodedBody, nil
 }
 
 func (c *CustomGameMode) callGetCustomUi(ctx contract.StaticContext) (serializedCustomUi []byte, err error) {
@@ -123,158 +190,43 @@ func (c *CustomGameMode) callGetCustomUi(ctx contract.StaticContext) (serialized
 const zbGameModeABI = `
 [
     {
-      "inputs": [],
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "serializedChanges",
+          "type": "bytes"
+        }
+      ],
+      "name": "GameStateChanges",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "beforeMatchStart",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_from",
-          "type": "address"
-        }
-      ],
-      "name": "MatchedStarted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "player1Addr",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "player2Addr",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "winner",
-          "type": "uint256"
-        }
-      ],
-      "name": "MatchFinished",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "tokens",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardTokens",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "cardID",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardCard",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "packCount",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "packType",
-          "type": "uint256"
-        }
-      ],
-      "name": "AwardPack",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "_from",
-          "type": "address"
-        }
-      ],
-      "name": "UserRegistered",
-      "type": "event"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "name",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "GameStart",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
+      "constant": false,
       "inputs": [
         {
           "name": "",
           "type": "bytes"
         }
       ],
-      "name": "onMatchStarting",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
+      "name": "afterInitialDraw",
+      "outputs": [],
       "payable": false,
-      "stateMutability": "pure",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -288,8 +240,9 @@ const zbGameModeABI = `
         }
       ],
       "payable": false,
-      "stateMutability": "pure",
+      "stateMutability": "view",
       "type": "function"
     }
   ]
 `
+const zbGameStateChangesEventName string = "GameStateChanges"
