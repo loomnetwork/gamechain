@@ -654,8 +654,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		if inf.UserId == req.UserId {
 			continue
 		}
-		if time.Unix(0, inf.StartTime*1000000).Sub(time.Now()) >= time.Minute*FindMatchTimeoutMinutes {
+
+		tdiff := time.Now().Sub(time.Unix(0, inf.StartTime*1000000))
+		fmt.Println("tdiff:", tdiff)
+		if tdiff >= time.Second*FindMatchTimeoutSeconds {
 			// expired matchmaking info
+			fmt.Println("skipping info:", inf.UserId)
 			continue
 		}
 
@@ -724,10 +728,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			continue
 		}
 
-		diff := time.Unix(0, inf.StartTime*1000000).Sub(time.Now())
-		if diff >= time.Minute*FindMatchTimeoutMinutes {
+		tdiff := time.Now().Sub(time.Unix(0, inf.StartTime*1000000))
+		if tdiff >= time.Second*FindMatchTimeoutSeconds {
 			// expired matchmaking info
-			ctx.Logger().Log("diff:" + diff.String())
+			ctx.Logger().Log("diff:" + tdiff.String())
 			continue
 		}
 

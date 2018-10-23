@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
@@ -1671,22 +1672,24 @@ func TestFindMatchTimeout(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	c.FindMatch(ctx, &zb.FindMatchRequest{
+	resp1, _ := c.FindMatch(ctx, &zb.FindMatchRequest{
 		DeckId:  1,
 		UserId:  "player-1",
 		Version: "v1",
 	})
-
+	t.Log(resp1.Match.Status)
 	infos, _ := loadMatchMakingInfoList(ctx)
 	for _, info := range infos.Infos {
 		t.Log(info.UserId, info.StartTime)
 	}
 
-	c.FindMatch(ctx, &zb.FindMatchRequest{
+	time.Sleep(time.Second * 5)
+	resp2, _ := c.FindMatch(ctx, &zb.FindMatchRequest{
 		DeckId:  1,
 		UserId:  "player-2",
 		Version: "v1",
 	})
+	t.Log(resp2.Match.Status)
 	//	infos, _ = loadMatchMakingInfoList(ctx)
 	//	t.Log(infos)
 }

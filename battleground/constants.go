@@ -1,3 +1,3 @@
 package battleground
 
-const FindMatchTimeoutMinutes = 1
+const FindMatchTimeoutSeconds = 10 //2 * 60
