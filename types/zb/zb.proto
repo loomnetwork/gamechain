@@ -533,12 +533,6 @@ message EndMatchResponse {
     GameState gameState = 1;
 }
 
-message MatchEndEvent {
-    int64 matchId   = 1;
-    string userId   = 2;
-    string winnerId = 3;
-}
-
 message ClearMatchPoolRequest {
 
 }
@@ -1068,6 +1062,7 @@ message HistoryData {
         HistoryInstance showInstance = 3;
         HistoryHide hideInstance = 4;
         HistoryInstance changeInstance = 5;
+        HistoryEndGame endGame = 6;
     }
 }
 
@@ -1098,4 +1093,10 @@ message HistoryInstance {
 message HistoryHide {
     int32 instanceId = 1;
     Zone zone = 2;
+}
+
+message HistoryEndGame {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
 }
