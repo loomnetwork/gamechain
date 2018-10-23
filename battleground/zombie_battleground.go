@@ -793,7 +793,7 @@ func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearM
 	return err
 }
 
-func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+func (z *ZombieBattleground) GetGameState(ctx contract.Context, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
 	gameState, err := loadGameState(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -824,6 +824,12 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err != nil {
 		return nil, err
 	}
+
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
+	if err != nil {
+		return nil, err
+	}
+
 	gamestate.Winner = req.WinnerId
 	gamestate.IsEnded = true
 	if err := saveGameState(ctx, gamestate); err != nil {
@@ -831,10 +837,18 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	}
 
 	//TODO obviously this will need to change drastically once the logic is on the server
-	emitMsg := zb.MatchEndEvent{
-		UserId:   req.GetUserId(),
-		MatchId:  req.MatchId,
-		WinnerId: req.WinnerId,
+	gp.history = append(gp.history, &zb.HistoryData{
+		Data: &zb.HistoryData_EndGame{
+			EndGame: &zb.HistoryEndGame{
+				UserId:   req.GetUserId(),
+				MatchId:  req.MatchId,
+				WinnerId: req.WinnerId,
+			},
+		},
+	})
+	emitMsg := zb.PlayerActionEvent{
+		Match: match,
+		Block: &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
