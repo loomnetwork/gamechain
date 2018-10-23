@@ -406,6 +406,7 @@ message MatchMakingInfoList {
 message MatchMakingInfo {
     string userId = 1;
     Deck deck = 2;
+    int64 startTime = 3;
 }
 
 enum PlayerActionType {

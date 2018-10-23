@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"time"
 	"unicode/utf8"
 
 	"github.com/golang/protobuf/jsonpb"
@@ -483,7 +484,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
+		Decks: deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -653,14 +654,20 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		if inf.UserId == req.UserId {
 			continue
 		}
+		if time.Unix(0, inf.StartTime*1000000).Sub(time.Now()) >= time.Minute*FindMatchTimeoutMinutes {
+			// expired matchmaking info
+			continue
+		}
+
 		info = inf
 	}
 
 	if info == nil {
 		// save user info
 		info = &zb.MatchMakingInfo{
-			UserId: req.UserId,
-			Deck:   deck,
+			UserId:    req.UserId,
+			Deck:      deck,
+			StartTime: time.Now().UnixNano() / 1000000, // millis
 		}
 		infos.Infos = append(infos.Infos, info)
 		if err := saveMatchMakingInfoList(ctx, infos); err != nil {
@@ -716,6 +723,14 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		if inf.UserId == opponentID {
 			continue
 		}
+
+		diff := time.Unix(0, inf.StartTime*1000000).Sub(time.Now())
+		if diff >= time.Minute*FindMatchTimeoutMinutes {
+			// expired matchmaking info
+			ctx.Logger().Log("diff:" + diff.String())
+			continue
+		}
+
 		newinfos = append(newinfos, inf)
 	}
 	infos.Infos = newinfos

@@ -1654,3 +1654,39 @@ func TestCardPlayOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 }
+
+func TestFindMatchTimeout(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	c.FindMatch(ctx, &zb.FindMatchRequest{
+		DeckId:  1,
+		UserId:  "player-1",
+		Version: "v1",
+	})
+
+	infos, _ := loadMatchMakingInfoList(ctx)
+	for _, info := range infos.Infos {
+		t.Log(info.UserId, info.StartTime)
+	}
+
+	c.FindMatch(ctx, &zb.FindMatchRequest{
+		DeckId:  1,
+		UserId:  "player-2",
+		Version: "v1",
+	})
+	//	infos, _ = loadMatchMakingInfoList(ctx)
+	//	t.Log(infos)
+}
