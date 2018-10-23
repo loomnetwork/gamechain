@@ -854,6 +854,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err != nil {
 		return nil, err
 	}
+	match.Topics = append(match.Topics, "endgame")
 	if err == nil {
 		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
