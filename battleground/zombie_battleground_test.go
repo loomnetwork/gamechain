@@ -1682,8 +1682,8 @@ func TestFindMatchTimeout(t *testing.T) {
 	for _, info := range infos.Infos {
 		t.Log(info.UserId, info.StartTime)
 	}
-
-	time.Sleep(time.Second * 5)
+	t.Log(ctx.Now())
+	time.Sleep(time.Second * 15)
 	resp2, _ := c.FindMatch(ctx, &zb.FindMatchRequest{
 		DeckId:  1,
 		UserId:  "player-2",

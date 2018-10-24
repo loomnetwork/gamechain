@@ -632,6 +632,7 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
+	fmt.Println(ctx.Now())
 	// load deck id
 	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
@@ -655,7 +656,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			continue
 		}
 
-		tdiff := time.Now().Sub(time.Unix(0, inf.StartTime*1000000))
+		tdiff := ctx.Now().Sub(time.Unix(0, inf.StartTime*1000000))
 		fmt.Println("tdiff:", tdiff)
 		if tdiff >= time.Second*FindMatchTimeoutSeconds {
 			// expired matchmaking info
@@ -671,7 +672,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		info = &zb.MatchMakingInfo{
 			UserId:    req.UserId,
 			Deck:      deck,
-			StartTime: time.Now().UnixNano() / 1000000, // millis
+			StartTime: ctx.Now().UnixNano() / 1000000, // millis
 		}
 		infos.Infos = append(infos.Infos, info)
 		if err := saveMatchMakingInfoList(ctx, infos); err != nil {
@@ -728,10 +729,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			continue
 		}
 
-		tdiff := time.Now().Sub(time.Unix(0, inf.StartTime*1000000))
+		tdiff := ctx.Now().Sub(time.Unix(0, inf.StartTime*1000000))
 		if tdiff >= time.Second*FindMatchTimeoutSeconds {
 			// expired matchmaking info
-			ctx.Logger().Log("diff:" + tdiff.String())
 			continue
 		}
 
