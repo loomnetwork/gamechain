@@ -412,11 +412,10 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 		Local: loom.LocalAddressFromPublicKey(pubKey),
 	}
 
-	*ctx = contract.WrapPluginContext(
-		plugin.CreateFakeContext(*addr, *addr),
-	)
+	fc := plugin.CreateFakeContext(*addr, *addr)
+	fc.SetTime(time.Now())
 
-	ctx.SetTime(time.Now())
+	*ctx = contract.WrapPluginContext(fc)
 
 	err := c.Init(*ctx, &initRequest)
 	assert.Nil(t, err)
@@ -1661,10 +1660,26 @@ func TestCardPlayOperations(t *testing.T) {
 func TestFindMatchTimeout(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
+	var addr *loom.Address
 	var ctx contract.Context
 
-	setup(c, pubKeyHexString, &addr, &ctx, t)
+	// setup ctx
+	c = &ZombieBattleground{}
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
+
+	addr = &loom.Address{
+		Local: loom.LocalAddressFromPublicKey(pubKey),
+	}
+
+	startTime := time.Now()
+	fc := plugin.CreateFakeContext(*addr, *addr)
+	fc.SetTime(startTime)
+
+	ctx = contract.WrapPluginContext(fc)
+
+	err := c.Init(ctx, &initRequest)
+	assert.Nil(t, err)
+
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
@@ -1680,18 +1695,21 @@ func TestFindMatchTimeout(t *testing.T) {
 		Version: "v1",
 	})
 	t.Log(resp1.Match.Status)
+	t.Log(resp1.Match.Id)
 	infos, _ := loadMatchMakingInfoList(ctx)
 	for _, info := range infos.Infos {
 		t.Log(info.UserId, info.StartTime)
 	}
-	t.Log(ctx.Now())
-	time.Sleep(time.Second * 15)
+
+	// move time forward to expire the matchmaking
+	fc.SetTime(startTime.Add(time.Second * (FindMatchTimeoutSeconds + 5)))
+
 	resp2, _ := c.FindMatch(ctx, &zb.FindMatchRequest{
 		DeckId:  1,
 		UserId:  "player-2",
 		Version: "v1",
 	})
 	t.Log(resp2.Match.Status)
-	//	infos, _ = loadMatchMakingInfoList(ctx)
-	//	t.Log(infos)
+	t.Log(resp2.Match.Id)
+	assert.Equal(t, zb.Match_Started, resp2.Match.Status)
 }
