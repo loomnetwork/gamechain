@@ -829,6 +829,7 @@ message CardInstance {
     CardPrototype prototype = 2;
     int32 defense = 3;
     int32 attack = 4;
+    int32 gooCost = 6;
     string owner = 5;
 }
 

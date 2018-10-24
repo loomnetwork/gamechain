@@ -396,6 +396,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owne
 		Owner: owner,
 		Attack:     cardDetails.Damage,
 		Defense:    cardDetails.Health,
+		GooCost:	cardDetails.Cost,
 		Prototype: &zb.CardPrototype{
 			Name:    cardDetails.Name,
 			GooCost: cardDetails.Cost,

@@ -3,6 +3,7 @@ package battleground
 import (
 	"encoding/binary"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/common"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"io"
@@ -11,7 +12,7 @@ import (
 )
 
 func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, err error) {
-	rb := NewPanicReaderWriterProxy(NewReverseBuffer(make([]byte, 8192)))
+	rb := newPanicReaderWriterProxy(NewReverseBuffer(make([]byte, 8192)))
 	binary.Write(rb, binary.BigEndian, int64(state.Id))
 	binary.Write(rb, binary.BigEndian, byte(state.CurrentPlayerIndex))
 
@@ -19,8 +20,8 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 		serializeString(rb, playerState.Id)
 		c.serializeDeck(rb, playerState.Deck)
 
-		simpleCardsInHand := convertCardInstanceArrayToSimpleCardInstanceArray(playerState.CardsInHand)
-		simpleCardsInDeck := convertCardInstanceArrayToSimpleCardInstanceArray(playerState.CardsInDeck)
+		simpleCardsInHand := newSimpleCardInstanceArrayFromCardInstanceArray(playerState.CardsInHand)
+		simpleCardsInDeck := newSimpleCardInstanceArrayFromCardInstanceArray(playerState.CardsInDeck)
 
 		c.serializeSimpleCardInstanceArray(rb, simpleCardsInHand)
 		c.serializeSimpleCardInstanceArray(rb, simpleCardsInDeck)
@@ -36,13 +37,10 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 	return rb.readWriter.(*ReverseBuffer).GetFilledSlice(), nil
 }
 
-func convertCardInstanceArrayToSimpleCardInstanceArray(cards []*zb.CardInstance) ([]*SimpleCardInstance) {
+func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) ([]*SimpleCardInstance) {
 	simpleCards := make([]*SimpleCardInstance, len(cards))
 	for i, card := range cards {
-		simpleCards[i] = &SimpleCardInstance{
-			instanceId: card.InstanceId,
-			name:       card.Prototype.Name,
-		}
+		simpleCards[i] = newSimpleCardInstanceFromCardInstance(card)
 	}
 
 	return simpleCards
@@ -56,97 +54,32 @@ func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb.Deck) (err err
 	return nil
 }
 
-func (c *CustomGameMode) serializeCardPrototype(writer io.Writer, card *zb.CardPrototype) (err error) {
-	serializeString(writer, card.Name)
-	binary.Write(writer, binary.BigEndian, uint8(card.GooCost))
-
-	return nil
-}
-
-func (c *CustomGameMode) deserializeCardPrototype(reader io.Reader) (card *zb.CardPrototype, err error) {
-	name, err := deserializeString(reader)
-
-	var gooCost uint8
-	binary.Read(reader, binary.BigEndian, &gooCost)
-
-	return &zb.CardPrototype{
-		Name:    name,
-		GooCost: int32(gooCost),
-	}, nil
-}
-
-func (c *CustomGameMode) serializeCardInstance(writer io.Writer, card *zb.CardInstance) (err error) {
-	binary.Write(writer, binary.BigEndian, int32(card.InstanceId))
-	c.serializeCardPrototype(writer, card.Prototype)
-	binary.Write(writer, binary.BigEndian, int32(card.Defense))
-	binary.Write(writer, binary.BigEndian, int32(card.Attack))
-	serializeString(writer, card.Owner)
-
-	return nil
-}
-
-func (c *CustomGameMode) deserializeCardInstance(reader io.Reader) (card *zb.CardInstance, err error) {
-	var instanceId int32
-	binary.Read(reader, binary.BigEndian, &instanceId)
-
-	cardPrototype, _ := c.deserializeCardPrototype(reader)
-
-	var defense int32
-	binary.Read(reader, binary.BigEndian, &defense)
-
-	var attack int32
-	binary.Read(reader, binary.BigEndian, &attack)
-
-	owner, _ := deserializeString(reader)
-
-	return &zb.CardInstance{
-		InstanceId: instanceId,
-		Prototype:  cardPrototype,
-		Defense:    defense,
-		Attack:     attack,
-		Owner:      owner,
-	}, nil
-}
-
 func (c *CustomGameMode) serializeSimpleCardInstance(writer io.Writer, card *SimpleCardInstance) (err error) {
 	binary.Write(writer, binary.BigEndian, int32(card.instanceId))
-	serializeString(writer, card.name)
+	serializeString(writer, card.mouldName)
+	binary.Write(writer, binary.BigEndian, int32(card.defense))
+	binary.Write(writer, binary.BigEndian, bool(card.defenseInherited))
+	binary.Write(writer, binary.BigEndian, int32(card.attack))
+	binary.Write(writer, binary.BigEndian, bool(card.attackInherited))
+	binary.Write(writer, binary.BigEndian, int32(card.gooCost))
+	binary.Write(writer, binary.BigEndian, bool(card.gooCostInherited))
 
 	return nil
 }
 
-func (c *CustomGameMode) deserializeSimpleCardInstance(reader io.Reader) (card *SimpleCardInstance, err error) {
-	var instanceId int32
-	binary.Read(reader, binary.BigEndian, &instanceId)
+func (c *CustomGameMode) deserializeSimpleCardInstance(reader io.Reader) (simpleCard *SimpleCardInstance, err error) {
+	simpleCard = &SimpleCardInstance{}
 
-	name, err := deserializeString(reader)
+	binary.Read(reader, binary.BigEndian, &simpleCard.instanceId)
+	simpleCard.mouldName, err = deserializeString(reader)
+	binary.Read(reader, binary.BigEndian, &simpleCard.defense)
+	binary.Read(reader, binary.BigEndian, &simpleCard.defenseInherited)
+	binary.Read(reader, binary.BigEndian, &simpleCard.attack)
+	binary.Read(reader, binary.BigEndian, &simpleCard.attackInherited)
+	binary.Read(reader, binary.BigEndian, &simpleCard.gooCost)
+	binary.Read(reader, binary.BigEndian, &simpleCard.gooCostInherited)
 
-	return &SimpleCardInstance{
-		instanceId: instanceId,
-		name:       name,
-	}, nil
-}
-
-func (c *CustomGameMode) serializeCardInstanceArray(writer io.Writer, cards []*zb.CardInstance) (err error) {
-	binary.Write(writer, binary.BigEndian, uint32(len(cards)))
-
-	for _, card := range cards {
-		c.serializeCardInstance(writer, card)
-	}
-
-	return nil
-}
-
-func (c *CustomGameMode) deserializeCardInstanceArray(reader io.Reader) (cards []*zb.CardInstance, err error) {
-	var cardCount uint32
-	binary.Read(reader, binary.BigEndian, &cardCount)
-
-	cards = make([]*zb.CardInstance, cardCount)
-	for i := uint32(0); i < cardCount; i++ {
-		cards[i], _ = c.deserializeCardInstance(reader)
-	}
-
-	return cards, nil
+	return
 }
 
 func (c *CustomGameMode) serializeSimpleCardInstanceArray(writer io.Writer, cards []*SimpleCardInstance) (err error) {
@@ -171,27 +104,47 @@ func (c *CustomGameMode) deserializeSimpleCardInstanceArray(reader io.Reader) (c
 	return cards, nil
 }
 
-func updateFromSimpleCards(ctx contract.Context, state *zb.GameState, cards []*zb.CardInstance, simpleCards []*SimpleCardInstance) (error) {
+func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb.Card) (*zb.CardInstance, error) {
+	newCard := newCardInstanceFromCardDetails(
+		cardLibraryCard,
+		card.InstanceId,
+		card.Owner,
+	)
+
+	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.CardPrototype)
+
+	if !simpleCard.defenseInherited {
+		newCard.Defense = simpleCard.defense
+	}
+
+	if !simpleCard.attackInherited {
+		newCard.Attack = simpleCard.attack
+	}
+
+	if !simpleCard.gooCostInherited {
+		newCard.GooCost = simpleCard.gooCost
+	}
+
+	return newCard, nil
+}
+
+func (c *CustomGameMode) updateCardsFromSimpleCards(ctx contract.Context, state *zb.GameState, cards []*zb.CardInstance, simpleCards []*SimpleCardInstance) (newCards []*zb.CardInstance, err error) {
 	cardLibrary, err := getCardLibrary(ctx, state.Version)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for _, simpleCard := range simpleCards {
+		var newCard *zb.CardInstance
 		isMatchingInstanceIdFound := false
-		for cardIndex, card := range cards {
+		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId {
-				cardLibraryCard, err := getCardDetails(cardLibrary, simpleCard.name)
+				cardLibraryCard, err := getCardDetails(cardLibrary, simpleCard.mouldName)
 				if err != nil {
-					return err
+					return nil, err
 				}
 
-				cards[cardIndex] =
-					newCardInstanceFromCardDetails(
-						cardLibraryCard,
-						card.InstanceId,
-						card.Owner,
-					)
+				newCard, err = c.updateCardFromSimpleCard(ctx, card, simpleCard, cardLibraryCard)
 
 				isMatchingInstanceIdFound = true
 				break
@@ -199,11 +152,13 @@ func updateFromSimpleCards(ctx contract.Context, state *zb.GameState, cards []*z
 		}
 
 		if !isMatchingInstanceIdFound {
-			return fmt.Errorf("card with instance ID %d not found", simpleCard.instanceId)
+			return nil, fmt.Errorf("card with instance ID %d not found", simpleCard.instanceId)
 		}
+
+		newCards = append(newCards, newCard)
 	}
 
-	return nil
+	return newCards, nil
 }
 
 func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.Context, state *zb.GameState, serializedActions []byte) (err error) {
@@ -211,7 +166,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 		return nil
 	}
 
-	reader := NewPanicReaderWriterProxy(NewReverseBuffer(serializedActions))
+	reader := newPanicReaderWriterProxy(NewReverseBuffer(serializedActions))
 	for {
 		var action battleground.GameStateChangeAction
 		binary.Read(reader, binary.BigEndian, &action)
@@ -249,7 +204,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			binary.Read(reader, binary.BigEndian, &playerIndex)
 
 			simpleCards, _ := c.deserializeSimpleCardInstanceArray(reader)
-			err := updateFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInDeck, simpleCards)
+			state.PlayerStates[playerIndex].CardsInDeck, err = c.updateCardsFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInDeck, simpleCards)
 
 			if err != nil {
 				return err
@@ -259,7 +214,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			binary.Read(reader, binary.BigEndian, &playerIndex)
 
 			simpleCards, _ := c.deserializeSimpleCardInstanceArray(reader)
-			err := updateFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInHand, simpleCards)
+			state.PlayerStates[playerIndex].CardsInHand, err = c.updateCardsFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInHand, simpleCards)
 
 			if err != nil {
 				return err
@@ -311,7 +266,7 @@ func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiEleme
 		return make([]*zb.CustomGameModeCustomUiElement, 0), nil
 	}
 
-	rb := NewPanicReaderWriterProxy(NewReverseBuffer(serializedCustomUi))
+	rb := newPanicReaderWriterProxy(NewReverseBuffer(serializedCustomUi))
 	for {
 		var elementType battleground.CustomUiElement
 		binary.Read(rb, binary.BigEndian, &elementType)
@@ -353,15 +308,34 @@ func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiEleme
 }
 
 type SimpleCardInstance struct {
-	instanceId int32
-	name       string
+	instanceId       int32
+	mouldName        string
+	defense          int32
+	defenseInherited bool
+	attack           int32
+	attackInherited  bool
+	gooCost          int32
+	gooCostInherited bool
+}
+
+func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
+	return &SimpleCardInstance{
+		instanceId:       card.InstanceId,
+		mouldName:        card.Prototype.Name,
+		attack:           card.Attack,
+		attackInherited:  true,
+		defense:          card.Defense,
+		defenseInherited: true,
+		gooCost:          card.Prototype.GooCost,
+		gooCostInherited: true,
+	}
 }
 
 type PanicReaderWriterProxy struct {
 	readWriter io.ReadWriter
 }
 
-func NewPanicReaderWriterProxy(readWriter io.ReadWriter) *PanicReaderWriterProxy {
+func newPanicReaderWriterProxy(readWriter io.ReadWriter) *PanicReaderWriterProxy {
 	prw := new(PanicReaderWriterProxy)
 	prw.readWriter = readWriter
 	return prw
