@@ -425,9 +425,6 @@ func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerSta
 				instanceId++
 			}
 		}
-		for _, c := range playerState.CardsInDeck {
-			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v\n", c.Prototype.Name, c.Attack))
-		}
 	}
 
 	return nil
