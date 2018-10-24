@@ -39,12 +39,12 @@ func NewCustomGameMode(tokenAddr loom.Address) *CustomGameMode {
 	}
 }
 
-func (c *CustomGameMode) CallHookBeforeMatchStart(ctx contract.Context, gameState *zb.GameState) (err error) {
-	return c.callAndApplyMatchHook(ctx, "beforeMatchStart", gameState)
+func (c *CustomGameMode) CallHookBeforeMatchStart(ctx contract.Context, gameplay *Gameplay) (err error) {
+	return c.callAndApplyMatchHook(ctx, "beforeMatchStart", gameplay)
 }
 
-func (c *CustomGameMode) CallHookAfterInitialDraw(ctx contract.Context, gameState *zb.GameState) (err error) {
-	return c.callAndApplyMatchHook(ctx, "afterInitialDraw", gameState)
+func (c *CustomGameMode) CallHookAfterInitialDraw(ctx contract.Context, gameplay *Gameplay) (err error) {
+	return c.callAndApplyMatchHook(ctx, "afterInitialDraw", gameplay)
 }
 
 func (c *CustomGameMode) GetCustomUi(ctx contract.StaticContext) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
@@ -72,14 +72,14 @@ func (c *CustomGameMode) CallFunction(ctx contract.Context, abiInput []byte) (er
 	return e
 }
 
-func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookName string, gameState *zb.GameState) (err error) {
+func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookName string, gameplay *Gameplay) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = recoverFromHook(err, matchHookName, r)
 		}
 	}()
 
-	serializedGameState, err := c.serializeGameState(gameState)
+	serializedGameState, err := c.serializeGameState(gameplay.State)
 	if err != nil {
 		return
 	}
@@ -90,7 +90,7 @@ func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookNa
 		return
 	}
 
-	err = c.deserializeAndApplyGameStateChangeActions(ctx, gameState, serializedGameStateChangeActions)
+	err = c.deserializeAndApplyGameStateChangeActions(ctx, gameplay, serializedGameStateChangeActions)
 	if err != nil {
 		return
 	}
