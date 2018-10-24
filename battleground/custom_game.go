@@ -90,7 +90,7 @@ func (c *CustomGameMode) callAndApplyMatchHook(ctx contract.Context, matchHookNa
 		return
 	}
 
-	err = c.deserializeAndApplyGameStateChangeActions(gameState, serializedGameStateChangeActions)
+	err = c.deserializeAndApplyGameStateChangeActions(ctx, gameState, serializedGameStateChangeActions)
 	if err != nil {
 		return
 	}
