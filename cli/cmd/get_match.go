@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -14,15 +15,19 @@ var getMatchCmdArgs struct {
 
 var getMatchCmd = &cobra.Command{
 	Use:   "get_match",
-	Short: "sample get match",
+	Short: "get match",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
+		callerAddr := loom.Address{
+			ChainID: commonTxObjs.rpcClient.GetChainID(),
+			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+		}
 		var req = zb.GetMatchRequest{
 			MatchId: getMatchCmdArgs.MatchID,
 		}
 		var resp zb.GetMatchResponse
 
-		_, err := commonTxObjs.contract.Call("GetMatch", &req, signer, &resp)
+		_, err := commonTxObjs.contract.StaticCall("GetMatch", &req, callerAddr, &resp)
 		if err != nil {
 			return err
 		}
