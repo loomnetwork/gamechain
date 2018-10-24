@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	mulliganCards  = 3
-	maxCardsInPlay = 6
-	maxCardsInHand = 10
-	maxGooVials    = 10
+	mulliganCards    = 3
+	maxMulliganCards = 10
+	maxCardsInPlay   = 6
+	maxCardsInHand   = 10
+	maxGooVials      = 10
 )
 
 var (
@@ -292,6 +293,63 @@ func (g *Gameplay) isEnded() bool {
 		}
 	}
 	return false
+}
+
+func (g *Gameplay) validateGameState() error {
+	for _, player := range g.State.PlayerStates {
+		if player.MaxCardsInPlay < 1 || player.MaxCardsInPlay > maxCardsInPlay {
+			return fmt.Errorf(
+				"MaxCardsInPlay must be in range [%d;%d], current value %d",
+				1,
+				maxCardsInPlay,
+				player.MaxCardsInPlay,
+			)
+		}
+
+		if player.MaxCardsInHand < 1 || player.MaxCardsInHand > maxCardsInHand {
+			return fmt.Errorf(
+				"MaxCardsInHand must be in range [%d;%d], current value %d",
+				1,
+				maxCardsInHand,
+				player.MaxCardsInHand,
+			)
+		}
+
+		if player.GooVials < 1 || player.GooVials > maxGooVials {
+			return fmt.Errorf(
+				"GooVials must be in range [%d;%d], current value %d",
+				1,
+				maxGooVials,
+				player.MaxGooVials,
+			)
+		}
+
+		if player.InitialCardsInHandCount > maxMulliganCards {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be larger than %d",
+				player.InitialCardsInHandCount,
+				maxMulliganCards,
+			)
+		}
+
+		if player.InitialCardsInHandCount < 0 {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be less than %d",
+				player.InitialCardsInHandCount,
+				0,
+			)
+		}
+
+		if player.InitialCardsInHandCount > player.MaxCardsInHand {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be larger than MaxCardsInHand (%d)",
+				player.InitialCardsInHandCount,
+				player.MaxCardsInHand,
+			)
+		}
+	}
+
+	return nil
 }
 
 func (g *Gameplay) PrintState() {
