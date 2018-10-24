@@ -213,7 +213,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 				)
 
 			if err != nil {
-				return err
+				return
 			}
 		case battleground.GameStateChangeAction_SetPlayerCardsInHand:
 			var playerIndex byte
@@ -228,7 +228,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 					simpleCards,
 				)
 			if err != nil {
-				return err
+				return
 			}
 		case battleground.GameStateChangeAction_SetPlayerInitialCardsInHandCount:
 			var playerIndex byte
@@ -270,6 +270,8 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			return nil
 		}
 	}
+
+	return gameplay.validateGameState()
 }
 
 func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
