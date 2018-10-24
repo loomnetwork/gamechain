@@ -134,7 +134,7 @@ func TestCustomGameMode_DeserializeGameStateChangeActions(t *testing.T) {
 	cgm := NewCustomGameMode(loom.RootAddress("chain"))
 	buffer := common.FromHex("0x00000000000000000000000000000000000000000000000000000000000000000000000000000000080100000002070000000002060100000001050000000001")
 
-	err := cgm.deserializeAndApplyGameStateChangeActions(*gp.ctx, gp.State, buffer)
+	err := cgm.deserializeAndApplyGameStateChangeActions(*gp.ctx, gp, buffer)
 	assert.Nil(t, err)
 
 	assert.Equal(t, int32(5), gp.State.PlayerStates[0].Defense)
@@ -148,7 +148,7 @@ func TestCustomGameMode_DeserializeGameStateChangeActionsUnknownAction(t *testin
 	cgm := NewCustomGameMode(loom.RootAddress("chain"))
 	buffer := common.FromHex("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000801000000020700000000020601000000010500000000F9")
 
-	err := cgm.deserializeAndApplyGameStateChangeActions(*gp.ctx, gp.State, buffer)
+	err := cgm.deserializeAndApplyGameStateChangeActions(*gp.ctx, gp, buffer)
 	assert.NotEqual(t, err, nil)
 }
 

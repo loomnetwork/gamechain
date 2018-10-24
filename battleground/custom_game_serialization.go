@@ -128,18 +128,18 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 	return newCard, nil
 }
 
-func (c *CustomGameMode) updateCardsFromSimpleCards(ctx contract.Context, state *zb.GameState, cards []*zb.CardInstance, simpleCards []*SimpleCardInstance) (newCards []*zb.CardInstance, err error) {
-	cardLibrary, err := getCardLibrary(ctx, state.Version)
-	if err != nil {
-		return nil, err
-	}
-
+func (c *CustomGameMode) updateCardsFromSimpleCards(
+	ctx contract.Context,
+	gameplay *Gameplay,
+	cards []*zb.CardInstance,
+	simpleCards []*SimpleCardInstance,
+) (newCards []*zb.CardInstance, err error) {
 	for _, simpleCard := range simpleCards {
 		var newCard *zb.CardInstance
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId {
-				cardLibraryCard, err := getCardDetails(cardLibrary, simpleCard.mouldName)
+				cardLibraryCard, err := getCardDetails(gameplay.cardLibrary, simpleCard.mouldName)
 				if err != nil {
 					return nil, err
 				}
@@ -161,7 +161,7 @@ func (c *CustomGameMode) updateCardsFromSimpleCards(ctx contract.Context, state 
 	return newCards, nil
 }
 
-func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.Context, state *zb.GameState, serializedActions []byte) (err error) {
+func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.Context, gameplay *Gameplay, serializedActions []byte) (err error) {
 	if len(serializedActions) == 0 {
 		return nil
 	}
@@ -182,7 +182,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].Defense = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].Defense = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerCurrentGoo:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
@@ -190,7 +190,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].CurrentGoo = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].CurrentGoo = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerGooVials:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
@@ -198,13 +198,19 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].GooVials = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].GooVials = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerCardsInDeck:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
 
 			simpleCards, _ := c.deserializeSimpleCardInstanceArray(reader)
-			state.PlayerStates[playerIndex].CardsInDeck, err = c.updateCardsFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInDeck, simpleCards)
+			gameplay.State.PlayerStates[playerIndex].CardsInDeck, err =
+				c.updateCardsFromSimpleCards(
+					ctx,
+					gameplay,
+					gameplay.State.PlayerStates[playerIndex].CardsInDeck,
+					simpleCards,
+				)
 
 			if err != nil {
 				return err
@@ -214,8 +220,13 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			binary.Read(reader, binary.BigEndian, &playerIndex)
 
 			simpleCards, _ := c.deserializeSimpleCardInstanceArray(reader)
-			state.PlayerStates[playerIndex].CardsInHand, err = c.updateCardsFromSimpleCards(ctx, state, state.PlayerStates[playerIndex].CardsInHand, simpleCards)
-
+			gameplay.State.PlayerStates[playerIndex].CardsInHand, err =
+				c.updateCardsFromSimpleCards(
+					ctx,
+					gameplay,
+					gameplay.State.PlayerStates[playerIndex].CardsInHand,
+					simpleCards,
+				)
 			if err != nil {
 				return err
 			}
@@ -226,7 +237,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].InitialCardsInHandCount = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].InitialCardsInHandCount = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerMaxCardsInPlay:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
@@ -234,7 +245,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].MaxCardsInPlay = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].MaxCardsInPlay = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerMaxCardsInHand:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
@@ -242,7 +253,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].MaxCardsInHand = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].MaxCardsInHand = int32(newValue)
 		case battleground.GameStateChangeAction_SetPlayerMaxGooVials:
 			var playerIndex byte
 			binary.Read(reader, binary.BigEndian, &playerIndex)
@@ -250,7 +261,7 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			var newValue byte
 			binary.Read(reader, binary.BigEndian, &newValue)
 
-			state.PlayerStates[playerIndex].MaxGooVials = int32(newValue)
+			gameplay.State.PlayerStates[playerIndex].MaxGooVials = int32(newValue)
 		default:
 			return fmt.Errorf("unknown game state change action %d", action)
 		}

@@ -404,18 +404,13 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owne
 	}
 }
 
-func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, version string) error {
-	cardList, err := getCardLibrary(ctx, version)
-	if err != nil {
-		return err
-	}
-
+func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerStates []*zb.PlayerState) error {
 	instanceId := int32(0) // unique instance IDs for cards
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
 			for i := int64(0); i < cardAmounts.Amount; i++ {
-				cardDetails, err := getCardDetails(cardList, cardAmounts.CardName)
+				cardDetails, err := getCardDetails(cardLibrary, cardAmounts.CardName)
 				if err != nil {
 					return fmt.Errorf("unable to get card %s from card library: %s", cardAmounts.CardName, err.Error())
 				}
