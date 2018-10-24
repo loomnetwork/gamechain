@@ -416,6 +416,8 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
+	ctx.SetTime(time.Now())
+
 	err := c.Init(*ctx, &initRequest)
 	assert.Nil(t, err)
 }
