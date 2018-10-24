@@ -14,7 +14,7 @@ const (
 	mulliganCards  = 3
 	maxCardsInPlay = 6
 	maxCardsInHand = 10
-	maxGooVials = 10
+	maxGooVials    = 10
 )
 
 var (
@@ -33,6 +33,7 @@ var (
 type Gameplay struct {
 	State                  *zb.GameState
 	stateFn                stateFn
+	cardLibrary            *zb.CardList
 	err                    error
 	customGameMode         *CustomGameMode
 	history                []*zb.HistoryData
@@ -72,16 +73,22 @@ func NewGamePlay(ctx contract.Context,
 		ClientSideRuleOverride: clientSideRuleOverride,
 	}
 
-	err := populateDeckCards(ctx, players, version)
+	var err error
+	g.cardLibrary, err = getCardLibrary(ctx, version)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := g.createGame(ctx); err != nil {
+	err = populateDeckCards(ctx, g.cardLibrary, players)
+	if err != nil {
 		return nil, err
 	}
 
-	if err := g.run(); err != nil {
+	if err = g.createGame(ctx); err != nil {
+		return nil, err
+	}
+
+	if err = g.run(); err != nil {
 		return nil, err
 	}
 	return g, nil
@@ -113,7 +120,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	g.State.CurrentPlayerIndex = n
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g.State)
+		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
@@ -129,7 +136,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	}
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g.State)
+		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
@@ -487,7 +494,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// handle card limit in hand
-	if len(g.activePlayer().CardsInHand) + 1 > int(g.activePlayer().MaxCardsInHand) {
+	if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
 		// TODO: assgin g.err
 		return nil
 	}
