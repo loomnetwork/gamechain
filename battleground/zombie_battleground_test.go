@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
@@ -1202,6 +1203,87 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 			assert.NotNil(t, response)
 		}(i)
 	}
+}
+
+func TestMatchMakingTimeout(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr *loom.Address
+	var ctx contract.Context
+
+	// setup ctx
+	c = &ZombieBattleground{}
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
+	addr = &loom.Address{
+		Local: loom.LocalAddressFromPublicKey(pubKey),
+	}
+	now := time.Now()
+	fc := plugin.CreateFakeContext(*addr, *addr)
+	fc.SetTime(now)
+	ctx = contract.WrapPluginContext(fc)
+	err := c.Init(ctx, &initRequest)
+	assert.Nil(t, err)
+
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-3",
+		Version: "v1",
+	}, t)
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-1",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+	})
+
+	// move time forward to expire the matchmaking
+	fc.SetTime(now.Add(2 * MMTimeout))
+
+	var matchID int64
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		matchID = response.Match.Id
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "this is the player1")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.EqualValues(t, 2, response.Match.Id)
+	})
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-3",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "this is the player2")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+	t.Run("GetMatch", func(t *testing.T) {
+		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: 1,
+		})
+		assert.Equal(t, contract.ErrNotFound, err)
+	})
 }
 
 func TestGameStateOperations(t *testing.T) {
