@@ -1125,8 +1125,6 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		fmt.Println("--------------------------")
-		fmt.Printf("%+v", response)
 		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
@@ -1140,8 +1138,6 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		fmt.Println("--------------------------")
-		fmt.Printf("%+v", response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
@@ -1178,6 +1174,34 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, zb.Match_Ended, response.Match.Status, "match status should be 'ended'")
 		assert.NotNil(t, response.GameState)
 	})
+}
+
+func TestMatchMakingPlayerPool(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	numPlayers := 10
+	for i := 0; i < numPlayers; i++ {
+		setupAccount(c, ctx, &zb.UpsertAccountRequest{
+			UserId:  fmt.Sprintf("player-%d", i+1),
+			Version: "v1",
+		}, t)
+	}
+
+	for i := 0; i < numPlayers; i++ {
+		func(i int) {
+			response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+				DeckId:  1,
+				UserId:  fmt.Sprintf("player-%d", i+1),
+				Version: "v1",
+			})
+			assert.Nil(t, err)
+			assert.NotNil(t, response)
+		}(i)
+	}
 }
 
 func TestGameStateOperations(t *testing.T) {
