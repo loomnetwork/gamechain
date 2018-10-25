@@ -648,11 +648,16 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		UpdatedAt: ctx.Now().Unix(),
 	}
 
+	// perform matchmaking function to calculate scores
+	// steps:
+	// 1. list all the candidates that has similar profiles
+	// 2. pick the most highest score
+	// 3. if there is no candidate, sleep for MMWaitTime seconds
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
-	for retries < MMFRetries {
+	for retries < MMRetries {
 		ctx.Logger().Info(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
-		time.Sleep(MMFWaitTime)
+		time.Sleep(MMWaitTime)
 		// load player pool
 		pool, err := loadPlayerPool(ctx)
 		if err != nil {
@@ -660,15 +665,36 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 		ctx.Logger().Info(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 
-		// prune the timedout player profile
+		// prune the timed out player profile
 		for _, pp := range pool.PlayerProfiles {
 			updatedAt := time.Unix(pp.UpdatedAt, 0)
-			if updatedAt.Add(MMFTimeout).Before(ctx.Now()) {
+			if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
+				ctx.Logger().Info(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+				// remove player from the pool
 				pool = removePlayerFromPool(pool, pp.UserId)
+				// remove match
+				match, _ := loadUserMatch(ctx, pp.UserId)
+				if match != nil {
+					ctx.Delete(MatchKey(match.Id))
+					match.Status = zb.Match_Timedout
+					// remove player's match if existing
+					ctx.Delete(UserMatchKey(pp.UserId))
+					// notify player
+					emitMsg := zb.PlayerActionEvent{
+						Match: match,
+					}
+					data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+					if err != nil {
+						return nil, err
+					}
+					if err == nil {
+						ctx.EmitTopics([]byte(data), match.Topics...)
+					}
+				}
 			}
 		}
 
-		// if pool size is 0, just register player to the pool
+		// 1. if pool size is 0, just register player to the pool
 		if len(pool.PlayerProfiles) == 0 {
 			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
 			if err := savePlayerPool(ctx, pool); err != nil {
@@ -690,7 +716,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				return nil, err
 			}
 			// save user match
-			// TODO: clean up the previous match?
 			if err := saveUserMatch(ctx, req.UserId, match); err != nil {
 				return nil, err
 			}
@@ -699,8 +724,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}, nil
 		}
 
-		targetProfile := findUserProfileByID(pool, req.UserId)
-		// if pool size is 1 and contains only the player finding a match, update the player profile
+		targetProfile := findPlayerProfileByID(pool, req.UserId)
+		// 2. if pool size is 1 and contains only the player finding a match, update the player profile
 		if len(pool.PlayerProfiles) == 1 && targetProfile != nil {
 			profile := pool.PlayerProfiles[0]
 			profile.UpdatedAt = ctx.Now().Unix()
@@ -718,11 +743,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}, nil
 		}
 
-		// perform matchmaking function to calculate scores
-		// steps:
-		// 1. list all the candidates that has similar profiles
-		// 2. pick the most highest score
-		// 3. if there is no candidate, sleep for 3 seconds
+		// 3. otherwise, perfrom match making function
 		var playerScores []*PlayerScore
 		for _, pp := range pool.PlayerProfiles {
 			// skip the requesting paluer
@@ -735,7 +756,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			matchedPlayerProfile = findUserProfileByID(pool, matchedPlayerID)
+			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
 			pool = removePlayerFromPool(pool, req.UserId)
