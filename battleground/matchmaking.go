@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	MaxMMFRetries = 3
-	MMFWaitTime   = 3000 * time.Millisecond
+	MMFRetries  = 3
+	MMFWaitTime = 3000 * time.Millisecond
+	MMFTimeout  = 60 * time.Second
 )
 
 // MatchMakingFunc calculates the score based on the given profile target and candidate
