@@ -28,6 +28,7 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 		binary.Write(rb, binary.BigEndian, byte(playerState.Defense))
 		binary.Write(rb, binary.BigEndian, byte(playerState.CurrentGoo))
 		binary.Write(rb, binary.BigEndian, byte(playerState.GooVials))
+		binary.Write(rb, binary.BigEndian, uint32(playerState.TurnTime))
 		binary.Write(rb, binary.BigEndian, byte(playerState.InitialCardsInHandCount))
 		binary.Write(rb, binary.BigEndian, byte(playerState.MaxCardsInPlay))
 		binary.Write(rb, binary.BigEndian, byte(playerState.MaxCardsInHand))
@@ -262,6 +263,14 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 			binary.Read(reader, binary.BigEndian, &newValue)
 
 			gameplay.State.PlayerStates[playerIndex].MaxGooVials = int32(newValue)
+		case battleground.GameStateChangeAction_SetPlayerTurnTime:
+			var playerIndex byte
+			binary.Read(reader, binary.BigEndian, &playerIndex)
+
+			var newValue uint32
+			binary.Read(reader, binary.BigEndian, &newValue)
+
+			gameplay.State.PlayerStates[playerIndex].TurnTime = int32(newValue)
 		default:
 			return fmt.Errorf("unknown game state change action %d", action)
 		}

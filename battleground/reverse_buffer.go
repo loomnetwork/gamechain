@@ -91,14 +91,14 @@ func (rb *ReverseBuffer) resizeIfNeeded(minimumIncreaseBy int) (resized bool, er
 		return false, nil
 	}
 
-	currentLength := len(rb.buffer)
-	minNewLength := currentLength + minimumIncreaseBy
+	oldLength := len(rb.buffer)
+	minNewLength := oldLength + minimumIncreaseBy
 
 	var newLength int
-	if currentLength == 0 {
+	if oldLength == 0 {
 		newLength = minNewLength
 	} else {
-		newLength = currentLength
+		newLength = oldLength
 	}
 
 	for newLength < minNewLength {
@@ -106,8 +106,8 @@ func (rb *ReverseBuffer) resizeIfNeeded(minimumIncreaseBy int) (resized bool, er
 	}
 
 	newBuffer := make([]byte, newLength)
-	copy(newBuffer[currentLength:newLength], rb.buffer[:])
-	rb.remainingBytes += newLength - currentLength
+	copy(newBuffer[oldLength:newLength], rb.buffer[:])
+	rb.remainingBytes += newLength - oldLength
 	rb.buffer = newBuffer
 
 	return true, nil
