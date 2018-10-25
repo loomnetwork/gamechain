@@ -650,7 +650,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
-	for retries < MaxMMFRetries {
+	for retries < MMFRetries {
 		ctx.Logger().Info(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
 		time.Sleep(MMFWaitTime)
 		// load player pool
@@ -660,7 +660,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 		ctx.Logger().Info(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 
-		// TODO: prune the timedout matches
+		// prune the timedout player profile
+		for _, pp := range pool.PlayerProfiles {
+			updatedAt := time.Unix(pp.UpdatedAt, 0)
+			if updatedAt.Add(MMFTimeout).Before(ctx.Now()) {
+				pool = removePlayerFromPool(pool, pp.UserId)
+			}
+		}
 
 		// if pool size is 0, just register player to the pool
 		if len(pool.PlayerProfiles) == 0 {
