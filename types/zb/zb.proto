@@ -393,6 +393,7 @@ message Match {
         Playing      = 3;
         PlayerLeft   = 4;
         Ended        = 5;
+        Timedout     = 6;
     }
     Status status = 4;
     string version = 5;
