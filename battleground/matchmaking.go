@@ -8,27 +8,23 @@ import (
 )
 
 const (
-	MMFRetries  = 3
-	MMFWaitTime = 3000 * time.Millisecond
-	MMFTimeout  = 60 * time.Second
+	// MMRetries defines how many times the player keep retrying on match making
+	MMRetries = 3
+	// MMWaitTime defines how long the player will wait if there is no other player in player pool
+	MMWaitTime = 3000 * time.Millisecond
+	// MMTimeout determines how long the player should be in the player pool
+	MMTimeout = 30 * time.Second
 )
 
 // MatchMakingFunc calculates the score based on the given profile target and candidate
 type MatchMakingFunc func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64
 
+// mmf is the gobal match making function that calculates the match making score
 var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64 {
 	return 1
 }
 
-func findUserProfileByID(pool *zb.PlayerPool, id string) *zb.PlayerProfile {
-	for _, pp := range pool.PlayerProfiles {
-		if pp.UserId == id {
-			return pp
-		}
-	}
-	return nil
-}
-
+// PlayerScore simply maintains the player id and score tuple
 type PlayerScore struct {
 	score float64
 	id    string
@@ -47,6 +43,15 @@ func (p byPlayersScore) Less(i, j int) bool {
 func sortByPlayerScore(ps []*PlayerScore) []*PlayerScore {
 	sort.Sort(byPlayersScore(ps))
 	return ps
+}
+
+func findPlayerProfileByID(pool *zb.PlayerPool, id string) *zb.PlayerProfile {
+	for _, pp := range pool.PlayerProfiles {
+		if pp.UserId == id {
+			return pp
+		}
+	}
+	return nil
 }
 
 func removePlayerFromPool(pool *zb.PlayerPool, id string) *zb.PlayerPool {
