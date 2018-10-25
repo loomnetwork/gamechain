@@ -961,6 +961,12 @@ message StartGameAction {
 message Unit {
     int32 instanceId = 1;
     AffectObjectType affectObjectType = 2;
+    Parameter Parameter = 3;
+}
+
+message Parameter {
+    int32 Damage  = 1;
+    int32 Defense = 2;
 }
 
 enum OverlordSkillKind {
