@@ -378,6 +378,7 @@ message PlayerState {
     int32 maxCardsInPlay = 14;
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
+    int32 turnTime = 17;
 }
 
 message Match {

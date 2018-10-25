@@ -11,11 +11,12 @@ import (
 )
 
 const (
-	mulliganCards    = 3
-	maxMulliganCards = 10
-	maxCardsInPlay   = 6
-	maxCardsInHand   = 10
-	maxGooVials      = 10
+	defaultTurnTime      = 120
+	defaultMulliganCards = 3
+	maxMulliganCards     = 10
+	maxCardsInPlay       = 6
+	maxCardsInHand       = 10
+	maxGooVials          = 10
 )
 
 var (
@@ -110,7 +111,8 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		g.State.PlayerStates[i].Defense = 20
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
-		g.State.PlayerStates[i].InitialCardsInHandCount = mulliganCards
+		g.State.PlayerStates[i].TurnTime = defaultTurnTime
+		g.State.PlayerStates[i].InitialCardsInHandCount = defaultMulliganCards
 		g.State.PlayerStates[i].MaxCardsInPlay = maxCardsInPlay
 		g.State.PlayerStates[i].MaxCardsInHand = maxCardsInHand
 		g.State.PlayerStates[i].MaxGooVials = maxGooVials
@@ -345,6 +347,14 @@ func (g *Gameplay) validateGameState() error {
 				"InitialCardsInHandCount (%d) can't be larger than MaxCardsInHand (%d)",
 				player.InitialCardsInHandCount,
 				player.MaxCardsInHand,
+			)
+		}
+
+		if player.TurnTime < 0 {
+			return fmt.Errorf(
+				"TurnTime must be larger than %d, current value %d",
+				0,
+				player.TurnTime,
 			)
 		}
 	}
