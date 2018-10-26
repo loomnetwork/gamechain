@@ -248,14 +248,14 @@ func loadGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) 
 	return &state, nil
 }
 
-func saveUserMatch(ctx contract.Context, userID string, match *zb.Match) error {
+func saveUserCurrentMatch(ctx contract.Context, userID string, match *zb.Match) error {
 	if err := ctx.Set(UserMatchKey(userID), match); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadUserMatch(ctx contract.StaticContext, userID string) (*zb.Match, error) {
+func loadUserCurrentMatch(ctx contract.StaticContext, userID string) (*zb.Match, error) {
 	var m zb.Match
 	err := ctx.Get(UserMatchKey(userID), &m)
 	if err != nil {

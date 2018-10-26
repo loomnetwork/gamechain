@@ -1248,6 +1248,15 @@ func TestCancleFindMatchOperations(t *testing.T) {
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
+
+	t.Run("CancelFindmatch", func(t *testing.T) {
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.NotNil(t, err, "cannot cancel already started match")
+	})
+
 }
 
 func TestMatchMakingPlayerPool(t *testing.T) {

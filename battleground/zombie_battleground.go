@@ -671,7 +671,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				// remove player from the pool
 				pool = removePlayerFromPool(pool, pp.UserId)
 				// remove match
-				match, _ := loadUserMatch(ctx, pp.UserId)
+				match, _ := loadUserCurrentMatch(ctx, pp.UserId)
 				if match != nil {
 					ctx.Delete(MatchKey(match.Id))
 					match.Status = zb.Match_Timedout
@@ -715,7 +715,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				return nil, err
 			}
 			// save user match
-			if err := saveUserMatch(ctx, req.UserId, match); err != nil {
+			if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
 				return nil, err
 			}
 			return &zb.FindMatchResponse{
@@ -733,7 +733,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}
 
 			// return the currently saved match
-			match, err := loadUserMatch(ctx, req.UserId)
+			match, err := loadUserCurrentMatch(ctx, req.UserId)
 			if err != nil {
 				return nil, err
 			}
@@ -771,7 +771,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// get and update the match
 	player1 := matchedPlayerProfile.UserId
-	match, err := loadUserMatch(ctx, player1)
+	match, err := loadUserCurrentMatch(ctx, player1)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
@@ -783,10 +783,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match.Status = zb.Match_Started
 
 	// save user match
-	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
 		return nil, err
 	}
-	if err := saveUserMatch(ctx, player1, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, player1, match); err != nil {
 		return nil, err
 	}
 	// save match
@@ -843,23 +843,19 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 }
 
 func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.CancelFindMatchRequest) (*zb.CancelFindMatchResponse, error) {
-	pool, err := loadPlayerPool(ctx)
-	if err != nil {
-		return nil, err
-	}
-	pool = removePlayerFromPool(pool, req.UserId)
-	if err := savePlayerPool(ctx, pool); err != nil {
-		return nil, err
-	}
-	// remove match
-	ctx.Delete(UserMatchKey(req.UserId))
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
 	}
+	if match.Status == zb.Match_Started {
+		return nil, fmt.Errorf("cannot cancel already started match")
+	}
+	// remove current match
+	ctx.Delete(UserMatchKey(req.UserId))
+	// remove match
 	ctx.Delete(MatchKey(match.Id))
-	match.Status = zb.Match_Canceled
 	// notify player
+	match.Status = zb.Match_Canceled
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 	}
@@ -869,6 +865,16 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 	}
 	if err == nil {
 		ctx.EmitTopics([]byte(data), match.Topics...)
+	}
+
+	// remove player from the player pool
+	pool, err := loadPlayerPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+	pool = removePlayerFromPool(pool, req.UserId)
+	if err := savePlayerPool(ctx, pool); err != nil {
+		return nil, err
 	}
 
 	return &zb.CancelFindMatchResponse{}, nil
