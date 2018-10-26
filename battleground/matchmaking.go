@@ -13,7 +13,7 @@ const (
 	// MMWaitTime defines how long the player will wait if there is no other player in player pool
 	MMWaitTime = 3000 * time.Millisecond
 	// MMTimeout determines how long the player should be in the player pool
-	MMTimeout = 60 * time.Second
+	MMTimeout = 120 * time.Second
 )
 
 // MatchMakingFunc calculates the score based on the given profile target and candidate
