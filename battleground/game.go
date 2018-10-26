@@ -187,8 +187,8 @@ func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
 }
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
-	// skip checking for mulligan action
-	if action.ActionType == zb.PlayerActionType_Mulligan {
+	// skip checking for allowed actions
+	if action.ActionType == zb.PlayerActionType_Mulligan ||	action.ActionType == zb.PlayerActionType_LeaveMatch {
 		return nil
 	}
 	activePlayer := g.activePlayer()
