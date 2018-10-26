@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"time"
 	"unicode/utf8"
 
 	"github.com/golang/protobuf/jsonpb"
@@ -631,7 +632,7 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
-	// load deck id
+	// preparing user profile consisting of deck, score, ...
 	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
 		return nil, err
@@ -641,59 +642,136 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
 	}
 
-	// register the user to match making pool
-	// TODO: chan ge to scan users in matchmakings
-	infos, err := loadMatchMakingInfoList(ctx)
-	if err != nil {
-		return nil, err
+	profile := zb.PlayerProfile{
+		UserId:    req.UserId,
+		DeckId:    deck.Id,
+		UpdatedAt: ctx.Now().Unix(),
 	}
 
-	var info *zb.MatchMakingInfo
-	for _, inf := range infos.Infos {
-		if inf.UserId == req.UserId {
-			continue
-		}
-		info = inf
-	}
-
-	if info == nil {
-		// save user info
-		info = &zb.MatchMakingInfo{
-			UserId: req.UserId,
-			Deck:   deck,
-		}
-		infos.Infos = append(infos.Infos, info)
-		if err := saveMatchMakingInfoList(ctx, infos); err != nil {
+	// perform matchmaking function to calculate scores
+	// steps:
+	// 1. list all the candidates that has similar profiles
+	// 2. pick the most highest score
+	// 3. if there is no candidate, sleep for MMWaitTime seconds
+	retries := 0
+	var matchedPlayerProfile *zb.PlayerProfile
+	for retries < MMRetries {
+		ctx.Logger().Info(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
+		// load player pool
+		pool, err := loadPlayerPool(ctx)
+		if err != nil {
 			return nil, err
 		}
 
-		match := &zb.Match{
-			Status: zb.Match_Matching,
-			PlayerStates: []*zb.PlayerState{
-				&zb.PlayerState{
-					Id:   req.UserId,
-					Deck: deck,
+		// prune the timed out player profile
+		for _, pp := range pool.PlayerProfiles {
+			updatedAt := time.Unix(pp.UpdatedAt, 0)
+			if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
+				ctx.Logger().Info(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+				// remove player from the pool
+				pool = removePlayerFromPool(pool, pp.UserId)
+				// remove match
+				match, _ := loadUserCurrentMatch(ctx, pp.UserId)
+				if match != nil {
+					ctx.Delete(MatchKey(match.Id))
+					match.Status = zb.Match_Timedout
+					// remove player's match if existing
+					ctx.Delete(UserMatchKey(pp.UserId))
+					// notify player
+					emitMsg := zb.PlayerActionEvent{
+						Match: match,
+					}
+					data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+					if err != nil {
+						return nil, err
+					}
+					if err == nil {
+						ctx.EmitTopics([]byte(data), match.Topics...)
+					}
+				}
+			}
+		}
+
+		ctx.Logger().Info(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
+		// 1. if pool size is 0, just register player to the pool
+		if len(pool.PlayerProfiles) == 0 {
+			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
+			if err := savePlayerPool(ctx, pool); err != nil {
+				return nil, err
+			}
+			// create match
+			match := &zb.Match{
+				Status: zb.Match_Matching,
+				PlayerStates: []*zb.PlayerState{
+					&zb.PlayerState{
+						Id:   req.UserId,
+						Deck: deck,
+					},
 				},
-			},
-			Version: req.Version,
+				Version: req.Version,
+			}
+
+			if err := createMatch(ctx, match); err != nil {
+				return nil, err
+			}
+			// save user match
+			if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
+				return nil, err
+			}
+			return &zb.FindMatchResponse{
+				Match: match,
+			}, nil
 		}
 
-		if err := createMatch(ctx, match); err != nil {
-			return nil, err
+		targetProfile := findPlayerProfileByID(pool, req.UserId)
+		// 2. if pool size is 1 and contains only the player finding a match, update the player profile
+		if len(pool.PlayerProfiles) == 1 && targetProfile != nil {
+			profile := pool.PlayerProfiles[0]
+			profile.UpdatedAt = ctx.Now().Unix()
+			if err := savePlayerPool(ctx, pool); err != nil {
+				return nil, err
+			}
+
+			// return the currently saved match
+			match, err := loadUserCurrentMatch(ctx, req.UserId)
+			if err != nil {
+				return nil, err
+			}
+			return &zb.FindMatchResponse{
+				Match: match,
+			}, nil
 		}
-		// save user match
-		// TODO: clean up the previous match?
-		if err := saveUserMatch(ctx, req.UserId, match); err != nil {
-			return nil, err
+
+		// 3. otherwise, perfrom match making function
+		var playerScores []*PlayerScore
+		for _, pp := range pool.PlayerProfiles {
+			// skip the requesting player
+			if pp.UserId == req.UserId {
+				continue
+			}
+			score := mmf(targetProfile, pp)
+			playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
 		}
-		return &zb.FindMatchResponse{
-			Match: match,
-		}, nil
+		sortedPlayerScores := sortByPlayerScore(playerScores)
+		if len(sortedPlayerScores) > 0 {
+			matchedPlayerID := sortedPlayerScores[0].id
+			ctx.Logger().Info(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
+			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
+			// remove the match players from the pool
+			pool = removePlayerFromPool(pool, matchedPlayerID)
+			pool = removePlayerFromPool(pool, req.UserId)
+			if err := savePlayerPool(ctx, pool); err != nil {
+				return nil, err
+			}
+			ctx.Logger().Info(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
+			break
+		}
+		retries++
 	}
 
 	// get and update the match
-	opponentID := info.UserId
-	match, err := loadUserMatch(ctx, opponentID)
+	player1 := matchedPlayerProfile.UserId
+	match, err := loadUserCurrentMatch(ctx, player1)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
@@ -705,24 +783,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match.Status = zb.Match_Started
 
 	// save user match
-	// TODO: clean up the previous match?
-	if err := saveUserMatch(ctx, req.UserId, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
 		return nil, err
 	}
-
-	// remove info from match making list by making sure that only second player remove it once
-	newinfos := make([]*zb.MatchMakingInfo, 0)
-	for _, inf := range infos.Infos {
-		if inf.UserId == opponentID {
-			continue
-		}
-		newinfos = append(newinfos, inf)
-	}
-	infos.Infos = newinfos
-	if err := saveMatchMakingInfoList(ctx, infos); err != nil {
+	if err := saveUserCurrentMatch(ctx, player1, match); err != nil {
 		return nil, err
 	}
-
+	// save match
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
@@ -775,6 +842,44 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}, nil
 }
 
+func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.CancelFindMatchRequest) (*zb.CancelFindMatchResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	if match.Status == zb.Match_Started {
+		return nil, fmt.Errorf("cannot cancel already started match")
+	}
+	// remove current match
+	ctx.Delete(UserMatchKey(req.UserId))
+	// remove match
+	ctx.Delete(MatchKey(match.Id))
+	// notify player
+	match.Status = zb.Match_Canceled
+	emitMsg := zb.PlayerActionEvent{
+		Match: match,
+	}
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics([]byte(data), match.Topics...)
+	}
+
+	// remove player from the player pool
+	pool, err := loadPlayerPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+	pool = removePlayerFromPool(pool, req.UserId)
+	if err := savePlayerPool(ctx, pool); err != nil {
+		return nil, err
+	}
+
+	return &zb.CancelFindMatchResponse{}, nil
+}
+
 func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -786,11 +891,6 @@ func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMat
 		Match:     match,
 		GameState: gameState,
 	}, nil
-}
-
-func (z *ZombieBattleground) ClearMatchPool(ctx contract.Context, req *zb.ClearMatchPoolRequest) error {
-	err := saveMatchMakingInfoList(ctx, &zb.MatchMakingInfoList{})
-	return err
 }
 
 func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
