@@ -1177,7 +1177,7 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 }
 
-func TestCancleFindMatchOperations(t *testing.T) {
+func TestCancelFindMatchOperations(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
