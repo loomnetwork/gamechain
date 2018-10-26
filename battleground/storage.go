@@ -329,41 +329,53 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func populateDeckCards(ctx contract.Context, playerStates []*zb.PlayerState, version string) error {
-	var cardList zb.CardList
-	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
-		return fmt.Errorf("error getting card library: %s", err)
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) (*zb.CardInstance) {
+	return &zb.CardInstance{
+		InstanceId: instanceId,
+		Owner: owner,
+		Attack:     cardDetails.Damage,
+		Defense:    cardDetails.Health,
+		GooCost:	cardDetails.Cost,
+		Prototype: &zb.CardPrototype{
+			Name:    cardDetails.Name,
+			GooCost: cardDetails.Cost,
+		},
 	}
-	instanceID := int32(0) // unique instance IDs for cards
+}
+
+func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerStates []*zb.PlayerState) error {
+	instanceId := int32(0) // unique instance IDs for cards
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
 			for i := int64(0); i < cardAmounts.Amount; i++ {
-				cardDetails, err := getCardDetails(&cardList, cardAmounts.CardName)
+				cardDetails, err := getCardDetails(cardLibrary, cardAmounts.CardName)
 				if err != nil {
 					return fmt.Errorf("unable to get card %s from card library: %s", cardAmounts.CardName, err.Error())
 				}
 
-				cardInstance := &zb.CardInstance{
-					InstanceId: instanceID,
-					Attack:     cardDetails.Damage,
-					Defense:    cardDetails.Health,
-					Prototype: &zb.CardPrototype{
-						Name:    cardDetails.Name,
-						GooCost: cardDetails.Cost,
-					},
-					Owner: playerState.Id,
-				}
+				cardInstance := newCardInstanceFromCardDetails(
+					cardDetails,
+					instanceId,
+					playerState.Id,
+					)
+
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
-				instanceID++
+				instanceId++
 			}
-		}
-		for _, c := range playerState.CardsInDeck {
-			ctx.Logger().Debug(fmt.Sprintf("card: name :%s, attack: %v\n", c.Prototype.Name, c.Attack))
 		}
 	}
 
 	return nil
+}
+
+func getCardLibrary(ctx contract.Context, version string) (*zb.CardList, error) {
+	var cardList zb.CardList
+	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
+		return nil, fmt.Errorf("error getting card library: %s", err)
+	}
+
+	return &cardList, nil
 }
 
 func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
@@ -372,5 +384,5 @@ func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 			return card, nil
 		}
 	}
-	return nil, fmt.Errorf("card not found in card library")
+	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }

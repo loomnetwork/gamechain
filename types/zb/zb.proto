@@ -3,8 +3,6 @@ syntax = "proto3";
 option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 
 import "github.com/loomnetwork/go-loom/types/types.proto";
-// C# namespace needs to be added to types.proto?
-//import "github.com/loomnetwork/unity-sdk/UnityProject/Assets/LoomSDK/Source/Protobuf/proto/loom.proto";
 
 message Account {
     string user_id             = 1;
@@ -380,6 +378,7 @@ message PlayerState {
     int32 maxCardsInPlay = 14;
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
+    int32 turnTime = 17;
 }
 
 message Match {
@@ -839,6 +838,7 @@ message CardInstance {
     CardPrototype prototype = 2;
     int32 defense = 3;
     int32 attack = 4;
+    int32 gooCost = 6;
     string owner = 5;
 }
 
@@ -972,6 +972,12 @@ message StartGameAction {
 message Unit {
     int32 instanceId = 1;
     AffectObjectType affectObjectType = 2;
+    Parameter Parameter = 3;
+}
+
+message Parameter {
+    int32 Damage  = 1;
+    int32 Defense = 2;
 }
 
 enum OverlordSkillKind {

@@ -45,6 +45,7 @@ const (
         GameStateChangeAction_SetPlayerMaxCardsInPlay GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerMaxCardsInHand GameStateChangeAction = iota
         GameStateChangeAction_SetPlayerMaxGooVials GameStateChangeAction = iota
+        GameStateChangeAction_SetPlayerTurnTime GameStateChangeAction = iota
 )
 
 type CustomUiElement int32
