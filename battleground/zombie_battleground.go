@@ -1043,7 +1043,7 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 		return nil, err
 	}
 	gp.PrintState()
-	if err := gp.AddBundleAction(req.PlayerActions...); err != nil {
+	if err := gp.AddAction(req.PlayerActions...); err != nil {
 		return nil, err
 	}
 	gp.PrintState()

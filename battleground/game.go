@@ -169,16 +169,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 }
 
 // AddAction adds the given action and reruns the game state
-func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
-	if err := g.checkCurrentPlayer(action); err != nil {
-		return err
-	}
-	g.State.PlayerActions = append(g.State.PlayerActions, action)
-	// resume the Gameplay
-	return g.resume()
-}
-
-func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
+func (g *Gameplay) AddAction(actions ...*zb.PlayerAction) error {
 	for _, action := range actions {
 		g.State.PlayerActions = append(g.State.PlayerActions, action)
 	}
