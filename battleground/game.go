@@ -11,10 +11,12 @@ import (
 )
 
 const (
-	mulliganCards  = 3
-	maxCardsInPlay = 6
-	maxCardsInHand = 10
-	maxGooVials = 10
+	defaultTurnTime      = 120
+	defaultMulliganCards = 3
+	maxMulliganCards     = 10
+	maxCardsInPlay       = 6
+	maxCardsInHand       = 10
+	maxGooVials          = 10
 )
 
 var (
@@ -33,6 +35,7 @@ var (
 type Gameplay struct {
 	State                  *zb.GameState
 	stateFn                stateFn
+	cardLibrary            *zb.CardList
 	err                    error
 	customGameMode         *CustomGameMode
 	history                []*zb.HistoryData
@@ -72,16 +75,22 @@ func NewGamePlay(ctx contract.Context,
 		ClientSideRuleOverride: clientSideRuleOverride,
 	}
 
-	err := populateDeckCards(ctx, players, version)
+	var err error
+	g.cardLibrary, err = getCardLibrary(ctx, version)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := g.createGame(ctx); err != nil {
+	err = populateDeckCards(ctx, g.cardLibrary, players)
+	if err != nil {
 		return nil, err
 	}
 
-	if err := g.run(); err != nil {
+	if err = g.createGame(ctx); err != nil {
+		return nil, err
+	}
+
+	if err = g.run(); err != nil {
 		return nil, err
 	}
 	return g, nil
@@ -102,7 +111,8 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		g.State.PlayerStates[i].Defense = 20
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
-		g.State.PlayerStates[i].InitialCardsInHandCount = mulliganCards
+		g.State.PlayerStates[i].TurnTime = defaultTurnTime
+		g.State.PlayerStates[i].InitialCardsInHandCount = defaultMulliganCards
 		g.State.PlayerStates[i].MaxCardsInPlay = maxCardsInPlay
 		g.State.PlayerStates[i].MaxCardsInHand = maxCardsInHand
 		g.State.PlayerStates[i].MaxGooVials = maxGooVials
@@ -113,7 +123,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	g.State.CurrentPlayerIndex = n
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g.State)
+		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
@@ -129,7 +139,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	}
 
 	if g.customGameMode != nil {
-		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g.State)
+		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g)
 		if err != nil {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
@@ -285,6 +295,71 @@ func (g *Gameplay) isEnded() bool {
 		}
 	}
 	return false
+}
+
+func (g *Gameplay) validateGameState() error {
+	for _, player := range g.State.PlayerStates {
+		if player.MaxCardsInPlay < 1 || player.MaxCardsInPlay > maxCardsInPlay {
+			return fmt.Errorf(
+				"MaxCardsInPlay must be in range [%d;%d], current value %d",
+				1,
+				maxCardsInPlay,
+				player.MaxCardsInPlay,
+			)
+		}
+
+		if player.MaxCardsInHand < 1 || player.MaxCardsInHand > maxCardsInHand {
+			return fmt.Errorf(
+				"MaxCardsInHand must be in range [%d;%d], current value %d",
+				1,
+				maxCardsInHand,
+				player.MaxCardsInHand,
+			)
+		}
+
+		if player.GooVials < 1 || player.GooVials > maxGooVials {
+			return fmt.Errorf(
+				"GooVials must be in range [%d;%d], current value %d",
+				1,
+				maxGooVials,
+				player.MaxGooVials,
+			)
+		}
+
+		if player.InitialCardsInHandCount > maxMulliganCards {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be larger than %d",
+				player.InitialCardsInHandCount,
+				maxMulliganCards,
+			)
+		}
+
+		if player.InitialCardsInHandCount < 0 {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be less than %d",
+				player.InitialCardsInHandCount,
+				0,
+			)
+		}
+
+		if player.InitialCardsInHandCount > player.MaxCardsInHand {
+			return fmt.Errorf(
+				"InitialCardsInHandCount (%d) can't be larger than MaxCardsInHand (%d)",
+				player.InitialCardsInHandCount,
+				player.MaxCardsInHand,
+			)
+		}
+
+		if player.TurnTime < 0 {
+			return fmt.Errorf(
+				"TurnTime must be larger than %d, current value %d",
+				0,
+				player.TurnTime,
+			)
+		}
+	}
+
+	return nil
 }
 
 func (g *Gameplay) PrintState() {
@@ -487,7 +562,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 	}
 
 	// handle card limit in hand
-	if len(g.activePlayer().CardsInHand) + 1 > int(g.activePlayer().MaxCardsInHand) {
+	if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
 		// TODO: assgin g.err
 		return nil
 	}
