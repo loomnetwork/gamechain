@@ -394,6 +394,7 @@ message Match {
         PlayerLeft   = 4;
         Ended        = 5;
         Timedout     = 6;
+        Canceled     = 7;
     }
     Status status = 4;
     string version = 5;
@@ -449,16 +450,16 @@ message PlayerActionEvent {
     History block = 6;
 }
 
-message PlayersInMatchmakingList {
-    repeated string userIDs = 1;
+message PlayerProfile {
+    string userId = 1;
+    int64 deckId  = 2;
+    string version = 3;
+    Address customGame = 5;
+    int64 updatedAt = 6;
 }
 
-message PendingMatchList {
-    repeated Match matches = 1;
-}
-
-message MatchList {
-    repeated Match matches = 1;
+message PlayerPool {
+    repeated PlayerProfile playerProfiles = 1;
 }
 
 message MatchCount {
@@ -473,20 +474,16 @@ message FindMatchRequest {
     Address customGame = 5;
 }
 
-message PlayerProfile {
-    string userId = 1;
-    int64 deckId  = 2;
-    string version = 3;
-    Address customGame = 5;
-    int64 updatedAt = 6;
-}
-
-message PlayerPool {
-    repeated PlayerProfile playerProfiles = 1;
-}
-
 message FindMatchResponse {
     Match match = 1;
+}
+
+message CancelFindMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+}
+
+message CancelFindMatchResponse {
 }
 
 message GetMatchRequest {

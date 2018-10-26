@@ -193,22 +193,6 @@ func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
 	return &pool, nil
 }
 
-func saveMatchList(ctx contract.Context, matchList *zb.MatchList) error {
-	if err := ctx.Set(matchesPrefix, matchList); err != nil {
-		return err
-	}
-	return nil
-}
-
-func loadMatchList(ctx contract.StaticContext) (*zb.MatchList, error) {
-	var rl zb.MatchList
-	err := ctx.Get(matchesPrefix, &rl)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-	return &rl, nil
-}
-
 func saveMatch(ctx contract.Context, match *zb.Match) error {
 	if err := ctx.Set(MatchKey(match.Id), match); err != nil {
 		return err
@@ -246,32 +230,6 @@ func nextMatchID(ctx contract.Context) (int64, error) {
 		return 0, err
 	}
 	return count.CurrentId, nil
-}
-
-func addPlayerInMatchmakingList(ctx contract.Context, ID string) error {
-	IDs, err := loadPlayersInMatchmakingList(ctx)
-	if err != nil && err != contract.ErrNotFound {
-		return err
-	}
-
-	IDs = append(IDs, ID)
-
-	list := zb.PlayersInMatchmakingList{}
-	list.UserIDs = IDs
-	if err := ctx.Set(playersInMatchmakingListKey, &list); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func loadPlayersInMatchmakingList(ctx contract.StaticContext) ([]string, error) {
-	var list zb.PlayersInMatchmakingList
-	err := ctx.Get(playersInMatchmakingListKey, &list)
-	if err != nil {
-		return nil, err
-	}
-	return list.UserIDs, nil
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {
