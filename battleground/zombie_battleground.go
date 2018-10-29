@@ -810,7 +810,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	addr, err = loom.ParseAddress(addrStr)
 	if err != nil {
-		ctx.Logger().Info(fmt.Sprintf("no custom game mode --%v\n", err))
+		ctx.Logger().Debug(fmt.Sprintf("no custom game mode --%v\n", err))
 	} else {
 		addr2 = &addr
 	}
