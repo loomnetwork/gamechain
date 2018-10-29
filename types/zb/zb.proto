@@ -978,6 +978,7 @@ message Unit {
 message Parameter {
     int32 Damage  = 1;
     int32 Defense = 2;
+    string CardName = 3;
 }
 
 enum OverlordSkillKind {
