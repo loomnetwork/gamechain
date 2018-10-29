@@ -656,7 +656,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
 	for retries < MMRetries {
-		ctx.Logger().Info(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
+		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
 		// load player pool
 		pool, err := loadPlayerPool(ctx)
 		if err != nil {
@@ -667,7 +667,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		for _, pp := range pool.PlayerProfiles {
 			updatedAt := time.Unix(pp.UpdatedAt, 0)
 			if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-				ctx.Logger().Info(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+				ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
 				// remove player from the pool
 				pool = removePlayerFromPool(pool, pp.UserId)
 				// remove match
@@ -692,7 +692,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}
 		}
 
-		ctx.Logger().Info(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
+		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 		// 1. if pool size is 0, just register player to the pool
 		if len(pool.PlayerProfiles) == 0 {
 			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
@@ -755,7 +755,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			ctx.Logger().Info(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
+			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
 			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
@@ -763,7 +763,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			if err := savePlayerPool(ctx, pool); err != nil {
 				return nil, err
 			}
-			ctx.Logger().Info(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
+			ctx.Logger().Debug(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
 			break
 		}
 		retries++
@@ -899,8 +899,6 @@ func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.Ge
 		return nil, err
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("gameState: %+v", gameState))
-
 	return &zb.GetGameStateResponse{
 		GameState: gameState,
 	}, nil
@@ -919,7 +917,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	// delete user match
 	ctx.Delete(UserMatchKey(req.UserId))
 
-	// @LOCK quick fix for now, need to update the game state properly
+	// update gamestate
 	gamestate, err := loadGameState(ctx, match.Id)
 	if err != nil {
 		return nil, err
@@ -958,7 +956,6 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err == nil {
 		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
-	fmt.Printf("MatchEnded-%v\n", emitMsg)
 
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
@@ -968,8 +965,6 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-
-	ctx.Logger().Info(fmt.Sprintf("REQ: %+v", req))
 
 	// check if the user is in the match
 	found := false

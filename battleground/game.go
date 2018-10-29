@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"bytes"
 	"fmt"
 	"math/rand"
 
@@ -40,7 +41,8 @@ type Gameplay struct {
 	customGameMode         *CustomGameMode
 	history                []*zb.HistoryData
 	ctx                    *contract.Context
-	ClientSideRuleOverride bool //disables all checks to ensure the client can work before server is fully implemented
+	ClientSideRuleOverride bool         //disables all checks to ensure the client can work before server is fully implemented
+	logger                 *loom.Logger // optional logger
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -73,6 +75,7 @@ func NewGamePlay(ctx contract.Context,
 		customGameMode:         customGameMode,
 		ctx:                    &ctx,
 		ClientSideRuleOverride: clientSideRuleOverride,
+		logger:                 ctx.Logger(),
 	}
 
 	var err error
@@ -188,7 +191,7 @@ func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	// skip checking for allowed actions
-	if action.ActionType == zb.PlayerActionType_Mulligan ||	action.ActionType == zb.PlayerActionType_LeaveMatch {
+	if action.ActionType == zb.PlayerActionType_Mulligan || action.ActionType == zb.PlayerActionType_LeaveMatch {
 		return nil
 	}
 	activePlayer := g.activePlayer()
@@ -202,7 +205,7 @@ func (g *Gameplay) run() error {
 	for g.stateFn = gameStart; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
-	fmt.Printf("Gameplay stopped at action index %d, err=%v\n", g.State.CurrentActionIndex, g.err)
+	g.debugf("Gameplay stopped at action index %d, err=%v\n", g.State.CurrentActionIndex, g.err)
 	return g.err
 }
 
@@ -236,7 +239,7 @@ func (g *Gameplay) resume() error {
 		return errInvalidAction
 	}
 
-	fmt.Printf("Gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
+	g.debugf("Gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
 	for g.stateFn = state; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
@@ -362,48 +365,64 @@ func (g *Gameplay) validateGameState() error {
 	return nil
 }
 
+func (g *Gameplay) SetLogger(logger *loom.Logger) {
+	g.logger = logger
+}
+
+func (g *Gameplay) debugf(msg string, values ...interface{}) {
+	if g.logger == nil {
+		return
+	}
+	g.logger.Debug(fmt.Sprintf(msg, values...))
+}
+
 func (g *Gameplay) PrintState() {
+	if g.logger == nil {
+		return
+	}
 	state := g.State
-	fmt.Printf("============StateInfo=============\n")
-	fmt.Printf("Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
-	fmt.Printf("Current Player Index: %v\n", state.CurrentPlayerIndex)
+	buf := new(bytes.Buffer)
+	fmt.Fprintf(buf, "============StateInfo=============\n")
+	fmt.Fprintf(buf, "Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
+	fmt.Fprintf(buf, "Current Player Index: %v\n", state.CurrentPlayerIndex)
 
 	for i, player := range g.State.PlayerStates {
 		if g.State.CurrentPlayerIndex == int32(i) {
-			fmt.Printf("Player%d: %s 🧟\n", i+1, player.Id)
+			fmt.Fprintf(buf, "Player%d: %s 🧟\n", i+1, player.Id)
 		} else {
-			fmt.Printf("Player%d: %s\n", i+1, player.Id)
+			fmt.Fprintf(buf, "Player%d: %s\n", i+1, player.Id)
 		}
-		fmt.Printf("\tdefense: %v\n", player.Defense)
-		fmt.Printf("\tcurrent goo: %v\n", player.CurrentGoo)
-		fmt.Printf("\tgoo vials: %v\n", player.GooVials)
-		fmt.Printf("\thas drawn card: %v\n", player.HasDrawnCard)
-		fmt.Printf("\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
-		fmt.Printf("\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
-		fmt.Printf("\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
-		fmt.Printf("\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
-		fmt.Println() // extra line
+		fmt.Fprintf(buf, "\tdefense: %v\n", player.Defense)
+		fmt.Fprintf(buf, "\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Fprintf(buf, "\tgoo vials: %v\n", player.GooVials)
+		fmt.Fprintf(buf, "\thas drawn card: %v\n", player.HasDrawnCard)
+		fmt.Fprintf(buf, "\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
+		fmt.Fprintf(buf, "\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
+		fmt.Fprintf(buf, "\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+		fmt.Fprintf(buf, "\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
+		fmt.Fprintf(buf, "\n") // extra line
 	}
 
-	fmt.Printf("History : count %v\n", len(g.history))
+	fmt.Fprintf(buf, "History : count %v\n", len(g.history))
 	for i, block := range g.history {
-		fmt.Printf("\t[%d] %v\n", i, block)
+		fmt.Fprintf(buf, "\t[%d] %v\n", i, block)
 	}
 
-	fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
+	fmt.Fprintf(buf, "Actions: count %v\n", len(state.PlayerActions))
 	for i, action := range state.PlayerActions {
 		if int64(i) == state.CurrentActionIndex {
-			fmt.Printf("   -->> [%d] %v\n", i, action)
+			fmt.Fprintf(buf, "   -->> [%d] %v\n", i, action)
 		} else {
-			fmt.Printf("\t[%d] %v\n", i, action)
+			fmt.Fprintf(buf, "\t[%d] %v\n", i, action)
 		}
 	}
-	fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
-	fmt.Printf("==================================\n")
+	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
+	fmt.Fprintf(buf, "==================================\n")
+	g.debugf(buf.String())
 }
 
 func gameStart(g *Gameplay) stateFn {
-	fmt.Printf("state: gameStart\n")
+	g.debugf("state: gameStart\n")
 	if g.isEnded() {
 		return nil
 	}
@@ -438,7 +457,7 @@ func gameStart(g *Gameplay) stateFn {
 }
 
 func actionMulligan(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_Mulligan)
+	g.debugf("state: %v\n", zb.PlayerActionType_Mulligan)
 	if g.isEnded() {
 		return nil
 	}
@@ -535,7 +554,7 @@ func actionMulligan(g *Gameplay) stateFn {
 }
 
 func actionDrawCard(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_DrawCard)
+	g.debugf("state: %v\n", zb.PlayerActionType_DrawCard)
 	if g.isEnded() {
 		return nil
 	}
@@ -636,7 +655,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 }
 
 func actionCardPlay(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_CardPlay)
+	g.debugf("state: %v\n", zb.PlayerActionType_CardPlay)
 	if g.isEnded() {
 		return nil
 	}
@@ -658,7 +677,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		// check card limit on board
 		if len(g.activePlayer().CardsInPlay)+1 > int(g.activePlayer().MaxCardsInPlay) {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("ClientSideRuleOverride-" + errLimitExceeded.Error())
+				g.debugf("ClientSideRuleOverride-" + errLimitExceeded.Error())
 			} else {
 				return g.captureErrorAndStop(errLimitExceeded)
 			}
@@ -668,7 +687,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		// TODO: handle card limit
 		if len(activeCardsInHand) == 0 {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
+				g.debugf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
 			} else {
 				return g.captureErrorAndStop(errNoCardsInHand)
 			}
@@ -678,7 +697,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 		if !found {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
+				g.debugf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
 				next := g.next()
 				if next == nil {
 					return nil
@@ -736,7 +755,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 }
 
 func actionCardAttack(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_CardAttack)
+	g.debugf("state: %v\n", zb.PlayerActionType_CardAttack)
 	if g.isEnded() {
 		return nil
 	}
@@ -760,7 +779,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	case zb.AffectObjectType_CHARACTER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("No cards on board to attack with")
+				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -772,7 +791,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 		}
 		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("No cards on board to attack with")
+				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -789,7 +808,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				break
 			}
 			if g.ClientSideRuleOverride {
-				fmt.Printf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
+				g.debugf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -824,7 +843,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	case zb.AffectObjectType_PLAYER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
-				fmt.Printf("No cards on board to attack with")
+				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -841,7 +860,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				break
 			}
 			if g.ClientSideRuleOverride {
-				fmt.Printf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
+				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -900,7 +919,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 }
 
 func actionCardAbilityUsed(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_CardAbilityUsed)
+	g.debugf("state: %v\n", zb.PlayerActionType_CardAbilityUsed)
 	if g.isEnded() {
 		return nil
 	}
@@ -949,7 +968,7 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 }
 
 func actionOverloadSkillUsed(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_OverlordSkillUsed)
+	g.debugf("state: %v\n", zb.PlayerActionType_OverlordSkillUsed)
 	if g.isEnded() {
 		return nil
 	}
@@ -996,7 +1015,7 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 }
 
 func actionEndTurn(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_EndTurn)
+	g.debugf("state: %v\n", zb.PlayerActionType_EndTurn)
 	if g.isEnded() {
 		return nil
 	}
@@ -1045,7 +1064,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 }
 
 func actionLeaveMatch(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_LeaveMatch)
+	g.debugf("state: %v\n", zb.PlayerActionType_LeaveMatch)
 	if g.isEnded() {
 		return nil
 	}
@@ -1093,7 +1112,7 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 }
 
 func actionRankBuff(g *Gameplay) stateFn {
-	fmt.Printf("state: %v\n", zb.PlayerActionType_RankBuff)
+	g.debugf("state: %v\n", zb.PlayerActionType_RankBuff)
 	if g.isEnded() {
 		return nil
 	}
