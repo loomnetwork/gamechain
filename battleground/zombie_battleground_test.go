@@ -1842,3 +1842,123 @@ func TestCardPlayOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 }
+
+func TestCheckGameStatusWithTimeout(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr *loom.Address
+	var ctx contract.Context
+
+	// setup ctx
+	c = &ZombieBattleground{}
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
+	addr = &loom.Address{
+		Local: loom.LocalAddressFromPublicKey(pubKey),
+	}
+	now := time.Now()
+	fc := plugin.CreateFakeContext(*addr, *addr)
+	fc.SetTime(now)
+	ctx = contract.WrapPluginContext(fc)
+	err := c.Init(ctx, &initRequest)
+	assert.Nil(t, err)
+
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:     1,
+			UserId:     "player-1",
+			Version:    "v1",
+			RandomSeed: 2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:     1,
+			UserId:     "player-2",
+			Version:    "v1",
+			RandomSeed: 2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex)
+	})
+
+	t.Run("SendEndturnPlayer1_Success", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-2",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex)
+	})
+
+	// player1 don't sent enturn within TurnTimeout
+	// move time forward to expire the player's turn
+	fc.SetTime(now.Add(TurnTimeout + (time.Second * 10)))
+
+	t.Run("Player2_CheckStatus", func(t *testing.T) {
+		_, err := c.CheckGameStatus(ctx, &zb.CheckGameStatusRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
+		latestAction := response.GameState.PlayerActions[len(response.GameState.PlayerActions)-1]
+		assert.Equal(t, zb.PlayerActionType_LeaveMatch, latestAction.ActionType)
+		assert.Equal(t, "player-2", response.GameState.Winner)
+	})
+
+	t.Run("SendAnyActionShould_Failed", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-2",
+			},
+		})
+		assert.NotNil(t, err)
+	})
+}

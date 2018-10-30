@@ -438,6 +438,7 @@ message PlayerAction {
         PlayerActionLeaveMatch leaveMatch               = 12;
         PlayerActionRankBuff rankBuff                   = 13;
     };
+    int64 createdAt = 15; // timestamp
 }
 
 message PlayerActionEvent {
@@ -542,8 +543,11 @@ message EndMatchResponse {
     GameState gameState = 1;
 }
 
-message ClearMatchPoolRequest {
+message CheckGameStatusRequest {
+    int64 matchId = 1;
+}
 
+message CheckGameStatusResponse {
 }
 
 // Game Modes
