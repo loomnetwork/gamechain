@@ -69,6 +69,7 @@ func NewGamePlay(ctx contract.Context,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 		Version:            version,
+		CreatedAt:          ctx.Now().Unix(),
 	}
 	g := &Gameplay{
 		State:                  state,
