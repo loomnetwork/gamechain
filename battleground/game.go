@@ -69,6 +69,7 @@ func NewGamePlay(ctx contract.Context,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
 		Randomseed:         seed,
 		Version:            version,
+		CreatedAt:          ctx.Now().Unix(),
 	}
 	g := &Gameplay{
 		State:                  state,
@@ -256,6 +257,9 @@ func (g *Gameplay) next() *zb.PlayerAction {
 }
 
 func (g *Gameplay) peek() *zb.PlayerAction {
+	if g.State.CurrentActionIndex < 0 {
+		return nil
+	}
 	if g.State.CurrentActionIndex+1 > int64(len(g.State.PlayerActions)) {
 		return nil
 	}
@@ -264,6 +268,12 @@ func (g *Gameplay) peek() *zb.PlayerAction {
 }
 
 func (g *Gameplay) current() *zb.PlayerAction {
+	if g.State.CurrentActionIndex < 0 {
+		return nil
+	}
+	if g.State.CurrentActionIndex+1 > int64(len(g.State.PlayerActions)) {
+		return nil
+	}
 	action := g.State.PlayerActions[g.State.CurrentActionIndex]
 	return action
 }
