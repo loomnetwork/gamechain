@@ -975,10 +975,16 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 	if err != nil {
 		return nil, err
 	}
-	// check if the current player is gone for more than timeout
-	activePlayer := gp.activePlayer()
+	// Check if the current player is gone for more than timeout.
+	// If there is no action added, we check the gamestate created time.
+	var createdAt time.Time
 	latestAction := gp.current()
-	createdAt := time.Unix(latestAction.CreatedAt, 0)
+	if latestAction == nil {
+		createdAt = time.Unix(gamestate.CreatedAt, 0)
+	} else {
+		createdAt = time.Unix(latestAction.CreatedAt, 0)
+	}
+	activePlayer := gp.activePlayer()
 	if createdAt.Add(TurnTimeout).Before(ctx.Now()) {
 		// create a leave match request and append to the game state
 		leaveMatchAction := zb.PlayerAction{
