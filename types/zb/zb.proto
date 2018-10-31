@@ -808,6 +808,7 @@ message GameState {
     int64 randomseed                    = 7;
     string winner                       = 8;
     string version                      = 9;
+    int64 createdAt                     = 10;
 }
 
 message AbilityInstance {
