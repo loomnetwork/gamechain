@@ -94,3 +94,33 @@
   Condition = "contains"
   All = true
   Expected = ["Player1: loom-2", "Player2: loom-1"]
+
+
+############ Create 3nd match and cancel findmatch ############
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-2 -d 1 -v v1"
+  Condition = "contains"
+  Expected = ["MatchID: 3", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli cancel_find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-2 -m 3"
+  Condition = "contains"
+  Expected = ["Cancel match 3 successfully"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 3"
+  Condition = "contains"
+  All = true
+  Expected = ["not found"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 3"
+  Condition = "contains"
+  All = true
+  Expected = ["not found"]
