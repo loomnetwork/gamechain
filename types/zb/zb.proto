@@ -838,13 +838,13 @@ message CardAbility {
     int32 delay = 19;
     string targetSet = 20;
     string subTrigger = 21;
-    int32 defence = 22;
+    int32 defense = 22;
     repeated VisualEffectInfo visualEffectsToPlay = 23;
 }
 
 message VisualEffectInfo {
-    string Type = 1;
-    string Path = 2;
+    string type = 1;
+    string path = 2;
 }
 
 message CardInstance {
