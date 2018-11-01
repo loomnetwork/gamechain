@@ -52,47 +52,107 @@
   Condition = "contains"
   All = true
   Expected = ["Player1: player-1", "Player2: player-2"]
-# -------
+
+# -------player-2
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
 
+# -------player-1
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
-# -------
+
+# -------player-2
 [[TestCases]]
   RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 24"
   Condition = "contains"
   Iterations = 10
   Expected = ["sent action cardplay successfully"]
-
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
-# -------
+
+# -------player-1
 [[TestCases]]
   RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 26"
   Condition = "contains"
   Iterations = 10
   Expected = ["sent action cardplay successfully"]
-
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
-# -------
+
+# -------player-2
 [[TestCases]]
   RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
   Condition = "contains"
   Iterations = 10
   Expected = ["sent action cardattack successfully"]
-
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
-# -------
+
+# -------player-2 wrong turn
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
+  Condition = "contains"
+  Iterations = 2
+  Expected = ["invalid player"]
+
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
+  Condition = "contains"
+  Expected = ["invalid player"]
+
+# -------player-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 30"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 100"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 120"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 12"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 80"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardattack successfully"]
+
+# -------game state
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-1", "Player2: player-2"]
+
+# -------player-1 leave match
