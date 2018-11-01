@@ -836,6 +836,15 @@ message CardAbility {
     int32 turns = 17;
     int32 count = 18;
     int32 delay = 19;
+    string targetSet = 20;
+    string subTrigger = 21;
+    int32 defense = 22;
+    repeated VisualEffectInfo visualEffectsToPlay = 23;
+}
+
+message VisualEffectInfo {
+    string type = 1;
+    string path = 2;
 }
 
 message CardInstance {
