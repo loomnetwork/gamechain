@@ -94,6 +94,15 @@ message Ability {
     int32 health         = 17;
     int32 damage         = 18;
     string attack_info   = 19;
+    string target_set    = 20;
+    string sub_trigger   = 21;
+    int32 defense        = 22;
+    repeated VisualEffectInfo visual_effects_to_play = 23;
+}
+
+message VisualEffectInfo {
+    string type = 1;
+    string path = 2;
 }
 
 message CardList {
@@ -815,7 +824,7 @@ message AbilityInstance {
 
 }
 
-
+// TODO: Need to clean this up because it's duplucated with Ability
 message CardAbility {
     CardAbilityType abilityType = 1;
     CardAbilityActivityType abilityActivityType = 2;
@@ -842,10 +851,6 @@ message CardAbility {
     repeated VisualEffectInfo visualEffectsToPlay = 23;
 }
 
-message VisualEffectInfo {
-    string type = 1;
-    string path = 2;
-}
 
 message CardInstance {
     int32 instanceId = 1;
