@@ -1,0 +1,98 @@
+############ Create accounts and Match making ############
+# Noted: No server side logic checking
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1"
+  All = true
+  Condition = "contains"
+  Expected = ["player-1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 1}} -u player-2"
+  All = true
+  Condition = "contains"
+  Expected = ["player-2"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1 -v v1 --randomSeed 1"
+  Condition = "contains"
+  Expected = ["MatchID: 1", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1 -v v1 --randomSeed 1"
+  Condition = "contains"
+  Expected = ["MatchID: 1", "Status: Started"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["MatchID: 1", "Status: Started", "Player1: player-1", "Player2: player-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-1", "Player2: player-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-1", "Player2: player-2"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 24"
+  Condition = "contains"
+  Iterations = 10
+  Expected = ["sent action cardplay successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 26"
+  Condition = "contains"
+  Iterations = 10
+  Expected = ["sent action cardplay successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
+  Condition = "contains"
+  Iterations = 10
+  Expected = ["sent action cardattack successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------
