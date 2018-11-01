@@ -156,3 +156,20 @@
   Expected = ["Player1: player-1", "Player2: player-2"]
 
 # -------player-1 leave match
+[[TestCases]]
+  RunCmd = "zb-cli send_action_leavematch -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
+  Condition = "contains"
+  Expected = ["sent action leavematch successfully"]
+
+# -------game state
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 1"
+  Condition = "contains"
+  All = true
+  Expected = ["Is ended: true", "Winner: player-2"]
+
+# -------player-2 end match with winner id: TODO remove this if the server side logic is in place
+[[TestCases]]
+  RunCmd = "zb-cli end_match -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --winnerId player-2"
+  Condition = "contains"
+  Expected = ["end match 1 successfully"]
