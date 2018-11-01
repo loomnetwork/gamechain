@@ -49,6 +49,8 @@ func TestE2E(t *testing.T) {
 		{"zb-hero-4", "test_hero.toml", 4, 10, "../zb.genesis.json"},
 		{"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-findmatch-4", "test_findmatch.toml", 4, 10, "../zb.genesis.json"},
+		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "../zb.genesis.json"},
 	}
 
 	// required to have loom binary
