@@ -1254,7 +1254,7 @@ func TestCancelFindMatchOperations(t *testing.T) {
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
-		assert.NotNil(t, err, "cannot cancel already started match")
+		assert.Nil(t, err)
 	})
 
 }
