@@ -30,6 +30,7 @@ var updateCardsCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error reading file: %s", err.Error())
 		}
+		defer f.Close()
 
 		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &updateCardsData); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
