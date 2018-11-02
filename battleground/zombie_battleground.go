@@ -848,13 +848,12 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 	if err != nil {
 		return nil, err
 	}
-	if match.Status == zb.Match_Started {
-		return nil, fmt.Errorf("cannot cancel already started match")
+	// remove the match if it not yet started
+	if match.Status == zb.Match_Matching {
+		ctx.Delete(MatchKey(match.Id))
 	}
 	// remove current match
 	ctx.Delete(UserMatchKey(req.UserId))
-	// remove match
-	ctx.Delete(MatchKey(match.Id))
 	// notify player
 	match.Status = zb.Match_Canceled
 	emitMsg := zb.PlayerActionEvent{
