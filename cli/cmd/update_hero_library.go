@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -28,13 +27,14 @@ var updateHeroLibraryCmd = &cobra.Command{
 			return fmt.Errorf("file name not provided")
 		}
 
-		f, err := ioutil.ReadFile(updateHeroLibraryCmdArgs.file)
+		f, err := os.Open(updateHeroLibraryCmdArgs.file)
 		if err != nil {
 			return fmt.Errorf("error reading file: %s", err.Error())
 		}
+		defer f.Close()
 
 		req := zb.UpdateHeroLibraryRequest{}
-		if err := new(jsonpb.Unmarshaler).Unmarshal(bytes.NewReader(f), &req); err != nil {
+		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &req); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 		req.Version = updateHeroLibraryCmdArgs.version
