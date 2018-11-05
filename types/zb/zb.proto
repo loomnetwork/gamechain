@@ -98,6 +98,7 @@ message Ability {
     string sub_trigger   = 21;
     int32 defense        = 22;
     repeated VisualEffectInfo visual_effects_to_play = 23;
+    int32 cost           = 24;
 }
 
 message VisualEffectInfo {
