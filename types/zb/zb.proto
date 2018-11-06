@@ -475,12 +475,19 @@ message MatchCount {
     int64 currentId = 1;
 }
 
-message FindMatchRequest {
+message RegisterPlayerPoolRequest {
     string userId = 1;
     int64 deckId  = 2;
     string version = 3;
-    int64 randomSeed = 4;
-    Address customGame = 5;
+    Address customGame = 4;
+}
+
+message RegisterPlayerPoolResponse {
+}
+
+message FindMatchRequest {
+    string userId = 1;
+    int64 randomSeed = 2;
 }
 
 message FindMatchResponse {
