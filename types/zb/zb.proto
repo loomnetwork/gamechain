@@ -99,6 +99,12 @@ message Ability {
     int32 defense        = 22;
     repeated VisualEffectInfo visual_effects_to_play = 23;
     int32 cost           = 24;
+    repeated ChoosableAbility choosable_abilities = 25;
+}
+
+message ChoosableAbility {
+    string description = 1;
+    Ability ability = 2;
 }
 
 message VisualEffectInfo {
