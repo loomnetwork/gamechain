@@ -1376,6 +1376,10 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 		UserId:  "player-2-tag",
 		Version: "v1",
 	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-3-tag",
+		Version: "v1",
+	}, t)
 
 	var matchID, matchIDTag int64
 
@@ -1448,6 +1452,20 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchIDTag, response.Match.Id)
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-3-tag",
+			Version: "v1",
+			Tags:    tags,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.NotEqual(t, matchIDTag, response.Match.Id)
 	})
 }
 
