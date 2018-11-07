@@ -644,10 +644,12 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	}
 
 	profile := zb.PlayerProfile{
-		UserId:    req.UserId,
-		DeckId:    deck.Id,
-		UpdatedAt: ctx.Now().Unix(),
-		Version:   req.Version,
+		UserId:     req.UserId,
+		DeckId:     deck.Id,
+		UpdatedAt:  ctx.Now().Unix(),
+		Version:    req.Version,
+		RandomSeed: req.RandomSeed,
+		CustomGame: req.CustomGame,
 	}
 
 	ctx.Logger().Debug(fmt.Sprintf("Register Player Pool user=%s", req.UserId))
@@ -692,7 +694,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	// perform matchmaking function to calculate scores
 	// steps:
-	// 1. list all the candidates that has similar profiles
+	// 1. list all the candidates that has similar profiles TODO: match versions
 	// 2. pick the most highest score
 	// 3. if there is no candidate, sleep for MMWaitTime seconds
 	retries := 0
@@ -779,28 +781,36 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Status: zb.Match_Matching,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
-				Id:   playerProfile.UserId,
-				Deck: deck,
+				Id:            playerProfile.UserId,
+				Deck:          deck,
+				MatchAccepted: false,
 			},
 			&zb.PlayerState{
-				Id:   matchedPlayerProfile.UserId,
-				Deck: matchedDeck,
+				Id:            matchedPlayerProfile.UserId,
+				Deck:          matchedDeck,
+				MatchAccepted: false,
 			},
 		},
-		Version: req.Version,
+		Version: matchedPlayerProfile.Version, // TODO: match version of both players
 	}
 
 	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
 		Id:   req.UserId,
 		Deck: deck,
 	})
-	match.Status = zb.Match_Started
+
+	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
+	if match.RandomSeed == 0 {
+		match.RandomSeed = ctx.Now().Unix()
+	}
+
+	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
 
 	// save user match
-	if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, playerProfile.UserId, match); err != nil {
 		return nil, err
 	}
-	if err := saveUserCurrentMatch(ctx, player1, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, matchedPlayerProfile.UserId, match); err != nil {
 		return nil, err
 	}
 	// save match
@@ -808,40 +818,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 
-	// create game state
-	match.RandomSeed = req.RandomSeed
-	if match.RandomSeed == 0 {
-		match.RandomSeed = ctx.Now().Unix()
-	}
-
-	var addr loom.Address
-	var addr2 *loom.Address
-	var addrStr string
-	//TODO cleanup how we do this parsing
-	if req.CustomGame != nil {
-		addrStr = fmt.Sprintf("default:%s", req.CustomGame.Local.String())
-	}
-
-	addr, err = loom.ParseAddress(addrStr)
-	if err != nil {
-		ctx.Logger().Debug(fmt.Sprintf("no custom game mode --%v\n", err))
-	} else {
-		addr2 = &addr
-	}
-
-	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
-	if err != nil {
-		return nil, err
-	}
-	if err := saveGameState(ctx, gp.State); err != nil {
-		return nil, err
-	}
-
-	// accept match
-	emitMsg := zb.PlayerActionEvent{
+	emitMsg := zb.FindMatchResponse{
 		Match: match,
-		Block: &zb.History{List: gp.history},
 	}
 	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
 	if err != nil {
@@ -852,6 +830,86 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	return &zb.FindMatchResponse{
+		Match: match,
+	}, nil
+}
+
+func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMatchRequest) (*zb.AcceptMatchResponse, error) {
+	match, err := loadUserCurrentMatch(ctx, req.UserId)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+
+	if req.MatchId != match.Id {
+		return nil, errors.New("match id not correct")
+	}
+
+	var opponentAccepted bool
+	for _, playerState := range match.PlayerStates {
+		if playerState.Id == req.UserId {
+			playerState.MatchAccepted = true
+		} else {
+			opponentAccepted = playerState.MatchAccepted
+		}
+	}
+
+	emitMsg := zb.AcceptMatchResponse{
+		Match: match,
+	}
+
+	if opponentAccepted {
+		var addr loom.Address
+		var addr2 *loom.Address
+		var addrStr string
+		//TODO cleanup how we do this parsing
+		if match.CustomGameAddr != nil {
+			addrStr = fmt.Sprintf("default:%s", match.CustomGameAddr.Local.String())
+		}
+
+		addr, err = loom.ParseAddress(addrStr)
+		if err != nil {
+			ctx.Logger().Debug(fmt.Sprintf("no custom game mode --%v\n", err))
+		} else {
+			addr2 = &addr
+		}
+
+		ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
+		gp, err := NewGamePlay(ctx, match.Id, match.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+		if err != nil {
+			return nil, err
+		}
+		if err := saveGameState(ctx, gp.State); err != nil {
+			return nil, err
+		}
+
+		match.Status = zb.Match_Started
+
+		emitMsg = zb.AcceptMatchResponse{
+			Match: match,
+			Block: &zb.History{List: gp.history},
+		}
+	}
+
+	// save user match
+	for _, playerState := range match.PlayerStates {
+		if err := saveUserCurrentMatch(ctx, playerState.Id, match); err != nil {
+			return nil, err
+		}
+	}
+	// save match
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	if err == nil {
+		ctx.EmitTopics([]byte(data), match.Topics...)
+	}
+
+	return &zb.AcceptMatchResponse{
 		Match: match,
 	}, nil
 }
