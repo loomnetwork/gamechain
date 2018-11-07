@@ -11,7 +11,6 @@ import (
 var cancelFindMatchCmdArgs struct {
 	userID  string
 	matchID int64
-	tags    []string
 }
 
 var cancelFindMatchCmd = &cobra.Command{
@@ -22,7 +21,6 @@ var cancelFindMatchCmd = &cobra.Command{
 		var req = zb.CancelFindMatchRequest{
 			UserId:  cancelFindMatchCmdArgs.userID,
 			MatchId: cancelFindMatchCmdArgs.matchID,
-			Tags:    cancelFindMatchCmdArgs.tags,
 		}
 
 		_, err := commonTxObjs.contract.Call("CancelFindMatch", &req, signer, nil)
@@ -39,5 +37,4 @@ func init() {
 
 	cancelFindMatchCmd.Flags().StringVarP(&cancelFindMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	cancelFindMatchCmd.Flags().Int64VarP(&cancelFindMatchCmdArgs.matchID, "matchId", "m", 0, "Match Id")
-	cancelFindMatchCmd.Flags().StringArrayVarP(&cancelFindMatchCmdArgs.tags, "tags", "t", nil, "tags")
 }
