@@ -88,30 +88,29 @@ var initRequest = zb.InitRequest{
 	},
 	Cards: []*zb.Card{
 		{
-			Id:      1,
-			Set:     "Air",
-			Name:    "Banshee",
-			Rank:    "Minion",
-			Type:    "Feral",
-			Damage:  2,
-			Health:  1,
-			Cost:    2,
-			Ability: "Feral",
-			Effects: []*zb.Effect{
+			MouldId: 1,
+			Set:     zb.CardSetType_Air,
+			Name:    "Soothsayer",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  2,
+			Defense: 1,
+			GooCost: 2,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger:  "entry",
-					Effect:   "feral",
-					Duration: "permanent",
-					Target:   "self",
+					Type:         zb.CardAbilityType_DRAW_CARD,
+					ActivityType: zb.CardAbilityActivityType_PASSIVE,
+					Trigger:      zb.CardAbilityTrigger_ENTRY,
+					Set:          zb.CardSetType_None,
 				},
 			},
 			CardViewInfo: &zb.CardViewInfo{
-				Position: &zb.Coordinates{
+				Position: &zb.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
 					Z: 3.5,
 				},
-				Scale: &zb.Coordinates{
+				Scale: &zb.Vector3Float{
 					X: 0.5,
 					Y: 0.5,
 					Z: 0.5,
@@ -119,20 +118,26 @@ var initRequest = zb.InitRequest{
 			},
 		},
 		{
-			Id:      2,
-			Set:     "Air",
-			Name:    "Breezee",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			MouldId: 2,
+			Set:     zb.CardSetType_Air,
+			Name:    "Azuraz",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
+					ActivityType: zb.CardAbilityActivityType_PASSIVE,
+					Trigger:      zb.CardAbilityTrigger_PERMANENT,
+					AllowedTargetTypes: []zb.AllowedTarget{
+						zb.AllowedTarget_NONE,
+					},
+					Stat:     zb.StatType_Damage,
+					Set:      zb.CardSetType_Earth,
+					Value:    1,
+					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
 				},
 			},
 		},

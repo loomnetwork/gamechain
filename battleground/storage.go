@@ -3,6 +3,7 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -333,13 +334,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owne
 	return &zb.CardInstance{
 		InstanceId: instanceId,
 		Owner: owner,
-		Attack:     cardDetails.Damage,
-		Defense:    cardDetails.Health,
-		GooCost:	cardDetails.Cost,
-		Prototype: &zb.CardPrototype{
-			Name:    cardDetails.Name,
-			GooCost: cardDetails.Cost,
-		},
+		Prototype: proto.Clone(cardDetails).(*zb.Card),
+		Instance: proto.Clone(cardDetails).(*zb.Card),
 	}
 }
 
