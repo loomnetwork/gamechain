@@ -40,7 +40,7 @@ var listCardCmd = &cobra.Command{
 		fmt.Printf("card library size: %d\n", len(result.Sets))
 		for _, set := range result.Sets {
 			for _, card := range set.Cards {
-				fmt.Printf("card_id: %d, name: %s\n", card.Id, card.Name)
+				fmt.Printf("card mould ID: %d, name: %s\n", card.MouldId, card.Name)
 			}
 		}
 		return nil

@@ -112,19 +112,21 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		card.Owner,
 	)
 
-	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.CardPrototype)
+	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.Card)
 
 	if !simpleCard.defenseInherited {
-		newCard.Defense = simpleCard.defense
+		newCard.Prototype.Defense = simpleCard.defense
 	}
 
 	if !simpleCard.attackInherited {
-		newCard.Attack = simpleCard.attack
+		newCard.Prototype.Attack = simpleCard.attack
 	}
 
 	if !simpleCard.gooCostInherited {
-		newCard.GooCost = simpleCard.gooCost
+		newCard.Prototype.GooCost = simpleCard.gooCost
 	}
+
+	newCard.Instance = proto.Clone(newCard.Instance).(*zb.Card)
 
 	return newCard, nil
 }
@@ -344,9 +346,9 @@ func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardIns
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId,
 		mouldName:        card.Prototype.Name,
-		attack:           card.Attack,
+		attack:           card.Prototype.Attack,
 		attackInherited:  true,
-		defense:          card.Defense,
+		defense:          card.Prototype.Defense,
 		defenseInherited: true,
 		gooCost:          card.Prototype.GooCost,
 		gooCostInherited: true,
