@@ -1,15 +1,18 @@
 package cmd
 
 import (
+	"time"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
 var registerPlayerPoolCmdArgs struct {
-	userID  string
-	deckID  int64
-	version string
+	userID     string
+	deckID     int64
+	version    string
+	randomSeed int64
 }
 
 var registerPlayerPoolCmd = &cobra.Command{
@@ -25,6 +28,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 
 		req.UserId = registerPlayerPoolCmdArgs.userID
 		req.Version = registerPlayerPoolCmdArgs.version
+		req.RandomSeed = registerPlayerPoolCmdArgs.randomSeed
 
 		_, err := commonTxObjs.contract.Call("RegisterPlayerPool", &req, signer, &resp)
 		if err != nil {
@@ -41,4 +45,5 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
+	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", time.Now().Unix(), "Random Seed")
 }

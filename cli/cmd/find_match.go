@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -10,10 +9,7 @@ import (
 )
 
 var findMatchCmdArgs struct {
-	userID     string
-	deckID     int64
-	version    string
-	randomSeed int64
+	userID string
 }
 
 var findMatchCmd = &cobra.Command{
@@ -23,13 +19,10 @@ var findMatchCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.FindMatchRequest{
 			UserId: findMatchCmdArgs.userID,
-			DeckId: findMatchCmdArgs.deckID,
 		}
 		var resp zb.FindMatchResponse
 
 		req.UserId = findMatchCmdArgs.userID
-		req.Version = findMatchCmdArgs.version
-		req.RandomSeed = findMatchCmdArgs.randomSeed
 
 		_, err := commonTxObjs.contract.Call("FindMatch", &req, signer, &resp)
 		if err != nil {
@@ -52,8 +45,4 @@ func init() {
 	rootCmd.AddCommand(findMatchCmd)
 
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
-	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
-	findMatchCmd.Flags().Int64VarP(&findMatchCmdArgs.randomSeed, "randomSeed", "s", time.Now().Unix(), "Random Seed")
-
 }
