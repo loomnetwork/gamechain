@@ -114,6 +114,10 @@ func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 	return ctx.Set(DecksKey(userID), decks)
 }
 
+func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error {
+	return ctx.Set(MakeVersionedKey(version), decks)
+}
+
 func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
 	var heroes zb.HeroList
 	err := ctx.Get(HeroesKey(userID), &heroes)

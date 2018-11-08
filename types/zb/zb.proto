@@ -342,6 +342,15 @@ message ListDecksResponse {
     int64 last_modification_timestamp = 3;
 }
 
+message SetAIDecksRequest {
+    string version = 1;
+    repeated Deck decks = 2;
+}
+
+message GetAIDecksRequest {
+    string version = 1;
+}
+
 message ListCardLibraryRequest {
     string version = 1;
 }
