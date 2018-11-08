@@ -69,7 +69,7 @@ func TestGameStateFunc(t *testing.T) {
 				Attacker: &zb.CardInstance{
 					InstanceId: 2,
 				},
-				AffectObjectType: zb.AffectObjectType_CHARACTER,
+				AffectObjectType: zb.AffectObjectType_Character,
 				Target: &zb.Unit{
 					InstanceId: 13,
 				},
@@ -89,7 +89,7 @@ func TestGameStateFunc(t *testing.T) {
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       2,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -103,7 +103,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_OverlordSkillUsed{
 			OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 				SkillId:          1,
-				AffectObjectType: zb.AffectObjectType_CARD,
+				AffectObjectType: zb.AffectObjectType_Card,
 				Target: &zb.Unit{
 					InstanceId: 2,
 				},
@@ -124,7 +124,7 @@ func TestGameStateFunc(t *testing.T) {
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       2,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -437,7 +437,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CHARACTER,
+					AffectObjectType: zb.AffectObjectType_Character,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -481,7 +481,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CHARACTER,
+					AffectObjectType: zb.AffectObjectType_Character,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -527,7 +527,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_CHARACTER,
+					AffectObjectType: zb.AffectObjectType_Character,
 					Target: &zb.Unit{
 						InstanceId: 2,
 					},
@@ -569,7 +569,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_AffectObjectType_PLAYER,
+					AffectObjectType: zb.AffectObjectType_Player,
 				},
 			},
 		})
@@ -603,7 +603,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_AffectObjectType_PLAYER,
+					AffectObjectType: zb.AffectObjectType_Player,
 				},
 			},
 		})

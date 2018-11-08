@@ -520,7 +520,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 	}
 
 	// convert to card list to card library view grouped by set
-	var category = make(map[zb.CardSetType][]*zb.Card)
+	var category = make(map[zb.CardSetType_Enum][]*zb.Card)
 	for _, card := range cardList.Cards {
 		if _, ok := category[card.Set]; !ok {
 			category[card.Set] = make([]*zb.Card, 0)
@@ -528,7 +528,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 		category[card.Set] = append(category[card.Set], card)
 	}
 	// order sets by name
-	var setTypes []zb.CardSetType
+	var setTypes []zb.CardSetType_Enum
 	for k := range category {
 		setTypes = append(setTypes, k)
 	}
