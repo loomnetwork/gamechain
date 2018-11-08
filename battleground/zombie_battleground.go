@@ -684,6 +684,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 	playerProfile := findPlayerProfileByID(pool, req.UserId)
+	if playerProfile == nil {
+		return nil, errors.New("Player not found in player pool")
+	}
 
 	dl, err := loadDecks(ctx, req.UserId)
 	if err != nil {
@@ -833,7 +836,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMatchRequest) (*zb.AcceptMatchResponse, error) {
 	match, err := loadUserCurrentMatch(ctx, req.UserId)
-	if err != nil && err != contract.ErrNotFound {
+	if err != nil {
 		return nil, err
 	}
 
