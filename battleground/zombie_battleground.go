@@ -652,7 +652,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		CustomGame: req.CustomGame,
 	}
 
-	ctx.Logger().Debug(fmt.Sprintf("Register Player Pool user=%s", req.UserId))
+	ctx.Logger().Info(fmt.Sprintf("Register Player Pool user=%s", req.UserId))
 	// load player pool
 	pool, err := loadPlayerPool(ctx)
 	if err != nil {
@@ -666,6 +666,8 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 			return nil, err
 		}
 	}
+
+	ctx.Logger().Info(fmt.Sprintf("Player Pool %+v", pool))
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "registerplayerpool")
