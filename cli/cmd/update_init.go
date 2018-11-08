@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -27,12 +27,13 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("file name not provided")
 		}
 
-		f, err := ioutil.ReadFile(updateInitCmdArgs.file)
+		f, err := os.Open(updateInitCmdArgs.file)
 		if err != nil {
 			return fmt.Errorf("error reading file: %s", err.Error())
 		}
+		defer f.Close()
 
-		if err := json.Unmarshal(f, &updateInitData); err != nil {
+		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &updateInitData); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 

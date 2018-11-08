@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -37,12 +39,13 @@ var listCardCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("card library size: %d\n", len(result.Sets))
-		for _, set := range result.Sets {
-			for _, card := range set.Cards {
-				fmt.Printf("card mould ID: %d, name: %s\n", card.MouldId, card.Name)
-			}
+
+		m := jsonpb.Marshaler{OrigName: true}
+
+		if err := m.Marshal(os.Stdout, &result); err != nil {
+			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
+
 		return nil
 	},
 }
