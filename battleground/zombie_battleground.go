@@ -689,7 +689,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 	match, _ := loadUserCurrentMatch(ctx, req.UserId)
 	if match != nil {
-		errors.New("Player already in a match")
+		return &zb.FindMatchResponse{
+			Match: match,
+		}, nil
 	}
 	playerProfile := findPlayerProfileByID(pool, req.UserId)
 	if playerProfile == nil {
@@ -822,11 +824,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("playerProfile.UserId: %s", playerProfile.UserId))
-	ctx.Logger().Info(fmt.Sprintf("playerProfile.Version: %s", playerProfile.Version))
-	ctx.Logger().Info(fmt.Sprintf("matchedPlayerProfile.UserId: %s", matchedPlayerProfile.UserId))
-	ctx.Logger().Info(fmt.Sprintf("playerProfile.Version: %s", matchedPlayerProfile.Version))
-
 	// save user match
 	if err := saveUserCurrentMatch(ctx, playerProfile.UserId, match); err != nil {
 		return nil, err
@@ -860,8 +857,6 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if err != nil {
 		return nil, err
 	}
-
-	ctx.Logger().Info(fmt.Sprintf("match: %+v", match))
 
 	if req.MatchId != match.Id {
 		return nil, errors.New("match id not correct")
