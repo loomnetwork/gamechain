@@ -510,7 +510,7 @@ func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecks
 	return saveAIDecks(ctx, req.Version, &deckList)
 }
 
-func (z *ZombieBattleground) GetAIDecks(ctx contract.Context, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
+func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
 	deckList, err := loadAIDecks(ctx, req.Version)
 	if err != nil {
 		return nil, err

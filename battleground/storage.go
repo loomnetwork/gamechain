@@ -119,7 +119,7 @@ func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error
 	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
 }
 
-func loadAIDecks(ctx contract.Context, version string) (*zb.DeckList, error) {
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.DeckList, error) {
 	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
 	if err != nil {
