@@ -215,9 +215,9 @@ var updateInitRequest = zb.UpdateInitRequest{
 			GooCost: 2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_DRAW_CARD,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_ENTRY,
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
 					Set:          zb.CardSetType_None,
 				},
 			},
@@ -245,16 +245,16 @@ var updateInitRequest = zb.UpdateInitRequest{
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_PERMANENT,
-					AllowedTargetTypes: []zb.AllowedTarget{
-						zb.AllowedTarget_NONE,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					AllowedTargetTypes: []zb.AllowedTarget_Enum{
+						zb.AllowedTarget_None,
 					},
-					Stat:     zb.StatType_Damage,
+					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Earth,
 					Value:    1,
-					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
+					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -269,16 +269,16 @@ var updateInitRequest = zb.UpdateInitRequest{
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_PERMANENT,
-					AllowedTargetTypes: []zb.AllowedTarget{
-						zb.AllowedTarget_NONE,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					AllowedTargetTypes: []zb.AllowedTarget_Enum{
+						zb.AllowedTarget_None,
 					},
-					Stat:     zb.StatType_Damage,
+					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Water,
 					Value:    1,
-					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
+					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -335,9 +335,9 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			GooCost: 2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_DRAW_CARD,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_ENTRY,
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
 					Set:          zb.CardSetType_None,
 				},
 			},
@@ -365,16 +365,16 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_PERMANENT,
-					AllowedTargetTypes: []zb.AllowedTarget{
-						zb.AllowedTarget_NONE,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					AllowedTargetTypes: []zb.AllowedTarget_Enum{
+						zb.AllowedTarget_None,
 					},
-					Stat:     zb.StatType_Damage,
+					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Earth,
 					Value:    1,
-					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
+					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -389,16 +389,16 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_PERMANENT,
-					AllowedTargetTypes: []zb.AllowedTarget{
-						zb.AllowedTarget_NONE,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					AllowedTargetTypes: []zb.AllowedTarget_Enum{
+						zb.AllowedTarget_None,
 					},
-					Stat:     zb.StatType_Damage,
+					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Water,
 					Value:    1,
-					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
+					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -1741,7 +1741,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1760,7 +1760,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_OverlordSkillUsed{
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId:          1,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_Card,
 						Target: &zb.Unit{
 							InstanceId: 2,
 						},
@@ -1785,7 +1785,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1861,7 +1861,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1882,7 +1882,7 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       2,
-							AffectObjectType: zb.AffectObjectType_CARD,
+							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},

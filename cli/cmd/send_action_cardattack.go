@@ -24,12 +24,12 @@ var sendActionCardAttackCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var otype zb.AffectObjectType
+		var otype zb.AffectObjectType_Enum
 		switch sendActionCardAttackCmdArgs.objectType {
 		case 0:
-			otype = zb.AffectObjectType_AffectObjectType_PLAYER
+			otype = zb.AffectObjectType_Player
 		case 1:
-			otype = zb.AffectObjectType_CHARACTER
+			otype = zb.AffectObjectType_Character
 		}
 
 		var req = zb.PlayerActionRequest{

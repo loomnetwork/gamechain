@@ -67,7 +67,7 @@ func NewGamePlay(ctx contract.Context,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
 		CurrentPlayerIndex: -1, // use -1 to avoid confict with default value
-		Randomseed:         seed,
+		RandomSeed:         seed,
 		Version:            version,
 		CreatedAt:          ctx.Now().Unix(),
 	}
@@ -122,7 +122,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		g.State.PlayerStates[i].MaxGooVials = maxGooVials
 	}
 	// coin toss for the first player
-	r := rand.New(rand.NewSource(g.State.Randomseed))
+	r := rand.New(rand.NewSource(g.State.RandomSeed))
 	n := r.Int31n(int32(len(g.State.PlayerStates)))
 	g.State.CurrentPlayerIndex = n
 
@@ -136,7 +136,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 
 	// init hands
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.Randomseed, i)
+		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.RandomSeed, i)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
@@ -164,7 +164,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 			CreateGame: &zb.HistoryCreateGame{
 				GameId:     g.State.Id,
 				Players:    ps,
-				Randomseed: g.State.Randomseed,
+				RandomSeed: g.State.RandomSeed,
 				Version:    g.State.Version,
 			},
 		},
@@ -786,7 +786,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	var targetIndex int
 
 	switch current.GetCardAttack().AffectObjectType {
-	case zb.AffectObjectType_CHARACTER:
+	case zb.AffectObjectType_Character:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
 				g.debugf("No cards on board to attack with")
@@ -850,7 +850,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
 		}
 
-	case zb.AffectObjectType_AffectObjectType_PLAYER:
+	case zb.AffectObjectType_Player:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
 				g.debugf("No cards on board to attack with")
@@ -870,7 +870,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				break
 			}
 			if g.ClientSideRuleOverride {
-				g.debugf("zb.AffectObjectType_AffectObjectType_PLAYER:-Attacker not found\n")
+				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
