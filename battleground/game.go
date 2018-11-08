@@ -850,7 +850,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
 		}
 
-	case zb.AffectObjectType_PLAYER:
+	case zb.AffectObjectType_AffectObjectType_PLAYER:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if g.ClientSideRuleOverride {
 				g.debugf("No cards on board to attack with")
@@ -870,7 +870,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				break
 			}
 			if g.ClientSideRuleOverride {
-				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
+				g.debugf("zb.AffectObjectType_AffectObjectType_PLAYER:-Attacker not found\n")
 				g.PrintState()
 				next := g.next()
 				if next == nil {

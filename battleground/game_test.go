@@ -569,7 +569,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_PLAYER,
+					AffectObjectType: zb.AffectObjectType_AffectObjectType_PLAYER,
 				},
 			},
 		})
@@ -603,7 +603,7 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.CardInstance{
 						InstanceId: 1,
 					},
-					AffectObjectType: zb.AffectObjectType_PLAYER,
+					AffectObjectType: zb.AffectObjectType_AffectObjectType_PLAYER,
 				},
 			},
 		})

@@ -35,6 +35,7 @@ var (
 	playersInMatchmakingListKey = []byte("players-matchmaking")
 	gameModeListKey             = []byte("gamemode-list")
 	playerPoolKey               = []byte("playerpool")
+	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 )
 
@@ -194,6 +195,19 @@ func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
 	return &pool, nil
 }
 
+func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
+	return ctx.Set(taggedPlayerPoolKey, pool)
+}
+
+func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+	var pool zb.PlayerPool
+	err := ctx.Get(taggedPlayerPoolKey, &pool)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &pool, nil
+}
+
 func saveMatch(ctx contract.Context, match *zb.Match) error {
 	if err := ctx.Set(MatchKey(match.Id), match); err != nil {
 		return err
@@ -330,10 +344,10 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) (*zb.CardInstance) {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) *zb.CardInstance {
 	return &zb.CardInstance{
 		InstanceId: instanceId,
-		Owner: owner,
+		Owner:      owner,
 		Prototype: proto.Clone(cardDetails).(*zb.Card),
 		Instance: proto.Clone(cardDetails).(*zb.Card),
 	}
@@ -354,7 +368,7 @@ func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerSta
 					cardDetails,
 					instanceId,
 					playerState.Id,
-					)
+				)
 
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 				instanceId++

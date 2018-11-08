@@ -1,14 +1,13 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var updateCardsCmdArgs struct {
@@ -27,25 +26,27 @@ var updateCardsCmd = &cobra.Command{
 			return fmt.Errorf("file name not provided")
 		}
 
-		f, err := ioutil.ReadFile(updateCardsCmdArgs.file)
+		f, err := os.Open(updateCardsCmdArgs.file)
 		if err != nil {
 			return fmt.Errorf("error reading file: %s", err.Error())
 		}
+		defer f.Close()
 
-		if err := json.Unmarshal(f, &updateCardsData); err != nil {
+		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &updateCardsData); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 
 		if updateCardsCmdArgs.version == "" {
 			return fmt.Errorf("version not specified")
 		}
+		fmt.Printf("Updating %d cards with version %s\n", len(updateCardsData.Cards), updateCardsCmdArgs.version)
 
 		updateCardsData.Version = updateCardsCmdArgs.version
 		_, err = commonTxObjs.contract.Call("UpdateCardList", &updateCardsData, signer, nil)
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateCardList: %s", err.Error())
 		}
-		fmt.Printf("Data updated successfully\n")
+		fmt.Printf("Cards updated successfully\n")
 
 		return nil
 	},

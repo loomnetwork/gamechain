@@ -9,8 +9,9 @@ import (
 )
 
 var endMatchCmdArgs struct {
-	userID  string
-	matchID int64
+	userID   string
+	matchID  int64
+	winnerID string
 }
 
 var endMatchCmd = &cobra.Command{
@@ -19,8 +20,9 @@ var endMatchCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.EndMatchRequest{
-			UserId:  endMatchCmdArgs.userID,
-			MatchId: endMatchCmdArgs.matchID,
+			UserId:   endMatchCmdArgs.userID,
+			MatchId:  endMatchCmdArgs.matchID,
+			WinnerId: endMatchCmdArgs.winnerID,
 		}
 		var resp zb.EndMatchResponse
 
@@ -28,7 +30,7 @@ var endMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("left match: %v", req.MatchId)
+		fmt.Printf("end match %v successfully", req.MatchId)
 
 		return nil
 	},
@@ -38,4 +40,5 @@ func init() {
 	rootCmd.AddCommand(endMatchCmd)
 	endMatchCmd.Flags().StringVarP(&endMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	endMatchCmd.Flags().Int64VarP(&endMatchCmdArgs.matchID, "matchId", "m", 0, "Match ID")
+	endMatchCmd.Flags().StringVar(&endMatchCmdArgs.winnerID, "winnerId", "loom", "Winner ID")
 }
