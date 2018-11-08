@@ -104,7 +104,7 @@ message Ability {
 
 message ChoosableAbility {
     string description = 1;
-    Ability ability = 2;
+    Ability ability_data = 2;
 }
 
 message VisualEffectInfo {
