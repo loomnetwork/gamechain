@@ -351,6 +351,10 @@ message GetAIDecksRequest {
     string version = 1;
 }
 
+message GetAIDecksResponse {
+    repeated Deck decks = 1;
+}
+
 message ListCardLibraryRequest {
     string version = 1;
 }

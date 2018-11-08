@@ -36,6 +36,7 @@ var (
 	playerPoolKey               = []byte("playerpool")
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
+	aiDecksKey                  = []byte("ai-decks")
 )
 
 var (
@@ -115,7 +116,16 @@ func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 }
 
 func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error {
-	return ctx.Set(MakeVersionedKey(version), decks)
+	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
+}
+
+func loadAIDecks(ctx contract.Context, version string) (*zb.DeckList, error) {
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
+	if err != nil {
+		return nil, err
+	}
+	return &deckList, nil
 }
 
 func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
