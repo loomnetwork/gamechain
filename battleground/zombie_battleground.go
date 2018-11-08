@@ -643,6 +643,10 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
 	}
 
+	if req.Version == "" {
+		return nil, fmt.Errorf("version not specified")
+	}
+
 	profile := zb.PlayerProfile{
 		UserId:     req.UserId,
 		DeckId:     deck.Id,
@@ -682,6 +686,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	pool, err := loadPlayerPool(ctx)
 	if err != nil {
 		return nil, err
+	}
+	match, _ := loadUserCurrentMatch(ctx, req.UserId)
+	if match != nil {
+		errors.New("Player already in a match")
 	}
 	playerProfile := findPlayerProfileByID(pool, req.UserId)
 	if playerProfile == nil {
@@ -771,6 +779,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// 	return nil, err
 	// }
 
+	if matchedPlayerProfile == nil {
+		return nil, errors.New("Matchmaking failed, couldnt get matchedPlayerProfile")
+	}
+
 	// get matched player deck
 	matchedDl, err := loadDecks(ctx, matchedPlayerProfile.UserId)
 	if err != nil {
@@ -782,7 +794,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// create match
-	match := &zb.Match{
+	match = &zb.Match{
 		Status: zb.Match_Matching,
 		PlayerStates: []*zb.PlayerState{
 			&zb.PlayerState{
@@ -796,7 +808,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				MatchAccepted: false,
 			},
 		},
-		Version: matchedPlayerProfile.Version, // TODO: match version of both players
+		Version: playerProfile.Version, // TODO: match version of both players
 	}
 
 	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
@@ -806,6 +818,15 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
 
+	if err := createMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	ctx.Logger().Info(fmt.Sprintf("playerProfile.UserId: %s", playerProfile.UserId))
+	ctx.Logger().Info(fmt.Sprintf("playerProfile.Version: %s", playerProfile.Version))
+	ctx.Logger().Info(fmt.Sprintf("matchedPlayerProfile.UserId: %s", matchedPlayerProfile.UserId))
+	ctx.Logger().Info(fmt.Sprintf("playerProfile.Version: %s", matchedPlayerProfile.Version))
+
 	// save user match
 	if err := saveUserCurrentMatch(ctx, playerProfile.UserId, match); err != nil {
 		return nil, err
@@ -814,9 +835,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, err
 	}
 	// save match
-	if err := saveMatch(ctx, match); err != nil {
-		return nil, err
-	}
+	// if err := saveMatch(ctx, match); err != nil {
+	// 	return nil, err
+	// }
 
 	emitMsg := zb.FindMatchResponse{
 		Match: match,
@@ -839,6 +860,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if err != nil {
 		return nil, err
 	}
+
+	ctx.Logger().Info(fmt.Sprintf("match: %+v", match))
 
 	if req.MatchId != match.Id {
 		return nil, errors.New("match id not correct")
@@ -873,7 +896,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			addr2 = &addr
 		}
 
-		ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
+		ctx.Logger().Info(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
 		gp, err := NewGamePlay(ctx, match.Id, match.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 		if err != nil {
 			return nil, err
