@@ -623,6 +623,7 @@ message AllowedTarget {
         OPPONENT_ALL_CARDS = 6 [(gogoproto.enumvalue_customname) = "OpponentAllCards"];
         ALL_CARDS = 7 [(gogoproto.enumvalue_customname) = "AllCards"];
         ALL = 8 [(gogoproto.enumvalue_customname) = "All"];
+        ITSELF = 9 [(gogoproto.enumvalue_customname) = "Itself"];
     }
 }
 
@@ -648,6 +649,7 @@ message MechanicIconType
         DESTROY = 16 [(gogoproto.enumvalue_customname) = "Destroy"];
         DISTRACT = 17 [(gogoproto.enumvalue_customname) = "Distract"];
         SHATTER = 18 [(gogoproto.enumvalue_customname) = "Shatter"];
+        KILL_UNIT = 19 [(gogoproto.enumvalue_customname) = "KillUnit"];
     }
 }
 
@@ -695,6 +697,7 @@ message CardAbilityTrigger {
         GOT_DAMAGE = 7 [(gogoproto.enumvalue_customname) = "GotDamage"];
         AT_DEFENCE = 8 [(gogoproto.enumvalue_customname) = "AtDefence"];
         IN_HAND = 9 [(gogoproto.enumvalue_customname) = "InHand"];
+        KILL_UNIT = 10 [(gogoproto.enumvalue_customname) = "KillUnit"];
     }
 }
 
@@ -784,6 +787,43 @@ message CardAbilityType {
         REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES = 60 [(gogoproto.enumvalue_customname) = "ReplaceUnitsWithTypeOnStrongerOnes"];
         RESTORE_DEF_RANDOMLY_SPLIT = 61 [(gogoproto.enumvalue_customname) = "RestoreDefRandomlySplit"];
         ADJACENT_UNITS_GET_GUARD = 62 [(gogoproto.enumvalue_customname) = "AdjacentUnitsGetGuard"];
+        SUMMON_UNIT_FROM_HAND = 63 [(gogoproto.enumvalue_customname) = "SummonUnitFromHand"];
+        DAMAGE_AND_DISTRACT_TARGET = 64 [(gogoproto.enumvalue_customname) = "DamageAndDistractTarget"];
+        DRAW_CARD_IF_DAMAGED_ZOMBIE_IN_PLAY = 65 [(gogoproto.enumvalue_customname) = "DrawCardIfDamagedZombieInPlay"];
+        TAKE_STAT_IF_OVERLORD_HAS_LESS_DEFENSE_THAN = 66 [(gogoproto.enumvalue_customname) = "TakeStatIfOverlordHasLessDefenseThan"];
+        DAMAGE_OVERLORD_ON_COUNT_ITEMS_PLAYED = 67 [(gogoproto.enumvalue_customname) = "DamageOverlordOnCountItemsPlayed"];
+        SHUFFLE_THIS_CARD_TO_DECK = 68 [(gogoproto.enumvalue_customname) = "ShuffleThisCardToDeck"];
+        TAKE_DEFENSE_TO_OVERLORD_WITH_DEFENSE = 69 [(gogoproto.enumvalue_customname) = "TakeDefenseToOverlordWithDefense"];
+        PUT_RANDOM_UNIT_FROM_DECK_ON_BOARD = 70 [(gogoproto.enumvalue_customname) = "PutRandomUnitFromDeckOnBoard"];
+        DISTRACT = 71 [(gogoproto.enumvalue_customname) = "Distract"];
+        DAMAGE_TARGET_FREEZE_IT_IF_SURVIVES = 72 [(gogoproto.enumvalue_customname) = "DamageTargetFreezeItIfSurvives"];
+        DESTROY_UNIT_BY_COST = 73 [(gogoproto.enumvalue_customname) = "DestroyUnitByCost"];
+        DAMAGE_ENEMY_OR_RESTORE_DEFENSE_ALLY = 74 [(gogoproto.enumvalue_customname) = "DamageEnemyOrRestoreDefenseAlly"];
+        TAKE_SWING_TO_UNITS = 75 [(gogoproto.enumvalue_customname) = "TakeSwingToUnits"];
+        DELAYED_PLACE_COPIES_IN_PLAY_DESTROY_UNIT = 76 [(gogoproto.enumvalue_customname) = "DelayedPlaceCopiesInPlayDestroyUnit"];
+        ADJACENT_UNITS_GET_STAT = 77 [(gogoproto.enumvalue_customname) = "AdjacentUnitsGetStat"];
+        EXTRA_GOO_IF_UNIT_IN_PLAY = 78 [(gogoproto.enumvalue_customname) = "ExtraGooIfUnitInPlay"];
+        DESTROY_UNITS = 79 [(gogoproto.enumvalue_customname) = "DestroyUnits"];
+        DEAL_DAMAGE_TO_UNIT_AND_SWING = 80 [(gogoproto.enumvalue_customname) = "DealDamageToUnitAndSwing"];
+        SET_ATTACK_AVAILABILITY = 81 [(gogoproto.enumvalue_customname) = "SetAttackAvailability"];
+        CHOOSABLE_ABILITIES = 82 [(gogoproto.enumvalue_customname) = "ChoosableAbilities"];
+    }
+}
+
+message CardAbilitySubTrigger
+{
+    enum Enum {
+        None = 0;
+        OnlyThisUnitInPlay = 1;
+        AllOtherAllyUnitsInPlay = 2;
+        AllAllyUnitsInPlay = 3;
+        RandomUnit = 4;
+        AllEnemyUnitsInPlay = 5;
+        AllAllyUnitsByFactionInPlay = 6;
+        ForEachFactionOfUnitInHand = 7;
+        IfHasUnitsWithFactionInPlay = 8;
+        AllyUnitsByFactionThatCost = 9;
+        YourOverlord = 10;
     }
 }
 
@@ -822,7 +862,7 @@ message CreatureType {
 
 message CardSetType {
     enum Enum {
-        None = 0 [(gogoproto.enumvalue_customname) = "None"];
+        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
         FIRE = 1 [(gogoproto.enumvalue_customname) = "Fire"];
         WATER = 2 [(gogoproto.enumvalue_customname) = "Water"];
         EARTH = 3 [(gogoproto.enumvalue_customname) = "Earth"];
@@ -847,6 +887,11 @@ message GameState {
     int64 createdAt                     = 10;
 }
 
+message CardChoosableAbility {
+    string description = 1;
+    CardAbility ability_data = 2;
+}
+
 message CardAbility {
     CardAbilityType.Enum type = 1;
     CardAbilityActivityType.Enum activityType = 2 [json_name="activity_type"];
@@ -860,14 +905,19 @@ message CardAbility {
     UnitSpecialStatus.Enum targetUnitStatusType = 10 [json_name="unit_status"];
     CreatureType.Enum targetUnitType = 11 [json_name="unit_type"];
     int32 value = 12;
-    int32 attack = 13;
-    int32 defense = 14;
+    int32 attack = 13 [json_name="damage"];
+    int32 defense = 14 [json_name="health"]; // FIXME: Health in client code
     string name = 15;
     int32 turns = 16;
     int32 count = 17;
     int32 delay = 18;
     repeated VisualEffectInfo VisualEffectsToPlay = 19;
     MechanicIconType.Enum mechanicIconType = 20 [json_name="mechanic_icon_type"];
+    CardSetType.Enum target_set = 21;
+    CardAbilitySubTrigger.Enum sub_trigger = 22;
+    repeated CardChoosableAbility choosable_abilities = 23;
+    int32 defense2 = 24 [json_name="defense"]; // FIXME: Defense in client code
+    int32 cost = 25;
 
     message VisualEffectInfo {
         enum VisualEffectType {
@@ -938,7 +988,7 @@ message OverlordSkillPrototype {
     int32 parameter = 7;
     int32 attack = 8;
     OverlordSkillKind overlordSkillKind = 9;
-    //repeated AllowedTarget.Enum skillTargetTypes = 10;
+    repeated AllowedTarget.Enum skillTargetTypes = 10;
     repeated CardSetType.Enum elementTargetTypes = 11;
 }
 
