@@ -18,13 +18,13 @@ var acceptMatchCmd = &cobra.Command{
 	Short: "accept match",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.acceptMatchRequest{
+		var req = zb.AcceptMatchRequest{
 			UserId:  acceptMatchCmdArgs.userID,
 			MatchId: acceptMatchCmdArgs.matchID,
 		}
-		var resp zb.acceptMatchResponse
+		var resp zb.AcceptMatchResponse
 
-		_, err := commonTxObjs.contract.Call("acceptMatch", &req, signer, &resp)
+		_, err := commonTxObjs.contract.Call("AcceptMatch", &req, signer, &resp)
 		if err != nil {
 			return err
 		}
@@ -45,5 +45,5 @@ func init() {
 	rootCmd.AddCommand(acceptMatchCmd)
 
 	acceptMatchCmd.Flags().StringVarP(&acceptMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	acceptMatchCmd.Flags().StringVarP(&acceptMatchCmdArgs.matchID, "matchId", "m", "", "matchId")
+	acceptMatchCmd.Flags().Int64VarP(&acceptMatchCmdArgs.matchID, "matchId", "m", 0, "matchId")
 }
