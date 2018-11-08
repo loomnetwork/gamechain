@@ -504,7 +504,20 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 }
 
 func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecksRequest) error {
+	deckList := zb.DeckList{
+		Decks: req.Decks,
+	}
+	return saveAIDecks(ctx, req.Version, &deckList)
+}
 
+func (z *ZombieBattleground) GetAIDecks(ctx contract.Context, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
+	deckList, err := loadAIDecks(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+	return &zb.GetAIDecksResponse{
+		Decks: deckList.Decks,
+	}, nil
 }
 
 // GetCollection returns the collection of the card own by the user
