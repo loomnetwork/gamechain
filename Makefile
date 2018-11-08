@@ -49,7 +49,10 @@ protoc-gen-gogo:
 
 %.cs: %.proto protoc-gen-gogo
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
-	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<
+	cp $< $<-cs.bak
+	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
+	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<-cs
+	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
 proto: types/zb/zb.pb.go types/zb/zb.cs
