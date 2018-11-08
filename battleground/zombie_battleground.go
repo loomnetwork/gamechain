@@ -796,11 +796,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Version: matchedPlayerProfile.Version, // TODO: match version of both players
 	}
 
-	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
-		Id:   req.UserId,
-		Deck: deck,
-	})
-
 	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
 	if match.RandomSeed == 0 {
 		match.RandomSeed = ctx.Now().Unix()
@@ -913,6 +908,18 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 
 	return &zb.AcceptMatchResponse{
 		Match: match,
+	}, nil
+}
+
+// TODO remove this
+func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
+	pool, err := loadPlayerPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.PlayerPoolResponse{
+		Pool: pool,
 	}, nil
 }
 

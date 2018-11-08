@@ -490,6 +490,12 @@ message RegisterPlayerPoolRequest {
 message RegisterPlayerPoolResponse {
 }
 
+// TODO: remove this
+message PlayerPoolRequest {}
+message PlayerPoolResponse {
+    PlayerPool pool = 1;
+}
+
 message FindMatchRequest {
     string userId = 1;
 }
