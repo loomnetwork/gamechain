@@ -11,6 +11,7 @@ func printProtoMessageAsJsonToStdout(pb proto.Message) error {
 	m := jsonpb.Marshaler{
 		OrigName: true,
 		Indent: "  ",
+		EmitDefaults: true,
 	}
 
 	if err := m.Marshal(os.Stdout, pb); err != nil {

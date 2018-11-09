@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -32,8 +30,7 @@ var addHeroExperienceCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("hero_id: %d\n", result.HeroId)
-		fmt.Printf("experience: %d\n", result.Experience)
+		printProtoMessageAsJsonToStdout(&result)
 		return nil
 	},
 }

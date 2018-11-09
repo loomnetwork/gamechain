@@ -12,7 +12,7 @@ import (
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{
 			CardName: "Banshee",
 			Amount:   4,
@@ -69,8 +69,11 @@ var initRequest = zb.InitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
+				Skill:        zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
 				Value:        1,
 			}},
 		},
@@ -80,8 +83,11 @@ var initRequest = zb.InitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
+				Skill:        zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
 				Value:        2,
 			}},
 		},
@@ -98,9 +104,9 @@ var initRequest = zb.InitRequest{
 			GooCost: 2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_DRAW_CARD,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_ENTRY,
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
 					Set:          zb.CardSetType_None,
 				},
 			},
@@ -128,16 +134,15 @@ var initRequest = zb.InitRequest{
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_MODIFICATOR_STATS,
-					ActivityType: zb.CardAbilityActivityType_PASSIVE,
-					Trigger:      zb.CardAbilityTrigger_PERMANENT,
-					AllowedTargetTypes: []zb.AllowedTarget{
-						zb.AllowedTarget_NONE,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Damage,
+					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Earth,
 					Value:    1,
-					BuffType: zb.CardAbilityBuffType_CardAbilityBuffType_ATTACK,
 				},
 			},
 		},
@@ -147,7 +152,7 @@ var initRequest = zb.InitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{
 					CardName: "Banshee",
 					Amount:   2,
