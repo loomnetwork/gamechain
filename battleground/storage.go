@@ -34,7 +34,9 @@ var (
 	playersInMatchmakingListKey = []byte("players-matchmaking")
 	gameModeListKey             = []byte("gamemode-list")
 	playerPoolKey               = []byte("playerpool")
+	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
+	aiDecksKey                  = []byte("ai-decks")
 )
 
 var (
@@ -113,6 +115,19 @@ func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 	return ctx.Set(DecksKey(userID), decks)
 }
 
+func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error {
+	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
+}
+
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.DeckList, error) {
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
+	if err != nil {
+		return nil, err
+	}
+	return &deckList, nil
+}
+
 func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
 	var heroes zb.HeroList
 	err := ctx.Get(HeroesKey(userID), &heroes)
@@ -187,6 +202,19 @@ func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 func loadPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(playerPoolKey, &pool)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &pool, nil
+}
+
+func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
+	return ctx.Set(taggedPlayerPoolKey, pool)
+}
+
+func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
+	var pool zb.PlayerPool
+	err := ctx.Get(taggedPlayerPoolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}

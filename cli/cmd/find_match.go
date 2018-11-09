@@ -10,6 +10,7 @@ import (
 
 var findMatchCmdArgs struct {
 	userID string
+	tags   []string
 }
 
 var findMatchCmd = &cobra.Command{
@@ -19,6 +20,7 @@ var findMatchCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.FindMatchRequest{
 			UserId: findMatchCmdArgs.userID,
+			Tags:   findMatchCmdArgs.tags,
 		}
 		var resp zb.FindMatchResponse
 
@@ -45,4 +47,5 @@ func init() {
 	rootCmd.AddCommand(findMatchCmd)
 
 	findMatchCmd.Flags().StringVarP(&findMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	findMatchCmd.Flags().StringArrayVarP(&findMatchCmdArgs.tags, "tags", "t", nil, "tags")
 }

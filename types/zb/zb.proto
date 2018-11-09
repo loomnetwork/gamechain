@@ -99,6 +99,12 @@ message Ability {
     int32 defense        = 22;
     repeated VisualEffectInfo visual_effects_to_play = 23;
     int32 cost           = 24;
+    repeated ChoosableAbility choosable_abilities = 25;
+}
+
+message ChoosableAbility {
+    string description = 1;
+    Ability ability_data = 2;
 }
 
 message VisualEffectInfo {
@@ -336,6 +342,19 @@ message ListDecksResponse {
     int64 last_modification_timestamp = 3;
 }
 
+message SetAIDecksRequest {
+    string version = 1;
+    repeated Deck decks = 2;
+}
+
+message GetAIDecksRequest {
+    string version = 1;
+}
+
+message GetAIDecksResponse {
+    repeated Deck decks = 1;
+}
+
 message ListCardLibraryRequest {
     string version = 1;
 }
@@ -468,7 +487,8 @@ message PlayerProfile {
     string version = 3;
     Address customGame = 5;
     int64 updatedAt = 6;
-    int64 randomSeed = 7;
+    repeated string tags = 7;
+    int64 randomSeed = 8;
 }
 
 message PlayerPool {
@@ -485,6 +505,7 @@ message RegisterPlayerPoolRequest {
     string version = 3;
     Address customGame = 4;
     int64 randomSeed = 5;
+    repeated string tags = 6;
 }
 
 message RegisterPlayerPoolResponse {
@@ -498,6 +519,7 @@ message PlayerPoolResponse {
 
 message FindMatchRequest {
     string userId = 1;
+    repeated string tags = 2;
 }
 
 message FindMatchResponse {
@@ -514,9 +536,20 @@ message AcceptMatchResponse {
     History block = 2;
 }
 
+message DebugFindMatchRequest {
+    string userId = 1;
+    int64 deckId  = 2;
+    string version = 3;
+    int64 randomSeed = 4;
+    Address customGame = 5;
+    Deck deck = 6;
+    repeated string tags = 7;
+}
+
 message CancelFindMatchRequest {
     string userId = 1;
     int64 matchId = 2;
+    repeated string tags = 3;
 }
 
 message CancelFindMatchResponse {
