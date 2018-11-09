@@ -43,6 +43,7 @@ message Card {
     int32 gooCost = 14 [json_name="cost"];
     CardViewInfo card_view_info = 16;
     repeated CardAbility abilities = 17;
+    string unique_animation     = 18;
 }
 
 message CardViewInfo {
