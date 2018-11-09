@@ -15,7 +15,7 @@ import (
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -36,8 +36,11 @@ var initRequest = zb.InitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
+				Skill:        zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
 				Value:        1,
 			}},
 		},
@@ -47,110 +50,113 @@ var initRequest = zb.InitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
+				Skill:        zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
 				Value:        2,
 			}},
 		},
 	},
 	Cards: []*zb.Card{
-		{MouldId: 1, Name: "Whizpar", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 34, Name: "Wheezy", Attack: 1, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 50, Name: "Soothsayer", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 142, Name: "Fumez", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 2, Name: "Pushhh", Attack: 3, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 3, Name: "Ztormmcaller", Attack: 3, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 32, Name: "Bouncer", Attack: 2, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 143, Name: "Gaz", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 96, Name: "Draft", Attack: 4, Defense: 5, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 97, Name: "MonZoon", Attack: 6, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 4, Name: "Zeuz", Attack: 5, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 94, Name: "Ztorm Shield", Attack: 4, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Air},
-		{MouldId: 5, Name: "Rockky", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 7, Name: "Bolderr", Attack: 1, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 98, Name: "Blocker", Attack: 0, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 101, Name: "Slab", Attack: 3, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 144, Name: "Pit", Attack: 0, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 6, Name: "Golem", Attack: 2, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 9, Name: "Walley", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 35, Name: "Tiny", Attack: 0, Defense: 7, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 59, Name: "Spiker", Attack: 2, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 145, Name: "Crater", Attack: 1, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 36, Name: "Earthshaker", Attack: 4, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 61, Name: "IgneouZ", Attack: 3, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 103, Name: "Pyrite", Attack: 0, Defense: 8, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 8, Name: "Mountain", Attack: 6, Defense: 8, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 104, Name: "Gaea", Attack: 4, Defense: 7, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Earth},
-		{MouldId: 10, Name: "Pyromaz", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 146, Name: "Quazi", Attack: 0, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 11, Name: "Burrrnn", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 12, Name: "Cynderman", Attack: 2, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 38, Name: "Werezomb", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 147, Name: "Modo", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 14, Name: "Fire-Maw", Attack: 3, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 67, Name: "Zhampion", Attack: 5, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 13, Name: "Gargantua", Attack: 6, Defense: 8, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 37, Name: "Cerberus", Attack: 7, Defense: 8, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Fire},
-		{MouldId: 18, Name: "Chainsaw", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 70, Name: "Goo Beaker", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 15, Name: "Stapler", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 16, Name: "Nail Bomb", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 17, Name: "Goo Bottles", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 117, Name: "Fresh Meat", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Item},
-		{MouldId: 19, Name: "Azuraz", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 75, Name: "Bloomer", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 148, Name: "Zap", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 20, Name: "Shroom", Attack: 4, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 21, Name: "Vindrom", Attack: 2, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 23, Name: "Puffer", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 44, Name: "Sapper", Attack: 2, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 45, Name: "Keeper", Attack: 1, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 149, Name: "Cactuz", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 22, Name: "Shammann", Attack: 5, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 42, Name: "Z-Virus", Attack: 0, Defense: 0, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 43, Name: "Yggdrazil", Attack: 4, Defense: 5, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Life},
-		{MouldId: 100, Name: "Zombie 1/1", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 101, Name: "Zombie 2/2", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 102, Name: "Zombie Feral", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 155, Name: "Tainted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Others},
-		{MouldId: 156, Name: "Corrupted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_SPELL, Set: zb.CardSetType_Others},
-		{MouldId: 78, Name: "Rainz", Attack: 3, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 125, Name: "Blight", Attack: 5, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 131, Name: "Zteroid", Attack: 5, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 108, Name: "BurZt", Attack: 4, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 135, Name: "Vortex", Attack: 6, Defense: 7, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 60, Name: "Defender", Attack: 4, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Others},
-		{MouldId: 24, Name: "Poizom", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 26, Name: "Hazmaz", Attack: 1, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 46, Name: "Zpitter", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 150, Name: "Zeptic", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 25, Name: "Ghoul", Attack: 3, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 47, Name: "Zeeter", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 151, Name: "Hazzard", Attack: 4, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 85, Name: "Zludge", Attack: 4, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 127, Name: "Ectoplasm", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 27, Name: "Cherno-bill", Attack: 7, Defense: 9, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 132, Name: "GooZilla", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 129, Name: "Zlopper", Attack: 3, Defense: 5, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Toxic},
-		{MouldId: 28, Name: "Izze", Attack: 1, Defense: 1, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 49, Name: "Znowman", Attack: 0, Defense: 5, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 152, Name: "Ozmoziz", Attack: 1, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 29, Name: "Jetter", Attack: 3, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 30, Name: "Freezzee", Attack: 2, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 153, Name: "Geyzer", Attack: 2, Defense: 3, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 90, Name: "Blizzard", Attack: 3, Defense: 4, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 139, Name: "Froztbite", Attack: 0, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 48, Name: "Zhatterer", Attack: 1, Defense: 2, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 141, Name: "Maelstrom", Attack: 5, Defense: 5, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 31, Name: "Tzunamy", Attack: 6, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water},
-		{MouldId: 999999, Name: "Germs", Attack: 6, Defense: 6, Kind: zb.CardKind_CREATURE, Set: zb.CardSetType_Water}, // added this card for TestDeserializeGameStateChangeActions2 test
+		{MouldId: 1, Name: "Whizpar", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 34, Name: "Wheezy", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 50, Name: "Soothsayer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 142, Name: "Fumez", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 2, Name: "Pushhh", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 3, Name: "Ztormmcaller", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 32, Name: "Bouncer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 143, Name: "Gaz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 96, Name: "Draft", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 97, Name: "MonZoon", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 4, Name: "Zeuz", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 94, Name: "Ztorm Shield", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 5, Name: "Rockky", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 7, Name: "Bolderr", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 98, Name: "Blocker", Attack: 0, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 101, Name: "Slab", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 144, Name: "Pit", Attack: 0, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 6, Name: "Golem", Attack: 2, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 9, Name: "Walley", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 35, Name: "Tiny", Attack: 0, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 59, Name: "Spiker", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 145, Name: "Crater", Attack: 1, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 36, Name: "Earthshaker", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 61, Name: "IgneouZ", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 103, Name: "Pyrite", Attack: 0, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 8, Name: "Mountain", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 104, Name: "Gaea", Attack: 4, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 10, Name: "Pyromaz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 146, Name: "Quazi", Attack: 0, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 11, Name: "Burrrnn", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 12, Name: "Cynderman", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 38, Name: "Werezomb", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 147, Name: "Modo", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 14, Name: "Fire-Maw", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 67, Name: "Zhampion", Attack: 5, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 13, Name: "Gargantua", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 37, Name: "Cerberus", Attack: 7, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 18, Name: "Chainsaw", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 70, Name: "Goo Beaker", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 15, Name: "Stapler", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 16, Name: "Nail Bomb", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 17, Name: "Goo Bottles", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 117, Name: "Fresh Meat", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 19, Name: "Azuraz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 75, Name: "Bloomer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 148, Name: "Zap", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 20, Name: "Shroom", Attack: 4, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 21, Name: "Vindrom", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 23, Name: "Puffer", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 44, Name: "Sapper", Attack: 2, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 45, Name: "Keeper", Attack: 1, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 149, Name: "Cactuz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 22, Name: "Shammann", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 42, Name: "Z-Virus", Attack: 0, Defense: 0, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 43, Name: "Yggdrazil", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 100, Name: "Zombie 1/1", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 101, Name: "Zombie 2/2", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 102, Name: "Zombie Feral", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 155, Name: "Tainted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
+		{MouldId: 156, Name: "Corrupted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
+		{MouldId: 78, Name: "Rainz", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 125, Name: "Blight", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 131, Name: "Zteroid", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 108, Name: "BurZt", Attack: 4, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 135, Name: "Vortex", Attack: 6, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 60, Name: "Defender", Attack: 4, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 24, Name: "Poizom", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 26, Name: "Hazmaz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 46, Name: "Zpitter", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 150, Name: "Zeptic", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 25, Name: "Ghoul", Attack: 3, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 47, Name: "Zeeter", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 151, Name: "Hazzard", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 85, Name: "Zludge", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 127, Name: "Ectoplasm", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 27, Name: "Cherno-bill", Attack: 7, Defense: 9, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 132, Name: "GooZilla", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 129, Name: "Zlopper", Attack: 3, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 28, Name: "Izze", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 49, Name: "Znowman", Attack: 0, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 152, Name: "Ozmoziz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 29, Name: "Jetter", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 30, Name: "Freezzee", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 153, Name: "Geyzer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 90, Name: "Blizzard", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 139, Name: "Froztbite", Attack: 0, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 48, Name: "Zhatterer", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 141, Name: "Maelstrom", Attack: 5, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 31, Name: "Tzunamy", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 999999, Name: "Germs", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water}, // added this card for TestDeserializeGameStateChangeActions2 test
 	},
 	DefaultDecks: []*zb.Deck{
 		{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Azuraz", Amount: 2},
 				{CardName: "Puffer", Amount: 2},
 				{CardName: "Soothsayer", Amount: 2},
@@ -165,7 +171,7 @@ var initRequest = zb.InitRequest{
 
 var updateInitRequest = zb.UpdateInitRequest{
 	Version: "v2",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -186,8 +192,11 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
+				Skill:        zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
 				Value:        1,
 			}},
 		},
@@ -197,8 +206,11 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
+				Skill:        zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
 				Value:        2,
 			}},
 		},
@@ -248,13 +260,12 @@ var updateInitRequest = zb.UpdateInitRequest{
 					Type:         zb.CardAbilityType_ModificatorStats,
 					ActivityType: zb.CardAbilityActivityType_Passive,
 					Trigger:      zb.CardAbilityTrigger_Permanent,
-					AllowedTargetTypes: []zb.AllowedTarget_Enum{
-						zb.AllowedTarget_None,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
 					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Earth,
 					Value:    1,
-					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -272,13 +283,12 @@ var updateInitRequest = zb.UpdateInitRequest{
 					Type:         zb.CardAbilityType_ModificatorStats,
 					ActivityType: zb.CardAbilityActivityType_Passive,
 					Trigger:      zb.CardAbilityTrigger_Permanent,
-					AllowedTargetTypes: []zb.AllowedTarget_Enum{
-						zb.AllowedTarget_None,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
 					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Water,
 					Value:    1,
-					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -288,7 +298,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Banshee", Amount: 2},
 				{CardName: "Breezee", Amount: 2},
 				{CardName: "Buffer", Amount: 2},
@@ -309,7 +319,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	Version:    "v2",
 	OldVersion: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -368,13 +378,12 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 					Type:         zb.CardAbilityType_ModificatorStats,
 					ActivityType: zb.CardAbilityActivityType_Passive,
 					Trigger:      zb.CardAbilityTrigger_Permanent,
-					AllowedTargetTypes: []zb.AllowedTarget_Enum{
-						zb.AllowedTarget_None,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
 					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Earth,
 					Value:    1,
-					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -392,13 +401,12 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 					Type:         zb.CardAbilityType_ModificatorStats,
 					ActivityType: zb.CardAbilityActivityType_Passive,
 					Trigger:      zb.CardAbilityTrigger_Permanent,
-					AllowedTargetTypes: []zb.AllowedTarget_Enum{
-						zb.AllowedTarget_None,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
 					Stat:     zb.StatType_Attack,
 					Set:      zb.CardSetType_Water,
 					Value:    1,
-					Buff: zb.CardAbilityBuffType_Attack,
 				},
 			},
 		},
@@ -408,7 +416,7 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Banshee", Amount: 2},
 				{CardName: "Breezee", Amount: 2},
 				{CardName: "Buffer", Amount: 2},
@@ -481,7 +489,7 @@ func TestAccountOperations(t *testing.T) {
 	})
 }
 
-func TestCardCollectionOperations(t *testing.T) {
+func TestCardCollectionCardOperations(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "8996b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
 	var addr loom.Address
@@ -494,11 +502,11 @@ func TestCardCollectionOperations(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	cardCollection, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
+	CardCollectionCard, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "CardUser",
 	})
 	assert.Nil(t, err)
-	assert.Equal(t, 12, len(cardCollection.Cards))
+	assert.Equal(t, 12, len(CardCollectionCard.Cards))
 
 }
 
@@ -552,7 +560,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -582,7 +590,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   200,
 						CardName: "Azuraz",
@@ -605,7 +613,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   2,
 						CardName: "InvalidName1",
@@ -628,7 +636,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "Default",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -651,7 +659,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "nEWdECK",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -675,7 +683,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -707,7 +715,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   100,
 						CardName: "Azuraz",
@@ -730,7 +738,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -754,7 +762,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "dEFAULT",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -1013,7 +1021,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "deck1",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Banshee",
@@ -1034,7 +1042,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "deck2",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -1303,7 +1311,7 @@ func TestDebugFindMatchOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				HeroId: 2,
 				Name:   "DebugDeck1",
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{CardName: "Azuraz", Amount: 2},
 					{CardName: "Puffer", Amount: 2},
 					{CardName: "Soothsayer", Amount: 2},
@@ -1328,7 +1336,7 @@ func TestDebugFindMatchOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				HeroId: 2,
 				Name:   "DebugDeck1",
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{CardName: "Azuraz", Amount: 2},
 					{CardName: "Puffer", Amount: 2},
 					{CardName: "Soothsayer", Amount: 2},
@@ -1836,7 +1844,7 @@ func TestGameStateOperations(t *testing.T) {
 						Attacker: &zb.CardInstance{
 							InstanceId: 13,
 						},
-						AffectObjectType: zb.AffectObjectType_CHARACTER,
+						AffectObjectType: zb.AffectObjectType_Character,
 						Target: &zb.Unit{
 							InstanceId: 8,
 						},
@@ -2292,7 +2300,7 @@ func TestAIDeckOperations(t *testing.T) {
 			Id:     1,
 			HeroId: 2,
 			Name:   "AI Decks",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Banshee", Amount: 2},
 				{CardName: "Breezee", Amount: 2},
 				{CardName: "Buffer", Amount: 2},
