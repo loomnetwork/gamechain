@@ -43,6 +43,7 @@ message Card {
     CardViewInfo card_view_info = 16;
     repeated Effect effects     = 17;
     repeated Ability abilities  = 18;
+    string unique_animation     = 19;
 }
 
 message CardViewInfo {
@@ -913,6 +914,7 @@ message CardPrototype {
     CreatureType creatureType = 16;
     CardKind cardKind = 17;
     string kind = 18;
+    string uniqueAnimation = 19;
 }
 
 message DataIdOwner {
