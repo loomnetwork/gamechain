@@ -333,11 +333,11 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 	// validate version on card library
-	cardlist, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := loadCardList(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
-	if err := validateCardLibrary(cardlist.Cards, req.Deck.Cards); err != nil {
+	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
 		return nil, err
 	}
 
@@ -373,7 +373,6 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	newDeckID++
 	req.Deck.Id = newDeckID
 	deckList.Decks = append(deckList.Decks, req.Deck)
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return nil, err
 	}
@@ -400,11 +399,11 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 	// validate version on card library
-	cardlist, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := loadCardList(ctx, req.Version)
 	if err != nil {
 		return err
 	}
-	if err := validateCardLibrary(cardlist.Cards, req.Deck.Cards); err != nil {
+	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
 		return err
 	}
 
@@ -440,8 +439,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+
 	// update decklist
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
@@ -471,7 +470,6 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return fmt.Errorf("deck not found")
 	}
 
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
@@ -486,7 +484,6 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 	}
 	return &zb.ListDecksResponse{
 		Decks:                     deckList.Decks,
-		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
 
