@@ -13,6 +13,7 @@ var registerPlayerPoolCmdArgs struct {
 	deckID     int64
 	version    string
 	randomSeed int64
+	tags       []string
 }
 
 var registerPlayerPoolCmd = &cobra.Command{
@@ -23,6 +24,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 		var req = zb.RegisterPlayerPoolRequest{
 			UserId: registerPlayerPoolCmdArgs.userID,
 			DeckId: registerPlayerPoolCmdArgs.deckID,
+			Tags:   registerPlayerPoolCmdArgs.tags,
 		}
 		var resp zb.RegisterPlayerPoolResponse
 
@@ -46,4 +48,5 @@ func init() {
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", time.Now().Unix(), "Random Seed")
+	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
 }
