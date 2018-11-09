@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
+
+	"github.com/gogo/protobuf/jsonpb"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
@@ -32,11 +33,17 @@ var getAIDecksCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		j, err := json.MarshalIndent(result, "", "  ")
+
+		jsonMarshaler := jsonpb.Marshaler{
+			OrigName: true,
+			Indent:   "  ",
+		}
+
+		j, err := jsonMarshaler.MarshalToString(&result)
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(j))
+		fmt.Println(j)
 		return nil
 	},
 }
