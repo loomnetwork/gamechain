@@ -2260,3 +2260,49 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 		assert.Equal(t, "player-2", response.GameState.Winner)
 	})
 }
+
+func TestAIDeckOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	aiDecks := []*zb.Deck{
+		{
+			Id:     1,
+			HeroId: 2,
+			Name:   "AI Decks",
+			Cards: []*zb.CardCollection{
+				{CardName: "Banshee", Amount: 2},
+				{CardName: "Breezee", Amount: 2},
+				{CardName: "Buffer", Amount: 2},
+				{CardName: "Soothsayer", Amount: 2},
+				{CardName: "Wheezy", Amount: 2},
+				{CardName: "Whiffer", Amount: 2},
+				{CardName: "Whizpar", Amount: 1},
+				{CardName: "Zhocker", Amount: 1},
+				{CardName: "Bouncer", Amount: 1},
+				{CardName: "Dragger", Amount: 1},
+				{CardName: "Guzt", Amount: 1},
+				{CardName: "Pushhh", Amount: 1},
+			},
+		},
+	}
+
+	t.Run("Set AI Decks", func(t *testing.T) {
+		req := &zb.SetAIDecksRequest{
+			Decks:   aiDecks,
+			Version: "v1",
+		}
+		err := c.SetAIDecks(ctx, req)
+		assert.Nil(t, err)
+	})
+
+	t.Run("Get AI Decks", func(t *testing.T) {
+		_, err := c.GetAIDecks(ctx, &zb.GetAIDecksRequest{
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+}
