@@ -729,6 +729,28 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 	match, _ := loadUserCurrentMatch(ctx, req.UserId)
 	if match != nil {
+		// timeout for matchmaking
+		updatedAt := time.Unix(match.CreatedAt, 0)
+		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
+			ctx.Logger().Debug(fmt.Sprintf("Match %d timedout", match.Id))
+			// remove match
+			ctx.Delete(MatchKey(match.Id))
+			match.Status = zb.Match_Timedout
+			// remove player's match if existing
+			ctx.Delete(UserMatchKey(req.UserId))
+			// notify player
+			emitMsg := zb.PlayerActionEvent{
+				Match: match,
+			}
+			data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+			if err != nil {
+				return nil, err
+			}
+			if err == nil {
+				ctx.EmitTopics([]byte(data), match.Topics...)
+			}
+		}
+
 		return &zb.FindMatchResponse{
 			Match: match,
 		}, nil
@@ -757,35 +779,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	for retries < MMRetries {
 		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retries=%d", req.UserId, retries))
 
-		// prune the timed out player profile
-		// for _, pp := range pool.PlayerProfiles {
-		// 	updatedAt := time.Unix(pp.UpdatedAt, 0)
-		// 	if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-		// 		ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
-		// 		// remove player from the pool
-		// 		pool = removePlayerFromPool(pool, pp.UserId)
-		// 		// remove match
-		// 		match, _ := loadUserCurrentMatch(ctx, pp.UserId)
-		// 		if match != nil {
-		// 			ctx.Delete(MatchKey(match.Id))
-		// 			match.Status = zb.Match_Timedout
-		// 			// remove player's match if existing
-		// 			ctx.Delete(UserMatchKey(pp.UserId))
-		// 			// notify player
-		// 			emitMsg := zb.PlayerActionEvent{
-		// 				Match: match,
-		// 			}
-		// 			data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
-		// 			if err != nil {
-		// 				return nil, err
-		// 			}
-		// 			if err == nil {
-		// 				ctx.EmitTopics([]byte(data), match.Topics...)
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 		var playerScores []*PlayerScore
 		for _, pp := range pool.PlayerProfiles {
@@ -812,13 +805,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 		retries++
 	}
-
-	// // get and update the match
-	// player1 := matchedPlayerProfile.UserId
-	// match, err := loadUserCurrentMatch(ctx, player1)
-	// if err != nil && err != contract.ErrNotFound {
-	// 	return nil, err
-	// }
 
 	if matchedPlayerProfile == nil {
 		return nil, errors.New("Matchmaking failed, couldnt get matchedPlayerProfile")

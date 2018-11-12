@@ -1670,6 +1670,15 @@ func TestMatchMakingTimeout(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-3",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
 	var matchID int64
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
@@ -1682,16 +1691,22 @@ func TestMatchMakingTimeout(t *testing.T) {
 	})
 
 	// move time forward to expire the matchmaking
-	// TODO: Fix once matchmaking timeout works again
-	// fc.SetTime(now.Add(2 * MMTimeout))
+	fc.SetTime(now.Add(2 * MMTimeout))
 
-	// t.Run("GetMatch", func(t *testing.T) {
-	// 	response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
-	// 		MatchId: matchID,
-	// 	})
-	// 	assert.Nil(t, err)
-	// 	assert.Nil(t, response.Match)
-	// })
+	t.Run("FindMatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.NotNil(t, err)
+	})
 }
 
 func TestGameStateOperations(t *testing.T) {
