@@ -984,27 +984,30 @@ func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.P
 }
 
 func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.CancelFindMatchRequest) (*zb.CancelFindMatchResponse, error) {
-	match, err := loadMatch(ctx, req.MatchId)
-	if err != nil {
-		return nil, err
-	}
-	// remove the match if it not yet started
-	if match.Status == zb.Match_Matching {
-		ctx.Delete(MatchKey(match.Id))
-	}
-	// remove current match
-	ctx.Delete(UserMatchKey(req.UserId))
-	// notify player
-	match.Status = zb.Match_Canceled
-	emitMsg := zb.PlayerActionEvent{
-		Match: match,
-	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
-	if err != nil {
-		return nil, err
-	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
+	if req.MatchId > 0 {
+		match, err := loadMatch(ctx, req.MatchId)
+		if err != nil {
+			return nil, err
+		}
+
+		// remove the match if it not yet started
+		if match.Status == zb.Match_Matching {
+			ctx.Delete(MatchKey(match.Id))
+		}
+		// remove current match
+		ctx.Delete(UserMatchKey(req.UserId))
+		// notify player
+		match.Status = zb.Match_Canceled
+		emitMsg := zb.PlayerActionEvent{
+			Match: match,
+		}
+		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		if err != nil {
+			return nil, err
+		}
+		if err == nil {
+			ctx.EmitTopics([]byte(data), match.Topics...)
+		}
 	}
 
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
