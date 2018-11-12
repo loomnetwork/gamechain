@@ -17,11 +17,21 @@ message Account {
     bytes owner                = 10;
 }
 
+enum AIType {
+    BLITZ_AI = 0;
+    DEFENSE_AI = 1;
+    MIXED_AI = 2;
+    MIXED_BLITZ_AI = 3;
+    TIME_BLITZ_AI = 4;
+    MIXED_DEFENSE_AI = 5;
+}
+
 message Deck {
    int64 id = 1;
    string name = 2;
    int64 hero_id = 3;
    repeated CardCollection cards = 4;
+   AIType type = 5;
 }
 
 message Card {
