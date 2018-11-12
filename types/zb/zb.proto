@@ -357,6 +357,9 @@ message PlayerState {
 message Match {
     int64 id = 1;
     repeated string topics = 2;
+
+    // TODO: this data is not used by the client, but is still sent.
+    // Perhaps we can split Match into MatchMetadata and MatchInitialPlayerState
     repeated PlayerState playerStates = 3;
     enum Status {
         Created      = 0;
@@ -417,13 +420,9 @@ message PlayerAction {
 }
 
 message PlayerActionEvent {
-    PlayerActionType.Enum playerActionType = 1;
-    string userId  = 2;
-    string message = 3;
-    Match match    = 4;
-    PlayerAction playerAction = 5;
-    History block = 6;
-}
+    PlayerAction playerAction = 1;
+    Match match = 2;
+    History block = 3;}
 
 message PlayerProfile {
     string userId = 1;
@@ -480,13 +479,11 @@ message GetMatchRequest {
 
 message GetMatchResponse {
     Match match         = 1;
-    GameState gameState = 2;
 }
 
 message SetMatchRequest {
     Match match         = 1;
 }
-
 
 message GetGameStateRequest {
     int64 matchId = 1;
@@ -1079,13 +1076,6 @@ message StartGameAction {
 message Unit {
     int32 instanceId = 1;
     AffectObjectType.Enum affectObjectType = 2;
-    Parameter Parameter = 3;
-}
-
-message Parameter {
-    int32 Attack  = 1;
-    int32 Defense = 2;
-    string CardName = 3;
 }
 
 message OverlordSkillKind {
