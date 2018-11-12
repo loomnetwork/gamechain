@@ -2287,6 +2287,7 @@ func TestAIDeckOperations(t *testing.T) {
 				{CardName: "Guzt", Amount: 1},
 				{CardName: "Pushhh", Amount: 1},
 			},
+			Type: zb.AIType_MIXED_AI,
 		},
 	}
 
