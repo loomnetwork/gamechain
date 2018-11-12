@@ -429,6 +429,7 @@ message Match {
     string version = 5;
     int64 randomSeed = 6;
     Address customGameAddr = 7;
+    int64 createdAt = 8;
 }
 
 message MatchMakingInfoList {

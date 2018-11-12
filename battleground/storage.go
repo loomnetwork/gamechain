@@ -235,6 +235,7 @@ func createMatch(ctx contract.Context, match *zb.Match) error {
 	}
 	match.Id = nextID
 	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	match.CreatedAt = ctx.Now().Unix()
 	return saveMatch(ctx, match)
 }
 
