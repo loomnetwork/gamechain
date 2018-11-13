@@ -5,13 +5,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"os"
 	"sort"
 	"time"
 	"unicode/utf8"
 
-	"github.com/golang/protobuf/jsonpb"
+	"github.com/gogo/protobuf/proto"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
@@ -710,13 +710,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 					emitMsg := zb.PlayerActionEvent{
 						Match: match,
 					}
-					data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+					data, err := proto.Marshal(&emitMsg)
 					if err != nil {
 						return nil, err
 					}
-					if err == nil {
-						ctx.EmitTopics([]byte(data), match.Topics...)
-					}
+					ctx.EmitTopics([]byte(data), match.Topics...)
 				}
 			}
 		}
@@ -858,13 +856,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Match: match,
 		Block: &zb.History{List: gp.history},
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
 		Match: match,
@@ -887,13 +883,11 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	var loadPlayerPoolFn func(contract.Context) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
@@ -988,13 +982,11 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 					emitMsg := zb.PlayerActionEvent{
 						Match: match,
 					}
-					data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+					data, err := proto.Marshal(&emitMsg)
 					if err != nil {
 						return nil, err
 					}
-					if err == nil {
-						ctx.EmitTopics([]byte(data), match.Topics...)
-					}
+					ctx.EmitTopics([]byte(data), match.Topics...)
 				}
 			}
 		}
@@ -1136,13 +1128,11 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		Match: match,
 		Block: &zb.History{List: gp.history},
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
 		Match: match,
@@ -1211,18 +1201,16 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			},
 		},
 	})
+	match.Topics = append(match.Topics, "endgame")
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 		Block: &zb.History{List: gp.history},
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	match.Topics = append(match.Topics, "endgame")
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
@@ -1278,13 +1266,11 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 			Match:        match,
 			Block:        &zb.History{List: gp.history},
 		}
-		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
 			return nil, err
 		}
-		if err == nil {
-			ctx.EmitTopics([]byte(data), match.Topics...)
-		}
+		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
 	return &zb.CheckGameStatusResponse{}, nil
@@ -1342,9 +1328,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics(data, match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.PlayerActionResponse{
 		GameState: gamestate,
