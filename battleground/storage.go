@@ -18,7 +18,7 @@ const (
 
 var (
 	cardPrefix           = []byte("card")
-	userPreifx           = []byte("user")
+	userPrefix           = []byte("user")
 	heroesPrefix         = []byte("heroes")
 	collectionPrefix     = []byte("collection")
 	decksPrefix          = []byte("decks")
@@ -116,12 +116,12 @@ func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 	return ctx.Set(DecksKey(userID), decks)
 }
 
-func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error {
+func saveAIDecks(ctx contract.Context, version string, decks *zb.AIDeckList) error {
 	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
 }
 
-func loadAIDecks(ctx contract.StaticContext, version string) (*zb.DeckList, error) {
-	var deckList zb.DeckList
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, error) {
+	var deckList zb.AIDeckList
 	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
 	if err != nil {
 		return nil, err
