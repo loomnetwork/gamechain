@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -37,6 +38,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 			return err
 		}
 
+		fmt.Printf("Registered player %d to pool", req.UserId)
 		return nil
 	},
 }
