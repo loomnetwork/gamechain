@@ -98,7 +98,7 @@
 [[TestCases]]
   RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u loom-2 -d 1 -v v1"
   Condition = "contains"
-  Expected = ["Registered player loom2-1 to pool"]
+  Expected = ["Registered player loom-2 to pool"]
 
 [[TestCases]]
   RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-1 -d 1 -v v1"
