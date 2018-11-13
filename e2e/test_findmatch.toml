@@ -127,7 +127,7 @@
   RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 2"
   Condition = "contains"
   All = true
-  Expected = ["MatchID: 2", "Status: Started", "Player1: loom-2", "Player2: loom-1"]
+  Expected = ["MatchID: 2", "Status: Started", "Player1: loom-1", "Player2: loom-2"]
 
 [[TestCases]]
   RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
@@ -162,12 +162,12 @@
 [[TestCases]]
   RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u loom-3 -d 1 -v v1"
   Condition = "contains"
-  Expected = ["Registered player player-3 to pool"]
+  Expected = ["Registered player loom-3 to pool"]
 
 [[TestCases]]
   RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u loom-4 -d 1 -v v1"
   Condition = "contains"
-  Expected = ["Registered player player-4 to pool"]
+  Expected = ["Registered player loom-4 to pool"]
 
 [[TestCases]]
   RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u loom-3"
