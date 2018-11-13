@@ -19,9 +19,7 @@ type CardAbilityRage struct {
 
 func (card *CardInstance) SetDefense(defense int32) {
 	card.tryInitAbilitiesInstances()
-	fmt.Println(card)
 	card.Instance.Defense = defense
-	fmt.Println(card)
 
 	callAbilityInstancesFunc(card, func(ability CardAbility, card *CardInstance) {
 		ability.defenseChangedHandler(card)
