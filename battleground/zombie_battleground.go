@@ -96,6 +96,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize default AI decks
+	aiDeckList := zb.AIDeckList{
+		Decks: req.AiDecks,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -502,7 +510,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 }
 
 func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecksRequest) error {
-	deckList := zb.DeckList{
+	deckList := zb.AIDeckList{
 		Decks: req.Decks,
 	}
 	return saveAIDecks(ctx, req.Version, &deckList)
