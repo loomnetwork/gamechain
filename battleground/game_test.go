@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"github.com/gogo/protobuf/proto"
 	"testing"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -611,6 +612,61 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(-1), gp.State.PlayerStates[1].Defense)
 		assert.Equal(t, "player-1", gp.State.Winner)
 		assert.True(t, gp.isEnded())
+	})
+
+	t.Run("Rage ability works", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		assert.Nil(t, err)
+
+		card0 := &zb.Card{
+			Defense: 5,
+			Attack:  2,
+			Abilities: []*zb.CardAbility{
+				{
+					Type:  zb.CardAbilityType_Rage,
+					Value: 2,
+				},
+			},
+		}
+		cardInstance0 := CardInstance{&zb.CardInstance{
+			InstanceId: 1,
+			Instance: proto.Clone(card0).(*zb.Card),
+			Prototype: proto.Clone(card0).(*zb.Card),
+		}}
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Instance: &zb.Card{
+				Defense:    5,
+				Attack:     1,
+			},
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_Character,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
 	})
 }
 
