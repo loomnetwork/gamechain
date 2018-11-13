@@ -38,7 +38,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Registered player %d to pool", req.UserId)
+		fmt.Printf("Registered player %s to pool", req.UserId)
 		return nil
 	},
 }
