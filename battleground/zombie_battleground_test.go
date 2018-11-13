@@ -2291,24 +2291,26 @@ func TestAIDeckOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	aiDecks := []*zb.Deck{
+	aiDecks := []*zb.AIDeck{
 		{
-			Id:     1,
-			HeroId: 2,
-			Name:   "AI Decks",
-			Cards: []*zb.DeckCard{
-				{CardName: "Banshee", Amount: 2},
-				{CardName: "Breezee", Amount: 2},
-				{CardName: "Buffer", Amount: 2},
-				{CardName: "Soothsayer", Amount: 2},
-				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whiffer", Amount: 2},
-				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Zhocker", Amount: 1},
-				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Dragger", Amount: 1},
-				{CardName: "Guzt", Amount: 1},
-				{CardName: "Pushhh", Amount: 1},
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "Banshee", Amount: 2},
+					{CardName: "Breezee", Amount: 2},
+					{CardName: "Buffer", Amount: 2},
+					{CardName: "Soothsayer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Whizpar", Amount: 1},
+					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bouncer", Amount: 1},
+					{CardName: "Dragger", Amount: 1},
+					{CardName: "Guzt", Amount: 1},
+					{CardName: "Pushhh", Amount: 1},
+				},
 			},
 			Type: zb.AIType_MIXED_AI,
 		},
