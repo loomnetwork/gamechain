@@ -75,7 +75,7 @@
 
 # -------player-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 1 -u player-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
 
