@@ -35,13 +35,13 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:        "Attack",
-				Skill:        zb.OverlordSkillKind_IceBolt,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Attack",
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_AllCards,
 					zb.OverlordAbilityTarget_PlayerCard,
 				},
-				Value:        1,
+				Value: 1,
 			}},
 		},
 		{
@@ -49,13 +49,13 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:        "Deffence",
-				Skill:        zb.OverlordSkillKind_Blizzard,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Deffence",
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_Player,
 					zb.OverlordAbilityTarget_OpponentCard,
 				},
-				Value:        2,
+				Value: 2,
 			}},
 		},
 	},
@@ -191,13 +191,13 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:        "Attack",
-				Skill:        zb.OverlordSkillKind_IceBolt,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Attack",
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_AllCards,
 					zb.OverlordAbilityTarget_PlayerCard,
 				},
-				Value:        1,
+				Value: 1,
 			}},
 		},
 		{
@@ -205,13 +205,13 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:        "Deffence",
-				Skill:        zb.OverlordSkillKind_Blizzard,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Deffence",
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_Player,
 					zb.OverlordAbilityTarget_OpponentCard,
 				},
-				Value:        2,
+				Value: 2,
 			}},
 		},
 	},
@@ -263,9 +263,9 @@ var updateInitRequest = zb.UpdateInitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Attack,
-					Set:      zb.CardSetType_Earth,
-					Value:    1,
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Earth,
+					Value: 1,
 				},
 			},
 		},
@@ -286,9 +286,9 @@ var updateInitRequest = zb.UpdateInitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Attack,
-					Set:      zb.CardSetType_Water,
-					Value:    1,
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Water,
+					Value: 1,
 				},
 			},
 		},
@@ -381,9 +381,9 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Attack,
-					Set:      zb.CardSetType_Earth,
-					Value:    1,
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Earth,
+					Value: 1,
 				},
 			},
 		},
@@ -404,9 +404,9 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Attack,
-					Set:      zb.CardSetType_Water,
-					Value:    1,
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Water,
+					Value: 1,
 				},
 			},
 		},
@@ -1361,7 +1361,6 @@ func TestDebugFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
