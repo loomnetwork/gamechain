@@ -838,8 +838,10 @@ func actionCardAttack(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(errors.New("Target not found"))
 		}
 
-		attacker.Instance.Defense -= target.Instance.Attack
-		target.Instance.Defense -= attacker.Instance.Attack
+		attackerInstance := CardInstance{attacker}
+		targetInstance := CardInstance{target}
+		attackerInstance.SetDefense(attackerInstance.Instance.Defense - targetInstance.Instance.Attack)
+		targetInstance.SetDefense(targetInstance.Instance.Defense - attackerInstance.Instance.Attack)
 
 		if attacker.Instance.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)

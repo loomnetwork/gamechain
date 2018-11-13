@@ -998,11 +998,24 @@ message CardAbility {
     }
 }
 
+message CardAbilityRage {
+    int32 addedAttack = 1;
+    bool wasApplied = 2;
+}
+
+message CardAbilityInstance {
+    oneof AbilityType {
+        CardAbilityRage rage = 1;
+    }
+}
+
 message CardInstance {
     Card prototype = 1;
     int32 instanceId = 2;
     Card instance = 3;
     string owner = 4;
+    bool abilitiesInstancesInitialized = 5;
+    repeated CardAbilityInstance abilitiesInstances = 6;
 }
 
 message DataIdOwner {
