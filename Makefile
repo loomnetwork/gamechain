@@ -93,7 +93,7 @@ abigen:
 
 test:
 	#TODO fix go vet in tests
-	go test -vet=off -v ./... -tags evm
+	go test -vet=off -v ./... -tags evm -timeout 20m
 
 clean:
 	go clean
