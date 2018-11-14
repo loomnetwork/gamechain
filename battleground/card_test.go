@@ -8,7 +8,7 @@ import (
 )
 
 func TestValidateDeckCollection(t *testing.T) {
-	userHas := []*zb.CardCollection{
+	userHas := []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -16,7 +16,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	}
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{
+		newCollection := []*zb.CardCollectionCard{
 			{CardName: "Banshee", Amount: 4},
 			{CardName: "Breezee", Amount: 3},
 			{CardName: "Buffer", Amount: 5},
@@ -26,7 +26,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{
+		newCollection := []*zb.CardCollectionCard{
 			{CardName: "Banshee", Amount: 0},
 			{CardName: "Breezee", Amount: 0},
 			{CardName: "Buffer", Amount: 0},
@@ -36,12 +36,12 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{}
-		assert.Nil(t, validateDeckCollections([]*zb.CardCollection{}, newCollection))
+		newCollection := []*zb.CardCollectionCard{}
+		assert.Nil(t, validateDeckCollections([]*zb.CardCollectionCard{}, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{
+		newCollection := []*zb.CardCollectionCard{
 			{CardName: "Banshee", Amount: 8},
 			{CardName: "Breezee", Amount: 10},
 		}
@@ -49,7 +49,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{
+		newCollection := []*zb.CardCollectionCard{
 			{CardName: "Card1", Amount: 0},
 			{CardName: "Card2", Amount: 0},
 		}
@@ -57,11 +57,11 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb.CardCollection{
+		newCollection := []*zb.CardCollectionCard{
 			{CardName: "Banshee", Amount: 8},
 			{CardName: "Breezee", Amount: 10},
 		}
-		assert.NotNil(t, validateDeckCollections([]*zb.CardCollection{}, newCollection))
+		assert.NotNil(t, validateDeckCollections([]*zb.CardCollectionCard{}, newCollection))
 	})
 }
 

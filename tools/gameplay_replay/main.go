@@ -201,7 +201,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			UserId:     ps.Id,
 			DeckId:     ps.Deck.Id,
 			Version:    game.Version,
-			RandomSeed: game.Randomseed,
+			RandomSeed: game.RandomSeed,
 		})
 		if err != nil {
 			return err
