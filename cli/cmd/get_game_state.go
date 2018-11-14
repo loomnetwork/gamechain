@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -37,7 +37,7 @@ var getGameStateCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := json.Marshal(state)
+			output, err := new(jsonpb.Marshaler).MarshalToString(state)
 			if err != nil {
 				return err
 			}
