@@ -10,7 +10,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/golang/protobuf/jsonpb"
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/gogo/protobuf/proto"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
@@ -92,6 +94,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		Heroes: req.Heroes,
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultHeroesKey), &defaultHeroList); err != nil {
+		return err
+	}
+
+	// initialize default AI decks
+	aiDeckList := zb.AIDeckList{
+		Decks: req.AiDecks,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
 		return err
 	}
 
@@ -333,11 +343,11 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 	// validate version on card library
-	cardlist, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := loadCardList(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
-	if err := validateCardLibrary(cardlist.Cards, req.Deck.Cards); err != nil {
+	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
 		return nil, err
 	}
 
@@ -373,7 +383,6 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	newDeckID++
 	req.Deck.Id = newDeckID
 	deckList.Decks = append(deckList.Decks, req.Deck)
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return nil, err
 	}
@@ -400,11 +409,11 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 	// validate version on card library
-	cardlist, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := loadCardList(ctx, req.Version)
 	if err != nil {
 		return err
 	}
-	if err := validateCardLibrary(cardlist.Cards, req.Deck.Cards); err != nil {
+	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
 		return err
 	}
 
@@ -440,8 +449,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+
 	// update decklist
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
@@ -471,7 +480,6 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 		return fmt.Errorf("deck not found")
 	}
 
-	deckList.LastModificationTimestamp = req.LastModificationTimestamp
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
@@ -485,8 +493,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks:                     deckList.Decks,
-		LastModificationTimestamp: deckList.LastModificationTimestamp,
+		Decks: deckList.Decks,
 	}, nil
 }
 
@@ -504,7 +511,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 }
 
 func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecksRequest) error {
-	deckList := zb.DeckList{
+	deckList := zb.AIDeckList{
 		Decks: req.Decks,
 	}
 	return saveAIDecks(ctx, req.Version, &deckList)
@@ -537,7 +544,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 	}
 
 	// convert to card list to card library view grouped by set
-	var category = make(map[string][]*zb.Card)
+	var category = make(map[zb.CardSetType_Enum][]*zb.Card)
 	for _, card := range cardList.Cards {
 		if _, ok := category[card.Set]; !ok {
 			category[card.Set] = make([]*zb.Card, 0)
@@ -545,14 +552,15 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 		category[card.Set] = append(category[card.Set], card)
 	}
 	// order sets by name
-	var setNames []string
+	var setTypes []zb.CardSetType_Enum
 	for k := range category {
-		setNames = append(setNames, k)
+		setTypes = append(setTypes, k)
 	}
-	sort.Strings(setNames)
+
+	sort.Slice(setTypes, func(i, j int) bool { return setTypes[i] < setTypes[j] })
 
 	var sets []*zb.CardSet
-	for _, setName := range setNames {
+	for _, setName := range setTypes {
 		cards, ok := category[setName]
 		if !ok {
 			continue
@@ -697,6 +705,33 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
 		if err := savePlayerPoolFn(ctx, pool); err != nil {
 			return nil, err
+		}
+	}
+
+	// prune the timed out player profile
+	for _, pp := range pool.PlayerProfiles {
+		updatedAt := time.Unix(pp.UpdatedAt, 0)
+		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
+			ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+			// remove player from the pool
+			pool = removePlayerFromPool(pool, pp.UserId)
+			// remove match
+			match, _ := loadUserCurrentMatch(ctx, pp.UserId)
+			if match != nil {
+				ctx.Delete(MatchKey(match.Id))
+				match.Status = zb.Match_Timedout
+				// remove player's match if existing
+				ctx.Delete(UserMatchKey(pp.UserId))
+				// notify player
+				emitMsg := zb.PlayerActionEvent{
+					Match: match,
+				}
+				data, err := proto.Marshal(&emitMsg)
+				if err != nil {
+					return nil, err
+				}
+				ctx.EmitTopics([]byte(data), match.Topics...)
+			}
 		}
 	}
 
@@ -864,13 +899,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	emitMsg := zb.FindMatchResponse{
 		Match: match,
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
 		Match: match,
@@ -944,13 +977,11 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		return nil, err
 	}
 
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.AcceptMatchResponse{
 		Match: match,
@@ -1089,13 +1120,11 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 					emitMsg := zb.PlayerActionEvent{
 						Match: match,
 					}
-					data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+					data, err := proto.Marshal(&emitMsg)
 					if err != nil {
 						return nil, err
 					}
-					if err == nil {
-						ctx.EmitTopics([]byte(data), match.Topics...)
-					}
+					ctx.EmitTopics([]byte(data), match.Topics...)
 				}
 			}
 		}
@@ -1237,13 +1266,11 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		Match: match,
 		Block: &zb.History{List: gp.history},
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
 		Match: match,
@@ -1255,11 +1282,9 @@ func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMat
 	if err != nil {
 		return nil, err
 	}
-	gameState, _ := loadGameState(ctx, req.MatchId)
 
 	return &zb.GetMatchResponse{
-		Match:     match,
-		GameState: gameState,
+		Match: match,
 	}, nil
 }
 
@@ -1314,18 +1339,16 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			},
 		},
 	})
+	match.Topics = append(match.Topics, "endgame")
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 		Block: &zb.History{List: gp.history},
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	match.Topics = append(match.Topics, "endgame")
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
 }
@@ -1377,18 +1400,15 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 			return nil, err
 		}
 		emitMsg := zb.PlayerActionEvent{
-			UserId:       activePlayer.Id,
 			PlayerAction: &leaveMatchAction,
 			Match:        match,
 			Block:        &zb.History{List: gp.history},
 		}
-		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
 			return nil, err
 		}
-		if err == nil {
-			ctx.EmitTopics([]byte(data), match.Topics...)
-		}
+		ctx.EmitTopics([]byte(data), match.Topics...)
 	}
 
 	return &zb.CheckGameStatusResponse{}, nil
@@ -1438,19 +1458,15 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerActionType: req.PlayerAction.ActionType,
-		UserId:           req.PlayerAction.PlayerId,
-		PlayerAction:     req.PlayerAction,
-		Match:            match,
-		Block:            &zb.History{List: gp.history},
+		Match:        match,
+		PlayerAction: req.PlayerAction,
 	}
-	data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+
+	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
 		return nil, err
 	}
-	if err == nil {
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
+	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.PlayerActionResponse{
 		GameState: gamestate,
