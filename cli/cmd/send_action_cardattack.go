@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -55,7 +57,17 @@ var sendActionCardAttackCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("sent action cardattack successfully")
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("sent action cardattack successfully")
+		}
 
 		return nil
 	},

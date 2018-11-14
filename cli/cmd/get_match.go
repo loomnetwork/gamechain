@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
@@ -32,12 +34,22 @@ var getMatchCmd = &cobra.Command{
 			return err
 		}
 		match := resp.Match
-		fmt.Printf("MatchID: %d\n", match.Id)
-		fmt.Printf("Status: %s\n", match.Status)
-		fmt.Printf("Topic: %v\n", match.Topics)
-		fmt.Printf("Players:\n")
-		for i, player := range match.PlayerStates {
-			fmt.Printf("\tPlayer%d: %s\n", i+1, player.Id)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(match)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("MatchID: %d\n", match.Id)
+			fmt.Printf("Status: %s\n", match.Status)
+			fmt.Printf("Topic: %v\n", match.Topics)
+			fmt.Printf("Players:\n")
+			for i, player := range match.PlayerStates {
+				fmt.Printf("\tPlayer%d: %s\n", i+1, player.Id)
+			}
 		}
 
 		return nil

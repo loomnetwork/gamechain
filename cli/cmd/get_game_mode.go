@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +34,17 @@ var getGameModeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("found game mode: %+v", gameMode)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(gameMode)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("found game mode: %+v", gameMode)
+		}
 
 		return nil
 	},

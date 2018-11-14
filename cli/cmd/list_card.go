@@ -16,8 +16,8 @@ var listCardCmdArgs struct {
 }
 
 var listCardCmd = &cobra.Command{
-	Use:   "list_card",
-	Short: "list card",
+	Use:   "list_card_library",
+	Short: "list card_library",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		if listCardCmdArgs.version == "" {

@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -31,14 +33,25 @@ var listDecksCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deck size: %d\n", len(result.Decks))
-		for _, deck := range result.Decks {
-			fmt.Printf("id: %d\n", deck.Id)
-			fmt.Printf("name: %s\n", deck.Name)
-			for _, card := range deck.Cards {
-				fmt.Printf("  card_name: %s, amount: %d\n", card.CardName, card.Amount)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(result)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("deck size: %d\n", len(result.Decks))
+			for _, deck := range result.Decks {
+				fmt.Printf("id: %d\n", deck.Id)
+				fmt.Printf("name: %s\n", deck.Name)
+				for _, card := range deck.Cards {
+					fmt.Printf("  card_name: %s, amount: %d\n", card.CardName, card.Amount)
+				}
 			}
 		}
+
 		return nil
 	},
 }

@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -35,12 +37,22 @@ var getHeroForUserCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("hero_id: %d\n", result.Hero.HeroId)
-		fmt.Printf("experience: %d\n", result.Hero.Experience)
-		fmt.Printf("level: %d\n", result.Hero.Level)
-		for _, skill := range result.Hero.Skills {
-			fmt.Printf("skill_title: %s\n", skill.Title)
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(result)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("hero_id: %d\n", result.Hero.HeroId)
+			fmt.Printf("experience: %d\n", result.Hero.Experience)
+			fmt.Printf("level: %d\n", result.Hero.Level)
+			for _, skill := range result.Hero.Skills {
+				fmt.Printf("skill_title: %s\n", skill.Title)
+			}
 		}
+
 		return nil
 	},
 }

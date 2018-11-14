@@ -41,7 +41,7 @@ var listHeroLibraryCmd = &cobra.Command{
 			if err != nil {
 				return err
 			}
-			fmt.Print(string(output))
+			fmt.Println(string(output))
 		default:
 			for _, heroInfo := range result.Heroes {
 				fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
