@@ -21,7 +21,28 @@ type MatchMakingFunc func(target *zb.PlayerProfile, candidate *zb.PlayerProfile)
 
 // mmf is the gobal match making function that calculates the match making score
 var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64 {
+	// map tag to the same tag group
+	if len(target.Tags) > 0 {
+		if compareTags(target.Tags, candidate.Tags) {
+			return 1
+		}
+		return 0
+	}
+
 	return 1
+}
+
+// compareTags compares string slices so order of string matters
+func compareTags(tag1, tag2 []string) bool {
+	if len(tag1) != len(tag2) {
+		return false
+	}
+	for i, v := range tag1 {
+		if v != tag2[i] {
+			return false
+		}
+	}
+	return true
 }
 
 // PlayerScore simply maintains the player id and score tuple
