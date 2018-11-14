@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
@@ -33,12 +35,22 @@ var listHeroLibraryCmd = &cobra.Command{
 			return err
 		}
 
-		for _, heroInfo := range result.Heroes {
-			fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
-			for _, skill := range heroInfo.Skills {
-				fmt.Printf("skill_title: %s\n", skill.Title)
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(result.Heroes)
+			if err != nil {
+				return err
+			}
+			fmt.Print(string(output))
+		default:
+			for _, heroInfo := range result.Heroes {
+				fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
+				for _, skill := range heroInfo.Skills {
+					fmt.Printf("skill_title: %s\n", skill.Title)
+				}
 			}
 		}
+
 		return nil
 	},
 }
