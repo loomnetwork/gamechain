@@ -1,7 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -42,7 +45,16 @@ var getGameModeCustomUiCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(result.UiElements)
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(result.UiElements)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Println(result.UiElements)
+		}
 
 		return nil
 	},
