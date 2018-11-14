@@ -45,7 +45,7 @@ var sendActionEndturnCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("sent action cardattack successfully")
+			fmt.Printf("sent action endturn successfully")
 		}
 
 		return nil
