@@ -485,7 +485,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 		return nil, err
 	}
 	return &zb.ListDecksResponse{
-		Decks: deckList.Decks,
+		Decks:                     deckList.Decks,
 		LastModificationTimestamp: deckList.LastModificationTimestamp,
 	}, nil
 }
@@ -660,6 +660,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
 	}
 
+	// sort tags
+	if len(req.Tags) > 0 {
+		sort.Strings(req.Tags)
+	}
+
 	profile := zb.PlayerProfile{
 		UserId:    req.UserId,
 		DeckId:    deck.Id,
@@ -722,9 +727,21 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}
 		}
 
-		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
-		// 1. if pool size is 0, just register player to the pool
-		if len(pool.PlayerProfiles) == 0 {
+		var playerScores []*PlayerScore
+		for _, pp := range pool.PlayerProfiles {
+			// skip the requesting player
+			if pp.UserId == req.UserId {
+				continue
+			}
+			score := mmf(&profile, pp)
+			// only non-negtive score will be added
+			if score > 0 {
+				playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
+			}
+		}
+
+		sortedPlayerScores := sortByPlayerScore(playerScores)
+		if len(sortedPlayerScores) == 0 {
 			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
@@ -753,36 +770,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			}, nil
 		}
 
-		targetProfile := findPlayerProfileByID(pool, req.UserId)
-		// 2. if pool size is 1 and contains only the player finding a match, update the player profile
-		if len(pool.PlayerProfiles) == 1 && targetProfile != nil {
-			profile := pool.PlayerProfiles[0]
-			profile.UpdatedAt = ctx.Now().Unix()
-			if err := savePlayerPoolFn(ctx, pool); err != nil {
-				return nil, err
-			}
-
-			// return the currently saved match
-			match, err := loadUserCurrentMatch(ctx, req.UserId)
-			if err != nil {
-				return nil, err
-			}
-			return &zb.FindMatchResponse{
-				Match: match,
-			}, nil
-		}
-
-		// 3. otherwise, perfrom match making function
-		var playerScores []*PlayerScore
-		for _, pp := range pool.PlayerProfiles {
-			// skip the requesting player
-			if pp.UserId == req.UserId {
-				continue
-			}
-			score := mmf(targetProfile, pp)
-			playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
-		}
-		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
 			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
@@ -938,6 +925,11 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		return nil, fmt.Errorf("deck not set")
 	}
 
+	// sort tags
+	if len(req.Tags) > 0 {
+		sort.Strings(req.Tags)
+	}
+
 	profile := zb.PlayerProfile{
 		UserId:    req.UserId,
 		DeckId:    deck.Id,
@@ -1000,9 +992,21 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			}
 		}
 
-		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
-		// 1. if pool size is 0, just register player to the pool
-		if len(pool.PlayerProfiles) == 0 {
+		var playerScores []*PlayerScore
+		for _, pp := range pool.PlayerProfiles {
+			// skip the requesting player
+			if pp.UserId == req.UserId {
+				continue
+			}
+			score := mmf(&profile, pp)
+			// only non-negtive score will be added
+			if score > 0 {
+				playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
+			}
+		}
+
+		sortedPlayerScores := sortByPlayerScore(playerScores)
+		if len(sortedPlayerScores) == 0 {
 			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
@@ -1031,36 +1035,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			}, nil
 		}
 
-		targetProfile := findPlayerProfileByID(pool, req.UserId)
-		// 2. if pool size is 1 and contains only the player finding a match, update the player profile
-		if len(pool.PlayerProfiles) == 1 && targetProfile != nil {
-			profile := pool.PlayerProfiles[0]
-			profile.UpdatedAt = ctx.Now().Unix()
-			if err := savePlayerPoolFn(ctx, pool); err != nil {
-				return nil, err
-			}
-
-			// return the currently saved match
-			match, err := loadUserCurrentMatch(ctx, req.UserId)
-			if err != nil {
-				return nil, err
-			}
-			return &zb.FindMatchResponse{
-				Match: match,
-			}, nil
-		}
-
-		// 3. otherwise, perfrom match making function
-		var playerScores []*PlayerScore
-		for _, pp := range pool.PlayerProfiles {
-			// skip the requesting player
-			if pp.UserId == req.UserId {
-				continue
-			}
-			score := mmf(targetProfile, pp)
-			playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
-		}
-		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
 			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
