@@ -1492,13 +1492,22 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 		UserId:  "player-4-tag",
 		Version: "v1",
 	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-5-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-6-tag",
+		Version: "v1",
+	}, t)
 
-	var matchIDTags1, matchIDTags2 int64
+	var matchIDTags1, matchIDTags2, matchIDTags3 int64
 
 	tags1 := []string{"tags1"}
 	tags2 := []string{"tags2"}
+	tags3 := []string{"tags3", "othertag"}
 
-	t.Run("FindmatchTag", func(t *testing.T) {
+	t.Run("FindmatchTag1", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			DeckId:  1,
 			UserId:  "player-1-tag",
@@ -1512,7 +1521,7 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 		matchIDTags1 = response.Match.Id
 	})
 
-	t.Run("FindmatchTag", func(t *testing.T) {
+	t.Run("FindmatchTag2", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			DeckId:  1,
 			UserId:  "player-3-tag",
@@ -1527,7 +1536,37 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 		assert.NotEqual(t, matchIDTags1, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag", func(t *testing.T) {
+	t.Run("FindmatchTag3", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-5-tag",
+			Version: "v1",
+			Tags:    tags3,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchIDTags3 = response.Match.Id
+		assert.NotEqual(t, matchIDTags1, response.Match.Id)
+		assert.NotEqual(t, matchIDTags2, response.Match.Id)
+	})
+
+	t.Run("FindmatchTag3", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			DeckId:  1,
+			UserId:  "player-6-tag",
+			Version: "v1",
+			Tags:    tags3,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchIDTags3, response.Match.Id)
+	})
+
+	t.Run("FindmatchTag1", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			DeckId:  1,
 			UserId:  "player-2-tag",
@@ -1541,7 +1580,7 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 		assert.Equal(t, matchIDTags1, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag", func(t *testing.T) {
+	t.Run("FindmatchTag2", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			DeckId:  1,
 			UserId:  "player-4-tag",
