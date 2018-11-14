@@ -81,13 +81,8 @@ message DeckCard {
     int64 amount      = 2;
 }
 
-message CardSet {
-    CardSetType.Enum name = 1;
-    repeated Card cards = 2;
-}
-
 message CardLibrary {
-    repeated CardSet sets = 1;
+    repeated Card cards = 1;
 }
 
 message Hero {
@@ -329,7 +324,7 @@ message ListCardLibraryRequest {
 }
 
 message ListCardLibraryResponse {
-    repeated CardSet sets = 1;
+    repeated Card cards = 1;
 }
 
 message ListHeroLibraryRequest {

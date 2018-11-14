@@ -6,14 +6,13 @@ import (
 	"encoding/hex"
 	"fmt"
 	"os"
-	"sort"
 	"time"
 	"unicode/utf8"
 
 	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
@@ -179,6 +178,24 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		}
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
+		return err
+	}
+
+	// initialize default AI decks
+	aiDeckList := zb.AIDeckList{
+		Decks: req.AiDecks,
+	}
+	if req.AiDecks == nil {
+		if req.OldVersion != "" {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, aiDecksKey), &deckList); err != nil {
+				return err
+			}
+		} else {
+			return fmt.Errorf("'ai_decks' key missing, old version not specified")
+		}
+	}
+
+	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
 		return err
 	}
 
@@ -542,36 +559,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 		return nil, err
 	}
 
-	// convert to card list to card library view grouped by set
-	var category = make(map[zb.CardSetType_Enum][]*zb.Card)
-	for _, card := range cardList.Cards {
-		if _, ok := category[card.Set]; !ok {
-			category[card.Set] = make([]*zb.Card, 0)
-		}
-		category[card.Set] = append(category[card.Set], card)
-	}
-	// order sets by name
-	var setTypes []zb.CardSetType_Enum
-	for k := range category {
-		setTypes = append(setTypes, k)
-	}
-
-	sort.Slice(setTypes, func(i, j int) bool { return setTypes[i] < setTypes[j] })
-
-	var sets []*zb.CardSet
-	for _, setName := range setTypes {
-		cards, ok := category[setName]
-		if !ok {
-			continue
-		}
-		set := &zb.CardSet{
-			Name:  setName,
-			Cards: cards,
-		}
-		sets = append(sets, set)
-	}
-
-	return &zb.ListCardLibraryResponse{Sets: sets}, nil
+	return &zb.ListCardLibraryResponse{Cards: cardList.Cards}, nil
 }
 
 func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb.ListHeroLibraryRequest) (*zb.ListHeroLibraryResponse, error) {
