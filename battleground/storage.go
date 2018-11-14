@@ -200,7 +200,7 @@ func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(playerPoolKey, pool)
 }
 
-func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+func loadPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(playerPoolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
@@ -213,7 +213,7 @@ func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(taggedPlayerPoolKey, pool)
 }
 
-func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(taggedPlayerPoolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
@@ -236,6 +236,7 @@ func createMatch(ctx contract.Context, match *zb.Match) error {
 	}
 	match.Id = nextID
 	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	match.CreatedAt = ctx.Now().Unix()
 	return saveMatch(ctx, match)
 }
 

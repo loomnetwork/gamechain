@@ -1145,31 +1145,68 @@ func TestFindMatchOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
-
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
@@ -1220,15 +1257,30 @@ func TestCancelFindMatchOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
@@ -1247,41 +1299,6 @@ func TestCancelFindMatchOperations(t *testing.T) {
 		})
 		assert.Equal(t, err, contract.ErrNotFound)
 	})
-
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-1",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchID = response.Match.Id
-	})
-
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchID, response.Match.Id)
-	})
-
-	t.Run("CancelFindmatch", func(t *testing.T) {
-		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
-			UserId:  "player-1",
-			MatchId: matchID,
-		})
-		assert.Nil(t, err)
-	})
-
 }
 
 func TestDebugFindMatchOperations(t *testing.T) {
@@ -1407,41 +1424,145 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 
 	var matchID, matchIDTag int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
 	tags := []string{"tag1"}
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1-tag",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2-tag",
+			Version: "v1",
+			Tags:    tags,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags,
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchID, response.Match.Id)
 		matchIDTag = response.Match.Id
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2-tag",
+			Tags:   tags,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+	})
+
+	t.Run("AcceptMatchTag", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1-tag",
+			MatchId: matchIDTag,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+		assert.NotEqual(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatchTag", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2-tag",
+			MatchId: matchIDTag,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+		assert.NotEqual(t, matchID, response.Match.Id)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1450,46 +1571,41 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
-	// add another non tag player to findmatch
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-1",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchID, response.Match.Id)
-	})
+	// check tag and non-tag players don't get matched
+	tags = []string{"tag3"}
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
-			UserId:  "player-2-tag",
+			UserId:  "player-3",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchIDTag, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-3-tag",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchIDTag, response.Match.Id)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3",
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+		})
+		assert.NotNil(t, err)
 	})
 }
 
@@ -1509,11 +1625,18 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 	}
 
 	for i := 0; i < numPlayers; i++ {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  fmt.Sprintf("player-%d", i+1),
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	}
+
+	for i := 0; i < numPlayers; i++ {
 		func(i int) {
 			response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-				DeckId:  1,
-				UserId:  fmt.Sprintf("player-%d", i+1),
-				Version: "v1",
+				UserId: fmt.Sprintf("player-%d", i+1),
 			})
 			assert.Nil(t, err)
 			assert.NotNil(t, response)
@@ -1553,52 +1676,60 @@ func TestMatchMakingTimeout(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 	})
 
-	// move time forward to expire the matchmaking
-	fc.SetTime(now.Add(2 * MMTimeout))
-
-	var matchID int64
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		matchID = response.Match.Id
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "this is the player1")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.EqualValues(t, 2, response.Match.Id)
 	})
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-3",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "this is the player2")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchID, response.Match.Id)
 	})
+
+	var matchID int64
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	// move time forward to expire the matchmaking
+	fc.SetTime(now.Add(2 * MMTimeout))
+
+	t.Run("FindMatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
+	})
+
 	t.Run("GetMatch", func(t *testing.T) {
 		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
-			MatchId: 1,
+			MatchId: matchID,
 		})
-		assert.Equal(t, contract.ErrNotFound, err)
+		assert.NotNil(t, err)
 	})
 }
 
@@ -1640,28 +1771,66 @@ func TestGameStateOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
@@ -2030,24 +2199,50 @@ func TestCardPlayOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchID = response.Match.Id
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Acceptmatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'Matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("Acceptmatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
-			Version: "v1",
+			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -2104,8 +2299,10 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-1",
 			Version:    "v1",
@@ -2114,14 +2311,60 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-2",
 			Version:    "v1",
 			RandomSeed: 2,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
@@ -2224,8 +2467,10 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-1",
 			Version:    "v1",
@@ -2234,14 +2479,60 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-2",
 			Version:    "v1",
 			RandomSeed: 2,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
