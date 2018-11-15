@@ -1609,6 +1609,169 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 }
 
+func TestFindMatchWithTagGroupOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-3-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-4-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-5-tag",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-6-tag",
+		Version: "v1",
+	}, t)
+
+	tags1 := []string{"tags1"}
+	tags2 := []string{"tags2"}
+	tags3 := []string{"tags3", "othertag"}
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-1-tag",
+			Version: "v1",
+			Tags:    tags1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-3-tag",
+			Version: "v1",
+			Tags:    tags2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-5-tag",
+			Version: "v1",
+			Tags:    tags3,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags1,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+			Tags:   tags2,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-5-tag",
+			Tags:   tags3,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-6-tag",
+			Version: "v1",
+			Tags:    tags3,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2-tag",
+			Version: "v1",
+			Tags:    tags1,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-4-tag",
+			Version: "v1",
+			Tags:    tags2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags1,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-1-tag", response.Match.PlayerStates[0].Id, "Player should be player-1-tag")
+		assert.Equal(t, "player-2-tag", response.Match.PlayerStates[1].Id, "Player should be player-2-tag")
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+			Tags:   tags2,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-3-tag", response.Match.PlayerStates[0].Id, "Player should be player-3-tag")
+		assert.Equal(t, "player-4-tag", response.Match.PlayerStates[1].Id, "Player should be player-4-tag")
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-5-tag",
+			Tags:   tags3,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-5-tag", response.Match.PlayerStates[0].Id, "Player should be player-5-tag")
+		assert.Equal(t, "player-6-tag", response.Match.PlayerStates[1].Id, "Player should be player-6-tag")
+	})
+}
+
 func TestMatchMakingPlayerPool(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
