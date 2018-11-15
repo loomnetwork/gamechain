@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -34,6 +35,8 @@ func setupInternalPlugin(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
+	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+
 	tests := []struct {
 		name       string
 		testFile   string
@@ -61,6 +64,11 @@ func TestE2E(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
+		// skip multi-node tests?
+		if singlenode && test.validators > 1 {
+			continue
+		}
+
 		t.Run(test.name, func(t *testing.T) {
 			config, err := common.NewConfig(test.name, test.testFile, test.genFile, test.validators, test.accounts)
 			if err != nil {
