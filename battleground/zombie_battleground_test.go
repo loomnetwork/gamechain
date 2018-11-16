@@ -1961,10 +1961,11 @@ func TestMatchMakingTimeout(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
-		assert.NotNil(t, err)
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
 	})
 }
 
