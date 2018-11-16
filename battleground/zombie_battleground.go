@@ -763,28 +763,32 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	match, _ := loadUserCurrentMatch(ctx, req.UserId)
 	if match != nil {
 		// timeout for matchmaking
-		updatedAt := time.Unix(match.CreatedAt, 0)
-		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-			ctx.Logger().Debug(fmt.Sprintf("Match %d timedout", match.Id))
-			// remove match
-			// ctx.Delete(MatchKey(match.Id))
-			match.Status = zb.Match_Timedout
-			if err := saveMatch(ctx, match); err != nil {
-				return nil, err
+		if match.Status == zb.Match_Matching {
+			updatedAt := time.Unix(match.CreatedAt, 0)
+			if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
+				ctx.Logger().Debug(fmt.Sprintf("Match %d timedout", match.Id))
+				// remove match
+				// ctx.Delete(MatchKey(match.Id))
+				match.Status = zb.Match_Timedout
+				if err := saveMatch(ctx, match); err != nil {
+					return nil, err
+				}
+				// remove player's match if existing
+				for _, player := range match.PlayerStates {
+					ctx.Delete(UserMatchKey(player.Id))
+				}
 			}
-			// remove player's match if existing
-			ctx.Delete(UserMatchKey(req.UserId))
-			// notify player
-			emitMsg := zb.PlayerActionEvent{
-				Match: match,
-			}
-			data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
-			if err != nil {
-				return nil, err
-			}
-			if err == nil {
-				ctx.EmitTopics([]byte(data), match.Topics...)
-			}
+		}
+		// notify player
+		emitMsg := zb.PlayerActionEvent{
+			Match: match,
+		}
+		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		if err != nil {
+			return nil, err
+		}
+		if err == nil {
+			ctx.EmitTopics([]byte(data), match.Topics...)
 		}
 
 		return &zb.FindMatchResponse{
