@@ -1366,10 +1366,11 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
-		assert.Equal(t, err, contract.ErrNotFound)
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
 	})
 }
 
