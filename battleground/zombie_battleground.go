@@ -10,7 +10,6 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
@@ -783,7 +782,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		emitMsg := zb.PlayerActionEvent{
 			Match: match,
 		}
-		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
 			return nil, err
 		}
@@ -1025,7 +1024,7 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 		emitMsg := zb.PlayerActionEvent{
 			Match: match,
 		}
-		data, err := new(jsonpb.Marshaler).MarshalToString(&emitMsg)
+		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
 			return nil, err
 		}

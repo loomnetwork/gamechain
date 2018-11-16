@@ -444,7 +444,8 @@ message PlayerAction {
 message PlayerActionEvent {
     PlayerAction playerAction = 1;
     Match match = 2;
-    History block = 3;}
+    History block = 3;
+}
 
 message PlayerProfile {
     string userId = 1;
