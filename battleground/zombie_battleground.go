@@ -693,6 +693,11 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		return nil, err
 	}
 
+	match, _ := loadUserCurrentMatch(ctx, req.UserId)
+	if match != nil {
+		return nil, errors.New("Player is already in a match")
+	}
+
 	// if player is not in pool, add them
 	if targetProfile := findPlayerProfileByID(pool, req.UserId); targetProfile == nil {
 		pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
@@ -762,8 +767,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
 			ctx.Logger().Debug(fmt.Sprintf("Match %d timedout", match.Id))
 			// remove match
-			ctx.Delete(MatchKey(match.Id))
+			// ctx.Delete(MatchKey(match.Id))
 			match.Status = zb.Match_Timedout
+			if err := saveMatch(ctx, match); err != nil {
+				return nil, err
+			}
 			// remove player's match if existing
 			ctx.Delete(UserMatchKey(req.UserId))
 			// notify player
