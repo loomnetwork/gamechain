@@ -1014,7 +1014,9 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 
 	if match != nil {
 		// remove current match
-		ctx.Delete(UserMatchKey(req.UserId))
+		for _, player := range match.PlayerStates {
+			ctx.Delete(UserMatchKey(player.Id))
+		}
 		match.Status = zb.Match_Canceled
 		if err := saveMatch(ctx, match); err != nil {
 			return nil, err
