@@ -81,13 +81,8 @@ message DeckCard {
     int64 amount      = 2;
 }
 
-message CardSet {
-    CardSetType.Enum name = 1;
-    repeated Card cards = 2;
-}
-
 message CardLibrary {
-    repeated CardSet sets = 1;
+    repeated Card cards = 1;
 }
 
 message Hero {
@@ -329,7 +324,7 @@ message ListCardLibraryRequest {
 }
 
 message ListCardLibraryResponse {
-    repeated CardSet sets = 1;
+    repeated Card cards = 1;
 }
 
 message ListHeroLibraryRequest {
@@ -376,6 +371,7 @@ message PlayerState {
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
     int32 turnTime = 17;
+    bool matchAccepted = 18;
 }
 
 message Match {
@@ -398,6 +394,8 @@ message Match {
     Status status = 4;
     string version = 5;
     int64 randomSeed = 6;
+    Address customGameAddr = 7;
+    int64 createdAt = 8;
 }
 
 message MatchMakingInfoList {
@@ -446,7 +444,8 @@ message PlayerAction {
 message PlayerActionEvent {
     PlayerAction playerAction = 1;
     Match match = 2;
-    History block = 3;}
+    History block = 3;
+}
 
 message PlayerProfile {
     string userId = 1;
@@ -455,6 +454,7 @@ message PlayerProfile {
     Address customGame = 5;
     int64 updatedAt = 6;
     repeated string tags = 7;
+    int64 randomSeed = 8;
 }
 
 message PlayerPool {
@@ -465,13 +465,41 @@ message MatchCount {
     int64 currentId = 1;
 }
 
-message FindMatchRequest {
+message RegisterPlayerPoolRequest {
     string userId = 1;
     int64 deckId  = 2;
     string version = 3;
-    int64 randomSeed = 4;
-    Address customGame = 5;
+    Address customGame = 4;
+    int64 randomSeed = 5;
     repeated string tags = 6;
+}
+
+message RegisterPlayerPoolResponse {
+}
+
+// TODO: remove this
+message PlayerPoolRequest {}
+message PlayerPoolResponse {
+    PlayerPool pool = 1;
+}
+
+message FindMatchRequest {
+    string userId = 1;
+    repeated string tags = 2;
+}
+
+message FindMatchResponse {
+    Match match = 1;
+}
+
+message AcceptMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+}
+
+message AcceptMatchResponse {
+    Match match = 1;
+    History block = 2;
 }
 
 message DebugFindMatchRequest {
@@ -482,10 +510,6 @@ message DebugFindMatchRequest {
     Address customGame = 5;
     Deck deck = 6;
     repeated string tags = 7;
-}
-
-message FindMatchResponse {
-    Match match = 1;
 }
 
 message CancelFindMatchRequest {
