@@ -20,7 +20,7 @@ var setAIDecksCmd = &cobra.Command{
 	Short: "set AI decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var deckList zb.DeckList
+		var deckList zb.AIDeckList
 
 		if setAIDecksCmdArgs.file == "" {
 			return fmt.Errorf("filename not provided")

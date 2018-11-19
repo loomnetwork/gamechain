@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +15,7 @@ import (
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -35,10 +35,13 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
-				Value:        1,
+				Title: "Attack",
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
+				Value: 1,
 			}},
 		},
 		{
@@ -46,111 +49,114 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
-				Value:        2,
+				Title: "Deffence",
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
+				Value: 2,
 			}},
 		},
 	},
 	Cards: []*zb.Card{
-		{Id: 1, Name: "Whizpar", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Air"},
-		{Id: 34, Name: "Wheezy", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Air"},
-		{Id: 50, Name: "Soothsayer", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Air"},
-		{Id: 142, Name: "Fumez", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Air"},
-		{Id: 2, Name: "Pushhh", Damage: 3, Health: 3, Kind: "CREATURE", Set: "Air"},
-		{Id: 3, Name: "Ztormmcaller", Damage: 3, Health: 3, Kind: "CREATURE", Set: "Air"},
-		{Id: 32, Name: "Bouncer", Damage: 2, Health: 3, Kind: "CREATURE", Set: "Air"},
-		{Id: 143, Name: "Gaz", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Air"},
-		{Id: 96, Name: "Draft", Damage: 4, Health: 5, Kind: "CREATURE", Set: "Air"},
-		{Id: 97, Name: "MonZoon", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Air"},
-		{Id: 4, Name: "Zeuz", Damage: 5, Health: 6, Kind: "CREATURE", Set: "Air"},
-		{Id: 94, Name: "Ztorm Shield", Damage: 4, Health: 4, Kind: "CREATURE", Set: "Air"},
-		{Id: 5, Name: "Rockky", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Earth"},
-		{Id: 7, Name: "Bolderr", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Earth"},
-		{Id: 98, Name: "Blocker", Damage: 0, Health: 3, Kind: "CREATURE", Set: "Earth"},
-		{Id: 101, Name: "Slab", Damage: 3, Health: 4, Kind: "CREATURE", Set: "Earth"},
-		{Id: 144, Name: "Pit", Damage: 0, Health: 2, Kind: "CREATURE", Set: "Earth"},
-		{Id: 6, Name: "Golem", Damage: 2, Health: 6, Kind: "CREATURE", Set: "Earth"},
-		{Id: 9, Name: "Walley", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Earth"},
-		{Id: 35, Name: "Tiny", Damage: 0, Health: 7, Kind: "CREATURE", Set: "Earth"},
-		{Id: 59, Name: "Spiker", Damage: 2, Health: 3, Kind: "CREATURE", Set: "Earth"},
-		{Id: 145, Name: "Crater", Damage: 1, Health: 4, Kind: "CREATURE", Set: "Earth"},
-		{Id: 36, Name: "Earthshaker", Damage: 4, Health: 4, Kind: "CREATURE", Set: "Earth"},
-		{Id: 61, Name: "IgneouZ", Damage: 3, Health: 3, Kind: "CREATURE", Set: "Earth"},
-		{Id: 103, Name: "Pyrite", Damage: 0, Health: 8, Kind: "CREATURE", Set: "Earth"},
-		{Id: 8, Name: "Mountain", Damage: 6, Health: 8, Kind: "CREATURE", Set: "Earth"},
-		{Id: 104, Name: "Gaea", Damage: 4, Health: 7, Kind: "CREATURE", Set: "Earth"},
-		{Id: 10, Name: "Pyromaz", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Fire"},
-		{Id: 146, Name: "Quazi", Damage: 0, Health: 1, Kind: "CREATURE", Set: "Fire"},
-		{Id: 11, Name: "Burrrnn", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Fire"},
-		{Id: 12, Name: "Cynderman", Damage: 2, Health: 3, Kind: "CREATURE", Set: "Fire"},
-		{Id: 38, Name: "Werezomb", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Fire"},
-		{Id: 147, Name: "Modo", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Fire"},
-		{Id: 14, Name: "Fire-Maw", Damage: 3, Health: 3, Kind: "CREATURE", Set: "Fire"},
-		{Id: 67, Name: "Zhampion", Damage: 5, Health: 2, Kind: "CREATURE", Set: "Fire"},
-		{Id: 13, Name: "Gargantua", Damage: 6, Health: 8, Kind: "CREATURE", Set: "Fire"},
-		{Id: 37, Name: "Cerberus", Damage: 7, Health: 8, Kind: "CREATURE", Set: "Fire"},
-		{Id: 18, Name: "Chainsaw", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 70, Name: "Goo Beaker", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 15, Name: "Stapler", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 16, Name: "Nail Bomb", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 17, Name: "Goo Bottles", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 117, Name: "Fresh Meat", Damage: 0, Health: 0, Kind: "SPELL", Set: "Item"},
-		{Id: 19, Name: "Azuraz", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Life"},
-		{Id: 75, Name: "Bloomer", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Life"},
-		{Id: 148, Name: "Zap", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Life"},
-		{Id: 20, Name: "Shroom", Damage: 4, Health: 2, Kind: "CREATURE", Set: "Life"},
-		{Id: 21, Name: "Vindrom", Damage: 2, Health: 3, Kind: "CREATURE", Set: "Life"},
-		{Id: 23, Name: "Puffer", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Life"},
-		{Id: 44, Name: "Sapper", Damage: 2, Health: 4, Kind: "CREATURE", Set: "Life"},
-		{Id: 45, Name: "Keeper", Damage: 1, Health: 3, Kind: "CREATURE", Set: "Life"},
-		{Id: 149, Name: "Cactuz", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Life"},
-		{Id: 22, Name: "Shammann", Damage: 5, Health: 6, Kind: "CREATURE", Set: "Life"},
-		{Id: 42, Name: "Z-Virus", Damage: 0, Health: 0, Kind: "CREATURE", Set: "Life"},
-		{Id: 43, Name: "Yggdrazil", Damage: 4, Health: 5, Kind: "CREATURE", Set: "Life"},
-		{Id: 100, Name: "Zombie 1/1", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Others"},
-		{Id: 101, Name: "Zombie 2/2", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Others"},
-		{Id: 102, Name: "Zombie Feral", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Others"},
-		{Id: 155, Name: "Tainted Goo", Damage: 0, Health: 0, Kind: "SPELL", Set: "Others"},
-		{Id: 156, Name: "Corrupted Goo", Damage: 0, Health: 0, Kind: "SPELL", Set: "Others"},
-		{Id: 78, Name: "Rainz", Damage: 3, Health: 4, Kind: "CREATURE", Set: "Others"},
-		{Id: 125, Name: "Blight", Damage: 5, Health: 4, Kind: "CREATURE", Set: "Others"},
-		{Id: 131, Name: "Zteroid", Damage: 5, Health: 4, Kind: "CREATURE", Set: "Others"},
-		{Id: 108, Name: "BurZt", Damage: 4, Health: 1, Kind: "CREATURE", Set: "Others"},
-		{Id: 135, Name: "Vortex", Damage: 6, Health: 7, Kind: "CREATURE", Set: "Others"},
-		{Id: 60, Name: "Defender", Damage: 4, Health: 6, Kind: "CREATURE", Set: "Others"},
-		{Id: 24, Name: "Poizom", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 26, Name: "Hazmaz", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 46, Name: "Zpitter", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 150, Name: "Zeptic", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 25, Name: "Ghoul", Damage: 3, Health: 2, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 47, Name: "Zeeter", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 151, Name: "Hazzard", Damage: 4, Health: 4, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 85, Name: "Zludge", Damage: 4, Health: 4, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 127, Name: "Ectoplasm", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 27, Name: "Cherno-bill", Damage: 7, Health: 9, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 132, Name: "GooZilla", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 129, Name: "Zlopper", Damage: 3, Health: 5, Kind: "CREATURE", Set: "Toxic"},
-		{Id: 28, Name: "Izze", Damage: 1, Health: 1, Kind: "CREATURE", Set: "Water"},
-		{Id: 49, Name: "Znowman", Damage: 0, Health: 5, Kind: "CREATURE", Set: "Water"},
-		{Id: 152, Name: "Ozmoziz", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Water"},
-		{Id: 29, Name: "Jetter", Damage: 3, Health: 4, Kind: "CREATURE", Set: "Water"},
-		{Id: 30, Name: "Freezzee", Damage: 2, Health: 2, Kind: "CREATURE", Set: "Water"},
-		{Id: 153, Name: "Geyzer", Damage: 2, Health: 3, Kind: "CREATURE", Set: "Water"},
-		{Id: 90, Name: "Blizzard", Damage: 3, Health: 4, Kind: "CREATURE", Set: "Water"},
-		{Id: 139, Name: "Froztbite", Damage: 0, Health: 6, Kind: "CREATURE", Set: "Water"},
-		{Id: 48, Name: "Zhatterer", Damage: 1, Health: 2, Kind: "CREATURE", Set: "Water"},
-		{Id: 141, Name: "Maelstrom", Damage: 5, Health: 5, Kind: "CREATURE", Set: "Water"},
-		{Id: 31, Name: "Tzunamy", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"},
-		{Id: 999999, Name: "Germs", Damage: 6, Health: 6, Kind: "CREATURE", Set: "Water"}, // added this card for TestDeserializeGameStateChangeActions2 test
+		{MouldId: 1, Name: "Whizpar", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 34, Name: "Wheezy", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 50, Name: "Soothsayer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 142, Name: "Fumez", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 2, Name: "Pushhh", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 3, Name: "Ztormmcaller", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 32, Name: "Bouncer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 143, Name: "Gaz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 96, Name: "Draft", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 97, Name: "MonZoon", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 4, Name: "Zeuz", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 94, Name: "Ztorm Shield", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
+		{MouldId: 5, Name: "Rockky", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 7, Name: "Bolderr", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 98, Name: "Blocker", Attack: 0, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 101, Name: "Slab", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 144, Name: "Pit", Attack: 0, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 6, Name: "Golem", Attack: 2, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 9, Name: "Walley", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 35, Name: "Tiny", Attack: 0, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 59, Name: "Spiker", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 145, Name: "Crater", Attack: 1, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 36, Name: "Earthshaker", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 61, Name: "IgneouZ", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 103, Name: "Pyrite", Attack: 0, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 8, Name: "Mountain", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 104, Name: "Gaea", Attack: 4, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
+		{MouldId: 10, Name: "Pyromaz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 146, Name: "Quazi", Attack: 0, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 11, Name: "Burrrnn", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 12, Name: "Cynderman", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 38, Name: "Werezomb", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 147, Name: "Modo", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 14, Name: "Fire-Maw", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 67, Name: "Zhampion", Attack: 5, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 13, Name: "Gargantua", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 37, Name: "Cerberus", Attack: 7, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
+		{MouldId: 18, Name: "Chainsaw", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 70, Name: "Goo Beaker", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 15, Name: "Stapler", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 16, Name: "Nail Bomb", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 17, Name: "Goo Bottles", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 117, Name: "Fresh Meat", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
+		{MouldId: 19, Name: "Azuraz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 75, Name: "Bloomer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 148, Name: "Zap", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 20, Name: "Shroom", Attack: 4, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 21, Name: "Vindrom", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 23, Name: "Puffer", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 44, Name: "Sapper", Attack: 2, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 45, Name: "Keeper", Attack: 1, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 149, Name: "Cactuz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 22, Name: "Shammann", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 42, Name: "Z-Virus", Attack: 0, Defense: 0, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 43, Name: "Yggdrazil", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
+		{MouldId: 100, Name: "Zombie 1/1", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 101, Name: "Zombie 2/2", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 102, Name: "Zombie Feral", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 155, Name: "Tainted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
+		{MouldId: 156, Name: "Corrupted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
+		{MouldId: 78, Name: "Rainz", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 125, Name: "Blight", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 131, Name: "Zteroid", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 108, Name: "BurZt", Attack: 4, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 135, Name: "Vortex", Attack: 6, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 60, Name: "Defender", Attack: 4, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
+		{MouldId: 24, Name: "Poizom", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 26, Name: "Hazmaz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 46, Name: "Zpitter", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 150, Name: "Zeptic", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 25, Name: "Ghoul", Attack: 3, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 47, Name: "Zeeter", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 151, Name: "Hazzard", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 85, Name: "Zludge", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 127, Name: "Ectoplasm", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 27, Name: "Cherno-bill", Attack: 7, Defense: 9, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 132, Name: "GooZilla", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 129, Name: "Zlopper", Attack: 3, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
+		{MouldId: 28, Name: "Izze", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 49, Name: "Znowman", Attack: 0, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 152, Name: "Ozmoziz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 29, Name: "Jetter", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 30, Name: "Freezzee", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 153, Name: "Geyzer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 90, Name: "Blizzard", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 139, Name: "Froztbite", Attack: 0, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 48, Name: "Zhatterer", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 141, Name: "Maelstrom", Attack: 5, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 31, Name: "Tzunamy", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
+		{MouldId: 999999, Name: "Germs", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water}, // added this card for TestDeserializeGameStateChangeActions2 test
 	},
 	DefaultDecks: []*zb.Deck{
 		{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Azuraz", Amount: 2},
 				{CardName: "Puffer", Amount: 2},
 				{CardName: "Soothsayer", Amount: 2},
@@ -161,11 +167,35 @@ var initRequest = zb.InitRequest{
 			},
 		},
 	},
+	AiDecks: []*zb.AIDeck{
+		{
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "Banshee", Amount: 2},
+					{CardName: "Breezee", Amount: 2},
+					{CardName: "Buffer", Amount: 2},
+					{CardName: "Soothsayer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Whizpar", Amount: 1},
+					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bouncer", Amount: 1},
+					{CardName: "Dragger", Amount: 1},
+					{CardName: "Guzt", Amount: 1},
+					{CardName: "Pushhh", Amount: 1},
+				},
+			},
+			Type: zb.AIType_MIXED_AI,
+		},
+	},
 }
 
 var updateInitRequest = zb.UpdateInitRequest{
 	Version: "v2",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -185,10 +215,13 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
-				Value:        1,
+				Title: "Attack",
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
+				Value: 1,
 			}},
 		},
 		{
@@ -196,39 +229,41 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
-				Value:        2,
+				Title: "Deffence",
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
+				Value: 2,
 			}},
 		},
 	},
 	Cards: []*zb.Card{
 		{
-			Id:      1,
-			Set:     "Air",
-			Name:    "Banshee",
-			Rank:    "Minion",
-			Type:    "Feral",
-			Damage:  2,
-			Health:  1,
-			Cost:    2,
-			Ability: "Feral",
-			Effects: []*zb.Effect{
+			MouldId: 1,
+			Set:     zb.CardSetType_Air,
+			Name:    "Soothsayer",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  2,
+			Defense: 1,
+			GooCost: 2,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger:  "entry",
-					Effect:   "feral",
-					Duration: "permanent",
-					Target:   "self",
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
+					Set:          zb.CardSetType_None,
 				},
 			},
 			CardViewInfo: &zb.CardViewInfo{
-				Position: &zb.Coordinates{
+				Position: &zb.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
 					Z: 3.5,
 				},
-				Scale: &zb.Coordinates{
+				Scale: &zb.Vector3Float{
 					X: 0.5,
 					Y: 0.5,
 					Z: 0.5,
@@ -236,38 +271,48 @@ var updateInitRequest = zb.UpdateInitRequest{
 			},
 		},
 		{
-			Id:      2,
-			Set:     "Air",
+			MouldId: 2,
+			Set:     zb.CardSetType_Air,
 			Name:    "Azuraz",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
+					},
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Earth,
+					Value: 1,
 				},
 			},
 		},
 		{
-			Id:      3,
-			Set:     "Air",
+			MouldId: 3,
+			Set:     zb.CardSetType_Air,
 			Name:    "NewCard",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
+					},
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Water,
+					Value: 1,
 				},
 			},
 		},
@@ -277,7 +322,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Banshee", Amount: 2},
 				{CardName: "Breezee", Amount: 2},
 				{CardName: "Buffer", Amount: 2},
@@ -293,12 +338,36 @@ var updateInitRequest = zb.UpdateInitRequest{
 			},
 		},
 	},
+	AiDecks: []*zb.AIDeck{
+		{
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "Banshee", Amount: 2},
+					{CardName: "Breezee", Amount: 2},
+					{CardName: "Buffer", Amount: 2},
+					{CardName: "Soothsayer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Whizpar", Amount: 1},
+					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bouncer", Amount: 1},
+					{CardName: "Dragger", Amount: 1},
+					{CardName: "Guzt", Amount: 1},
+					{CardName: "Pushhh", Amount: 1},
+				},
+			},
+			Type: zb.AIType_MIXED_AI,
+		},
+	},
 }
 
 var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	Version:    "v2",
 	OldVersion: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{CardName: "Banshee", Amount: 4},
 		{CardName: "Breezee", Amount: 3},
 		{CardName: "Buffer", Amount: 5},
@@ -314,30 +383,29 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	},
 	Cards: []*zb.Card{
 		{
-			Id:      1,
-			Set:     "Air",
-			Name:    "Banshee",
-			Rank:    "Minion",
-			Type:    "Feral",
-			Damage:  2,
-			Health:  1,
-			Cost:    2,
-			Ability: "Feral",
-			Effects: []*zb.Effect{
+			MouldId: 1,
+			Set:     zb.CardSetType_Air,
+			Name:    "Soothsayer",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  2,
+			Defense: 1,
+			GooCost: 2,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger:  "entry",
-					Effect:   "feral",
-					Duration: "permanent",
-					Target:   "self",
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
+					Set:          zb.CardSetType_None,
 				},
 			},
 			CardViewInfo: &zb.CardViewInfo{
-				Position: &zb.Coordinates{
+				Position: &zb.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
 					Z: 3.5,
 				},
-				Scale: &zb.Coordinates{
+				Scale: &zb.Vector3Float{
 					X: 0.5,
 					Y: 0.5,
 					Z: 0.5,
@@ -345,38 +413,48 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			},
 		},
 		{
-			Id:      2,
-			Set:     "Air",
+			MouldId: 2,
+			Set:     zb.CardSetType_Air,
 			Name:    "Azuraz",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
+					},
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Earth,
+					Value: 1,
 				},
 			},
 		},
 		{
-			Id:      3,
-			Set:     "Air",
+			MouldId: 3,
+			Set:     zb.CardSetType_Air,
 			Name:    "NewCard",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
+					},
+					Stat:  zb.StatType_Attack,
+					Set:   zb.CardSetType_Water,
+					Value: 1,
 				},
 			},
 		},
@@ -386,7 +464,7 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{CardName: "Banshee", Amount: 2},
 				{CardName: "Breezee", Amount: 2},
 				{CardName: "Buffer", Amount: 2},
@@ -400,6 +478,30 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 				{CardName: "Guzt", Amount: 1},
 				{CardName: "Pushhh", Amount: 1},
 			},
+		},
+	},
+	AiDecks: []*zb.AIDeck{
+		{
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "Banshee", Amount: 2},
+					{CardName: "Breezee", Amount: 2},
+					{CardName: "Buffer", Amount: 2},
+					{CardName: "Soothsayer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Whizpar", Amount: 1},
+					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bouncer", Amount: 1},
+					{CardName: "Dragger", Amount: 1},
+					{CardName: "Guzt", Amount: 1},
+					{CardName: "Pushhh", Amount: 1},
+				},
+			},
+			Type: zb.AIType_MIXED_AI,
 		},
 	},
 }
@@ -459,7 +561,7 @@ func TestAccountOperations(t *testing.T) {
 	})
 }
 
-func TestCardCollectionOperations(t *testing.T) {
+func TestCardCollectionCardOperations(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "8996b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
 	var addr loom.Address
@@ -472,11 +574,11 @@ func TestCardCollectionOperations(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	cardCollection, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
+	CardCollectionCard, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "CardUser",
 	})
 	assert.Nil(t, err)
-	assert.Equal(t, 12, len(cardCollection.Cards))
+	assert.Equal(t, 12, len(CardCollectionCard.Cards))
 
 }
 
@@ -530,7 +632,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -560,7 +662,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   200,
 						CardName: "Azuraz",
@@ -583,7 +685,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "NewDeck",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   2,
 						CardName: "InvalidName1",
@@ -606,7 +708,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "Default",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -629,7 +731,7 @@ func TestDeckOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "nEWdECK",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -653,7 +755,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -685,7 +787,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   100,
 						CardName: "Azuraz",
@@ -708,7 +810,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "Edited",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -732,7 +834,7 @@ func TestDeckOperations(t *testing.T) {
 				Id:     2,
 				Name:   "dEFAULT",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -783,8 +885,8 @@ func TestCardOperations(t *testing.T) {
 		})
 
 		assert.Nil(t, err)
-		// we expect Air, Earth, Fire, Item, Life, Others, Toxic, Water
-		assert.Equal(t, 8, len(cardResponse.Sets))
+		// we expect all the cards in InitRequest.Cards
+		assert.Equal(t, 90, len(cardResponse.Cards))
 	})
 
 	t.Run("ListHeroLibrary", func(t *testing.T) {
@@ -931,37 +1033,34 @@ func TestUpdateCardListOperations(t *testing.T) {
 		Version: "v2",
 		Cards: []*zb.Card{
 			{
-				Id:      1,
-				Set:     "Air",
+				MouldId: 1,
+				Set:     zb.CardSetType_Air,
 				Name:    "Banshee",
-				Rank:    "Minion",
-				Type:    "Feral",
-				Damage:  2,
-				Health:  1,
-				Cost:    2,
-				Ability: "Feral",
+				Rank:    zb.CreatureRank_Minion,
+				Type:    zb.CreatureType_Feral,
+				Attack:  2,
+				Defense: 1,
+				GooCost: 2,
 			},
 			{
-				Id:      2,
-				Set:     "Air",
+				MouldId: 2,
+				Set:     zb.CardSetType_Air,
 				Name:    "Azuraz",
-				Rank:    "Minion",
-				Type:    "Walker",
-				Damage:  1,
-				Health:  1,
-				Cost:    1,
-				Ability: "-",
+				Rank:    zb.CreatureRank_Minion,
+				Type:    zb.CreatureType_Walker,
+				Attack:  1,
+				Defense: 1,
+				GooCost: 1,
 			},
 			{
-				Id:      3,
-				Set:     "Air",
+				MouldId: 3,
+				Set:     zb.CardSetType_Air,
 				Name:    "NewCard",
-				Rank:    "Minion",
-				Type:    "Walker",
-				Damage:  1,
-				Health:  1,
-				Cost:    1,
-				Ability: "-",
+				Rank:    zb.CreatureRank_Minion,
+				Type:    zb.CreatureType_Walker,
+				Attack:  1,
+				Defense: 1,
+				GooCost: 1,
 			},
 		},
 	}
@@ -994,7 +1093,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "deck1",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Banshee",
@@ -1015,7 +1114,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				Name:   "deck2",
 				HeroId: 1,
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						CardName: "Azuraz",
@@ -1118,31 +1217,68 @@ func TestFindMatchOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
-
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
@@ -1153,7 +1289,6 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
@@ -1173,7 +1308,6 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Ended, response.Match.Status, "match status should be 'ended'")
-		assert.NotNil(t, response.GameState)
 	})
 }
 
@@ -1195,15 +1329,30 @@ func TestCancelFindMatchOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
@@ -1217,46 +1366,12 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
-			MatchId: matchID,
-		})
-		assert.Equal(t, err, contract.ErrNotFound)
-	})
-
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-1",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchID = response.Match.Id
-	})
-
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchID, response.Match.Id)
-	})
-
-	t.Run("CancelFindmatch", func(t *testing.T) {
-		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
-			UserId:  "player-1",
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
 	})
-
 }
 
 func TestDebugFindMatchOperations(t *testing.T) {
@@ -1284,7 +1399,7 @@ func TestDebugFindMatchOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				HeroId: 2,
 				Name:   "DebugDeck1",
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{CardName: "Azuraz", Amount: 2},
 					{CardName: "Puffer", Amount: 2},
 					{CardName: "Soothsayer", Amount: 2},
@@ -1309,7 +1424,7 @@ func TestDebugFindMatchOperations(t *testing.T) {
 			Deck: &zb.Deck{
 				HeroId: 2,
 				Name:   "DebugDeck1",
-				Cards: []*zb.CardCollection{
+				Cards: []*zb.DeckCard{
 					{CardName: "Azuraz", Amount: 2},
 					{CardName: "Puffer", Amount: 2},
 					{CardName: "Soothsayer", Amount: 2},
@@ -1336,7 +1451,6 @@ func TestDebugFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
@@ -1383,41 +1497,145 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 
 	var matchID, matchIDTag int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
 	tags := []string{"tag1"}
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1-tag",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2-tag",
+			Version: "v1",
+			Tags:    tags,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags,
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchID, response.Match.Id)
 		matchIDTag = response.Match.Id
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2-tag",
+			Tags:   tags,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+	})
+
+	t.Run("AcceptMatchTag", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1-tag",
+			MatchId: matchIDTag,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+		assert.NotEqual(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatchTag", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2-tag",
+			MatchId: matchIDTag,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchIDTag, response.Match.Id)
+		assert.NotEqual(t, matchID, response.Match.Id)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -1426,46 +1644,41 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
-	// add another non tag player to findmatch
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-1",
-			Version: "v1",
-		})
-		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchID, response.Match.Id)
-	})
+	// check tag and non-tag players don't get matched
+	tags = []string{"tag3"}
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
-			UserId:  "player-2-tag",
+			UserId:  "player-3",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchIDTag, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-3-tag",
 			Version: "v1",
 			Tags:    tags,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.NotEqual(t, matchIDTag, response.Match.Id)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3",
+		})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("FindmatchTag", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+		})
+		assert.NotNil(t, err)
 	})
 }
 
@@ -1501,97 +1714,134 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	var matchIDTags1, matchIDTags2, matchIDTags3 int64
-
 	tags1 := []string{"tags1"}
 	tags2 := []string{"tags2"}
 	tags3 := []string{"tags3", "othertag"}
 
-	t.Run("FindmatchTag1", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1-tag",
 			Version: "v1",
 			Tags:    tags1,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchIDTags1 = response.Match.Id
 	})
 
-	t.Run("FindmatchTag2", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-3-tag",
 			Version: "v1",
 			Tags:    tags2,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchIDTags2 = response.Match.Id
-		assert.NotEqual(t, matchIDTags1, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag3", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-5-tag",
 			Version: "v1",
 			Tags:    tags3,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchIDTags3 = response.Match.Id
-		assert.NotEqual(t, matchIDTags1, response.Match.Id)
-		assert.NotEqual(t, matchIDTags2, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag3", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags1,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+			Tags:   tags2,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-5-tag",
+			Tags:   tags3,
+		})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-6-tag",
 			Version: "v1",
 			Tags:    tags3,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchIDTags3, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag1", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-2-tag",
 			Version: "v1",
 			Tags:    tags1,
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchIDTags1, response.Match.Id)
 	})
 
-	t.Run("FindmatchTag2", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-4-tag",
 			Version: "v1",
 			Tags:    tags2,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1-tag",
+			Tags:   tags1,
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchIDTags2, response.Match.Id)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-1-tag", response.Match.PlayerStates[0].Id, "Player should be player-1-tag")
+		assert.Equal(t, "player-2-tag", response.Match.PlayerStates[1].Id, "Player should be player-2-tag")
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-3-tag",
+			Tags:   tags2,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-3-tag", response.Match.PlayerStates[0].Id, "Player should be player-3-tag")
+		assert.Equal(t, "player-4-tag", response.Match.PlayerStates[1].Id, "Player should be player-4-tag")
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-5-tag",
+			Tags:   tags3,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, "player-5-tag", response.Match.PlayerStates[0].Id, "Player should be player-5-tag")
+		assert.Equal(t, "player-6-tag", response.Match.PlayerStates[1].Id, "Player should be player-6-tag")
 	})
 }
 
@@ -1611,11 +1861,18 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 	}
 
 	for i := 0; i < numPlayers; i++ {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  fmt.Sprintf("player-%d", i+1),
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	}
+
+	for i := 0; i < numPlayers; i++ {
 		func(i int) {
 			response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-				DeckId:  1,
-				UserId:  fmt.Sprintf("player-%d", i+1),
-				Version: "v1",
+				UserId: fmt.Sprintf("player-%d", i+1),
 			})
 			assert.Nil(t, err)
 			assert.NotNil(t, response)
@@ -1655,52 +1912,61 @@ func TestMatchMakingTimeout(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 	})
 
-	// move time forward to expire the matchmaking
-	fc.SetTime(now.Add(2 * MMTimeout))
-
-	var matchID int64
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		matchID = response.Match.Id
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "this is the player1")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		assert.EqualValues(t, 2, response.Match.Id)
 	})
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-3",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "this is the player2")
-		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.Equal(t, matchID, response.Match.Id)
 	})
-	t.Run("GetMatch", func(t *testing.T) {
-		_, err := c.GetMatch(ctx, &zb.GetMatchRequest{
-			MatchId: 1,
+
+	var matchID int64
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
 		})
-		assert.Equal(t, contract.ErrNotFound, err)
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	// move time forward to expire the matchmaking
+	fc.SetTime(now.Add(2 * MMTimeout))
+
+	t.Run("FindMatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
 	})
 }
 
@@ -1742,28 +2008,66 @@ func TestGameStateOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
-			UserId:  "player-2",
-			Version: "v1",
+			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
@@ -1776,7 +2080,6 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
-		assert.NotNil(t, response.GameState)
 	})
 
 	// Note: since the toss coin seed is always 0 for testing, we always get 0 as the first player
@@ -1848,7 +2151,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1867,7 +2170,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_OverlordSkillUsed{
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId:          1,
-						AffectObjectType: zb.AffectObjectType_CARD,
+						AffectObjectType: zb.AffectObjectType_Card,
 						Target: &zb.Unit{
 							InstanceId: 2,
 						},
@@ -1892,7 +2195,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1943,7 +2246,7 @@ func TestGameStateOperations(t *testing.T) {
 						Attacker: &zb.CardInstance{
 							InstanceId: 13,
 						},
-						AffectObjectType: zb.AffectObjectType_CHARACTER,
+						AffectObjectType: zb.AffectObjectType_Character,
 						Target: &zb.Unit{
 							InstanceId: 8,
 						},
@@ -1968,7 +2271,7 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       2,
-								AffectObjectType: zb.AffectObjectType_CARD,
+								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -1989,7 +2292,7 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       2,
-							AffectObjectType: zb.AffectObjectType_CARD,
+							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},
@@ -2133,24 +2436,50 @@ func TestCardPlayOperations(t *testing.T) {
 
 	var matchID int64
 
-	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:  1,
 			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, response)
-		assert.Equal(t, 1, len(response.Match.PlayerStates), "the first player should see only 1 player state")
-		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
-		matchID = response.Match.Id
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:  1,
+			UserId:  "player-2",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
 		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
-			DeckId:  1,
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Acceptmatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'Matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("Acceptmatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
-			Version: "v1",
+			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
@@ -2207,8 +2536,10 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-1",
 			Version:    "v1",
@@ -2217,14 +2548,60 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-2",
 			Version:    "v1",
 			RandomSeed: 2,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
@@ -2327,8 +2704,10 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-1",
 			Version:    "v1",
@@ -2337,14 +2716,60 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			DeckId:     1,
 			UserId:     "player-2",
 			Version:    "v1",
 			RandomSeed: 2,
 		})
 		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
@@ -2394,24 +2819,26 @@ func TestAIDeckOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	aiDecks := []*zb.Deck{
+	aiDecks := []*zb.AIDeck{
 		{
-			Id:     1,
-			HeroId: 2,
-			Name:   "AI Decks",
-			Cards: []*zb.CardCollection{
-				{CardName: "Banshee", Amount: 2},
-				{CardName: "Breezee", Amount: 2},
-				{CardName: "Buffer", Amount: 2},
-				{CardName: "Soothsayer", Amount: 2},
-				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whiffer", Amount: 2},
-				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Zhocker", Amount: 1},
-				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Dragger", Amount: 1},
-				{CardName: "Guzt", Amount: 1},
-				{CardName: "Pushhh", Amount: 1},
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "Banshee", Amount: 2},
+					{CardName: "Breezee", Amount: 2},
+					{CardName: "Buffer", Amount: 2},
+					{CardName: "Soothsayer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Whizpar", Amount: 1},
+					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bouncer", Amount: 1},
+					{CardName: "Dragger", Amount: 1},
+					{CardName: "Guzt", Amount: 1},
+					{CardName: "Pushhh", Amount: 1},
+				},
 			},
 			Type: zb.AIType_MIXED_AI,
 		},

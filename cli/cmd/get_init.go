@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -39,11 +38,7 @@ var getInitCmd = &cobra.Command{
 			return err
 		}
 
-		j, err := json.MarshalIndent(result, "", "  ")
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(j))
+		printProtoMessageAsJsonToStdout(&result)
 		return nil
 	},
 }
