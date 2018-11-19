@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -33,12 +31,8 @@ var listHeroLibraryCmd = &cobra.Command{
 			return err
 		}
 
-		for _, heroInfo := range result.Heroes {
-			fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
-			for _, skill := range heroInfo.Skills {
-				fmt.Printf("skill_title: %s\n", skill.Title)
-			}
-		}
+		printProtoMessageAsJsonToStdout(&result)
+
 		return nil
 	},
 }

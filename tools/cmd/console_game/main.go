@@ -12,7 +12,7 @@ import (
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
-	DefaultCollection: []*zb.CardCollection{
+	DefaultCollection: []*zb.CardCollectionCard{
 		{
 			CardName: "Banshee",
 			Amount:   4,
@@ -69,8 +69,11 @@ var initRequest = zb.InitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title:        "Attack",
-				Skill:        "Skill0",
-				SkillTargets: "zb.Skill_ALL_CARDS|zb.Skill_PLAYER_CARD",
+				Skill:        zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
+				},
 				Value:        1,
 			}},
 		},
@@ -80,38 +83,40 @@ var initRequest = zb.InitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title:        "Deffence",
-				Skill:        "Skill1",
-				SkillTargets: "zb.Skill_PLAYER|zb.Skill_OPPONENT_CARD",
+				Skill:        zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
+				},
 				Value:        2,
 			}},
 		},
 	},
 	Cards: []*zb.Card{
 		{
-			Id:      1,
-			Set:     "Air",
-			Name:    "Banshee",
-			Rank:    "Minion",
-			Type:    "Feral",
-			Damage:  2,
-			Health:  1,
-			Cost:    2,
-			Ability: "Feral",
-			Effects: []*zb.Effect{
+			MouldId: 1,
+			Set:     zb.CardSetType_Air,
+			Name:    "Soothsayer",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  2,
+			Defense: 1,
+			GooCost: 2,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger:  "entry",
-					Effect:   "feral",
-					Duration: "permanent",
-					Target:   "self",
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
+					Set:          zb.CardSetType_None,
 				},
 			},
 			CardViewInfo: &zb.CardViewInfo{
-				Position: &zb.Coordinates{
+				Position: &zb.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
 					Z: 3.5,
 				},
-				Scale: &zb.Coordinates{
+				Scale: &zb.Vector3Float{
 					X: 0.5,
 					Y: 0.5,
 					Z: 0.5,
@@ -119,20 +124,25 @@ var initRequest = zb.InitRequest{
 			},
 		},
 		{
-			Id:      2,
-			Set:     "Air",
-			Name:    "Breezee",
-			Rank:    "Minion",
-			Type:    "Walker",
-			Damage:  1,
-			Health:  1,
-			Cost:    1,
-			Ability: "-",
-			Effects: []*zb.Effect{
+			MouldId: 2,
+			Set:     zb.CardSetType_Air,
+			Name:    "Azuraz",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Trigger: "death",
-					Effect:  "attack_strength_buff",
-					Target:  "friendly_selectable",
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
+					},
+					Stat:     zb.StatType_Attack,
+					Set:      zb.CardSetType_Earth,
+					Value:    1,
 				},
 			},
 		},
@@ -142,7 +152,7 @@ var initRequest = zb.InitRequest{
 			Id:     0,
 			HeroId: 2,
 			Name:   "Default",
-			Cards: []*zb.CardCollection{
+			Cards: []*zb.DeckCard{
 				{
 					CardName: "Banshee",
 					Amount:   2,
