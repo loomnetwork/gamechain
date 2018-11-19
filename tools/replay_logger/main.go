@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -11,14 +12,12 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
-
-	_ "github.com/go-sql-driver/mysql"
-
-	"encoding/base64"
 	"strings"
 
 	"github.com/Jeffail/gabs"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/gogo/protobuf/proto"
 	"github.com/gorilla/websocket"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
@@ -149,7 +148,8 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	defer f.Close()
 
 	var event zb.PlayerActionEvent
-	if err := jsonpb.UnmarshalString(string(body), &event); err != nil {
+	err = proto.Unmarshal(body, &event)
+	if err != nil {
 		return nil, err
 	}
 
@@ -160,9 +160,12 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 			return nil, err
 		}
 	}
-	replay.Blocks = append(replay.Blocks, event.Block.List...)
+
 	if event.PlayerAction != nil {
+		replay.Blocks = append(replay.Blocks, event.Block.List...)
 		replay.Actions = append(replay.Actions, event.PlayerAction)
+	} else {
+		replay.Blocks = event.Block.List
 	}
 
 	m := jsonpb.Marshaler{}
