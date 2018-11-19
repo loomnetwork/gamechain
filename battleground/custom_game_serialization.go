@@ -126,7 +126,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		newCard.Prototype.GooCost = simpleCard.gooCost
 	}
 
-	newCard.Instance = proto.Clone(newCard.Instance).(*zb.Card)
+	newCard.Instance = newCardInstanceSpecificDataFromCardDetails(newCard.Prototype)
 
 	return newCard, nil
 }

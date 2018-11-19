@@ -359,12 +359,22 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
+func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
+	return &zb.CardInstanceSpecificData{
+		Attack: cardDetails.Attack,
+		Defense: cardDetails.Defense,
+		Type: cardDetails.Type,
+		Set: cardDetails.Set,
+		GooCost: cardDetails.GooCost,
+	}
+}
+
 func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) *zb.CardInstance {
 	return &zb.CardInstance{
 		InstanceId: instanceId,
 		Owner:      owner,
 		Prototype: proto.Clone(cardDetails).(*zb.Card),
-		Instance: proto.Clone(cardDetails).(*zb.Card),
+		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
 	}
 }
 

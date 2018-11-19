@@ -45,11 +45,14 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		secret = "justsowecantestwithoutenvvar"
 	}
 	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
-	if disableClientSideOverride == "false" {
+	if disableClientSideOverride != "false" {
 		z.ClientSideRuleOverride = false
 	} else {
 		z.ClientSideRuleOverride = true
 	}
+
+	z.ClientSideRuleOverride = false
+	ctx.Logger().Info(fmt.Sprintf("ClientSideRuleOverride = %t\n", z.ClientSideRuleOverride))
 
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
@@ -1438,6 +1441,11 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		return nil, err
 	}
 
+	req.PlayerAction.AbilityOutcomes = gp.abilityOutcomes
+
+	fmt.Printf("\n\nreq.PlayerAction.AbilityOutcomes: %v\n\n", req.PlayerAction.AbilityOutcomes)
+	//gp.abilityOutcomes = nil
+
 	if err := saveGameState(ctx, gamestate); err != nil {
 		return nil, err
 	}
@@ -1462,7 +1470,6 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.PlayerActionResponse{
-		GameState: gamestate,
 		Match:     match,
 	}, nil
 }

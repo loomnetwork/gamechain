@@ -2105,7 +2105,9 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 1, response.GameState.CurrentPlayerIndex, "player-2 should be active")
+
+		gameState, err := loadGameState(ctx, matchID)
+		assert.EqualValues(t, 1, gameState.CurrentPlayerIndex, "player-2 should be active")
 	})
 	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
 		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
@@ -2117,7 +2119,9 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex, "player-1 should be active")
+
+		gameState, err := loadGameState(ctx, matchID)
+		assert.EqualValues(t, 0, gameState.CurrentPlayerIndex, "player-1 should be active")
 	})
 	t.Run("SendCardPlayPlayer1", func(t *testing.T) {
 		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
@@ -2215,7 +2219,9 @@ func TestGameStateOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.EqualValues(t, 1, response.GameState.CurrentPlayerIndex, "player-2 should be active")
+
+		gameState, err := loadGameState(ctx, matchID)
+		assert.EqualValues(t, 1, gameState.CurrentPlayerIndex, "player-2 should be active")
 	})
 	t.Run("SendCardPlayPlayer2", func(t *testing.T) {
 		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{

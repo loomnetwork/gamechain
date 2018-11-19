@@ -46,6 +46,14 @@ message Card {
     UniqueAnimationType.Enum unique_animation     = 18;
 }
 
+message CardInstanceSpecificData {
+    int32 attack = 1;
+    int32 defense = 2;
+    CreatureType.Enum type = 3;
+    CardSetType.Enum set = 4;
+    int32 gooCost = 5;
+}
+
 message CardViewInfo {
     Vector3Float position   = 1;
     Vector3Float scale      = 2;
@@ -438,6 +446,7 @@ message PlayerAction {
         PlayerActionLeaveMatch leaveMatch               = 12;
         PlayerActionRankBuff rankBuff                   = 13;
     };
+    repeated CardAbilityOutcome abilityOutcomes = 14;
     int64 createdAt = 15; // timestamp
 }
 
@@ -551,8 +560,7 @@ message PlayerActionRequest {
 }
 
 message PlayerActionResponse {
-    GameState gameState = 1;
-    Match match = 2;
+    Match match = 1;
 }
 
 message BundlePlayerActionRequest {
@@ -1022,9 +1030,20 @@ message CardAbility {
     }
 }
 
+message CardAbilityRageOutcome {
+    int32 instanceId = 1;
+    int32 newAttack = 2;
+}
+
 message CardAbilityRage {
     int32 addedAttack = 1;
     bool wasApplied = 2;
+}
+
+message CardAbilityOutcome {
+    oneof AbilityType {
+        CardAbilityRageOutcome rage = 1;
+    }
 }
 
 message CardAbilityInstance {
@@ -1036,8 +1055,10 @@ message CardAbilityInstance {
 message CardInstance {
     Card prototype = 1;
     int32 instanceId = 2;
-    Card instance = 3;
+    CardInstanceSpecificData instance = 3;
     string owner = 4;
+
+    // FIXME: this really shouldn't be in Protobuf
     bool abilitiesInstancesInitialized = 5;
     repeated CardAbilityInstance abilitiesInstances = 6;
 }

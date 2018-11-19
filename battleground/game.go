@@ -27,7 +27,6 @@ var (
 	errNotEnoughPlayer       = errors.New("not enough players")
 	errAlreadyTossCoin       = errors.New("already tossed coin")
 	errNoCurrentPlayer       = errors.New("no current player")
-	errCardNotFoundInHand    = errors.New("card not found in hand")
 	errLimitExceeded         = errors.New("max card limit exceeded")
 	errNoCardsInHand         = errors.New("Can't play card. No cards in hand")
 	errInsufficientGoo       = errors.New("insufficient goo")
@@ -43,6 +42,7 @@ type Gameplay struct {
 	ctx                    *contract.Context
 	ClientSideRuleOverride bool         //disables all checks to ensure the client can work before server is fully implemented
 	logger                 *loom.Logger // optional logger
+	abilityOutcomes        []*zb.CardAbilityOutcome
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -706,14 +706,19 @@ func actionCardPlay(g *Gameplay) stateFn {
 		// get card instance from cardsInHand list
 		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 		if !found {
+			err := fmt.Errorf(
+				"card (instance id: %d, name: %s) not found in hand",
+				cardPlay.Card.InstanceId,
+				cardPlay.Card.Prototype.Name,
+				)
 			if g.ClientSideRuleOverride {
-				g.debugf("ClientSideRuleOverride-" + errCardNotFoundInHand.Error())
+				g.debugf("ClientSideRuleOverride-" + err.Error())
 				next := g.next()
 				if next == nil {
 					return nil
 				}
 			} else {
-				return g.captureErrorAndStop(errCardNotFoundInHand)
+				return g.captureErrorAndStop(err)
 			}
 		}
 
@@ -840,8 +845,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 		attackerInstance := CardInstance{attacker}
 		targetInstance := CardInstance{target}
-		attackerInstance.SetDefense(attackerInstance.Instance.Defense - targetInstance.Instance.Attack)
-		targetInstance.SetDefense(targetInstance.Instance.Defense - attackerInstance.Instance.Attack)
+		attackerInstance.SetDefense(g, attackerInstance.Instance.Defense - targetInstance.Instance.Attack)
+		targetInstance.SetDefense(g, targetInstance.Instance.Defense - attackerInstance.Instance.Attack)
 
 		if attacker.Instance.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
