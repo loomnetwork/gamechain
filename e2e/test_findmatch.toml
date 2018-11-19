@@ -194,7 +194,7 @@
   RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 3"
   Condition = "contains"
   All = true
-  Expected = ["not found"]
+  Expected = ["Status: Canceled"]
 
 [[TestCases]]
   RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 3"
