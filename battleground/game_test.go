@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -417,14 +417,16 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    3,
 				Attack:     2,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    5,
 				Attack:     1,
 			},
@@ -461,14 +463,16 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    3,
 				Attack:     2,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    1,
 				Attack:     1,
 			},
@@ -507,14 +511,16 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    1,
 				Attack:     1,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    1,
 				Attack:     1,
 			},
@@ -555,7 +561,7 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Instance: &zb.Card{
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    3,
 				Attack:     2,
 			},
@@ -589,7 +595,7 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Instance: &zb.Card{
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    3,
 				Attack:     2,
 			},
@@ -635,14 +641,15 @@ func TestCardAttack(t *testing.T) {
 		}
 		cardInstance0 := CardInstance{&zb.CardInstance{
 			InstanceId: 1,
-			Instance: proto.Clone(card0).(*zb.Card),
+			Instance: newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype: proto.Clone(card0).(*zb.Card),
 		}}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Instance: &zb.Card{
+			Prototype: &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense:    5,
 				Attack:     1,
 			},
@@ -667,6 +674,8 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(4), gp.abilityOutcomes[0].GetRage().NewAttack)
+		assert.Equal(t, int32(1), gp.abilityOutcomes[0].GetRage().InstanceId)
 	})
 }
 
