@@ -153,6 +153,10 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 		return nil, err
 	}
 
+	if event.Block == nil {
+		return nil, nil
+	}
+
 	var replay zb.GameReplay
 	if fi, _ := f.Stat(); fi.Size() > 0 {
 		if err := jsonpb.Unmarshal(f, &replay); err != nil {
