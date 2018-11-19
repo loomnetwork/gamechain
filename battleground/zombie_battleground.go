@@ -928,6 +928,10 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		return nil, errors.New("match id not correct")
 	}
 
+	if match.Status != zb.Match_Matching {
+		return nil, errors.New("Can't accept match, wrong status")
+	}
+
 	var opponentAccepted bool
 	for _, playerState := range match.PlayerStates {
 		if playerState.Id == req.UserId {
