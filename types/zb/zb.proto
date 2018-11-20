@@ -1138,6 +1138,13 @@ message StartGameAction {
 message Unit {
     int32 instanceId = 1;
     AffectObjectType.Enum affectObjectType = 2;
+    Parameter Parameter = 3;
+}
+
+message Parameter {
+    int32 Attack  = 1;
+    int32 Defense = 2;
+    string CardName = 3;
 }
 
 message OverlordSkillKind {
