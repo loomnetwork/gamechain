@@ -35,6 +35,7 @@ func setupInternalPlugin(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
+	t.Skip()
 	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
 
 	tests := []struct {
