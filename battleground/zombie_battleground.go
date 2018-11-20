@@ -235,7 +235,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	}
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
-		return nil, errors.Wrap(err, "error getting default aiDeckList")
+		return nil, errors.Wrap(err, "error getting aiDeckList")
 	}
 
 	return &zb.GetInitResponse{
