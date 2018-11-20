@@ -866,13 +866,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// create match
 	match = &zb.Match{
 		Status: zb.Match_Matching,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
+		PlayerStates: []*zb.InitialPlayerState{
+			&zb.InitialPlayerState{
 				Id:            playerProfile.UserId,
 				Deck:          deck,
 				MatchAccepted: false,
 			},
-			&zb.PlayerState{
+			&zb.InitialPlayerState{
 				Id:            matchedPlayerProfile.UserId,
 				Deck:          matchedDeck,
 				MatchAccepted: false,
@@ -962,7 +962,18 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		}
 
 		ctx.Logger().Info(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
-		gp, err := NewGamePlay(ctx, match.Id, match.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+		playerStates := []*zb.PlayerState{
+			&zb.PlayerState{
+				Id:   match.PlayerStates[0].Id,
+				Deck: match.PlayerStates[0].Deck,
+			},
+			&zb.PlayerState{
+				Id:   match.PlayerStates[1].Id,
+				Deck: match.PlayerStates[1].Deck,
+			},
+		}
+
+		gp, err := NewGamePlay(ctx, match.Id, match.Version, playerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 		if err != nil {
 			return nil, err
 		}
@@ -1166,8 +1177,8 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			// create match
 			match := &zb.Match{
 				Status: zb.Match_Matching,
-				PlayerStates: []*zb.PlayerState{
-					&zb.PlayerState{
+				PlayerStates: []*zb.InitialPlayerState{
+					&zb.InitialPlayerState{
 						Id:   req.UserId,
 						Deck: deck,
 					},
@@ -1210,7 +1221,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		return nil, err
 	}
 
-	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
+	match.PlayerStates = append(match.PlayerStates, &zb.InitialPlayerState{
 		Id:   req.UserId,
 		Deck: deck,
 	})
@@ -1250,7 +1261,18 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 	}
 
 	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+	playerStates := []*zb.PlayerState{
+		&zb.PlayerState{
+			Id:   match.PlayerStates[0].Id,
+			Deck: match.PlayerStates[0].Deck,
+		},
+		&zb.PlayerState{
+			Id:   match.PlayerStates[1].Id,
+			Deck: match.PlayerStates[1].Deck,
+		},
+	}
+
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, playerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}

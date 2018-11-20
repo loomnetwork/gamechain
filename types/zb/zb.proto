@@ -371,7 +371,12 @@ message PlayerState {
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
     int32 turnTime = 17;
-    bool matchAccepted = 18;
+}
+
+message InitialPlayerState {
+    string id = 1;
+    bool matchAccepted = 2;
+    Deck deck  = 3;
 }
 
 message Match {
@@ -380,7 +385,7 @@ message Match {
 
     // TODO: this data is not used by the client, but is still sent.
     // Perhaps we can split Match into MatchMetadata and MatchInitialPlayerState
-    repeated PlayerState playerStates = 3;
+    repeated InitialPlayerState playerStates = 3;
     enum Status {
         Created      = 0;
         Matching     = 1;
