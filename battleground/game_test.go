@@ -674,8 +674,8 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(4), gp.abilityOutcomes[0].GetRage().NewAttack)
-		assert.Equal(t, int32(1), gp.abilityOutcomes[0].GetRage().InstanceId)
+		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
+		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId)
 	})
 }
 
@@ -732,7 +732,9 @@ func TestCardPlay(t *testing.T) {
 				},
 			},
 		})
-		assert.Equal(t, errCardNotFoundInHand, err)
+
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "not found in hand")
 	})
 	t.Run("CardPlay from empty hand", func(t *testing.T) {
 		players := []*zb.PlayerState{

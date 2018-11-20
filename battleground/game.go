@@ -42,7 +42,7 @@ type Gameplay struct {
 	ctx                    *contract.Context
 	ClientSideRuleOverride bool         //disables all checks to ensure the client can work before server is fully implemented
 	logger                 *loom.Logger // optional logger
-	abilityOutcomes        []*zb.CardAbilityOutcome
+	actionOutcomes        []*zb.PlayerActionOutcome
 }
 
 type stateFn func(*Gameplay) stateFn
