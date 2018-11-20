@@ -65,7 +65,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
-	// initialize heros
+
+	// initialize heroes
 	heroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
@@ -73,6 +74,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize card collection
 	cardCollectionList := zb.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
@@ -88,6 +90,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize default heroes
 	defaultHeroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
@@ -95,7 +98,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
-	// initialize default AI decks
+	// initialize AI decks
 	aiDeckList := zb.AIDeckList{
 		Decks: req.AiDecks,
 	}
@@ -128,7 +131,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
-	// initialize heros
+	// initialize heroes
 	heroList.Heroes = req.Heroes
 	defaultHeroList.Heroes = req.Heroes
 	if req.Heroes == nil {
@@ -151,6 +154,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
+	// initialize default collection
 	cardCollectionList.Cards = req.DefaultCollection
 	if req.DefaultCollection == nil {
 		if req.OldVersion != "" {
@@ -181,7 +185,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
-	// initialize default AI decks
+	// initialize AI decks
 	aiDeckList := zb.AIDeckList{
 		Decks: req.AiDecks,
 	}
@@ -208,6 +212,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	var defaultHeroList zb.HeroList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
+	var aiDeckList zb.AIDeckList
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return nil, errors.Wrap(err, "error getting cardList")
@@ -229,12 +234,17 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting default deckList")
 	}
 
+	if err := ctx.Get(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+		return nil, errors.Wrap(err, "error getting default aiDeckList")
+	}
+
 	return &zb.GetInitResponse{
 		Cards:             cardList.Cards,
 		Heroes:            heroList.Heroes,
 		DefaultHeroes:     defaultHeroList.Heroes,
 		DefaultDecks:      deckList.Decks,
 		DefaultCollection: cardCollectionList.Cards,
+		AiDecks:           aiDeckList.Decks,
 		Version:           req.Version,
 	}, nil
 }
