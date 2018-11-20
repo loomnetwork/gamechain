@@ -35,7 +35,6 @@ func setupInternalPlugin(dir string) error {
 }
 
 func TestE2E(t *testing.T) {
-	t.Skip()
 	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
 
 	tests := []struct {
@@ -51,10 +50,10 @@ func TestE2E(t *testing.T) {
 		{"zb-deck-4", "test_deck.toml", 4, 10, "../zb.genesis.json"},
 		{"zb-hero-1", "test_hero.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-hero-4", "test_hero.toml", 4, 10, "../zb.genesis.json"},
-		{"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../zb.genesis.json"},
-		{"zb-findmatch-4", "test_findmatch.toml", 4, 10, "../zb.genesis.json"},
-		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../zb.genesis.json"},
-		{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "../zb.genesis.json"},
+		// {"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../zb.genesis.json"},
+		// {"zb-findmatch-4", "test_findmatch.toml", 4, 10, "../zb.genesis.json"},
+		// {"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../zb.genesis.json"},
+		// {"zb-gameplay-4", "test_gameplay.toml", 4, 10, "../zb.genesis.json"},
 	}
 
 	// required to have loom binary
