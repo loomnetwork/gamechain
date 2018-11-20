@@ -843,6 +843,13 @@ func actionCardAttack(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(errors.New("Target not found"))
 		}
 
+		g.debugf(
+			"card {instanceId: %d, name: %s} attacking card {instanceId: %d, name: %s}",
+			attacker.InstanceId,
+			attacker.Prototype.Name,
+			target.InstanceId,
+			target.Prototype.Name,
+			)
 		attackerInstance := CardInstance{attacker}
 		targetInstance := CardInstance{target}
 		attackerInstance.SetDefense(g, attackerInstance.Instance.Defense - targetInstance.Instance.Attack)

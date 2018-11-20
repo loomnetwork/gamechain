@@ -1443,9 +1443,11 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 
 	req.PlayerAction.ActionOutcomes = gp.actionOutcomes
 
-	fmt.Printf("\n\n action: " + zb.PlayerActionType_Enum_name[int32(req.PlayerAction.ActionType)])
-	fmt.Printf("\n\nreq.PlayerAction.ActionOutcomes: %v\n\n", req.PlayerAction.ActionOutcomes)
-	//gp.abilityOutcomes = nil
+	if req.PlayerAction.ActionOutcomes != nil && len(req.PlayerAction.ActionOutcomes) > 0 {
+		ctx.Logger().Info(fmt.Sprintf("\n\nreq.PlayerAction.ActionOutcomes: %v\n\n", req.PlayerAction.ActionOutcomes))
+	}
+
+	gp.actionOutcomes = nil
 
 	if err := saveGameState(ctx, gamestate); err != nil {
 		return nil, err
