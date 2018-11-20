@@ -780,7 +780,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 		// notify player
 		emitMsg := zb.PlayerActionEvent{
-			Match: match,
+			// Match:        match, @LOCK REMOVE THIS COMMENT
 		}
 		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
@@ -905,7 +905,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// }
 
 	emitMsg := zb.PlayerActionEvent{
-		Match: match,
+		// Match:        match, @LOCK REMOVE THIS COMMENT
 	}
 	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
@@ -973,7 +973,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		match.Status = zb.Match_Started
 
 		emitMsg = zb.PlayerActionEvent{
-			Match: match,
+			// Match:        match, @LOCK REMOVE THIS COMMENT
 			Block: &zb.History{List: gp.history},
 		}
 	}
@@ -1456,8 +1456,8 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 
 	emitMsg := zb.PlayerActionEvent{
 		PlayerAction: req.PlayerAction,
-		Match:        match,
-		Block:        &zb.History{List: gp.history},
+		// Match:        match, @LOCK REMOVE THIS COMMENT
+		Block: &zb.History{List: gp.history},
 	}
 
 	data, err := proto.Marshal(&emitMsg)
