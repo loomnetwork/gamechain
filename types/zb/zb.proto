@@ -446,7 +446,7 @@ message PlayerAction {
         PlayerActionLeaveMatch leaveMatch               = 12;
         PlayerActionRankBuff rankBuff                   = 13;
     };
-    repeated CardAbilityOutcome abilityOutcomes = 14;
+    repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
 }
 
@@ -1030,19 +1030,19 @@ message CardAbility {
     }
 }
 
-message CardAbilityRageOutcome {
-    int32 instanceId = 1;
-    int32 newAttack = 2;
-}
-
 message CardAbilityRage {
     int32 addedAttack = 1;
     bool wasApplied = 2;
 }
 
-message CardAbilityOutcome {
-    oneof AbilityType {
+message PlayerActionOutcome {
+    oneof Outcome {
         CardAbilityRageOutcome rage = 1;
+    }
+
+    message CardAbilityRageOutcome {
+        int32 instanceId = 1;
+        int32 newAttack = 2;
     }
 }
 
@@ -1158,11 +1158,6 @@ message PlayerActionEndTurn  {
 
 message PlayerActionMulligan {
     repeated CardInstance mulliganedCards = 1;
-}
-
-message PlayerActionOutcome {
-    string playerId = 1;
-    GameState gameState = 2;
 }
 
 message StartGameAction {

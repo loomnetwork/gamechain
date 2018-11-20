@@ -10,36 +10,36 @@ type CardInstance struct {
 }
 
 type CardAbility interface {
-	defenseChangedHandler(card *CardInstance) []*zb.CardAbilityOutcome
+	defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome
 }
 
 type CardAbilityRage struct {
 	*zb.CardAbilityRage
 }
 
-type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.CardAbilityOutcome
+type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
 
 func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 	card.tryInitAbilitiesInstances()
 	card.Instance.Defense = defense
 
-	callAbilityInstancesFunc(game, card, func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.CardAbilityOutcome {
+	callAbilityInstancesFunc(game, card, func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome {
 		return ability.defenseChangedHandler(card)
 	})
 
-	fmt.Printf("\n\ngame.abilityOutcomes: %v\n\n", game.abilityOutcomes)
+	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
 }
 
-func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.CardAbilityOutcome {
+func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
 	if !rage.WasApplied {
 		if card.Instance.Defense < card.Prototype.Defense {
 			rage.WasApplied = true
 			card.Instance.Attack += rage.AddedAttack
 
-			return []*zb.CardAbilityOutcome{
+			return []*zb.PlayerActionOutcome {
 				{
-					AbilityType: &zb.CardAbilityOutcome_Rage{
-						Rage: &zb.CardAbilityRageOutcome{
+					Outcome: &zb.PlayerActionOutcome_Rage {
+						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome {
 							InstanceId: card.InstanceId,
 							NewAttack:  card.Instance.Attack,
 						},
@@ -51,10 +51,10 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Car
 		rage.WasApplied = false
 		card.Instance.Attack -= rage.AddedAttack
 
-		return []*zb.CardAbilityOutcome{
+		return []*zb.PlayerActionOutcome {
 			{
-				AbilityType: &zb.CardAbilityOutcome_Rage{
-					Rage: &zb.CardAbilityRageOutcome{
+				Outcome: &zb.PlayerActionOutcome_Rage {
+					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome {
 						InstanceId: card.InstanceId,
 						NewAttack:  card.Instance.Attack,
 					},
@@ -79,7 +79,7 @@ func callAbilityInstancesFunc(game *Gameplay, card *CardInstance, fn abilityInst
 		outcomes := fn(game, abilityInstance, card)
 		if outcomes != nil {
 			for _, outcome := range outcomes {
-				game.abilityOutcomes = append(game.abilityOutcomes, outcome)
+				game.actionOutcomes = append(game.actionOutcomes, outcome)
 			}
 		}
 	}
