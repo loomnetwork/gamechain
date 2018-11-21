@@ -7,7 +7,6 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
