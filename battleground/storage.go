@@ -3,6 +3,7 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -17,7 +18,7 @@ const (
 
 var (
 	cardPrefix           = []byte("card")
-	userPreifx           = []byte("user")
+	userPrefix           = []byte("user")
 	heroesPrefix         = []byte("heroes")
 	collectionPrefix     = []byte("collection")
 	decksPrefix          = []byte("decks")
@@ -115,12 +116,12 @@ func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 	return ctx.Set(DecksKey(userID), decks)
 }
 
-func saveAIDecks(ctx contract.Context, version string, decks *zb.DeckList) error {
+func saveAIDecks(ctx contract.Context, version string, decks *zb.AIDeckList) error {
 	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
 }
 
-func loadAIDecks(ctx contract.StaticContext, version string) (*zb.DeckList, error) {
-	var deckList zb.DeckList
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, error) {
+	var deckList zb.AIDeckList
 	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
 	if err != nil {
 		return nil, err
@@ -199,7 +200,7 @@ func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(playerPoolKey, pool)
 }
 
-func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+func loadPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(playerPoolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
@@ -212,7 +213,7 @@ func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(taggedPlayerPoolKey, pool)
 }
 
-func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(taggedPlayerPoolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
@@ -235,6 +236,7 @@ func createMatch(ctx contract.Context, match *zb.Match) error {
 	}
 	match.Id = nextID
 	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	match.CreatedAt = ctx.Now().Unix()
 	return saveMatch(ctx, match)
 }
 
@@ -361,13 +363,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owne
 	return &zb.CardInstance{
 		InstanceId: instanceId,
 		Owner:      owner,
-		Attack:     cardDetails.Damage,
-		Defense:    cardDetails.Health,
-		GooCost:    cardDetails.Cost,
-		Prototype: &zb.CardPrototype{
-			Name:    cardDetails.Name,
-			GooCost: cardDetails.Cost,
-		},
+		Prototype: proto.Clone(cardDetails).(*zb.Card),
+		Instance: proto.Clone(cardDetails).(*zb.Card),
 	}
 }
 

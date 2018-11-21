@@ -10,14 +10,13 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/pkg/errors"
-
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -198,19 +197,46 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			return err
 		}
 
-		findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
+		_, err := zbContract.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			UserId:     ps.Id,
 			DeckId:     ps.Deck.Id,
 			Version:    game.Version,
-			RandomSeed: game.Randomseed,
+			RandomSeed: game.RandomSeed,
 		})
 		if err != nil {
 			return err
 		}
-
-		// the second iteration of the loop should give us a useful match state
-		newMatch = findMatchResp.Match
 	}
+
+	findMatchResp, err := zbContract.FindMatch(ctx, &zb.FindMatchRequest{
+		UserId: game.Players[0].Id,
+	})
+	if err != nil {
+		return err
+	}
+	findMatchResp, err = zbContract.FindMatch(ctx, &zb.FindMatchRequest{
+		UserId: game.Players[1].Id,
+	})
+	if err != nil {
+		return err
+	}
+
+	acceptMatchResp, err := zbContract.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+		UserId:  game.Players[0].Id,
+		MatchId: findMatchResp.Match.Id,
+	})
+	if err != nil {
+		return err
+	}
+	acceptMatchResp, err = zbContract.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+		UserId:  game.Players[1].Id,
+		MatchId: findMatchResp.Match.Id,
+	})
+	if err != nil {
+		return err
+	}
+
+	newMatch = acceptMatchResp.Match
 
 	// initialise the game state
 	log.Info("Initialising game state")
