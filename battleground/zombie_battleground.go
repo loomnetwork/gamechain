@@ -68,7 +68,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
-	// initialize heros
+
+	// initialize heroes
 	heroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
@@ -76,6 +77,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize card collection
 	cardCollectionList := zb.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
@@ -91,6 +93,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize default heroes
 	defaultHeroList := zb.HeroList{
 		Heroes: req.Heroes,
 	}
@@ -98,7 +101,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
-	// initialize default AI decks
+	// initialize AI decks
 	aiDeckList := zb.AIDeckList{
 		Decks: req.AiDecks,
 	}
@@ -131,7 +134,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
-	// initialize heros
+	// initialize heroes
 	heroList.Heroes = req.Heroes
 	defaultHeroList.Heroes = req.Heroes
 	if req.Heroes == nil {
@@ -154,6 +157,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
+	// initialize default collection
 	cardCollectionList.Cards = req.DefaultCollection
 	if req.DefaultCollection == nil {
 		if req.OldVersion != "" {
@@ -184,7 +188,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
-	// initialize default AI decks
+	// initialize AI decks
 	aiDeckList := zb.AIDeckList{
 		Decks: req.AiDecks,
 	}
@@ -211,6 +215,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	var defaultHeroList zb.HeroList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
+	var aiDeckList zb.AIDeckList
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return nil, errors.Wrap(err, "error getting cardList")
@@ -232,12 +237,17 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting default deckList")
 	}
 
+	if err := ctx.Get(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+		return nil, errors.Wrap(err, "error getting aiDeckList")
+	}
+
 	return &zb.GetInitResponse{
 		Cards:             cardList.Cards,
 		Heroes:            heroList.Heroes,
 		DefaultHeroes:     defaultHeroList.Heroes,
 		DefaultDecks:      deckList.Decks,
 		DefaultCollection: cardCollectionList.Cards,
+		AiDecks:           aiDeckList.Decks,
 		Version:           req.Version,
 	}, nil
 }
@@ -869,13 +879,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// create match
 	match = &zb.Match{
 		Status: zb.Match_Matching,
-		PlayerStates: []*zb.PlayerState{
-			&zb.PlayerState{
+		PlayerStates: []*zb.InitialPlayerState{
+			&zb.InitialPlayerState{
 				Id:            playerProfile.UserId,
 				Deck:          deck,
 				MatchAccepted: false,
 			},
-			&zb.PlayerState{
+			&zb.InitialPlayerState{
 				Id:            matchedPlayerProfile.UserId,
 				Deck:          matchedDeck,
 				MatchAccepted: false,
@@ -907,7 +917,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	// 	return nil, err
 	// }
 
-	emitMsg := zb.FindMatchResponse{
+	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 	}
 	data, err := proto.Marshal(&emitMsg)
@@ -931,6 +941,10 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		return nil, errors.New("match id not correct")
 	}
 
+	if match.Status != zb.Match_Matching {
+		return nil, errors.New("Can't accept match, wrong status")
+	}
+
 	var opponentAccepted bool
 	for _, playerState := range match.PlayerStates {
 		if playerState.Id == req.UserId {
@@ -940,7 +954,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		}
 	}
 
-	emitMsg := zb.AcceptMatchResponse{
+	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 	}
 
@@ -961,7 +975,18 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		}
 
 		ctx.Logger().Info(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
-		gp, err := NewGamePlay(ctx, match.Id, match.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+		playerStates := []*zb.PlayerState{
+			&zb.PlayerState{
+				Id:   match.PlayerStates[0].Id,
+				Deck: match.PlayerStates[0].Deck,
+			},
+			&zb.PlayerState{
+				Id:   match.PlayerStates[1].Id,
+				Deck: match.PlayerStates[1].Deck,
+			},
+		}
+
+		gp, err := NewGamePlay(ctx, match.Id, match.Version, playerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 		if err != nil {
 			return nil, err
 		}
@@ -971,7 +996,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 
 		match.Status = zb.Match_Started
 
-		emitMsg = zb.AcceptMatchResponse{
+		emitMsg = zb.PlayerActionEvent{
 			Match: match,
 			Block: &zb.History{List: gp.history},
 		}
@@ -1165,8 +1190,8 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			// create match
 			match := &zb.Match{
 				Status: zb.Match_Matching,
-				PlayerStates: []*zb.PlayerState{
-					&zb.PlayerState{
+				PlayerStates: []*zb.InitialPlayerState{
+					&zb.InitialPlayerState{
 						Id:   req.UserId,
 						Deck: deck,
 					},
@@ -1209,7 +1234,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		return nil, err
 	}
 
-	match.PlayerStates = append(match.PlayerStates, &zb.PlayerState{
+	match.PlayerStates = append(match.PlayerStates, &zb.InitialPlayerState{
 		Id:   req.UserId,
 		Deck: deck,
 	})
@@ -1249,7 +1274,18 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 	}
 
 	ctx.Logger().Log(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, match.PlayerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+	playerStates := []*zb.PlayerState{
+		&zb.PlayerState{
+			Id:   match.PlayerStates[0].Id,
+			Deck: match.PlayerStates[0].Deck,
+		},
+		&zb.PlayerState{
+			Id:   match.PlayerStates[1].Id,
+			Deck: match.PlayerStates[1].Deck,
+		},
+	}
+
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, playerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -1462,8 +1498,9 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		Match:        match,
 		PlayerAction: req.PlayerAction,
+		Match:        match,
+		Block:        &zb.History{List: gp.history},
 	}
 
 	data, err := proto.Marshal(&emitMsg)
