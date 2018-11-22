@@ -34,9 +34,44 @@ func setupInternalPlugin(dir string) error {
 	return nil
 }
 
-func TestE2E(t *testing.T) {
+func rune2e(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
 	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+	// skip multi-node tests?
+	if singlenode && validators > 1 {
+		return
+	}
 
+	config, err := common.NewConfig(name, testFile, genFile, validators, accounts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	binary, err := exec.LookPath("go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// required binary
+	cmd := exec.Cmd{
+		Dir:  config.BaseDir,
+		Path: binary,
+		Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
+	}
+	if err := cmd.Run(); err != nil {
+		t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
+	}
+
+	if err := common.DoRun(*config); err != nil {
+		t.Fatal(err)
+	}
+
+	// pause before running the next test
+	time.Sleep(500 * time.Millisecond)
+
+	// clean up test data if successful
+	os.RemoveAll(config.BaseDir)
+
+}
+
+func TestE2EAccountDeck(t *testing.T) {
 	tests := []struct {
 		name       string
 		testFile   string
@@ -60,46 +95,11 @@ func TestE2E(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		// skip multi-node tests?
-		if singlenode && test.validators > 1 {
-			continue
-		}
-
-		t.Run(test.name, func(t *testing.T) {
-			config, err := common.NewConfig(test.name, test.testFile, test.genFile, test.validators, test.accounts)
-			if err != nil {
-				t.Fatal(err)
-			}
-			binary, err := exec.LookPath("go")
-			if err != nil {
-				t.Fatal(err)
-			}
-			// required binary
-			cmd := exec.Cmd{
-				Dir:  config.BaseDir,
-				Path: binary,
-				Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
-			}
-			if err := cmd.Run(); err != nil {
-				t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
-			}
-
-			if err := common.DoRun(*config); err != nil {
-				t.Fatal(err)
-			}
-
-			// pause before running the next test
-			time.Sleep(500 * time.Millisecond)
-
-			// clean up test data if successful
-			os.RemoveAll(config.BaseDir)
-		})
+		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
 	}
 }
 
 func TestE2EMatchMaking(t *testing.T) {
-	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
-
 	tests := []struct {
 		name       string
 		testFile   string
@@ -119,46 +119,11 @@ func TestE2EMatchMaking(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		// skip multi-node tests?
-		if singlenode && test.validators > 1 {
-			continue
-		}
-
-		t.Run(test.name, func(t *testing.T) {
-			config, err := common.NewConfig(test.name, test.testFile, test.genFile, test.validators, test.accounts)
-			if err != nil {
-				t.Fatal(err)
-			}
-			binary, err := exec.LookPath("go")
-			if err != nil {
-				t.Fatal(err)
-			}
-			// required binary
-			cmd := exec.Cmd{
-				Dir:  config.BaseDir,
-				Path: binary,
-				Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
-			}
-			if err := cmd.Run(); err != nil {
-				t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
-			}
-
-			if err := common.DoRun(*config); err != nil {
-				t.Fatal(err)
-			}
-
-			// pause before running the next test
-			time.Sleep(500 * time.Millisecond)
-
-			// clean up test data if successful
-			os.RemoveAll(config.BaseDir)
-		})
+		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
 	}
 }
 
 func TestE2EGameplay(t *testing.T) {
-	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
-
 	tests := []struct {
 		name       string
 		testFile   string
@@ -178,39 +143,6 @@ func TestE2EGameplay(t *testing.T) {
 	assert.Nil(t, err)
 
 	for _, test := range tests {
-		// skip multi-node tests?
-		if singlenode && test.validators > 1 {
-			continue
-		}
-
-		t.Run(test.name, func(t *testing.T) {
-			config, err := common.NewConfig(test.name, test.testFile, test.genFile, test.validators, test.accounts)
-			if err != nil {
-				t.Fatal(err)
-			}
-			binary, err := exec.LookPath("go")
-			if err != nil {
-				t.Fatal(err)
-			}
-			// required binary
-			cmd := exec.Cmd{
-				Dir:  config.BaseDir,
-				Path: binary,
-				Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
-			}
-			if err := cmd.Run(); err != nil {
-				t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
-			}
-
-			if err := common.DoRun(*config); err != nil {
-				t.Fatal(err)
-			}
-
-			// pause before running the next test
-			time.Sleep(500 * time.Millisecond)
-
-			// clean up test data if successful
-			os.RemoveAll(config.BaseDir)
-		})
+		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
 	}
 }
