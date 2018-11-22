@@ -201,3 +201,131 @@
   Condition = "contains"
   All = true
   Expected = ["not found"]
+
+############ Create 4th and5th match with tags ############
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 5}} -u player-5 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 6}} -u player-6 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 7}} -u player-7 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 8}} -u player-8 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 9}} -u player-9 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-0 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+  
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 5}} -u player-5 -d 1 -v v1 -t tag1"
+  Condition = "contains"
+  Expected = ["Registered player player-5 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 6}} -u player-6 -d 1 -v v1 -t tag1"
+  Condition = "contains"
+  Expected = ["Registered player player-6 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 7}} -u player-7 -d 1 -v v1 -t tag2"
+  Condition = "contains"
+  Expected = ["Registered player player-7 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 8}} -u player-8 -d 1 -v v1 -t tag2"
+  Condition = "contains"
+  Expected = ["Registered player player-8 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 9}} -u player-9 -d 1 -v v1 -t tag3"
+  Condition = "contains"
+  Expected = ["Registered player player-9 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-0 -d 1 -v v1 -t tag3"
+  Condition = "contains"
+  Expected = ["Registered player player-0 to pool"]
+
+# --- player-5, player-6
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 5}} -u player-5 -t tag1"
+  Condition = "contains"
+  Expected = ["MatchID: 4", "Status: Matching", "PlayerID: player-5", "PlayerID: player-6"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 6}} -u player-6 -t tag1"
+  Condition = "contains"
+  Expected = ["MatchID: 4", "Status: Matching", "PlayerID: player-5", "PlayerID: player-6"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 5}} -u player-5 -m 4"
+  Condition = "contains"
+  Expected = ["MatchID: 4", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 6}} -u player-6 -m 4"
+  Condition = "contains"
+  Expected = ["MatchID: 4", "Status: Started"]
+
+# --- player-7, player-8
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 7}} -u player-7 -t tag2"
+  Condition = "contains"
+  Expected = ["MatchID: 5", "Status: Matching", "PlayerID: player-7", "PlayerID: player-8"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 8}} -u player-8 -t tag2"
+  Condition = "contains"
+  Expected = ["MatchID: 5", "Status: Matching", "PlayerID: player-7", "PlayerID: player-8"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 7}} -u player-7 -m 5"
+  Condition = "contains"
+  Expected = ["MatchID: 5", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 8}} -u player-8 -m 5"
+  Condition = "contains"
+  Expected = ["MatchID: 5", "Status: Started"]
+
+# --- player-9, player-0
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 9}} -u player-9 -t tag3"
+  Condition = "contains"
+  Expected = ["MatchID: 6", "Status: Matching", "PlayerID: player-0", "PlayerID: player-9"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-0 -t tag3"
+  Condition = "contains"
+  Expected = ["MatchID: 6", "Status: Matching", "PlayerID: player-0", "PlayerID: player-9"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 9}} -u player-9 -m 6"
+  Condition = "contains"
+  Expected = ["MatchID: 6", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 0}} -u player-0 -m 6"
+  Condition = "contains"
+  Expected = ["MatchID: 6", "Status: Started"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
