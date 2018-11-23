@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/cli"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -35,7 +37,18 @@ var updateOracleCmd = &cobra.Command{
 		if err != nil {
 			return errors.Wrap(err, "call contract")
 		}
-		fmt.Println("oracle changed")
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Println("oracle changed")
+		}
+
 		return nil
 	},
 }

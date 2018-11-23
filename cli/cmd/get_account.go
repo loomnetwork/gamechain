@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -32,9 +34,20 @@ var getAccountCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error encountered while calling GetAccount: %s", err.Error())
 		}
-		fmt.Printf("User: %s\n", result.UserId)
-		fmt.Printf("Image: %s\n", result.Image)
-		fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := new(jsonpb.Marshaler).MarshalToString(&result)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("User: %s\n", result.UserId)
+			fmt.Printf("Image: %s\n", result.Image)
+			fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
+		}
+
 		return nil
 	},
 }

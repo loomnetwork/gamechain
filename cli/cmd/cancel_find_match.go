@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -29,7 +31,18 @@ var cancelFindMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Cancel match %d successfully", req.MatchId)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("Cancel match %d successfully", req.MatchId)
+		}
+
 		return nil
 	},
 }

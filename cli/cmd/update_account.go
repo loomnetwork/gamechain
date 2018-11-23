@@ -3,11 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/loomnetwork/go-loom/auth"
-	"github.com/spf13/cobra"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom/auth"
+	"github.com/spf13/cobra"
 )
 
 var updateAccCmdArgs struct {
@@ -33,10 +33,20 @@ var updateAccountCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateAccount: %s", err.Error())
 		}
-		fmt.Printf("Account updated successfully\n")
-		fmt.Printf("User: %s\n", result.UserId)
-		fmt.Printf("Image: %s\n", result.Image)
-		fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("Account updated successfully\n")
+			fmt.Printf("User: %s\n", result.UserId)
+			fmt.Printf("Image: %s\n", result.Image)
+			fmt.Printf("Game Membership Tier: %d\n", result.GameMembershipTier)
+		}
 
 		return nil
 	},

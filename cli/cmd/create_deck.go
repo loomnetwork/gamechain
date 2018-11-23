@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -37,7 +38,18 @@ var createDeckCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deck created successfully with id %d", result.DeckId)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("deck created successfully with id %d", result.DeckId)
+		}
+
 		return nil
 
 	},
