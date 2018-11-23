@@ -61,7 +61,7 @@ $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
 $(LOOMCHAIN_DIR):
-	git clone -q git@github.com:loomnetwork/loomchain.git $@ && git checkout v2
+	git clone -q git@github.com:loomnetwork/loomchain.git -b v2 $@
 
 deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go get \
