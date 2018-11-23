@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/spf13/cobra"
 )
 
@@ -33,11 +35,21 @@ var getDeckCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("deck name: %v\n", result.Deck.Name)
-		fmt.Printf("deck id: %v\n", result.Deck.Id)
-		fmt.Printf("hero id: %v\n", result.Deck.HeroId)
-		for _, card := range result.Deck.Cards {
-			fmt.Printf("card_name: %s, amount: %d\n", card.CardName, card.Amount)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := new(jsonpb.Marshaler).MarshalToString(&result)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("deck name: %v\n", result.Deck.Name)
+			fmt.Printf("deck id: %v\n", result.Deck.Id)
+			fmt.Printf("hero id: %v\n", result.Deck.HeroId)
+			for _, card := range result.Deck.Cards {
+				fmt.Printf("card_name: %s, amount: %d\n", card.CardName, card.Amount)
+			}
 		}
 		return nil
 	},
