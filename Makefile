@@ -82,7 +82,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/gorilla/websocket \
 		github.com/go-sql-driver/mysql \
 		gopkg.in/yaml.v2 \
-		github.com/sirupsen/logrus
+		github.com/sirupsen/logrus \
+		gopkg.in/check.v1
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && git checkout v2 && make deps && make && cp loom $(GOPATH)/bin
 	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
