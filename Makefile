@@ -66,8 +66,6 @@ $(LOOMCHAIN_DIR):
 deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
-		github.com/gogo/protobuf/jsonpb \
-		github.com/gogo/protobuf/proto \
 		github.com/spf13/cobra \
 		github.com/pkg/errors \
 		github.com/stretchr/testify/assert\
@@ -87,7 +85,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/kr/logfmt
 	go install github.com/golang/dep/cmd/dep
 	cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
-	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
+#	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 	cd $(GOPATH)/src/github.com/loomnetwork/e2e ; git checkout v2
 
 abigen:
