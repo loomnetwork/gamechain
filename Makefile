@@ -88,6 +88,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	rm -rf $(GOPATH)/src/github.com/loomnetwork/e2e/vendor ; true
 	rm -rf $(GOGO_PROTOBUF_DIR) ; true
 	# ugly hacks
+	go get gopkg.in/yaml.v2
 	go get github.com/gogo/protobuf/jsonpb
 	go get github.com/gogo/protobuf/proto
 	go get github.com/tendermint/tendermint/types
