@@ -42,7 +42,7 @@ type Gameplay struct {
 	ctx                    *contract.Context
 	ClientSideRuleOverride bool         //disables all checks to ensure the client can work before server is fully implemented
 	logger                 *loom.Logger // optional logger
-	actionOutcomes        []*zb.PlayerActionOutcome
+	actionOutcomes         []*zb.PlayerActionOutcome
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -575,15 +575,15 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 	// check player turn
 	// TODO: for now, skip player check so we dont break client logic at match start due to mulligans
-	// if err := g.checkCurrentPlayer(current); err != nil {
-	// 	return g.captureErrorAndStop(err)
-	// }
+	if err := g.checkCurrentPlayer(current); err != nil {
+		return g.captureErrorAndStop(err)
+	}
 
 	// check if player has already drawn a card after starting new turn
-	// if g.activePlayer().HasDrawnCard {
-	// 	g.err = errInvalidAction
-	// 	return nil
-	// }
+	if g.activePlayer().HasDrawnCard {
+		g.err = errInvalidAction
+		return nil
+	}
 
 	// draw card
 	if len(g.activePlayer().CardsInDeck) < 1 {
@@ -602,24 +602,26 @@ func actionDrawCard(g *Gameplay) stateFn {
 	// 	return g.captureErrorAndStop(errors.New("Client drew a card but server could not verify it"))
 	// }
 
-	var cardIndexInDeck int
-	var card *zb.CardInstance
-	for i, cardInDeck := range g.activePlayer().CardsInDeck {
-		if cardInDeck.InstanceId == current.GetDrawCard().CardInstance.InstanceId {
-			card = cardInDeck
-			cardIndexInDeck = i
-			g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
-			break
-		}
-	}
+	// var cardIndexInDeck int
+	// var card *zb.CardInstance
+	// for i, cardInDeck := range g.activePlayer().CardsInDeck {
+	// 	if cardInDeck.InstanceId == current.GetDrawCard().CardInstance.InstanceId {
+	// 		card = cardInDeck
+	// 		cardIndexInDeck = i
+	// 		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
+	// 		break
+	// 	}
+	// }
 
-	if card == nil {
-		return g.captureErrorAndStop(errors.New("Can't draw card. Card not found in deck"))
-	}
+	card := g.activePlayer().CardsInDeck[0]
+
+	// if card == nil {
+	// 	return g.captureErrorAndStop(errors.New("Can't draw card. Card not found in deck"))
+	// }
 
 	// remove card from CardsInDeck
-	// g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
-	g.activePlayer().CardsInDeck = append(g.activePlayer().CardsInDeck[:cardIndexInDeck], g.activePlayer().CardsInDeck[cardIndexInDeck+1:]...)
+	g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+	// g.activePlayer().CardsInDeck = append(g.activePlayer().CardsInDeck[:cardIndexInDeck], g.activePlayer().CardsInDeck[cardIndexInDeck+1:]...)
 
 	// card drawn, don't allow another draw until next turn
 	g.activePlayer().HasDrawnCard = true
@@ -707,10 +709,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
 		if !found {
 			err := fmt.Errorf(
-				"card (instance id: %d, name: %s) not found in hand",
+				"card (instance id: %d) not found in hand",
 				cardPlay.Card.InstanceId,
-				cardPlay.Card.Prototype.Name,
-				)
+				// cardPlay.Card.Prototype.Name,
+			)
 			if g.ClientSideRuleOverride {
 				g.debugf("ClientSideRuleOverride-" + err.Error())
 				next := g.next()
@@ -849,11 +851,11 @@ func actionCardAttack(g *Gameplay) stateFn {
 			attacker.Prototype.Name,
 			target.InstanceId,
 			target.Prototype.Name,
-			)
+		)
 		attackerInstance := CardInstance{attacker}
 		targetInstance := CardInstance{target}
-		attackerInstance.SetDefense(g, attackerInstance.Instance.Defense - targetInstance.Instance.Attack)
-		targetInstance.SetDefense(g, targetInstance.Instance.Defense - attackerInstance.Instance.Attack)
+		attackerInstance.SetDefense(g, attackerInstance.Instance.Defense-targetInstance.Instance.Attack)
+		targetInstance.SetDefense(g, targetInstance.Instance.Defense-attackerInstance.Instance.Attack)
 
 		if attacker.Instance.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
