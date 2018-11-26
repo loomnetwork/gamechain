@@ -18,6 +18,7 @@ cp zb.genesis.json genesis.json
 loom run
 ```
 
+
 ## Creating account and running transactions
 
 ```
