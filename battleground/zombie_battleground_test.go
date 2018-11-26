@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
@@ -1029,40 +1030,42 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	expectedCards := []*zb.Card{
+		{
+			MouldId: 1,
+			Set:     zb.CardSetType_Air,
+			Name:    "Banshee",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Feral,
+			Attack:  2,
+			Defense: 1,
+			GooCost: 2,
+		},
+		{
+			MouldId: 2,
+			Set:     zb.CardSetType_Air,
+			Name:    "Azuraz",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+		},
+		{
+			MouldId: 3,
+			Set:     zb.CardSetType_Air,
+			Name:    "NewCard",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CreatureType_Walker,
+			Attack:  1,
+			Defense: 1,
+			GooCost: 1,
+		},
+	}
+
 	var updateCardListRequest = zb.UpdateCardListRequest{
 		Version: "v2",
-		Cards: []*zb.Card{
-			{
-				MouldId: 1,
-				Set:     zb.CardSetType_Air,
-				Name:    "Banshee",
-				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CreatureType_Feral,
-				Attack:  2,
-				Defense: 1,
-				GooCost: 2,
-			},
-			{
-				MouldId: 2,
-				Set:     zb.CardSetType_Air,
-				Name:    "Azuraz",
-				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CreatureType_Walker,
-				Attack:  1,
-				Defense: 1,
-				GooCost: 1,
-			},
-			{
-				MouldId: 3,
-				Set:     zb.CardSetType_Air,
-				Name:    "NewCard",
-				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CreatureType_Walker,
-				Attack:  1,
-				Defense: 1,
-				GooCost: 1,
-			},
-		},
+		Cards:   expectedCards,
 	}
 
 	t.Run("UpdateCardList", func(t *testing.T) {
@@ -1072,11 +1075,12 @@ func TestUpdateCardListOperations(t *testing.T) {
 	t.Run("Check card v2", func(t *testing.T) {
 		req := zb.GetCardListRequest{Version: "v2"}
 		resp, err := c.GetCardList(ctx, &req)
+		expected := &zb.GetCardListResponse{
+			Cards: expectedCards,
+		}
 		assert.Nil(t, err)
 		assert.NotNil(t, resp)
-		fmt.Printf("Check1: %+v", updateCardListRequest.Cards)
-		fmt.Printf("Check2: %+v", resp.Cards)
-		assert.EqualValues(t, updateCardListRequest.Cards, resp.Cards)
+		assert.True(t, proto.Equal(expected, resp))
 	})
 	t.Run("Check not exsiting version v3", func(t *testing.T) {
 		req := zb.GetCardListRequest{Version: "v3"}
