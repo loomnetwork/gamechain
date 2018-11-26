@@ -7,7 +7,6 @@ make deps
 make
 ```
 
-
 ## Run with loomchain
 
 Make sure you have [loom](github.com/loomnetwork/loomchain) binary.
