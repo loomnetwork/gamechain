@@ -1146,25 +1146,27 @@ func TestUpdateHeroLibraryOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
+	expectedHeroes := []*zb.Hero{
+		{
+			HeroId:           1,
+			Name:             "Hero1v2",
+			ShortDescription: "Hero1v2",
+		},
+		{
+			HeroId:           2,
+			Name:             "Hero2v2",
+			ShortDescription: "Hero2v2",
+		},
+		{
+			HeroId:           3,
+			Name:             "Hero3v2",
+			ShortDescription: "Hero2v2",
+		},
+	}
+
 	var updateHeroLibraryRequest = zb.UpdateHeroLibraryRequest{
 		Version: "v2",
-		Heroes: []*zb.Hero{
-			{
-				HeroId:           1,
-				Name:             "Hero1v2",
-				ShortDescription: "Hero1v2",
-			},
-			{
-				HeroId:           2,
-				Name:             "Hero2v2",
-				ShortDescription: "Hero2v2",
-			},
-			{
-				HeroId:           3,
-				Name:             "Hero3v2",
-				ShortDescription: "Hero2v2",
-			},
-		},
+		Heroes:  expectedHeroes,
 	}
 
 	t.Run("Update hero library v2", func(t *testing.T) {
@@ -1174,9 +1176,12 @@ func TestUpdateHeroLibraryOperations(t *testing.T) {
 	t.Run("Check hero library v2", func(t *testing.T) {
 		req := zb.ListHeroLibraryRequest{Version: "v2"}
 		resp, err := c.ListHeroLibrary(ctx, &req)
+		expected := &zb.ListHeroLibraryResponse{
+			Heroes: expectedHeroes,
+		}
 		assert.Nil(t, err)
 		assert.NotNil(t, resp)
-		assert.EqualValues(t, updateHeroLibraryRequest.Heroes, resp.Heroes)
+		assert.True(t, proto.Equal(expected, resp))
 	})
 	t.Run("Check not exsiting version v3", func(t *testing.T) {
 		req := zb.ListHeroLibraryRequest{Version: "v3"}
