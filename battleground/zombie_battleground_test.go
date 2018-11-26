@@ -1074,6 +1074,8 @@ func TestUpdateCardListOperations(t *testing.T) {
 		resp, err := c.GetCardList(ctx, &req)
 		assert.Nil(t, err)
 		assert.NotNil(t, resp)
+		fmt.Printf("Check1: %+v", updateCardListRequest.Cards)
+		fmt.Printf("Check2: %+v", resp.Cards)
 		assert.EqualValues(t, updateCardListRequest.Cards, resp.Cards)
 	})
 	t.Run("Check not exsiting version v3", func(t *testing.T) {
