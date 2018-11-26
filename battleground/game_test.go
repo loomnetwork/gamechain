@@ -1,9 +1,9 @@
 package battleground
 
 import (
-	"github.com/gogo/protobuf/proto"
 	"testing"
 
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -417,18 +417,18 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    3,
-				Attack:     2,
+				Defense: 3,
+				Attack:  2,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    5,
-				Attack:     1,
+				Defense: 5,
+				Attack:  1,
 			},
 		})
 
@@ -463,18 +463,18 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    3,
-				Attack:     2,
+				Defense: 3,
+				Attack:  2,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    1,
-				Attack:     1,
+				Defense: 1,
+				Attack:  1,
 			},
 		})
 
@@ -511,18 +511,18 @@ func TestCardAttack(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    1,
-				Attack:     1,
+				Defense: 1,
+				Attack:  1,
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    1,
-				Attack:     1,
+				Defense: 1,
+				Attack:  1,
 			},
 		})
 
@@ -562,8 +562,8 @@ func TestCardAttack(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    3,
-				Attack:     2,
+				Defense: 3,
+				Attack:  2,
 			},
 		})
 		gp.State.PlayerStates[1].Defense = 3
@@ -596,8 +596,8 @@ func TestCardAttack(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
 			InstanceId: 1,
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    3,
-				Attack:     2,
+				Defense: 3,
+				Attack:  2,
 			},
 		})
 		gp.State.PlayerStates[1].Defense = 1
@@ -641,17 +641,17 @@ func TestCardAttack(t *testing.T) {
 		}
 		cardInstance0 := CardInstance{&zb.CardInstance{
 			InstanceId: 1,
-			Instance: newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype: proto.Clone(card0).(*zb.Card),
+			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
+			Prototype:  proto.Clone(card0).(*zb.Card),
 		}}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: 2,
-			Prototype: &zb.Card{},
+			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
-				Defense:    5,
-				Attack:     1,
+				Defense: 5,
+				Attack:  1,
 			},
 		})
 
