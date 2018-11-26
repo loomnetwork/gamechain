@@ -155,6 +155,10 @@ message Skill {
 
     int32 attack = 11;
     int32 count = 12;
+    
+    int64 id = 13;
+    bool unlocked = 14;
+    bool can_select_target = 15;
 }
 
 message HeroList {
