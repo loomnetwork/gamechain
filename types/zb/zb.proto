@@ -1020,6 +1020,8 @@ message CardAbility {
             Undefined = 0;
             Impact = 1;
             Moving = 2;
+            Impact_Heavy = 3;
+            Impact_Feral = 4;
         }
 
         VisualEffectType Type = 1;
