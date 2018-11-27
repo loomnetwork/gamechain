@@ -159,6 +159,7 @@ message Skill {
     int64 id = 13;
     bool unlocked = 14;
     bool can_select_target = 15;
+    string unitStatus = 16;
 }
 
 message HeroList {
