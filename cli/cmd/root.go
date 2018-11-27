@@ -14,6 +14,7 @@ var rootCmdArgs struct {
 	readURI            string
 	writeURI           string
 	chainID            string
+	outputFormat       string
 }
 
 var commonTxObjs struct {
@@ -79,6 +80,7 @@ func Execute() error {
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.readURI, "readURI", "r", "http://localhost:46658/query", "Read URI for rpc")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.writeURI, "writeURI", "w", "http://localhost:46658/rpc", "Write URI for rpc")
 	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.chainID, "chainID", "c", "default", "Chain ID")
+	rootCmd.PersistentFlags().StringVarP(&rootCmdArgs.outputFormat, "output", "O", "plaintext", "format of the output (json, plaintext)")
 
 	return rootCmd.Execute()
 }
