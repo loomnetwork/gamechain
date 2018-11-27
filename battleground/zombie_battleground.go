@@ -708,12 +708,14 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		return nil, errors.New("Player is already in a match")
 	}
 
-	// if player is not in pool, add them
-	if targetProfile := findPlayerProfileByID(pool, req.UserId); targetProfile == nil {
-		pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
-		if err := savePlayerPoolFn(ctx, pool); err != nil {
-			return nil, err
-		}
+	targetProfile := findPlayerProfileByID(pool, req.UserId)
+	// if player is in the pool, remove the player from the pool first. otherwise, the profile won't get updated
+	if targetProfile != nil {
+		pool = removePlayerFromPool(pool, req.UserId)
+	}
+	pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
+	if err := savePlayerPoolFn(ctx, pool); err != nil {
+		return nil, err
 	}
 
 	// prune the timed out player profile
