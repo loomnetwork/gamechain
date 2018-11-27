@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -30,7 +32,17 @@ var endMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("end match %v successfully", req.MatchId)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("end match %v successfully", req.MatchId)
+		}
 
 		return nil
 	},

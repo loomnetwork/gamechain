@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -36,7 +37,18 @@ var editDeckCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error encountered while calling EditDeck: %s", err.Error())
 		}
-		fmt.Printf("deck edited successfully")
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("deck edited successfully")
+		}
+
 		return nil
 	},
 }
