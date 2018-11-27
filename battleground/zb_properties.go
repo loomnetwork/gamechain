@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
@@ -36,10 +37,10 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 			rage.WasApplied = true
 			card.Instance.Attack += rage.AddedAttack
 
-			return []*zb.PlayerActionOutcome {
+			return []*zb.PlayerActionOutcome{
 				{
-					Outcome: &zb.PlayerActionOutcome_Rage {
-						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome {
+					Outcome: &zb.PlayerActionOutcome_Rage{
+						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
 							InstanceId: card.InstanceId,
 							NewAttack:  card.Instance.Attack,
 						},
@@ -51,10 +52,10 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 		rage.WasApplied = false
 		card.Instance.Attack -= rage.AddedAttack
 
-		return []*zb.PlayerActionOutcome {
+		return []*zb.PlayerActionOutcome{
 			{
-				Outcome: &zb.PlayerActionOutcome_Rage {
-					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome {
+				Outcome: &zb.PlayerActionOutcome_Rage{
+					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
 						InstanceId: card.InstanceId,
 						NewAttack:  card.Instance.Attack,
 					},
@@ -73,7 +74,7 @@ func callAbilityInstancesFunc(game *Gameplay, card *CardInstance, fn abilityInst
 		case *zb.CardAbilityInstance_Rage:
 			abilityInstance = &CardAbilityRage{abilityType.Rage}
 		default:
-			panic(fmt.Errorf("CardAbilityInstance has unexpected type %T", abilityType))
+			fmt.Println("CardAbilityInstance has unexpected type %T", abilityType)
 		}
 
 		outcomes := fn(game, abilityInstance, card)
@@ -96,13 +97,13 @@ func (card *CardInstance) initAbilityInstances() {
 			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
 				AbilityType: &zb.CardAbilityInstance_Rage{
 					Rage: &zb.CardAbilityRage{
-						WasApplied: false,
+						WasApplied:  false,
 						AddedAttack: abilityInstanceRaw.Value,
 					},
 				},
 			})
 		default:
-			panic(fmt.Errorf("CardAbility.Type has unexpected value %d", abilityInstanceRaw.Type))
+			fmt.Println("CardAbility.Type has unexpected value %d", abilityInstanceRaw.Type)
 		}
 	}
 }
