@@ -675,13 +675,14 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	}
 
 	profile := zb.PlayerProfile{
-		UserId:     req.UserId,
-		DeckId:     deck.Id,
-		UpdatedAt:  ctx.Now().Unix(),
-		Version:    req.Version,
-		RandomSeed: req.RandomSeed,
-		CustomGame: req.CustomGame,
-		Tags:       req.Tags,
+		UserId:                 req.UserId,
+		DeckId:                 deck.Id,
+		UpdatedAt:              ctx.Now().Unix(),
+		Version:                req.Version,
+		RandomSeed:             req.RandomSeed,
+		CustomGame:             req.CustomGame,
+		Tags:                   req.Tags,
+		ClientSideRuleOverride: req.ClientSideRuleOverride,
 	}
 
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
@@ -897,6 +898,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
+	match.ClientSideRuleOverride = playerProfile.ClientSideRuleOverride
 
 	if err := createMatch(ctx, match); err != nil {
 		return nil, err
@@ -983,7 +985,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			},
 		}
 
-		gp, err := NewGamePlay(ctx, match.Id, match.Version, playerStates, match.RandomSeed, addr2, z.ClientSideRuleOverride)
+		gp, err := NewGamePlay(ctx, match.Id, match.Version, playerStates, match.RandomSeed, addr2, match.ClientSideRuleOverride)
 		if err != nil {
 			return nil, err
 		}

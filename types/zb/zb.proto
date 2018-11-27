@@ -405,6 +405,7 @@ message Match {
     int64 randomSeed = 6;
     Address customGameAddr = 7;
     int64 createdAt = 8;
+    bool ClientSideRuleOverride = 9;
 }
 
 message MatchMakingInfoList {
@@ -464,6 +465,7 @@ message PlayerProfile {
     int64 updatedAt = 6;
     repeated string tags = 7;
     int64 randomSeed = 8;
+    bool ClientSideRuleOverride = 9;
 }
 
 message PlayerPool {
@@ -481,6 +483,7 @@ message RegisterPlayerPoolRequest {
     Address customGame = 4;
     int64 randomSeed = 5;
     repeated string tags = 6;
+    bool ClientSideRuleOverride = 7;
 }
 
 message RegisterPlayerPoolResponse {
