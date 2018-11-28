@@ -7,7 +7,6 @@ make deps
 make
 ```
 
-
 ## Run with loomchain
 
 Make sure you have [loom](github.com/loomnetwork/loomchain) binary.
@@ -18,6 +17,7 @@ loom init
 cp zb.genesis.json genesis.json
 loom run
 ```
+
 
 ## Creating account and running transactions
 
@@ -31,7 +31,7 @@ loom genkey -k priv
 # In gamechain directory, run:
 
 # create account transaction
-./bin/zb-cli create_account -k priv -u loom -v "{\"image\":\"Image\", \"game_membership_tier\": 1}"
+./bin/zb-cli create_account -k priv -u loom -v v2 -d "{\"image\":\"Image\", \"game_membership_tier\": 1}"
 
 # get account static call
 ./bin/zb-cli get_account -k priv -u loom
@@ -46,7 +46,7 @@ loom genkey -k priv
 ./bin/zb-cli get_deck -k priv -u loom --deckId 0
 
 # Add Deck
-./bin/zb-cli create_deck -k priv -u loom -v "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": "Breezee", \"amount\": 1} ]}"
+./bin/zb-cli create_deck -k priv -u loom -v v2 -d "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": \"Breezee\", \"amount\": 1} ]}"
 
 # Delete Deck by id
 ./bin/zb-cli delete_deck -k priv -u loom --deckId 0
