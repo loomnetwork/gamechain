@@ -1071,6 +1071,7 @@ message PlayerActionOutcome {
 message CardAbilityInstance {
     oneof AbilityType {
         CardAbilityRage rage = 1;
+        CardAbilityPriorityAttack priorityAttack = 2;
     }
 }
 
