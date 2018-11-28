@@ -39,9 +39,12 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 func callAbilityInstancesFunc(game *Gameplay, card *CardInstance, fn abilityInstanceFn) {
 	for _, abilityInstanceRaw := range card.AbilitiesInstances {
 		var abilityInstance CardAbility
+		fmt.Println(abilityInstanceRaw.AbilityType)
 		switch abilityType := abilityInstanceRaw.AbilityType.(type) {
 		case *zb.CardAbilityInstance_Rage:
 			abilityInstance = &CardAbilityRage{abilityType.Rage}
+		case *zb.CardAbilityInstance_PriorityAttack:
+			abilityInstance = &CardAbilityPriorityAttack{abilityType.PriorityAttack}
 		default:
 			fmt.Println("CardAbilityInstance has unexpected type %T", abilityType)
 		}
@@ -69,6 +72,12 @@ func (card *CardInstance) initAbilityInstances() {
 						WasApplied:  false,
 						AddedAttack: abilityInstanceRaw.Value,
 					},
+				},
+			})
+		case zb.CardAbilityType_PriorityAttack:
+			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
+				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
+					PriorityAttack: &zb.CardAbilityPriorityAttack{},
 				},
 			})
 		default:
@@ -125,5 +134,8 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 // Priority Attack
 func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
 	// reset the card's defense
+	fmt.Println("prAttack")
+	// TODO: need the older value here
 	card.Instance.Defense = card.Prototype.Defense
+	return []*zb.PlayerActionOutcome{}
 }

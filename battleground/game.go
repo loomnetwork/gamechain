@@ -72,9 +72,9 @@ func NewGamePlay(ctx contract.Context,
 		CreatedAt:          ctx.Now().Unix(),
 	}
 	g := &Gameplay{
-		State:                  state,
-		customGameMode:         customGameMode,
-		ctx:                    &ctx,
+		State:          state,
+		customGameMode: customGameMode,
+		ctx:            &ctx,
 		ClientSideRuleOverride: clientSideRuleOverride,
 		logger:                 ctx.Logger(),
 	}
