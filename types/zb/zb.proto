@@ -1053,6 +1053,10 @@ message CardAbilityRage {
     bool wasApplied = 2;
 }
 
+message CardAbilityPriorityAttack {
+    
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
