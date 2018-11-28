@@ -103,7 +103,7 @@ func (card *CardInstance) initAbilityInstances() {
 				},
 			})
 		default:
-			fmt.Println("CardAbility.Type has unexpected value %d", abilityInstanceRaw.Type)
+			fmt.Printf("CardAbility.Type has unexpected value %d", abilityInstanceRaw.Type)
 		}
 	}
 }
