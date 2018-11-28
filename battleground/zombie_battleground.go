@@ -51,7 +51,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		z.ClientSideRuleOverride = true
 	}
 
-	z.ClientSideRuleOverride = false
 	ctx.Logger().Info(fmt.Sprintf("ClientSideRuleOverride = %t\n", z.ClientSideRuleOverride))
 
 	if req.Oracle != nil {
@@ -1510,7 +1509,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.PlayerActionResponse{
-		Match:     match,
+		Match: match,
 	}, nil
 }
 
