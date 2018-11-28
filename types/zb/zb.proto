@@ -688,6 +688,7 @@ message UniqueAnimationType
     enum Enum {
         None = 0;
         ShammannArrival = 1;
+        ZVirusArrival = 2; 
     }
 }
 
@@ -905,6 +906,7 @@ message CardAbilityType {
         SET_ATTACK_AVAILABILITY = 81 [(gogoproto.enumvalue_customname) = "SetAttackAvailability"];
         CHOOSABLE_ABILITIES = 82 [(gogoproto.enumvalue_customname) = "ChoosableAbilities"];
         COSTS_LESS_IF_TYPE_CARD_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfTypeCardInPlay"];
+        GAIN_GOO = 84 [(gogoproto.enumvalue_customname) = "GainGoo"];
     }
 }
 
