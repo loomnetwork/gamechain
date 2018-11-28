@@ -45,7 +45,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		secret = "justsowecantestwithoutenvvar"
 	}
 	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
-	if disableClientSideOverride != "false" {
+	if disableClientSideOverride == "false" {
 		z.ClientSideRuleOverride = false
 	} else {
 		z.ClientSideRuleOverride = true
