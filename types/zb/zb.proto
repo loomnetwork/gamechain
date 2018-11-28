@@ -748,6 +748,7 @@ message GameMechanicDescriptionType
         IN_HAND = 22 [(gogoproto.enumvalue_customname) = "InHand"];
         KILL_UNIT = 23 [(gogoproto.enumvalue_customname) = "KillUnit"];
         PERMANENT = 24 [(gogoproto.enumvalue_customname) = "Permanent"];
+        BLITZ = 25 [(gogoproto.enumvalue_customname) = "Blitz"];
     }
 }
 
