@@ -18,8 +18,13 @@ type CardAbilityRage struct {
 	*zb.CardAbilityRage
 }
 
+type CardAbilityPriorityAttack struct {
+	*zb.CardAbilityPriorityAttack
+}
+
 type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
 
+// SetDefence will set the card's defense value and call the ability's defenseChangedHandler
 func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 	card.tryInitAbilitiesInstances()
 	card.Instance.Defense = defense
@@ -29,42 +34,6 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 	})
 
 	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
-}
-
-func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
-	if !rage.WasApplied {
-		if card.Instance.Defense < card.Prototype.Defense {
-			rage.WasApplied = true
-			card.Instance.Attack += rage.AddedAttack
-
-			return []*zb.PlayerActionOutcome{
-				{
-					Outcome: &zb.PlayerActionOutcome_Rage{
-						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
-							InstanceId: card.InstanceId,
-							NewAttack:  card.Instance.Attack,
-						},
-					},
-				},
-			}
-		}
-	} else if card.Instance.Defense >= card.Prototype.Defense {
-		rage.WasApplied = false
-		card.Instance.Attack -= rage.AddedAttack
-
-		return []*zb.PlayerActionOutcome{
-			{
-				Outcome: &zb.PlayerActionOutcome_Rage{
-					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
-						InstanceId: card.InstanceId,
-						NewAttack:  card.Instance.Attack,
-					},
-				},
-			},
-		}
-	}
-
-	return nil
 }
 
 func callAbilityInstancesFunc(game *Gameplay, card *CardInstance, fn abilityInstanceFn) {
@@ -113,4 +82,48 @@ func (card *CardInstance) tryInitAbilitiesInstances() {
 		card.initAbilityInstances()
 		card.AbilitiesInstancesInitialized = true
 	}
+}
+
+/* ability specific hooks */
+// Rage
+func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
+	if !rage.WasApplied {
+		if card.Instance.Defense < card.Prototype.Defense {
+			rage.WasApplied = true
+			card.Instance.Attack += rage.AddedAttack
+
+			return []*zb.PlayerActionOutcome{
+				{
+					Outcome: &zb.PlayerActionOutcome_Rage{
+						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+							InstanceId: card.InstanceId,
+							NewAttack:  card.Instance.Attack,
+						},
+					},
+				},
+			}
+		}
+	} else if card.Instance.Defense >= card.Prototype.Defense {
+		rage.WasApplied = false
+		card.Instance.Attack -= rage.AddedAttack
+
+		return []*zb.PlayerActionOutcome{
+			{
+				Outcome: &zb.PlayerActionOutcome_Rage{
+					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+						InstanceId: card.InstanceId,
+						NewAttack:  card.Instance.Attack,
+					},
+				},
+			},
+		}
+	}
+
+	return nil
+}
+
+// Priority Attack
+func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
+	// reset the card's defense
+	card.Instance.Defense = card.Prototype.Defense
 }
