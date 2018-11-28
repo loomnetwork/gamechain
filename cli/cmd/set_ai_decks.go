@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -44,7 +46,18 @@ var setAIDecksCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("decks set successfully")
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("decks set successfully")
+		}
+
 		return nil
 	},
 }

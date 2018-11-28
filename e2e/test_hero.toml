@@ -13,29 +13,29 @@
   RunCmd = "zb-cli list_hero -k {{index $.AccountPrivKeyPathList 0}} -u loom"
   All = true
   Condition = "contains"
-  Expected = ["\"hero_id\": \"0\"", "\"hero_id\": \"1\"", "\"hero_id\": \"2\"", "\"hero_id\": \"3\"", "\"hero_id\": \"4\"", "\"hero_id\": \"5\""]
+  Expected = ["hero_id: 0", "hero_id: 1", "hero_id: 2", "hero_id: 3", "hero_id: 4", "hero_id: 5"]
 
 [[TestCases]]
   RunCmd = "zb-cli get_hero -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1"
   All = true
   Condition = "contains"
-  Expected = ["\"hero_id\": \"1\"", "\"experience\": \"0\""]
+  Expected = ["hero_id: 1", "experience: 0"]
 
 [[TestCases]]
   RunCmd = "zb-cli get_hero_skills -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1"
   All = true
   Condition = "contains"
-  Expected = ["\"hero_id\": \"1\""]
+  Expected = ["hero_id: 1"]
 
 [[TestCases]]
   RunCmd = "zb-cli add_hero_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1 -e 10"
   Condition = "contains"
-  Expected = ["\"hero_id\": \"1\"", "\"experience\": \"10\""]
+  Expected = ["hero_id: 1", "experience: 10"]
 
 [[TestCases]]
   RunCmd = "zb-cli add_hero_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1 -e 5"
   Condition = "contains"
-  Expected = ["\"hero_id\": \"1\"", "\"experience\": \"15\""]
+  Expected = ["hero_id: 1", "experience: 15"]
 
 [[TestCases]]
   RunCmd = "checkapphash"
@@ -44,4 +44,4 @@
   RunCmd = "zb-cli get_hero -k {{index $.AccountPrivKeyPathList 0}} -u loom --heroId 1"
   All = true
   Condition = "contains"
-  Expected = ["\"hero_id\": \"1\"", "\"experience\": \"15\""]
+  Expected = ["hero_id: 1", "experience: 15"]

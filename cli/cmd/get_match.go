@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -32,13 +34,22 @@ var getMatchCmd = &cobra.Command{
 			return err
 		}
 		match := resp.Match
-		fmt.Printf("MatchID: %d\n", match.Id)
-		fmt.Printf("Status: %s\n", match.Status)
-		fmt.Printf("Topic: %v\n", match.Topics)
-		fmt.Printf("Version: %s\n", match.Version)
-		fmt.Printf("Players:\n")
-		for i, player := range match.PlayerStates {
-			fmt.Printf("\tPlayer%d: %s - accepted: %v\n", i+1, player.Id, player.MatchAccepted)
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := new(jsonpb.Marshaler).MarshalToString(match)
+			if err != nil {
+				return err
+			}
+			fmt.Println(output)
+		default:
+			fmt.Printf("MatchID: %d\n", match.Id)
+			fmt.Printf("Status: %s\n", match.Status)
+			fmt.Printf("Topic: %v\n", match.Topics)
+			fmt.Printf("Players:\n")
+			for i, player := range match.PlayerStates {
+				fmt.Printf("\tPlayer%d: %s\n", i+1, player.Id)
+			}
 		}
 
 		return nil

@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -46,7 +48,17 @@ var updateCardsCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateCardList: %s", err.Error())
 		}
-		fmt.Printf("Cards updated successfully\n")
+
+		switch strings.ToLower(rootCmdArgs.outputFormat) {
+		case "json":
+			output, err := json.Marshal(map[string]interface{}{"success": true})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(output))
+		default:
+			fmt.Printf("Cards updated successfully\n")
+		}
 
 		return nil
 	},
