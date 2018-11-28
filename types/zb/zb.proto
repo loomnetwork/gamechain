@@ -907,6 +907,8 @@ message CardAbilityType {
         CHOOSABLE_ABILITIES = 82 [(gogoproto.enumvalue_customname) = "ChoosableAbilities"];
         COSTS_LESS_IF_TYPE_CARD_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfTypeCardInPlay"];
         GAIN_GOO = 84 [(gogoproto.enumvalue_customname) = "GainGoo"];
+        BLITZ = 85 [(gogoproto.enumvalue_customname) = "Blitz"];
+        DRAW_CARD_BY_FACTION = 86 [(gogoproto.enumvalue_customname) = "DrawCardByFaction"];
     }
 }
 
