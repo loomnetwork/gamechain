@@ -414,6 +414,7 @@ message Match {
     int64 randomSeed = 6;
     Address customGameAddr = 7;
     int64 createdAt = 8;
+    bool useClientGameLogic = 9;
 }
 
 message MatchMakingInfoList {

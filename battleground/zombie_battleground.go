@@ -45,7 +45,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		secret = "justsowecantestwithoutenvvar"
 	}
 	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
-	if disableClientSideOverride == "false" {
+	if disableClientSideOverride == "true" {
 		z.ClientSideRuleOverride = false
 	} else {
 		z.ClientSideRuleOverride = true
@@ -902,7 +902,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
 
-	if err := createMatch(ctx, match); err != nil {
+	if err := createMatch(ctx, match, z.ClientSideRuleOverride); err != nil {
 		return nil, err
 	}
 
@@ -1200,7 +1200,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 				Version: req.Version,
 			}
 
-			if err := createMatch(ctx, match); err != nil {
+			if err := createMatch(ctx, match, z.ClientSideRuleOverride); err != nil {
 				return nil, err
 			}
 			// save user match
@@ -1479,12 +1479,11 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	req.PlayerAction.ActionOutcomes = gp.actionOutcomes
+	gp.actionOutcomes = nil
 
 	if req.PlayerAction.ActionOutcomes != nil && len(req.PlayerAction.ActionOutcomes) > 0 {
 		ctx.Logger().Info(fmt.Sprintf("\n\nreq.PlayerAction.ActionOutcomes: %v\n\n", req.PlayerAction.ActionOutcomes))
 	}
-
-	gp.actionOutcomes = nil
 
 	if err := saveGameState(ctx, gamestate); err != nil {
 		return nil, err
