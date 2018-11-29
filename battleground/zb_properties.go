@@ -20,6 +20,7 @@ type CardAbilityRage struct {
 
 type CardAbilityPriorityAttack struct {
 	*zb.CardAbilityPriorityAttack
+	oldDefense int32
 }
 
 type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
@@ -39,6 +40,7 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
 }
 
+// call hook for each ability instance
 func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityInstanceFn) {
 	for _, abilityInstanceRaw := range card.AbilitiesInstances {
 		var abilityInstance CardAbility
@@ -47,7 +49,10 @@ func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityIns
 		case *zb.CardAbilityInstance_Rage:
 			abilityInstance = &CardAbilityRage{abilityType.Rage}
 		case *zb.CardAbilityInstance_PriorityAttack:
-			abilityInstance = &CardAbilityPriorityAttack{abilityType.PriorityAttack}
+			abilityInstance = &CardAbilityPriorityAttack{
+				CardAbilityPriorityAttack: abilityType.PriorityAttack,
+				oldDefense:                card.Instance.Defense,
+			}
 		default:
 			fmt.Println("CardAbilityInstance has unexpected type %T", abilityType)
 		}
@@ -137,8 +142,8 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 // Priority Attack
 func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
 	// reset the card's defense
-	fmt.Println("prAttack")
+	fmt.Println("prAttack", priorityAttack.oldDefense)
 	// TODO: need the older value here
-	card.Instance.Defense = card.Prototype.Defense
+	card.Instance.Defense = priorityAttack.oldDefense
 	return []*zb.PlayerActionOutcome{}
 }
