@@ -20,7 +20,6 @@ type CardAbilityRage struct {
 
 type CardAbilityPriorityAttack struct {
 	*zb.CardAbilityPriorityAttack
-	oldDefense int32
 }
 
 type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
@@ -36,7 +35,6 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 
 	// call the defense changed hook for each ability of the card
 	card.callAbilityInstancesFunc(game, defenseChangedHook)
-
 	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
 }
 
@@ -44,14 +42,12 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityInstanceFn) {
 	for _, abilityInstanceRaw := range card.AbilitiesInstances {
 		var abilityInstance CardAbility
-		fmt.Println(abilityInstanceRaw.AbilityType)
 		switch abilityType := abilityInstanceRaw.AbilityType.(type) {
 		case *zb.CardAbilityInstance_Rage:
 			abilityInstance = &CardAbilityRage{abilityType.Rage}
 		case *zb.CardAbilityInstance_PriorityAttack:
 			abilityInstance = &CardAbilityPriorityAttack{
 				CardAbilityPriorityAttack: abilityType.PriorityAttack,
-				oldDefense:                card.Instance.Defense,
 			}
 		default:
 			fmt.Println("CardAbilityInstance has unexpected type %T", abilityType)
@@ -85,7 +81,9 @@ func (card *CardInstance) initAbilityInstances() {
 		case zb.CardAbilityType_PriorityAttack:
 			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
 				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
-					PriorityAttack: &zb.CardAbilityPriorityAttack{},
+					PriorityAttack: &zb.CardAbilityPriorityAttack{
+						OldDefense: card.Instance.Defense,
+					},
 				},
 			})
 		default:
@@ -141,9 +139,7 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 
 // Priority Attack
 func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
-	// reset the card's defense
-	fmt.Println("prAttack", priorityAttack.oldDefense)
-	// TODO: need the older value here
-	card.Instance.Defense = priorityAttack.oldDefense
+	// reset the card's defense to the old value (before the attack)
+	card.Instance.Defense = priorityAttack.OldDefense
 	return []*zb.PlayerActionOutcome{}
 }
