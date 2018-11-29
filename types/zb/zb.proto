@@ -154,7 +154,7 @@ message Skill {
     string icon_path = 3;
     string description = 4;
     repeated OverlordAbilityTarget.Enum skill_targets = 5;
-    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6 [json_name = "target_unit_special_status"];
+    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6;
     repeated CardSetType.Enum element_targets = 7;
     int32 value = 8;
 
@@ -697,7 +697,6 @@ message UniqueAnimationType
     enum Enum {
         None = 0;
         ShammannArrival = 1;
-        ZVirusArrival = 2;
     }
 }
 
@@ -1022,7 +1021,7 @@ message CardAbility {
     int32 turns = 16;
     int32 count = 17;
     int32 delay = 18;
-    repeated VisualEffectInfo VisualEffectsToPlay = 19 [json_name = "visual_effects_to_play"];
+    repeated VisualEffectInfo VisualEffectsToPlay = 19;
     GameMechanicDescriptionType.Enum gameMechanicDescriptionType = 20 [json_name = "mechanic_description_type"];
     CardSetType.Enum target_set = 21;
     CardAbilitySubTrigger.Enum sub_trigger = 22;
@@ -1039,8 +1038,8 @@ message CardAbility {
             Impact_Feral = 4;
         }
 
-        VisualEffectType Type = 1 [json_name = "type"];
-        string Path = 2 [json_name = "path"];
+        VisualEffectType Type = 1;
+        string Path = 2;
     }
 }
 
