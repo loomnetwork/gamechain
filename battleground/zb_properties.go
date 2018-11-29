@@ -141,5 +141,14 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
 	// reset the card's defense to the old value (before the attack)
 	card.Instance.Defense = priorityAttack.OldDefense
-	return []*zb.PlayerActionOutcome{}
+	return []*zb.PlayerActionOutcome{
+		{
+			Outcome: &zb.PlayerActionOutcome_PriorityAttack{
+				PriorityAttack: &zb.PlayerActionOutcome_CardAbilityPriorityAttackOutcome{
+					InstanceId: card.InstanceId,
+					NewDefense: card.Instance.Defense,
+				},
+			},
+		},
+	}
 }

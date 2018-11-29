@@ -1060,11 +1060,17 @@ message CardAbilityPriorityAttack {
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
+        CardAbilityPriorityAttackOutcome priorityAttack = 2;
     }
 
     message CardAbilityRageOutcome {
         int32 instanceId = 1;
         int32 newAttack = 2;
+    }
+
+    message CardAbilityPriorityAttackOutcome {
+        int32 instanceId = 1;
+        int32 newDefense = 2;
     }
 }
 
