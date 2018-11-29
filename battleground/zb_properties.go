@@ -29,14 +29,17 @@ func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
 	card.tryInitAbilitiesInstances()
 	card.Instance.Defense = defense
 
-	callAbilityInstancesFunc(game, card, func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome {
+	defenseChangedHook := func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome {
 		return ability.defenseChangedHandler(card)
-	})
+	}
+
+	// call the defense changed hook for each ability of the card
+	card.callAbilityInstancesFunc(game, defenseChangedHook)
 
 	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
 }
 
-func callAbilityInstancesFunc(game *Gameplay, card *CardInstance, fn abilityInstanceFn) {
+func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityInstanceFn) {
 	for _, abilityInstanceRaw := range card.AbilitiesInstances {
 		var abilityInstance CardAbility
 		fmt.Println(abilityInstanceRaw.AbilityType)
