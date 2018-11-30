@@ -677,6 +677,114 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
 		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId)
 	})
+
+	t.Run("PriorityAttack ability when target is killed", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		assert.Nil(t, err)
+
+		card0 := &zb.Card{
+			Defense: 5,
+			Attack:  2,
+			Abilities: []*zb.CardAbility{
+				{
+					Type: zb.CardAbilityType_PriorityAttack,
+				},
+			},
+		}
+		cardInstance0 := CardInstance{&zb.CardInstance{
+			InstanceId: 1,
+			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
+			Prototype:  proto.Clone(card0).(*zb.Card),
+		}}
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
+				Defense: 1,
+				Attack:  1,
+			},
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_Character,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(5), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
+	})
+
+	t.Run("PriorityAttack ability does not trigger when target is not killed", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		assert.Nil(t, err)
+
+		card0 := &zb.Card{
+			Defense: 5,
+			Attack:  2,
+			Abilities: []*zb.CardAbility{
+				{
+					Type: zb.CardAbilityType_PriorityAttack,
+				},
+			},
+		}
+		cardInstance0 := CardInstance{&zb.CardInstance{
+			InstanceId: 1,
+			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
+			Prototype:  proto.Clone(card0).(*zb.Card),
+		}}
+
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: 2,
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
+				Defense: 5,
+				Attack:  1,
+			},
+		})
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.CardInstance{
+						InstanceId: 1,
+					},
+					AffectObjectType: zb.AffectObjectType_Character,
+					Target: &zb.Unit{
+						InstanceId: 2,
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
+	})
 }
 
 func TestCardPlay(t *testing.T) {
