@@ -154,7 +154,7 @@ message Skill {
     string icon_path = 3;
     string description = 4;
     repeated OverlordAbilityTarget.Enum skill_targets = 5;
-    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6;
+    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6 [json_name="target_unit_special_status"];
     repeated CardSetType.Enum element_targets = 7;
     int32 value = 8;
 
