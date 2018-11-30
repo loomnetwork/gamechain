@@ -1053,20 +1053,32 @@ message CardAbilityRage {
     bool wasApplied = 2;
 }
 
+message CardAbilityPriorityAttack {
+    int32 attackerOldDefense = 1;
+    int32 targetOldDefense = 2;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
+        CardAbilityPriorityAttackOutcome priorityAttack = 2;
     }
 
     message CardAbilityRageOutcome {
         int32 instanceId = 1;
         int32 newAttack = 2;
     }
+
+    message CardAbilityPriorityAttackOutcome {
+        int32 instanceId = 1;
+        int32 newDefense = 2;
+    }
 }
 
 message CardAbilityInstance {
     oneof AbilityType {
         CardAbilityRage rage = 1;
+        CardAbilityPriorityAttack priorityAttack = 2;
     }
 }
 
