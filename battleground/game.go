@@ -861,10 +861,10 @@ func actionCardAttack(g *Gameplay) stateFn {
 			target.InstanceId,
 			target.Prototype.Name,
 		)
-		attackerInstance := CardInstance{attacker}
-		targetInstance := CardInstance{target}
-		attackerInstance.SetDefense(g, attackerInstance.Instance.Defense-targetInstance.Instance.Attack)
-		targetInstance.SetDefense(g, targetInstance.Instance.Defense-attackerInstance.Instance.Attack)
+		attackerInstance := &CardInstance{attacker}
+		targetInstance := &CardInstance{target}
+		attackerInstance.SetDefense(g, targetInstance, attackerInstance.Instance.Defense-targetInstance.Instance.Attack)
+		targetInstance.SetDefense(g, attackerInstance, targetInstance.Instance.Defense-attackerInstance.Instance.Attack)
 
 		if attacker.Instance.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)

@@ -1054,7 +1054,8 @@ message CardAbilityRage {
 }
 
 message CardAbilityPriorityAttack {
-    int32 oldDefense = 1;
+    int32 attackerOldDefense = 1;
+    int32 targetOldDefense = 2;
 }
 
 message PlayerActionOutcome {

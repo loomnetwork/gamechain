@@ -25,8 +25,8 @@ type CardAbilityPriorityAttack struct {
 type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
 
 // SetDefence will set the card's defense value and call the ability's defenseChangedHandler
-func (card *CardInstance) SetDefense(game *Gameplay, defense int32) {
-	card.tryInitAbilitiesInstances()
+func (card *CardInstance) SetDefense(game *Gameplay, opponentCard *CardInstance, defense int32) {
+	card.tryInitAbilitiesInstances(game, opponentCard)
 	card.Instance.Defense = defense
 
 	defenseChangedHook := func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome {
@@ -62,7 +62,7 @@ func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityIns
 	}
 }
 
-func (card *CardInstance) initAbilityInstances() {
+func (card *CardInstance) initAbilityInstances(game *Gameplay, opponentCard *CardInstance) {
 	if card.Prototype.Abilities == nil {
 		return
 	}
@@ -82,7 +82,8 @@ func (card *CardInstance) initAbilityInstances() {
 			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
 				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
 					PriorityAttack: &zb.CardAbilityPriorityAttack{
-						OldDefense: card.Instance.Defense,
+						AttackerOldDefense: card.Instance.Defense,
+						TargetOldDefense:   opponentCard.Instance.Defense,
 					},
 				},
 			})
@@ -92,9 +93,9 @@ func (card *CardInstance) initAbilityInstances() {
 	}
 }
 
-func (card *CardInstance) tryInitAbilitiesInstances() {
+func (card *CardInstance) tryInitAbilitiesInstances(game *Gameplay, opponentCard *CardInstance) {
 	if !card.AbilitiesInstancesInitialized {
-		card.initAbilityInstances()
+		card.initAbilityInstances(game, opponentCard)
 		card.AbilitiesInstancesInitialized = true
 	}
 }
@@ -139,8 +140,10 @@ func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.Pla
 
 // Priority Attack
 func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
-	// reset the card's defense to the old value (before the attack)
-	card.Instance.Defense = priorityAttack.OldDefense
+	// reset the card's defense to the value before the attack, only if the opponent card dies
+	if priorityAttack.TargetOldDefense-card.Instance.Attack <= 0 {
+		card.Instance.Defense = priorityAttack.AttackerOldDefense
+	}
 	return []*zb.PlayerActionOutcome{
 		{
 			Outcome: &zb.PlayerActionOutcome_PriorityAttack{
