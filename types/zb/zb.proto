@@ -709,6 +709,10 @@ message UniqueAnimationType
         None = 0;
         ShammannArrival = 1;
         ZVirusArrival = 2;
+        ChernoBillArrival = 3;
+        CerberusArrival = 4;
+        ZeuzArrival = 5;
+        TzunamyArrival = 6;
     }
 }
 
