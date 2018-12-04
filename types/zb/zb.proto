@@ -475,6 +475,7 @@ message PlayerProfile {
     int64 updatedAt = 6;
     repeated string tags = 7;
     int64 randomSeed = 8;
+    bool useBackendGameLogic = 9;
 }
 
 message PlayerPool {
@@ -492,6 +493,7 @@ message RegisterPlayerPoolRequest {
     Address customGame = 4;
     int64 randomSeed = 5;
     repeated string tags = 6;
+    bool useBackendGameLogic = 7;
 }
 
 message RegisterPlayerPoolResponse {

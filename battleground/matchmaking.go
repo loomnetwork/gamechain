@@ -23,9 +23,14 @@ type MatchMakingFunc func(target *zb.PlayerProfile, candidate *zb.PlayerProfile)
 var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64 {
 	// map tag to the same tag group
 	if len(target.Tags) > 0 {
-		if compareTags(target.Tags, candidate.Tags) {
+		if compareTags(target.Tags, candidate.Tags) && target.UseBackendGameLogic == candidate.UseBackendGameLogic {
 			return 1
 		}
+		return 0
+	}
+
+	// server side ability
+	if target.UseBackendGameLogic != candidate.UseBackendGameLogic {
 		return 0
 	}
 
