@@ -72,9 +72,9 @@ func NewGamePlay(ctx contract.Context,
 		CreatedAt:          ctx.Now().Unix(),
 	}
 	g := &Gameplay{
-		State:          state,
-		customGameMode: customGameMode,
-		ctx:            &ctx,
+		State:                  state,
+		customGameMode:         customGameMode,
+		ctx:                    &ctx,
 		ClientSideRuleOverride: clientSideRuleOverride,
 		logger:                 ctx.Logger(),
 	}
@@ -599,6 +599,8 @@ func actionDrawCard(g *Gameplay) stateFn {
 		}
 
 		card = g.activePlayer().CardsInDeck[0]
+
+		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
 
 		// remove card from CardsInDeck
 		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
