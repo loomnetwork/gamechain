@@ -5,13 +5,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/url"
 	"os"
-	"path/filepath"
-	"runtime"
-	"strconv"
 	"strings"
 
 	"github.com/Jeffail/gabs"
@@ -34,16 +30,13 @@ func main() {
 		wsURL = "ws://localhost:9999/queryws"
 	}
 	log.Printf("wsURL - %s", wsURL)
-	saveToDB, _ = strconv.ParseBool(os.Getenv("SAVE_TO_DB"))
 
-	if saveToDB {
-		var err error
-		db, err = connectToDb()
-		if err != nil {
-			log.Println(err)
-		}
-		defer db.Close()
+	var err error
+	db, err = connectToDb()
+	if err != nil {
+		log.Println(err)
 	}
+	defer db.Close()
 
 	wsLoop()
 }
@@ -101,88 +94,41 @@ func wsLoop() {
 
 				fmt.Println("Getting event with topic: ", topic)
 
-				if !strings.HasPrefix(topic, "match") {
+				if "zombiebattlegroundcreatedeck" != topic {
 					continue
 				}
 
-				replay, err := writeReplayFile(topic, body)
+				fmt.Println("CREATE DECK TOPIC RECEIVED")
+				fmt.Printf("body: %+v", string(body))
+
+				var event zb.CreateDeckEvent
+				err := proto.Unmarshal(body, &event)
 				if err != nil {
-					log.Println("Error writing replay file: ", err)
+					log.Println("Error unmarshaling event: ", err)
+					continue
 				}
 
-				if saveToDB {
-					matchID, err := strconv.ParseInt(topic[5:], 10, 64)
-					if err != nil {
-						log.Println(err)
-					}
-					log.Printf("Saving replay with match ID %d to DB", matchID)
-					_, err = db.Exec(`INSERT INTO replays set match_id=?, replay_json=? ON DUPLICATE KEY UPDATE replay_json = ?`, matchID, replay, replay)
-					if err != nil {
-						log.Println("Error saving replay to DB: ", err)
-					}
+				fmt.Printf("event: %+v", event)
+
+				log.Printf("Saving deck with deck ID %d to DB", event.Deck.Id)
+				log.Printf("Saving deck with deck userid %s to DB", event.UserId)
+				log.Printf("Saving deck with deck name %s to DB", event.Deck.Name)
+
+				m := jsonpb.Marshaler{}
+				deckJSON, err := m.MarshalToString(event.Deck)
+				if err != nil {
+					log.Println("Error marshaling deck to json: ", err)
+					continue
+				}
+
+				_, err = db.Exec(`INSERT INTO zb_decks set user=?, deck_id=?, deck_name=?, deck_json=?, version=?, sender_address=?`, event.UserId, event.Deck.Id, event.Deck.Name, deckJSON, event.Version, event.SenderAddress)
+				if err != nil {
+					log.Println("Error saving replay to DB: ", err)
 				}
 
 			}
 		}
 	}
-}
-
-func writeReplayFile(topic string, body []byte) ([]byte, error) {
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
-
-	path := filepath.Join(basepath, "../../replays/")
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		os.Mkdir(path, os.ModePerm)
-	}
-
-	filename := fmt.Sprintf("%s.json", topic)
-	path = filepath.Join(path, filename)
-
-	fmt.Println("Writing to file: ", path)
-
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	var event zb.PlayerActionEvent
-	err = proto.Unmarshal(body, &event)
-	if err != nil {
-		return nil, err
-	}
-
-	if event.Block == nil {
-		return nil, nil
-	}
-
-	var replay zb.GameReplay
-	if fi, _ := f.Stat(); fi.Size() > 0 {
-		if err := jsonpb.Unmarshal(f, &replay); err != nil {
-			log.Println(err)
-			return nil, err
-		}
-	}
-
-	if event.PlayerAction != nil {
-		replay.Blocks = append(replay.Blocks, event.Block.List...)
-		replay.Actions = append(replay.Actions, event.PlayerAction)
-	} else {
-		replay.Blocks = event.Block.List
-	}
-
-	m := jsonpb.Marshaler{}
-	result, err := m.MarshalToString(&replay)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := ioutil.WriteFile(path, []byte(result), os.ModePerm); err != nil {
-		return nil, err
-	}
-
-	return []byte(result), nil
 }
 
 func connectToDb() (*sql.DB, error) {
@@ -212,7 +158,7 @@ func connectToDb() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_decks (user VARCHAR(255), deck_id INT, deck_name VARCHAR(255), deck_json MEDIUMBLOB, version VARCHAR(32), sender_address VARCHAR(255), created_at TIMESTAMP NOT NULL DEFAULT NOW(), PRIMARY KEY (user, deck_id))")
 	if err != nil {
 		return nil, err
 	}

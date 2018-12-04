@@ -413,11 +413,20 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createdeck")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createdeck")
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.CreateDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		Deck:          req.Deck,
+		Version:       req.Version,
 	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	ctx.EmitTopics([]byte(data), "zombiebattleground:createdeck")
+
 	return &zb.CreateDeckResponse{DeckId: newDeckID}, nil
 }
 
