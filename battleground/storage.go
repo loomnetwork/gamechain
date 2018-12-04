@@ -229,7 +229,7 @@ func saveMatch(ctx contract.Context, match *zb.Match) error {
 	return nil
 }
 
-func createMatch(ctx contract.Context, match *zb.Match, useClientGameLogic bool) error {
+func createMatch(ctx contract.Context, match *zb.Match, useBackendGameLogic bool) error {
 	nextID, err := nextMatchID(ctx)
 	if err != nil {
 		return err
@@ -237,7 +237,7 @@ func createMatch(ctx contract.Context, match *zb.Match, useClientGameLogic bool)
 	match.Id = nextID
 	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
 	match.CreatedAt = ctx.Now().Unix()
-	match.UseClientGameLogic = useClientGameLogic
+	match.UseBackendGameLogic = useBackendGameLogic
 	return saveMatch(ctx, match)
 }
 
