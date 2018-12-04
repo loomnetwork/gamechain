@@ -899,7 +899,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
-	match.ClientSideRuleOverride = playerProfile.ClientSideRuleOverride
+	match.UseBackendGameLogic = playerProfile.UseBackendGameLogic
 
 	if err := createMatch(ctx, match, z.UseBackendGameLogic); err != nil {
 		return nil, err
