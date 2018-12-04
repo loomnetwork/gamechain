@@ -40,7 +40,7 @@ type Gameplay struct {
 	customGameMode         *CustomGameMode
 	history                []*zb.HistoryData
 	ctx                    *contract.Context
-	ClientSideRuleOverride bool         //disables all checks to ensure the client can work before server is fully implemented
+	UseBackendGameLogic    bool         // when false, disables all checks to ensure the client can work before server is fully implemented
 	logger                 *loom.Logger // optional logger
 	actionOutcomes         []*zb.PlayerActionOutcome
 }
@@ -54,7 +54,7 @@ func NewGamePlay(ctx contract.Context,
 	players []*zb.PlayerState,
 	seed int64,
 	customGameAddress *loom.Address,
-	clientSideRuleOverride bool,
+	useBackendGameLogic bool,
 ) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
@@ -75,7 +75,7 @@ func NewGamePlay(ctx contract.Context,
 		State:                  state,
 		customGameMode:         customGameMode,
 		ctx:                    &ctx,
-		ClientSideRuleOverride: clientSideRuleOverride,
+		UseBackendGameLogic:    useBackendGameLogic,
 		logger:                 ctx.Logger(),
 	}
 
@@ -101,8 +101,11 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState, override bool) (*Gameplay, error) {
-	g := &Gameplay{State: state, ClientSideRuleOverride: override}
+func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool) (*Gameplay, error) {
+	g := &Gameplay{
+		State: state,
+		UseBackendGameLogic: useBackendGameLogic,
+	}
 	if err := g.run(); err != nil {
 		return nil, err
 	}
@@ -575,7 +578,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 	var card *zb.CardInstance
 
-	if !g.ClientSideRuleOverride {
+	if g.UseBackendGameLogic {
 		// check player turn
 		if err := g.checkCurrentPlayer(current); err != nil {
 			return g.captureErrorAndStop(err)
@@ -694,12 +697,12 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 	cardPlay := current.GetCardPlay()
 
-	if !g.ClientSideRuleOverride {
+	if g.UseBackendGameLogic {
 		card := cardPlay.Card
 
 		// check card limit on board
 		if len(g.activePlayer().CardsInPlay)+1 > int(g.activePlayer().MaxCardsInPlay) {
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("ClientSideRuleOverride-" + errLimitExceeded.Error())
 			} else {
 				return g.captureErrorAndStop(errLimitExceeded)
@@ -709,7 +712,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		activeCardsInHand := g.activePlayer().CardsInHand
 		// TODO: handle card limit
 		if len(activeCardsInHand) == 0 {
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("ClientSideRuleOverride-" + errNoCardsInHand.Error())
 			} else {
 				return g.captureErrorAndStop(errNoCardsInHand)
@@ -724,7 +727,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 				cardPlay.Card.InstanceId,
 				// cardPlay.Card.Prototype.Name,
 			)
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("ClientSideRuleOverride-" + err.Error())
 				next := g.next()
 				if next == nil {
@@ -806,7 +809,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	switch current.GetCardAttack().AffectObjectType {
 	case zb.AffectObjectType_Character:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
@@ -818,7 +821,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			}
 		}
 		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
@@ -835,7 +838,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				attackerIndex = i
 				break
 			}
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
 				g.PrintState()
 				next := g.next()
@@ -879,7 +882,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 	case zb.AffectObjectType_Player:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
@@ -896,7 +899,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				attackerIndex = i
 				break
 			}
-			if g.ClientSideRuleOverride {
+			if !g.UseBackendGameLogic {
 				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
 				g.PrintState()
 				next := g.next()

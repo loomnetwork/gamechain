@@ -28,7 +28,7 @@ func TestGameStateFunc(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 	assert.Nil(t, err)
 
 	// // add more action
@@ -166,7 +166,7 @@ func TestInvalidUserTurn(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
@@ -197,7 +197,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -254,7 +254,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, false)
+	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
@@ -356,7 +356,7 @@ func TestDrawCard(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 		// add more action
 		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
@@ -374,7 +374,7 @@ func TestDrawCard(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 		// add more action
 		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
@@ -412,7 +412,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -458,7 +458,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -506,7 +506,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -556,7 +556,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -590,7 +590,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -626,7 +626,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -684,7 +684,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -738,7 +738,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -806,7 +806,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -827,7 +827,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -850,7 +850,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, false)
+		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
