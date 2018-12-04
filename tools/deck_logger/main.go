@@ -94,36 +94,65 @@ func wsLoop() {
 
 				fmt.Println("Getting event with topic: ", topic)
 
-				if "zombiebattlegroundcreatedeck" != topic {
+				switch topic {
+				case "zombiebattlegroundcreatedeck":
+					var event zb.CreateDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
+
+					log.Printf("Saving deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
+
+					m := jsonpb.Marshaler{}
+					deckJSON, err := m.MarshalToString(event.Deck)
+					if err != nil {
+						log.Println("Error marshaling deck to json: ", err)
+						continue
+					}
+
+					_, err = db.Exec(`INSERT INTO zb_decks set user=?, deck_id=?, deck_name=?, deck_json=?, version=?, sender_address=?`, event.UserId, event.Deck.Id, event.Deck.Name, deckJSON, event.Version, event.SenderAddress)
+					if err != nil {
+						log.Println("Error saving deck to DB: ", err)
+					}
+				case "zombiebattlegroundeditdeck":
+					var event zb.EditDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
+
+					log.Printf("Editing deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
+
+					m := jsonpb.Marshaler{}
+					deckJSON, err := m.MarshalToString(event.Deck)
+					if err != nil {
+						log.Println("Error marshaling deck to json: ", err)
+						continue
+					}
+
+					_, err = db.Exec(`UPDATE zb_decks SET deck_name=?, deck_json=?, version=?, sender_address=? WHERE user=? AND deck_id=?`, event.Deck.Name, deckJSON, event.Version, event.SenderAddress, event.UserId, event.Deck.Id)
+					if err != nil {
+						log.Println("Error saving deck to DB: ", err)
+					}
+				case "zombiebattlegrounddeletedeck":
+					var event zb.DeleteDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
+
+					log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
+
+					_, err = db.Exec(`DELETE FROM zb_decks WHERE user=? AND deck_id=?`, event.UserId, event.DeckId)
+					if err != nil {
+						log.Println("Error saving deck to DB: ", err)
+					}
+				default:
 					continue
-				}
-
-				fmt.Println("CREATE DECK TOPIC RECEIVED")
-				fmt.Printf("body: %+v", string(body))
-
-				var event zb.CreateDeckEvent
-				err := proto.Unmarshal(body, &event)
-				if err != nil {
-					log.Println("Error unmarshaling event: ", err)
-					continue
-				}
-
-				fmt.Printf("event: %+v", event)
-
-				log.Printf("Saving deck with deck ID %d to DB", event.Deck.Id)
-				log.Printf("Saving deck with deck userid %s to DB", event.UserId)
-				log.Printf("Saving deck with deck name %s to DB", event.Deck.Name)
-
-				m := jsonpb.Marshaler{}
-				deckJSON, err := m.MarshalToString(event.Deck)
-				if err != nil {
-					log.Println("Error marshaling deck to json: ", err)
-					continue
-				}
-
-				_, err = db.Exec(`INSERT INTO zb_decks set user=?, deck_id=?, deck_name=?, deck_json=?, version=?, sender_address=?`, event.UserId, event.Deck.Id, event.Deck.Name, deckJSON, event.Version, event.SenderAddress)
-				if err != nil {
-					log.Println("Error saving replay to DB: ", err)
 				}
 
 			}
@@ -158,7 +187,7 @@ func connectToDb() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_decks (user VARCHAR(255), deck_id INT, deck_name VARCHAR(255), deck_json MEDIUMBLOB, version VARCHAR(32), sender_address VARCHAR(255), created_at TIMESTAMP NOT NULL DEFAULT NOW(), PRIMARY KEY (user, deck_id))")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_decks (user VARCHAR(255), deck_id INT, deck_name VARCHAR(255), deck_json MEDIUMBLOB, version VARCHAR(32), sender_address VARCHAR(255), created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (user, deck_id))")
 	if err != nil {
 		return nil, err
 	}
