@@ -490,11 +490,20 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "editdeck")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:editdeck")
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.EditDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		Deck:          req.Deck,
+		Version:       req.Version,
 	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return err
+	}
+	ctx.EmitTopics([]byte(data), "zombiebattleground:editdeck")
+
 	return nil
 }
 
@@ -518,6 +527,20 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
+
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.DeleteDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		DeckId:        req.DeckId,
+	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return err
+	}
+	ctx.EmitTopics([]byte(data), "zombiebattleground:deletedeck")
+
 	return nil
 }
 
