@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"os"
 	"sort"
-	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -21,7 +20,6 @@ import (
 )
 
 type ZombieBattleground struct {
-	UseBackendGameLogic bool // false by default. When disabled, skips all checks to ensure the client can work before server is fully implemented
 }
 
 const (
@@ -45,10 +43,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
 	}
-
-	z.UseBackendGameLogic = strings.ToLower(os.Getenv("USE_BACKEND_GAME_LOGIC")) == "true"
-
-	ctx.Logger().Info(fmt.Sprintf("UseBackendGameLogic = %t\n", z.UseBackendGameLogic))
 
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
@@ -684,6 +678,8 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		UseBackendGameLogic: req.UseBackendGameLogic,
 	}
 
+	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
+
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
@@ -899,9 +895,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
-	match.UseBackendGameLogic = playerProfile.UseBackendGameLogic
 
-	if err := createMatch(ctx, match, z.UseBackendGameLogic); err != nil {
+	if err := createMatch(ctx, match, playerProfile.UseBackendGameLogic); err != nil {
 		return nil, err
 	}
 
@@ -974,7 +969,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			addr2 = &addr
 		}
 
-		ctx.Logger().Info(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", z.UseBackendGameLogic))
+		ctx.Logger().Info(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", match.UseBackendGameLogic))
 		playerStates := []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   match.PlayerStates[0].Id,
@@ -1199,7 +1194,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 				Version: req.Version,
 			}
 
-			if err := createMatch(ctx, match, z.UseBackendGameLogic); err != nil {
+			if err := createMatch(ctx, match, match.UseBackendGameLogic); err != nil {
 				return nil, err
 			}
 			// save user match
@@ -1273,7 +1268,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		addr2 = &addr
 	}
 
-	ctx.Logger().Log(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", z.UseBackendGameLogic))
+	ctx.Logger().Log(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", match.UseBackendGameLogic))
 	playerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:   match.PlayerStates[0].Id,
@@ -1285,7 +1280,7 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 		},
 	}
 
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, playerStates, match.RandomSeed, addr2, z.UseBackendGameLogic)
+	gp, err := NewGamePlay(ctx, match.Id, req.Version, playerStates, match.RandomSeed, addr2, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
@@ -1350,7 +1345,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
-	gp, err := GamePlayFrom(gamestate, z.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
@@ -1395,7 +1390,7 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, z.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
@@ -1467,7 +1462,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, z.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
@@ -1522,7 +1517,7 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, z.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
@@ -1814,4 +1809,4 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	return nil
 }
 
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{UseBackendGameLogic: false})
+var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
