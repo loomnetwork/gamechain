@@ -19,9 +19,8 @@ import (
 )
 
 var (
-	wsURL    string
-	saveToDB bool
-	db       *sql.DB
+	wsURL string
+	db    *sql.DB
 )
 
 func main() {
