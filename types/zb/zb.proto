@@ -753,6 +753,7 @@ message GameMechanicDescriptionType
         KILL_UNIT = 23 [(gogoproto.enumvalue_customname) = "KillUnit"];
         PERMANENT = 24 [(gogoproto.enumvalue_customname) = "Permanent"];
         BLITZ = 25 [(gogoproto.enumvalue_customname) = "Blitz"];
+        RESTORE = 26 [(gogoproto.enumvalue_customname) = "Restore"];
     }
 }
 
