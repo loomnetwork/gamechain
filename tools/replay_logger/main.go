@@ -23,9 +23,8 @@ import (
 )
 
 var (
-	wsURL    string
-	saveToDB bool
-	db       *sql.DB
+	wsURL string
+	db    *sql.DB
 )
 
 func main() {
@@ -34,16 +33,13 @@ func main() {
 		wsURL = "ws://localhost:9999/queryws"
 	}
 	log.Printf("wsURL - %s", wsURL)
-	saveToDB, _ = strconv.ParseBool(os.Getenv("SAVE_TO_DB"))
 
-	if saveToDB {
-		var err error
-		db, err = connectToDb()
-		if err != nil {
-			log.Println(err)
-		}
-		defer db.Close()
+	var err error
+	db, err = connectToDb()
+	if err != nil {
+		log.Println(err)
 	}
+	defer db.Close()
 
 	wsLoop()
 }
@@ -95,11 +91,51 @@ func wsLoop() {
 				height := int(result.Path("block_height").Data().(float64))
 				log.Printf("height: %d", height)
 				topics, _ := result.Path("topics").Children()
+				fmt.Println("Getting event with topics: ", topics)
 				topic := strings.Trim(strings.Replace(topics[0].String(), ":", "", -1), "\"")
+				var extraTopic string
+				if len(topics) > 1 {
+					extraTopic = strings.Trim(strings.Replace(topics[1].String(), ":", "", -1), "\"")
+				}
 				encodedBody := result.Path("encoded_body").Data().(string)
 				body, _ := base64.StdEncoding.DecodeString(encodedBody)
 
-				fmt.Println("Getting event with topic: ", topic)
+				if extraTopic == "zombiebattlegroundfindmatch" || extraTopic == "zombiebattlegroundacceptmatch" {
+					var event zb.PlayerActionEvent
+					err = proto.Unmarshal(body, &event)
+					if err != nil {
+						fmt.Println(err)
+					}
+					_, err = db.Exec(`INSERT INTO zb_matches set
+						match_id = ?,
+						player1_id = ?,
+						player2_id = ?,
+						player1_accepted = ?,
+						player2_accepted = ?,
+						status = ?,
+						version = ?,
+						randomseed = ?
+						ON DUPLICATE KEY UPDATE
+						player1_accepted = ?,
+						player2_accepted = ?,
+						status = ?`,
+						event.Match.Id,
+						event.Match.PlayerStates[0].Id,
+						event.Match.PlayerStates[1].Id,
+						event.Match.PlayerStates[0].MatchAccepted,
+						event.Match.PlayerStates[1].MatchAccepted,
+						event.Match.Status,
+						event.Match.Version,
+						event.Match.RandomSeed,
+						event.Match.PlayerStates[0].MatchAccepted,
+						event.Match.PlayerStates[1].MatchAccepted,
+						event.Match.Status,
+					)
+					if err != nil {
+						log.Println("Error saving match meta info to DB: ", err)
+					}
+					continue
+				}
 
 				if !strings.HasPrefix(topic, "match") {
 					continue
@@ -110,16 +146,14 @@ func wsLoop() {
 					log.Println("Error writing replay file: ", err)
 				}
 
-				if saveToDB {
-					matchID, err := strconv.ParseInt(topic[5:], 10, 64)
-					if err != nil {
-						log.Println(err)
-					}
-					log.Printf("Saving replay with match ID %d to DB", matchID)
-					_, err = db.Exec(`INSERT INTO replays set match_id=?, replay_json=? ON DUPLICATE KEY UPDATE replay_json = ?`, matchID, replay, replay)
-					if err != nil {
-						log.Println("Error saving replay to DB: ", err)
-					}
+				matchID, err := strconv.ParseInt(topic[5:], 10, 64)
+				if err != nil {
+					log.Println(err)
+				}
+				log.Printf("Saving replay with match ID %d to DB", matchID)
+				_, err = db.Exec(`INSERT INTO zb_replays set match_id=?, replay_json=? ON DUPLICATE KEY UPDATE replay_json = ?`, matchID, replay, replay)
+				if err != nil {
+					log.Println("Error saving replay to DB: ", err)
 				}
 
 			}
@@ -213,6 +247,10 @@ func connectToDb() (*sql.DB, error) {
 		return nil, err
 	}
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
+	if err != nil {
+		return nil, err
+	}
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_matches (match_id INT, player1_id VARCHAR(255), player2_id VARCHAR(255), player1_accepted BOOL DEFAULT false, player2_accepted BOOL DEFAULT false, status INT, version VARCHAR(32), randomseed INT, created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (match_id))")
 	if err != nil {
 		return nil, err
 	}
