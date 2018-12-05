@@ -831,7 +831,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			return nil, err
 		}
 		if err == nil {
-			ctx.EmitTopics([]byte(data), match.Topics...)
+			topics := append(match.Topics, "zombiebattleground:findmatch")
+			ctx.EmitTopics([]byte(data), topics...)
 		}
 
 		return &zb.FindMatchResponse{
@@ -955,7 +956,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	topics := append(match.Topics, "zombiebattleground:findmatch")
+	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.FindMatchResponse{
 		Match: match,
@@ -1048,7 +1050,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	topics := append(match.Topics, "zombiebattleground:acceptmatch")
+	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.AcceptMatchResponse{
 		Match: match,
