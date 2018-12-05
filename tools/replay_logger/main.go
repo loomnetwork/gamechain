@@ -155,7 +155,6 @@ func wsLoop() {
 				if err != nil {
 					log.Println("Error saving replay to DB: ", err)
 				}
-
 			}
 		}
 	}
