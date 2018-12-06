@@ -1,6 +1,6 @@
 // +build evm
 
-package gateway
+package main
 
 import (
 	"context"
@@ -23,7 +23,6 @@ import (
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/loomnetwork/go-loom/common/evmcompat"
 	ltypes "github.com/loomnetwork/go-loom/types"
-	"github.com/loomnetwork/loomchain/gateway/ethcontract"
 	"github.com/pkg/errors"
 )
 
@@ -114,12 +113,16 @@ type Status struct {
 }
 
 type Oracle struct {
+	cfg *OracleConfig
+
 	gcAddress loom.Address // gamechain address
+	gcSigner  auth.Signer
+
 	pcAddress loom.Address // plasmachain address
+	pcSigner  auth.Signer
 
 	/*
 		chainID   string
-		cfg        TransferGatewayConfig
 		solGateway *ethcontract.MainnetGatewayContract
 		goGateway  *DAppChainGateway
 		startBlock uint64
@@ -177,6 +180,7 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 	}
 
 	return &Oracle{
+		cfg:       cfg,
 		gcAddress: gcAddress,
 		gcSigner:  gcSigner,
 
@@ -184,7 +188,6 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		pcSigner:  pcSigner,
 
 		/*
-			cfg:                   *cfg,
 			chainID:               chainID,
 			logger:                loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 			gcAddress:             gcAddress,
@@ -238,36 +241,18 @@ func (orc *Oracle) updateStatus() {
 func (orc *Oracle) connect() error {
 	var err error
 
-	if orc.ethClient == nil {
-		orc.ethClient, err = ConnectToMainnet(orc.cfg.EthereumURI)
+	if orc.gcGateway == nil {
+		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
+		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcSigner, orc.logger)
 		if err != nil {
-			return errors.Wrap(err, "failed to connect to Ethereum")
+			return errors.Wrap(err, "failed to create gc dappchain gateway")
 		}
 	}
-
-	if orc.solGateway == nil {
-		orc.solGateway, err = ethcontract.NewMainnetGatewayContract(
-			common.HexToAddress(orc.cfg.MainnetContractHexAddress),
-			orc.ethClient,
-		)
+	if orc.pcGateway == nil {
+		pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
+		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.gpcAddress, orc.pcSigner, orc.logger)
 		if err != nil {
-			return errors.Wrap(err, "failed create Mainnet Gateway contract binding")
-		}
-	}
-
-	if orc.goGateway == nil {
-		dappClient := client.NewDAppChainRPCClient(orc.chainID, orc.cfg.DAppChainWriteURI, orc.cfg.DAppChainReadURI)
-
-		if orc.isLoomCoinOracle {
-			orc.goGateway, err = ConnectToDAppChainLoomCoinGateway(dappClient, orc.address, orc.signer, orc.logger)
-			if err != nil {
-				return errors.Wrap(err, "failed to create dappchain loomcoin gateway")
-			}
-		} else {
-			orc.goGateway, err = ConnectToDAppChainGateway(dappClient, orc.address, orc.signer, orc.logger)
-			if err != nil {
-				return errors.Wrap(err, "failed to create dappchain gateway")
-			}
+			return errors.Wrap(err, "failed to create pc dappchain gateway")
 		}
 
 	}
@@ -279,11 +264,11 @@ func (orc *Oracle) connect() error {
 func (orc *Oracle) RunWithRecovery() {
 	defer func() {
 		if r := recover(); r != nil {
-			orc.logger.Error("recovered from panic in Gateway Oracle", "r", r)
+			orc.logger.Error("recovered from panic in Oracle", "r", r)
 			// Unless it's a runtime error restart the goroutine
 			if _, ok := r.(runtime.Error); !ok {
 				time.Sleep(30 * time.Second)
-				orc.logger.Info("Restarting Gateway Oracle...")
+				orc.logger.Info("Restarting Oracle...")
 				go orc.RunWithRecovery()
 			}
 		}
