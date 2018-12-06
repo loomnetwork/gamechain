@@ -689,10 +689,10 @@ message UniqueAnimationType
         None = 0;
         ShammannArrival = 1;
         ZVirusArrival = 2; 
-        ChernoBillArrival = 3;
+        ZeuzArrival = 3;
         CerberusArrival = 4;
-        ZeuzArrival = 5;
-        TzunamyArrival = 6;
+        TzunamyArrival = 5;
+        ChernoBillArrival = 6;
     }
 }
 
