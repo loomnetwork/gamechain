@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -12,16 +11,36 @@ import (
 
 	"github.com/Jeffail/gabs"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gorilla/websocket"
+	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var (
 	wsURL string
-	db    *sql.DB
+	db    *gorm.DB
 )
+
+type Deck struct {
+	gorm.Model
+	UserID           string `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
+	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
+	Name             string
+	HeroID           int64
+	Cards            []DeckCard
+	PrimarySkillID   int
+	SecondarySkillID int
+	Version          string
+	SenderAddress    string
+}
+
+type DeckCard struct {
+	gorm.Model
+	DeckID   uint
+	CardName string
+	Amount   int64
+}
 
 func main() {
 	wsURL = os.Getenv("wsURL")
@@ -104,17 +123,35 @@ func wsLoop() {
 
 					log.Printf("Saving deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
 
-					m := jsonpb.Marshaler{}
-					deckJSON, err := m.MarshalToString(event.Deck)
-					if err != nil {
-						log.Println("Error marshaling deck to json: ", err)
-						continue
+					cards := []DeckCard{}
+					for _, card := range event.Deck.Cards {
+						cards = append(cards, DeckCard{
+							CardName: card.CardName,
+							Amount:   card.Amount,
+						})
 					}
 
-					_, err = db.Exec(`INSERT INTO zb_decks set user=?, deck_id=?, deck_name=?, deck_json=?, version=?, sender_address=?`, event.UserId, event.Deck.Id, event.Deck.Name, deckJSON, event.Version, event.SenderAddress)
-					if err != nil {
-						log.Println("Error saving deck to DB: ", err)
+					fmt.Printf("DECK MSG: %+v", event)
+
+					deck := Deck{
+						UserID:           event.UserId,
+						DeckID:           event.Deck.Id,
+						Name:             event.Deck.Name,
+						HeroID:           event.Deck.HeroId,
+						Cards:            cards,
+						PrimarySkillID:   0,
+						SecondarySkillID: 0,
+						Version:          event.Version,
+						SenderAddress:    event.SenderAddress,
 					}
+
+					db.NewRecord(deck)
+					db.Create(&deck)
+					log.Printf("Saved deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
+					// _, err = db.Exec(`INSERT INTO zb_decks set user=?, deck_id=?, deck_name=?, deck_json=?, version=?, sender_address=?`, event.UserId, event.Deck.Id, event.Deck.Name, deckJSON, event.Version, event.SenderAddress)
+					// if err != nil {
+					// 	log.Println("Error saving deck to DB: ", err)
+					// }
 				case "zombiebattlegroundeditdeck":
 					var event zb.EditDeckEvent
 					err := proto.Unmarshal(body, &event)
@@ -125,17 +162,37 @@ func wsLoop() {
 
 					log.Printf("Editing deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
 
-					m := jsonpb.Marshaler{}
-					deckJSON, err := m.MarshalToString(event.Deck)
+					deck := Deck{}
+
+					err = db.Where(&Deck{UserID: event.UserId, DeckID: event.Deck.Id}).First(&deck).Error
 					if err != nil {
-						log.Println("Error marshaling deck to json: ", err)
+						log.Println("Error getting deck from DB: ", err)
 						continue
 					}
 
-					_, err = db.Exec(`UPDATE zb_decks SET deck_name=?, deck_json=?, version=?, sender_address=? WHERE user=? AND deck_id=?`, event.Deck.Name, deckJSON, event.Version, event.SenderAddress, event.UserId, event.Deck.Id)
-					if err != nil {
-						log.Println("Error saving deck to DB: ", err)
+					cards := []DeckCard{}
+					for _, card := range event.Deck.Cards {
+						cards = append(cards, DeckCard{
+							CardName: card.CardName,
+							Amount:   card.Amount,
+						})
 					}
+
+					db.Model(&deck).Association("Cards").Replace(cards)
+
+					deck.Name = event.Deck.Name
+					deck.HeroID = event.Deck.HeroId
+					deck.PrimarySkillID = 0
+					deck.SecondarySkillID = 0
+					deck.Version = event.Version
+					deck.SenderAddress = event.SenderAddress
+
+					db.Save(&deck)
+					log.Printf("Saved deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
+					// _, err = db.Exec(`UPDATE zb_decks SET deck_name=?, deck_json=?, version=?, sender_address=? WHERE user=? AND deck_id=?`, event.Deck.Name, deckJSON, event.Version, event.SenderAddress, event.UserId, event.Deck.Id)
+					// if err != nil {
+					// 	log.Println("Error saving deck to DB: ", err)
+					// }
 				case "zombiebattlegrounddeletedeck":
 					var event zb.DeleteDeckEvent
 					err := proto.Unmarshal(body, &event)
@@ -146,10 +203,13 @@ func wsLoop() {
 
 					log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 
-					_, err = db.Exec(`DELETE FROM zb_decks WHERE user=? AND deck_id=?`, event.UserId, event.DeckId)
-					if err != nil {
-						log.Println("Error saving deck to DB: ", err)
-					}
+					db.Where(&Deck{UserID: event.UserId, DeckID: event.DeckId}).Delete(Deck{})
+
+					log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
+					// _, err = db.Exec(`DELETE FROM zb_decks WHERE user=? AND deck_id=?`, event.UserId, event.DeckId)
+					// if err != nil {
+					// 	log.Println("Error saving deck to DB: ", err)
+					// }
 				default:
 					continue
 				}
@@ -159,7 +219,7 @@ func wsLoop() {
 	}
 }
 
-func connectToDb() (*sql.DB, error) {
+func connectToDb() (*gorm.DB, error) {
 	dbURL := os.Getenv("DATABASE_URL")
 	var dbName string
 	if dbURL == "" {
@@ -182,13 +242,14 @@ func connectToDb() (*sql.DB, error) {
 		}
 		dbURL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUserName, dbPass, dbHost, dbPort, dbName)
 	}
-	db, err := sql.Open("mysql", dbURL)
+	db, err := gorm.Open("mysql", dbURL)
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_decks (user VARCHAR(255), deck_id INT, deck_name VARCHAR(255), deck_json MEDIUMBLOB, version VARCHAR(32), sender_address VARCHAR(255), created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (user, deck_id))")
-	if err != nil {
-		return nil, err
-	}
+	db.AutoMigrate(&Deck{}, &DeckCard{})
+	// _, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_decks (user VARCHAR(255), deck_id INT, deck_name VARCHAR(255), deck_json MEDIUMBLOB, version VARCHAR(32), sender_address VARCHAR(255), created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (user, deck_id))")
+	// if err != nil {
+	// 	return nil, err
+	// }
 	return db, nil
 }
