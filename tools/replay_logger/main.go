@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -13,19 +12,41 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Jeffail/gabs"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gorilla/websocket"
+	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 var (
 	wsURL string
-	db    *sql.DB
+	db    *gorm.DB
 )
+
+type Match struct {
+	ID              int64 `gorm:"PRIMARY_KEY,auto_increment:false"`
+	Player1ID       string
+	Player2ID       string
+	Player1Accepted bool
+	Player2Accepted bool
+	Status          string
+	Version         string
+	RandomSeed      int64
+	Replay          Replay
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+}
+
+type Replay struct {
+	gorm.Model
+	MatchID    int64
+	ReplayJSON json.RawMessage
+}
 
 func main() {
 	wsURL = os.Getenv("wsURL")
@@ -106,34 +127,39 @@ func wsLoop() {
 					if err != nil {
 						fmt.Println(err)
 					}
-					_, err = db.Exec(`INSERT INTO zb_matches set
-						match_id = ?,
-						player1_id = ?,
-						player2_id = ?,
-						player1_accepted = ?,
-						player2_accepted = ?,
-						status = ?,
-						version = ?,
-						randomseed = ?
-						ON DUPLICATE KEY UPDATE
-						player1_accepted = ?,
-						player2_accepted = ?,
-						status = ?`,
-						event.Match.Id,
-						event.Match.PlayerStates[0].Id,
-						event.Match.PlayerStates[1].Id,
-						event.Match.PlayerStates[0].MatchAccepted,
-						event.Match.PlayerStates[1].MatchAccepted,
-						event.Match.Status,
-						event.Match.Version,
-						event.Match.RandomSeed,
-						event.Match.PlayerStates[0].MatchAccepted,
-						event.Match.PlayerStates[1].MatchAccepted,
-						event.Match.Status,
-					)
-					if err != nil {
-						log.Println("Error saving match meta info to DB: ", err)
+
+					if extraTopic == "zombiebattlegroundfindmatch" {
+						match := Match{
+							ID:              event.Match.Id,
+							Player1ID:       event.Match.PlayerStates[0].Id,
+							Player2ID:       event.Match.PlayerStates[1].Id,
+							Player1Accepted: event.Match.PlayerStates[0].MatchAccepted,
+							Player2Accepted: event.Match.PlayerStates[1].MatchAccepted,
+							Status:          event.Match.Status.String(),
+							Version:         event.Match.Version,
+							RandomSeed:      event.Match.RandomSeed,
+						}
+						db.Create(&match)
+					} else {
+						match := Match{}
+
+						err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+						if err != nil {
+							log.Println("Error getting match from DB: ", err)
+							continue
+						}
+
+						match.Player1ID = event.Match.PlayerStates[0].Id
+						match.Player2ID = event.Match.PlayerStates[1].Id
+						match.Player1Accepted = event.Match.PlayerStates[0].MatchAccepted
+						match.Player2Accepted = event.Match.PlayerStates[1].MatchAccepted
+						match.Status = event.Match.Status.String()
+						match.Version = event.Match.Version
+						match.RandomSeed = event.Match.RandomSeed
+
+						db.Save(&match)
 					}
+
 					continue
 				}
 
@@ -151,9 +177,19 @@ func wsLoop() {
 					log.Println(err)
 				}
 				log.Printf("Saving replay with match ID %d to DB", matchID)
-				_, err = db.Exec(`INSERT INTO zb_replays set match_id=?, replay_json=? ON DUPLICATE KEY UPDATE replay_json = ?`, matchID, replay, replay)
-				if err != nil {
-					log.Println("Error saving replay to DB: ", err)
+
+				dbReplay := Replay{}
+
+				err = db.Where(&Replay{MatchID: matchID}).First(&dbReplay).Error
+				if err == nil {
+					db.First(&dbReplay)
+					dbReplay.ReplayJSON = replay
+					db.Save(&dbReplay)
+				} else {
+					// insert
+					dbReplay.MatchID = matchID
+					dbReplay.ReplayJSON = replay
+					db.Create(&dbReplay)
 				}
 			}
 		}
@@ -218,7 +254,7 @@ func writeReplayFile(topic string, body []byte) ([]byte, error) {
 	return []byte(result), nil
 }
 
-func connectToDb() (*sql.DB, error) {
+func connectToDb() (*gorm.DB, error) {
 	dbURL := os.Getenv("DATABASE_URL")
 	var dbName string
 	if dbURL == "" {
@@ -241,17 +277,18 @@ func connectToDb() (*sql.DB, error) {
 		}
 		dbURL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUserName, dbPass, dbHost, dbPort, dbName)
 	}
-	db, err := sql.Open("mysql", dbURL)
+	db, err := gorm.Open("mysql", dbURL)
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
-	if err != nil {
-		return nil, err
-	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_matches (match_id INT, player1_id VARCHAR(255), player2_id VARCHAR(255), player1_accepted BOOL DEFAULT false, player2_accepted BOOL DEFAULT false, status INT, version VARCHAR(32), randomseed INT, created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (match_id))")
-	if err != nil {
-		return nil, err
-	}
+	db.AutoMigrate(&Match{}, &Replay{})
+	// _, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// _, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_matches (match_id INT, player1_id VARCHAR(255), player2_id VARCHAR(255), player1_accepted BOOL DEFAULT false, player2_accepted BOOL DEFAULT false, status INT, version VARCHAR(32), randomseed INT, created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (match_id))")
+	// if err != nil {
+	// 	return nil, err
+	// }
 	return db, nil
 }
