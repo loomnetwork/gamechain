@@ -38,6 +38,7 @@ type Match struct {
 	Version         string
 	RandomSeed      int64
 	Replay          Replay
+	Deck            Deck
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 }
@@ -45,7 +46,28 @@ type Match struct {
 type Replay struct {
 	gorm.Model
 	MatchID    int64
-	ReplayJSON json.RawMessage
+	ReplayJSON []byte `sql:"type:mediumtext;"`
+}
+
+type Deck struct {
+	gorm.Model
+	UserID           string `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
+	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
+	MatchID          int64
+	Name             string
+	HeroID           int64
+	Cards            []DeckCard
+	PrimarySkillID   int
+	SecondarySkillID int
+	Version          string
+	SenderAddress    string
+}
+
+type DeckCard struct {
+	gorm.Model
+	DeckID   uint
+	CardName string
+	Amount   int64
 }
 
 func main() {
@@ -121,7 +143,8 @@ func wsLoop() {
 				encodedBody := result.Path("encoded_body").Data().(string)
 				body, _ := base64.StdEncoding.DecodeString(encodedBody)
 
-				if extraTopic == "zombiebattlegroundfindmatch" || extraTopic == "zombiebattlegroundacceptmatch" {
+				switch {
+				case extraTopic == "zombiebattlegroundfindmatch" || extraTopic == "zombiebattlegroundacceptmatch":
 					var event zb.PlayerActionEvent
 					err = proto.Unmarshal(body, &event)
 					if err != nil {
@@ -159,37 +182,117 @@ func wsLoop() {
 
 						db.Save(&match)
 					}
+				case topic == "zombiebattlegroundcreatedeck":
+					var event zb.CreateDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
 
+					log.Printf("Saving deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
+
+					cards := []DeckCard{}
+					for _, card := range event.Deck.Cards {
+						cards = append(cards, DeckCard{
+							CardName: card.CardName,
+							Amount:   card.Amount,
+						})
+					}
+
+					fmt.Printf("DECK MSG: %+v", event)
+
+					deck := Deck{
+						UserID:           event.UserId,
+						DeckID:           event.Deck.Id,
+						Name:             event.Deck.Name,
+						HeroID:           event.Deck.HeroId,
+						Cards:            cards,
+						PrimarySkillID:   0,
+						SecondarySkillID: 0,
+						Version:          event.Version,
+						SenderAddress:    event.SenderAddress,
+					}
+
+					db.Create(&deck)
+					log.Printf("Saved deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
+				case topic == "zombiebattlegroundeditdeck":
+					var event zb.EditDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
+
+					log.Printf("Editing deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
+
+					deck := Deck{}
+
+					err = db.Where(&Deck{UserID: event.UserId, DeckID: event.Deck.Id}).First(&deck).Error
+					if err != nil {
+						log.Println("Error getting deck from DB: ", err)
+						continue
+					}
+
+					cards := []DeckCard{}
+					for _, card := range event.Deck.Cards {
+						cards = append(cards, DeckCard{
+							CardName: card.CardName,
+							Amount:   card.Amount,
+						})
+					}
+
+					db.Model(&deck).Association("Cards").Replace(cards)
+
+					deck.Name = event.Deck.Name
+					deck.HeroID = event.Deck.HeroId
+					deck.PrimarySkillID = 0
+					deck.SecondarySkillID = 0
+					deck.Version = event.Version
+					deck.SenderAddress = event.SenderAddress
+
+					db.Save(&deck)
+					log.Printf("Saved deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
+				case topic == "zombiebattlegrounddeletedeck":
+					var event zb.DeleteDeckEvent
+					err := proto.Unmarshal(body, &event)
+					if err != nil {
+						log.Println("Error unmarshaling event: ", err)
+						continue
+					}
+
+					log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
+
+					db.Where(&Deck{UserID: event.UserId, DeckID: event.DeckId}).Delete(Deck{})
+
+					log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
+				case strings.HasPrefix(topic, "match"):
+					replay, err := writeReplayFile(topic, body)
+					if err != nil {
+						log.Println("Error writing replay file: ", err)
+					}
+
+					matchID, err := strconv.ParseInt(topic[5:], 10, 64)
+					if err != nil {
+						log.Println(err)
+					}
+					log.Printf("Saving replay with match ID %d to DB", matchID)
+
+					dbReplay := Replay{}
+
+					err = db.Where(&Replay{MatchID: matchID}).First(&dbReplay).Error
+					if err == nil {
+						db.First(&dbReplay)
+						dbReplay.ReplayJSON = replay
+						db.Save(&dbReplay)
+					} else {
+						// insert
+						dbReplay.MatchID = matchID
+						dbReplay.ReplayJSON = replay
+						db.Create(&dbReplay)
+					}
+				default:
 					continue
-				}
-
-				if !strings.HasPrefix(topic, "match") {
-					continue
-				}
-
-				replay, err := writeReplayFile(topic, body)
-				if err != nil {
-					log.Println("Error writing replay file: ", err)
-				}
-
-				matchID, err := strconv.ParseInt(topic[5:], 10, 64)
-				if err != nil {
-					log.Println(err)
-				}
-				log.Printf("Saving replay with match ID %d to DB", matchID)
-
-				dbReplay := Replay{}
-
-				err = db.Where(&Replay{MatchID: matchID}).First(&dbReplay).Error
-				if err == nil {
-					db.First(&dbReplay)
-					dbReplay.ReplayJSON = replay
-					db.Save(&dbReplay)
-				} else {
-					// insert
-					dbReplay.MatchID = matchID
-					dbReplay.ReplayJSON = replay
-					db.Create(&dbReplay)
 				}
 			}
 		}
@@ -281,14 +384,6 @@ func connectToDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.AutoMigrate(&Match{}, &Replay{})
-	// _, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_replays (match_id INT, replay_json MEDIUMBLOB, PRIMARY KEY (match_id))")
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// _, err = db.Exec("CREATE TABLE IF NOT EXISTS zb_matches (match_id INT, player1_id VARCHAR(255), player2_id VARCHAR(255), player1_accepted BOOL DEFAULT false, player2_accepted BOOL DEFAULT false, status INT, version VARCHAR(32), randomseed INT, created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(), PRIMARY KEY (match_id))")
-	// if err != nil {
-	// 	return nil, err
-	// }
+	db.AutoMigrate(&Match{}, &Replay{}, &Deck{}, &DeckCard{})
 	return db, nil
 }
