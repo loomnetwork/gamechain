@@ -1,5 +1,3 @@
-// +build evm
-
 package main
 
 import (
@@ -16,7 +14,7 @@ import (
 
 /*
 * create rpc clients and DappchainGateway for gamechain (gc) and plasmachain (pc)
-* 	TODO: use correct contract names in `Resolve`
+* 	done TODO: use correct contract names in `Resolve`
 * open a websocket conn for events in `Run`
 * websocket event should call the DappchainGateway's process events method
 * http calls to loomauth:
@@ -32,18 +30,21 @@ type Oracle struct {
 	gcSigner       auth.Signer
 	gcChainID      string
 	gcContractName string
+	gcGateway      *DAppChainGateway
 
-	pcAddress      loom.Address // plasmachain address
-	pcSigner       auth.Signer
-	pcChainID      string
-	pcContractName string
+	pcAddress         loom.Address // plasmachain address
+	pcSigner          auth.Signer
+	pcChainID         string
+	pcContractName    string
+	pcGateway         *DAppChainGateway
+	logger            *loom.Logger
+	reconnectInterval time.Duration
 
 	/*
 		chainID   string
 		solGateway *ethcontract.MainnetGatewayContract
 		goGateway  *DAppChainGateway
 		startBlock uint64
-		logger     *loom.Logger
 		ethClient  *MainnetClient
 		// Used to sign tx/data sent to the DAppChain Gateway contract
 		signer auth.Signer
@@ -52,7 +53,6 @@ type Oracle struct {
 		dAppChainPollInterval time.Duration
 		mainnetPollInterval   time.Duration
 		startupDelay          time.Duration
-		reconnectInterval     time.Duration
 		mainnetGatewayAddress loom.Address
 
 		numMainnetEventsFetched   uint64
@@ -70,7 +70,7 @@ type Oracle struct {
 }
 
 func CreateOracle(cfg *OracleConfig) (*Oracle, error) {
-	return createOracle(cfg, chainID, "tg_oracle", false)
+	return createOracle(cfg)
 }
 
 func createOracle(cfg *OracleConfig) (*Oracle, error) {
@@ -81,18 +81,18 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 	gcSigner := auth.NewEd25519Signer(privKey)
 
 	gcAddress := loom.Address{
-		ChainID: chainID,
+		ChainID: cfg.GameChainChainID,
 		Local:   loom.LocalAddressFromPublicKey(gcSigner.PublicKey()),
 	}
 
-	privKey, err := LoadDappChainPrivateKey(cfg.PlasmaChainPrivateKeyPath)
+	privKey, err = LoadDappChainPrivateKey(cfg.PlasmaChainPrivateKeyPath)
 	if err != nil {
 		return nil, err
 	}
 	pcSigner := auth.NewEd25519Signer(privKey)
 
 	pcAddress := loom.Address{
-		ChainID: chainID,
+		ChainID: cfg.PlasmaChainChainID,
 		Local:   loom.LocalAddressFromPublicKey(pcSigner.PublicKey()),
 	}
 
@@ -106,7 +106,7 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		pcSigner:       pcSigner,
 		pcContractName: "ZBGCard",
 
-		logger: loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
+		//logger: loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 		/*
 			chainID:               chainID,
 			gcAddress:             gcAddress,
@@ -138,7 +138,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.gcGateway == nil {
 		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
-		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcSigner, orc.gcContractName, orc.logger)
+		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcContractName, orc.gcSigner, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create gc dappchain gateway")
 		}
@@ -146,7 +146,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.pcGateway == nil {
 		pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
-		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.gpcAddress, orc.pcSigner, orc.pcContractName, orc.logger)
+		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.pcAddress, orc.pcContractName, orc.pcSigner, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create pc dappchain gateway")
 		}
@@ -171,9 +171,9 @@ func (orc *Oracle) RunWithRecovery() {
 	}()
 
 	// When running in-process give the node a bit of time to spin up.
-	if orc.startupDelay > 0 {
-		time.Sleep(orc.startupDelay)
-	}
+	//if orc.startupDelay > 0 {
+	//	time.Sleep(orc.startupDelay)
+	//}
 
 	orc.Run()
 }
@@ -184,28 +184,26 @@ func (orc *Oracle) Run() {
 		if err := orc.connect(); err == nil {
 			break
 		}
-		orc.updateStatus()
+		//	orc.updateStatus()
 		time.Sleep(orc.reconnectInterval)
 	}
-
-	skipSleep := true
-	for {
-		if !skipSleep {
-			time.Sleep(orc.mainnetPollInterval)
-		} else {
-			skipSleep = false
-		}
-		go orc.listenToGameChain()
-		go orc.listenToPlasmaChain()
-	}
+	go orc.listenToGameChain()
+	go orc.listenToPlasmaChain()
 }
 
 func (orc *Oracle) listenToGameChain() error {
+	/*gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
+	if err != nil {
+		return err
+	}
 
+	gcEventClient.WatchTopic()
+	*/
+	return nil
 }
 
 func (orc *Oracle) listenToPlasmaChain() error {
-
+	return nil
 }
 
 func LoadDappChainPrivateKey(path string) ([]byte, error) {
@@ -239,4 +237,15 @@ func ConnectToDAppChainGateway(
 		signer:           signer,
 		logger:           logger,
 	}, nil
+}
+
+type DAppChainGateway struct {
+	Address loom.Address
+	// Timestamp of the last successful response from the DAppChain
+	LastResponseTime time.Time
+
+	contract *client.Contract
+	caller   loom.Address
+	logger   *loom.Logger
+	signer   auth.Signer
 }
