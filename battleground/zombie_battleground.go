@@ -628,6 +628,9 @@ func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroReques
 	}
 	hero = proto.Clone(req.Hero).(*zb.Hero)
 
+	// make sure we don't override hero id
+	hero.HeroId = req.HeroId
+
 	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
 	}
