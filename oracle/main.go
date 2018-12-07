@@ -1,23 +1,12 @@
-// +build evm
-
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"path/filepath"
 
-	"github.com/loomnetwork/loomchain/gateway"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
 )
-
-type LoomConfig struct {
-	ChainID      string
-	RPCProxyPort int32
-	//TransferGateway *gateway.TransferGatewayConfig
-}
 
 func main() {
 	cfg, err := parseConfig(nil)
@@ -35,19 +24,19 @@ func main() {
 	http.HandleFunc("/status", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(orc.Status())
+		//json.NewEncoder(w).Encode(orc.Status())
 	})
 
-	http.Handle("/metrics", promhttp.Handler())
+	//http.Handle("/metrics", promhttp.Handler())
 
-	log.Fatal(http.ListenAndServe(cfg.TransferGateway.OracleQueryAddress, nil))
+	log.Fatal(http.ListenAndServe(cfg.OracleQueryAddress, nil))
 }
 
-// Loads loom.yml or equivalent from one of the usual location, or if overrideCfgDirs is provided
+// Loads oracle.yml or equivalent from one of the usual location, or if overrideCfgDirs is provided
 // from one of those config directories.
-func parseConfig(overrideCfgDirs []string) (*LoomConfig, error) {
+func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
 	v := viper.New()
-	v.SetConfigName("loom")
+	v.SetConfigName("oracle")
 	if len(overrideCfgDirs) == 0 {
 		// look for the loom config file in all the places loom itself does
 		v.AddConfigPath(".")
@@ -58,10 +47,12 @@ func parseConfig(overrideCfgDirs []string) (*LoomConfig, error) {
 		}
 	}
 	v.ReadInConfig()
-	conf := &LoomConfig{
-		ChainID:         "default",
-		RPCProxyPort:    46658,
-		TransferGateway: gateway.DefaultConfig(46658),
+	conf := &OracleConfig{
+		GameChainPrivateKeyPath: "priv",
+		GameChainChainID:        "default",
+		GameChainReadURI:        "http://localhost:46658/query",
+		GameChainWriteURI:       "http://localhost:46658/rpc",
+		GameChainEventsURI:      "",
 	}
 	err := v.Unmarshal(conf)
 	if err != nil {

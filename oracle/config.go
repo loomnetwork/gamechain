@@ -14,4 +14,6 @@ type OracleConfig struct {
 	PlasmaChainWriteURI       string
 	PlasmaChainEventsURI      string
 	PlasmaChainPollInterval   int
+
+	OracleQueryAddress string
 }
