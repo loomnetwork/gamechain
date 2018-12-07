@@ -475,6 +475,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+	existingDeck.PrimarySkill = req.Deck.PrimarySkill
+	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
