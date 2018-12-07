@@ -133,32 +133,6 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 	}, nil
 }
 
-// Status returns some basic info about the current state of the Oracle.
-func (orc *Oracle) connect() error {
-	var err error
-
-	log.Info("Connecting to GameChain")
-	if orc.gcGateway == nil {
-		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
-		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.cfg.GameChainContractName, orc.gcSigner, orc.logger)
-		if err != nil {
-			return errors.Wrap(err, "failed to create gc dappchain gateway")
-		}
-	}
-
-	/*
-		if orc.pcGateway == nil {
-			pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
-			orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.pcAddress, orc.pcContractName, orc.pcSigner, orc.logger)
-			if err != nil {
-				return errors.Wrap(err, "failed to create pc dappchain gateway")
-			}
-
-		}
-	*/
-	return nil
-}
-
 // RunWithRecovery should run in a goroutine, it will ensure the oracle keeps on running as long
 // as it doesn't panic due to a runtime error.
 func (orc *Oracle) RunWithRecovery() {
@@ -197,6 +171,31 @@ func (orc *Oracle) Run() {
 	go orc.listenToPlasmaChain()
 }
 
+// Status returns some basic info about the current state of the Oracle.
+func (orc *Oracle) connect() error {
+	var err error
+
+	log.Info("Connecting to GameChain")
+	if orc.gcGateway == nil {
+		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
+		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.cfg.GameChainContractName, orc.gcSigner, orc.logger)
+		if err != nil {
+			return errors.Wrap(err, "failed to create gc dappchain gateway")
+		}
+	}
+
+	/*
+		if orc.pcGateway == nil {
+			pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
+			orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.pcAddress, orc.pcContractName, orc.pcSigner, orc.logger)
+			if err != nil {
+				return errors.Wrap(err, "failed to create pc dappchain gateway")
+			}
+
+		}
+	*/
+	return nil
+}
 func (orc *Oracle) listenToGameChain() error {
 	log.Info("Listening to GameChain")
 	/*
@@ -227,34 +226,4 @@ func LoadDappChainPrivateKey(path string) ([]byte, error) {
 	}
 
 	return privKey, nil
-}
-
-func ConnectToDAppChainGateway(
-	loomClient *client.DAppChainRPCClient, caller loom.Address, contractName string, signer auth.Signer,
-	logger *loom.Logger,
-) (*DAppChainGateway, error) {
-	gatewayAddr, err := loomClient.Resolve(contractName)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to resolve Gateway Go contract address")
-	}
-
-	return &DAppChainGateway{
-		Address:          gatewayAddr,
-		LastResponseTime: time.Now(),
-		contract:         client.NewContract(loomClient, gatewayAddr.Local),
-		caller:           caller,
-		signer:           signer,
-		//	logger:           logger,
-	}, nil
-}
-
-type DAppChainGateway struct {
-	Address loom.Address
-	// Timestamp of the last successful response from the DAppChain
-	LastResponseTime time.Time
-
-	contract *client.Contract
-	caller   loom.Address
-	//logger   *loom.Logger
-	signer auth.Signer
 }
