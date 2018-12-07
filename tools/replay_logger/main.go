@@ -34,11 +34,14 @@ type Match struct {
 	Player2ID       string
 	Player1Accepted bool
 	Player2Accepted bool
+	Player1DeckID   int64
+	Player2DeckID   int64
 	Status          string
 	Version         string
 	RandomSeed      int64
 	Replay          Replay
 	Deck            Deck
+	WinnerID        string
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 }
@@ -53,7 +56,6 @@ type Deck struct {
 	gorm.Model
 	UserID           string `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
 	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
-	MatchID          int64
 	Name             string
 	HeroID           int64
 	Cards            []DeckCard
@@ -136,28 +138,35 @@ func wsLoop() {
 				topics, _ := result.Path("topics").Children()
 				fmt.Println("Getting event with topics: ", topics)
 				topic := strings.Trim(strings.Replace(topics[0].String(), ":", "", -1), "\"")
-				var extraTopic string
+				var secondaryTopic string
 				if len(topics) > 1 {
-					extraTopic = strings.Trim(strings.Replace(topics[1].String(), ":", "", -1), "\"")
+					secondaryTopic = strings.Trim(strings.Replace(topics[1].String(), ":", "", -1), "\"")
 				}
 				encodedBody := result.Path("encoded_body").Data().(string)
 				body, _ := base64.StdEncoding.DecodeString(encodedBody)
 
 				switch {
-				case extraTopic == "zombiebattlegroundfindmatch" || extraTopic == "zombiebattlegroundacceptmatch":
+				case secondaryTopic == "zombiebattlegroundfindmatch" || secondaryTopic == "zombiebattlegroundacceptmatch":
 					var event zb.PlayerActionEvent
 					err = proto.Unmarshal(body, &event)
 					if err != nil {
 						fmt.Println(err)
 					}
 
-					if extraTopic == "zombiebattlegroundfindmatch" {
-						match := Match{
+					if secondaryTopic == "zombiebattlegroundfindmatch" {
+						match := Match{}
+						err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+						if err == nil {
+							continue
+						}
+						match = Match{
 							ID:              event.Match.Id,
 							Player1ID:       event.Match.PlayerStates[0].Id,
 							Player2ID:       event.Match.PlayerStates[1].Id,
 							Player1Accepted: event.Match.PlayerStates[0].MatchAccepted,
 							Player2Accepted: event.Match.PlayerStates[1].MatchAccepted,
+							Player1DeckID:   event.Match.PlayerStates[0].Deck.Id,
+							Player2DeckID:   event.Match.PlayerStates[1].Deck.Id,
 							Status:          event.Match.Status.String(),
 							Version:         event.Match.Version,
 							RandomSeed:      event.Match.RandomSeed,
@@ -172,16 +181,31 @@ func wsLoop() {
 							continue
 						}
 
-						match.Player1ID = event.Match.PlayerStates[0].Id
-						match.Player2ID = event.Match.PlayerStates[1].Id
 						match.Player1Accepted = event.Match.PlayerStates[0].MatchAccepted
 						match.Player2Accepted = event.Match.PlayerStates[1].MatchAccepted
 						match.Status = event.Match.Status.String()
-						match.Version = event.Match.Version
-						match.RandomSeed = event.Match.RandomSeed
 
 						db.Save(&match)
 					}
+				case secondaryTopic == "endgame":
+					var event zb.PlayerActionEvent
+					err = proto.Unmarshal(body, &event)
+					if err != nil {
+						fmt.Println(err)
+					}
+
+					match := Match{}
+
+					err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+					if err != nil {
+						log.Println("Error getting match from DB: ", err)
+						continue
+					}
+
+					match.WinnerID = event.Block.List[0].GetEndGame().WinnerId
+					match.Status = event.Match.Status.String()
+
+					db.Save(&match)
 				case topic == "zombiebattlegroundcreatedeck":
 					var event zb.CreateDeckEvent
 					err := proto.Unmarshal(body, &event)
