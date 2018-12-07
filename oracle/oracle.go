@@ -27,11 +27,11 @@ import (
 type Oracle struct {
 	cfg *OracleConfig
 
-	gcAddress      loom.Address // gamechain address
-	gcSigner       auth.Signer
-	gcChainID      string
-	gcContractName string
-	gcGateway      *DAppChainGateway
+	gcAddress loom.Address // gamechain address
+	gcSigner  auth.Signer
+	gcChainID string
+	//gcContractName string
+	gcGateway *DAppChainGateway
 
 	pcAddress         loom.Address // plasmachain address
 	pcSigner          auth.Signer
@@ -99,10 +99,9 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		}
 	*/
 	return &Oracle{
-		cfg:            cfg,
-		gcAddress:      gcAddress,
-		gcSigner:       gcSigner,
-		gcContractName: "ZombieBattleground",
+		cfg:       cfg,
+		gcAddress: gcAddress,
+		gcSigner:  gcSigner,
 
 		//pcAddress:      pcAddress,
 		//pcSigner:       pcSigner,
@@ -138,22 +137,25 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 func (orc *Oracle) connect() error {
 	var err error
 
+	log.Info("Connecting to GameChain")
 	if orc.gcGateway == nil {
 		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
-		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcContractName, orc.gcSigner, orc.logger)
+		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.cfg.GameChainContractName, orc.gcSigner, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create gc dappchain gateway")
 		}
 	}
 
-	if orc.pcGateway == nil {
-		pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
-		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.pcAddress, orc.pcContractName, orc.pcSigner, orc.logger)
-		if err != nil {
-			return errors.Wrap(err, "failed to create pc dappchain gateway")
-		}
+	/*
+		if orc.pcGateway == nil {
+			pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
+			orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.pcAddress, orc.pcContractName, orc.pcSigner, orc.logger)
+			if err != nil {
+				return errors.Wrap(err, "failed to create pc dappchain gateway")
+			}
 
-	}
+		}
+	*/
 	return nil
 }
 
@@ -183,9 +185,11 @@ func (orc *Oracle) RunWithRecovery() {
 // TODO: Graceful shutdown
 func (orc *Oracle) Run() {
 	for {
-		if err := orc.connect(); err == nil {
+		err := orc.connect()
+		if err == nil {
 			break
 		}
+		log.Error(err)
 		//	orc.updateStatus()
 		time.Sleep(orc.reconnectInterval)
 	}

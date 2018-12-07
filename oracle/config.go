@@ -7,6 +7,7 @@ type OracleConfig struct {
 	GameChainWriteURI       string
 	GameChainEventsURI      string
 	GameChainPollInterval   int
+	GameChainContractName   string
 
 	PlasmaChainPrivateKeyPath string
 	PlasmaChainChainID        string
