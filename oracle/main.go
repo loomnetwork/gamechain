@@ -1,9 +1,10 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/spf13/viper"
 )
@@ -11,12 +12,12 @@ import (
 func main() {
 	cfg, err := parseConfig(nil)
 	if err != nil {
-		panic(err)
+		log.Error(err)
 	}
 
 	orc, err := CreateOracle(cfg)
 	if err != nil {
-		panic(err)
+		log.Error(err)
 	}
 
 	go orc.RunWithRecovery()
@@ -28,7 +29,8 @@ func main() {
 	})
 
 	//http.Handle("/metrics", promhttp.Handler())
-
+	log.Info("Oracle Running")
+	log.Infof("Query address: %s", cfg.OracleQueryAddress)
 	log.Fatal(http.ListenAndServe(cfg.OracleQueryAddress, nil))
 }
 
@@ -53,6 +55,7 @@ func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
 		GameChainReadURI:        "http://localhost:46658/query",
 		GameChainWriteURI:       "http://localhost:46658/rpc",
 		GameChainEventsURI:      "",
+		OracleQueryAddress:      ":8888",
 	}
 	err := v.Unmarshal(conf)
 	if err != nil {

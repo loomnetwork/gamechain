@@ -10,6 +10,7 @@ import (
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 /*
@@ -85,28 +86,29 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		Local:   loom.LocalAddressFromPublicKey(gcSigner.PublicKey()),
 	}
 
-	privKey, err = LoadDappChainPrivateKey(cfg.PlasmaChainPrivateKeyPath)
-	if err != nil {
-		return nil, err
-	}
-	pcSigner := auth.NewEd25519Signer(privKey)
+	/*
+			privKey, err = LoadDappChainPrivateKey(cfg.PlasmaChainPrivateKeyPath)
+			if err != nil {
+				return nil, err
+			}
+			pcSigner := auth.NewEd25519Signer(privKey)
 
-	pcAddress := loom.Address{
-		ChainID: cfg.PlasmaChainChainID,
-		Local:   loom.LocalAddressFromPublicKey(pcSigner.PublicKey()),
-	}
-
+		pcAddress := loom.Address{
+			ChainID: cfg.PlasmaChainChainID,
+			Local:   loom.LocalAddressFromPublicKey(pcSigner.PublicKey()),
+		}
+	*/
 	return &Oracle{
 		cfg:            cfg,
 		gcAddress:      gcAddress,
 		gcSigner:       gcSigner,
 		gcContractName: "ZombieBattleground",
 
-		pcAddress:      pcAddress,
-		pcSigner:       pcSigner,
-		pcContractName: "ZBGCard",
+		//pcAddress:      pcAddress,
+		//pcSigner:       pcSigner,
+		//pcContractName: "ZBGCard",
 
-		//logger: loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
+		logger: loom.NewLoomLogger("info", ""),
 		/*
 			chainID:               chainID,
 			gcAddress:             gcAddress,
@@ -160,11 +162,11 @@ func (orc *Oracle) connect() error {
 func (orc *Oracle) RunWithRecovery() {
 	defer func() {
 		if r := recover(); r != nil {
-			orc.logger.Error("recovered from panic in Oracle", "r", r)
+			log.Error("recovered from panic in Oracle", "r", r)
 			// Unless it's a runtime error restart the goroutine
 			if _, ok := r.(runtime.Error); !ok {
 				time.Sleep(30 * time.Second)
-				orc.logger.Info("Restarting Oracle...")
+				log.Info("Restarting Oracle...")
 				go orc.RunWithRecovery()
 			}
 		}
@@ -192,17 +194,20 @@ func (orc *Oracle) Run() {
 }
 
 func (orc *Oracle) listenToGameChain() error {
-	/*gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
-	if err != nil {
-		return err
-	}
+	log.Info("Listening to GameChain")
+	/*
+		gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
+		if err != nil {
+			return err
+		}
 
-	gcEventClient.WatchTopic()
+		gcEventClient.WatchTopic()
 	*/
 	return nil
 }
 
 func (orc *Oracle) listenToPlasmaChain() error {
+	log.Info("Listening to PlasmaChain")
 	return nil
 }
 
@@ -235,7 +240,7 @@ func ConnectToDAppChainGateway(
 		contract:         client.NewContract(loomClient, gatewayAddr.Local),
 		caller:           caller,
 		signer:           signer,
-		logger:           logger,
+		//	logger:           logger,
 	}, nil
 }
 
@@ -246,6 +251,6 @@ type DAppChainGateway struct {
 
 	contract *client.Contract
 	caller   loom.Address
-	logger   *loom.Logger
-	signer   auth.Signer
+	//logger   *loom.Logger
+	signer auth.Signer
 }
