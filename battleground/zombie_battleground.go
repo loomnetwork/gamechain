@@ -468,6 +468,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+	existingDeck.PrimarySkill = req.Deck.PrimarySkill
+	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
@@ -603,6 +605,38 @@ func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHero
 	return &zb.GetHeroResponse{Hero: hero}, nil
 }
 
+func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroRequest) (*zb.SetHeroResponse, error) {
+	if req.Hero == nil {
+		return nil, fmt.Errorf("Hero is null")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero = proto.Clone(req.Hero).(*zb.Hero)
+
+	// make sure we don't override hero id
+	hero.HeroId = req.HeroId
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHero")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:sethero")
+	}
+
+	return &zb.SetHeroResponse{Hero: hero}, nil
+}
+
 func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddHeroExperienceRequest) (*zb.AddHeroExperienceResponse, error) {
 	if req.Experience <= 0 {
 		return nil, fmt.Errorf("experience needs to be greater than zero")
@@ -633,6 +667,64 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	}
 
 	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroExperience(ctx contract.Context, req *zb.SetHeroExperienceRequest) (*zb.SetHeroExperienceResponse, error) {
+	if req.Experience <= 0 {
+		return nil, fmt.Errorf("experience needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Experience = req.Experience
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroExperience")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setheroexperience")
+	}
+
+	return &zb.SetHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroLevel(ctx contract.Context, req *zb.SetHeroLevelRequest) (*zb.SetHeroLevelResponse, error) {
+	if req.Level <= 0 {
+		return nil, fmt.Errorf("level needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Level = req.Level
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroLevel")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setherolevel")
+	}
+
+	return &zb.SetHeroLevelResponse{HeroId: hero.HeroId, Level: hero.Level}, nil
 }
 
 func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
@@ -691,7 +783,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		savePlayerPoolFn = savePlayerPool
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("Register Player Pool user=%s", req.UserId))
 	// load player pool
 	pool, err := loadPlayerPoolFn(ctx)
 	if err != nil {
@@ -739,8 +830,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 			}
 		}
 	}
-
-	ctx.Logger().Info(fmt.Sprintf("Player Pool %+v", pool))
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "registerplayerpool")
@@ -824,9 +913,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
 	for retries < MMRetries {
-		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retries=%d", req.UserId, retries))
-
-		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 		var playerScores []*PlayerScore
 		for _, pp := range pool.PlayerProfiles {
 			// skip the requesting player
@@ -843,7 +929,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
 			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
@@ -851,7 +936,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
 			}
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
 			break
 		}
 		retries++
@@ -969,7 +1053,6 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			addr2 = &addr
 		}
 
-		ctx.Logger().Info(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", match.UseBackendGameLogic))
 		playerStates := []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   match.PlayerStates[0].Id,
@@ -1129,7 +1212,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
 	for retries < MMRetries {
-		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
 		// load player pool
 		pool, err := loadPlayerPoolFn(ctx)
 		if err != nil {
@@ -1208,7 +1290,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
 			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
@@ -1216,7 +1297,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
 			}
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
 			break
 		}
 		retries++

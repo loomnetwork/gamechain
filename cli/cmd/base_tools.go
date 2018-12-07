@@ -2,15 +2,16 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
-	"os"
 )
 
-func printProtoMessageAsJsonToStdout(pb proto.Message) error {
+func printProtoMessageAsJSONToStdout(pb proto.Message) error {
 	m := jsonpb.Marshaler{
-		OrigName: true,
-		Indent: "  ",
+		OrigName:     true,
+		Indent:       "  ",
 		EmitDefaults: true,
 	}
 
