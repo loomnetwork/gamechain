@@ -475,6 +475,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+	existingDeck.PrimarySkill = req.Deck.PrimarySkill
+	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
@@ -625,6 +627,9 @@ func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroReques
 		return nil, contract.ErrNotFound
 	}
 	hero = proto.Clone(req.Hero).(*zb.Hero)
+
+	// make sure we don't override hero id
+	hero.HeroId = req.HeroId
 
 	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
