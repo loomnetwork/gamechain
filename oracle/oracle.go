@@ -28,11 +28,15 @@ import (
 type Oracle struct {
 	cfg *OracleConfig
 
-	gcAddress loom.Address // gamechain address
-	gcSigner  auth.Signer
+	gcAddress      loom.Address // gamechain address
+	gcSigner       auth.Signer
+	gcChainID      string
+	gcContractName string
 
-	pcAddress loom.Address // plasmachain address
-	pcSigner  auth.Signer
+	pcAddress      loom.Address // plasmachain address
+	pcSigner       auth.Signer
+	pcChainID      string
+	pcContractName string
 
 	/*
 		chainID   string
@@ -93,16 +97,18 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 	}
 
 	return &Oracle{
-		cfg:       cfg,
-		gcAddress: gcAddress,
-		gcSigner:  gcSigner,
+		cfg:            cfg,
+		gcAddress:      gcAddress,
+		gcSigner:       gcSigner,
+		gcContractName: "ZombieBattleground",
 
-		pcAddress: pcAddress,
-		pcSigner:  pcSigner,
+		pcAddress:      pcAddress,
+		pcSigner:       pcSigner,
+		pcContractName: "ZBGCard",
 
+		logger: loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 		/*
 			chainID:               chainID,
-			logger:                loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 			gcAddress:             gcAddress,
 			mainnetPrivateKey:     mainnetPrivateKey,
 			dAppChainPollInterval: time.Duration(cfg.DAppChainPollInterval) * time.Second,
@@ -132,7 +138,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.gcGateway == nil {
 		gcDappClient := client.NewDAppChainRPCClient(orc.gcChainID, orc.cfg.GameChainWriteURI, orc.cfg.GameChainReadURI)
-		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcSigner, orc.logger)
+		orc.gcGateway, err = ConnectToDAppChainGateway(gcDappClient, orc.gcAddress, orc.gcSigner, orc.gcContractName, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create gc dappchain gateway")
 		}
@@ -140,7 +146,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.pcGateway == nil {
 		pcDappClient := client.NewDAppChainRPCClient(orc.pcChainID, orc.cfg.PlasmaChainWriteURI, orc.cfg.PlasmaChainReadURI)
-		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.gpcAddress, orc.pcSigner, orc.logger)
+		orc.pcGateway, err = ConnectToDAppChainGateway(pcDappClient, orc.gpcAddress, orc.pcSigner, orc.pcContractName, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create pc dappchain gateway")
 		}
@@ -189,13 +195,16 @@ func (orc *Oracle) Run() {
 		} else {
 			skipSleep = false
 		}
-		// TODO: should be possible to poll DAppChain & Mainnet at different intervals
-		orc.pollGameChain()
-		orc.pollPlasmaChain()
+		go orc.listenToGameChain()
+		go orc.listenToPlasmaChain()
 	}
 }
 
-func (orc *Oracle) pollGameChain() error {
+func (orc *Oracle) listenToGameChain() error {
+
+}
+
+func (orc *Oracle) listenToPlasmaChain() error {
 
 }
 
@@ -214,10 +223,10 @@ func LoadDappChainPrivateKey(path string) ([]byte, error) {
 }
 
 func ConnectToDAppChainGateway(
-	loomClient *client.DAppChainRPCClient, caller loom.Address, signer auth.Signer,
+	loomClient *client.DAppChainRPCClient, caller loom.Address, contractName string, signer auth.Signer,
 	logger *loom.Logger,
 ) (*DAppChainGateway, error) {
-	gatewayAddr, err := loomClient.Resolve("gateway")
+	gatewayAddr, err := loomClient.Resolve(contractName)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to resolve Gateway Go contract address")
 	}
