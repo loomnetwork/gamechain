@@ -49,7 +49,7 @@ var getHeroForUserCmd = &cobra.Command{
 			fmt.Printf("experience: %d\n", result.Hero.Experience)
 			fmt.Printf("level: %d\n", result.Hero.Level)
 			for _, skill := range result.Hero.Skills {
-				fmt.Printf("skill_title: %s\n", skill.Title)
+				fmt.Printf("skill title: %s\n", skill.Title)
 			}
 		}
 
