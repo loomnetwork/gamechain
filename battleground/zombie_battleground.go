@@ -610,6 +610,35 @@ func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHero
 	return &zb.GetHeroResponse{Hero: hero}, nil
 }
 
+func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroRequest) (*zb.SetHeroResponse, error) {
+	if req.Hero == nil {
+		return nil, fmt.Errorf("Hero is null")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero = proto.Clone(req.Hero).(*zb.Hero)
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHero")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:sethero")
+	}
+
+	return &zb.SetHeroResponse{Hero: hero}, nil
+}
+
 func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddHeroExperienceRequest) (*zb.AddHeroExperienceResponse, error) {
 	if req.Experience <= 0 {
 		return nil, fmt.Errorf("experience needs to be greater than zero")
@@ -640,6 +669,64 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	}
 
 	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroExperience(ctx contract.Context, req *zb.SetHeroExperienceRequest) (*zb.SetHeroExperienceResponse, error) {
+	if req.Experience <= 0 {
+		return nil, fmt.Errorf("experience needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Experience = req.Experience
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroExperience")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setheroexperience")
+	}
+
+	return &zb.SetHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroLevel(ctx contract.Context, req *zb.SetHeroLevelRequest) (*zb.SetHeroLevelResponse, error) {
+	if req.Level <= 0 {
+		return nil, fmt.Errorf("level needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Level = req.Level
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroLevel")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setherolevel")
+	}
+
+	return &zb.SetHeroLevelResponse{HeroId: hero.HeroId, Level: hero.Level}, nil
 }
 
 func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
