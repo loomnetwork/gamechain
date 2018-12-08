@@ -370,17 +370,25 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 	}
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) *zb.CardInstance {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.InstanceId, owner string) *zb.CardInstance {
 	return &zb.CardInstance{
-		InstanceId: instanceId,
+		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
 		Owner:      owner,
 		Prototype: proto.Clone(cardDetails).(*zb.Card),
 		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
 	}
 }
 
+func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId {
+	var instanceIds = make([]*zb.InstanceId, len(cards), len(cards))
+	for i := range cards {
+		instanceIds[i] = cards[i].InstanceId
+	}
+
+	return instanceIds
+}
+
 func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerStates []*zb.PlayerState) error {
-	instanceId := int32(0) // unique instance IDs for cards
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
@@ -392,12 +400,11 @@ func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerSta
 
 				cardInstance := newCardInstanceFromCardDetails(
 					cardDetails,
-					instanceId,
+					nil,
 					playerState.Id,
 				)
 
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
-				instanceId++
 			}
 		}
 	}

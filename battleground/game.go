@@ -3,12 +3,12 @@ package battleground
 import (
 	"bytes"
 	"fmt"
-	"math/rand"
-
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
+	"math/rand"
 )
 
 const (
@@ -137,12 +137,38 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		}
 	}
 
-	// init hands
+	// init cards
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.RandomSeed, i)
 		// draw cards 3 card for mulligan
 		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
 		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
+	}
+
+
+	// init card instance IDs
+	// 0 and 1 are reserved for overlords
+	var instanceId int32 = 2
+	for _, playerState := range g.State.PlayerStates {
+		for _, card := range playerState.CardsInPlay {
+			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			instanceId++
+		}
+
+		for _, card := range playerState.CardsInHand {
+			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			instanceId++
+		}
+
+		for _, card := range playerState.CardsInDeck {
+			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			instanceId++
+		}
+
+		for _, card := range playerState.CardsInGraveyard {
+			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			instanceId++
+		}
 	}
 
 	if g.customGameMode != nil {
@@ -498,7 +524,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
 	}
 	for _, card := range mulligan.MulliganedCards {
-		_, _, found := findCardInCardList(card, player.CardsInHand)
+		_, _, found := findCardInCardListByInstanceId(card, player.CardsInHand)
 		if !found {
 			return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
 		}
@@ -507,7 +533,7 @@ func actionMulligan(g *Gameplay) stateFn {
 	// keep only the cards in in mulligan
 	keepCards := make([]*zb.CardInstance, 0)
 	for _, mcard := range mulligan.MulliganedCards {
-		_, card, found := findCardInCardList(mcard, player.CardsInHand)
+		_, card, found := findCardInCardListByInstanceId(mcard, player.CardsInHand)
 		if found {
 			keepCards = append(keepCards, card)
 		}
@@ -519,7 +545,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		rerollCards = append(rerollCards, player.CardsInHand...)
 	} else {
 		for _, card := range player.CardsInHand {
-			_, _, found := findCardInCardList(card, keepCards)
+			_, _, found := findCardInCardListByName(card, keepCards)
 			if !found {
 				rerollCards = append(rerollCards, card)
 			}
@@ -621,7 +647,7 @@ func actionDrawCard(g *Gameplay) stateFn {
 
 		var cardIndexInDeck int
 		for i, cardInDeck := range g.activePlayer().CardsInDeck {
-			if cardInDeck.InstanceId == current.GetDrawCard().CardInstance.InstanceId {
+			if proto.Equal(cardInDeck.InstanceId, current.GetDrawCard().CardInstance.InstanceId) {
 				card = cardInDeck
 				cardIndexInDeck = i
 				g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
@@ -720,11 +746,11 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// get card instance from cardsInHand list
-		cardIndex, card, found := findCardInCardListInstanceID(cardPlay.Card, activeCardsInHand)
+		cardIndex, card, found := findCardInCardListByInstanceId(cardPlay.Card.InstanceId, activeCardsInHand)
 		if !found {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
-				cardPlay.Card.InstanceId,
+				cardPlay.Card.InstanceId.InstanceId,
 				// cardPlay.Card.Prototype.Name,
 			)
 			if !g.UseBackendGameLogic {
@@ -806,7 +832,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	var attackerIndex int
 	var targetIndex int
 
-	switch current.GetCardAttack().AffectObjectType {
+	switch current.GetCardAttack().Target.AffectObjectType {
 	case zb.AffectObjectType_Character:
 		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if !g.UseBackendGameLogic {
@@ -833,7 +859,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			}
 		}
 		for i, card := range g.activePlayer().CardsInPlay {
-			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
 				attacker = card
 				attackerIndex = i
 				break
@@ -851,7 +877,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 		}
 
 		for i, card := range g.activePlayerOpponent().CardsInPlay {
-			if card.InstanceId == current.GetCardAttack().Target.InstanceId {
+			if proto.Equal(card.InstanceId, current.GetCardAttack().Target.InstanceId) {
 				target = card
 				targetIndex = i
 				break
@@ -894,7 +920,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			}
 		}
 		for i, card := range g.activePlayer().CardsInPlay {
-			if card.InstanceId == current.GetCardAttack().Attacker.InstanceId {
+			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
 				attacker = card
 				attackerIndex = i
 				break
@@ -923,7 +949,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_ChangeInstance{
 			ChangeInstance: &zb.HistoryInstance{
-				InstanceId: 1, // TODO change to the actual card id
+				InstanceId: &zb.InstanceId{InstanceId: 1}, // TODO change to the actual card id
 				Value:      2,
 			},
 		},

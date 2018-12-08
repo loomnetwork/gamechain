@@ -141,7 +141,7 @@ func (c *CustomGameMode) updateCardsFromSimpleCards(
 		var newCard *zb.CardInstance
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
-			if simpleCard.instanceId == card.InstanceId {
+			if simpleCard.instanceId == card.InstanceId.InstanceId {
 				cardLibraryCard, err := getCardDetails(gameplay.cardLibrary, simpleCard.mouldName)
 				if err != nil {
 					return nil, err
@@ -344,7 +344,7 @@ type SimpleCardInstance struct {
 
 func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
-		instanceId:       card.InstanceId,
+		instanceId:       card.InstanceId.InstanceId,
 		mouldName:        card.Prototype.Name,
 		attack:           card.Prototype.Attack,
 		attackInherited:  true,
