@@ -1106,12 +1106,12 @@ message PlayerActionOutcome {
     }
 
     message CardAbilityRageOutcome {
-        int32 instanceId = 1;
+        InstanceId instanceId = 1;
         int32 newAttack = 2;
     }
 
     message CardAbilityPriorityAttackOutcome {
-        int32 instanceId = 1;
+        InstanceId instanceId = 1;
         int32 newDefense = 2;
     }
 }
@@ -1125,7 +1125,7 @@ message CardAbilityInstance {
 
 message CardInstance {
     Card prototype = 1;
-    int32 instanceId = 2;
+    InstanceId instanceId = 2;
     CardInstanceSpecificData instance = 3;
     string owner = 4;
 
@@ -1143,12 +1143,12 @@ message CardDeck {
     repeated Card cards = 1;
 }
 
-message InstanceIdOwner {
+message InstanceId {
     int32 instanceId = 1;
 }
 
 message OverlordInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     OverlordPrototype prototype = 2;
     OverlordSkillInstance firstSkill = 3;
     OverlordSkillInstance secondSkill = 4;
@@ -1202,22 +1202,20 @@ message PlayerActionRankBuff {
 }
 
 message PlayerActionCardAttack {
-    CardInstance attacker = 1;
-    AffectObjectType.Enum affectObjectType = 2;
-    Unit target = 3;
+    InstanceId attacker = 1;
+    Unit target = 2;
 }
 
 message PlayerActionCardAbilityUsed {
     CardInstance card = 1;
     CardKind.Enum cardKind = 2;
     repeated Unit targets = 3;
-    string AbilityType = 4;
+    CardAbilityType.Enum AbilityType = 4;
 }
 
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
-    AffectObjectType.Enum affectObjectType = 2;
-    Unit target = 3;
+    Unit target = 2;
 }
 
 message PlayerActionDrawCard {
@@ -1228,7 +1226,7 @@ message PlayerActionEndTurn  {
 }
 
 message PlayerActionMulligan {
-    repeated CardInstance mulliganedCards = 1;
+    repeated InstanceId mulliganedCards = 1;
 }
 
 message StartGameAction {
@@ -1236,7 +1234,7 @@ message StartGameAction {
 }
 
 message Unit {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     AffectObjectType.Enum affectObjectType = 2;
     Parameter Parameter = 3;
 }
@@ -1362,13 +1360,13 @@ message HistoryCreateGame {
 }
 
 message HistoryFullInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     int32 attack = 2;
     int32 defense = 3;
 }
 
 message HistoryInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     int32 value = 2;
     enum change {
         Attack = 0;
@@ -1377,7 +1375,7 @@ message HistoryInstance {
 }
 
 message HistoryHide {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     Zone zone = 2;
 }
 

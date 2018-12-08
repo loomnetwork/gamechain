@@ -38,7 +38,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					InstanceId: 2,
+					InstanceId: &zb.InstanceId{InstanceId: 2},
 				},
 			},
 		},
@@ -52,7 +52,7 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
 				Card: &zb.CardInstance{
-					InstanceId: 13,
+					InstanceId: &zb.InstanceId{InstanceId: 13},
 				},
 			},
 		},
@@ -67,12 +67,10 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardAttack{
 			CardAttack: &zb.PlayerActionCardAttack{
-				Attacker: &zb.CardInstance{
-					InstanceId: 2,
-				},
-				AffectObjectType: zb.AffectObjectType_Character,
+				Attacker: &zb.InstanceId{InstanceId: 2},
 				Target: &zb.Unit{
-					InstanceId: 13,
+					InstanceId: &zb.InstanceId{InstanceId: 13},
+					AffectObjectType: zb.AffectObjectType_Character,
 				},
 			},
 		},
@@ -85,11 +83,11 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_CardAbilityUsed{
 			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
 				Card: &zb.CardInstance{
-					InstanceId: 1,
+					InstanceId: &zb.InstanceId{InstanceId: 1},
 				},
 				Targets: []*zb.Unit{
 					&zb.Unit{
-						InstanceId:       2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
 						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
@@ -104,9 +102,9 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_OverlordSkillUsed{
 			OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 				SkillId:          1,
-				AffectObjectType: zb.AffectObjectType_Card,
 				Target: &zb.Unit{
-					InstanceId: 2,
+					InstanceId: &zb.InstanceId{InstanceId: 2},
+					AffectObjectType: zb.AffectObjectType_Card,
 				},
 			},
 		},
@@ -120,11 +118,11 @@ func TestGameStateFunc(t *testing.T) {
 		Action: &zb.PlayerAction_RankBuff{
 			RankBuff: &zb.PlayerActionRankBuff{
 				Card: &zb.CardInstance{
-					InstanceId: 1,
+					InstanceId: &zb.InstanceId{InstanceId: 1},
 				},
 				Targets: []*zb.Unit{
 					&zb.Unit{
-						InstanceId:       2,
+						InstanceId:       &zb.InstanceId{InstanceId: 2},
 						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
@@ -207,13 +205,13 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				MulliganedCards: player1Mulligan,
+				MulliganedCards: getInstanceIdsFromCardInstances(player1Mulligan),
 			},
 		},
 	})
 	assert.Nil(t, err)
 	for _, card := range player1Mulligan {
-		_, _, found := findCardInCardList(card, gp.State.PlayerStates[0].CardsInHand)
+		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[0].CardsInHand)
 		assert.True(t, found, "mulliganed card should be player hand")
 	}
 
@@ -224,13 +222,13 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				MulliganedCards: player2Mulligan,
+				MulliganedCards: getInstanceIdsFromCardInstances(player2Mulligan),
 			},
 		},
 	})
 	assert.Nil(t, err)
 	for _, card := range player2Mulligan {
-		_, _, found := findCardInCardList(card, gp.State.PlayerStates[1].CardsInHand)
+		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[1].CardsInHand)
 		assert.True(t, found, "mulliganed card should be player hand")
 	}
 	gp.PrintState()
@@ -263,16 +261,10 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_Mulligan{
 			Mulligan: &zb.PlayerActionMulligan{
-				MulliganedCards: []*zb.CardInstance{
-					&zb.CardInstance{
-						Prototype: &zb.Card{Name: "test1"},
-					},
-					&zb.CardInstance{
-						Prototype: &zb.Card{Name: "test2"},
-					},
-					&zb.CardInstance{
-						Prototype: &zb.Card{Name: "test3"},
-					},
+				MulliganedCards: []*zb.InstanceId{
+					{InstanceId: -1},
+					{InstanceId: -2},
+					{InstanceId: -3},
 				},
 			},
 		},
@@ -416,7 +408,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
@@ -424,7 +416,7 @@ func TestCardAttack(t *testing.T) {
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
@@ -437,12 +429,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -462,7 +452,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
@@ -470,7 +460,7 @@ func TestCardAttack(t *testing.T) {
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
@@ -483,12 +473,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -497,7 +485,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
 		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInGraveyard))
-		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId.InstanceId)
 	})
 
 	t.Run("Attacker and target are killed", func(t *testing.T) {
@@ -510,7 +498,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
@@ -518,7 +506,7 @@ func TestCardAttack(t *testing.T) {
 			},
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
@@ -531,12 +519,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -546,8 +532,8 @@ func TestCardAttack(t *testing.T) {
 		assert.Zero(t, len(gp.State.PlayerStates[1].CardsInPlay))
 		assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInGraveyard))
 		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInGraveyard))
-		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInGraveyard[0].InstanceId)
-		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInGraveyard[0].InstanceId.InstanceId)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[1].CardsInGraveyard[0].InstanceId.InstanceId)
 	})
 
 	t.Run("Opponent overlord is attacked", func(t *testing.T) {
@@ -560,7 +546,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -573,10 +559,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
+					Attacker: &zb.InstanceId{InstanceId: 1},
+					Target: &zb.Unit{
+						AffectObjectType: zb.AffectObjectType_Player,
 					},
-					AffectObjectType: zb.AffectObjectType_Player,
 				},
 			},
 		})
@@ -594,7 +580,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -607,10 +593,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
+					Attacker: &zb.InstanceId{InstanceId: 1},
+					Target: &zb.Unit{
+						AffectObjectType: zb.AffectObjectType_Player,
 					},
-					AffectObjectType: zb.AffectObjectType_Player,
 				},
 			},
 		})
@@ -640,14 +626,14 @@ func TestCardAttack(t *testing.T) {
 			},
 		}
 		cardInstance0 := CardInstance{&zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
 		}}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
@@ -660,12 +646,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -675,7 +659,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
-		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId)
+		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId.InstanceId)
 	})
 
 	t.Run("PriorityAttack ability when target is killed", func(t *testing.T) {
@@ -697,14 +681,14 @@ func TestCardAttack(t *testing.T) {
 			},
 		}
 		cardInstance0 := CardInstance{&zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
 		}}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
@@ -717,12 +701,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -751,14 +733,14 @@ func TestCardAttack(t *testing.T) {
 			},
 		}
 		cardInstance0 := CardInstance{&zb.CardInstance{
-			InstanceId: 1,
+			InstanceId: &zb.InstanceId{InstanceId: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
 		}}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, cardInstance0.CardInstance)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
-			InstanceId: 2,
+			InstanceId: &zb.InstanceId{InstanceId: 2},
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
@@ -771,12 +753,10 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.CardInstance{
-						InstanceId: 1,
-					},
-					AffectObjectType: zb.AffectObjectType_Character,
+					Attacker: &zb.InstanceId{InstanceId: 1},
 					Target: &zb.Unit{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
+						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -814,7 +794,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 8,
+						InstanceId: &zb.InstanceId{InstanceId: 3},
 					},
 				},
 			},
@@ -835,7 +815,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: -1,
+						InstanceId: &zb.InstanceId{InstanceId: -1},
 					},
 				},
 			},
@@ -858,7 +838,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 8,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
 					},
 				},
 			},
@@ -870,7 +850,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 3},
 					},
 				},
 			},
@@ -882,7 +862,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 3,
+						InstanceId: &zb.InstanceId{InstanceId: 4},
 					},
 				},
 			},
@@ -894,7 +874,7 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: 2,
+						InstanceId: &zb.InstanceId{InstanceId: 2},
 					},
 				},
 			},

@@ -35,7 +35,7 @@ func (card *CardInstance) SetDefense(game *Gameplay, opponentCard *CardInstance,
 
 	// call the defense changed hook for each ability of the card
 	card.callAbilityInstancesFunc(game, defenseChangedHook)
-	fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
+	//fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
 }
 
 // call hook for each ability instance
