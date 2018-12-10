@@ -47,13 +47,15 @@ type Match struct {
 }
 
 type Replay struct {
-	gorm.Model
+	ID         int64 `gorm:"PRIMARY_KEY"`
 	MatchID    int64
 	ReplayJSON []byte `sql:"type:mediumtext;"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type Deck struct {
-	gorm.Model
+	ID               int64  `gorm:"PRIMARY_KEY"`
 	UserID           string `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
 	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
 	Name             string
@@ -63,17 +65,21 @@ type Deck struct {
 	SecondarySkillID int
 	Version          string
 	SenderAddress    string
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
 }
 
 type DeckCard struct {
-	gorm.Model
-	DeckID   uint
-	CardName string
-	Amount   int64
+	ID        int64 `gorm:"PRIMARY_KEY"`
+	DeckID    uint
+	CardName  string
+	Amount    int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func main() {
-	wsURL = os.Getenv("wsURL")
+	wsURL = os.Getenv("WS_URL")
 	if len(wsURL) == 0 {
 		wsURL = "ws://localhost:9999/queryws"
 	}
@@ -82,7 +88,7 @@ func main() {
 	var err error
 	db, err = connectToDb()
 	if err != nil {
-		log.Println(err)
+		panic(err)
 	}
 	defer db.Close()
 
@@ -142,15 +148,21 @@ func wsLoop() {
 				if len(topics) > 1 {
 					secondaryTopic = strings.Trim(strings.Replace(topics[1].String(), ":", "", -1), "\"")
 				}
-				encodedBody := result.Path("encoded_body").Data().(string)
-				body, _ := base64.StdEncoding.DecodeString(encodedBody)
+				encodedBody, ok := result.Path("encoded_body").Data().(string)
+				if !ok {
+					log.Println("Error getting encoded_body from message")
+				}
+				body, err := base64.StdEncoding.DecodeString(encodedBody)
+				if err != nil {
+					log.Println("Error decoding encoded_body")
+				}
 
 				switch {
 				case secondaryTopic == "zombiebattlegroundfindmatch" || secondaryTopic == "zombiebattlegroundacceptmatch":
 					var event zb.PlayerActionEvent
 					err = proto.Unmarshal(body, &event)
 					if err != nil {
-						fmt.Println(err)
+						log.Println(err)
 					}
 
 					if secondaryTopic == "zombiebattlegroundfindmatch" {
@@ -171,7 +183,10 @@ func wsLoop() {
 							Version:         event.Match.Version,
 							RandomSeed:      event.Match.RandomSeed,
 						}
-						db.Create(&match)
+						err = db.Create(&match).Error
+						if err != nil {
+							log.Println("Error creating match: ", err)
+						}
 					} else {
 						match := Match{}
 
@@ -185,7 +200,10 @@ func wsLoop() {
 						match.Player2Accepted = event.Match.PlayerStates[1].MatchAccepted
 						match.Status = event.Match.Status.String()
 
-						db.Save(&match)
+						err = db.Save(&match).Error
+						if err != nil {
+							log.Println("Error updating match: ", err)
+						}
 					}
 				case secondaryTopic == "endgame":
 					var event zb.PlayerActionEvent
@@ -205,7 +223,10 @@ func wsLoop() {
 					match.WinnerID = event.Block.List[0].GetEndGame().WinnerId
 					match.Status = event.Match.Status.String()
 
-					db.Save(&match)
+					err = db.Save(&match).Error
+					if err != nil {
+						log.Println("Error updating match: ", err)
+					}
 				case topic == "zombiebattlegroundcreatedeck":
 					var event zb.CreateDeckEvent
 					err := proto.Unmarshal(body, &event)
@@ -238,7 +259,10 @@ func wsLoop() {
 						SenderAddress:    event.SenderAddress,
 					}
 
-					db.Create(&deck)
+					err = db.Create(&deck).Error
+					if err != nil {
+						log.Println("Error saving deck: ", err)
+					}
 					log.Printf("Saved deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
 				case topic == "zombiebattlegroundeditdeck":
 					var event zb.EditDeckEvent
@@ -275,7 +299,10 @@ func wsLoop() {
 					deck.Version = event.Version
 					deck.SenderAddress = event.SenderAddress
 
-					db.Save(&deck)
+					err = db.Save(&deck).Error
+					if err != nil {
+						log.Println("Error updating deck: ", err)
+					}
 					log.Printf("Saved deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
 				case topic == "zombiebattlegrounddeletedeck":
 					var event zb.DeleteDeckEvent
@@ -309,11 +336,13 @@ func wsLoop() {
 						db.First(&dbReplay)
 						dbReplay.ReplayJSON = replay
 						db.Save(&dbReplay)
-					} else {
+					} else if gorm.IsRecordNotFoundError(err) {
 						// insert
 						dbReplay.MatchID = matchID
 						dbReplay.ReplayJSON = replay
 						db.Create(&dbReplay)
+					} else {
+						log.Println("Error getting replay: ", err)
 					}
 				default:
 					continue
@@ -397,7 +426,7 @@ func connectToDb() (*gorm.DB, error) {
 			dbUserName = "root"
 		}
 		if len(dbName) == 0 {
-			dbName = "zb_replays"
+			dbName = "loom"
 		}
 		if len(dbPort) == 0 {
 			dbPort = "3306"
@@ -408,6 +437,9 @@ func connectToDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.AutoMigrate(&Match{}, &Replay{}, &Deck{}, &DeckCard{})
+	err = db.AutoMigrate(&Match{}, &Replay{}, &Deck{}, &DeckCard{}).Error
+	if err != nil {
+		log.Println("Error during AutoMigrate: ", err)
+	}
 	return db, nil
 }
