@@ -12,7 +12,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Jeffail/gabs"
 	_ "github.com/go-sql-driver/mysql"
@@ -20,6 +19,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
+	"github.com/loomnetwork/gamechain/models"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
@@ -27,56 +27,6 @@ var (
 	wsURL string
 	db    *gorm.DB
 )
-
-type Match struct {
-	ID              int64 `gorm:"PRIMARY_KEY,auto_increment:false"`
-	Player1ID       string
-	Player2ID       string
-	Player1Accepted bool
-	Player2Accepted bool
-	Player1DeckID   int64
-	Player2DeckID   int64
-	Status          string
-	Version         string
-	RandomSeed      int64
-	Replay          Replay
-	Deck            Deck
-	WinnerID        string
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-}
-
-type Replay struct {
-	ID         int64 `gorm:"PRIMARY_KEY"`
-	MatchID    int64
-	ReplayJSON []byte `sql:"type:mediumtext;"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-}
-
-type Deck struct {
-	ID               int64  `gorm:"PRIMARY_KEY"`
-	UserID           string `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
-	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
-	Name             string
-	HeroID           int64
-	Cards            []DeckCard
-	PrimarySkillID   int
-	SecondarySkillID int
-	Version          string
-	SenderAddress    string
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
-}
-
-type DeckCard struct {
-	ID        int64 `gorm:"PRIMARY_KEY"`
-	DeckID    uint
-	CardName  string
-	Amount    int64
-	CreatedAt time.Time
-	UpdatedAt time.Time
-}
 
 func main() {
 	wsURL = os.Getenv("WS_URL")
@@ -166,12 +116,12 @@ func wsLoop() {
 					}
 
 					if secondaryTopic == "zombiebattlegroundfindmatch" {
-						match := Match{}
-						err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+						match := models.Match{}
+						err = db.Where(&models.Match{ID: event.Match.Id}).First(&match).Error
 						if err == nil {
 							continue
 						}
-						match = Match{
+						match = models.Match{
 							ID:              event.Match.Id,
 							Player1ID:       event.Match.PlayerStates[0].Id,
 							Player2ID:       event.Match.PlayerStates[1].Id,
@@ -188,9 +138,9 @@ func wsLoop() {
 							log.Println("Error creating match: ", err)
 						}
 					} else {
-						match := Match{}
+						match := models.Match{}
 
-						err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+						err = db.Where(&models.Match{ID: event.Match.Id}).First(&match).Error
 						if err != nil {
 							log.Println("Error getting match from DB: ", err)
 							continue
@@ -212,9 +162,9 @@ func wsLoop() {
 						fmt.Println(err)
 					}
 
-					match := Match{}
+					match := models.Match{}
 
-					err = db.Where(&Match{ID: event.Match.Id}).First(&match).Error
+					err = db.Where(&models.Match{ID: event.Match.Id}).First(&match).Error
 					if err != nil {
 						log.Println("Error getting match from DB: ", err)
 						continue
@@ -237,9 +187,9 @@ func wsLoop() {
 
 					log.Printf("Saving deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
 
-					cards := []DeckCard{}
+					cards := []models.DeckCard{}
 					for _, card := range event.Deck.Cards {
-						cards = append(cards, DeckCard{
+						cards = append(cards, models.DeckCard{
 							CardName: card.CardName,
 							Amount:   card.Amount,
 						})
@@ -247,7 +197,7 @@ func wsLoop() {
 
 					fmt.Printf("DECK MSG: %+v", event)
 
-					deck := Deck{
+					deck := models.Deck{
 						UserID:           event.UserId,
 						DeckID:           event.Deck.Id,
 						Name:             event.Deck.Name,
@@ -274,17 +224,17 @@ func wsLoop() {
 
 					log.Printf("Editing deck with deck ID %d, userid %s, name %s", event.Deck.Id, event.UserId, event.Deck.Name)
 
-					deck := Deck{}
+					deck := models.Deck{}
 
-					err = db.Where(&Deck{UserID: event.UserId, DeckID: event.Deck.Id}).First(&deck).Error
+					err = db.Where(&models.Deck{UserID: event.UserId, DeckID: event.Deck.Id}).First(&deck).Error
 					if err != nil {
 						log.Println("Error getting deck from DB: ", err)
 						continue
 					}
 
-					cards := []DeckCard{}
+					cards := []models.DeckCard{}
 					for _, card := range event.Deck.Cards {
-						cards = append(cards, DeckCard{
+						cards = append(cards, models.DeckCard{
 							CardName: card.CardName,
 							Amount:   card.Amount,
 						})
@@ -314,7 +264,7 @@ func wsLoop() {
 
 					log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 
-					db.Where(&Deck{UserID: event.UserId, DeckID: event.DeckId}).Delete(Deck{})
+					db.Where(&models.Deck{UserID: event.UserId, DeckID: event.DeckId}).Delete(models.Deck{})
 
 					log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 				case strings.HasPrefix(topic, "match"):
@@ -329,9 +279,9 @@ func wsLoop() {
 					}
 					log.Printf("Saving replay with match ID %d to DB", matchID)
 
-					dbReplay := Replay{}
+					dbReplay := models.Replay{}
 
-					err = db.Where(&Replay{MatchID: matchID}).First(&dbReplay).Error
+					err = db.Where(&models.Replay{MatchID: matchID}).First(&dbReplay).Error
 					if err == nil {
 						db.First(&dbReplay)
 						dbReplay.ReplayJSON = replay
@@ -437,7 +387,7 @@ func connectToDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = db.AutoMigrate(&Match{}, &Replay{}, &Deck{}, &DeckCard{}).Error
+	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}).Error
 	if err != nil {
 		log.Println("Error during AutoMigrate: ", err)
 	}
