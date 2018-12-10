@@ -309,7 +309,7 @@ func TestPopulateDeckCards(t *testing.T) {
 	cardLibrary, err := getCardLibrary(ctx, "v1")
 	assert.Nil(t, err)
 
-	err = populateDeckCards(ctx, cardLibrary, playerStates)
+	err = populateDeckCards(ctx, cardLibrary, playerStates, true)
 	assert.Nil(t, err)
 	assert.NotNil(t, playerStates[0].CardsInDeck)
 	assert.NotNil(t, playerStates[1].CardsInDeck)
