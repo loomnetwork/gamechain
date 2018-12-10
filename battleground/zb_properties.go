@@ -88,7 +88,7 @@ func (card *CardInstance) initAbilityInstances(game *Gameplay, opponentCard *Car
 				},
 			})
 		default:
-			fmt.Printf("CardAbility.Type has unexpected value %d", abilityInstanceRaw.Type)
+			fmt.Printf("CardAbility.Type has unexpected value %s\n", zb.CardAbilityType_Enum_name[int32(abilityInstanceRaw.Type)])
 		}
 	}
 }

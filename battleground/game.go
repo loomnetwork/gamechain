@@ -85,7 +85,7 @@ func NewGamePlay(ctx contract.Context,
 		return nil, err
 	}
 
-	err = populateDeckCards(ctx, g.cardLibrary, players)
+	err = populateDeckCards(ctx, g.cardLibrary, players, useBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}

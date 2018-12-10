@@ -388,7 +388,12 @@ func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId 
 	return instanceIds
 }
 
-func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerStates []*zb.PlayerState) error {
+func populateDeckCards(
+	ctx contract.Context,
+	cardLibrary *zb.CardList,
+	playerStates []*zb.PlayerState,
+	useBackendGameLogic bool,
+	) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
@@ -405,6 +410,25 @@ func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerSta
 				)
 
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
+			}
+		}
+	}
+
+	if useBackendGameLogic {
+		for _, playerState := range playerStates {
+			for _, card := range playerState.CardsInDeck {
+				filteredAbilities := make([]*zb.CardAbility, 0, 0)
+				for _, ability := range card.Prototype.Abilities {
+					switch ability.Type {
+					case zb.CardAbilityType_Rage:
+					case zb.CardAbilityType_PriorityAttack:
+						filteredAbilities = append(filteredAbilities, ability)
+					default:
+						fmt.Printf("CardAbility.Type has unexpected value %s, removed\n", zb.CardAbilityType_Enum_name[int32(ability.Type)])
+					}
+				}
+
+				card.Prototype.Abilities = filteredAbilities
 			}
 		}
 	}
