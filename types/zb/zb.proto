@@ -425,6 +425,11 @@ message InitialPlayerState {
     Deck deck  = 3;
 }
 
+message PlayerTimestamp {
+    string id = 1;
+    int64 updatedAt = 2;
+}
+
 message Match {
     int64 id = 1;
     repeated string topics = 2;
@@ -448,6 +453,7 @@ message Match {
     Address customGameAddr = 7;
     int64 createdAt = 8;
     bool useBackendGameLogic = 9;
+    repeated PlayerTimestamp playerLastSeens = 10;
 }
 
 message MatchMakingInfoList {
@@ -635,6 +641,14 @@ message CheckGameStatusRequest {
 }
 
 message CheckGameStatusResponse {
+}
+
+message KeepAliveRequest {
+    int64 matchId   = 1;
+    string userId   = 2;
+}
+
+message KeepAliveResponse {
 }
 
 // Game Modes
@@ -1189,6 +1203,7 @@ message OverlordSkillPrototype {
 }
 
 message PlayerActionLeaveMatch {
+    string winner = 1;
 }
 
 message PlayerActionCardPlay {
