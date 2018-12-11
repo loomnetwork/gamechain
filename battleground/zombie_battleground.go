@@ -27,6 +27,7 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
+	KeepAliveTimeout           = 10 * time.Second
 )
 
 var secret string
@@ -971,6 +972,14 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			},
 		},
 		Version: playerProfile.Version, // TODO: match version of both players
+		PlayerLastSeens: []*zb.PlayerTimestamp{
+			&zb.PlayerTimestamp{
+				Id: playerProfile.UserId,
+			},
+			&zb.PlayerTimestamp{
+				Id: matchedPlayerProfile.UserId,
+			},
+		},
 	}
 
 	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
@@ -1506,6 +1515,9 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 		if err := saveMatch(ctx, match); err != nil {
 			return nil, err
 		}
+		// update winner
+		leaveMatchReq := leaveMatchAction.GetLeaveMatch()
+		leaveMatchReq.Winner = gp.State.Winner
 		emitMsg := zb.PlayerActionEvent{
 			PlayerAction: &leaveMatchAction,
 			Match:        match,
@@ -1624,6 +1636,101 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 		Match:     match,
 		History:   gp.history,
 	}, nil
+}
+
+func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRequest) (*zb.KeepAliveResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	switch match.Status {
+	case zb.Match_PlayerLeft, zb.Match_Ended, zb.Match_Timedout, zb.Match_Canceled:
+		return nil, fmt.Errorf("Match %d is already finished", match.Id)
+	}
+
+	var playerIndex = -1
+	var playerID string
+	for i, playerState := range match.PlayerStates {
+		if playerState.Id == req.UserId {
+			playerIndex = i
+			playerID = playerState.Id
+		}
+	}
+	if playerIndex < 0 {
+		return nil, fmt.Errorf("player id %s not found", playerID)
+	}
+
+	if playerIndex > len(match.PlayerLastSeens)-1 {
+		return nil, fmt.Errorf("player id %s not found", playerID)
+	}
+
+	var skipInitialChecking bool
+	for _, lastseen := range match.PlayerLastSeens {
+		if lastseen.UpdatedAt == 0 {
+			skipInitialChecking = true
+			break
+		}
+	}
+
+	match.PlayerLastSeens[playerIndex].UpdatedAt = ctx.Now().Unix()
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	if skipInitialChecking {
+		return &zb.KeepAliveResponse{}, nil
+	}
+
+	gamestate, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
+	if err != nil {
+		return nil, err
+	}
+	for _, lastseen := range match.PlayerLastSeens {
+		lastSeenAt := time.Unix(lastseen.UpdatedAt, 0)
+		if lastSeenAt.Add(KeepAliveTimeout).Before(ctx.Now()) {
+			// create a leave match request and append to the game state
+			leaveMatchAction := zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
+				PlayerId:   lastseen.Id,
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{},
+				},
+				CreatedAt: ctx.Now().Unix(),
+			}
+
+			// ignore the error in case this method is called mutiple times
+			if err := gp.AddAction(&leaveMatchAction); err == nil {
+				if err := saveGameState(ctx, gamestate); err != nil {
+					return nil, err
+				}
+			}
+			// update match status
+			match.Status = zb.Match_PlayerLeft
+			if err := saveMatch(ctx, match); err != nil {
+				return nil, err
+			}
+			// update winner
+			leaveMatchReq := leaveMatchAction.GetLeaveMatch()
+			leaveMatchReq.Winner = gp.State.Winner
+			emitMsg := zb.PlayerActionEvent{
+				PlayerAction: &leaveMatchAction,
+				Match:        match,
+				Block:        &zb.History{List: gp.history},
+			}
+			data, err := proto.Marshal(&emitMsg)
+			if err != nil {
+				return nil, err
+			}
+			ctx.EmitTopics([]byte(data), match.Topics...)
+		}
+	}
+
+	return &zb.KeepAliveResponse{}, nil
 }
 
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
