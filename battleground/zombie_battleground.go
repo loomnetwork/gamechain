@@ -1642,6 +1642,11 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 		return nil, err
 	}
 
+	switch match.Status {
+	case zb.Match_PlayerLeft, zb.Match_Ended, zb.Match_Timedout, zb.Match_Canceled:
+		return nil, fmt.Errorf("Match %d is already finished", match.Id)
+	}
+
 	var playerIndex = -1
 	var playerID string
 	for i, playerState := range match.PlayerStates {
