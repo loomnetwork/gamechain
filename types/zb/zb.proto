@@ -1144,7 +1144,7 @@ message CardDeck {
 }
 
 message InstanceId {
-    int32 instanceId = 1;
+    int32 id = 1;
 }
 
 message OverlordInstance {

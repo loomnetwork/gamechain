@@ -2143,7 +2143,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 8},
+							InstanceId: &zb.InstanceId{Id: 8},
 						},
 					},
 				},
@@ -2161,11 +2161,11 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 1},
+							InstanceId: &zb.InstanceId{Id: 1},
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{InstanceId: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2186,7 +2186,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId:          1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{InstanceId: 2},
+							InstanceId: &zb.InstanceId{Id: 2},
 							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
@@ -2205,11 +2205,11 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_RankBuff{
 					RankBuff: &zb.PlayerActionRankBuff{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 1},
+							InstanceId: &zb.InstanceId{Id: 1},
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{InstanceId: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2243,7 +2243,7 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 13},
+							InstanceId: &zb.InstanceId{Id: 13},
 						},
 					},
 				},
@@ -2260,9 +2260,9 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardAttack{
 					CardAttack: &zb.PlayerActionCardAttack{
-						Attacker: &zb.InstanceId{InstanceId: 13},
+						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{InstanceId: 8},
+							InstanceId: &zb.InstanceId{Id: 8},
 							AffectObjectType: zb.AffectObjectType_Character,
 						},
 					},
@@ -2281,11 +2281,11 @@ func TestGameStateOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 1},
+							InstanceId: &zb.InstanceId{Id: 1},
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{InstanceId: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2306,7 +2306,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{InstanceId: 2},
+							InstanceId: &zb.InstanceId{Id: 2},
 							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
@@ -2512,7 +2512,7 @@ func TestCardPlayOperations(t *testing.T) {
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{InstanceId: 8},
+							InstanceId: &zb.InstanceId{Id: 8},
 						},
 					},
 				},
