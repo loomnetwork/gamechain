@@ -20,6 +20,15 @@ type DAppChainGateway struct {
 	signer auth.Signer
 }
 
+type LoomAuthGateway struct {
+	EndPoint string
+}
+
+func (g *LoomAuthGateway) ProcessEvent() error {
+
+	return nil
+}
+
 func ConnectToDAppChainGateway(
 	loomClient *client.DAppChainRPCClient, caller loom.Address, contractName string, signer auth.Signer,
 	logger *loom.Logger,
