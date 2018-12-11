@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"encoding/base64"
@@ -21,31 +21,99 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/models"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var (
-	wsURL string
-	db    *gorm.DB
-)
-
-func main() {
-	wsURL = os.Getenv("WS_URL")
-	if len(wsURL) == 0 {
-		wsURL = "ws://localhost:9999/queryws"
-	}
-	log.Printf("wsURL - %s", wsURL)
-
-	var err error
-	db, err = connectToDb()
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
-
-	wsLoop()
+var rootCmd = &cobra.Command{
+	Use:          "gamechain-logger [url]",
+	Short:        "Loom Gamechain logger",
+	Long:         `A logger that captures events from Gamechain and creates game metadata`,
+	Example:      `  gamechain-logger ws://localhost:9999/queryws`,
+	SilenceUsage: true,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			cmd.Usage()
+			return fmt.Errorf("Gamechain websocket URL endpoint required")
+		}
+		return run(args[0])
+	},
 }
 
-func wsLoop() {
+func init() {
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().String("db-url", "", "MySQL Connection URL")
+	rootCmd.PersistentFlags().String("db-host", "127.0.0.1", "MySQL host")
+	rootCmd.PersistentFlags().String("db-port", "3306", "MySQL port")
+	rootCmd.PersistentFlags().String("db-name", "loom", "MySQL database name")
+	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
+	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
+	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
+	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
+	viper.BindPFlag("db-port", rootCmd.PersistentFlags().Lookup("db-port"))
+	viper.BindPFlag("db-name", rootCmd.PersistentFlags().Lookup("db-name"))
+	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
+	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
+}
+
+func initConfig() {
+	viper.AutomaticEnv() // read in environment variables that match
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+}
+
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+}
+
+func run(wsURL string) error {
+	var (
+		dbURL      = viper.GetString("db-url")
+		dbHost     = viper.GetString("db-host")
+		dbPort     = viper.GetString("db-port")
+		dbName     = viper.GetString("db-name")
+		dbUser     = viper.GetString("db-user")
+		dbPassword = viper.GetString("db-password")
+	)
+
+	parsedURL, err := url.Parse(wsURL)
+	if err != nil {
+		return errors.Wrapf(err, "Error parsing url %s", wsURL)
+	}
+
+	conn, err := connectGamechain(parsedURL.String())
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	log.Printf("connected to gamechain url %s", wsURL)
+
+	// db should be optional?
+	dbConnStr := dbURL
+	if dbURL != "" {
+		dbConnStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, url.QueryEscape(dbPassword), dbHost, dbPort, dbName)
+	}
+	log.Printf("connected to database host %s", dbHost)
+
+	db, err := connectDb(dbConnStr)
+	if err != nil {
+		return errors.Wrapf(err, "fail to connect to database")
+	}
+	defer db.Close()
+	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}).Error
+	if err != nil {
+		return err
+	}
+
+	// TODO: need to run with recovery and need to capture SIG TERM
+	wsLoop(conn, db)
+
+	return nil
+}
+
+func connectGamechain(wsURL string) (*websocket.Conn, error) {
 	subscribeCommand := struct {
 		Method  string            `json:"method"`
 		JSONRPC string            `json:"jsonrpc"`
@@ -54,28 +122,88 @@ func wsLoop() {
 	}{"subevents", "2.0", make(map[string]string), "dummy"}
 	subscribeMsg, err := json.Marshal(subscribeCommand)
 	if err != nil {
-		log.Fatal("Cannot marshal command to json")
+		return nil, errors.Wrapf(err, "Cannot marshal command to json")
 	}
 
-	parsedURL, err := url.Parse(wsURL)
+	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
 	if err != nil {
-		log.Fatal("Error parsing url: ", err)
+		return nil, errors.Wrapf(err, "Fail to connect to %s", wsURL)
 	}
+	if err := conn.WriteMessage(websocket.TextMessage, subscribeMsg); err != nil {
+		return nil, err
+	}
+	return conn, nil
+}
 
-	u := url.URL{Scheme: parsedURL.Scheme, Host: parsedURL.Host, Path: parsedURL.Path}
-	log.Printf("connecting to %s", u.String())
-
-	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+func connectDb(dbURL string) (*gorm.DB, error) {
+	db, err := gorm.Open("mysql", dbURL)
 	if err != nil {
-		log.Fatal("dial:", err)
+		return nil, err
 	}
-	defer c.Close()
-	if err := c.WriteMessage(websocket.TextMessage, subscribeMsg); err != nil {
-		log.Fatal("Error writing command:", err)
+	return db, nil
+}
+
+func writeReplayFile(topic string, body []byte) ([]byte, error) {
+	_, b, _, _ := runtime.Caller(0)
+	basepath := filepath.Dir(b)
+
+	path := filepath.Join(basepath, "../../replays/")
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.Mkdir(path, os.ModePerm)
 	}
 
+	filename := fmt.Sprintf("%s.json", topic)
+	path = filepath.Join(path, filename)
+
+	fmt.Println("Writing to file: ", path)
+
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	var event zb.PlayerActionEvent
+	err = proto.Unmarshal(body, &event)
+	if err != nil {
+		return nil, err
+	}
+
+	if event.Block == nil {
+		return nil, nil
+	}
+
+	var replay zb.GameReplay
+	if fi, _ := f.Stat(); fi.Size() > 0 {
+		if err := jsonpb.Unmarshal(f, &replay); err != nil {
+			log.Println(err)
+			return nil, err
+		}
+	}
+
+	if event.PlayerAction != nil {
+		replay.Blocks = append(replay.Blocks, event.Block.List...)
+		replay.Actions = append(replay.Actions, event.PlayerAction)
+	} else {
+		replay.Blocks = event.Block.List
+	}
+
+	m := jsonpb.Marshaler{}
+	result, err := m.MarshalToString(&replay)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := ioutil.WriteFile(path, []byte(result), os.ModePerm); err != nil {
+		return nil, err
+	}
+
+	return []byte(result), nil
+}
+
+func wsLoop(conn *websocket.Conn, db *gorm.DB) {
 	for {
-		_, message, err := c.ReadMessage()
+		_, message, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
 			return
@@ -300,96 +428,4 @@ func wsLoop() {
 			}
 		}
 	}
-}
-
-func writeReplayFile(topic string, body []byte) ([]byte, error) {
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
-
-	path := filepath.Join(basepath, "../../replays/")
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		os.Mkdir(path, os.ModePerm)
-	}
-
-	filename := fmt.Sprintf("%s.json", topic)
-	path = filepath.Join(path, filename)
-
-	fmt.Println("Writing to file: ", path)
-
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	var event zb.PlayerActionEvent
-	err = proto.Unmarshal(body, &event)
-	if err != nil {
-		return nil, err
-	}
-
-	if event.Block == nil {
-		return nil, nil
-	}
-
-	var replay zb.GameReplay
-	if fi, _ := f.Stat(); fi.Size() > 0 {
-		if err := jsonpb.Unmarshal(f, &replay); err != nil {
-			log.Println(err)
-			return nil, err
-		}
-	}
-
-	if event.PlayerAction != nil {
-		replay.Blocks = append(replay.Blocks, event.Block.List...)
-		replay.Actions = append(replay.Actions, event.PlayerAction)
-	} else {
-		replay.Blocks = event.Block.List
-	}
-
-	m := jsonpb.Marshaler{}
-	result, err := m.MarshalToString(&replay)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := ioutil.WriteFile(path, []byte(result), os.ModePerm); err != nil {
-		return nil, err
-	}
-
-	return []byte(result), nil
-}
-
-func connectToDb() (*gorm.DB, error) {
-	dbURL := os.Getenv("DATABASE_URL")
-	var dbName string
-	if dbURL == "" {
-		dbUserName := os.Getenv("DATABASE_USERNAME")
-		dbName = os.Getenv("DATABASE_NAME")
-		dbPass := os.Getenv("DATABASE_PASS")
-		dbHost := os.Getenv("DATABASE_HOST")
-		dbPort := os.Getenv("DATABASE_PORT")
-		if len(dbHost) == 0 {
-			dbHost = "127.0.0.1"
-		}
-		if len(dbUserName) == 0 {
-			dbUserName = "root"
-		}
-		if len(dbName) == 0 {
-			dbName = "loom"
-		}
-		if len(dbPort) == 0 {
-			dbPort = "3306"
-		}
-		dbURL = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUserName, dbPass, dbHost, dbPort, dbName)
-	}
-	db, err := gorm.Open("mysql", dbURL)
-	if err != nil {
-		return nil, err
-	}
-	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}).Error
-	if err != nil {
-		log.Println("Error during AutoMigrate: ", err)
-	}
-	return db, nil
 }
