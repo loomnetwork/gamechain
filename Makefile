@@ -28,8 +28,8 @@ bin/zb-enum-gen:
 bin/zb-console-game:
 	go build -o $@ tools/cmd/console_game/main.go
 
-bin/replay-logger:
-	go build -o $@ $(PKG)/tools/replay_logger
+bin/gamechain-logger:
+	go build -o $@ $(PKG)/tools/gamechain-logger
 
 bin/gameplay-replay:
 	go build -o $@ $(PKG)/tools/gameplay_replay
@@ -111,7 +111,7 @@ clean:
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
-		bin/replay-logger \
+		bin/gamechain-logger \
 		bin/gameplay-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen
