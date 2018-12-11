@@ -960,7 +960,7 @@ message CardAbilityType {
         DEAL_DAMAGE_TO_UNIT_AND_SWING = 80 [(gogoproto.enumvalue_customname) = "DealDamageToUnitAndSwing"];
         SET_ATTACK_AVAILABILITY = 81 [(gogoproto.enumvalue_customname) = "SetAttackAvailability"];
         CHOOSABLE_ABILITIES = 82 [(gogoproto.enumvalue_customname) = "ChoosableAbilities"];
-        COSTS_LESS_IF_TYPE_CARD_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfTypeCardInPlay"];
+        COSTS_LESS_IF_CARD_TYPE_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfCardTypeInPlay"];
         GAIN_GOO = 84 [(gogoproto.enumvalue_customname) = "GainGoo"];
         BLITZ = 85 [(gogoproto.enumvalue_customname) = "Blitz"];
         DRAW_CARD_BY_FACTION = 86 [(gogoproto.enumvalue_customname) = "DrawCardByFaction"];
