@@ -67,6 +67,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
+		github.com/spf13/viper \
 		github.com/pkg/errors \
 		github.com/stretchr/testify/assert\
 		github.com/hashicorp/go-plugin \
