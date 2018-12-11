@@ -151,22 +151,22 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	var instanceId int32 = 2
 	for _, playerState := range g.State.PlayerStates {
 		for _, card := range playerState.CardsInPlay {
-			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			card.InstanceId = &zb.InstanceId{Id: instanceId}
 			instanceId++
 		}
 
 		for _, card := range playerState.CardsInHand {
-			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			card.InstanceId = &zb.InstanceId{Id: instanceId}
 			instanceId++
 		}
 
 		for _, card := range playerState.CardsInDeck {
-			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			card.InstanceId = &zb.InstanceId{Id: instanceId}
 			instanceId++
 		}
 
 		for _, card := range playerState.CardsInGraveyard {
-			card.InstanceId = &zb.InstanceId{InstanceId: instanceId}
+			card.InstanceId = &zb.InstanceId{Id: instanceId}
 			instanceId++
 		}
 	}
@@ -750,7 +750,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		if !found {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
-				cardPlay.Card.InstanceId.InstanceId,
+				cardPlay.Card.InstanceId.Id,
 				// cardPlay.Card.Prototype.Name,
 			)
 			if !g.UseBackendGameLogic {
@@ -949,7 +949,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 	g.history = append(g.history, &zb.HistoryData{
 		Data: &zb.HistoryData_ChangeInstance{
 			ChangeInstance: &zb.HistoryInstance{
-				InstanceId: &zb.InstanceId{InstanceId: 1}, // TODO change to the actual card id
+				InstanceId: &zb.InstanceId{Id: 1}, // TODO change to the actual card id
 				Value:      2,
 			},
 		},
