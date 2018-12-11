@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Jeffail/gabs"
 	_ "github.com/go-sql-driver/mysql"
@@ -83,13 +84,6 @@ func run(wsURL string) error {
 		return errors.Wrapf(err, "Error parsing url %s", wsURL)
 	}
 
-	conn, err := connectGamechain(parsedURL.String())
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-	log.Printf("connected to gamechain url %s", wsURL)
-
 	// db should be optional?
 	dbConnStr := dbURL
 	if dbURL == "" {
@@ -108,9 +102,17 @@ func run(wsURL string) error {
 	}
 
 	// TODO: need to run with recovery and need to capture SIG TERM
-	wsLoop(conn, db)
-
-	return nil
+	for {
+		time.Sleep(1 * time.Second)
+		conn, err := connectGamechain(parsedURL.String())
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		defer conn.Close()
+		log.Printf("connected to gamechain url %s", wsURL)
+		wsLoop(conn, db)
+	}
 }
 
 func connectGamechain(wsURL string) (*websocket.Conn, error) {
