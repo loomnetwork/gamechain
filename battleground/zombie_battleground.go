@@ -1686,7 +1686,7 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
 	if err != nil {
 		return nil, err
 	}
