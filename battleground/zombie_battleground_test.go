@@ -3034,20 +3034,20 @@ func TestKeepAlive(t *testing.T) {
 		assert.Equal(t, "player-2", response.GameState.Winner)
 	})
 
-	t.Run("KeepAliveAfterGameEndedShould_Faild", func(t *testing.T) {
+	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
 		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-1",
 		})
-		assert.NotNil(t, err)
+		assert.Nil(t, err)
 	})
 
-	t.Run("KeepAliveAfterGameEndedShould_Faild", func(t *testing.T) {
+	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
 		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-2",
 		})
-		assert.NotNil(t, err)
+		assert.Nil(t, err)
 	})
 
 	t.Run("SendAnyActionShould_Fail", func(t *testing.T) {
