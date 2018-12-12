@@ -370,7 +370,14 @@ func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb.UpdateU
 	if err := ctx.Set(accountKey, &account); err != nil {
 		return errors.Wrapf(err, "error setting account elo score for userId: %s", req.UserId)
 	}
-	// TODO: emit event
+
+	// emit event
+	emitMsg := account
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return err
+	}
+	ctx.EmitTopics([]byte(data), "zombiebattleground:update_elo")
 	return nil
 }
 
