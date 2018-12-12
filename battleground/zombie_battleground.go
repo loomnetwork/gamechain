@@ -742,33 +742,23 @@ func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.G
 
 func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.RegisterPlayerPoolRequest) (*zb.RegisterPlayerPoolResponse, error) {
 	// preparing user profile consisting of deck, score, ...
-	dl, err := loadDecks(ctx, req.UserId)
+	_, err := getDeckWithRegistrationData(ctx, req.RegistrationData)
 	if err != nil {
 		return nil, err
 	}
-	deck := getDeckByID(dl.Decks, req.DeckId)
-	if deck == nil {
-		return nil, fmt.Errorf("deck id %d not found", req.DeckId)
-	}
 
-	if req.Version == "" {
+	if req.RegistrationData.Version == "" {
 		return nil, fmt.Errorf("version not specified")
 	}
 
 	// sort tags
-	if len(req.Tags) > 0 {
-		sort.Strings(req.Tags)
+	if len(req.RegistrationData.Tags) > 0 {
+		sort.Strings(req.RegistrationData.Tags)
 	}
 
 	profile := zb.PlayerProfile{
-		UserId:              req.UserId,
-		DeckId:              deck.Id,
-		UpdatedAt:           ctx.Now().Unix(),
-		Version:             req.Version,
-		RandomSeed:          req.RandomSeed,
-		CustomGame:          req.CustomGame,
-		Tags:                req.Tags,
-		UseBackendGameLogic: req.UseBackendGameLogic,
+		RegistrationData: req.RegistrationData,
+		UpdatedAt: ctx.Now().Unix(),
 	}
 
 	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
@@ -776,7 +766,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
-	if len(profile.Tags) > 0 {
+	if len(profile.RegistrationData.Tags) > 0 {
 		loadPlayerPoolFn = loadTaggedPlayerPool
 		savePlayerPoolFn = saveTaggedPlayerPool
 	} else {
@@ -790,15 +780,15 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		return nil, err
 	}
 
-	match, _ := loadUserCurrentMatch(ctx, req.UserId)
+	match, _ := loadUserCurrentMatch(ctx, req.RegistrationData.UserId)
 	if match != nil {
 		return nil, errors.New("Player is already in a match")
 	}
 
-	targetProfile := findPlayerProfileByID(pool, req.UserId)
+	targetProfile := findPlayerProfileByID(pool, req.RegistrationData.UserId)
 	// if player is in the pool, remove the player from the pool first. otherwise, the profile won't get updated
 	if targetProfile != nil {
-		pool = removePlayerFromPool(pool, req.UserId)
+		pool = removePlayerFromPool(pool, req.RegistrationData.UserId)
 	}
 	pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
 	if err := savePlayerPoolFn(ctx, pool); err != nil {
@@ -809,16 +799,16 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	for _, pp := range pool.PlayerProfiles {
 		updatedAt := time.Unix(pp.UpdatedAt, 0)
 		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-			ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+			ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.RegistrationData.UserId))
 			// remove player from the pool
-			pool = removePlayerFromPool(pool, pp.UserId)
+			pool = removePlayerFromPool(pool, pp.RegistrationData.UserId)
 			// remove match
-			match, _ := loadUserCurrentMatch(ctx, pp.UserId)
+			match, _ := loadUserCurrentMatch(ctx, pp.RegistrationData.UserId)
 			if match != nil {
 				ctx.Delete(MatchKey(match.Id))
 				match.Status = zb.Match_Timedout
 				// remove player's match if existing
-				ctx.Delete(UserMatchKey(pp.UserId))
+				ctx.Delete(UserMatchKey(pp.RegistrationData.UserId))
 				// notify player
 				emitMsg := zb.PlayerActionEvent{
 					Match: match,
@@ -833,7 +823,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "registerplayerpool")
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.RegistrationData.UserId, "registerplayerpool")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:registerplayerpool")
 	}
@@ -897,13 +887,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, errors.New("Player not found in player pool")
 	}
 
-	dl, err := loadDecks(ctx, req.UserId)
+	deck, err := getDeckWithRegistrationData(ctx, playerProfile.RegistrationData)
 	if err != nil {
 		return nil, err
-	}
-	deck := getDeckByID(dl.Decks, playerProfile.DeckId)
-	if deck == nil {
-		return nil, fmt.Errorf("deck id %d not found while matchmaking", playerProfile.DeckId)
 	}
 
 	// perform matchmaking function to calculate scores
@@ -917,13 +903,13 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		var playerScores []*PlayerScore
 		for _, pp := range pool.PlayerProfiles {
 			// skip the requesting player
-			if pp.UserId == req.UserId {
+			if pp.RegistrationData.UserId == req.UserId {
 				continue
 			}
 			score := mmf(playerProfile, pp)
 			// only non-negative score will be added
 			if score > 0 {
-				playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
+				playerScores = append(playerScores, &PlayerScore{score: score, id: pp.RegistrationData.UserId})
 			}
 		}
 
@@ -947,13 +933,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// get matched player deck
-	matchedDl, err := loadDecks(ctx, matchedPlayerProfile.UserId)
+	matchedDeck, err := getDeckWithRegistrationData(ctx, matchedPlayerProfile.RegistrationData)
 	if err != nil {
 		return nil, err
-	}
-	matchedDeck := getDeckByID(matchedDl.Decks, matchedPlayerProfile.DeckId)
-	if matchedDeck == nil {
-		return nil, fmt.Errorf("deck id %d not found", matchedPlayerProfile.DeckId)
 	}
 
 	// create match
@@ -961,45 +943,46 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Status: zb.Match_Matching,
 		PlayerStates: []*zb.InitialPlayerState{
 			&zb.InitialPlayerState{
-				Id:            playerProfile.UserId,
+				Id:            playerProfile.RegistrationData.UserId,
 				Deck:          deck,
 				MatchAccepted: false,
 			},
 			&zb.InitialPlayerState{
-				Id:            matchedPlayerProfile.UserId,
+				Id:            matchedPlayerProfile.RegistrationData.UserId,
 				Deck:          matchedDeck,
 				MatchAccepted: false,
 			},
 		},
-		Version: playerProfile.Version, // TODO: match version of both players
+		Version: playerProfile.RegistrationData.Version, // TODO: match version of both players
 		PlayerLastSeens: []*zb.PlayerTimestamp{
 			&zb.PlayerTimestamp{
-				Id:        playerProfile.UserId,
+				Id:        playerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 			&zb.PlayerTimestamp{
-				Id:        matchedPlayerProfile.UserId,
+				Id:        matchedPlayerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
 	}
 
-	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
-	if match.RandomSeed == 0 {
+	if playerProfile.RegistrationData.DebugCheats.Enabled && playerProfile.RegistrationData.DebugCheats.UseCustomRandomSeed {
+		match.RandomSeed = playerProfile.RegistrationData.DebugCheats.CustomRandomSeed
+	} else {
 		match.RandomSeed = ctx.Now().Unix()
 	}
 
-	match.CustomGameAddr = playerProfile.CustomGame // TODO: make sure both players request same custom game?
+	match.CustomGameAddr = playerProfile.RegistrationData.CustomGame // TODO: make sure both players request same custom game?
 
-	if err := createMatch(ctx, match, playerProfile.UseBackendGameLogic); err != nil {
+	if err := createMatch(ctx, match, playerProfile.RegistrationData.UseBackendGameLogic); err != nil {
 		return nil, err
 	}
 
 	// save user match
-	if err := saveUserCurrentMatch(ctx, playerProfile.UserId, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, playerProfile.RegistrationData.UserId, match); err != nil {
 		return nil, err
 	}
-	if err := saveUserCurrentMatch(ctx, matchedPlayerProfile.UserId, match); err != nil {
+	if err := saveUserCurrentMatch(ctx, matchedPlayerProfile.RegistrationData.UserId, match); err != nil {
 		return nil, err
 	}
 	// save match
@@ -1172,227 +1155,6 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 	}
 
 	return &zb.CancelFindMatchResponse{}, nil
-}
-
-func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugFindMatchRequest) (*zb.FindMatchResponse, error) {
-	// preparing user profile consisting of deck, score, ...
-	dl, err := loadDecks(ctx, req.UserId)
-	if err != nil {
-		return nil, err
-	}
-	var deck *zb.Deck
-	if req.DeckId > 0 {
-		deck = getDeckByID(dl.Decks, req.DeckId)
-	}
-	if req.Deck != nil {
-		deck = req.Deck
-	}
-
-	if deck == nil {
-		return nil, fmt.Errorf("deck not set")
-	}
-
-	// sort tags
-	if len(req.Tags) > 0 {
-		sort.Strings(req.Tags)
-	}
-
-	profile := zb.PlayerProfile{
-		UserId:    req.UserId,
-		DeckId:    deck.Id,
-		UpdatedAt: ctx.Now().Unix(),
-		Tags:      req.Tags,
-	}
-
-	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
-	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
-	// if the tags is set, use tagged playerpool
-	if len(profile.Tags) > 0 {
-		loadPlayerPoolFn = loadTaggedPlayerPool
-		savePlayerPoolFn = saveTaggedPlayerPool
-	} else {
-		loadPlayerPoolFn = loadPlayerPool
-		savePlayerPoolFn = savePlayerPool
-	}
-
-	// perform matchmaking function to calculate scores
-	// steps:
-	// 1. list all the candidates that has similar profiles
-	// 2. pick the most highest score
-	// 3. if there is no candidate, sleep for MMWaitTime seconds
-	retries := 0
-	var matchedPlayerProfile *zb.PlayerProfile
-	for retries < MMRetries {
-		// load player pool
-		pool, err := loadPlayerPoolFn(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		// prune the timed out player profile
-		for _, pp := range pool.PlayerProfiles {
-			updatedAt := time.Unix(pp.UpdatedAt, 0)
-			if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-				ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
-				// remove player from the pool
-				pool = removePlayerFromPool(pool, pp.UserId)
-				// remove match
-				match, _ := loadUserCurrentMatch(ctx, pp.UserId)
-				if match != nil {
-					ctx.Delete(MatchKey(match.Id))
-					match.Status = zb.Match_Timedout
-					// remove player's match if existing
-					ctx.Delete(UserMatchKey(pp.UserId))
-					// notify player
-					emitMsg := zb.PlayerActionEvent{
-						Match: match,
-					}
-					data, err := proto.Marshal(&emitMsg)
-					if err != nil {
-						return nil, err
-					}
-					ctx.EmitTopics([]byte(data), match.Topics...)
-				}
-			}
-		}
-
-		var playerScores []*PlayerScore
-		for _, pp := range pool.PlayerProfiles {
-			// skip the requesting player
-			if pp.UserId == req.UserId {
-				continue
-			}
-			score := mmf(&profile, pp)
-			// only non-negtive score will be added
-			if score > 0 {
-				playerScores = append(playerScores, &PlayerScore{score: score, id: pp.UserId})
-			}
-		}
-
-		sortedPlayerScores := sortByPlayerScore(playerScores)
-		if len(sortedPlayerScores) == 0 {
-			pool.PlayerProfiles = append(pool.PlayerProfiles, &profile)
-			if err := savePlayerPoolFn(ctx, pool); err != nil {
-				return nil, err
-			}
-			// create match
-			match := &zb.Match{
-				Status: zb.Match_Matching,
-				PlayerStates: []*zb.InitialPlayerState{
-					&zb.InitialPlayerState{
-						Id:   req.UserId,
-						Deck: deck,
-					},
-				},
-				Version: req.Version,
-			}
-
-			if err := createMatch(ctx, match, match.UseBackendGameLogic); err != nil {
-				return nil, err
-			}
-			// save user match
-			if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
-				return nil, err
-			}
-			return &zb.FindMatchResponse{
-				Match: match,
-			}, nil
-		}
-
-		if len(sortedPlayerScores) > 0 {
-			matchedPlayerID := sortedPlayerScores[0].id
-			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
-			// remove the match players from the pool
-			pool = removePlayerFromPool(pool, matchedPlayerID)
-			pool = removePlayerFromPool(pool, req.UserId)
-			if err := savePlayerPoolFn(ctx, pool); err != nil {
-				return nil, err
-			}
-			break
-		}
-		retries++
-	}
-
-	// get and update the match
-	player1 := matchedPlayerProfile.UserId
-	match, err := loadUserCurrentMatch(ctx, player1)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-
-	match.PlayerStates = append(match.PlayerStates, &zb.InitialPlayerState{
-		Id:   req.UserId,
-		Deck: deck,
-	})
-	match.Status = zb.Match_Started
-
-	// save user match
-	if err := saveUserCurrentMatch(ctx, req.UserId, match); err != nil {
-		return nil, err
-	}
-	if err := saveUserCurrentMatch(ctx, player1, match); err != nil {
-		return nil, err
-	}
-	// save match
-	if err := saveMatch(ctx, match); err != nil {
-		return nil, err
-	}
-
-	// create game state
-	match.RandomSeed = req.RandomSeed
-	if match.RandomSeed == 0 {
-		match.RandomSeed = ctx.Now().Unix()
-	}
-
-	var addr loom.Address
-	var addr2 *loom.Address
-	var addrStr string
-	//TODO cleanup how we do this parsing
-	if req.CustomGame != nil {
-		addrStr = fmt.Sprintf("default:%s", req.CustomGame.Local.String())
-	}
-
-	addr, err = loom.ParseAddress(addrStr)
-	if err != nil {
-		ctx.Logger().Debug(fmt.Sprintf("no custom game mode --%v\n", err))
-	} else {
-		addr2 = &addr
-	}
-
-	ctx.Logger().Log(fmt.Sprintf("NewGamePlay - UseBackendGameLogic - %t\n", match.UseBackendGameLogic))
-	playerStates := []*zb.PlayerState{
-		&zb.PlayerState{
-			Id:   match.PlayerStates[0].Id,
-			Deck: match.PlayerStates[0].Deck,
-		},
-		&zb.PlayerState{
-			Id:   match.PlayerStates[1].Id,
-			Deck: match.PlayerStates[1].Deck,
-		},
-	}
-
-	gp, err := NewGamePlay(ctx, match.Id, req.Version, playerStates, match.RandomSeed, addr2, match.UseBackendGameLogic)
-	if err != nil {
-		return nil, err
-	}
-	if err := saveGameState(ctx, gp.State); err != nil {
-		return nil, err
-	}
-
-	// accept match
-	emitMsg := zb.PlayerActionEvent{
-		Match: match,
-		Block: &zb.History{List: gp.history},
-	}
-	data, err := proto.Marshal(&emitMsg)
-	if err != nil {
-		return nil, err
-	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
-
-	return &zb.FindMatchResponse{
-		Match: match,
-	}, nil
 }
 
 func (z *ZombieBattleground) GetMatch(ctx contract.StaticContext, req *zb.GetMatchRequest) (*zb.GetMatchResponse, error) {

@@ -197,12 +197,20 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			return err
 		}
 
-		_, err := zbContract.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
-			UserId:     ps.Id,
-			DeckId:     ps.Deck.Id,
-			Version:    game.Version,
-			RandomSeed: game.RandomSeed,
-		})
+		request := &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				UserId:     ps.Id,
+				DeckId:     ps.Deck.Id,
+				Version:    game.Version,
+				DebugCheats: zb.DebugCheatsData{
+					Enabled: true,
+					UseCustomRandomSeed: true,
+					CustomRandomSeed: game.RandomSeed,
+				},
+			},
+		}
+
+		_, err := zbContract.RegisterPlayerPool(ctx, request)
 		if err != nil {
 			return err
 		}
