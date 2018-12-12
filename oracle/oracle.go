@@ -198,14 +198,13 @@ func (orc *Oracle) connect() error {
 }
 func (orc *Oracle) listenToGameChain() error {
 	log.Info("Listening to GameChain")
-	/*
-		gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
-		if err != nil {
-			return err
-		}
 
-		gcEventClient.WatchTopic()
-	*/
+	gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
+	if err != nil {
+		return err
+	}
+
+	gcEventClient.WatchTopic("zombiebattleground:update_elo")
 	return nil
 }
 

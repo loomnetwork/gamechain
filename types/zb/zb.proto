@@ -264,10 +264,9 @@ message UpsertAccountRequest {
     string version = 10;
 }
 
-message UpdatUserEloRequest {
+message UpdateUserEloRequest {
     string user_id = 1;
     int64 elo_score = 2;
-    string version = 3;
 }
 
 message GetAccountRequest {
