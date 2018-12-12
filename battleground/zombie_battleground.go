@@ -978,10 +978,12 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Version: playerProfile.Version, // TODO: match version of both players
 		PlayerLastSeens: []*zb.PlayerTimestamp{
 			&zb.PlayerTimestamp{
-				Id: playerProfile.UserId,
+				Id:        playerProfile.UserId,
+				UpdatedAt: ctx.Now().Unix(),
 			},
 			&zb.PlayerTimestamp{
-				Id: matchedPlayerProfile.UserId,
+				Id:        matchedPlayerProfile.UserId,
+				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
 	}
@@ -1642,11 +1644,6 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 		return nil, err
 	}
 
-	switch match.Status {
-	case zb.Match_PlayerLeft, zb.Match_Ended, zb.Match_Timedout, zb.Match_Canceled:
-		return nil, fmt.Errorf("Match %d is already finished", match.Id)
-	}
-
 	var playerIndex = -1
 	var playerID string
 	for i, playerState := range match.PlayerStates {
@@ -1684,6 +1681,10 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 	if err != nil {
 		return nil, err
 	}
+	if gamestate.IsEnded {
+		return nil, fmt.Errorf("game %v is already ended", gamestate.Id)
+	}
+
 	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
 	if err != nil {
 		return nil, err
