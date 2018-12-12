@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"time"
 
 	loom "github.com/loomnetwork/go-loom"
@@ -25,7 +26,7 @@ type LoomAuthGateway struct {
 }
 
 func (g *LoomAuthGateway) ProcessEvent() error {
-
+	http.Post()
 	return nil
 }
 
