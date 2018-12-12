@@ -352,6 +352,28 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	return nil
 }
 
+func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb.UpdateUserEloRequest) error {
+	// Verify whether this privateKey associated with user
+	if !isOwner(ctx, req.UserId) {
+		return ErrUserNotVerified
+	}
+
+	var account zb.Account
+	accountKey := AccountKey(req.UserId)
+	if err := ctx.Get(accountKey, &account); err != nil {
+		return errors.Wrapf(err, "unable to retrieve account data for userId: %s", req.UserId)
+	}
+
+	// set elo score
+	account.EloScore = req.EloScore
+
+	if err := ctx.Set(accountKey, &account); err != nil {
+		return errors.Wrapf(err, "error setting account elo score for userId: %s", req.UserId)
+	}
+	// TODO: emit event
+	return nil
+}
+
 // CreateDeck appends the given deck to user's deck list
 func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest) (*zb.CreateDeckResponse, error) {
 	if req.Deck == nil {
