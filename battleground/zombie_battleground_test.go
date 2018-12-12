@@ -1697,30 +1697,30 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1-tag",
 			Tags:   tags1,
 		})
-		assert.NotNil(t, err)
-		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+		assert.Nil(t, err)
+		assert.Equal(t, false, response.MatchFound)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-3-tag",
 			Tags:   tags2,
 		})
-		assert.NotNil(t, err)
-		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+		assert.Nil(t, err)
+		assert.Equal(t, false, response.MatchFound)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-5-tag",
 			Tags:   tags3,
 		})
-		assert.NotNil(t, err)
-		assert.Equal(t, "Matchmaking failed, couldnt get matchedPlayerProfile", err.Error())
+		assert.Nil(t, err)
+		assert.Equal(t, false, response.MatchFound)
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
