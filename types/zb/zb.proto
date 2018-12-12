@@ -507,14 +507,18 @@ message PlayerActionEvent {
 }
 
 message PlayerProfile {
+    PlayerProfileRegistrationData registrationData = 1;
+    int64 updatedAt = 2;
+}
+
+message PlayerProfileRegistrationData {
     string userId = 1;
     int64 deckId  = 2;
     string version = 3;
-    Address customGame = 5;
-    int64 updatedAt = 6;
-    repeated string tags = 7;
-    int64 randomSeed = 8;
-    bool useBackendGameLogic = 9;
+    Address customGame = 4;
+    repeated string tags = 5;
+    bool useBackendGameLogic = 6;
+    DebugCheatsData debugCheats = 7 [(gogoproto.nullable) = false];
 }
 
 message PlayerPool {
@@ -526,13 +530,7 @@ message MatchCount {
 }
 
 message RegisterPlayerPoolRequest {
-    string userId = 1;
-    int64 deckId  = 2;
-    string version = 3;
-    Address customGame = 4;
-    int64 randomSeed = 5;
-    repeated string tags = 6;
-    bool useBackendGameLogic = 7;
+    PlayerProfileRegistrationData registrationData = 1;
 }
 
 message RegisterPlayerPoolResponse {
@@ -542,6 +540,16 @@ message RegisterPlayerPoolResponse {
 message PlayerPoolRequest {}
 message PlayerPoolResponse {
     PlayerPool pool = 1;
+}
+
+message DebugCheatsData {
+    bool enabled = 1;
+
+    bool useCustomDeck = 2;
+    Deck customDeck = 3;
+
+    bool useCustomRandomSeed = 4;
+    int64 customRandomSeed = 5;
 }
 
 message FindMatchRequest {
@@ -561,16 +569,6 @@ message AcceptMatchRequest {
 message AcceptMatchResponse {
     Match match = 1;
     History block = 2;
-}
-
-message DebugFindMatchRequest {
-    string userId = 1;
-    int64 deckId  = 2;
-    string version = 3;
-    int64 randomSeed = 4;
-    Address customGame = 5;
-    Deck deck = 6;
-    repeated string tags = 7;
 }
 
 message CancelFindMatchRequest {

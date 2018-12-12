@@ -167,6 +167,24 @@ func deleteDeckByID(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
 	return newList, len(newList) != len(deckList)
 }
 
+func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb.PlayerProfileRegistrationData) (*zb.Deck, error) {
+	if registrationData.DebugCheats.Enabled && registrationData.DebugCheats.UseCustomDeck {
+		return registrationData.DebugCheats.CustomDeck, nil
+	}
+
+	// get matched player deck
+	matchedDl, err := loadDecks(ctx, registrationData.UserId)
+	if err != nil {
+		return nil, err
+	}
+	matchedDeck := getDeckByID(matchedDl.Decks, registrationData.DeckId)
+	if matchedDeck == nil {
+		return nil, fmt.Errorf("deck id %d not found", registrationData.DeckId)
+	}
+
+	return matchedDeck, nil
+}
+
 func getDeckByID(deckList []*zb.Deck, id int64) *zb.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
