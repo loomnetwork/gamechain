@@ -202,7 +202,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 				UserId:     ps.Id,
 				DeckId:     ps.Deck.Id,
 				Version:    game.Version,
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: game.RandomSeed,

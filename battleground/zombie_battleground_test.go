@@ -2518,7 +2518,7 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-1",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,
@@ -2534,7 +2534,7 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-2",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,
@@ -2698,7 +2698,7 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-1",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,
@@ -2714,7 +2714,7 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-2",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,
@@ -2895,7 +2895,7 @@ func TestKeepAlive(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-1",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,
@@ -2911,7 +2911,7 @@ func TestKeepAlive(t *testing.T) {
 				DeckId:     1,
 				UserId:     "player-2",
 				Version:    "v1",
-				DebugCheats: zb.DebugCheatsData{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled: true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed: 2,

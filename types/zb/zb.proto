@@ -518,7 +518,7 @@ message PlayerProfileRegistrationData {
     Address customGame = 4;
     repeated string tags = 5;
     bool useBackendGameLogic = 6;
-    DebugCheatsData debugCheats = 7 [(gogoproto.nullable) = false];
+    DebugCheatsConfiguration debugCheats = 7 [(gogoproto.nullable) = false];
 }
 
 message PlayerPool {
@@ -542,7 +542,7 @@ message PlayerPoolResponse {
     PlayerPool pool = 1;
 }
 
-message DebugCheatsData {
+message DebugCheatsConfiguration {
     bool enabled = 1;
 
     bool useCustomDeck = 2;
