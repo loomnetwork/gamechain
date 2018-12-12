@@ -880,6 +880,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 		return &zb.FindMatchResponse{
 			Match: match,
+			MatchFound: true,
 		}, nil
 	}
 	playerProfile := findPlayerProfileByID(pool, req.UserId)
@@ -929,7 +930,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	if matchedPlayerProfile == nil {
-		return nil, errors.New("Matchmaking failed, couldnt get matchedPlayerProfile")
+		return &zb.FindMatchResponse{
+			MatchFound: false,
+		}, nil
 	}
 
 	// get matched player deck
@@ -1001,6 +1004,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 
 	return &zb.FindMatchResponse{
 		Match: match,
+		MatchFound: true,
 	}, nil
 }
 
