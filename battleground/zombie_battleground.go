@@ -28,7 +28,7 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
-	KeepAliveTimeout           = 30 * time.Second // client keeps sending keepalive every 5 second. have to make sure he have some buffer for network delays
+	KeepAliveTimeout           = 25 * time.Second // client keeps sending keepalive every 5 second. have to make sure we have some buffer for network delays
 )
 
 var secret string
