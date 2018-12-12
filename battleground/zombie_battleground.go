@@ -28,7 +28,7 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
-	KeepAliveTimeout           = 10 * time.Second
+	KeepAliveTimeout           = 25 * time.Second // client keeps sending keepalive every 5 second. have to make sure we have some buffer for network delays
 )
 
 var secret string
@@ -978,12 +978,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Version: playerProfile.Version, // TODO: match version of both players
 		PlayerLastSeens: []*zb.PlayerTimestamp{
 			&zb.PlayerTimestamp{
-				Id:        playerProfile.UserId,
-				UpdatedAt: ctx.Now().Unix(),
+				Id: playerProfile.UserId,
 			},
 			&zb.PlayerTimestamp{
-				Id:        matchedPlayerProfile.UserId,
-				UpdatedAt: ctx.Now().Unix(),
+				Id: matchedPlayerProfile.UserId,
 			},
 		},
 	}
@@ -1667,8 +1665,15 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 			break
 		}
 	}
-
-	match.PlayerLastSeens[playerIndex].UpdatedAt = ctx.Now().Unix()
+	// init keepalive timestamp
+	now := ctx.Now().Unix()
+	if skipInitialChecking {
+		for i := range match.PlayerLastSeens {
+			match.PlayerLastSeens[i].UpdatedAt = now
+		}
+	}
+	// update timestamp
+	match.PlayerLastSeens[playerIndex].UpdatedAt = now
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
@@ -1682,7 +1687,7 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 		return nil, err
 	}
 	if gamestate.IsEnded {
-		return nil, fmt.Errorf("game %v is already ended", gamestate.Id)
+		return &zb.KeepAliveResponse{}, nil // just ignore for client check
 	}
 
 	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
