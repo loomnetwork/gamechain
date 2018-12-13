@@ -6,9 +6,14 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/gogo/protobuf/proto"
+
+	"github.com/loomnetwork/loomauth/types/zb"
+
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
+	lptypes "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
@@ -198,13 +203,32 @@ func (orc *Oracle) connect() error {
 }
 func (orc *Oracle) listenToGameChain() error {
 	log.Info("Listening to GameChain")
-
 	gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
 	if err != nil {
+		log.Error(err)
 		return err
 	}
+	var eventsSink chan *lptypes.EventData
+	topicName := "zombiebattleground:update_elo"
+	eventSubcription, err := gcEventClient.WatchTopic(topicName, eventsSink)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	_ = eventSubcription
+	log.Info("Watching topic - ", topicName)
+	select {
+	case event := <-eventsSink:
+		log.Info("received event")
+		var payload zb.Account
+		err := proto.Unmarshal(event.EncodedBody, &payload)
+		if err != nil {
+			log.Error(err)
+			return err
+		}
+		log.Info("$$", payload)
+	}
 
-	gcEventClient.WatchTopic("zombiebattleground:update_elo")
 	return nil
 }
 
