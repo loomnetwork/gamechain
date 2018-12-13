@@ -54,7 +54,7 @@ func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
 		GameChainChainID:        "default",
 		GameChainReadURI:        "http://localhost:46658/query",
 		GameChainWriteURI:       "http://localhost:46658/rpc",
-		GameChainEventsURI:      "",
+		GameChainEventsURI:      "ws://localhost:9999/queryws",
 		OracleQueryAddress:      ":8888",
 	}
 	err := v.Unmarshal(conf)
