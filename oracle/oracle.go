@@ -203,7 +203,7 @@ func (orc *Oracle) connect() error {
 }
 func (orc *Oracle) listenToGameChain() error {
 	log.Info("Listening to GameChain")
-	gcEventClient, err := NewDAppChainEventClient(orc.gcAddress, orc.cfg.GameChainEventsURI)
+	gcEventClient, err := NewDAppChainEventClient(orc.gcGateway.Address, orc.cfg.GameChainEventsURI)
 	if err != nil {
 		log.Error(err)
 		return err
