@@ -6,10 +6,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gogo/protobuf/proto"
-
-	"github.com/loomnetwork/loomauth/types/zb"
-
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
@@ -37,6 +33,8 @@ type Oracle struct {
 	gcChainID string
 	//gcContractName string
 	gcGateway *DAppChainGateway
+
+	laGateway *LoomAuthGateway
 
 	pcAddress         loom.Address // plasmachain address
 	pcSigner          auth.Signer
@@ -91,6 +89,9 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		Local:   loom.LocalAddressFromPublicKey(gcSigner.PublicKey()),
 	}
 
+	laGateway := &LoomAuthGateway{
+		EndPoint: cfg.LoomAuthEndpoint,
+	}
 	/*
 			privKey, err = LoadDappChainPrivateKey(cfg.PlasmaChainPrivateKeyPath)
 			if err != nil {
@@ -108,6 +109,7 @@ func createOracle(cfg *OracleConfig) (*Oracle, error) {
 		gcAddress: gcAddress,
 		gcSigner:  gcSigner,
 
+		laGateway: laGateway,
 		//pcAddress:      pcAddress,
 		//pcSigner:       pcSigner,
 		//pcContractName: "ZBGCard",
@@ -208,7 +210,7 @@ func (orc *Oracle) listenToGameChain() error {
 		log.Error(err)
 		return err
 	}
-	var eventsSink chan *lptypes.EventData
+	eventsSink := make(chan *lptypes.EventData)
 	topicName := "zombiebattleground:update_elo"
 	eventSubcription, err := gcEventClient.WatchTopic(topicName, eventsSink)
 	if err != nil {
@@ -220,13 +222,7 @@ func (orc *Oracle) listenToGameChain() error {
 	select {
 	case event := <-eventsSink:
 		log.Info("received event")
-		var payload zb.Account
-		err := proto.Unmarshal(event.EncodedBody, &payload)
-		if err != nil {
-			log.Error(err)
-			return err
-		}
-		log.Info("$$", payload)
+		orc.laGateway.ProcessEvent(event.EncodedBody)
 	}
 
 	return nil
