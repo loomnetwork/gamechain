@@ -9,7 +9,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -31,7 +30,7 @@ var rootCmd = &cobra.Command{
 	Use:          "gamechain-logger [url]",
 	Short:        "Loom Gamechain logger",
 	Long:         `A logger that captures events from Gamechain and creates game metadata`,
-	Example:      `  gamechain-logger ws://localhost:9999/queryws`,
+	Example:      `  gamechain-logger ws://localhost:9999/queryws replays`,
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
@@ -50,12 +49,14 @@ func init() {
 	rootCmd.PersistentFlags().String("db-name", "loom", "MySQL database name")
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
+	rootCmd.PersistentFlags().String("replayfolder", "/tmp/zbreplays", "absolute path to replay folder")
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
 	viper.BindPFlag("db-port", rootCmd.PersistentFlags().Lookup("db-port"))
 	viper.BindPFlag("db-name", rootCmd.PersistentFlags().Lookup("db-name"))
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
+	viper.BindPFlag("replayfolder", rootCmd.PersistentFlags().Lookup("replayfolder"))
 }
 
 func initConfig() {
@@ -96,7 +97,7 @@ func run(wsURL string) error {
 		return errors.Wrapf(err, "fail to connect to database")
 	}
 	defer db.Close()
-	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}).Error
+	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}, &models.Card{}).Error
 	if err != nil {
 		return err
 	}
@@ -146,16 +147,13 @@ func connectDb(dbURL string) (*gorm.DB, error) {
 }
 
 func writeReplayFile(topic string, body []byte) ([]byte, error) {
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
-
-	path := filepath.Join(basepath, "../../replays/")
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		os.Mkdir(path, os.ModePerm)
+	replayfolder := viper.GetString("replayfolder")
+	if _, err := os.Stat(replayfolder); os.IsNotExist(err) {
+		os.Mkdir(replayfolder, os.ModePerm)
 	}
 
 	filename := fmt.Sprintf("%s.json", topic)
-	path = filepath.Join(path, filename)
+	path := filepath.Join(replayfolder, filename)
 
 	fmt.Println("Writing to file: ", path)
 
