@@ -56,6 +56,7 @@ func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
 		GameChainWriteURI:       "http://localhost:46658/rpc",
 		GameChainEventsURI:      "ws://localhost:9999/queryws",
 		OracleQueryAddress:      ":8888",
+		LoomAuthEndpoint:        "http://localhost:3000/user/update_elo",
 	}
 	err := v.Unmarshal(conf)
 	if err != nil {

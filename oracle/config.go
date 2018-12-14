@@ -9,6 +9,8 @@ type OracleConfig struct {
 	GameChainPollInterval   int
 	GameChainContractName   string
 
+	LoomAuthEndpoint string
+
 	PlasmaChainPrivateKeyPath string
 	PlasmaChainChainID        string
 	PlasmaChainReadURI        string

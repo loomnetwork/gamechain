@@ -1,12 +1,18 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"net/http"
 	"time"
 
+	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 type DAppChainGateway struct {
@@ -24,8 +30,27 @@ type LoomAuthGateway struct {
 	EndPoint string
 }
 
-func (g *LoomAuthGateway) ProcessEvent() error {
-	//http.Post()
+type LARequest struct {
+	Elo int64 `json:"elo"`
+}
+
+func (g *LoomAuthGateway) ProcessEvent(eventBody []byte) error {
+	var payload zb.Account
+	err := proto.Unmarshal(eventBody, &payload)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	log.Info("Sending event to loomauth")
+	// use some other library such as gorequest?
+	j, _ := json.Marshal(LARequest{
+		Elo: payload.EloScore,
+	})
+	resp, err := http.Post(g.EndPoint, "application/json", bytes.NewBuffer(j))
+	if err != nil {
+		return err
+	}
+	log.Info("Response: ", resp.StatusCode)
 	return nil
 }
 
