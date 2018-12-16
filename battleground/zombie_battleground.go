@@ -27,7 +27,7 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
-	KeepAliveTimeout           = 25 * time.Second // client keeps sending keepalive every 5 second. have to make sure we have some buffer for network delays
+	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
 )
 
 var secret string
@@ -967,6 +967,10 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
+		PlayerDebugCheats: []*zb.DebugCheatsConfiguration{
+			&playerProfile.RegistrationData.DebugCheats,
+			&matchedPlayerProfile.RegistrationData.DebugCheats,
+		},
 	}
 
 	if playerProfile.RegistrationData.DebugCheats.Enabled && playerProfile.RegistrationData.DebugCheats.UseCustomRandomSeed {
@@ -1036,19 +1040,19 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	}
 
 	if opponentAccepted {
-		var addr loom.Address
-		var addr2 *loom.Address
-		var addrStr string
+		var customModeAddr loom.Address
+		var customModeAddr2 *loom.Address
+		var customModeAddrStr string
 		//TODO cleanup how we do this parsing
 		if match.CustomGameAddr != nil {
-			addrStr = fmt.Sprintf("default:%s", match.CustomGameAddr.Local.String())
+			customModeAddrStr = fmt.Sprintf("default:%s", match.CustomGameAddr.Local.String())
 		}
 
-		addr, err = loom.ParseAddress(addrStr)
+		customModeAddr, err = loom.ParseAddress(customModeAddrStr)
 		if err != nil {
 			ctx.Logger().Debug(fmt.Sprintf("no custom game mode --%v\n", err))
 		} else {
-			addr2 = &addr
+			customModeAddr2 = &customModeAddr
 		}
 
 		playerStates := []*zb.PlayerState{
@@ -1062,7 +1066,16 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			},
 		}
 
-		gp, err := NewGamePlay(ctx, match.Id, match.Version, playerStates, match.RandomSeed, addr2, match.UseBackendGameLogic)
+		gp, err := NewGamePlay(
+			ctx,
+			match.Id,
+			match.Version,
+			playerStates,
+			match.RandomSeed,
+			customModeAddr2,
+			match.UseBackendGameLogic,
+			match.PlayerDebugCheats,
+			)
 		if err != nil {
 			return nil, err
 		}
@@ -1202,7 +1215,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
 	if err != nil {
 		return nil, err
 	}
@@ -1247,7 +1260,7 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
 	if err != nil {
 		return nil, err
 	}
@@ -1322,7 +1335,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
 	if err != nil {
 		return nil, err
 	}
@@ -1377,7 +1390,7 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 	if err != nil {
 		return nil, err
 	}
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
 	if err != nil {
 		return nil, err
 	}
@@ -1460,7 +1473,7 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 		return &zb.KeepAliveResponse{}, nil // just ignore for client check
 	}
 
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic)
+	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
 	if err != nil {
 		return nil, err
 	}
