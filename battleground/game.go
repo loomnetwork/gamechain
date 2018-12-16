@@ -9,6 +9,7 @@ import (
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
 	"math/rand"
+	"sort"
 )
 
 const (
@@ -41,8 +42,9 @@ type Gameplay struct {
 	history                []*zb.HistoryData
 	ctx                    *contract.Context
 	UseBackendGameLogic    bool         // when false, disables all checks to ensure the client can work before server is fully implemented
-	logger                 *loom.Logger // optional logger
 	actionOutcomes         []*zb.PlayerActionOutcome
+	playersDebugCheats     []*zb.DebugCheatsConfiguration
+	logger                 *loom.Logger // optional logger
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -55,11 +57,23 @@ func NewGamePlay(ctx contract.Context,
 	seed int64,
 	customGameAddress *loom.Address,
 	useBackendGameLogic bool,
+	playersDebugCheats []*zb.DebugCheatsConfiguration,
 ) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
 		ctx.Logger().Info(fmt.Sprintf("Playing a custom game mode -%v", customGameAddress.String()))
 		customGameMode = NewCustomGameMode(*customGameAddress)
+	}
+
+	// Ensure that same random seed will result in the same player order,
+	// no matter which player joined the pool earlier
+	sort.SliceStable(players, func(i, j int) bool {
+		return players[i].Id < players[j].Id
+	})
+
+	// So we won't have to do nil checks everywhere along the way
+	if playersDebugCheats == nil {
+		playersDebugCheats = []*zb.DebugCheatsConfiguration{{}, {}}
 	}
 
 	state := &zb.GameState{
@@ -77,6 +91,7 @@ func NewGamePlay(ctx contract.Context,
 		ctx:                    &ctx,
 		UseBackendGameLogic:    useBackendGameLogic,
 		logger:                 ctx.Logger(),
+		playersDebugCheats:     playersDebugCheats,
 	}
 
 	var err error
@@ -101,10 +116,11 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool) (*Gameplay, error) {
+func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool, playersDebugCheats []*zb.DebugCheatsConfiguration) (*Gameplay, error) {
 	g := &Gameplay{
 		State: state,
 		UseBackendGameLogic: useBackendGameLogic,
+		playersDebugCheats: playersDebugCheats,
 	}
 	if err := g.run(); err != nil {
 		return nil, err
@@ -139,10 +155,14 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 
 	// init cards
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].CardsInDeck = shuffleCardInDeck(g.State.PlayerStates[i].CardsInDeck, g.State.RandomSeed, i)
+		playerState := g.State.PlayerStates[i]
+		if !(g.playersDebugCheats[i].Enabled && g.playersDebugCheats[i].DisableDeckShuffle) {
+			playerState.CardsInDeck = shuffleCardInDeck(playerState.CardsInDeck, g.State.RandomSeed, i)
+		}
+
 		// draw cards 3 card for mulligan
-		g.State.PlayerStates[i].CardsInHand = g.State.PlayerStates[i].CardsInDeck[:g.State.PlayerStates[i].InitialCardsInHandCount]
-		g.State.PlayerStates[i].CardsInDeck = g.State.PlayerStates[i].CardsInDeck[g.State.PlayerStates[i].InitialCardsInHandCount:]
+		playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
+		playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
 	}
 
 
@@ -177,6 +197,11 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 			ctx.Logger().Error(fmt.Sprintf("Error in custom game mode -%v", err))
 			return err
 		}
+	}
+
+	// first player draws a card immediately
+	if err := drawCard(g, 1); err != nil {
+		return err
 	}
 
 	// add history data
@@ -247,8 +272,6 @@ func (g *Gameplay) resume() error {
 	}
 	var state stateFn
 	switch next.ActionType {
-	case zb.PlayerActionType_DrawCard:
-		state = actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		state = actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -592,118 +615,43 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 }
 
-func actionDrawCard(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_DrawCard)
-	if g.isEnded() {
-		return nil
-	}
-	current := g.current()
-	if current == nil {
-		return nil
-	}
-
+func drawCard(g *Gameplay, count int) error {
 	var card *zb.CardInstance
 
 	if g.UseBackendGameLogic {
-		// check player turn
-		if err := g.checkCurrentPlayer(current); err != nil {
-			return g.captureErrorAndStop(err)
-		}
-
 		// check if player has already drawn a card after starting new turn
 		if g.activePlayer().HasDrawnCard {
 			g.err = errInvalidAction
 			return nil
 		}
 
-		// draw card
-		if len(g.activePlayer().CardsInDeck) < 1 {
-			return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
-		}
-
-		// handle card limit in hand
-		if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
-			// TODO: assgin g.err
-			return nil
-		}
-
-		card = g.activePlayer().CardsInDeck[0]
-
-		g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
-	} else {
-		// draw card
-		if len(g.activePlayer().CardsInDeck) < 1 {
-			return g.captureErrorAndStop(errors.New("Can't draw card. No more cards in deck"))
-		}
-
-		// handle card limit in hand
-		if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
-			// TODO: assgin g.err
-			return nil
-		}
-
-		var cardIndexInDeck int
-		for i, cardInDeck := range g.activePlayer().CardsInDeck {
-			if proto.Equal(cardInDeck.InstanceId, current.GetDrawCard().CardInstance.InstanceId) {
-				card = cardInDeck
-				cardIndexInDeck = i
-				g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, cardInDeck)
-				break
+		for i := 0; i < count; i++ {
+			// draw card
+			if len(g.activePlayer().CardsInDeck) < 1 {
+				return errors.New("Can't draw card. No more cards in deck")
 			}
-		}
 
-		if card == nil {
-			return g.captureErrorAndStop(errors.New("Can't draw card. Card not found in deck"))
-		}
+			// handle card limit in hand
+			if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
+				// TODO: assgin g.err
+				return nil
+			}
 
-		// remove card from CardsInDeck
-		g.activePlayer().CardsInDeck = append(g.activePlayer().CardsInDeck[:cardIndexInDeck], g.activePlayer().CardsInDeck[cardIndexInDeck+1:]...)
+			card = g.activePlayer().CardsInDeck[0]
+
+			g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
+
+			// remove card from CardsInDeck
+			g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+		}
+	} else {
+		// do nothing, client currently doesn't care about this at all
 	}
 
 	// card drawn, don't allow another draw until next turn
 	g.activePlayer().HasDrawnCard = true
 
-	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_FullInstance{
-			FullInstance: &zb.HistoryFullInstance{
-				InstanceId: card.InstanceId,
-				Attack:     card.Instance.Attack,
-				Defense:    card.Instance.Defense,
-			},
-		},
-	})
-
-	// determine the next action
-	g.PrintState()
-	next := g.next()
-	if next == nil {
-		return nil
-	}
-
-	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
-		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
-	case zb.PlayerActionType_CardPlay:
-		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
-		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
-		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
-		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
-		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
-		return actionRankBuff
-	default:
-		return nil
-	}
+	return nil
 }
 
 func actionCardPlay(g *Gameplay) stateFn {
@@ -792,8 +740,6 @@ func actionCardPlay(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -965,8 +911,6 @@ func actionCardAttack(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -1014,8 +958,6 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -1061,8 +1003,6 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -1094,11 +1034,27 @@ func actionEndTurn(g *Gameplay) stateFn {
 	if err := g.checkCurrentPlayer(current); err != nil {
 		return g.captureErrorAndStop(err)
 	}
+
+	g.activePlayer().TurnNumber++
+
+	previousPlayerTurnNumber := g.activePlayer().TurnNumber
+
 	// change player turn
 	g.changePlayerTurn()
 
 	// allow the new player to draw card on new turn
 	g.activePlayer().HasDrawnCard = false
+
+	// Draw the card. If this is the first move of the second player, they get 2 cards
+	var cardsToDraw int
+	if previousPlayerTurnNumber == 1 && g.activePlayer().TurnNumber == 0 {
+		cardsToDraw = 2
+	} else {
+		cardsToDraw = 1
+	}
+	if err := drawCard(g, cardsToDraw); err != nil {
+		return g.captureErrorAndStop(err)
+	}
 
 	// determine the next action
 	g.PrintState()
@@ -1110,8 +1066,6 @@ func actionEndTurn(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -1160,8 +1114,6 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:
@@ -1198,8 +1150,6 @@ func actionRankBuff(g *Gameplay) stateFn {
 	switch next.ActionType {
 	case zb.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_DrawCard:
-		return actionDrawCard
 	case zb.PlayerActionType_CardPlay:
 		return actionCardPlay
 	case zb.PlayerActionType_CardAttack:

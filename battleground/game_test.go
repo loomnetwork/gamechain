@@ -28,7 +28,7 @@ func TestGameStateFunc(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 
 	// // add more action
@@ -164,13 +164,13 @@ func TestInvalidUserTurn(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 	// add more action
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Equal(t, err, errInvalidPlayer)
-	cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
+	cardID := gp.State.PlayerStates[0].CardsInHand[0].InstanceId
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: &zb.CardInstance{InstanceId: cardID}}}})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
@@ -195,7 +195,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
@@ -252,7 +252,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
 	seed := int64(0)
-	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true)
+	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
@@ -326,64 +326,6 @@ func TestPopulateDeckCards(t *testing.T) {
 	assert.Equal(t, s1, int64(len(playerStates[1].CardsInDeck)))
 }
 
-func TestDrawCard(t *testing.T) {
-	var c *ZombieBattleground
-	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
-	assert.Nil(t, err)
-	player1 := "player-1"
-	player2 := "player-2"
-
-	// DrawCard cannot be called twice for the same turn
-	t.Run("Call DrawCard twice (Invalid)", func(t *testing.T) {
-		t.Skip("Skipping this while we let the client decide CardDraw")
-		players := []*zb.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
-		}
-		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
-		assert.Nil(t, err)
-		// add more action
-		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
-		assert.Nil(t, err)
-		cardID = gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
-		assert.Equal(t, errInvalidAction, err)
-
-	})
-
-	t.Run("DrawCard after Endturn", func(t *testing.T) {
-		players := []*zb.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
-		}
-		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
-		assert.Nil(t, err)
-		// add more action
-		cardID := gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
-		assert.Nil(t, err)
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
-		assert.Nil(t, err)
-		cardID = gp.State.PlayerStates[1].CardsInDeck[0].InstanceId
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player2, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
-		assert.Nil(t, err)
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
-		assert.Nil(t, err)
-		cardID = gp.State.PlayerStates[0].CardsInDeck[0].InstanceId
-		err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_DrawCard, PlayerId: player1, Action: &zb.PlayerAction_DrawCard{DrawCard: &zb.PlayerActionDrawCard{CardInstance: &zb.CardInstance{InstanceId: cardID}}}})
-		assert.Nil(t, err)
-	})
-}
 func TestCardAttack(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
@@ -404,7 +346,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -448,7 +390,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -494,7 +436,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -542,7 +484,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -576,7 +518,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
@@ -612,7 +554,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -668,7 +610,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -720,7 +662,7 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
@@ -786,7 +728,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -807,7 +749,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -830,7 +772,7 @@ func TestCardPlay(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true)
+		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardPlay,
@@ -874,7 +816,19 @@ func TestCardPlay(t *testing.T) {
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
 					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb.InstanceId{Id: 5},
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 6},
 					},
 				},
 			},

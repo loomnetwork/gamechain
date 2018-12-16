@@ -406,8 +406,8 @@ message PlayerState {
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
-    Deck deck  = 7;
-    int32 defense   = 8;
+    Deck deck = 7;
+    int32 defense = 8;
     int32 currentGoo = 9;
     int32 gooVials = 10;
     bool hasDrawnCard = 11;
@@ -417,6 +417,7 @@ message PlayerState {
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
     int32 turnTime = 17;
+    int32 turnNumber = 18;
 }
 
 message InitialPlayerState {
@@ -454,6 +455,7 @@ message Match {
     int64 createdAt = 8;
     bool useBackendGameLogic = 9;
     repeated PlayerTimestamp playerLastSeens = 10;
+    repeated DebugCheatsConfiguration playerDebugCheats = 11;
 }
 
 message MatchMakingInfoList {
@@ -470,15 +472,12 @@ message PlayerActionType {
         None = 0;
         EndTurn = 1;
         Mulligan = 2;
-        DrawCard = 3;
-        CardPlay = 4;
-        CardAttack = 5;
-        CardAbilityUsed = 6;
-        OverlordSkillUsed = 7;
-        CoinToss = 8;
-        InitHands = 9;
-        LeaveMatch = 10;
-        RankBuff = 11;
+        CardPlay = 3;
+        CardAttack = 4;
+        CardAbilityUsed = 5;
+        OverlordSkillUsed = 6;
+        LeaveMatch = 7;
+        RankBuff = 8;
     }
 }
 
@@ -486,15 +485,14 @@ message PlayerAction {
     PlayerActionType.Enum actionType = 1; // not sure we really need this
     string playerId = 2;
     oneof action {
-        PlayerActionCardAttack cardAttack               = 3;
-        PlayerActionDrawCard drawCard                   = 4;
-        PlayerActionEndTurn endTurn                     = 5;
-        PlayerActionMulligan mulligan                   = 6;
-        PlayerActionCardPlay cardPlay                   = 7;
-        PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
-        PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
-        PlayerActionLeaveMatch leaveMatch               = 12;
-        PlayerActionRankBuff rankBuff                   = 13;
+        PlayerActionEndTurn endTurn                     = 3;
+        PlayerActionMulligan mulligan                   = 4;
+        PlayerActionCardPlay cardPlay                   = 5;
+        PlayerActionCardAttack cardAttack               = 6;
+        PlayerActionCardAbilityUsed cardAbilityUsed     = 7;
+        PlayerActionOverlordSkillUsed overlordSkillUsed = 8;
+        PlayerActionLeaveMatch leaveMatch               = 9;
+        PlayerActionRankBuff rankBuff                   = 10;
     };
     repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
@@ -550,6 +548,8 @@ message DebugCheatsConfiguration {
 
     bool useCustomRandomSeed = 4;
     int64 customRandomSeed = 5;
+
+    bool disableDeckShuffle = 6;
 }
 
 message FindMatchRequest {
@@ -1230,10 +1230,6 @@ message PlayerActionCardAbilityUsed {
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
     Unit target = 2;
-}
-
-message PlayerActionDrawCard {
-    CardInstance cardInstance = 2;
 }
 
 message PlayerActionEndTurn  {
