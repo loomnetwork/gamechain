@@ -813,9 +813,12 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	for _, pp := range pool.PlayerProfiles {
 		updatedAt := time.Unix(pp.UpdatedAt, 0)
 		if updatedAt.Add(MMTimeout).Before(ctx.Now()) {
-			ctx.Logger().Debug(fmt.Sprintf("Player profile %s timedout", pp.UserId))
+			ctx.Logger().Info(fmt.Sprintf("Player profile %s timedout", pp.UserId))
 			// remove player from the pool
 			pool = removePlayerFromPool(pool, pp.UserId)
+			if err := savePlayerPoolFn(ctx, pool); err != nil {
+				return nil, err
+			}
 			// remove match
 			match, _ := loadUserCurrentMatch(ctx, pp.UserId)
 			if match != nil {
