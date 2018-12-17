@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"crypto/ecdsa"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -10,12 +11,14 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
+	"github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
 
@@ -758,7 +761,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 
 	profile := zb.PlayerProfile{
 		RegistrationData: req.RegistrationData,
-		UpdatedAt: ctx.Now().Unix(),
+		UpdatedAt:        ctx.Now().Unix(),
 	}
 
 	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
@@ -882,7 +885,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 
 		return &zb.FindMatchResponse{
-			Match: match,
+			Match:      match,
 			MatchFound: true,
 		}, nil
 	}
@@ -962,11 +965,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Version: playerProfile.RegistrationData.Version, // TODO: match version of both players
 		PlayerLastSeens: []*zb.PlayerTimestamp{
 			&zb.PlayerTimestamp{
-				Id: playerProfile.RegistrationData.UserId,
+				Id:        playerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 			&zb.PlayerTimestamp{
-				Id: matchedPlayerProfile.RegistrationData.UserId,
+				Id:        matchedPlayerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
@@ -1010,7 +1013,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
-		Match: match,
+		Match:      match,
 		MatchFound: true,
 	}, nil
 }
@@ -1078,7 +1081,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			customModeAddr2,
 			match.UseBackendGameLogic,
 			match.PlayerDebugCheats,
-			)
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -1786,4 +1789,70 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	return nil
 }
 
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
+func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
+
+	awardType := "tutorial-completed"
+	verifySignResult, err := generateVerifyHash(req.UserId, awardType)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.RewardTutorialCompletedResponse{
+		UserId:    req.UserId,
+		AwardType: awardType,
+		Hash:      verifySignResult.Hash,
+		Signature: verifySignResult.Signature,
+	}, nil
+}
+
+type VerifySignResult struct {
+	Hash      string `json:"hash"`
+	Signature string `json:"signature"`
+}
+
+func generateVerifyHash(userId string, awardType string, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
+
+	hash, err := createHash(userId, awardType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	sig, err := soliditySign(hash, privKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &VerifySignResult{
+		Hash:      "0x" + hex.EncodeToString(hash),
+		Signature: "0x" + hex.EncodeToString(sig),
+	}, nil
+}
+
+func createHash(userID string, awardType string) ([]byte, error) {
+
+	hash := solsha3.SoliditySHA3(
+		solsha3.Uint256(userID),
+		solsha3.Uint256(awardType),
+	)
+
+	if len(hash) == 0 {
+		return nil, errors.New("Failed to generate hash")
+	}
+
+	return hash, nil
+}
+
+func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
+	sig, err := crypto.Sign(data, privKey)
+	if err != nil {
+		return nil, err
+	}
+
+	v := sig[len(sig)-1]
+	sig[len(sig)-1] = v + 27
+	return sig, nil
+}
+
+var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{ClientSideRuleOverride: true})

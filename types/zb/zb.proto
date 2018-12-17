@@ -397,6 +397,17 @@ message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
 }
 
+message RewardTutorialCompletedRequest {
+    string user_id = 1;
+}
+
+message RewardTutorialCompletedResponse {
+    string user_id = 1;
+    string award_type = 2;
+    string hash = 3;
+    string signature = 4;
+}
+
 //////////// Match Making /////////////
 
 message PlayerState {
