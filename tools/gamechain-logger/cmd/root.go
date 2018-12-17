@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"syscall"
 
@@ -28,7 +27,7 @@ var rootCmd = &cobra.Command{
 	Use:          "gamechain-logger [url]",
 	Short:        "Loom Gamechain logger",
 	Long:         `A logger that captures events from Gamechain and creates game metadata`,
-	Example:      "  gamechain-logger ws://localhost:9999/queryws",
+	Example:      `  gamechain-logger ws://localhost:9999/queryws replays`,
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
@@ -47,13 +46,14 @@ func init() {
 	rootCmd.PersistentFlags().String("db-name", "loom", "MySQL database name")
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
+	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
 	viper.BindPFlag("db-port", rootCmd.PersistentFlags().Lookup("db-port"))
 	viper.BindPFlag("db-name", rootCmd.PersistentFlags().Lookup("db-name"))
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
-
+	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
 }
 
 func initConfig() {
@@ -160,16 +160,15 @@ func connectDb(dbURL string) (*gorm.DB, error) {
 }
 
 func writeReplayFile(topic string, event zb.PlayerActionEvent) ([]byte, error) {
-	_, b, _, _ := runtime.Caller(0)
-	basepath := filepath.Dir(b)
-
-	path := filepath.Join(basepath, "../../replays/")
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		os.Mkdir(path, os.ModePerm)
+	dir := viper.GetString("replay-dir")
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		if e := os.MkdirAll(dir, os.ModePerm); e != nil {
+			return nil, e
+		}
 	}
 
 	filename := fmt.Sprintf("%s.json", topic)
-	path = filepath.Join(path, filename)
+	path := filepath.Join(dir, filename)
 
 	fmt.Println("Writing to file: ", path)
 
