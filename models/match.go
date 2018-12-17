@@ -4,6 +4,8 @@ import "time"
 
 type Match struct {
 	ID              int64 `gorm:"PRIMARY_KEY,auto_increment:false"`
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 	Player1ID       string
 	Player2ID       string
 	Player1Accepted bool
@@ -16,14 +18,12 @@ type Match struct {
 	Replay          Replay
 	Deck            Deck
 	WinnerID        string
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
 }
 
 type Replay struct {
 	ID         int64 `gorm:"PRIMARY_KEY"`
-	MatchID    int64
-	ReplayJSON []byte `sql:"type:mediumtext;"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	MatchID    int64
+	ReplayJSON []byte `sql:"type:mediumtext;"`
 }
