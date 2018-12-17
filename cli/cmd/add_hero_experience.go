@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -36,11 +35,7 @@ var addHeroExperienceCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := json.Marshal(map[string]interface{}{"success": true})
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(output))
+			return printProtoMessageAsJSONToStdout(&result)
 		default:
 			fmt.Printf("hero_id: %d\n", result.HeroId)
 			fmt.Printf("experience: %d\n", result.Experience)
@@ -54,6 +49,6 @@ func init() {
 	rootCmd.AddCommand(addHeroExperienceCmd)
 
 	addHeroExperienceCmd.Flags().StringVarP(&addHeroExperienceCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	addHeroExperienceCmd.Flags().Int64VarP(&addHeroExperienceCmdArgs.heroID, "heroId", "", 1, "heroID of hero")
+	addHeroExperienceCmd.Flags().Int64VarP(&addHeroExperienceCmdArgs.heroID, "heroId", "i", 1, "heroID of hero")
 	addHeroExperienceCmd.Flags().Int64VarP(&addHeroExperienceCmdArgs.experience, "experience", "e", 1, "experience to be added")
 }

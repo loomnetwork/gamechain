@@ -2871,3 +2871,193 @@ func TestAIDeckOperations(t *testing.T) {
 		assert.Nil(t, err)
 	})
 }
+
+func TestKeepAlive(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr *loom.Address
+	var ctx contract.Context
+
+	// setup ctx
+	c = &ZombieBattleground{}
+	pubKey, _ := hex.DecodeString(pubKeyHexString)
+	addr = &loom.Address{
+		Local: loom.LocalAddressFromPublicKey(pubKey),
+	}
+	now := time.Now()
+	fc := plugin.CreateFakeContext(*addr, *addr)
+	fc.SetTime(now)
+	ctx = contract.WrapPluginContext(fc)
+	err := c.Init(ctx, &initRequest)
+	assert.Nil(t, err)
+
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:     1,
+			UserId:     "player-1",
+			Version:    "v1",
+			RandomSeed: 2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			DeckId:     1,
+			UserId:     "player-2",
+			Version:    "v1",
+			RandomSeed: 2,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex)
+	})
+
+	t.Run("KeepAlivePlayer1_Success", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("KeepAlivePlayer2_Success", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-2",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex)
+	})
+
+	// keep player2 alive
+	fc.SetTime(now.Add(time.Second * 5))
+	t.Run("KeepAlivePlayer2_Success", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-2",
+		})
+		assert.Nil(t, err)
+	})
+
+	// player1 fails to keep alive
+	// move time forward to expire the player's turn
+	fc.SetTime(now.Add(KeepAliveTimeout + time.Second*5))
+
+	t.Run("KeepAlivePlayer2_Winner", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-2",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetGameState", func(t *testing.T) {
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+			MatchId: 1,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
+		latestAction := response.GameState.PlayerActions[len(response.GameState.PlayerActions)-1]
+		assert.Equal(t, zb.PlayerActionType_LeaveMatch, latestAction.ActionType)
+		assert.Equal(t, "player-2", response.GameState.Winner)
+	})
+
+	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-1",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
+			MatchId: 1,
+			UserId:  "player-2",
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("SendAnyActionShould_Fail", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
+				PlayerId:   "player-2",
+			},
+		})
+		assert.NotNil(t, err)
+	})
+}
