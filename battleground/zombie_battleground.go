@@ -28,6 +28,7 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
+	KeepAliveTimeout           = 25 * time.Second // client keeps sending keepalive every 5 second. have to make sure we have some buffer for network delays
 )
 
 const (
@@ -498,6 +499,8 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
 	existingDeck.HeroId = req.Deck.HeroId
+	existingDeck.PrimarySkill = req.Deck.PrimarySkill
+	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
@@ -656,6 +659,38 @@ func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHero
 	return &zb.GetHeroResponse{Hero: hero}, nil
 }
 
+func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroRequest) (*zb.SetHeroResponse, error) {
+	if req.Hero == nil {
+		return nil, fmt.Errorf("Hero is null")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero = proto.Clone(req.Hero).(*zb.Hero)
+
+	// make sure we don't override hero id
+	hero.HeroId = req.HeroId
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHero")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:sethero")
+	}
+
+	return &zb.SetHeroResponse{Hero: hero}, nil
+}
+
 func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddHeroExperienceRequest) (*zb.AddHeroExperienceResponse, error) {
 	if req.Experience <= 0 {
 		return nil, fmt.Errorf("experience needs to be greater than zero")
@@ -686,6 +721,64 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	}
 
 	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroExperience(ctx contract.Context, req *zb.SetHeroExperienceRequest) (*zb.SetHeroExperienceResponse, error) {
+	if req.Experience <= 0 {
+		return nil, fmt.Errorf("experience needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Experience = req.Experience
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroExperience")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setheroexperience")
+	}
+
+	return &zb.SetHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
+}
+
+func (z *ZombieBattleground) SetHeroLevel(ctx contract.Context, req *zb.SetHeroLevelRequest) (*zb.SetHeroLevelResponse, error) {
+	if req.Level <= 0 {
+		return nil, fmt.Errorf("level needs to be greater than zero")
+	}
+
+	heroList, err := loadHeroes(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
+		return nil, contract.ErrNotFound
+	}
+	hero.Level = req.Level
+
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
+		return nil, err
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroLevel")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setherolevel")
+	}
+
+	return &zb.SetHeroLevelResponse{HeroId: hero.HeroId, Level: hero.Level}, nil
 }
 
 func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
@@ -741,7 +834,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		savePlayerPoolFn = savePlayerPool
 	}
 
-	ctx.Logger().Info(fmt.Sprintf("Register Player Pool user=%s", req.UserId))
 	// load player pool
 	pool, err := loadPlayerPoolFn(ctx)
 	if err != nil {
@@ -789,8 +881,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 			}
 		}
 	}
-
-	ctx.Logger().Info(fmt.Sprintf("Player Pool %+v", pool))
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "registerplayerpool")
@@ -875,9 +965,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
 	for retries < MMRetries {
-		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retries=%d", req.UserId, retries))
-
-		ctx.Logger().Debug(fmt.Sprintf("PlayerPool size before running matchmaking: %d", len(pool.PlayerProfiles)))
 		var playerScores []*PlayerScore
 		for _, pp := range pool.PlayerProfiles {
 			// skip the requesting player
@@ -894,7 +981,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		sortedPlayerScores := sortByPlayerScore(playerScores)
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
 			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
@@ -902,7 +988,6 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
 			}
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
 			break
 		}
 		retries++
@@ -938,6 +1023,14 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			},
 		},
 		Version: playerProfile.Version, // TODO: match version of both players
+		PlayerLastSeens: []*zb.PlayerTimestamp{
+			&zb.PlayerTimestamp{
+				Id: playerProfile.UserId,
+			},
+			&zb.PlayerTimestamp{
+				Id: matchedPlayerProfile.UserId,
+			},
+		},
 	}
 
 	match.RandomSeed = playerProfile.RandomSeed //TODO: seed should really come from somewhere else
@@ -1021,7 +1114,6 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			addr2 = &addr
 		}
 
-		ctx.Logger().Info(fmt.Sprintf("NewGamePlay-clientSideRuleOverride-%t\n", z.ClientSideRuleOverride))
 		playerStates := []*zb.PlayerState{
 			&zb.PlayerState{
 				Id:   match.PlayerStates[0].Id,
@@ -1182,7 +1274,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 	retries := 0
 	var matchedPlayerProfile *zb.PlayerProfile
 	for retries < MMRetries {
-		ctx.Logger().Debug(fmt.Sprintf("Matchmaking for user=%s retires=%d", req.UserId, retries))
 		// load player pool
 		pool, err := loadPlayerPoolFn(ctx)
 		if err != nil {
@@ -1261,7 +1352,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 
 		if len(sortedPlayerScores) > 0 {
 			matchedPlayerID := sortedPlayerScores[0].id
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool matched player %s vs %s", req.UserId, matchedPlayerID))
 			matchedPlayerProfile = findPlayerProfileByID(pool, matchedPlayerID)
 			// remove the match players from the pool
 			pool = removePlayerFromPool(pool, matchedPlayerID)
@@ -1269,7 +1359,6 @@ func (z *ZombieBattleground) DebugFindMatch(ctx contract.Context, req *zb.DebugF
 			if err := savePlayerPoolFn(ctx, pool); err != nil {
 				return nil, err
 			}
-			ctx.Logger().Debug(fmt.Sprintf("PlayerPool size after running matchmaking: %d", len(pool.PlayerProfiles)))
 			break
 		}
 		retries++
@@ -1480,6 +1569,9 @@ func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.Check
 		if err := saveMatch(ctx, match); err != nil {
 			return nil, err
 		}
+		// update winner
+		leaveMatchReq := leaveMatchAction.GetLeaveMatch()
+		leaveMatchReq.Winner = gp.State.Winner
 		emitMsg := zb.PlayerActionEvent{
 			PlayerAction: &leaveMatchAction,
 			Match:        match,
@@ -1592,6 +1684,107 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 		Match:     match,
 		History:   gp.history,
 	}, nil
+}
+
+func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRequest) (*zb.KeepAliveResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	var playerIndex = -1
+	var playerID string
+	for i, playerState := range match.PlayerStates {
+		if playerState.Id == req.UserId {
+			playerIndex = i
+			playerID = playerState.Id
+		}
+	}
+	if playerIndex < 0 {
+		return nil, fmt.Errorf("player id %s not found", playerID)
+	}
+
+	if playerIndex > len(match.PlayerLastSeens)-1 {
+		return nil, fmt.Errorf("player id %s not found", playerID)
+	}
+
+	var skipInitialChecking bool
+	for _, lastseen := range match.PlayerLastSeens {
+		if lastseen.UpdatedAt == 0 {
+			skipInitialChecking = true
+			break
+		}
+	}
+	// init keepalive timestamp
+	now := ctx.Now().Unix()
+	if skipInitialChecking {
+		for i := range match.PlayerLastSeens {
+			match.PlayerLastSeens[i].UpdatedAt = now
+		}
+	}
+	// update timestamp
+	match.PlayerLastSeens[playerIndex].UpdatedAt = now
+	if err := saveMatch(ctx, match); err != nil {
+		return nil, err
+	}
+
+	if skipInitialChecking {
+		return &zb.KeepAliveResponse{}, nil
+	}
+
+	gamestate, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	if gamestate.IsEnded {
+		return &zb.KeepAliveResponse{}, nil // just ignore for client check
+	}
+
+	gp, err := GamePlayFrom(gamestate, z.ClientSideRuleOverride)
+	if err != nil {
+		return nil, err
+	}
+	for _, lastseen := range match.PlayerLastSeens {
+		lastSeenAt := time.Unix(lastseen.UpdatedAt, 0)
+		if lastSeenAt.Add(KeepAliveTimeout).Before(ctx.Now()) {
+			// create a leave match request and append to the game state
+			leaveMatchAction := zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
+				PlayerId:   lastseen.Id,
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{},
+				},
+				CreatedAt: ctx.Now().Unix(),
+			}
+
+			// ignore the error in case this method is called mutiple times
+			if err := gp.AddAction(&leaveMatchAction); err == nil {
+				if err := saveGameState(ctx, gamestate); err != nil {
+					return nil, err
+				}
+			}
+			// update match status
+			match.Status = zb.Match_PlayerLeft
+			if err := saveMatch(ctx, match); err != nil {
+				return nil, err
+			}
+			// update winner
+			leaveMatchReq := leaveMatchAction.GetLeaveMatch()
+			leaveMatchReq.Winner = gp.State.Winner
+			emitMsg := zb.PlayerActionEvent{
+				PlayerAction: &leaveMatchAction,
+				Match:        match,
+				Block:        &zb.History{List: gp.history},
+			}
+			data, err := proto.Marshal(&emitMsg)
+			if err != nil {
+				return nil, err
+			}
+			ctx.EmitTopics([]byte(data), match.Topics...)
+		}
+	}
+
+	return &zb.KeepAliveResponse{}, nil
 }
 
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {

@@ -121,12 +121,45 @@ message AddHeroExperienceResponse {
     int64 experience = 2;
 }
 
+message SetHeroExperienceRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+    int64 experience = 3;
+}
+
+message SetHeroExperienceResponse {
+    int64 hero_id = 1;
+    int64 experience = 2;
+}
+
+message SetHeroLevelRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+    int64 level = 3;
+}
+
+message SetHeroLevelResponse {
+    int64 hero_id = 1;
+    int64 level = 2;
+}
+
 message GetHeroRequest {
     string user_id = 1;
     int64 hero_id = 2;
 }
 
 message GetHeroResponse {
+    Hero hero = 1;
+}
+
+
+message SetHeroRequest {
+    string user_id = 1;
+    int64 hero_id = 2;
+    Hero hero = 3;
+}
+
+message SetHeroResponse {
     Hero hero = 1;
 }
 
@@ -404,6 +437,11 @@ message InitialPlayerState {
     Deck deck  = 3;
 }
 
+message PlayerTimestamp {
+    string id = 1;
+    int64 updatedAt = 2;
+}
+
 message Match {
     int64 id = 1;
     repeated string topics = 2;
@@ -426,6 +464,7 @@ message Match {
     int64 randomSeed = 6;
     Address customGameAddr = 7;
     int64 createdAt = 8;
+    repeated PlayerTimestamp playerLastSeens = 9;
 }
 
 message MatchMakingInfoList {
@@ -612,6 +651,15 @@ message CheckGameStatusRequest {
 
 message CheckGameStatusResponse {
 }
+
+message KeepAliveRequest {
+    int64 matchId   = 1;
+    string userId   = 2;
+}
+
+message KeepAliveResponse {
+}
+
 
 // Game Modes
 
@@ -932,7 +980,7 @@ message CardAbilityType {
         DEAL_DAMAGE_TO_UNIT_AND_SWING = 80 [(gogoproto.enumvalue_customname) = "DealDamageToUnitAndSwing"];
         SET_ATTACK_AVAILABILITY = 81 [(gogoproto.enumvalue_customname) = "SetAttackAvailability"];
         CHOOSABLE_ABILITIES = 82 [(gogoproto.enumvalue_customname) = "ChoosableAbilities"];
-        COSTS_LESS_IF_TYPE_CARD_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfTypeCardInPlay"];
+        COSTS_LESS_IF_CARD_TYPE_IN_PLAY = 83 [(gogoproto.enumvalue_customname) = "CostsLessIfCardTypeInPlay"];
         GAIN_GOO = 84 [(gogoproto.enumvalue_customname) = "GainGoo"];
         BLITZ = 85 [(gogoproto.enumvalue_customname) = "Blitz"];
         DRAW_CARD_BY_FACTION = 86 [(gogoproto.enumvalue_customname) = "DrawCardByFaction"];
@@ -1127,6 +1175,7 @@ message OverlordSkillPrototype {
 }
 
 message PlayerActionLeaveMatch {
+    string winner = 1;
 }
 
 message PlayerActionCardPlay {
