@@ -12,7 +12,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
@@ -28,6 +28,20 @@ const (
 	MaxGameModeDescriptionChar = 255
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
+)
+
+const (
+	TopicCreateAccountEvent      = "zombiebattleground:createaccount"
+	TopicUpdateAccountEvent      = "zombiebattleground:updateaccount"
+	TopicCreateDeckEvent         = "zombiebattleground:createdeck"
+	TopicEditDeckEvent           = "zombiebattleground:editdeck"
+	TopicDeleteDeckEvent         = "zombiebattleground:deletedeck"
+	TopicAddHeroExpEvent         = "zombiebattleground:addheroexperience"
+	TopicRegisterPlayerPoolEvent = "zombiebattleground:registerplayerpool"
+	TopicFindMatchEvent          = "zombiebattleground:findmatch"
+	TopicAcceptMatchEvent        = "zombiebattleground:acceptmatch"
+	// match pattern match:id e.g. match:1, match:2, ...
+	TopicMatchEventPrefix = "match:"
 )
 
 var secret string
@@ -292,7 +306,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "updateaccount")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:updateaccount")
+		ctx.EmitTopics(emitMsgJSON, TopicUpdateAccountEvent)
 	}
 
 	return &account, nil
@@ -346,7 +360,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createaccount")
+		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
 	}
 
 	return nil
@@ -425,7 +439,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), "zombiebattleground:createdeck")
+	ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
 
 	return &zb.CreateDeckResponse{DeckId: newDeckID}, nil
 }
@@ -502,7 +516,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	if err != nil {
 		return err
 	}
-	ctx.EmitTopics([]byte(data), "zombiebattleground:editdeck")
+	ctx.EmitTopics([]byte(data), TopicEditDeckEvent)
 
 	return nil
 }
@@ -539,7 +553,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	if err != nil {
 		return err
 	}
-	ctx.EmitTopics([]byte(data), "zombiebattleground:deletedeck")
+	ctx.EmitTopics([]byte(data), TopicDeleteDeckEvent)
 
 	return nil
 }
@@ -668,7 +682,7 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "addHeroExperience")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:addheroexperience")
+		ctx.EmitTopics(emitMsgJSON, TopicAddHeroExpEvent)
 	}
 
 	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
@@ -781,7 +795,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "registerplayerpool")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:registerplayerpool")
+		ctx.EmitTopics(emitMsgJSON, TopicRegisterPlayerPoolEvent)
 	}
 
 	return &zb.RegisterPlayerPoolResponse{}, nil
@@ -831,7 +845,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			return nil, err
 		}
 		if err == nil {
-			topics := append(match.Topics, "zombiebattleground:findmatch")
+			topics := append(match.Topics, TopicFindMatchEvent)
 			ctx.EmitTopics([]byte(data), topics...)
 		}
 
@@ -956,7 +970,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil {
 		return nil, err
 	}
-	topics := append(match.Topics, "zombiebattleground:findmatch")
+	topics := append(match.Topics, TopicFindMatchEvent)
 	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.FindMatchResponse{
@@ -1050,7 +1064,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if err != nil {
 		return nil, err
 	}
-	topics := append(match.Topics, "zombiebattleground:acceptmatch")
+	topics := append(match.Topics, TopicAcceptMatchEvent)
 	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.AcceptMatchResponse{
@@ -1405,7 +1419,8 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			},
 		},
 	})
-	match.Topics = append(match.Topics, "endgame")
+	// Don't think we need this since endgame should be emitted to match
+	// match.Topics = append(match.Topics, "endgame")
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 		Block: &zb.History{List: gp.history},
