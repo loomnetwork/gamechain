@@ -1800,13 +1800,19 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, fmt.Errorf("error reading private key")
 	}
 
-	nonce := getNonce()
+	nonce, err := getNonce(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	awardType := "tutorial-completed"
 
 	verifySignResult, err := generateVerifyHash(req.UserId, awardType, nonce, privateKey)
 	if err != nil {
 		return nil, err
 	}
+
+	// emit event
 
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:    req.UserId,
@@ -1815,10 +1821,6 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		Hash:      verifySignResult.Hash,
 		Signature: verifySignResult.Signature,
 	}, nil
-}
-
-func getNonce() int64 {
-	return 0
 }
 
 type VerifySignResult struct {

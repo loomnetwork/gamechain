@@ -409,6 +409,10 @@ message RewardTutorialCompletedResponse {
     int64 nonce = 5;
 }
 
+message Nonce {
+    int64 current_nonce = 1;
+}
+
 //////////// Match Making /////////////
 
 message PlayerState {
