@@ -31,9 +31,11 @@ const (
 	MaxGameModeVersionChar     = 16
 	TurnTimeout                = 120 * time.Second
 	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	AwardTypeTutorialCompleted = "tutorial-completed"
 )
 
 var secret string
+var privateKeyStr string
 
 func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 	return plugin.Meta{
@@ -47,6 +49,13 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
 	}
+	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
+	if disableClientSideOverride == "false" {
+		z.ClientSideRuleOverride = false
+	} else {
+		z.ClientSideRuleOverride = true
+	}
+	privateKeyStr = os.Getenv("GAMECHAIN_PRIVATE_KEY")
 
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
@@ -1794,7 +1803,6 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, ErrUserNotVerified
 	}
 
-	privateKeyStr := os.Getenv("GAMECHAIN_PRIVATE_KEY")
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	if err != nil {
 		return nil, fmt.Errorf("error reading private key")
@@ -1804,15 +1812,11 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	if err != nil {
 		return nil, err
 	}
-
-	awardType := "tutorial-completed"
-
+	awardType := AwardTypeTutorialCompleted
 	verifySignResult, err := generateVerifyHash(req.UserId, awardType, nonce, privateKey)
 	if err != nil {
 		return nil, err
 	}
-
-	// emit event
 
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:    req.UserId,
