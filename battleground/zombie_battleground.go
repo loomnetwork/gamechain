@@ -1805,6 +1805,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:    req.UserId,
 		AwardType: awardType,
+		Nonce:     nonce,
 		Hash:      verifySignResult.Hash,
 		Signature: verifySignResult.Signature,
 	}, nil
