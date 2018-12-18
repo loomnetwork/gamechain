@@ -1790,13 +1790,19 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 }
 
 func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
+	if !isOwner(ctx, req.UserId) {
+		return nil, ErrUserNotVerified
+	}
+
 	privateKeyStr := os.Getenv("GAMECHAIN_PRIVATE_KEY")
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	if err != nil {
 		return nil, fmt.Errorf("error reading private key")
 	}
+
 	nonce := getNonce()
 	awardType := "tutorial-completed"
+
 	verifySignResult, err := generateVerifyHash(req.UserId, awardType, nonce, privateKey)
 	if err != nil {
 		return nil, err
