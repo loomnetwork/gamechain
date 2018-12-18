@@ -1790,9 +1790,14 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 }
 
 func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
-
+	privateKeyStr := os.Getenv("GAMECHAIN_PRIVATE_KEY")
+	privateKey, err := crypto.HexToECDSA(privateKeyStr)
+	if err != nil {
+		return nil, fmt.Errorf("error reading private key")
+	}
+	nonce := getNonce()
 	awardType := "tutorial-completed"
-	verifySignResult, err := generateVerifyHash(req.UserId, awardType)
+	verifySignResult, err := generateVerifyHash(req.UserId, awardType, nonce, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -1805,14 +1810,18 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	}, nil
 }
 
+func getNonce() int64 {
+	return 0
+}
+
 type VerifySignResult struct {
 	Hash      string `json:"hash"`
 	Signature string `json:"signature"`
 }
 
-func generateVerifyHash(userId string, awardType string, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
+func generateVerifyHash(userId string, awardType string, nonce int64, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
 
-	hash, err := createHash(userId, awardType)
+	hash, err := createHash(userId, awardType, nonce)
 
 	if err != nil {
 		return nil, err
@@ -1830,11 +1839,12 @@ func generateVerifyHash(userId string, awardType string, privKey *ecdsa.PrivateK
 	}, nil
 }
 
-func createHash(userID string, awardType string) ([]byte, error) {
+func createHash(userID string, awardType string, nonce int64) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
 		solsha3.Uint256(userID),
 		solsha3.Uint256(awardType),
+		solsha3.Uint256(nonce),
 	)
 
 	if len(hash) == 0 {
