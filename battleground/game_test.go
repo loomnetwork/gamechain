@@ -199,7 +199,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	assert.Nil(t, err)
 
 	// mulligan keep all the cards
-	player1Mulligan := gp.State.PlayerStates[0].CardsInHand
+	player1Mulligan := gp.State.PlayerStates[0].CardsInHand[:3]
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player1,
