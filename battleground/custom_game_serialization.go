@@ -126,7 +126,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		newCard.Prototype.GooCost = simpleCard.gooCost
 	}
 
-	newCard.Instance = proto.Clone(newCard.Instance).(*zb.Card)
+	newCard.Instance = newCardInstanceSpecificDataFromCardDetails(newCard.Prototype)
 
 	return newCard, nil
 }
@@ -141,7 +141,7 @@ func (c *CustomGameMode) updateCardsFromSimpleCards(
 		var newCard *zb.CardInstance
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
-			if simpleCard.instanceId == card.InstanceId {
+			if simpleCard.instanceId == card.InstanceId.Id {
 				cardLibraryCard, err := getCardDetails(gameplay.cardLibrary, simpleCard.mouldName)
 				if err != nil {
 					return nil, err
@@ -344,7 +344,7 @@ type SimpleCardInstance struct {
 
 func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
-		instanceId:       card.InstanceId,
+		instanceId:       card.InstanceId.Id,
 		mouldName:        card.Prototype.Name,
 		attack:           card.Prototype.Attack,
 		attackInherited:  true,
