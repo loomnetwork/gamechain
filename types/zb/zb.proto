@@ -407,6 +407,7 @@ message RewardTutorialCompletedResponse {
     string hash = 3;
     string signature = 4;
     int64 nonce = 5;
+    repeated int64 amounts = 6;
 }
 
 message Nonce {
