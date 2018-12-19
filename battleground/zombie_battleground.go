@@ -1818,12 +1818,20 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, err
 	}
 
+	// assign rewards
+	var boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack int64
+	smallPack = 1 // TODO: what numbers to put here?
+
+	// amounts have to be in an array in the exactly this order
+	amounts := []int64{boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack}
+
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:    req.UserId,
 		AwardType: awardType,
 		Nonce:     nonce,
 		Hash:      verifySignResult.Hash,
 		Signature: verifySignResult.Signature,
+		Amounts:   amounts,
 	}, nil
 }
 
