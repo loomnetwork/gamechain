@@ -91,6 +91,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	# cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
 #	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
+	cd $(GOPATH)/src/github.com/loomnetwork/e2e && git checkout adjust-config-param-staging
 
 abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
