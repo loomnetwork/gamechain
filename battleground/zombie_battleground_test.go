@@ -3060,3 +3060,31 @@ func TestKeepAlive(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 }
+
+func TestRewardTutorialCompleted(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "loom1",
+		Version: "v1",
+	}, t)
+
+	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+	t.Run("RewardTutorialCompleted", func(t *testing.T) {
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+			UserId: "loom1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, resp)
+		assert.Equal(t, "0x46700b4d40ac5c35af2c22dda2787a91eb567b06c924a8fb8ae9a05b20c08c21", resp.Hash)
+		assert.Equal(t, "0x464c761b99933342201f49201018d465865961c34ab35ae2642b1dcd72711b55", resp.R)
+		assert.Equal(t, "0x2e673c926bec099498f66a895fe0e38cd77d178237205ca115cc30a87096cb5a", resp.S)
+		assert.Equal(t, uint64(28), resp.V)
+
+	})
+}
