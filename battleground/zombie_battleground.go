@@ -1821,7 +1821,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 
 	r := verifySignResult.Signature[0:66]
 	s := "0x" + verifySignResult.Signature[66:130]
-	vStr := "0x" + verifySignResult.Signature[130:132]
+	vStr := verifySignResult.Signature[130:132]
 	v, err := strconv.ParseUint(vStr, 16, 8)
 	if err != nil {
 		return nil, err
