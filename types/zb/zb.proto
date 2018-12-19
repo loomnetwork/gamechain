@@ -405,9 +405,12 @@ message RewardTutorialCompletedResponse {
     string user_id = 1;
     string award_type = 2;
     string hash = 3;
-    string signature = 4;
-    int64 nonce = 5;
-    repeated int64 amounts = 6;
+    string r = 4;
+    string s = 5;
+    uint64 v = 6;
+    //string signature = 4;
+    int64 nonce = 7;
+    repeated int64 amounts = 8;
 }
 
 message Nonce {

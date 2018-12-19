@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strconv"
 	"time"
 	"unicode/utf8"
 
@@ -1818,11 +1819,19 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, err
 	}
 
+	r := verifySignResult.Signature[0:66]
+	s := "0x" + verifySignResult.Signature[66:130]
+	vStr := "0x" + verifySignResult.Signature[130:132]
+	v, err := strconv.ParseUint(vStr, 16, 8)
+	if err != nil {
+		return nil, err
+	}
+
 	// assign rewards
 	var boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack int64
 	smallPack = 1 // TODO: what numbers to put here?
 
-	// amounts have to be in an array in the exactly this order
+	// amounts have to be in an array in exactly this order
 	amounts := []int64{boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack}
 
 	return &zb.RewardTutorialCompletedResponse{
@@ -1830,8 +1839,11 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		AwardType: awardType,
 		Nonce:     nonce,
 		Hash:      verifySignResult.Hash,
-		Signature: verifySignResult.Signature,
-		Amounts:   amounts,
+		R:         r,
+		S:         s,
+		V:         v,
+		//Signature: verifySignResult.Signature,
+		Amounts: amounts,
 	}, nil
 }
 
