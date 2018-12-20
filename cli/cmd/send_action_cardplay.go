@@ -33,7 +33,7 @@ var sendActionCardPlayCmd = &cobra.Command{
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
 						Card: &zb.CardInstance{
-							InstanceId: sendActionCardPlayCmdArgs.cardPlayInstanceID,
+							InstanceId: &zb.InstanceId{Id: sendActionCardPlayCmdArgs.cardPlayInstanceID},
 						},
 					},
 				},

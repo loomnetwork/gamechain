@@ -167,6 +167,24 @@ func deleteDeckByID(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
 	return newList, len(newList) != len(deckList)
 }
 
+func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb.PlayerProfileRegistrationData) (*zb.Deck, error) {
+	if registrationData.DebugCheats.Enabled && registrationData.DebugCheats.UseCustomDeck {
+		return registrationData.DebugCheats.CustomDeck, nil
+	}
+
+	// get matched player deck
+	matchedDl, err := loadDecks(ctx, registrationData.UserId)
+	if err != nil {
+		return nil, err
+	}
+	matchedDeck := getDeckByID(matchedDl.Decks, registrationData.DeckId)
+	if matchedDeck == nil {
+		return nil, fmt.Errorf("deck id %d not found", registrationData.DeckId)
+	}
+
+	return matchedDeck, nil
+}
+
 func getDeckByID(deckList []*zb.Deck, id int64) *zb.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
@@ -229,7 +247,7 @@ func saveMatch(ctx contract.Context, match *zb.Match) error {
 	return nil
 }
 
-func createMatch(ctx contract.Context, match *zb.Match) error {
+func createMatch(ctx contract.Context, match *zb.Match, useBackendGameLogic bool) error {
 	nextID, err := nextMatchID(ctx)
 	if err != nil {
 		return err
@@ -237,6 +255,7 @@ func createMatch(ctx contract.Context, match *zb.Match) error {
 	match.Id = nextID
 	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
 	match.CreatedAt = ctx.Now().Unix()
+	match.UseBackendGameLogic = useBackendGameLogic
 	return saveMatch(ctx, match)
 }
 
@@ -359,17 +378,40 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId int32, owner string) *zb.CardInstance {
-	return &zb.CardInstance{
-		InstanceId: instanceId,
-		Owner:      owner,
-		Prototype: proto.Clone(cardDetails).(*zb.Card),
-		Instance: proto.Clone(cardDetails).(*zb.Card),
+func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
+	return &zb.CardInstanceSpecificData{
+		Attack: cardDetails.Attack,
+		Defense: cardDetails.Defense,
+		Type: cardDetails.Type,
+		Set: cardDetails.Set,
+		GooCost: cardDetails.GooCost,
 	}
 }
 
-func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerStates []*zb.PlayerState) error {
-	instanceId := int32(0) // unique instance IDs for cards
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.InstanceId, owner string) *zb.CardInstance {
+	return &zb.CardInstance{
+		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
+		Owner:      owner,
+		Prototype: proto.Clone(cardDetails).(*zb.Card),
+		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
+	}
+}
+
+func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId {
+	var instanceIds = make([]*zb.InstanceId, len(cards), len(cards))
+	for i := range cards {
+		instanceIds[i] = cards[i].InstanceId
+	}
+
+	return instanceIds
+}
+
+func populateDeckCards(
+	ctx contract.Context,
+	cardLibrary *zb.CardList,
+	playerStates []*zb.PlayerState,
+	useBackendGameLogic bool,
+	) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
@@ -381,12 +423,30 @@ func populateDeckCards(ctx contract.Context, cardLibrary *zb.CardList, playerSta
 
 				cardInstance := newCardInstanceFromCardDetails(
 					cardDetails,
-					instanceId,
+					nil,
 					playerState.Id,
 				)
 
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
-				instanceId++
+			}
+		}
+	}
+
+	if useBackendGameLogic {
+		for _, playerState := range playerStates {
+			for _, card := range playerState.CardsInDeck {
+				filteredAbilities := make([]*zb.CardAbility, 0, 0)
+				for _, ability := range card.Prototype.Abilities {
+					switch ability.Type {
+					case zb.CardAbilityType_Rage:
+					case zb.CardAbilityType_PriorityAttack:
+						filteredAbilities = append(filteredAbilities, ability)
+					default:
+						fmt.Printf("CardAbility.Type has unexpected value %s, removed\n", zb.CardAbilityType_Enum_name[int32(ability.Type)])
+					}
+				}
+
+				card.Prototype.Abilities = filteredAbilities
 			}
 		}
 	}
