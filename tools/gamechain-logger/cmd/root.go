@@ -43,7 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().String("db-url", "", "MySQL Connection URL")
 	rootCmd.PersistentFlags().String("db-host", "127.0.0.1", "MySQL host")
 	rootCmd.PersistentFlags().String("db-port", "3306", "MySQL port")
-	rootCmd.PersistentFlags().String("db-name", "loom", "MySQL database name")
+	rootCmd.PersistentFlags().String("db-name", "loomauth", "MySQL database name")
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
