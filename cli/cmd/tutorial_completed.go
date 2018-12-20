@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -27,7 +28,8 @@ var tutorialCompletedCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(resp)
+		j, _ := json.Marshal(resp)
+		fmt.Println(string(j))
 		return nil
 	},
 }

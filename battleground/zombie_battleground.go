@@ -27,12 +27,13 @@ type ZombieBattleground struct {
 }
 
 const (
-	MaxGameModeNameChar         = 48
-	MaxGameModeDescriptionChar  = 255
-	MaxGameModeVersionChar      = 16
-	TurnTimeout                 = 120 * time.Second
-	KeepAliveTimeout            = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
-	RewardTypeTutorialCompleted = "tutorial-completed"
+	MaxGameModeNameChar           = 48
+	MaxGameModeDescriptionChar    = 255
+	MaxGameModeVersionChar        = 16
+	TurnTimeout                   = 120 * time.Second
+	KeepAliveTimeout              = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	RewardTypeTutorialCompleted   = "tutorial-completed"
+	TutorialRewardContractVersion = 1
 )
 
 var secret string
@@ -1815,12 +1816,21 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, fmt.Errorf("error reading private key")
 	}
 
-	nonce, err := getNonce(ctx)
-	if err != nil {
-		return nil, err
-	}
-	rewardType := RewardTypeTutorialCompleted
-	verifySignResult, err := generateVerifyHash(req.UserId, rewardType, nonce, privateKey)
+	/*
+		nonce, err := getNonce(ctx)
+		if err != nil {
+			return nil, err
+		}
+	*/
+	//rewardType := RewardTypeTutorialCompleted
+	// assign rewards
+	var smallPack, onboardingPack int64
+	smallPack = 1 // TODO: what numbers to put here?
+
+	// amounts have to be in an array in exactly this order
+	amounts := []int64{smallPack, onboardingPack}
+
+	verifySignResult, err := generateVerifyHash(req.UserId, smallPack, onboardingPack, TutorialRewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -1833,22 +1843,14 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, err
 	}
 
-	// assign rewards
-	var boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack int64
-	smallPack = 1 // TODO: what numbers to put here?
-
-	// amounts have to be in an array in exactly this order
-	amounts := []int64{boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack}
-
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:     req.UserId,
-		RewardType: rewardType,
-		Nonce:      nonce,
-		Hash:       verifySignResult.Hash,
-		R:          r,
-		S:          s,
-		V:          v,
-		//Signature: verifySignResult.Signature,
+		RewardType: RewardTypeTutorialCompleted,
+		//	Nonce:      nonce,
+		Hash:    verifySignResult.Hash,
+		R:       r,
+		S:       s,
+		V:       v,
 		Amounts: amounts,
 	}, nil
 }
@@ -1863,14 +1865,14 @@ func (z *ZombieBattleground) ConfirmRewardClaimed(ctx contract.Context, req *zb.
 	return err
 }
 
-type VerifySignResult struct {
-	Hash      string `json:"hash"`
-	Signature string `json:"signature"`
+type verifySignResult struct {
+	Hash      string
+	Signature string
 }
 
-func generateVerifyHash(userId string, rewardType string, nonce int64, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
+func generateVerifyHash(userID string, smallPack, onboardingPack, tutorialRewardContractVersion int64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
 
-	hash, err := createHash(userId, rewardType, nonce)
+	hash, err := createHash(userID, smallPack, onboardingPack, tutorialRewardContractVersion)
 
 	if err != nil {
 		return nil, err
@@ -1882,18 +1884,19 @@ func generateVerifyHash(userId string, rewardType string, nonce int64, privKey *
 		return nil, err
 	}
 
-	return &VerifySignResult{
+	return &verifySignResult{
 		Hash:      "0x" + hex.EncodeToString(hash),
 		Signature: "0x" + hex.EncodeToString(sig),
 	}, nil
 }
 
-func createHash(userID string, rewardType string, nonce int64) ([]byte, error) {
+func createHash(userID string, smallPack, onboardingPack, tutorialRewardContractVersion int64) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
 		solsha3.Uint256(userID),
-		solsha3.Uint256(rewardType),
-		solsha3.Uint256(nonce),
+		solsha3.Uint256(smallPack),
+		solsha3.Uint256(onboardingPack),
+		solsha3.Uint256(tutorialRewardContractVersion),
 	)
 
 	if len(hash) == 0 {
