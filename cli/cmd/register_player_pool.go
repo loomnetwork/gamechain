@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -23,22 +21,27 @@ var registerPlayerPoolCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.RegisterPlayerPoolRequest{
-			UserId: registerPlayerPoolCmdArgs.userID,
-			DeckId: registerPlayerPoolCmdArgs.deckID,
-			Tags:   registerPlayerPoolCmdArgs.tags,
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				UserId: registerPlayerPoolCmdArgs.userID,
+				DeckId: registerPlayerPoolCmdArgs.deckID,
+				Version: registerPlayerPoolCmdArgs.version,
+				Tags:   registerPlayerPoolCmdArgs.tags,
+			},
 		}
 		var resp zb.RegisterPlayerPoolResponse
 
-		req.UserId = registerPlayerPoolCmdArgs.userID
-		req.Version = registerPlayerPoolCmdArgs.version
-		req.RandomSeed = registerPlayerPoolCmdArgs.randomSeed
+		if registerPlayerPoolCmdArgs.randomSeed != 0 {
+			req.RegistrationData.DebugCheats.Enabled = true
+			req.RegistrationData.DebugCheats.UseCustomRandomSeed = true
+			req.RegistrationData.DebugCheats.CustomRandomSeed = registerPlayerPoolCmdArgs.randomSeed
+		}
 
 		_, err := commonTxObjs.contract.Call("RegisterPlayerPool", &req, signer, &resp)
 		if err != nil {
 			return err
 		}
 
-		fmt.Printf("Registered player %s to pool", req.UserId)
+		fmt.Printf("Registered player %s to pool", req.RegistrationData.UserId)
 		return nil
 	},
 }
@@ -49,6 +52,6 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
-	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", time.Now().Unix(), "Random Seed")
+	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", 0, "Random Seed")
 	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
 }

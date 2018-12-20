@@ -30,7 +30,7 @@ func TestComparePlayerTestsFailing(t *testing.T) {
 			Defense:       20,
 			CurrentGoo:    0,
 			GooVials:      0,
-			CurrentAction: zb.PlayerActionType_DrawCard,
+			CurrentAction: zb.PlayerActionType_CardPlay,
 		},
 	}
 
@@ -40,7 +40,7 @@ func TestComparePlayerTestsFailing(t *testing.T) {
 			Defense:       21,
 			CurrentGoo:    0,
 			GooVials:      0,
-			CurrentAction: zb.PlayerActionType_DrawCard,
+			CurrentAction: zb.PlayerActionType_CardPlay,
 		},
 	}
 
@@ -55,7 +55,7 @@ func TestComparePlayerTests(t *testing.T) {
 			Defense:       20,
 			CurrentGoo:    0,
 			GooVials:      0,
-			CurrentAction: zb.PlayerActionType_DrawCard,
+			CurrentAction: zb.PlayerActionType_CardPlay,
 		},
 	}
 
@@ -65,7 +65,7 @@ func TestComparePlayerTests(t *testing.T) {
 			Defense:       20,
 			CurrentGoo:    0,
 			GooVials:      0,
-			CurrentAction: zb.PlayerActionType_DrawCard,
+			CurrentAction: zb.PlayerActionType_CardPlay,
 		},
 	}
 

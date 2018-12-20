@@ -21,11 +21,24 @@ type MatchMakingFunc func(target *zb.PlayerProfile, candidate *zb.PlayerProfile)
 
 // mmf is the gobal match making function that calculates the match making score
 var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64 {
+	targetData := target.RegistrationData
+	candidateData := candidate.RegistrationData
 	// map tag to the same tag group
-	if len(target.Tags) > 0 {
-		if compareTags(target.Tags, candidate.Tags) {
+	if len(targetData.Tags) > 0 || len(candidateData.Tags) > 0 {
+		if compareTags(targetData.Tags, candidateData.Tags) {
 			return 1
+		} else {
+			return 0
 		}
+	}
+
+	// backend side game logic
+	if targetData.UseBackendGameLogic != candidateData.UseBackendGameLogic {
+		return 0
+	}
+
+	// debug cheats
+	if targetData.DebugCheats.Enabled != candidateData.DebugCheats.Enabled {
 		return 0
 	}
 
@@ -68,7 +81,7 @@ func sortByPlayerScore(ps []*PlayerScore) []*PlayerScore {
 
 func findPlayerProfileByID(pool *zb.PlayerPool, id string) *zb.PlayerProfile {
 	for _, pp := range pool.PlayerProfiles {
-		if pp.UserId == id {
+		if pp.RegistrationData.UserId == id {
 			return pp
 		}
 	}
@@ -78,7 +91,7 @@ func findPlayerProfileByID(pool *zb.PlayerPool, id string) *zb.PlayerProfile {
 func removePlayerFromPool(pool *zb.PlayerPool, id string) *zb.PlayerPool {
 	var newpool zb.PlayerPool
 	for _, pp := range pool.PlayerProfiles {
-		if pp.UserId != id {
+		if pp.RegistrationData.UserId != id {
 			newpool.PlayerProfiles = append(newpool.PlayerProfiles, pp)
 		}
 	}

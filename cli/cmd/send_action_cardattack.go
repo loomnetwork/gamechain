@@ -41,12 +41,10 @@ var sendActionCardAttackCmd = &cobra.Command{
 				PlayerId:   sendActionCardAttackCmdArgs.userID,
 				Action: &zb.PlayerAction_CardAttack{
 					CardAttack: &zb.PlayerActionCardAttack{
-						Attacker: &zb.CardInstance{
-							InstanceId: sendActionCardAttackCmdArgs.attackerID,
-						},
-						AffectObjectType: otype,
+						Attacker: &zb.InstanceId{Id: sendActionCardAttackCmdArgs.attackerID},
 						Target: &zb.Unit{
-							InstanceId: sendActionCardAttackCmdArgs.targetID,
+							InstanceId: &zb.InstanceId{Id: sendActionCardAttackCmdArgs.targetID},
+							AffectObjectType: otype,
 						},
 					},
 				},

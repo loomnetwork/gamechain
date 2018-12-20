@@ -3,6 +3,7 @@ package battleground
 import (
 	"errors"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
@@ -119,7 +120,7 @@ func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []
 	return
 }
 
-func findCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+func findCardInCardListByName(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
 	for i, c := range cards {
 		if card.Prototype.Name == c.Prototype.Name {
 			return i, c, true
@@ -128,9 +129,9 @@ func findCardInCardList(card *zb.CardInstance, cards []*zb.CardInstance) (int, *
 	return -1, nil, false
 }
 
-func findCardInCardListInstanceID(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+func findCardInCardListByInstanceId(instanceId *zb.InstanceId, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
 	for i, c := range cards {
-		if card.InstanceId == c.InstanceId {
+		if proto.Equal(instanceId, c.InstanceId) {
 			return i, c, true
 		}
 	}
