@@ -79,6 +79,10 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
+func RewardClaimedKey(userID string) []byte {
+	return []byte("user:" + userID + ":rewardClaimed")
+}
+
 func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
 	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
@@ -294,6 +298,27 @@ func getNonce(ctx contract.Context) (int64, error) {
 		return 0, err
 	}
 	return nonce.CurrentNonce, nil
+}
+
+func setRewardClaimed(ctx contract.Context, userID string, rewardType string) error {
+	err := ctx.Set(RewardClaimedKey(userID), &zb.RewardClaimed{
+		RewardType: rewardType,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func getRewardClaimed(ctx contract.Context, userID string) (*zb.RewardClaimed, error) {
+	var rewardClaimed zb.RewardClaimed
+	err := ctx.Get(RewardClaimedKey(userID), &rewardClaimed)
+	if err == contract.ErrNotFound {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &rewardClaimed, nil
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {
