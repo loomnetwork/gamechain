@@ -87,9 +87,8 @@
 
 # -------player-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 24"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 50"
   Condition = "contains"
-  Iterations = 10
   Expected = ["sent action cardplay successfully"]
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
@@ -98,9 +97,8 @@
 
 # -------player-1
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 26"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 2"
   Condition = "contains"
-  Iterations = 10
   Expected = ["sent action cardplay successfully"]
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1"
@@ -109,45 +107,17 @@
 
 # -------player-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 50 --targetID 2 --objectType 1"
   Condition = "contains"
-  Iterations = 10
   Expected = ["sent action cardattack successfully"]
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
 
-# -------player-2 wrong turn
-[[TestCases]]
-  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
-  Condition = "contains"
-  Iterations = 2
-  Expected = ["invalid player"]
-
-[[TestCases]]
-  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2"
-  Condition = "contains"
-  Expected = ["invalid player"]
-
 # -------player-1
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 30"
-  Condition = "contains"
-  Iterations = 1
-  Expected = ["sent action cardplay successfully"]
-[[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 100"
-  Condition = "contains"
-  Iterations = 1
-  Expected = ["sent action cardplay successfully"]
-[[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 120"
-  Condition = "contains"
-  Iterations = 1
-  Expected = ["sent action cardplay successfully"]
-[[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 12"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-1 -i 4"
   Condition = "contains"
   Iterations = 1
   Expected = ["sent action cardplay successfully"]
@@ -158,15 +128,10 @@
 
 # -------player-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 80"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 -i 30"
   Condition = "contains"
   Iterations = 1
   Expected = ["sent action cardplay successfully"]
-[[TestCases]]
-  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --attackerID 24 --targetID 26 --objectType 1"
-  Condition = "contains"
-  Iterations = 1
-  Expected = ["sent action cardattack successfully"]
 
 # -------game state
 [[TestCases]]

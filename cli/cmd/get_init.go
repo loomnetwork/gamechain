@@ -38,8 +38,7 @@ var getInitCmd = &cobra.Command{
 			return err
 		}
 
-		printProtoMessageAsJsonToStdout(&result)
-		return nil
+		return printProtoMessageAsJSONToStdout(&result)
 	},
 }
 

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -37,9 +38,7 @@ var listCardCmd = &cobra.Command{
 			return err
 		}
 
-		printProtoMessageAsJsonToStdout(&result)
-
-		return nil
+		return printProtoMessageAsJSONToStdout(&result)
 	},
 }
 
