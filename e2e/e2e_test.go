@@ -79,11 +79,11 @@ func TestE2EAccountDeck(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		// {"zb-account-1", "test_account.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-account-1", "test_account.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-account-4", "test_account.toml", 4, 10, "../zb.genesis.json"},
-		// {"zb-deck-1", "test_deck.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-deck-1", "test_deck.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-deck-4", "test_deck.toml", 4, 10, "../zb.genesis.json"},
-		// {"zb-hero-1", "test_hero.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-hero-1", "test_hero.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-hero-4", "test_hero.toml", 4, 10, "../zb.genesis.json"},
 	}
 
@@ -107,7 +107,7 @@ func TestE2EMatchMaking(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		// {"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-findmatch-4", "test_findmatch.toml", 4, 10, "../zb.genesis.json"},
 	}
 
@@ -131,7 +131,7 @@ func TestE2EGameplay(t *testing.T) {
 		accounts   int
 		genFile    string
 	}{
-		// {"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "../zb.genesis.json"},
 	}
 
