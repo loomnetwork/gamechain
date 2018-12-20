@@ -3075,6 +3075,8 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+
+	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
 			UserId: "loom1",
@@ -3085,6 +3087,24 @@ func TestRewardTutorialCompleted(t *testing.T) {
 		assert.Equal(t, "0x464c761b99933342201f49201018d465865961c34ab35ae2642b1dcd72711b55", resp.R)
 		assert.Equal(t, "0x2e673c926bec099498f66a895fe0e38cd77d178237205ca115cc30a87096cb5a", resp.S)
 		assert.Equal(t, uint64(28), resp.V)
+	})
 
+	// client confirms that reward has been claimed from faucet
+	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
+		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
+			UserId:     "loom1",
+			RewardType: RewardTypeTutorialCompleted,
+		})
+		assert.Nil(t, err)
+	})
+
+	// attempt to get reward again should fail
+	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+			UserId: "loom1",
+		})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "reward already claimed")
+		assert.Nil(t, resp)
 	})
 }
