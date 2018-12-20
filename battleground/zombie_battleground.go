@@ -1804,6 +1804,17 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, ErrUserNotVerified
 	}
 
+	rewardClaimed, err := getRewardClaimed(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	if rewardClaimed != nil {
+		if rewardClaimed.RewardType == RewardTypeTutorialCompleted {
+			return nil, fmt.Errorf("reward already claimed")
+		}
+	}
+
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	if err != nil {
 		return nil, fmt.Errorf("error reading private key")
