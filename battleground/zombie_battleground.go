@@ -50,12 +50,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
 	}
-	disableClientSideOverride := os.Getenv("DISABLE_CLIENT_SIDE_OVERRIDE")
-	if disableClientSideOverride == "false" {
-		z.ClientSideRuleOverride = false
-	} else {
-		z.ClientSideRuleOverride = true
-	}
+
 	privateKeyStr = os.Getenv("GAMECHAIN_PRIVATE_KEY")
 
 	if req.Oracle != nil {
@@ -1919,4 +1914,4 @@ func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
 	return sig, nil
 }
 
-var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{ClientSideRuleOverride: true})
+var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
