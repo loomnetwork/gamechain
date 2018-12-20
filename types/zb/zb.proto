@@ -403,7 +403,7 @@ message RewardTutorialCompletedRequest {
 
 message RewardTutorialCompletedResponse {
     string user_id = 1;
-    string award_type = 2;
+    string reward_type = 2;
     string hash = 3;
     string r = 4;
     string s = 5;
@@ -415,6 +415,15 @@ message RewardTutorialCompletedResponse {
 
 message Nonce {
     int64 current_nonce = 1;
+}
+
+message ConfirmRewardClaimedRequest {
+    string user_id = 1;
+    string reward_type = 2;
+}
+
+message RewardClaimed {
+    string reward_type = 1;
 }
 
 //////////// Match Making /////////////

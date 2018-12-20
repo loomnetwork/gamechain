@@ -27,12 +27,12 @@ type ZombieBattleground struct {
 }
 
 const (
-	MaxGameModeNameChar        = 48
-	MaxGameModeDescriptionChar = 255
-	MaxGameModeVersionChar     = 16
-	TurnTimeout                = 120 * time.Second
-	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
-	AwardTypeTutorialCompleted = "tutorial-completed"
+	MaxGameModeNameChar         = 48
+	MaxGameModeDescriptionChar  = 255
+	MaxGameModeVersionChar      = 16
+	TurnTimeout                 = 120 * time.Second
+	KeepAliveTimeout            = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	RewardTypeTutorialCompleted = "tutorial-completed"
 )
 
 var secret string
@@ -1813,8 +1813,8 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	if err != nil {
 		return nil, err
 	}
-	awardType := AwardTypeTutorialCompleted
-	verifySignResult, err := generateVerifyHash(req.UserId, awardType, nonce, privateKey)
+	rewardType := RewardTypeTutorialCompleted
+	verifySignResult, err := generateVerifyHash(req.UserId, rewardType, nonce, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -1835,16 +1835,26 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	amounts := []int64{boosterPack, superPack, airPack, earthPack, firePack, lifePack, toxicPack, waterPack, smallPack, onboardingPack}
 
 	return &zb.RewardTutorialCompletedResponse{
-		UserId:    req.UserId,
-		AwardType: awardType,
-		Nonce:     nonce,
-		Hash:      verifySignResult.Hash,
-		R:         r,
-		S:         s,
-		V:         v,
+		UserId:     req.UserId,
+		RewardType: rewardType,
+		Nonce:      nonce,
+		Hash:       verifySignResult.Hash,
+		R:          r,
+		S:          s,
+		V:          v,
 		//Signature: verifySignResult.Signature,
 		Amounts: amounts,
 	}, nil
+}
+
+func (z *ZombieBattleground) ConfirmRewardClaimed(ctx contract.Context, req *zb.ConfirmRewardClaimedRequest) error {
+	if !isOwner(ctx, req.UserId) {
+		return ErrUserNotVerified
+	}
+
+	// TODO: add rewardType checks?
+	err := setRewardClaimed(ctx, req.UserId, req.RewardType)
+	return err
 }
 
 type VerifySignResult struct {
@@ -1852,9 +1862,9 @@ type VerifySignResult struct {
 	Signature string `json:"signature"`
 }
 
-func generateVerifyHash(userId string, awardType string, nonce int64, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
+func generateVerifyHash(userId string, rewardType string, nonce int64, privKey *ecdsa.PrivateKey) (*VerifySignResult, error) {
 
-	hash, err := createHash(userId, awardType, nonce)
+	hash, err := createHash(userId, rewardType, nonce)
 
 	if err != nil {
 		return nil, err
@@ -1872,11 +1882,11 @@ func generateVerifyHash(userId string, awardType string, nonce int64, privKey *e
 	}, nil
 }
 
-func createHash(userID string, awardType string, nonce int64) ([]byte, error) {
+func createHash(userID string, rewardType string, nonce int64) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
 		solsha3.Uint256(userID),
-		solsha3.Uint256(awardType),
+		solsha3.Uint256(rewardType),
 		solsha3.Uint256(nonce),
 	)
 
