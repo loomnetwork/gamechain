@@ -46,6 +46,14 @@ message Card {
     UniqueAnimationType.Enum unique_animation_type     = 18;
 }
 
+message CardInstanceSpecificData {
+    int32 attack = 1;
+    int32 defense = 2;
+    CreatureType.Enum type = 3;
+    CardSetType.Enum set = 4;
+    int32 gooCost = 5;
+}
+
 message CardViewInfo {
     Vector3Float position   = 1;
     Vector3Float scale      = 2;
@@ -179,7 +187,7 @@ message Skill {
     string icon_path = 3;
     string description = 4;
     repeated OverlordAbilityTarget.Enum skill_targets = 5;
-    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6;
+    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6 [json_name="target_unit_special_status"];
     repeated CardSetType.Enum element_targets = 7;
     int32 value = 8;
 
@@ -418,8 +426,8 @@ message PlayerState {
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
-    Deck deck  = 7;
-    int32 defense   = 8;
+    Deck deck = 7;
+    int32 defense = 8;
     int32 currentGoo = 9;
     int32 gooVials = 10;
     bool hasDrawnCard = 11;
@@ -429,6 +437,7 @@ message PlayerState {
     int32 maxCardsInHand = 15;
     int32 maxGooVials = 16;
     int32 turnTime = 17;
+    int32 turnNumber = 18;
 }
 
 message InitialPlayerState {
@@ -464,7 +473,9 @@ message Match {
     int64 randomSeed = 6;
     Address customGameAddr = 7;
     int64 createdAt = 8;
-    repeated PlayerTimestamp playerLastSeens = 9;
+    bool useBackendGameLogic = 9;
+    repeated PlayerTimestamp playerLastSeens = 10;
+    repeated DebugCheatsConfiguration playerDebugCheats = 11;
 }
 
 message MatchMakingInfoList {
@@ -481,15 +492,12 @@ message PlayerActionType {
         None = 0;
         EndTurn = 1;
         Mulligan = 2;
-        DrawCard = 3;
-        CardPlay = 4;
-        CardAttack = 5;
-        CardAbilityUsed = 6;
-        OverlordSkillUsed = 7;
-        CoinToss = 8;
-        InitHands = 9;
-        LeaveMatch = 10;
-        RankBuff = 11;
+        CardPlay = 3;
+        CardAttack = 4;
+        CardAbilityUsed = 5;
+        OverlordSkillUsed = 6;
+        LeaveMatch = 7;
+        RankBuff = 8;
     }
 }
 
@@ -497,16 +505,16 @@ message PlayerAction {
     PlayerActionType.Enum actionType = 1; // not sure we really need this
     string playerId = 2;
     oneof action {
-        PlayerActionCardAttack cardAttack               = 3;
-        PlayerActionDrawCard drawCard                   = 4;
-        PlayerActionEndTurn endTurn                     = 5;
-        PlayerActionMulligan mulligan                   = 6;
-        PlayerActionCardPlay cardPlay                   = 7;
-        PlayerActionCardAbilityUsed cardAbilityUsed     = 8;
-        PlayerActionOverlordSkillUsed overlordSkillUsed = 9;
-        PlayerActionLeaveMatch leaveMatch               = 12;
-        PlayerActionRankBuff rankBuff                   = 13;
+        PlayerActionEndTurn endTurn                     = 3;
+        PlayerActionMulligan mulligan                   = 4;
+        PlayerActionCardPlay cardPlay                   = 5;
+        PlayerActionCardAttack cardAttack               = 6;
+        PlayerActionCardAbilityUsed cardAbilityUsed     = 7;
+        PlayerActionOverlordSkillUsed overlordSkillUsed = 8;
+        PlayerActionLeaveMatch leaveMatch               = 9;
+        PlayerActionRankBuff rankBuff                   = 10;
     };
+    repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
 }
 
@@ -517,13 +525,18 @@ message PlayerActionEvent {
 }
 
 message PlayerProfile {
+    PlayerProfileRegistrationData registrationData = 1;
+    int64 updatedAt = 2;
+}
+
+message PlayerProfileRegistrationData {
     string userId = 1;
     int64 deckId  = 2;
     string version = 3;
-    Address customGame = 5;
-    int64 updatedAt = 6;
-    repeated string tags = 7;
-    int64 randomSeed = 8;
+    Address customGame = 4;
+    repeated string tags = 5;
+    bool useBackendGameLogic = 6;
+    DebugCheatsConfiguration debugCheats = 7 [(gogoproto.nullable) = false];
 }
 
 message PlayerPool {
@@ -535,12 +548,7 @@ message MatchCount {
 }
 
 message RegisterPlayerPoolRequest {
-    string userId = 1;
-    int64 deckId  = 2;
-    string version = 3;
-    Address customGame = 4;
-    int64 randomSeed = 5;
-    repeated string tags = 6;
+    PlayerProfileRegistrationData registrationData = 1;
 }
 
 message RegisterPlayerPoolResponse {
@@ -552,6 +560,18 @@ message PlayerPoolResponse {
     PlayerPool pool = 1;
 }
 
+message DebugCheatsConfiguration {
+    bool enabled = 1;
+
+    bool useCustomDeck = 2;
+    Deck customDeck = 3;
+
+    bool useCustomRandomSeed = 4;
+    int64 customRandomSeed = 5;
+
+    bool disableDeckShuffle = 6;
+}
+
 message FindMatchRequest {
     string userId = 1;
     repeated string tags = 2;
@@ -559,6 +579,7 @@ message FindMatchRequest {
 
 message FindMatchResponse {
     Match match = 1;
+    bool matchFound = 2;
 }
 
 message AcceptMatchRequest {
@@ -569,16 +590,6 @@ message AcceptMatchRequest {
 message AcceptMatchResponse {
     Match match = 1;
     History block = 2;
-}
-
-message DebugFindMatchRequest {
-    string userId = 1;
-    int64 deckId  = 2;
-    string version = 3;
-    int64 randomSeed = 4;
-    Address customGame = 5;
-    Deck deck = 6;
-    repeated string tags = 7;
 }
 
 message CancelFindMatchRequest {
@@ -620,8 +631,7 @@ message PlayerActionRequest {
 }
 
 message PlayerActionResponse {
-    GameState gameState = 1;
-    Match match = 2;
+    Match match = 1;
 }
 
 message BundlePlayerActionRequest {
@@ -659,7 +669,6 @@ message KeepAliveRequest {
 
 message KeepAliveResponse {
 }
-
 
 // Game Modes
 
@@ -1113,11 +1122,49 @@ message CardAbility {
     }
 }
 
+message CardAbilityRage {
+    int32 addedAttack = 1;
+    bool wasApplied = 2;
+}
+
+message CardAbilityPriorityAttack {
+    int32 attackerOldDefense = 1;
+    int32 targetOldDefense = 2;
+}
+
+message PlayerActionOutcome {
+    oneof Outcome {
+        CardAbilityRageOutcome rage = 1;
+        CardAbilityPriorityAttackOutcome priorityAttack = 2;
+    }
+
+    message CardAbilityRageOutcome {
+        InstanceId instanceId = 1;
+        int32 newAttack = 2;
+    }
+
+    message CardAbilityPriorityAttackOutcome {
+        InstanceId instanceId = 1;
+        int32 newDefense = 2;
+    }
+}
+
+message CardAbilityInstance {
+    oneof AbilityType {
+        CardAbilityRage rage = 1;
+        CardAbilityPriorityAttack priorityAttack = 2;
+    }
+}
+
 message CardInstance {
     Card prototype = 1;
-    int32 instanceId = 2;
-    Card instance = 3;
+    InstanceId instanceId = 2;
+    CardInstanceSpecificData instance = 3;
     string owner = 4;
+
+    // FIXME: this really shouldn't be in Protobuf
+    bool abilitiesInstancesInitialized = 5;
+    repeated CardAbilityInstance abilitiesInstances = 6;
 }
 
 message DataIdOwner {
@@ -1129,12 +1176,12 @@ message CardDeck {
     repeated Card cards = 1;
 }
 
-message InstanceIdOwner {
-    int32 instanceId = 1;
+message InstanceId {
+    int32 id = 1;
 }
 
 message OverlordInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     OverlordPrototype prototype = 2;
     OverlordSkillInstance firstSkill = 3;
     OverlordSkillInstance secondSkill = 4;
@@ -1189,38 +1236,27 @@ message PlayerActionRankBuff {
 }
 
 message PlayerActionCardAttack {
-    CardInstance attacker = 1;
-    AffectObjectType.Enum affectObjectType = 2;
-    Unit target = 3;
+    InstanceId attacker = 1;
+    Unit target = 2;
 }
 
 message PlayerActionCardAbilityUsed {
     CardInstance card = 1;
     CardKind.Enum cardKind = 2;
     repeated Unit targets = 3;
-    string AbilityType = 4;
+    CardAbilityType.Enum AbilityType = 4;
 }
 
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
-    AffectObjectType.Enum affectObjectType = 2;
-    Unit target = 3;
-}
-
-message PlayerActionDrawCard {
-    CardInstance cardInstance = 2;
+    Unit target = 2;
 }
 
 message PlayerActionEndTurn  {
 }
 
 message PlayerActionMulligan {
-    repeated CardInstance mulliganedCards = 1;
-}
-
-message PlayerActionOutcome {
-    string playerId = 1;
-    GameState gameState = 2;
+    repeated InstanceId mulliganedCards = 1;
 }
 
 message StartGameAction {
@@ -1228,7 +1264,7 @@ message StartGameAction {
 }
 
 message Unit {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     AffectObjectType.Enum affectObjectType = 2;
     Parameter Parameter = 3;
 }
@@ -1354,13 +1390,13 @@ message HistoryCreateGame {
 }
 
 message HistoryFullInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     int32 attack = 2;
     int32 defense = 3;
 }
 
 message HistoryInstance {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     int32 value = 2;
     enum change {
         Attack = 0;
@@ -1369,7 +1405,7 @@ message HistoryInstance {
 }
 
 message HistoryHide {
-    int32 instanceId = 1;
+    InstanceId instanceId = 1;
     Zone zone = 2;
 }
 
