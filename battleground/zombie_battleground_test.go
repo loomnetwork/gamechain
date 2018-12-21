@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
@@ -3110,11 +3111,12 @@ func TestRewardTutorialCompleted(t *testing.T) {
 }
 
 func TestHashSignature(t *testing.T) {
-	hash, err := createHash(149, 5, 1)
+	privateKeyStr = "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
+	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
-	t.Run("Hash", func(t *testing.T) {
-		assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", "0x"+hex.EncodeToString(hash))
-	})
 
-	//t.Run("Signature")
+	verifySignResult, err := generateVerifyHash(149, 5, 1, privateKey)
+	assert.Nil(t, err)
+	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
+	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
 }
