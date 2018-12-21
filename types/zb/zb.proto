@@ -410,7 +410,8 @@ message RewardTutorialCompletedResponse {
     uint64 v = 6;
     //string signature = 4;
     int64 nonce = 7;
-    repeated uint64 amounts = 8;
+    //repeated uint64 amounts = 8;
+    uint64 minion_pack = 8;
     uint64 user_id_uint = 9;
 }
 

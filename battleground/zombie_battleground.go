@@ -1824,19 +1824,22 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	*/
 	//rewardType := RewardTypeTutorialCompleted
 	// assign rewards
-	var smallPack, onboardingPack uint64
-	smallPack = 312
-	onboardingPack = 122
+	//var smallPack, onboardingPack uint64
+	//smallPack = 312
+	//onboardingPack = 122
+
+	var minionPack uint64
 
 	// amounts have to be in an array in exactly this order
-	amounts := []uint64{smallPack, onboardingPack}
+	//amounts := []uint64{smallPack, onboardingPack}
+	minionPack = 5
 
 	userIDUint, err := getUserIDUint(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	verifySignResult, err := generateVerifyHash(userIDUint, smallPack, onboardingPack, TutorialRewardContractVersion, privateKey)
+	verifySignResult, err := generateVerifyHash(userIDUint, minionPack, TutorialRewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -1854,11 +1857,11 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		UserIdUint: userIDUint,
 		RewardType: RewardTypeTutorialCompleted,
 		//	Nonce:      nonce,
-		Hash:    verifySignResult.Hash,
-		R:       r,
-		S:       s,
-		V:       v,
-		Amounts: amounts,
+		Hash:       verifySignResult.Hash,
+		R:          r,
+		S:          s,
+		V:          v,
+		MinionPack: minionPack,
 	}, nil
 }
 
@@ -1877,9 +1880,9 @@ type verifySignResult struct {
 	Signature string
 }
 
-func generateVerifyHash(userID uint64, smallPack, onboardingPack uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
+func generateVerifyHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
 
-	hash, err := createHash(userID, smallPack, onboardingPack, tutorialRewardContractVersion)
+	hash, err := createHash(userID, minionPack, tutorialRewardContractVersion)
 
 	if err != nil {
 		return nil, err
@@ -1897,12 +1900,11 @@ func generateVerifyHash(userID uint64, smallPack, onboardingPack uint64, tutoria
 	}, nil
 }
 
-func createHash(userID uint64, smallPack, onboardingPack uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
+func createHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
 		solsha3.Uint256(strconv.FormatUint(userID, 10)),
-		solsha3.Uint256(strconv.FormatUint(smallPack, 10)),
-		solsha3.Uint256(strconv.FormatUint(onboardingPack, 10)),
+		solsha3.Uint256(strconv.FormatUint(minionPack, 10)),
 		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
 	)
 
