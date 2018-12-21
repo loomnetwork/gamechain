@@ -1,4 +1,4 @@
-package main
+package oracle
 
 import (
 	"bytes"
@@ -12,11 +12,11 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gorilla/websocket"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	ptypes "github.com/loomnetwork/go-loom/builtin/types/plasma_cash"
 	loom_client "github.com/loomnetwork/go-loom/client"
 	lptypes "github.com/loomnetwork/go-loom/plugin/types"
-	"github.com/phonkee/go-pubsub"
+	pubsub "github.com/phonkee/go-pubsub"
 	"github.com/pkg/errors"
 )
 
