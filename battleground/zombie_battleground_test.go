@@ -3108,3 +3108,12 @@ func TestRewardTutorialCompleted(t *testing.T) {
 		assert.Nil(t, resp)
 	})
 }
+
+func TestHashSignature(t *testing.T) {
+	hash, err := createHash(149, 312, 122, 1)
+	t.Run("Hash", func(t *testing.T) {
+		assert.Nil(t, err)
+		assert.Equal(t, "0xac670888805ea5880b73916b8b5f4b7a0c82a0c036cdd87571f7b850709b2e86", "0x"+hex.EncodeToString(hash))
+	})
+
+}

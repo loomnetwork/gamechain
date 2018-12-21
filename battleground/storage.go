@@ -40,6 +40,7 @@ var (
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
 	nonceKey                    = []byte("nonce")
+	currentUserIDUIntKey        = []byte("current-user-id")
 )
 
 var (
@@ -83,6 +84,10 @@ func RewardClaimedKey(userID string) []byte {
 	return []byte("user:" + userID + ":rewardClaimed")
 }
 
+func UserIDUIntKey(userID string) []byte {
+	return []byte("user:" + userID + ":IDUint")
+
+}
 func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
 	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
@@ -319,6 +324,25 @@ func getRewardClaimed(ctx contract.Context, userID string) (*zb.RewardClaimed, e
 		return nil, err
 	}
 	return &rewardClaimed, nil
+}
+
+func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
+	var userIDUInt *zb.UserIDUint
+	err := ctx.Get(UserIDUIntKey(userID), userIDUInt)
+	if err == contract.ErrNotFound {
+		userIDUInt = nextIntUserID(ctx)
+	} else {
+		return 0, err
+	}
+	return userIDUInt.UserIdUint, nil
+}
+
+func nextIntUserID(ctx contract.Context) *zb.UserIDUint {
+	var currentUserIDUInt zb.UserIDUint
+	ctx.Get(currentUserIDUIntKey, &currentUserIDUInt)
+	currentUserIDUInt.UserIdUint++
+	ctx.Set(currentUserIDUIntKey, &currentUserIDUInt)
+	return &currentUserIDUInt
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {

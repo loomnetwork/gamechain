@@ -33,7 +33,7 @@ const (
 	TurnTimeout                   = 120 * time.Second
 	KeepAliveTimeout              = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
 	RewardTypeTutorialCompleted   = "tutorial-completed"
-	TutorialRewardContractVersion = 1
+	TutorialRewardContractVersion = uint64(1)
 )
 
 var secret string
@@ -1824,13 +1824,19 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	*/
 	//rewardType := RewardTypeTutorialCompleted
 	// assign rewards
-	var smallPack, onboardingPack int64
-	smallPack = 1 // TODO: what numbers to put here?
+	var smallPack, onboardingPack uint64
+	smallPack = 312
+	onboardingPack = 122
 
 	// amounts have to be in an array in exactly this order
-	amounts := []int64{smallPack, onboardingPack}
+	amounts := []uint64{smallPack, onboardingPack}
 
-	verifySignResult, err := generateVerifyHash(req.UserId, smallPack, onboardingPack, TutorialRewardContractVersion, privateKey)
+	userIDUint, err := getUserIDUint(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	verifySignResult, err := generateVerifyHash(userIDUint, smallPack, onboardingPack, TutorialRewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -1845,6 +1851,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 
 	return &zb.RewardTutorialCompletedResponse{
 		UserId:     req.UserId,
+		UserIdUint: userIDUint,
 		RewardType: RewardTypeTutorialCompleted,
 		//	Nonce:      nonce,
 		Hash:    verifySignResult.Hash,
@@ -1870,7 +1877,7 @@ type verifySignResult struct {
 	Signature string
 }
 
-func generateVerifyHash(userID string, smallPack, onboardingPack, tutorialRewardContractVersion int64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
+func generateVerifyHash(userID uint64, smallPack, onboardingPack uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
 
 	hash, err := createHash(userID, smallPack, onboardingPack, tutorialRewardContractVersion)
 
@@ -1890,13 +1897,13 @@ func generateVerifyHash(userID string, smallPack, onboardingPack, tutorialReward
 	}, nil
 }
 
-func createHash(userID string, smallPack, onboardingPack, tutorialRewardContractVersion int64) ([]byte, error) {
+func createHash(userID uint64, smallPack, onboardingPack uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
-		solsha3.Uint256(userID),
-		solsha3.Uint256(smallPack),
-		solsha3.Uint256(onboardingPack),
-		solsha3.Uint256(tutorialRewardContractVersion),
+		solsha3.Uint256(strconv.FormatUint(userID, 10)),
+		solsha3.Uint256(strconv.FormatUint(smallPack, 10)),
+		solsha3.Uint256(strconv.FormatUint(onboardingPack, 10)),
+		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
 	)
 
 	if len(hash) == 0 {
