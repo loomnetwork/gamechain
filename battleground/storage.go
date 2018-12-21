@@ -326,12 +326,16 @@ func getRewardClaimed(ctx contract.Context, userID string) (*zb.RewardClaimed, e
 	return &rewardClaimed, nil
 }
 
-func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
-	var userIDUInt *zb.UserIDUint
-	err := ctx.Get(UserIDUIntKey(userID), userIDUInt)
+func getOrGenerateUserIDUint(ctx contract.Context, userID string) (uint64, error) {
+	var userIDUInt zb.UserIDUint
+	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
 	if err == contract.ErrNotFound {
-		userIDUInt = nextIntUserID(ctx)
+		userIDUInt = *nextIntUserID(ctx)
 	} else {
+		return 0, err
+	}
+	err = ctx.Set(UserIDUIntKey(userID), &userIDUInt)
+	if err != nil {
 		return 0, err
 	}
 	return userIDUInt.UserIdUint, nil
@@ -343,6 +347,15 @@ func nextIntUserID(ctx contract.Context) *zb.UserIDUint {
 	currentUserIDUInt.UserIdUint++
 	ctx.Set(currentUserIDUIntKey, &currentUserIDUInt)
 	return &currentUserIDUInt
+}
+
+func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
+	var userIDUInt zb.UserIDUint
+	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
+	if err != nil {
+		return 0, err
+	}
+	return userIDUInt.UserIdUint, err
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {

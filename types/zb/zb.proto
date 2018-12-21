@@ -426,6 +426,7 @@ message UserIDUint {
 message ConfirmRewardClaimedRequest {
     string user_id = 1;
     string reward_type = 2;
+    uint64 user_id_uint = 3;
 }
 
 message RewardClaimed {

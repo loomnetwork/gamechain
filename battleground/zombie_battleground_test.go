@@ -3076,25 +3076,39 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+		var err error
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
 			UserId: "loom1",
 		})
 		assert.Nil(t, err)
-		assert.NotNil(t, resp)
-		assert.Equal(t, "0x012893657d8eb2efad4de0a91bcd0e39ad9837745dec3ea923737ea803fc8e3d", resp.Hash)
-		assert.Equal(t, "0x8372ea90b2cf8adf63f32fa07e98d81768caef235cc4fea12cd35decbcb89320", resp.R)
-		assert.Equal(t, "0x070033e28fd1a327d1eb2a29d5fc08dfc4331ec37ebf2a96053c5339116829ae", resp.S)
-		assert.Equal(t, uint64(28), resp.V)
+		assert.NotNil(t, rewardTutorialCompletedResp)
+		assert.Equal(t, "0xb887d9702492f10e6529a37c69e400970795496fb0b88b67947d16b36b475d8d", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0x1d830690ee4ce5afc0c267cf941ac547738212479f30f9709d679b08526c90ba", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x1c27c0d86d1e0fe248f080bfe7c258815c0e172c9a13cdd4e9115fda980b42fc", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
 	})
 
 	// client confirms that reward has been claimed from faucet
+
+	// fails because the request should have the user id uint returned in the previous call
+	t.Run("ConfirmRewardClaimed fails", func(t *testing.T) {
+		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
+			UserId:     "loom1",
+			RewardType: RewardTypeTutorialCompleted,
+		})
+		assert.NotNil(t, err)
+	})
+
+	// send the correct request with UserIdUint
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
 		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
 			UserId:     "loom1",
 			RewardType: RewardTypeTutorialCompleted,
+			UserIdUint: rewardTutorialCompletedResp.UserIdUint,
 		})
 		assert.Nil(t, err)
 	})
