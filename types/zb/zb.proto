@@ -410,11 +410,16 @@ message RewardTutorialCompletedResponse {
     uint64 v = 6;
     //string signature = 4;
     int64 nonce = 7;
-    repeated int64 amounts = 8;
+    repeated uint64 amounts = 8;
+    uint64 user_id_uint = 9;
 }
 
 message Nonce {
     int64 current_nonce = 1;
+}
+
+message UserIDUint {
+    uint64 user_id_uint = 1;
 }
 
 message ConfirmRewardClaimedRequest {
