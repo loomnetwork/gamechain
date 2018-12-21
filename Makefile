@@ -35,6 +35,9 @@ bin/replay-logger:
 bin/gameplay-replay:
 	go build -o $@ $(PKG)/tools/gameplay_replay
 
+bin/gcoracle:
+	go build -o $@ $(PKG)/tools/gcoracle
+
 contracts/zombiebattleground.so.1.0.0: proto
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
 
@@ -118,4 +121,4 @@ clean:
 		bin/replay-logger \
 		bin/gameplay-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen bin/gcoracle

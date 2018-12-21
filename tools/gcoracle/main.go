@@ -1,23 +1,25 @@
 package main
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 	"path/filepath"
 
-	log "github.com/sirupsen/logrus"
-
+	"github.com/loomnetwork/gamechain/oracle"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
 )
 
 func main() {
 	cfg, err := parseConfig(nil)
 	if err != nil {
-		log.Error(err)
+		panic(err)
 	}
 
-	orc, err := CreateOracle(cfg)
+	orc, err := oracle.CreateOracle(cfg, "gamechain")
 	if err != nil {
-		log.Error(err)
+		panic(err)
 	}
 
 	go orc.RunWithRecovery()
@@ -25,18 +27,16 @@ func main() {
 	http.HandleFunc("/status", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		//json.NewEncoder(w).Encode(orc.Status())
+		json.NewEncoder(w).Encode(orc.Status())
 	})
 
-	//http.Handle("/metrics", promhttp.Handler())
-	log.Info("Oracle Running")
-	log.Infof("Query address: %s", cfg.OracleQueryAddress)
+	http.Handle("/metrics", promhttp.Handler())
 	log.Fatal(http.ListenAndServe(cfg.OracleQueryAddress, nil))
 }
 
 // Loads oracle.yml or equivalent from one of the usual location, or if overrideCfgDirs is provided
 // from one of those config directories.
-func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
+func parseConfig(overrideCfgDirs []string) (*oracle.Config, error) {
 	v := viper.New()
 	v.SetConfigName("oracle")
 	if len(overrideCfgDirs) == 0 {
@@ -49,14 +49,13 @@ func parseConfig(overrideCfgDirs []string) (*OracleConfig, error) {
 		}
 	}
 	v.ReadInConfig()
-	conf := &OracleConfig{
-		GameChainPrivateKeyPath: "priv",
-		GameChainChainID:        "default",
-		GameChainReadURI:        "http://localhost:46658/query",
-		GameChainWriteURI:       "http://localhost:46658/rpc",
-		GameChainEventsURI:      "ws://localhost:9999/queryws",
+	conf := &oracle.Config{
+		GamechainPrivateKeyPath: "priv",
+		GamechainChainID:        "default",
+		GamechainReadURI:        "http://localhost:46658/query",
+		GamechainWriteURI:       "http://localhost:46658/rpc",
+		GamechainEventsURI:      "ws://localhost:9999/queryws",
 		OracleQueryAddress:      ":8888",
-		LoomAuthEndpoint:        "http://localhost:3000/user/update_elo",
 	}
 	err := v.Unmarshal(conf)
 	if err != nil {
