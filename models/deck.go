@@ -10,7 +10,7 @@ type Deck struct {
 	DeckID           int64  `gorm:"UNIQUE_INDEX:idx_userid_deckid"`
 	Name             string
 	HeroID           int64
-	Cards            []DeckCard `gorm:"foreignkey:DeckID"`
+	DeckCards        []DeckCard `gorm:"foreignkey:DeckID"`
 	PrimarySkillID   int
 	SecondarySkillID int
 	Version          string
