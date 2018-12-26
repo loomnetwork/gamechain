@@ -3,17 +3,14 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"strings"
+
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
 	"github.com/pkg/errors"
-)
-
-const (
-	OwnerRole = "user" // TODO: change to owner
 )
 
 var (
@@ -38,6 +35,7 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	stateKey                    = []byte("state")
 )
 
 var (
@@ -75,6 +73,22 @@ func UserMatchKey(userID string) []byte {
 
 func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
+}
+
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
+	if err := ctx.Set(stateKey, state); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
+	err := ctx.Get(stateKey, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
 
 func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
@@ -380,10 +394,10 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
 	return &zb.CardInstanceSpecificData{
-		Attack: cardDetails.Attack,
+		Attack:  cardDetails.Attack,
 		Defense: cardDetails.Defense,
-		Type: cardDetails.Type,
-		Set: cardDetails.Set,
+		Type:    cardDetails.Type,
+		Set:     cardDetails.Set,
 		GooCost: cardDetails.GooCost,
 	}
 }
@@ -392,8 +406,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.Instanc
 	return &zb.CardInstance{
 		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
 		Owner:      owner,
-		Prototype: proto.Clone(cardDetails).(*zb.Card),
-		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		Prototype:  proto.Clone(cardDetails).(*zb.Card),
+		Instance:   newCardInstanceSpecificDataFromCardDetails(cardDetails),
 	}
 }
 
@@ -411,7 +425,7 @@ func populateDeckCards(
 	cardLibrary *zb.CardList,
 	playerStates []*zb.PlayerState,
 	useBackendGameLogic bool,
-	) error {
+) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {

@@ -12,15 +12,12 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
 	"github.com/pkg/errors"
 )
-
-type ZombieBattleground struct {
-}
 
 const (
 	MaxGameModeNameChar        = 48
@@ -30,7 +27,20 @@ const (
 	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
 )
 
-var secret string
+const (
+	OracleRole = "oracle"
+	OwnerRole  = "user"
+)
+
+var (
+	// secret
+	secret string
+	// Error list
+	ErrOracleNotSpecified = errors.New("oracle not specified")
+)
+
+type ZombieBattleground struct {
+}
 
 func (z *ZombieBattleground) Meta() (plugin.Meta, error) {
 	return plugin.Meta{
@@ -46,10 +56,18 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	if req.Oracle != nil {
-		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), "oracle")
+		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), OracleRole)
 		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
 			return errors.Wrap(err, "Error setting oracle")
 		}
+	}
+
+	// init state
+	state := zb.GamechainState{
+		LastPlasmachainBlockNum: 1,
+	}
+	if err := saveState(ctx, &state); err != nil {
+		return err
 	}
 
 	// initialize card library
@@ -787,7 +805,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 
 	profile := zb.PlayerProfile{
 		RegistrationData: req.RegistrationData,
-		UpdatedAt: ctx.Now().Unix(),
+		UpdatedAt:        ctx.Now().Unix(),
 	}
 
 	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
@@ -911,7 +929,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 
 		return &zb.FindMatchResponse{
-			Match: match,
+			Match:      match,
 			MatchFound: true,
 		}, nil
 	}
@@ -991,11 +1009,11 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		Version: playerProfile.RegistrationData.Version, // TODO: match version of both players
 		PlayerLastSeens: []*zb.PlayerTimestamp{
 			&zb.PlayerTimestamp{
-				Id: playerProfile.RegistrationData.UserId,
+				Id:        playerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 			&zb.PlayerTimestamp{
-				Id: matchedPlayerProfile.RegistrationData.UserId,
+				Id:        matchedPlayerProfile.RegistrationData.UserId,
 				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
@@ -1039,7 +1057,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.FindMatchResponse{
-		Match: match,
+		Match:      match,
 		MatchFound: true,
 	}, nil
 }
@@ -1107,7 +1125,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			customModeAddr2,
 			match.UseBackendGameLogic,
 			match.PlayerDebugCheats,
-			)
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -1552,6 +1570,37 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 	return &zb.KeepAliveResponse{}, nil
 }
 
+func (z *ZombieBattleground) GetState(ctx contract.StaticContext, req *zb.GetGamechainStateRequest) (*zb.GetGamechainStateResponse, error) {
+	state, err := loadState(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &zb.GetGamechainStateResponse{
+		State: state,
+	}, nil
+}
+
+func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamechainStateRequest) error {
+	state, err := loadState(ctx)
+	if err != nil && err != contract.ErrNotFound {
+		return err
+	}
+	if state != nil {
+		return fmt.Errorf("state already inilialized")
+	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state = &zb.GamechainState{
+		LastPlasmachainBlockNum: 1,
+	}
+	return saveState(ctx, state)
+}
+
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
 	if ctx.Has(oracleKey) {
 		if params.OldOracle.String() == params.NewOracle.String() {
@@ -1562,7 +1611,7 @@ func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.Updat
 		}
 		ctx.GrantPermission([]byte(params.OldOracle.String()), []string{"old-oracle"})
 	}
-	ctx.GrantPermission([]byte(params.NewOracle.String()), []string{"oracle"})
+	ctx.GrantPermission([]byte(params.NewOracle.String()), []string{OracleRole})
 
 	if err := ctx.Set(oracleKey, params.NewOracle); err != nil {
 		return errors.Wrap(err, "setting new oracle")
@@ -1571,7 +1620,7 @@ func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.Updat
 }
 
 func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Address) error {
-	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"oracle"}); !ok {
+	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{OracleRole}); !ok {
 		return errors.New("Oracle unverified")
 	}
 
