@@ -50,12 +50,24 @@ func parseConfig(overrideCfgDirs []string) (*oracle.Config, error) {
 	}
 	v.ReadInConfig()
 	conf := &oracle.Config{
-		GamechainPrivateKeyPath: "priv",
+		// plasmachain
+		PlasmachainPrivateKeyPath: "plasmachain.priv",
+		PlasmachainChainID:        "default",
+		PlasmachainReadURI:        "http://localhost:46658/query",
+		PlasmachainWriteURI:       "http://localhost:46658/rpc",
+		PlasmachainEventsURI:      "ws://localhost:9999/queryws",
+		PlasmachainContractName:   "ZombieBattleground", // TODO: change me
+		// gamechain
+		GamechainPrivateKeyPath: "gamechain.priv",
 		GamechainChainID:        "default",
 		GamechainReadURI:        "http://localhost:46658/query",
 		GamechainWriteURI:       "http://localhost:46658/rpc",
 		GamechainEventsURI:      "ws://localhost:9999/queryws",
-		OracleQueryAddress:      ":8888",
+		GamechainContractName:   "ZombieBattleground",
+		// oracle
+		OracleQueryAddress:   ":8888",
+		OracleLogLevel:       "debug",
+		OracleLogDestination: "file://oracle.log",
 	}
 	err := v.Unmarshal(conf)
 	if err != nil {

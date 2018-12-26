@@ -15,7 +15,6 @@ import (
 	lmtype "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/loomnetwork/loomchain"
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 type (
@@ -106,7 +105,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		pcSigner:          pcSigner,
 		pcContractName:    cfg.PlasmachainContractName,
 		metrics:           NewMetrics(metricSubsystem),
-		logger:            loom.NewLoomLogger("info", ""),
+		logger:            loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 		pcPollInterval:    time.Duration(cfg.PlasmachainPollInterval) * time.Second,
 		startupDelay:      time.Duration(cfg.OracleStartupDelay) * time.Second,
 		reconnectInterval: time.Duration(cfg.OracleReconnectInterval) * time.Second,
@@ -172,11 +171,11 @@ func (orc *Oracle) connect() error {
 func (orc *Oracle) RunWithRecovery() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Error("recovered from panic in Oracle", "r", r)
+			orc.logger.Error("recovered from panic in Oracle", "r", r)
 			// Unless it's a runtime error restart the goroutine
 			if _, ok := r.(runtime.Error); !ok {
 				time.Sleep(30 * time.Second)
-				log.Info("Restarting Oracle...")
+				orc.logger.Info("Restarting Oracle...")
 				go orc.RunWithRecovery()
 			}
 		}
@@ -194,16 +193,26 @@ func (orc *Oracle) RunWithRecovery() {
 func (orc *Oracle) Run() {
 	for {
 		if err := orc.connect(); err == nil {
-			log.Error(err)
 			break
 		}
 		orc.updateStatus()
 		time.Sleep(orc.reconnectInterval)
 	}
-	go orc.pollPlasmaChain()
+
+	skipSleep := true
+	for {
+		if !skipSleep {
+			time.Sleep(orc.pcPollInterval)
+		} else {
+			skipSleep = false
+		}
+		orc.pollPlasmaChain()
+	}
+
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
+	orc.logger.Info("polling plasma chain")
 	lastPlasmachainBlockNum, err := orc.pcGateway.LastBlockNumber()
 	if err != nil {
 		return err

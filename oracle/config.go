@@ -8,7 +8,7 @@ type Config struct {
 	PlasmachainWriteURI       string
 	PlasmachainEventsURI      string
 	PlasmachainContractName   string
-	PlasmachainPollInterval   int
+	PlasmachainPollInterval   int // in second
 	// Gamechain
 	GamechainPrivateKeyPath string
 	GamechainChainID        string

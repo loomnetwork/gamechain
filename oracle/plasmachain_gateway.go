@@ -40,5 +40,7 @@ func ConnectToPlasmachainGateway(
 }
 
 func (gw *PlasmachainGateway) LastBlockNumber() (uint64, error) {
-	panic("need to have GetState")
+	// panic("need to have GetState")
+	// FIX ME:
+	return 1, nil
 }
