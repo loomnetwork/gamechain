@@ -86,7 +86,9 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		gopkg.in/yaml.v2 \
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
-		github.com/kr/logfmt
+		github.com/kr/logfmt \
+		github.com/phonkee/go-pubsub \
+		github.com/spf13/viper
 
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
