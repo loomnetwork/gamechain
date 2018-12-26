@@ -246,6 +246,7 @@ message InitRequest {
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
+    Address owner                              = 8;
 }
 
 message UpdateOracle {
@@ -277,6 +278,21 @@ message GetInitResponse {
     repeated AIDeck ai_decks                   = 6;
     string version                             = 7;
     Address oracle                             = 8;
+}
+
+message GamechainState {
+    uint64 last_plasmachain_block_num = 1;
+}
+
+message GetGamechainStateRequest {
+}
+
+message GetGamechainStateResponse {
+    GamechainState state = 1;
+}
+
+message InitGamechainStateRequest {
+    Address oracle = 1;
 }
 
 message UpdateCardListRequest {
