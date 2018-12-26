@@ -3,6 +3,7 @@ package oracle
 import (
 	"time"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
@@ -40,7 +41,14 @@ func ConnectToGamechainGateway(
 }
 
 func (gw *GamechainGateway) LastPlasmaBlockNumber() (uint64, error) {
-	panic("need to have GetState")
+	var req zb.GetGamechainStateRequest
+	var resp zb.GetGamechainStateResponse
+	if _, err := gw.contract.StaticCall("GetState", &req, gw.Address, &resp); err != nil {
+		gw.logger.Error("fail to get state from plasmachain")
+		return 0, err
+	}
+	gw.LastResponseTime = time.Now()
+	return resp.State.LastPlasmachainBlockNum, nil
 }
 
 func (gw *GamechainGateway) ProcessEventBatch(events []*plasmachainEventInfo) error {
