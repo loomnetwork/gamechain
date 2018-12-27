@@ -4,6 +4,7 @@ PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/l
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
+LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
 
 all: build-ext cli
@@ -64,7 +65,10 @@ $(PLUGIN_DIR):
 $(LOOMCHAIN_DIR):
 	git clone -q git@github.com:loomnetwork/loomchain.git $@
 
-deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
+$(LOOMAUTH_DIR):
+	git clone -q git@github.com:loomnetwork/loomauth.git $@
+
+deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
@@ -85,8 +89,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
 		github.com/kr/logfmt \
-		github.com/jinzhu/gorm \
-		github.com/loomnetwork/loomauth
+		github.com/jinzhu/gorm
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
