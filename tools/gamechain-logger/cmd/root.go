@@ -16,7 +16,6 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
-	"github.com/loomnetwork/gamechain/models"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -95,10 +94,6 @@ func run(wsURL string) error {
 	}
 	log.Printf("connected to database host %s", dbHost)
 	defer db.Close()
-	err = db.AutoMigrate(&models.Match{}, &models.Replay{}, &models.Deck{}, &models.DeckCard{}).Error
-	if err != nil {
-		return err
-	}
 
 	// control channels
 	doneC := make(chan struct{})
