@@ -196,11 +196,13 @@ message Skill {
 
     int32 attack = 11;
     int32 count = 12;
-    
+
     int64 id = 13;
     bool unlocked = 14;
     bool can_select_target = 15;
     string unitStatus = 16;
+
+    bool single_use = 17;
 }
 
 message HeroList {
@@ -745,7 +747,7 @@ message UniqueAnimationType
     enum Enum {
         None = 0;
         ShammannArrival = 1;
-        ZVirusArrival = 2; 
+        ZVirusArrival = 2;
         ZeuzArrival = 3;
         CerberusArrival = 4;
         TzunamyArrival = 5;
