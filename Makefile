@@ -85,7 +85,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
 		github.com/kr/logfmt \
-		github.com/jinzhu/gorm
+		github.com/jinzhu/gorm \
+		github.com/loomnetwork/loomauth
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961

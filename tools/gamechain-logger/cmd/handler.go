@@ -6,9 +6,9 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/jinzhu/gorm"
-	"github.com/loomnetwork/gamechain/models"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/plugin/types"
+	"github.com/loomnetwork/loomauth/models"
 	"github.com/pkg/errors"
 )
 
