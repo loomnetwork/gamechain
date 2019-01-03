@@ -35,6 +35,6 @@ var updateVersionsCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateVersionsCmd)
 
-	updateVersionsCmd.Flags().StringVarP(&updateVersionsCmdArgs.contentVersion, "content", "c", "", "content version")
+	updateVersionsCmd.Flags().StringVarP(&updateVersionsCmdArgs.contentVersion, "content", "v", "", "content version")
 	updateVersionsCmd.Flags().StringVarP(&updateVersionsCmdArgs.pvpVersion, "pvp", "p", "", "pvp version")
 }
