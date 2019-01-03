@@ -1546,7 +1546,7 @@ func (z *ZombieBattleground) UpdateVersions(ctx contract.Context, req *zb.Update
 	return nil
 }
 
-func (z *ZombieBattleground) GetVersions(ctx contract.Context, req *zb.GetVersionsRequest) (*zb.GetVersionsResponse, error) {
+func (z *ZombieBattleground) GetVersions(ctx contract.StaticContext, req *zb.GetVersionsRequest) (*zb.GetVersionsResponse, error) {
 	var contentVersion zb.ContentVersion
 	var pvpVersion zb.PvpVersion
 	var err error
