@@ -653,6 +653,27 @@ message KeepAliveRequest {
 message KeepAliveResponse {
 }
 
+message UpdateVersionsRequest {
+    string contentVersion = 1;
+    string pvpVersion = 2;
+}
+
+message ContentVersion {
+    string contentVersion = 1;
+}
+
+message PvpVersion {
+    string pvpVersion = 1;
+}
+
+message GetVersionsRequest {
+}
+
+message GetVersionsResponse {
+    string contentVersion = 1;
+    string pvpVersion = 2;
+}
+
 // Game Modes
 
 message GameMode {
