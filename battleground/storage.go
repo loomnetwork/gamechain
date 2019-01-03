@@ -3,8 +3,9 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"strings"
+
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -38,6 +39,8 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	contentVersionKey           = []byte("content-version")
+	pvpVersionKey               = []byte("pvp-version")
 )
 
 var (
@@ -380,10 +383,10 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
 	return &zb.CardInstanceSpecificData{
-		Attack: cardDetails.Attack,
+		Attack:  cardDetails.Attack,
 		Defense: cardDetails.Defense,
-		Type: cardDetails.Type,
-		Set: cardDetails.Set,
+		Type:    cardDetails.Type,
+		Set:     cardDetails.Set,
 		GooCost: cardDetails.GooCost,
 	}
 }
@@ -392,8 +395,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.Instanc
 	return &zb.CardInstance{
 		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
 		Owner:      owner,
-		Prototype: proto.Clone(cardDetails).(*zb.Card),
-		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		Prototype:  proto.Clone(cardDetails).(*zb.Card),
+		Instance:   newCardInstanceSpecificDataFromCardDetails(cardDetails),
 	}
 }
 
@@ -411,7 +414,7 @@ func populateDeckCards(
 	cardLibrary *zb.CardList,
 	playerStates []*zb.PlayerState,
 	useBackendGameLogic bool,
-	) error {
+) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
