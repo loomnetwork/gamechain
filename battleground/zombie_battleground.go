@@ -1839,6 +1839,10 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, err
 	}
 
+	if len(verifySignResult.Signature) != 132 {
+		return nil, fmt.Errorf("signature length invalid")
+	}
+
 	r := verifySignResult.Signature[0:66]
 	s := "0x" + verifySignResult.Signature[66:130]
 	vStr := verifySignResult.Signature[130:132]
