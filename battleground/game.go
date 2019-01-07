@@ -804,12 +804,16 @@ func actionCardAttack(g *Gameplay) stateFn {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
 			}
 		}
+
 		for i, card := range g.activePlayer().CardsInPlay {
 			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
 				attacker = card
 				attackerIndex = i
 				break
 			}
+		}
+
+		if attacker == nil {
 			if !g.UseBackendGameLogic {
 				g.debugf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
 				g.PrintState()
@@ -828,6 +832,9 @@ func actionCardAttack(g *Gameplay) stateFn {
 				targetIndex = i
 				break
 			}
+		}
+
+		if target == nil {
 			return g.captureErrorAndStop(errors.New("Target not found"))
 		}
 
@@ -865,12 +872,17 @@ func actionCardAttack(g *Gameplay) stateFn {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
 			}
 		}
+
 		for i, card := range g.activePlayer().CardsInPlay {
 			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
 				attacker = card
 				attackerIndex = i
+
 				break
 			}
+		}
+
+		if attacker == nil {
 			if !g.UseBackendGameLogic {
 				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
 				g.PrintState()
