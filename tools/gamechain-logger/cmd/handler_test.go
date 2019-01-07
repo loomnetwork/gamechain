@@ -1,14 +1,13 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"strings"
 	"testing"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/loomnetwork/loomauth/models"
 	"github.com/stretchr/testify/assert"
@@ -39,19 +38,7 @@ const EditDeckEvent = `{"topics":["zombiebattleground:editdeck"],"caller":{"chai
 const DeleteDeckEvent = `{"topics":["zombiebattleground:deletedeck"],"caller":{"chain_id":"default","local":"xmOaJA2CIOecyHvkyJNo8WJjCkg="},"address":{"chain_id":"default","local":"4ojW7scVDWoi/eM/CqLYHgZZHE0="},"plugin_name":"zombiebattleground:1.0.0","block_height":34,"encoded_body":"CgdwbGF5ZXIxEioweGM2NjM5YTI0MGQ4MjIwZTc5Y0M4N2JlNEM4OTM2OEYxNjI2MzBBNDgYAg==","original_request":"CgpEZWxldGVEZWNrEgsKB3BsYXllcjEQAg=="}`
 
 func ConnectDB(dbName string) *gorm.DB {
-	dbURL := os.Getenv("TEST_DATABASE_URL")
-	if dbURL == "" {
-		dbPass := os.Getenv("TEST_DATABASE_PASS")
-		dbHost := os.Getenv("TEST_DATABASE_HOST")
-		if len(dbHost) == 0 {
-			dbHost = "127.0.0.1"
-		}
-
-		dbURL = fmt.Sprintf("root:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=true", dbPass, dbHost, dbName)
-	}
-
-	fmt.Printf("%s ", dbURL)
-	db, err := gorm.Open("mysql", dbURL)
+	db, err := gorm.Open("sqlite3", "/tmp/gorm.db")
 	if err != nil {
 		log.Printf("Got error when connect database, the error is '%v'", err)
 	}
