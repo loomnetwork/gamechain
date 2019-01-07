@@ -1,9 +1,10 @@
 PKG = github.com/loomnetwork/gamechain
 GIT_SHA = `git rev-parse --verify HEAD`
-PROTOC = protoc --plugin=./protoc-gen-gogo -I. -Ivendor -I$(GOPATH)/src -I/usr/local/include
+PROTOC = protoc --plugin=./protoc-gen-gogo -I. -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
+LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
 
 all: build-ext cli
@@ -29,8 +30,8 @@ bin/zb-enum-gen:
 bin/zb-console-game:
 	go build -o $@ tools/cmd/console_game/main.go
 
-bin/replay-logger:
-	go build -o $@ $(PKG)/tools/replay_logger
+bin/gamechain-logger:
+	go build -o $@ $(PKG)/tools/gamechain-logger
 
 bin/gameplay-replay:
 	go build -o $@ $(PKG)/tools/gameplay_replay
@@ -64,10 +65,14 @@ $(PLUGIN_DIR):
 $(LOOMCHAIN_DIR):
 	git clone -q git@github.com:loomnetwork/loomchain.git $@
 
-deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
+$(LOOMAUTH_DIR):
+	git clone -q git@github.com:loomnetwork/loomauth.git $@
+
+deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
+		github.com/spf13/viper \
 		github.com/pkg/errors \
 		github.com/stretchr/testify/assert\
 		github.com/hashicorp/go-plugin \
@@ -84,14 +89,16 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
 		github.com/kr/logfmt \
-		github.com/phonkee/go-pubsub
-
+		github.com/jinzhu/gorm \
+		github.com/phonkee/go-pubsub \
+		github.com/mattn/go-sqlite3
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
 	cd $(LOOMCHAIN_DIR) && git checkout 78f7ef2f07a1b826cdbad09b7d35f3c6c25406d4 && make deps && make && cp loom $(GOPATH)/bin
+	cd $(LOOMAUTH_DIR) && git checkout zb-api && make deps && make
 	# cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
-#	cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
+	# cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 	# cd $(GOPATH)/src/github.com/loomnetwork/e2e && git checkout adjust-config-param-staging
 
 abigen:
@@ -116,7 +123,7 @@ clean:
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
-		bin/replay-logger \
+		bin/gamechain-logger \
 		bin/gameplay-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen
