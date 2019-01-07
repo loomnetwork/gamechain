@@ -44,6 +44,7 @@ message Card {
     CardViewInfo card_view_info = 16;
     repeated CardAbility abilities = 17;
     UniqueAnimationType.Enum unique_animation_type     = 18;
+    CardSetType.Enum hidden_set = 19;
 }
 
 message CardInstanceSpecificData {
@@ -196,11 +197,13 @@ message Skill {
 
     int32 attack = 11;
     int32 count = 12;
-    
+
     int64 id = 13;
     bool unlocked = 14;
     bool can_select_target = 15;
     string unitStatus = 16;
+
+    bool single_use = 17;
 }
 
 message HeroList {
@@ -686,6 +689,27 @@ message KeepAliveRequest {
 message KeepAliveResponse {
 }
 
+message UpdateVersionsRequest {
+    string contentVersion = 1;
+    string pvpVersion = 2;
+}
+
+message ContentVersion {
+    string contentVersion = 1;
+}
+
+message PvpVersion {
+    string pvpVersion = 1;
+}
+
+message GetVersionsRequest {
+}
+
+message GetVersionsResponse {
+    string contentVersion = 1;
+    string pvpVersion = 2;
+}
+
 // Game Modes
 
 message GameMode {
@@ -781,7 +805,7 @@ message UniqueAnimationType
     enum Enum {
         None = 0;
         ShammannArrival = 1;
-        ZVirusArrival = 2; 
+        ZVirusArrival = 2;
         ZeuzArrival = 3;
         CerberusArrival = 4;
         TzunamyArrival = 5;
