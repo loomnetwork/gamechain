@@ -1532,6 +1532,49 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 	return &zb.KeepAliveResponse{}, nil
 }
 
+func (z *ZombieBattleground) UpdateVersions(ctx contract.Context, req *zb.UpdateVersionsRequest) error {
+	var err error
+	if req.ContentVersion != "" {
+		err = ctx.Set(contentVersionKey, &zb.ContentVersion{
+			ContentVersion: req.ContentVersion,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	if req.PvpVersion != "" {
+		err = ctx.Set(pvpVersionKey, &zb.PvpVersion{
+			PvpVersion: req.PvpVersion,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) GetVersions(ctx contract.StaticContext, req *zb.GetVersionsRequest) (*zb.GetVersionsResponse, error) {
+	var contentVersion zb.ContentVersion
+	var pvpVersion zb.PvpVersion
+	var err error
+	err = ctx.Get(contentVersionKey, &contentVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ctx.Get(pvpVersionKey, &pvpVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetVersionsResponse{
+		ContentVersion: contentVersion.ContentVersion,
+		PvpVersion:     pvpVersion.PvpVersion,
+	}, nil
+}
+
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
 	if ctx.Has(oracleKey) {
 		if params.OldOracle.String() == params.NewOracle.String() {
