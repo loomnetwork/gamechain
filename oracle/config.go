@@ -2,13 +2,13 @@ package oracle
 
 type Config struct {
 	// Plasmachain
-	PlasmachainPrivateKeyPath string
-	PlasmachainChainID        string
-	PlasmachainReadURI        string
-	PlasmachainWriteURI       string
-	PlasmachainEventsURI      string
-	PlasmachainContractName   string
-	PlasmachainPollInterval   int // in second
+	PlasmachainPrivateKeyPath     string
+	PlasmachainChainID            string
+	PlasmachainReadURI            string
+	PlasmachainWriteURI           string
+	PlasmachainEventsURI          string
+	PlasmachainContractHexAddress string
+	PlasmachainPollInterval       int // in second
 	// Gamechain
 	GamechainPrivateKeyPath string
 	GamechainChainID        string
@@ -29,16 +29,17 @@ type Config struct {
 
 func DefaultConfig() *Config {
 	return &Config{
-		PlasmachainChainID:      "default",
-		PlasmachainReadURI:      "http://127.0.0.1:46658/query",
-		PlasmachainWriteURI:     "http://127.0.0.1:46658/rpc",
-		PlasmachainEventsURI:    "ws://127.0.0.1:%d/queryws",
-		PlasmachainContractName: "ZBGCard",
-		PlasmachainPollInterval: 10,
-		GamechainChainID:        "default",
-		GamechainReadURI:        "http://127.0.0.1:46658/query",
-		GamechainWriteURI:       "http://127.0.0.1:46658/rpc",
-		GamechainEventsURI:      "ws://127.0.0.1:%d/queryws",
-		GamechainContractName:   "zombiebattleground",
+		PlasmachainChainID:            "default",
+		PlasmachainReadURI:            "http://127.0.0.1:46658/query",
+		PlasmachainWriteURI:           "http://127.0.0.1:46658/rpc",
+		PlasmachainEventsURI:          "ws://127.0.0.1:%d/queryws",
+		PlasmachainContractHexAddress: "0xC5dFc9282BF68DFAd041a04a0c09bE927b093992",
+		PlasmachainPollInterval:       10,
+		GamechainChainID:              "default",
+		GamechainReadURI:              "http://127.0.0.1:46658/query",
+		GamechainWriteURI:             "http://127.0.0.1:46658/rpc",
+		GamechainEventsURI:            "ws://127.0.0.1:%d/queryws",
+		GamechainContractName:         "zombiebattleground",
+		OracleReconnectInterval:       5,
 	}
 }

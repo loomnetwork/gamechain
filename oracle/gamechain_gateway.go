@@ -29,7 +29,6 @@ func ConnectToGamechainGateway(
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to resolve Gateway Go contract address")
 	}
-
 	return &GamechainGateway{
 		Address:          gatewayAddr,
 		LastResponseTime: time.Now(),
@@ -44,7 +43,6 @@ func (gw *GamechainGateway) LastPlasmaBlockNumber() (uint64, error) {
 	var req zb.GetGamechainStateRequest
 	var resp zb.GetGamechainStateResponse
 	if _, err := gw.contract.StaticCall("GetState", &req, gw.Address, &resp); err != nil {
-		gw.logger.Error("fail to get state from plasmachain")
 		return 0, err
 	}
 	gw.LastResponseTime = time.Now()
