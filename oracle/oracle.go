@@ -2,6 +2,7 @@ package oracle
 
 import (
 	"encoding/base64"
+	"fmt"
 	"io/ioutil"
 	"runtime"
 	"sort"
@@ -45,12 +46,12 @@ type Oracle struct {
 	cfg     Config
 	chainID string
 	// Plasmachain address
-	pcAddress      loom.Address
-	pcSigner       auth.Signer
-	pcChainID      string
-	pcContractName string
-	pcGateway      *PlasmachainGateway
-	pcPollInterval time.Duration
+	pcAddress         loom.Address
+	pcSigner          auth.Signer
+	pcChainID         string
+	pcContractAddress string
+	pcGateway         *PlasmachainGateway
+	pcPollInterval    time.Duration
 	// Gamechain
 	gcAddress      loom.Address
 	gcSigner       auth.Signer
@@ -103,7 +104,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		gcSigner:          gcSigner,
 		pcAddress:         pcAddress,
 		pcSigner:          pcSigner,
-		pcContractName:    cfg.PlasmachainContractName,
+		pcContractAddress: cfg.PlasmachainContractHexAddress,
 		metrics:           NewMetrics(metricSubsystem),
 		logger:            loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
 		pcPollInterval:    time.Duration(cfg.PlasmachainPollInterval) * time.Second,
@@ -144,6 +145,14 @@ func (orc *Oracle) updateStatus() {
 // Status returns some basic info about the current state of the Oracle.
 func (orc *Oracle) connect() error {
 	var err error
+	if orc.pcGateway == nil {
+		dappClient := client.NewDAppChainRPCClient(orc.cfg.PlasmachainChainID, orc.cfg.PlasmachainWriteURI, orc.cfg.PlasmachainReadURI)
+		orc.pcGateway, err = ConnectToPlasmachainGateway(dappClient, orc.pcAddress, orc.cfg.PlasmachainContractHexAddress, orc.pcSigner, orc.logger)
+		if err != nil {
+			return errors.Wrap(err, "failed to create plasmachain gateway")
+		}
+		orc.logger.Info("connected to Plasmachain")
+	}
 
 	if orc.gcGateway == nil {
 		dappClient := client.NewDAppChainRPCClient(orc.cfg.GamechainChainID, orc.cfg.GamechainWriteURI, orc.cfg.GamechainReadURI)
@@ -154,21 +163,13 @@ func (orc *Oracle) connect() error {
 		orc.logger.Info("connected to Gamechain")
 	}
 
-	if orc.pcGateway == nil {
-		dappClient := client.NewDAppChainRPCClient(orc.cfg.PlasmachainChainID, orc.cfg.PlasmachainWriteURI, orc.cfg.PlasmachainReadURI)
-		orc.pcGateway, err = ConnectToPlasmachainGateway(dappClient, orc.gcAddress, orc.cfg.PlasmachainContractName, orc.pcSigner, orc.logger)
-		if err != nil {
-			return errors.Wrap(err, "failed to create plasmachain gateway")
-		}
-		orc.logger.Info("connected to Plasmachain")
-	}
-
 	return nil
 }
 
 // RunWithRecovery should run in a goroutine, it will ensure the oracle keeps on running as long
 // as it doesn't panic due to a runtime error.
 func (orc *Oracle) RunWithRecovery() {
+	orc.logger.Info("Running Oracle...")
 	defer func() {
 		if r := recover(); r != nil {
 			orc.logger.Error("recovered from panic in Oracle", "r", r)
@@ -192,9 +193,11 @@ func (orc *Oracle) RunWithRecovery() {
 // TODO: Graceful shutdown
 func (orc *Oracle) Run() {
 	for {
-		if err := orc.connect(); err == nil {
+		err := orc.connect()
+		if err == nil {
 			break
 		}
+		orc.logger.Info(err.Error())
 		orc.updateStatus()
 		time.Sleep(orc.reconnectInterval)
 	}
@@ -206,14 +209,17 @@ func (orc *Oracle) Run() {
 		} else {
 			skipSleep = false
 		}
-		orc.pollPlasmaChain()
+		err := orc.pollPlasmaChain()
+		if err != nil {
+			orc.logger.Error(err.Error())
+		}
 	}
 
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
 	orc.logger.Info("polling plasma chain")
-	lastPlasmachainBlockNum, err := orc.pcGateway.LastBlockNumber()
+	lastPlasmachainBlockNum, err := orc.gcGateway.LastPlasmaBlockNumber()
 	if err != nil {
 		return err
 	}
@@ -224,12 +230,13 @@ func (orc *Oracle) pollPlasmaChain() error {
 	}
 
 	// TODO: limit max block range per batch
-	latestBlock, err := orc.gcGateway.LastPlasmaBlockNumber()
+	latestBlock, err := orc.getLatestEthBlockNumber()
 	if err != nil {
-		orc.logger.Error("failed to obtain latest Plasmachain block number", "err", err)
+		orc.logger.Error("failed to obtain latest Plasmachain block number from Gamechain", "err", err)
 		return err
 	}
 
+	orc.logger.Debug(fmt.Sprintf("latestBlock: %d, startBlock: %d", latestBlock, startBlock))
 	if latestBlock < startBlock {
 		// Wait for Plasmachain to produce a new block...
 		return nil
@@ -258,6 +265,15 @@ func (orc *Oracle) pollPlasmaChain() error {
 	return nil
 }
 
+func (orc *Oracle) getLatestEthBlockNumber() (uint64, error) {
+	return orc.pcGateway.LastBlockNumber()
+	// blockHeader, err := orc.pcClient.HeaderByNumber(context.TODO(), nil)
+	// if err != nil {
+	// 	return 0, err
+	// }
+	// return blockHeader.Number.Uint64(), nil
+}
+
 // Fetches all relevent events from an Plasmachain node from startBlock to endBlock (inclusive)
 func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEventInfo, error) {
 	// NOTE: Currently either all blocks from w.StartBlock are processed successfully or none are.
@@ -266,19 +282,19 @@ func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEvent
 		End:   &endBlock,
 	}
 
-	var openPacks []*plasmachainEventInfo
+	var tokenClaimed []*plasmachainEventInfo
 	var err error
 
-	openPacks, err = orc.fetchOpenPacks(filterOpts)
+	tokenClaimed, err = orc.fetchTokenClaimed(filterOpts)
 	if err != nil {
 		return nil, err
 	}
 
 	events := make(
 		[]*plasmachainEventInfo, 0,
-		len(openPacks),
+		len(tokenClaimed),
 	)
-	events = append(events, openPacks...)
+	events = append(events, tokenClaimed...)
 
 	sortPlasmachainEvents(events)
 	sortedEvents := make([]*plasmachainEventInfo, len(events))
@@ -290,7 +306,7 @@ func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEvent
 		orc.logger.Debug("fetched Plasmachain events",
 			"startBlock", startBlock,
 			"endBlock", endBlock,
-			"open-packs", len(openPacks),
+			"open-packs", len(tokenClaimed),
 		)
 	}
 
@@ -308,8 +324,8 @@ func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	})
 }
 
-func (orc *Oracle) fetchOpenPacks(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
-	panic("not implemented")
+func (orc *Oracle) fetchTokenClaimed(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
+	return orc.pcGateway.FetchTokenClaimed(opts)
 }
 
 func LoadDappChainPrivateKey(path string) ([]byte, error) {

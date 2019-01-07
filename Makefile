@@ -105,6 +105,9 @@ abigen:
 	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
 	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go
 
+oracle-abigen:
+	go build github.com/ethereum/go-ethereum/cmd/abigen
+	./abigen --abi oracle/abi/simple_store.abi --pkg ethcontract --type SimpleStoreContract --out oracle/ethcontract/simple_store.go
 
 test:
 	#TODO fix go vet in tests
@@ -123,4 +126,4 @@ clean:
 		bin/replay-logger \
 		bin/gameplay-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen bin/gcoracle
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/replay-logger abigen bin/gcoracle oracle-abigen
