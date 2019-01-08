@@ -66,4 +66,4 @@ The oracle will be set automatically on chain init according the genesis file. O
 
 ```
 ./bin/zb-cli update_oracle default:NEW_ORACLE_ADDRESS default:CURRENT_ORACLE_ADDRESS -k oracle.priv
-```
+``` 

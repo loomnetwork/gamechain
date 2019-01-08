@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
@@ -1231,9 +1232,9 @@ func TestFindMatchOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1242,9 +1243,9 @@ func TestFindMatchOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1347,9 +1348,9 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1358,9 +1359,9 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1430,9 +1431,9 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1441,9 +1442,9 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1500,10 +1501,10 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1-tag",
-				Version:    "v1",
-				Tags:        tags,
+				DeckId:  1,
+				UserId:  "player-1-tag",
+				Version: "v1",
+				Tags:    tags,
 			},
 		})
 		assert.Nil(t, err)
@@ -1512,10 +1513,10 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2-tag",
-				Version:    "v1",
-				Tags:        tags,
+				DeckId:  1,
+				UserId:  "player-2-tag",
+				Version: "v1",
+				Tags:    tags,
 			},
 		})
 		assert.Nil(t, err)
@@ -1588,10 +1589,10 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-3",
-				Version:    "v1",
-				Tags:        tags,
+				DeckId:  1,
+				UserId:  "player-3",
+				Version: "v1",
+				Tags:    tags,
 			},
 		})
 		assert.Nil(t, err)
@@ -1600,10 +1601,10 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-3-tag",
-				Version:    "v1",
-				Tags:        tags,
+				DeckId:  1,
+				UserId:  "player-3-tag",
+				Version: "v1",
+				Tags:    tags,
 			},
 		})
 		assert.Nil(t, err)
@@ -1663,10 +1664,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1-tag",
-				Version:    "v1",
-				Tags:        tags1,
+				DeckId:  1,
+				UserId:  "player-1-tag",
+				Version: "v1",
+				Tags:    tags1,
 			},
 		})
 		assert.Nil(t, err)
@@ -1675,10 +1676,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-3-tag",
-				Version:    "v1",
-				Tags:        tags2,
+				DeckId:  1,
+				UserId:  "player-3-tag",
+				Version: "v1",
+				Tags:    tags2,
 			},
 		})
 		assert.Nil(t, err)
@@ -1687,10 +1688,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-5-tag",
-				Version:    "v1",
-				Tags:        tags3,
+				DeckId:  1,
+				UserId:  "player-5-tag",
+				Version: "v1",
+				Tags:    tags3,
 			},
 		})
 		assert.Nil(t, err)
@@ -1726,10 +1727,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-6-tag",
-				Version:    "v1",
-				Tags:        tags3,
+				DeckId:  1,
+				UserId:  "player-6-tag",
+				Version: "v1",
+				Tags:    tags3,
 			},
 		})
 		assert.Nil(t, err)
@@ -1738,10 +1739,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2-tag",
-				Version:    "v1",
-				Tags:        tags1,
+				DeckId:  1,
+				UserId:  "player-2-tag",
+				Version: "v1",
+				Tags:    tags1,
 			},
 		})
 		assert.Nil(t, err)
@@ -1750,10 +1751,10 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-4-tag",
-				Version:    "v1",
-				Tags:        tags2,
+				DeckId:  1,
+				UserId:  "player-4-tag",
+				Version: "v1",
+				Tags:    tags2,
 			},
 		})
 		assert.Nil(t, err)
@@ -1817,9 +1818,9 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 	for i := 0; i < numPlayers; i++ {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     fmt.Sprintf("player-%d", i+1),
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  fmt.Sprintf("player-%d", i+1),
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1871,9 +1872,9 @@ func TestMatchMakingTimeout(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1882,9 +1883,9 @@ func TestMatchMakingTimeout(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1893,9 +1894,9 @@ func TestMatchMakingTimeout(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-3",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-3",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1973,9 +1974,9 @@ func TestGameStateOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -1984,9 +1985,9 @@ func TestGameStateOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -2120,7 +2121,7 @@ func TestGameStateOperations(t *testing.T) {
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2139,9 +2140,9 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_OverlordSkillUsed{
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
-						SkillId:          1,
+						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId:       &zb.InstanceId{Id: 2},
 							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
@@ -2164,7 +2165,7 @@ func TestGameStateOperations(t *testing.T) {
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2217,7 +2218,7 @@ func TestGameStateOperations(t *testing.T) {
 					CardAttack: &zb.PlayerActionCardAttack{
 						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 8},
+							InstanceId:       &zb.InstanceId{Id: 8},
 							AffectObjectType: zb.AffectObjectType_Character,
 						},
 					},
@@ -2240,7 +2241,7 @@ func TestGameStateOperations(t *testing.T) {
 						},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
@@ -2261,7 +2262,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId:       &zb.InstanceId{Id: 2},
 							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
@@ -2409,9 +2410,9 @@ func TestCardPlayOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -2420,9 +2421,9 @@ func TestCardPlayOperations(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 			},
 		})
 		assert.Nil(t, err)
@@ -2515,13 +2516,13 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -2531,13 +2532,13 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -2695,13 +2696,13 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -2711,13 +2712,13 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -2892,13 +2893,13 @@ func TestKeepAlive(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-1",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -2908,13 +2909,13 @@ func TestKeepAlive(t *testing.T) {
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
 		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				DeckId:     1,
-				UserId:     "player-2",
-				Version:    "v1",
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: 2,
+					CustomRandomSeed:    2,
 				},
 			},
 		})
@@ -3059,4 +3060,77 @@ func TestKeepAlive(t *testing.T) {
 		})
 		assert.NotNil(t, err)
 	})
+}
+
+func TestRewardTutorialCompleted(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "loom1",
+		Version: "v1",
+	}, t)
+
+	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
+
+	// get reward on completing tutorial
+	t.Run("RewardTutorialCompleted", func(t *testing.T) {
+		var err error
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+			UserId: "loom1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, rewardTutorialCompletedResp)
+		assert.Equal(t, "0xb887d9702492f10e6529a37c69e400970795496fb0b88b67947d16b36b475d8d", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0x1d830690ee4ce5afc0c267cf941ac547738212479f30f9709d679b08526c90ba", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x1c27c0d86d1e0fe248f080bfe7c258815c0e172c9a13cdd4e9115fda980b42fc", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
+	})
+
+	// client confirms that reward has been claimed from faucet
+
+	// fails because the request should have the user id uint returned in the previous call
+	t.Run("ConfirmRewardClaimed fails", func(t *testing.T) {
+		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
+			UserId:     "loom1",
+			RewardType: RewardTypeTutorialCompleted,
+		})
+		assert.NotNil(t, err)
+	})
+
+	// send the correct request with UserIdUint
+	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
+		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
+			UserId:     "loom1",
+			RewardType: RewardTypeTutorialCompleted,
+			UserIdUint: rewardTutorialCompletedResp.UserIdUint,
+		})
+		assert.Nil(t, err)
+	})
+
+	// attempt to get reward again should fail
+	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+			UserId: "loom1",
+		})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "reward already claimed")
+		assert.Nil(t, resp)
+	})
+}
+
+func TestHashSignature(t *testing.T) {
+	privateKeyStr = "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
+	privateKey, err := crypto.HexToECDSA(privateKeyStr)
+	assert.Nil(t, err)
+
+	verifySignResult, err := generateVerifyHash(149, 5, 1, privateKey)
+	assert.Nil(t, err)
+	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
+	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
 }
