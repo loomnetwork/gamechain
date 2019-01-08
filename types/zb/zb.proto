@@ -331,14 +331,34 @@ message CreateDeckResponse {
     int64 deck_id = 1;
 }
 
+message CreateDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    Deck deck = 3;
+    string version = 4;
+}
+
 message DeleteDeckRequest {
     string user_id = 1;
     int64 deck_id = 2;
 }
 
+message DeleteDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    int64 deck_id = 3;
+}
+
 message EditDeckRequest {
     string user_id = 1;
     Deck deck      = 2;
+    string version = 4;
+}
+
+message EditDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    Deck deck = 3;
     string version = 4;
 }
 
@@ -398,6 +418,42 @@ message GetCollectionRequest {
 
 message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
+}
+
+message RewardTutorialCompletedRequest {
+    string user_id = 1;
+}
+
+message RewardTutorialCompletedResponse {
+    string user_id = 1;
+    string reward_type = 2;
+    string hash = 3;
+    string r = 4;
+    string s = 5;
+    uint64 v = 6;
+    //string signature = 4;
+    int64 nonce = 7;
+    //repeated uint64 amounts = 8;
+    uint64 minion_pack = 8;
+    uint64 user_id_uint = 9;
+}
+
+message Nonce {
+    int64 current_nonce = 1;
+}
+
+message UserIDUint {
+    uint64 user_id_uint = 1;
+}
+
+message ConfirmRewardClaimedRequest {
+    string user_id = 1;
+    string reward_type = 2;
+    uint64 user_id_uint = 3;
+}
+
+message RewardClaimed {
+    string reward_type = 1;
 }
 
 //////////// Match Making /////////////
