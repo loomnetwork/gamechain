@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "serializationpb_test";
+import "github.com/loomnetwork/gamechain/types/serialization/serialization.proto";
+
+message CardAbility {
+    string targetType = 2;
+    string effect = 3;
+}
+
+message Card {
+    string name = 2;
+    repeated SerializationId abilities = 3; // abilities that this specific card uses
+}
+
+message CardList {
+    repeated SerializationId abilities = 2; // all possible card abilities
+    repeated SerializationId cards = 3;
+}

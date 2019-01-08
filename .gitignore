@@ -22,8 +22,12 @@
 .idea
 
 # Protobuf generated
-/types/zb/Zb.cs
-/types/zb/zb.pb.go
+/types/zb/*.cs
+/types/zb/*.go
+/types/serialization/*.cs
+/types/serialization/*.go
+/types/test_serialization/*.cs
+/types/test_serialization/*.go
 
 # App specific
 /app.db
