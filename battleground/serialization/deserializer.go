@@ -36,7 +36,7 @@ func (deserializer *Deserializer) Unmarshal(marshaledGraph *serializationpb.Seri
 }
 
 func (deserializer *Deserializer) Deserialize(id *serializationpb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) (SerializableObject, error) {
-	unmarshaledId := Id(id.SerializationId)
+	unmarshaledId := Unmarshal(id)
 
 	if unmarshaledId == NilSerializationId {
 		return nil, nil
@@ -63,6 +63,11 @@ func (deserializer *Deserializer) Deserialize(id *serializationpb.SerializationI
 	}
 
 	return object, nil
+}
+
+func (deserializer *Deserializer) DeserializeNoError(id *serializationpb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) SerializableObject {
+	deserialized, _ := deserializer.Deserialize(id, targetCreator, unmarshaledProtoMessageCreator)
+	return deserialized
 }
 
 func (deserializer *Deserializer) DeserializeRoot(root SerializableObject, message proto.Message) (SerializableObject, error) {

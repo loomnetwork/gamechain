@@ -9,7 +9,12 @@ import (
 	"github.com/loomnetwork/gamechain/types/test_serialization"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"reflect"
 	"testing"
+)
+
+const (
+	printSerializationJsonOutput = true
 )
 
 type CardAbility struct {
@@ -50,7 +55,20 @@ func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Messa
 }
 
 func (entity *SelfReferenceEntity) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	return nil, nil
+	message := rawMessage.(*serializationpb_test.SelfReferenceEntity)
+	otherEntityDeserialized, err := deserializer.Deserialize(
+		message.OtherEntity,
+		func() SerializableObject { return &SelfReferenceEntity{} },
+		func() proto.Message { return &serializationpb_test.SelfReferenceEntity{} },
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	entity.otherEntity = otherEntityDeserialized.(*SelfReferenceEntity)
+	entity.field = message.Field
+	return entity, nil
 }
 
 func (entityA *EntityA) Serialize(serializer *Serializer) proto.Message {
@@ -71,11 +89,8 @@ func (entityA *EntityA) Deserialize(deserializer *Deserializer, rawMessage proto
 	message := rawMessage.(*serializationpb_test.EntityA)
 	entityBDeserialized, err := deserializer.Deserialize(
 		message.EntityB,
-		func() SerializableObject {
-			return &EntityB{}
-		}, func() proto.Message {
-			return &serializationpb_test.EntityB{}
-		},
+		func() SerializableObject { return &EntityB{} },
+		func() proto.Message { return &serializationpb_test.EntityB{} },
 	)
 
 	if err != nil {
@@ -91,11 +106,8 @@ func (entityB *EntityB) Deserialize(deserializer *Deserializer, rawMessage proto
 	message := rawMessage.(*serializationpb_test.EntityB)
 	entityADeserialized, err := deserializer.Deserialize(
 		message.EntityA,
-		func() SerializableObject {
-			return &EntityA{}
-		}, func() proto.Message {
-			return &serializationpb_test.EntityA{}
-		},
+		func() SerializableObject { return &EntityA{} },
+		func() proto.Message { return &serializationpb_test.EntityA{} },
 	)
 
 	if err != nil {
@@ -115,7 +127,11 @@ func (cardAbility *CardAbility) Serialize(serializer *Serializer) proto.Message 
 }
 
 func (cardAbility *CardAbility) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	return nil, nil
+	message := rawMessage.(*serializationpb_test.CardAbility)
+
+	cardAbility.targetType = message.TargetType
+	cardAbility.effect = message.Effect
+	return cardAbility, nil
 }
 
 func (card *Card) Serialize(serializer *Serializer) proto.Message {
@@ -131,7 +147,24 @@ func (card *Card) Serialize(serializer *Serializer) proto.Message {
 }
 
 func (card *Card) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	return nil, nil
+	message := rawMessage.(*serializationpb_test.Card)
+
+	card.name = message.Name
+	for i := 0; i < len(message.Abilities); i++ {
+		abilityDeserialized, err := deserializer.Deserialize(
+			message.Abilities[i],
+			func() SerializableObject { return &CardAbility{} },
+			func() proto.Message { return &serializationpb_test.CardAbility{} },
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		card.abilities = append(card.abilities, abilityDeserialized.(*CardAbility))
+	}
+
+	return card, nil
 }
 
 func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
@@ -149,7 +182,37 @@ func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
 }
 
 func (cardList *CardList) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	return nil, nil
+	message := rawMessage.(*serializationpb_test.CardList)
+
+	for i := 0; i < len(message.Abilities); i++ {
+		abilityDeserialized, err := deserializer.Deserialize(
+			message.Abilities[i],
+			func() SerializableObject { return &CardAbility{} },
+			func() proto.Message { return &serializationpb_test.CardAbility{} },
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		cardList.abilities = append(cardList.abilities, abilityDeserialized.(*CardAbility))
+	}
+
+	for i := 0; i < len(message.Cards); i++ {
+		cardDeserialized, err := deserializer.Deserialize(
+			message.Cards[i],
+			func() SerializableObject { return &Card{} },
+			func() proto.Message { return &serializationpb_test.Card{} },
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		cardList.cards = append(cardList.cards, cardDeserialized.(*Card))
+	}
+
+	return cardList, nil
 }
 
 func getCardList() *CardList {
@@ -177,16 +240,20 @@ func getCardList() *CardList {
 	return &cardList
 }
 
-func TestGraphSerialization_1(t *testing.T) {
-	cardList := getCardList()
-	serializer := NewSerializer()
-	serializer.Serialize(cardList)
+func TestGraphSerialization_Basic(t *testing.T) {
+	sourceCardList := getCardList()
 
-	debugOutputGraphAsJson(serializer)
+	fullCircleSerializationTest(
+		t,
+		sourceCardList,
+		func(t *testing.T, serializer *Serializer) {
+
+		},
+		&serializationpb_test.CardList{},
+	)
 }
 
 func TestGraphSerialization_CrossReference(t *testing.T) {
-	// data
 	sourceEntityA := &EntityA{
 		aField: 3,
 	}
@@ -196,59 +263,53 @@ func TestGraphSerialization_CrossReference(t *testing.T) {
 	sourceEntityA.entityB = sourceEntityB
 	sourceEntityB.entityA = sourceEntityA
 
-	// serialize
-	serializer := NewSerializerSerialize(sourceEntityA)
-
-	assert.Equal(t, 1, int(serializer.currentId))
-	assert.Equal(t, 2, len(serializer.objectToId))
-	assert.True(t, proto.Equal(
-		serializer.idToSerializedObject[0],
-		&serializationpb_test.EntityA{
-			EntityB: Id(1).Marshal(),
-			AField:  sourceEntityA.aField,
+	fullCircleSerializationTest(
+		t,
+		sourceEntityA,
+		func(t *testing.T, serializer *Serializer) {
+			assert.Equal(t, 1, int(serializer.currentId))
+			assert.Equal(t, 2, len(serializer.objectToId))
+			assert.True(t, proto.Equal(
+				serializer.idToSerializedObject[0],
+				&serializationpb_test.EntityA{
+					EntityB: Id(1).Marshal(),
+					AField:  sourceEntityA.aField,
+				},
+			))
+			assert.True(t, proto.Equal(
+				serializer.idToSerializedObject[1],
+				&serializationpb_test.EntityB{
+					EntityA: Id(0).Marshal(),
+					BField:  sourceEntityB.bField,
+				},
+			))
 		},
-	))
-	assert.True(t, proto.Equal(
-		serializer.idToSerializedObject[1],
-		&serializationpb_test.EntityB{
-			EntityA: Id(0).Marshal(),
-			BField:  sourceEntityB.bField,
-		},
-	))
-
-	// deserialize
-	marshaled, err := serializer.Marshal()
-	assert.NoError(t, err)
-
-	deserializer, err := NewDeserializerUnmarshal(marshaled)
-	assert.NoError(t, err)
-
-	deserializedEntityA, err := deserializer.DeserializeRoot(&EntityA{}, &serializationpb_test.EntityA{})
-	assert.NoError(t, err)
-
-	// validate
-	assert.Equal(t, sourceEntityA, deserializedEntityA)
+		&serializationpb_test.EntityA{},
+	)
 }
 
 func TestGraphSerialization_SelfReference(t *testing.T) {
-	entity := &SelfReferenceEntity{
+	sourceEntity := &SelfReferenceEntity{
 		field: 3,
 	}
-	entity.otherEntity = entity
+	sourceEntity.otherEntity = sourceEntity
 
-	serializer := NewSerializerSerialize(entity)
-
-	assert.Equal(t, 0, int(serializer.currentId))
-	assert.Equal(t, 1, len(serializer.objectToId))
-	assert.True(t, proto.Equal(
-		serializer.idToSerializedObject[0],
-		&serializationpb_test.SelfReferenceEntity{
-			OtherEntity: Id(0).Marshal(),
-			Field:       3,
+	fullCircleSerializationTest(
+		t,
+		sourceEntity,
+		func(t *testing.T, serializer *Serializer) {
+			assert.Equal(t, 0, int(serializer.currentId))
+			assert.Equal(t, 1, len(serializer.objectToId))
+			assert.True(t, proto.Equal(
+				serializer.idToSerializedObject[0],
+				&serializationpb_test.SelfReferenceEntity{
+					OtherEntity: Id(0).Marshal(),
+					Field:       sourceEntity.field,
+				},
+			))
 		},
-	))
-
-	debugOutputGraphAsJson(serializer)
+		&serializationpb_test.SelfReferenceEntity{},
+	)
 }
 
 func TestGraphSerialization_DoubleRoot(t *testing.T) {
@@ -258,9 +319,52 @@ func TestGraphSerialization_DoubleRoot(t *testing.T) {
 	entity.otherEntity = entity
 
 	serializer := NewSerializer()
-
 	assert.NotPanics(t, func() { serializer.Serialize(entity) })
-	assert.PanicsWithValue(t, ErrorOnlyOneRootObject, func() { serializer.Serialize(entity) })
+	assert.PanicsWithValue(t, ErrOnlyOneRootObject, func() { serializer.Serialize(entity) })
+}
+
+func fullCircleSerializationTest(
+	t *testing.T,
+	sourceRoot SerializableObject,
+	checkSerializerFunc func(t *testing.T, serializer *Serializer),
+	serializedProtoMessage proto.Message,
+) {
+	// serialize
+	serializer := NewSerializerSerialize(sourceRoot)
+	if checkSerializerFunc != nil {
+		checkSerializerFunc(t, serializer)
+	}
+
+	if printSerializationJsonOutput {
+		fmt.Println("=-- Serialized")
+		debugOutputGraphAsJson(serializer)
+	}
+
+	// deserialize
+	marshaled, err := serializer.Marshal()
+	assert.NoError(t, err)
+
+	deserializer, err := NewDeserializerUnmarshal(marshaled)
+	assert.NoError(t, err)
+
+	// create an empty instance with the same type as sourceRoot
+	deserializedRoot := (reflect.New(reflect.ValueOf(sourceRoot).Elem().Type()).Elem()).Addr().Interface().(SerializableObject)
+
+	deserializedRoot, err =
+		deserializer.DeserializeRoot(
+			deserializedRoot,
+			serializedProtoMessage,
+		)
+	assert.NoError(t, err)
+
+	// validate
+	assert.Equal(t, sourceRoot, deserializedRoot)
+
+	if printSerializationJsonOutput {
+		fmt.Println("=-- Deserialized")
+		reserializedSerializer := NewSerializerSerialize(deserializedRoot)
+		debugOutputGraphAsJson(reserializedSerializer)
+	}
 }
 
 func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) *serializationpb.SerializedDebugGraph {

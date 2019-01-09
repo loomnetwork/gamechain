@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrorOnlyOneRootObject = errors.New("only one root object is allowed")
+	ErrOnlyOneRootObject   = errors.New("only one root object is allowed")
 	initialSerializationId = Id(math.MaxUint32 - 1)
 )
 
@@ -38,7 +38,7 @@ func NewSerializerSerialize(object SerializableObject) *Serializer {
 
 func (serializer *Serializer) Serialize(object SerializableObject) Id {
 	if serializer.currentId != initialSerializationId && !serializer.serializingRoot {
-		panic(ErrorOnlyOneRootObject)
+		panic(ErrOnlyOneRootObject)
 	}
 
 	serializingRoot := false
