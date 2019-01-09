@@ -24,6 +24,7 @@
 # Protobuf generated
 /types/zb/Zb.cs
 /types/zb/zb.pb.go
+/types/oracle/oracle.pb.go
 
 # App specific
 /app.db

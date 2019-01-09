@@ -13,20 +13,9 @@ import (
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
-	lmtype "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/loomnetwork/loomchain"
 	"github.com/pkg/errors"
 )
-
-type (
-	PlasmachainEventData = lmtype.EventData
-)
-
-type plasmachainEventInfo struct {
-	BlockNum uint64
-	TxIdx    uint
-	Event    *PlasmachainEventData
-}
 
 type Status struct {
 	Version                  string
@@ -218,12 +207,12 @@ func (orc *Oracle) Run() {
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
-	orc.logger.Info("polling plasma chain")
+	orc.logger.Info("Polling plasma chain")
 	lastPlasmachainBlockNum, err := orc.gcGateway.LastPlasmaBlockNumber()
 	if err != nil {
 		return err
 	}
-
+	orc.logger.Info(fmt.Sprintf("lastPlasmachainBlockNum: %d\n", lastPlasmachainBlockNum))
 	startBlock := lastPlasmachainBlockNum + 1
 	if orc.startBlock > startBlock {
 		startBlock = orc.startBlock
@@ -231,16 +220,20 @@ func (orc *Oracle) pollPlasmaChain() error {
 
 	// TODO: limit max block range per batch
 	latestBlock, err := orc.getLatestEthBlockNumber()
+	orc.logger.Info(fmt.Sprintf("latestBlock: %d\n", latestBlock))
 	if err != nil {
 		orc.logger.Error("failed to obtain latest Plasmachain block number from Gamechain", "err", err)
 		return err
 	}
 
-	orc.logger.Debug(fmt.Sprintf("latestBlock: %d, startBlock: %d", latestBlock, startBlock))
 	if latestBlock < startBlock {
 		// Wait for Plasmachain to produce a new block...
 		return nil
 	}
+
+	startBlock = 262000
+	// latestBlock = 200000
+	orc.logger.Debug(fmt.Sprintf("latestBlock: %d, startBlock: %d", latestBlock, startBlock))
 
 	events, err := orc.fetchEvents(startBlock, latestBlock)
 	if err != nil {
@@ -267,34 +260,30 @@ func (orc *Oracle) pollPlasmaChain() error {
 
 func (orc *Oracle) getLatestEthBlockNumber() (uint64, error) {
 	return orc.pcGateway.LastBlockNumber()
-	// blockHeader, err := orc.pcClient.HeaderByNumber(context.TODO(), nil)
-	// if err != nil {
-	// 	return 0, err
-	// }
-	// return blockHeader.Number.Uint64(), nil
 }
 
 // Fetches all relevent events from an Plasmachain node from startBlock to endBlock (inclusive)
 func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEventInfo, error) {
+	orc.logger.Info(fmt.Sprintf("fetchEvents: %d, %d\n", startBlock, endBlock))
 	// NOTE: Currently either all blocks from w.StartBlock are processed successfully or none are.
 	filterOpts := &bind.FilterOpts{
 		Start: startBlock,
 		End:   &endBlock,
 	}
 
-	var tokenClaimed []*plasmachainEventInfo
+	var geratedCards []*plasmachainEventInfo
 	var err error
 
-	tokenClaimed, err = orc.fetchTokenClaimed(filterOpts)
+	geratedCards, err = orc.fetchGeneraedCard(filterOpts)
 	if err != nil {
 		return nil, err
 	}
 
 	events := make(
 		[]*plasmachainEventInfo, 0,
-		len(tokenClaimed),
+		len(geratedCards),
 	)
-	events = append(events, tokenClaimed...)
+	events = append(events, geratedCards...)
 
 	sortPlasmachainEvents(events)
 	sortedEvents := make([]*plasmachainEventInfo, len(events))
@@ -306,7 +295,7 @@ func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEvent
 		orc.logger.Debug("fetched Plasmachain events",
 			"startBlock", startBlock,
 			"endBlock", endBlock,
-			"open-packs", len(tokenClaimed),
+			"generatedCard", len(geratedCards),
 		)
 	}
 
@@ -324,8 +313,8 @@ func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	})
 }
 
-func (orc *Oracle) fetchTokenClaimed(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
-	return orc.pcGateway.FetchTokenClaimed(opts)
+func (orc *Oracle) fetchGeneraedCard(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
+	return orc.pcGateway.FetchGeneratedCard(opts)
 }
 
 func LoadDappChainPrivateKey(path string) ([]byte, error) {
