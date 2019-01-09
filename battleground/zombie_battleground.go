@@ -1,30 +1,50 @@
 package battleground
 
 import (
+	"crypto/ecdsa"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"os"
 	"sort"
+	"strconv"
 	"time"
 	"unicode/utf8"
 
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
+	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
 
 const (
-	MaxGameModeNameChar        = 48
-	MaxGameModeDescriptionChar = 255
-	MaxGameModeVersionChar     = 16
-	TurnTimeout                = 120 * time.Second
-	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	MaxGameModeNameChar           = 48
+	MaxGameModeDescriptionChar    = 255
+	MaxGameModeVersionChar        = 16
+	TurnTimeout                   = 120 * time.Second
+	KeepAliveTimeout              = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	RewardTypeTutorialCompleted   = "tutorial-completed"
+	TutorialRewardContractVersion = 1
+)
+
+const (
+	TopicCreateAccountEvent      = "zombiebattleground:createaccount"
+	TopicUpdateAccountEvent      = "zombiebattleground:updateaccount"
+	TopicCreateDeckEvent         = "zombiebattleground:createdeck"
+	TopicEditDeckEvent           = "zombiebattleground:editdeck"
+	TopicDeleteDeckEvent         = "zombiebattleground:deletedeck"
+	TopicAddHeroExpEvent         = "zombiebattleground:addheroexperience"
+	TopicRegisterPlayerPoolEvent = "zombiebattleground:registerplayerpool"
+	TopicFindMatchEvent          = "zombiebattleground:findmatch"
+	TopicAcceptMatchEvent        = "zombiebattleground:acceptmatch"
+	// match pattern match:id e.g. match:1, match:2, ...
+	TopicMatchEventPrefix = "match:"
 )
 
 const (
@@ -35,6 +55,8 @@ const (
 var (
 	// secret
 	secret string
+	// privateKey to sign reward
+	privateKeyStr string
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
 )
@@ -54,6 +76,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if secret == "" {
 		secret = "justsowecantestwithoutenvvar"
 	}
+
+	privateKeyStr = os.Getenv("GAMECHAIN_PRIVATE_KEY")
 
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), OracleRole)
@@ -304,7 +328,7 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "updateaccount")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:updateaccount")
+		ctx.EmitTopics(emitMsgJSON, TopicUpdateAccountEvent)
 	}
 
 	return &account, nil
@@ -358,7 +382,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createaccount")
+		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
 	}
 
 	return nil
@@ -454,11 +478,20 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createdeck")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:createdeck")
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.CreateDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		Deck:          req.Deck,
+		Version:       req.Version,
 	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return nil, err
+	}
+	ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
+
 	return &zb.CreateDeckResponse{DeckId: newDeckID}, nil
 }
 
@@ -524,11 +557,20 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 		return err
 	}
 
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "editdeck")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:editdeck")
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.EditDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		Deck:          req.Deck,
+		Version:       req.Version,
 	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return err
+	}
+	ctx.EmitTopics([]byte(data), TopicEditDeckEvent)
+
 	return nil
 }
 
@@ -552,6 +594,20 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
 		return err
 	}
+
+	senderAddress := ctx.Message().Sender.Local.String()
+	emitMsg := zb.DeleteDeckEvent{
+		UserId:        req.UserId,
+		SenderAddress: senderAddress,
+		DeckId:        req.DeckId,
+	}
+
+	data, err := proto.Marshal(&emitMsg)
+	if err != nil {
+		return err
+	}
+	ctx.EmitTopics([]byte(data), TopicDeleteDeckEvent)
+
 	return nil
 }
 
@@ -711,7 +767,7 @@ func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.Add
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "addHeroExperience")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:addheroexperience")
+		ctx.EmitTopics(emitMsgJSON, TopicAddHeroExpEvent)
 	}
 
 	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
@@ -875,7 +931,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.RegistrationData.UserId, "registerplayerpool")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:registerplayerpool")
+		ctx.EmitTopics(emitMsgJSON, TopicRegisterPlayerPoolEvent)
 	}
 
 	return &zb.RegisterPlayerPoolResponse{}, nil
@@ -925,7 +981,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 			return nil, err
 		}
 		if err == nil {
-			ctx.EmitTopics([]byte(data), match.Topics...)
+			topics := append(match.Topics, TopicFindMatchEvent)
+			ctx.EmitTopics([]byte(data), topics...)
 		}
 
 		return &zb.FindMatchResponse{
@@ -1054,7 +1111,8 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	topics := append(match.Topics, TopicFindMatchEvent)
+	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.FindMatchResponse{
 		Match:      match,
@@ -1156,7 +1214,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	topics := append(match.Topics, TopicAcceptMatchEvent)
+	ctx.EmitTopics([]byte(data), topics...)
 
 	return &zb.AcceptMatchResponse{
 		Match: match,
@@ -1286,7 +1345,8 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			},
 		},
 	})
-	match.Topics = append(match.Topics, "endgame")
+	// Don't think we need this since endgame should be emitted to match
+	// match.Topics = append(match.Topics, "endgame")
 	emitMsg := zb.PlayerActionEvent{
 		Match: match,
 		Block: &zb.History{List: gp.history},
@@ -1601,6 +1661,49 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamecha
 	return saveState(ctx, state)
 }
 
+func (z *ZombieBattleground) UpdateVersions(ctx contract.Context, req *zb.UpdateVersionsRequest) error {
+	var err error
+	if req.ContentVersion != "" {
+		err = ctx.Set(contentVersionKey, &zb.ContentVersion{
+			ContentVersion: req.ContentVersion,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	if req.PvpVersion != "" {
+		err = ctx.Set(pvpVersionKey, &zb.PvpVersion{
+			PvpVersion: req.PvpVersion,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) GetVersions(ctx contract.StaticContext, req *zb.GetVersionsRequest) (*zb.GetVersionsResponse, error) {
+	var contentVersion zb.ContentVersion
+	var pvpVersion zb.PvpVersion
+	var err error
+	err = ctx.Get(contentVersionKey, &contentVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ctx.Get(pvpVersionKey, &pvpVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetVersionsResponse{
+		ContentVersion: contentVersion.ContentVersion,
+		PvpVersion:     pvpVersion.PvpVersion,
+	}, nil
+}
+
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {
 	if ctx.Has(oracleKey) {
 		if params.OldOracle.String() == params.NewOracle.String() {
@@ -1862,6 +1965,147 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 	}
 
 	return nil
+}
+
+func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
+	if !isOwner(ctx, req.UserId) {
+		return nil, ErrUserNotVerified
+	}
+
+	rewardClaimed, err := getRewardClaimed(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	if rewardClaimed != nil {
+		if rewardClaimed.RewardType == RewardTypeTutorialCompleted {
+			return nil, fmt.Errorf("reward already claimed")
+		}
+	}
+
+	privateKey, err := crypto.HexToECDSA(privateKeyStr)
+	if err != nil {
+		return nil, fmt.Errorf("error reading private key")
+	}
+
+	/*
+		nonce, err := getNonce(ctx)
+		if err != nil {
+			return nil, err
+		}
+	*/
+
+	//rewardType := RewardTypeTutorialCompleted
+
+	// assign rewards
+	var minionPack uint64
+	minionPack = 5
+
+	userIDUint, err := getOrGenerateUserIDUint(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	verifySignResult, err := generateVerifyHash(userIDUint, minionPack, TutorialRewardContractVersion, privateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(verifySignResult.Signature) != 132 {
+		return nil, fmt.Errorf("signature length invalid")
+	}
+
+	r := verifySignResult.Signature[0:66]
+	s := "0x" + verifySignResult.Signature[66:130]
+	vStr := verifySignResult.Signature[130:132]
+	v, err := strconv.ParseUint(vStr, 16, 8)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.RewardTutorialCompletedResponse{
+		UserId:     req.UserId,
+		UserIdUint: userIDUint,
+		RewardType: RewardTypeTutorialCompleted,
+		//	Nonce:      nonce,
+		Hash:       verifySignResult.Hash,
+		R:          r,
+		S:          s,
+		V:          v,
+		MinionPack: minionPack,
+	}, nil
+}
+
+func (z *ZombieBattleground) ConfirmRewardClaimed(ctx contract.Context, req *zb.ConfirmRewardClaimedRequest) error {
+	if !isOwner(ctx, req.UserId) {
+		return ErrUserNotVerified
+	}
+
+	userIDUint, err := getUserIDUint(ctx, req.UserId)
+	if err != nil {
+		return err
+	}
+
+	// check whether the userIDUint in the request is same as the one generated by the RewardTutorialCompleted call
+	// the uint user id is generated only in the RewardTutorialCompleted call, so it can be used for safety check
+	// this is to prevent confirmation of reward claim without actually generating a reward via RewardTutorialCompleted
+	if req.UserIdUint != userIDUint {
+		return fmt.Errorf("invalid request")
+	}
+	// TODO: add rewardType checks?
+	err = setRewardClaimed(ctx, req.UserId, req.RewardType)
+	return err
+}
+
+type verifySignResult struct {
+	Hash      string
+	Signature string
+}
+
+func generateVerifyHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
+
+	hash, err := createHash(userID, minionPack, tutorialRewardContractVersion)
+
+	if err != nil {
+		return nil, err
+	}
+
+	sig, err := soliditySign(hash, privKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &verifySignResult{
+		Hash:      "0x" + hex.EncodeToString(hash),
+		Signature: "0x" + hex.EncodeToString(sig),
+	}, nil
+}
+
+func createHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
+
+	hash := solsha3.SoliditySHA3(
+		solsha3.Uint256(strconv.FormatUint(userID, 10)),
+		solsha3.Uint256(strconv.FormatUint(minionPack, 10)),
+		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
+	)
+
+	if len(hash) == 0 {
+		return nil, errors.New("Failed to generate hash")
+	}
+
+	return hash, nil
+}
+
+func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
+	sig, err := crypto.Sign(data, privKey)
+	if err != nil {
+		return nil, err
+	}
+
+	v := sig[len(sig)-1]
+	sig[len(sig)-1] = v + 27
+	return sig, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
