@@ -59,7 +59,7 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
-proto: types/zb/zb.pb.go types/zb/zb.cs
+proto: types/zb/zb.pb.go types/zb/zb.cs types/oracle/oracle.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -107,7 +107,7 @@ abigen:
 
 oracle-abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
-	./abigen --abi oracle/abi/simple_store.abi --pkg ethcontract --type SimpleStoreContract --out oracle/ethcontract/simple_store.go
+	./abigen --abi oracle/abi/card_faucet.abi --pkg ethcontract --type CardFaucet --out oracle/ethcontract/card_faucet.go
 
 test:
 	#TODO fix go vet in tests
