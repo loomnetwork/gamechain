@@ -17,3 +17,13 @@ message CardList {
     repeated SerializationId abilities = 2; // all possible card abilities
     repeated SerializationId cards = 3;
 }
+
+message EntityA {
+    SerializationId entityB = 1;
+    int32 aField = 2;
+}
+
+message EntityB {
+    SerializationId entityA = 1;
+    int32 bField = 2;
+}
