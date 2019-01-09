@@ -1,15 +1,11 @@
 syntax = "proto3";
 
 option go_package = "serializationpb";
+
 import "google/protobuf/any.proto";
 
 message SerializationId {
-    int32 serializationId = 1;
-}
-
-message SerializedObject {
-    bytes data = 1;
-    string type = 2;
+    uint32 serializationId = 1;
 }
 
 message SerializedDebugGraph {

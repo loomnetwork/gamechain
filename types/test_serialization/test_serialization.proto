@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 option go_package = "serializationpb_test";
+
 import "github.com/loomnetwork/gamechain/types/serialization/serialization.proto";
 
 message CardAbility {

@@ -42,82 +42,114 @@ type SelfReferenceEntity struct {
 	field       int32
 }
 
-func (entity *SelfReferenceEntity) Serialize(graph *Graph) proto.Message {
+func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Message {
 	return &serializationpb_test.SelfReferenceEntity{
-		OtherEntity: graph.Serialize(entity).Marshal(),
+		OtherEntity: serializer.Serialize(entity).Marshal(),
 		Field:       entity.field,
 	}
 }
 
-func (entity *SelfReferenceEntity) Deserialize(graph *Graph) {
-
+func (entity *SelfReferenceEntity) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	return nil, nil
 }
 
-func (entityA *EntityA) Serialize(graph *Graph) proto.Message {
+func (entityA *EntityA) Serialize(serializer *Serializer) proto.Message {
 	return &serializationpb_test.EntityA{
-		EntityB: graph.Serialize(entityA.entityB).Marshal(),
+		EntityB: serializer.Serialize(entityA.entityB).Marshal(),
 		AField:  entityA.aField,
 	}
 }
 
-func (entityB *EntityB) Serialize(graph *Graph) proto.Message {
+func (entityB *EntityB) Serialize(serializer *Serializer) proto.Message {
 	return &serializationpb_test.EntityB{
-		EntityA: graph.Serialize(entityB.entityA).Marshal(),
+		EntityA: serializer.Serialize(entityB.entityA).Marshal(),
 		BField:  entityB.bField,
 	}
 }
 
-func (entityA *EntityA) Deserialize(graph *Graph) {
+func (entityA *EntityA) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	message := rawMessage.(*serializationpb_test.EntityA)
+	entityBDeserialized, err := deserializer.Deserialize(
+		message.EntityB,
+		func() SerializableObject {
+			return &EntityB{}
+		}, func() proto.Message {
+			return &serializationpb_test.EntityB{}
+		},
+	)
 
+	if err != nil {
+		return nil, err
+	}
+
+	entityA.entityB = entityBDeserialized.(*EntityB)
+	entityA.aField = message.AField
+	return entityA, nil
 }
 
-func (entityB *EntityB) Deserialize(graph *Graph) {
+func (entityB *EntityB) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	message := rawMessage.(*serializationpb_test.EntityB)
+	entityADeserialized, err := deserializer.Deserialize(
+		message.EntityA,
+		func() SerializableObject {
+			return &EntityA{}
+		}, func() proto.Message {
+			return &serializationpb_test.EntityA{}
+		},
+	)
 
+	if err != nil {
+		return nil, err
+	}
+
+	entityB.entityA = entityADeserialized.(*EntityA)
+	entityB.bField = message.BField
+	return entityB, nil
 }
 
-func (cardAbility *CardAbility) Serialize(graph *Graph) proto.Message {
+func (cardAbility *CardAbility) Serialize(serializer *Serializer) proto.Message {
 	return &serializationpb_test.CardAbility{
 		Effect:     cardAbility.effect,
 		TargetType: cardAbility.targetType,
 	}
 }
 
-func (cardAbility *CardAbility) Deserialize(graph *Graph) {
-
+func (cardAbility *CardAbility) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	return nil, nil
 }
 
-func (card *Card) Serialize(graph *Graph) proto.Message {
+func (card *Card) Serialize(serializer *Serializer) proto.Message {
 	instance := &serializationpb_test.Card{
 		Name: card.name,
 	}
 
 	for _, ability := range card.abilities {
-		instance.Abilities = append(instance.Abilities, graph.Serialize(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
 	}
 
 	return instance
 }
 
-func (card *Card) Deserialize(graph *Graph) {
-
+func (card *Card) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	return nil, nil
 }
 
-func (cardList *CardList) Serialize(graph *Graph) proto.Message {
+func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
 	instance := &serializationpb_test.CardList{}
 
 	for _, ability := range cardList.abilities {
-		instance.Abilities = append(instance.Abilities, graph.Serialize(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
 	}
 
 	for _, card := range cardList.cards {
-		instance.Cards = append(instance.Cards, graph.Serialize(card).Marshal())
+		instance.Cards = append(instance.Cards, serializer.Serialize(card).Marshal())
 	}
 
 	return instance
 }
 
-func (cardList *CardList) Deserialize(graph *Graph) {
-
+func (cardList *CardList) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
+	return nil, nil
 }
 
 func getCardList() *CardList {
@@ -147,42 +179,55 @@ func getCardList() *CardList {
 
 func TestGraphSerialization_1(t *testing.T) {
 	cardList := getCardList()
-	graph := NewGraph()
-	graph.Serialize(cardList)
+	serializer := NewSerializer()
+	serializer.Serialize(cardList)
 
-	debugOutputGraphAsJson(graph)
+	debugOutputGraphAsJson(serializer)
 }
 
 func TestGraphSerialization_CrossReference(t *testing.T) {
-	entityA := &EntityA{
+	// data
+	sourceEntityA := &EntityA{
 		aField: 3,
 	}
-	entityB := &EntityB{
+	sourceEntityB := &EntityB{
 		bField: 4,
 	}
-	entityA.entityB = entityB
-	entityB.entityA = entityA
+	sourceEntityA.entityB = sourceEntityB
+	sourceEntityB.entityA = sourceEntityA
 
-	graph := NewGraphSerialize(entityA)
+	// serialize
+	serializer := NewSerializerSerialize(sourceEntityA)
 
-	assert.Equal(t, int32(1), graph.currentId.Id)
-	assert.Equal(t, 2, len(graph.objectToId))
+	assert.Equal(t, 1, int(serializer.currentId))
+	assert.Equal(t, 2, len(serializer.objectToId))
 	assert.True(t, proto.Equal(
-		graph.idToSerializedObject[0],
+		serializer.idToSerializedObject[0],
 		&serializationpb_test.EntityA{
-			EntityB: Id{Id: 1}.Marshal(),
-			AField:  3,
+			EntityB: Id(1).Marshal(),
+			AField:  sourceEntityA.aField,
 		},
 	))
 	assert.True(t, proto.Equal(
-		graph.idToSerializedObject[1],
+		serializer.idToSerializedObject[1],
 		&serializationpb_test.EntityB{
-			EntityA: Id{Id: 0}.Marshal(),
-			BField:  4,
+			EntityA: Id(0).Marshal(),
+			BField:  sourceEntityB.bField,
 		},
 	))
 
-	debugOutputGraphAsJson(graph)
+	// deserialize
+	marshaled, err := serializer.Marshal()
+	assert.NoError(t, err)
+
+	deserializer, err := NewDeserializerUnmarshal(marshaled)
+	assert.NoError(t, err)
+
+	deserializedEntityA, err := deserializer.DeserializeRoot(&EntityA{}, &serializationpb_test.EntityA{})
+	assert.NoError(t, err)
+
+	// validate
+	assert.Equal(t, sourceEntityA, deserializedEntityA)
 }
 
 func TestGraphSerialization_SelfReference(t *testing.T) {
@@ -191,19 +236,19 @@ func TestGraphSerialization_SelfReference(t *testing.T) {
 	}
 	entity.otherEntity = entity
 
-	graph := NewGraphSerialize(entity)
+	serializer := NewSerializerSerialize(entity)
 
-	assert.Equal(t, int32(0), graph.currentId.Id)
-	assert.Equal(t, 1, len(graph.objectToId))
+	assert.Equal(t, 0, int(serializer.currentId))
+	assert.Equal(t, 1, len(serializer.objectToId))
 	assert.True(t, proto.Equal(
-		graph.idToSerializedObject[0],
+		serializer.idToSerializedObject[0],
 		&serializationpb_test.SelfReferenceEntity{
-			OtherEntity: Id{Id: 0}.Marshal(),
+			OtherEntity: Id(0).Marshal(),
 			Field:       3,
 		},
 	))
 
-	debugOutputGraphAsJson(graph)
+	debugOutputGraphAsJson(serializer)
 }
 
 func TestGraphSerialization_DoubleRoot(t *testing.T) {
@@ -212,15 +257,15 @@ func TestGraphSerialization_DoubleRoot(t *testing.T) {
 	}
 	entity.otherEntity = entity
 
-	graph := NewGraph()
+	serializer := NewSerializer()
 
-	assert.NotPanics(t, func(){ graph.Serialize(entity) })
-	assert.PanicsWithValue(t, ErrorOnlyOneRootObject, func(){ graph.Serialize(entity) })
+	assert.NotPanics(t, func() { serializer.Serialize(entity) })
+	assert.PanicsWithValue(t, ErrorOnlyOneRootObject, func() { serializer.Serialize(entity) })
 }
 
 func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) *serializationpb.SerializedDebugGraph {
 	debugGraph := serializationpb.SerializedDebugGraph{
-		Version: graph.Version,
+		Version: SerializerFormatVersion,
 	}
 
 	for i := 0; i < len(graph.Objects); i++ {
@@ -228,7 +273,7 @@ func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) 
 		objectTypeName := graph.TypeNames[i]
 
 		debugGraph.Objects = append(debugGraph.Objects, &any.Any{
-			Value: objectData,
+			Value:   objectData,
 			TypeUrl: "type.googleapis.com/" + objectTypeName,
 		})
 	}
@@ -236,17 +281,25 @@ func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) 
 	return &debugGraph
 }
 
-func debugOutputGraphAsJson(graph *Graph) {
+func debugOutputGraphAsJson(serializer *Serializer) {
+	marshaled, err := serializer.DebugMarshal()
+	if err != nil {
+		panic(err)
+	}
+
+	debugGraph := convertSerializedGraphToDebugGraph(marshaled)
+
+	debugOutputProtoMessageAsJson(debugGraph)
+}
+
+func debugOutputProtoMessageAsJson(message proto.Message) {
 	m := jsonpb.Marshaler{
 		OrigName:     true,
 		Indent:       "  ",
 		EmitDefaults: true,
 	}
 
-	marshaled, _ := graph.DebugMarshal()
-	debugGraph := convertSerializedGraphToDebugGraph(marshaled)
-
-	if err := m.Marshal(os.Stdout, debugGraph); err != nil {
+	if err := m.Marshal(os.Stdout, message); err != nil {
 		fmt.Printf("error generating JSON file: %s", err.Error())
 	}
 
