@@ -107,7 +107,7 @@ func (serializer *Serializer) serializeInternal(object SerializableObject) Id {
 
 func (serializer *Serializer) addSerialized(id Id, protoMessage proto.Message) {
 	messageCap := cap(serializer.idToSerializedObject)
-	if messageCap-1 < int(id) {
+	if messageCap - 1 < int(id) {
 		serializer.idToSerializedObject = append(serializer.idToSerializedObject, make([]proto.Message, messageCap, messageCap)...)
 	}
 
