@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/ptypes/any"
+	"github.com/loomnetwork/gamechain/types/serialization"
 	"github.com/loomnetwork/gamechain/types/test_serialization"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -34,16 +37,32 @@ type EntityB struct {
 	bField  int32
 }
 
+type SelfReferenceEntity struct {
+	otherEntity *SelfReferenceEntity
+	field       int32
+}
+
+func (entity *SelfReferenceEntity) Serialize(graph *Graph) proto.Message {
+	return &serializationpb_test.SelfReferenceEntity{
+		OtherEntity: graph.Serialize(entity).Marshal(),
+		Field:       entity.field,
+	}
+}
+
+func (entity *SelfReferenceEntity) Deserialize(graph *Graph) {
+
+}
+
 func (entityA *EntityA) Serialize(graph *Graph) proto.Message {
 	return &serializationpb_test.EntityA{
-		EntityB: graph.SerializeX(entityA.entityB).Marshal(),
+		EntityB: graph.Serialize(entityA.entityB).Marshal(),
 		AField:  entityA.aField,
 	}
 }
 
 func (entityB *EntityB) Serialize(graph *Graph) proto.Message {
 	return &serializationpb_test.EntityB{
-		EntityA: graph.SerializeX(entityB.entityA).Marshal(),
+		EntityA: graph.Serialize(entityB.entityA).Marshal(),
 		BField:  entityB.bField,
 	}
 }
@@ -73,7 +92,7 @@ func (card *Card) Serialize(graph *Graph) proto.Message {
 	}
 
 	for _, ability := range card.abilities {
-		instance.Abilities = append(instance.Abilities, graph.SerializeX(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, graph.Serialize(ability).Marshal())
 	}
 
 	return instance
@@ -87,11 +106,11 @@ func (cardList *CardList) Serialize(graph *Graph) proto.Message {
 	instance := &serializationpb_test.CardList{}
 
 	for _, ability := range cardList.abilities {
-		instance.Abilities = append(instance.Abilities, graph.SerializeX(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, graph.Serialize(ability).Marshal())
 	}
 
 	for _, card := range cardList.cards {
-		instance.Cards = append(instance.Cards, graph.SerializeX(card).Marshal())
+		instance.Cards = append(instance.Cards, graph.Serialize(card).Marshal())
 	}
 
 	return instance
@@ -129,26 +148,12 @@ func getCardList() *CardList {
 func TestGraphSerialization_1(t *testing.T) {
 	cardList := getCardList()
 	graph := NewGraph()
-	graph.SerializeX(cardList)
+	graph.Serialize(cardList)
 
-	m := jsonpb.Marshaler{
-		OrigName:     true,
-		Indent:       "  ",
-		EmitDefaults: true,
-	}
-
-	/*	if err := m.Marshal(os.Stdout, serialized); err != nil {
-			fmt.Printf("error generating JSON file: %s", err.Error())
-		}
-	*/
-	if err := m.Marshal(os.Stdout, graph.Serialize()); err != nil {
-		fmt.Printf("error generating JSON file: %s", err.Error())
-	}
-
-	fmt.Println()
+	debugOutputGraphAsJson(graph)
 }
 
-func TestGraphSerialization_2(t *testing.T) {
+func TestGraphSerialization_CrossReference(t *testing.T) {
 	entityA := &EntityA{
 		aField: 3,
 	}
@@ -157,27 +162,93 @@ func TestGraphSerialization_2(t *testing.T) {
 	}
 	entityA.entityB = entityB
 	entityB.entityA = entityA
+
+	graph := NewGraphSerialize(entityA)
+
+	assert.Equal(t, int32(1), graph.currentId.Id)
+	assert.Equal(t, 2, len(graph.objectToId))
+	assert.True(t, proto.Equal(
+		graph.idToSerializedObject[0],
+		&serializationpb_test.EntityA{
+			EntityB: Id{Id: 1}.Marshal(),
+			AField:  3,
+		},
+	))
+	assert.True(t, proto.Equal(
+		graph.idToSerializedObject[1],
+		&serializationpb_test.EntityB{
+			EntityA: Id{Id: 0}.Marshal(),
+			BField:  4,
+		},
+	))
+
+	debugOutputGraphAsJson(graph)
+}
+
+func TestGraphSerialization_SelfReference(t *testing.T) {
+	entity := &SelfReferenceEntity{
+		field: 3,
+	}
+	entity.otherEntity = entity
+
+	graph := NewGraphSerialize(entity)
+
+	assert.Equal(t, int32(0), graph.currentId.Id)
+	assert.Equal(t, 1, len(graph.objectToId))
+	assert.True(t, proto.Equal(
+		graph.idToSerializedObject[0],
+		&serializationpb_test.SelfReferenceEntity{
+			OtherEntity: Id{Id: 0}.Marshal(),
+			Field:       3,
+		},
+	))
+
+	debugOutputGraphAsJson(graph)
+}
+
+func TestGraphSerialization_DoubleRoot(t *testing.T) {
+	entity := &SelfReferenceEntity{
+		field: 3,
+	}
+	entity.otherEntity = entity
+
 	graph := NewGraph()
 
-	graph.SerializeX(entityA)
-	//entityA.Serialize(graph)
+	assert.NotPanics(t, func(){ graph.Serialize(entity) })
+	assert.PanicsWithValue(t, ErrorOnlyOneRootObject, func(){ graph.Serialize(entity) })
+}
 
-	//fmt.Println(graph.objectToSerializedInstance)
+func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) *serializationpb.SerializedDebugGraph {
+	debugGraph := serializationpb.SerializedDebugGraph{
+		Version: graph.Version,
+	}
+
+	for i := 0; i < len(graph.Objects); i++ {
+		objectData := graph.Objects[i]
+		objectTypeName := graph.TypeNames[i]
+
+		debugGraph.Objects = append(debugGraph.Objects, &any.Any{
+			Value: objectData,
+			TypeUrl: "type.googleapis.com/" + objectTypeName,
+		})
+	}
+
+	return &debugGraph
+}
+
+func debugOutputGraphAsJson(graph *Graph) {
 	m := jsonpb.Marshaler{
 		OrigName:     true,
 		Indent:       "  ",
 		EmitDefaults: true,
 	}
 
-	/*	if err := m.Marshal(os.Stdout, serialized); err != nil {
-			fmt.Printf("error generating JSON file: %s", err.Error())
-		}
-	*/
-	if err := m.Marshal(os.Stdout, graph.Serialize()); err != nil {
+	marshaled, _ := graph.DebugMarshal()
+	debugGraph := convertSerializedGraphToDebugGraph(marshaled)
+
+	if err := m.Marshal(os.Stdout, debugGraph); err != nil {
 		fmt.Printf("error generating JSON file: %s", err.Error())
 	}
 
 	fmt.Println()
-
-	//fmt.Printf("%+v\n", cardList)
 }

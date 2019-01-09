@@ -7,11 +7,18 @@ message SerializationId {
     int32 serializationId = 1;
 }
 
-message SerializedInstance {
-    SerializationId serializationId = 1;
-    google.protobuf.Any data = 2;
+message SerializedObject {
+    bytes data = 1;
+    string type = 2;
+}
+
+message SerializedDebugGraph {
+    int32 version = 1;
+    repeated google.protobuf.Any objects = 2;
 }
 
 message SerializedGraph {
-    repeated SerializedInstance objects = 1;
+    int32 version = 1;
+    repeated bytes objects = 2;
+    repeated string typeNames = 3; // optional, only useful for debugging
 }

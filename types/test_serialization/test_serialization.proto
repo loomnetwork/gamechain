@@ -27,3 +27,8 @@ message EntityB {
     SerializationId entityA = 1;
     int32 bField = 2;
 }
+
+message SelfReferenceEntity {
+    SerializationId otherEntity = 1;
+    int32 field = 2;
+}
