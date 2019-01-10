@@ -58,7 +58,7 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
 
-proto: types/zb/zb.pb.go types/zb/zb.cs types/serialization/serialization.pb.go types/test_serialization/test_serialization.pb.go
+proto: types/zb/zb.pb.go types/zb/zb.cs library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go library/pbgraphserialization/proto/pbgraphserialization_test/pbgraphserialization_test.pb.go 
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -92,7 +92,9 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/kr/logfmt \
 		github.com/jinzhu/gorm \
 		github.com/phonkee/go-pubsub \
-		github.com/mattn/go-sqlite3
+		github.com/mattn/go-sqlite3 \
+		golang.org/x/tools/go/loader
+
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
@@ -118,8 +120,10 @@ clean:
 	go clean
 	rm -f \
 		protoc-gen-gogo \
-		types/zb/zb.pb.go \
-		types/zb/Zb.cs \
+		types/zb/pb_zb.go \
+		types/zb/zb.cs \
+		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
+		library/pbgraphserialization/proto/pbgraphserialization_test/pb_pbgraphserialization_test.go \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \

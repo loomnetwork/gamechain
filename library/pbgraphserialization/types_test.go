@@ -1,8 +1,8 @@
-package serialization
+package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/test_serialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization_test"
 )
 
 type CardAbility struct {

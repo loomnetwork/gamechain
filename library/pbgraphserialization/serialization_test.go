@@ -1,12 +1,12 @@
-package serialization
+package pbgraphserialization
 
 import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/any"
-	"github.com/loomnetwork/gamechain/types/serialization"
-	"github.com/loomnetwork/gamechain/types/test_serialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization_test"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"reflect"
