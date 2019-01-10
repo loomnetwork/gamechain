@@ -36,3 +36,4 @@ loom
 replays/*
 !replays/.gitkeep
 tools/replay_logger/replays/*
+replay/*
