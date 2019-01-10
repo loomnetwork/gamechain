@@ -3,13 +3,14 @@ package battleground
 import (
 	"bytes"
 	"fmt"
+	"math/rand"
+	"sort"
+
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
-	"math/rand"
-	"sort"
 )
 
 const (
@@ -34,17 +35,17 @@ var (
 )
 
 type Gameplay struct {
-	State                  *zb.GameState
-	stateFn                stateFn
-	cardLibrary            *zb.CardList
-	err                    error
-	customGameMode         *CustomGameMode
-	history                []*zb.HistoryData
-	ctx                    *contract.Context
-	UseBackendGameLogic    bool         // when false, disables all checks to ensure the client can work before server is fully implemented
-	actionOutcomes         []*zb.PlayerActionOutcome
-	playersDebugCheats     []*zb.DebugCheatsConfiguration
-	logger                 *loom.Logger // optional logger
+	State               *zb.GameState
+	stateFn             stateFn
+	cardLibrary         *zb.CardList
+	err                 error
+	customGameMode      *CustomGameMode
+	history             []*zb.HistoryData
+	ctx                 *contract.Context
+	UseBackendGameLogic bool // when false, disables all checks to ensure the client can work before server is fully implemented
+	actionOutcomes      []*zb.PlayerActionOutcome
+	playersDebugCheats  []*zb.DebugCheatsConfiguration
+	logger              *loom.Logger // optional logger
 }
 
 type stateFn func(*Gameplay) stateFn
@@ -86,12 +87,12 @@ func NewGamePlay(ctx contract.Context,
 		CreatedAt:          ctx.Now().Unix(),
 	}
 	g := &Gameplay{
-		State:                  state,
-		customGameMode:         customGameMode,
-		ctx:                    &ctx,
-		UseBackendGameLogic:    useBackendGameLogic,
-		logger:                 ctx.Logger(),
-		playersDebugCheats:     playersDebugCheats,
+		State:               state,
+		customGameMode:      customGameMode,
+		ctx:                 &ctx,
+		UseBackendGameLogic: useBackendGameLogic,
+		logger:              ctx.Logger(),
+		playersDebugCheats:  playersDebugCheats,
 	}
 
 	var err error
@@ -118,9 +119,9 @@ func NewGamePlay(ctx contract.Context,
 // GamePlayFrom initializes and run game to the latest state
 func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool, playersDebugCheats []*zb.DebugCheatsConfiguration) (*Gameplay, error) {
 	g := &Gameplay{
-		State: state,
+		State:               state,
 		UseBackendGameLogic: useBackendGameLogic,
-		playersDebugCheats: playersDebugCheats,
+		playersDebugCheats:  playersDebugCheats,
 	}
 	if err := g.run(); err != nil {
 		return nil, err
@@ -164,7 +165,6 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
 		playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
 	}
-
 
 	// init card instance IDs
 	// 0 and 1 are reserved for overlords
@@ -528,62 +528,55 @@ func actionMulligan(g *Gameplay) stateFn {
 		return nil
 	}
 
-	mulligan := current.GetMulligan()
-	if mulligan == nil {
-		return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
-	}
-	var player *zb.PlayerState
-	for i := 0; i < len(g.State.PlayerStates); i++ {
-		if g.State.PlayerStates[i].Id == current.PlayerId {
-			player = g.State.PlayerStates[i]
+	if g.UseBackendGameLogic {
+		mulligan := current.GetMulligan()
+		if mulligan == nil {
+			return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
 		}
-	}
-	if player == nil {
-		return g.captureErrorAndStop(fmt.Errorf("player not found"))
-	}
-
-	// Check if all the mulliganed cards and number of card that can be mulligan
-	if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
-		return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
-	}
-	for _, card := range mulligan.MulliganedCards {
-		_, _, found := findCardInCardListByInstanceId(card, player.CardsInHand)
-		if !found {
-			return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
-		}
-	}
-
-	// keep only the cards in in mulligan
-	keepCards := make([]*zb.CardInstance, 0)
-	for _, mcard := range mulligan.MulliganedCards {
-		_, card, found := findCardInCardListByInstanceId(mcard, player.CardsInHand)
-		if found {
-			keepCards = append(keepCards, card)
-		}
-	}
-
-	// if the card in hand not match with the keep card, draw new cards
-	rerollCards := make([]*zb.CardInstance, 0)
-	if len(keepCards) == 0 {
-		rerollCards = append(rerollCards, player.CardsInHand...)
-	} else {
-		for _, card := range player.CardsInHand {
-			_, _, found := findCardInCardListByName(card, keepCards)
-			if !found {
-				rerollCards = append(rerollCards, card)
+		var player *zb.PlayerState
+		for i := 0; i < len(g.State.PlayerStates); i++ {
+			if g.State.PlayerStates[i].Id == current.PlayerId {
+				player = g.State.PlayerStates[i]
 			}
 		}
-	}
+		if player == nil {
+			return g.captureErrorAndStop(fmt.Errorf("player not found"))
+		}
 
-	// set card in hands
-	player.CardsInHand = keepCards
-	// place cards back to deck
-	player.CardsInDeck = append(player.CardsInDeck, rerollCards...)
-	// draw card to replace the reroll cards
-	for range rerollCards {
-		player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
-		// TODO: return to deck with random order
-		player.CardsInDeck = player.CardsInDeck[1:]
+		if player.TurnNumber > 0 {
+			return g.captureErrorAndStop(fmt.Errorf("Mulligan not allowed after game has started"))
+		}
+
+		// Check if all the mulliganed cards and number of card that can be mulligan
+		if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
+			return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
+		}
+		mulliganCards := make([]*zb.CardInstance, 0)
+		for _, card := range mulligan.MulliganedCards {
+			handCards := player.CardsInHand[:3] // make sure only first 3 drawn cards can be mulliganed
+			_, mulliganCard, found := findCardInCardListByInstanceId(card, handCards)
+			if !found {
+				return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
+			}
+			mulliganCards = append(mulliganCards, mulliganCard)
+		}
+
+		// draw card to replace the reroll cards
+		for range mulliganCards {
+			player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
+			// TODO: return to deck with random order
+			player.CardsInDeck = player.CardsInDeck[1:]
+		}
+
+		// place cards back to deck
+		for _, mulliganCard := range mulliganCards {
+			for i, cardInHand := range player.CardsInHand {
+				if cardInHand.InstanceId == mulliganCard.InstanceId {
+					player.CardsInHand = append(player.CardsInHand[:i], player.CardsInHand[i+1:]...)
+				}
+			}
+		}
+		player.CardsInDeck = append(player.CardsInDeck, mulliganCards...)
 	}
 
 	// determine the next action
@@ -701,16 +694,18 @@ func actionCardPlay(g *Gameplay) stateFn {
 				cardPlay.Card.InstanceId.Id,
 				// cardPlay.Card.Prototype.Name,
 			)
-			if !g.UseBackendGameLogic {
-				g.debugf("ClientSideRuleOverride-" + err.Error())
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(err)
-			}
+			return g.captureErrorAndStop(err)
 		}
+
+		// check goo cost
+		if card.Instance.GooCost > g.activePlayer().CurrentGoo {
+			err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
+			return g.captureErrorAndStop(err)
+		}
+
+		// change player goo
+		// TODO: abilities that change goo vials, overflow etc
+		g.activePlayer().CurrentGoo -= card.Instance.GooCost
 
 		// put card on board
 		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
@@ -1041,6 +1036,12 @@ func actionEndTurn(g *Gameplay) stateFn {
 
 	// change player turn
 	g.changePlayerTurn()
+
+	// give the new player a new goo vial and fill up all their vials
+	if g.activePlayer().GooVials < maxGooVials {
+		g.activePlayer().GooVials++
+	}
+	g.activePlayer().CurrentGoo = g.activePlayer().GooVials
 
 	// allow the new player to draw card on new turn
 	g.activePlayer().HasDrawnCard = false
