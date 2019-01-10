@@ -1102,7 +1102,7 @@ message CreatureRank {
 
 message CreatureType {
     enum Enum {
-        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+        Undefined = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
         WALKER = 1 [(gogoproto.enumvalue_customname) = "Walker"];
         FERAL = 2 [(gogoproto.enumvalue_customname) = "Feral"];
         HEAVY = 3 [(gogoproto.enumvalue_customname) = "Heavy"];
