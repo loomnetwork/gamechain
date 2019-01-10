@@ -553,7 +553,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		}
 		mulliganCards := make([]*zb.CardInstance, 0)
 		for _, card := range mulligan.MulliganedCards {
-			handCards := player.CardsInHand[:3] // make sure only first 3 drawn cards can be mulliganed
+			handCards := player.CardsInHand[:player.InitialCardsInHandCount]
 			_, mulliganCard, found := findCardInCardListByInstanceId(card, handCards)
 			if !found {
 				return g.captureErrorAndStop(fmt.Errorf("invalid mulligan card"))
