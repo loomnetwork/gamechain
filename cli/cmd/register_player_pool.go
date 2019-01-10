@@ -57,5 +57,5 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", 0, "Random Seed")
 	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
-	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.useBackendGameLogic, "useBackendGameLogic", "l", false, "useBackendGameLogic")
+	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.useBackendGameLogic, "useBackendGameLogic", "b", false, "useBackendGameLogic")
 }

@@ -199,14 +199,15 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 
 		request := &zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				UserId:     ps.Id,
-				DeckId:     ps.Deck.Id,
-				Version:    game.Version,
+				UserId:  ps.Id,
+				DeckId:  ps.Deck.Id,
+				Version: game.Version,
 				DebugCheats: zb.DebugCheatsConfiguration{
-					Enabled: true,
+					Enabled:             true,
 					UseCustomRandomSeed: true,
-					CustomRandomSeed: game.RandomSeed,
+					CustomRandomSeed:    game.RandomSeed,
 				},
+				UseBackendGameLogic: true,
 			},
 		}
 
