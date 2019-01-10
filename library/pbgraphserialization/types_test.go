@@ -5,6 +5,9 @@ import (
 	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
 )
 
+//some cool comments
+//pbgraphserialization:enable
+// some more comments
 type CardAbility struct {
 	targetType string
 	effect     string
