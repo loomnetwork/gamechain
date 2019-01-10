@@ -42,13 +42,16 @@ func main() {
 	if readFromDBFlag {
 		gameReplay = readFromDB()
 	} else {
-		gameReplay = readJSONFile(*replayJSON)
+		gameReplay = readFromJSONFile(*replayJSON)
 	}
 
-	runReplay(gameReplay)
+	err := runReplay(gameReplay)
+	if err != nil {
+		log.WithError(err).Error("error running replay")
+	}
 }
 
-func runReplay(gameReplay *zb.GameReplay) {
+func runReplay(gameReplay *zb.GameReplay) error {
 	// set up fake context
 	zbContract := &battleground.ZombieBattleground{}
 	log.Info("Setting up fake context")
@@ -59,22 +62,19 @@ func runReplay(gameReplay *zb.GameReplay) {
 	// initFilePath := filepath.Join(basepath, "init.json")
 	initFile, err := os.Open(*initFileName)
 	if err != nil {
-		log.WithError(err).Error("error opening init.json")
-		os.Exit(1)
+		return errors.Wrap(err, "error opening init.json")
 	}
 	defer initFile.Close()
 
 	var initRequest zb.InitRequest
 	err = jsonpb.Unmarshal(initFile, &initRequest)
 	if err != nil {
-		log.WithError(err).Error("error unmarshalling init.json")
-		os.Exit(1)
+		return errors.Wrap(err, "error unmarshalling init.json")
 	}
 
 	err = zbContract.Init(*fakeCtx, &initRequest)
 	if err != nil {
-		log.WithError(err).Error("error calling Init transaction")
-		return
+		return errors.Wrap(err, "error calling Init transaction")
 	}
 
 	// log the game play being replayed
@@ -87,16 +87,14 @@ func runReplay(gameReplay *zb.GameReplay) {
 	log.Info("Initialising states")
 	err = initialiseStates(*fakeCtx, zbContract, gameReplay, &replayedGameReplay)
 	if err != nil {
-		log.WithError(err).Error("error initialising state")
-		os.Exit(1)
+		return errors.Wrap(err, "error initialising state")
 	}
 
 	// start replaying the actions and validate states after each transition
 	log.Info("Starting replay and validate")
 	err = replayAndValidate(*fakeCtx, zbContract, gameReplay, &replayedGameReplay)
 	if err != nil {
-		log.WithError(err).Error("error while validating gameplay")
-		os.Exit(1)
+		return errors.Wrap(err, "error while validating gameplay")
 	}
 
 	// fnameTrimmed := strings.TrimSuffix(fname, ".json")
@@ -112,6 +110,7 @@ func runReplay(gameReplay *zb.GameReplay) {
 	// 	log.WithError(err).Error("error writing output to file")
 	// }
 	// log.Infof("Gameplay validation completed, output written to %s", pathReplayed)
+	return nil
 }
 
 func readFromDB() *zb.GameReplay {
@@ -143,7 +142,7 @@ func readFromDB() *zb.GameReplay {
 	return &gameReplay
 }
 
-func readJSONFile(fname string) *zb.GameReplay {
+func readFromJSONFile(fname string) *zb.GameReplay {
 	var gameReplay zb.GameReplay
 
 	if len(os.Args) == 1 {
@@ -166,7 +165,6 @@ func readJSONFile(fname string) *zb.GameReplay {
 		os.Exit(1)
 	}
 	return &gameReplay
-
 }
 
 func setupFakeContext() *contract.Context {

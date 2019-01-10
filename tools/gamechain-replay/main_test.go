@@ -74,5 +74,8 @@ func TestComparePlayerTests(t *testing.T) {
 }
 
 func TestReplayE2E(t *testing.T) {
-
+	*initFileName = "init.json"
+	gameReplay := readFromJSONFile("match_test.json")
+	err := runReplay(gameReplay)
+	assert.Nil(t, err)
 }
