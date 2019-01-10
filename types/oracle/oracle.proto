@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 
 message PlasmachainEvent {
@@ -12,6 +13,11 @@ message PlasmachainEvent {
 message PlasmachainGeneratedCard {
     Address owner = 1;
     Address contract = 2;
-    BigUInt card_id = 3;
+    BigUInt card_id = 3 [(gogoproto.customname)="CardID"];
     BigUInt amount = 4;
+}
+
+message ProcessEventBatchRequest {
+    repeated PlasmachainEvent events = 1;
+    string card_version = 2;
 }

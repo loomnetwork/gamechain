@@ -2,7 +2,6 @@ package oracle
 
 import (
 	"encoding/base64"
-	"fmt"
 	"io/ioutil"
 	"runtime"
 	"sort"
@@ -10,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
@@ -145,7 +145,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.gcGateway == nil {
 		dappClient := client.NewDAppChainRPCClient(orc.cfg.GamechainChainID, orc.cfg.GamechainWriteURI, orc.cfg.GamechainReadURI)
-		orc.gcGateway, err = ConnectToGamechainGateway(dappClient, orc.gcAddress, orc.cfg.GamechainContractName, orc.gcSigner, orc.logger)
+		orc.gcGateway, err = ConnectToGamechainGateway(dappClient, orc.gcAddress, orc.cfg.GamechainContractName, orc.gcSigner, orc.logger, orc.cfg.GamechainCardVersion)
 		if err != nil {
 			return errors.Wrap(err, "failed to create gamechain gateway")
 		}
@@ -207,12 +207,11 @@ func (orc *Oracle) Run() {
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
-	orc.logger.Info("Polling plasma chain")
+	orc.logger.Info("polling plasma chain")
 	lastPlasmachainBlockNum, err := orc.gcGateway.LastPlasmaBlockNumber()
 	if err != nil {
 		return err
 	}
-	orc.logger.Info(fmt.Sprintf("lastPlasmachainBlockNum: %d\n", lastPlasmachainBlockNum))
 	startBlock := lastPlasmachainBlockNum + 1
 	if orc.startBlock > startBlock {
 		startBlock = orc.startBlock
@@ -220,7 +219,6 @@ func (orc *Oracle) pollPlasmaChain() error {
 
 	// TODO: limit max block range per batch
 	latestBlock, err := orc.getLatestEthBlockNumber()
-	orc.logger.Info(fmt.Sprintf("latestBlock: %d\n", latestBlock))
 	if err != nil {
 		orc.logger.Error("failed to obtain latest Plasmachain block number from Gamechain", "err", err)
 		return err
@@ -231,13 +229,15 @@ func (orc *Oracle) pollPlasmaChain() error {
 		return nil
 	}
 
-	startBlock = 262000
-	// latestBlock = 200000
-	orc.logger.Debug(fmt.Sprintf("latestBlock: %d, startBlock: %d", latestBlock, startBlock))
-
+	// Not sure why lower block produce error 'getting receipt: get receipt for', leveldb: not found
+	// TODO: remove this
+	if startBlock < 200000 {
+		startBlock = 200000
+	}
+	orc.logger.Info("fetching blocks", "latestBlock", startBlock, "latestBlock", latestBlock)
 	events, err := orc.fetchEvents(startBlock, latestBlock)
 	if err != nil {
-		orc.logger.Error("failed to fetch events from Ethereum", "err", err)
+		orc.logger.Error("failed to fetch events from Plasmachain", "err", err)
 		return err
 	}
 
@@ -263,39 +263,38 @@ func (orc *Oracle) getLatestEthBlockNumber() (uint64, error) {
 }
 
 // Fetches all relevent events from an Plasmachain node from startBlock to endBlock (inclusive)
-func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*plasmachainEventInfo, error) {
-	orc.logger.Info(fmt.Sprintf("fetchEvents: %d, %d\n", startBlock, endBlock))
+func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*orctype.PlasmachainEvent, error) {
 	// NOTE: Currently either all blocks from w.StartBlock are processed successfully or none are.
 	filterOpts := &bind.FilterOpts{
 		Start: startBlock,
 		End:   &endBlock,
 	}
 
-	var geratedCards []*plasmachainEventInfo
+	var generatedCards []*plasmachainEventInfo
 	var err error
 
-	geratedCards, err = orc.fetchGeneraedCard(filterOpts)
+	generatedCards, err = orc.fetchGeneratedCard(filterOpts)
 	if err != nil {
 		return nil, err
 	}
 
 	events := make(
 		[]*plasmachainEventInfo, 0,
-		len(geratedCards),
+		len(generatedCards),
 	)
-	events = append(events, geratedCards...)
+	events = append(events, generatedCards...)
 
 	sortPlasmachainEvents(events)
-	sortedEvents := make([]*plasmachainEventInfo, len(events))
+	sortedEvents := make([]*orctype.PlasmachainEvent, len(events))
 	for i, event := range events {
-		sortedEvents[i] = event
+		sortedEvents[i] = event.Event
 	}
 
 	if len(events) > 0 {
 		orc.logger.Debug("fetched Plasmachain events",
 			"startBlock", startBlock,
 			"endBlock", endBlock,
-			"generatedCard", len(geratedCards),
+			"generatedCard", len(generatedCards),
 		)
 	}
 
@@ -313,7 +312,7 @@ func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	})
 }
 
-func (orc *Oracle) fetchGeneraedCard(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
+func (orc *Oracle) fetchGeneratedCard(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
 	return orc.pcGateway.FetchGeneratedCard(opts)
 }
 

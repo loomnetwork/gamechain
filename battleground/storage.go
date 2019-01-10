@@ -563,3 +563,12 @@ func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 	}
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }
+
+func findCardByMouldID(cardList *zb.CardList, mouldID int64) (*zb.Card, bool) {
+	for _, card := range cardList.Cards {
+		if card.MouldId == mouldID {
+			return card, true
+		}
+	}
+	return nil, false
+}

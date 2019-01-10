@@ -3,6 +3,7 @@ package oracle
 import (
 	"time"
 
+	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -19,11 +20,13 @@ type GamechainGateway struct {
 	caller   loom.Address
 	logger   *loom.Logger
 	signer   auth.Signer
+	// CardVersion
+	cardVersion string
 }
 
 func ConnectToGamechainGateway(
 	loomClient *client.DAppChainRPCClient, caller loom.Address, contractName string, signer auth.Signer,
-	logger *loom.Logger,
+	logger *loom.Logger, cardVersion string,
 ) (*GamechainGateway, error) {
 	gatewayAddr, err := loomClient.Resolve(contractName)
 	if err != nil {
@@ -36,6 +39,7 @@ func ConnectToGamechainGateway(
 		caller:           caller,
 		signer:           signer,
 		logger:           logger,
+		cardVersion:      cardVersion,
 	}, nil
 }
 
@@ -49,6 +53,15 @@ func (gw *GamechainGateway) LastPlasmaBlockNumber() (uint64, error) {
 	return resp.State.LastPlasmachainBlockNum, nil
 }
 
-func (gw *GamechainGateway) ProcessEventBatch(events []*plasmachainEventInfo) error {
-	panic("need to have ProcessEventBatch")
+func (gw *GamechainGateway) ProcessEventBatch(events []*orctype.PlasmachainEvent) error {
+	req := orctype.ProcessEventBatchRequest{
+		Events:      events,
+		CardVersion: gw.cardVersion,
+	}
+	if _, err := gw.contract.Call("ProcessEventBatch", &req, gw.signer, nil); err != nil {
+		gw.logger.Error("failed to call ProcessEventBatch", "err", err)
+		return err
+	}
+	gw.LastResponseTime = time.Now()
+	return nil
 }
