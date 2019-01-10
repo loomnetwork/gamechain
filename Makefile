@@ -58,7 +58,7 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
 
-proto: types/zb/zb.pb.go types/zb/zb.cs library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go library/pbgraphserialization/proto/pbgraphserialization_test/pbgraphserialization_test.pb.go 
+proto: types/zb/zb.pb.go types/zb/zb.cs library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.pb.go library/pbgraphserialization/internal/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -122,8 +122,8 @@ clean:
 		protoc-gen-gogo \
 		types/zb/pb_zb.go \
 		types/zb/zb.cs \
-		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
-		library/pbgraphserialization/proto/pbgraphserialization_test/pb_pbgraphserialization_test.go \
+		library/pbgraphserialization/internal/proto/pbgraphserialization/pb_pbgraphserialization.go \
+		library/pbgraphserialization/internal/proto/test_pbgraphserialization/pb_test_pbgraphserialization.go \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \

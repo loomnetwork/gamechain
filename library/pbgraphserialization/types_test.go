@@ -2,7 +2,7 @@ package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization_test"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
 )
 
 type CardAbility struct {
@@ -36,18 +36,18 @@ type SelfReferenceEntity struct {
 }
 
 func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Message {
-	return &serializationpb_test.SelfReferenceEntity{
+	return &pbgraphserialization_pb_test.SelfReferenceEntity{
 		OtherEntity: serializer.Serialize(entity).Marshal(),
 		Field:       entity.field,
 	}
 }
 
 func (entity *SelfReferenceEntity) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.SelfReferenceEntity)
+	message := rawMessage.(*pbgraphserialization_pb_test.SelfReferenceEntity)
 	otherEntityDeserialized, err := deserializer.Deserialize(
 		message.OtherEntity,
 		func() SerializableObject { return &SelfReferenceEntity{} },
-		func() proto.Message { return &serializationpb_test.SelfReferenceEntity{} },
+		func() proto.Message { return &pbgraphserialization_pb_test.SelfReferenceEntity{} },
 	)
 
 	if err != nil {
@@ -60,18 +60,18 @@ func (entity *SelfReferenceEntity) Deserialize(deserializer *Deserializer, rawMe
 }
 
 func (entityA *EntityA) Serialize(serializer *Serializer) proto.Message {
-	return &serializationpb_test.EntityA{
+	return &pbgraphserialization_pb_test.EntityA{
 		EntityB: serializer.Serialize(entityA.entityB).Marshal(),
 		AField:  entityA.aField,
 	}
 }
 
 func (entityA *EntityA) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.EntityA)
+	message := rawMessage.(*pbgraphserialization_pb_test.EntityA)
 	entityBDeserialized, err := deserializer.Deserialize(
 		message.EntityB,
 		func() SerializableObject { return &EntityB{} },
-		func() proto.Message { return &serializationpb_test.EntityB{} },
+		func() proto.Message { return &pbgraphserialization_pb_test.EntityB{} },
 	)
 
 	if err != nil {
@@ -84,18 +84,18 @@ func (entityA *EntityA) Deserialize(deserializer *Deserializer, rawMessage proto
 }
 
 func (entityB *EntityB) Serialize(serializer *Serializer) proto.Message {
-	return &serializationpb_test.EntityB{
+	return &pbgraphserialization_pb_test.EntityB{
 		EntityA: serializer.Serialize(entityB.entityA).Marshal(),
 		BField:  entityB.bField,
 	}
 }
 
 func (entityB *EntityB) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.EntityB)
+	message := rawMessage.(*pbgraphserialization_pb_test.EntityB)
 	entityADeserialized, err := deserializer.Deserialize(
 		message.EntityA,
 		func() SerializableObject { return &EntityA{} },
-		func() proto.Message { return &serializationpb_test.EntityA{} },
+		func() proto.Message { return &pbgraphserialization_pb_test.EntityA{} },
 	)
 
 	if err != nil {
@@ -108,14 +108,14 @@ func (entityB *EntityB) Deserialize(deserializer *Deserializer, rawMessage proto
 }
 
 func (cardAbility *CardAbility) Serialize(serializer *Serializer) proto.Message {
-	return &serializationpb_test.CardAbility{
+	return &pbgraphserialization_pb_test.CardAbility{
 		Effect:     cardAbility.effect,
 		TargetType: cardAbility.targetType,
 	}
 }
 
 func (cardAbility *CardAbility) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.CardAbility)
+	message := rawMessage.(*pbgraphserialization_pb_test.CardAbility)
 
 	cardAbility.targetType = message.TargetType
 	cardAbility.effect = message.Effect
@@ -123,7 +123,7 @@ func (cardAbility *CardAbility) Deserialize(deserializer *Deserializer, rawMessa
 }
 
 func (card *Card) Serialize(serializer *Serializer) proto.Message {
-	instance := &serializationpb_test.Card{
+	instance := &pbgraphserialization_pb_test.Card{
 		Name: card.name,
 	}
 
@@ -135,14 +135,14 @@ func (card *Card) Serialize(serializer *Serializer) proto.Message {
 }
 
 func (card *Card) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.Card)
+	message := rawMessage.(*pbgraphserialization_pb_test.Card)
 
 	card.name = message.Name
 	for i := 0; i < len(message.Abilities); i++ {
 		abilityDeserialized, err := deserializer.Deserialize(
 			message.Abilities[i],
 			func() SerializableObject { return &CardAbility{} },
-			func() proto.Message { return &serializationpb_test.CardAbility{} },
+			func() proto.Message { return &pbgraphserialization_pb_test.CardAbility{} },
 		)
 
 		if err != nil {
@@ -156,7 +156,7 @@ func (card *Card) Deserialize(deserializer *Deserializer, rawMessage proto.Messa
 }
 
 func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
-	instance := &serializationpb_test.CardList{}
+	instance := &pbgraphserialization_pb_test.CardList{}
 
 	for _, ability := range cardList.abilities {
 		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
@@ -170,13 +170,13 @@ func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
 }
 
 func (cardList *CardList) Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error) {
-	message := rawMessage.(*serializationpb_test.CardList)
+	message := rawMessage.(*pbgraphserialization_pb_test.CardList)
 
 	for i := 0; i < len(message.Abilities); i++ {
 		abilityDeserialized, err := deserializer.Deserialize(
 			message.Abilities[i],
 			func() SerializableObject { return &CardAbility{} },
-			func() proto.Message { return &serializationpb_test.CardAbility{} },
+			func() proto.Message { return &pbgraphserialization_pb_test.CardAbility{} },
 		)
 
 		if err != nil {
@@ -190,7 +190,7 @@ func (cardList *CardList) Deserialize(deserializer *Deserializer, rawMessage pro
 		cardDeserialized, err := deserializer.Deserialize(
 			message.Cards[i],
 			func() SerializableObject { return &Card{} },
-			func() proto.Message { return &serializationpb_test.Card{} },
+			func() proto.Message { return &pbgraphserialization_pb_test.Card{} },
 		)
 
 		if err != nil {

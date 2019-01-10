@@ -2,7 +2,7 @@ package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization"
 )
 
 type Deserializer struct {
@@ -16,7 +16,7 @@ func NewDeserializer() *Deserializer {
 	return &deserializer
 }
 
-func NewDeserializerUnmarshal(marshaledGraph *serializationpb.SerializedGraph) (*Deserializer, error) {
+func NewDeserializerUnmarshal(marshaledGraph *pbgraphserialization_pb.SerializedGraph) (*Deserializer, error) {
 	deserializer := NewDeserializer()
 	err := deserializer.Unmarshal(marshaledGraph)
 	if err != nil {
@@ -25,7 +25,7 @@ func NewDeserializerUnmarshal(marshaledGraph *serializationpb.SerializedGraph) (
 	return deserializer, nil
 }
 
-func (deserializer *Deserializer) Unmarshal(marshaledGraph *serializationpb.SerializedGraph) error {
+func (deserializer *Deserializer) Unmarshal(marshaledGraph *pbgraphserialization_pb.SerializedGraph) error {
 	count := len(marshaledGraph.Objects)
 	deserializer.idToMarshaledObject = make([][]byte, count, count)
 	for i := 0; i < count; i++ {
@@ -35,7 +35,7 @@ func (deserializer *Deserializer) Unmarshal(marshaledGraph *serializationpb.Seri
 	return nil
 }
 
-func (deserializer *Deserializer) Deserialize(id *serializationpb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) (SerializableObject, error) {
+func (deserializer *Deserializer) Deserialize(id *pbgraphserialization_pb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) (SerializableObject, error) {
 	unmarshaledId := Unmarshal(id)
 
 	if unmarshaledId == NilSerializationId {
@@ -65,7 +65,7 @@ func (deserializer *Deserializer) Deserialize(id *serializationpb.SerializationI
 	return object, nil
 }
 
-func (deserializer *Deserializer) DeserializeNoError(id *serializationpb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) SerializableObject {
+func (deserializer *Deserializer) DeserializeNoError(id *pbgraphserialization_pb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) SerializableObject {
 	deserialized, _ := deserializer.Deserialize(id, targetCreator, unmarshaledProtoMessageCreator)
 	return deserialized
 }
@@ -85,6 +85,6 @@ func (deserializer *Deserializer) DeserializeRoot(root SerializableObject, messa
 	return root, nil
 }
 
-func (deserializer *Deserializer) getMarshaledObject(id *serializationpb.SerializationId) []byte {
+func (deserializer *Deserializer) getMarshaledObject(id *pbgraphserialization_pb.SerializationId) []byte {
 	return deserializer.idToMarshaledObject[id.SerializationId]
 }

@@ -5,8 +5,8 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/any"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization_test"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"reflect"
@@ -26,7 +26,7 @@ func TestGraphSerialization_Basic(t *testing.T) {
 		func(t *testing.T, serializer *Serializer) {
 
 		},
-		&serializationpb_test.CardList{},
+		&pbgraphserialization_pb_test.CardList{},
 	)
 }
 
@@ -48,20 +48,20 @@ func TestGraphSerialization_CrossReference(t *testing.T) {
 			assert.Equal(t, 2, len(serializer.objectToId))
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[0],
-				&serializationpb_test.EntityA{
+				&pbgraphserialization_pb_test.EntityA{
 					EntityB: Id(1).Marshal(),
 					AField:  sourceEntityA.aField,
 				},
 			))
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[1],
-				&serializationpb_test.EntityB{
+				&pbgraphserialization_pb_test.EntityB{
 					EntityA: Id(0).Marshal(),
 					BField:  sourceEntityB.bField,
 				},
 			))
 		},
-		&serializationpb_test.EntityA{},
+		&pbgraphserialization_pb_test.EntityA{},
 	)
 }
 
@@ -79,13 +79,13 @@ func TestGraphSerialization_SelfReference(t *testing.T) {
 			assert.Equal(t, 1, len(serializer.objectToId))
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[0],
-				&serializationpb_test.SelfReferenceEntity{
+				&pbgraphserialization_pb_test.SelfReferenceEntity{
 					OtherEntity: Id(0).Marshal(),
 					Field:       sourceEntity.field,
 				},
 			))
 		},
-		&serializationpb_test.SelfReferenceEntity{},
+		&pbgraphserialization_pb_test.SelfReferenceEntity{},
 	)
 }
 
@@ -144,8 +144,8 @@ func fullCircleSerializationTest(
 	}
 }
 
-func convertSerializedGraphToDebugGraph(graph *serializationpb.SerializedGraph) *serializationpb.SerializedDebugGraph {
-	debugGraph := serializationpb.SerializedDebugGraph{
+func convertSerializedGraphToDebugGraph(graph *pbgraphserialization_pb.SerializedGraph) *pbgraphserialization_pb.SerializedDebugGraph {
+	debugGraph := pbgraphserialization_pb.SerializedDebugGraph{
 		Version: SerializerFormatVersion,
 	}
 

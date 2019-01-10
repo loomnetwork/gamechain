@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "pbgraphserialization_test";
+option go_package = "pbgraphserialization_pb_test";
 
-import "library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.proto";
+import "github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.proto";
 
 message CardAbility {
     string targetType = 2;
