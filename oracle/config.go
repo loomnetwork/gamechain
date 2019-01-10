@@ -16,6 +16,7 @@ type Config struct {
 	GamechainWriteURI       string
 	GamechainEventsURI      string
 	GamechainContractName   string
+	GamechainCardVersion    string // the card version e.g. v1, v3 used to map from mould id to name
 	// Oracle log verbosity (debug, info, error, etc.)
 	OracleLogLevel       string
 	OracleLogDestination string
@@ -40,6 +41,7 @@ func DefaultConfig() *Config {
 		GamechainWriteURI:             "http://127.0.0.1:46658/rpc",
 		GamechainEventsURI:            "ws://127.0.0.1:%d/queryws",
 		GamechainContractName:         "zombiebattleground",
+		GamechainCardVersion:          "v3",
 		OracleReconnectInterval:       5,
 	}
 }

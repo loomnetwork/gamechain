@@ -14,6 +14,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
+	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
@@ -59,6 +60,7 @@ var (
 	privateKeyStr string
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
+	ErrInvalidEventBatch  = errors.New("invalid event batch")
 )
 
 type ZombieBattleground struct {
@@ -2106,6 +2108,137 @@ func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
 	v := sig[len(sig)-1]
 	sig[len(sig)-1] = v + 27
 	return sig, nil
+}
+
+func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
+	}
+
+	blockCount := 0           // number of blocks that were actually processed in this batch
+	lastEthBlock := uint64(0) // the last block processed in this batch
+
+	for _, ev := range req.Events {
+		// Events in the batch are expected to be ordered by block, so a batch should contain
+		// events from block N, followed by events from block N+1, any other order is invalid.
+		if ev.EthBlock < lastEthBlock {
+			ctx.Logger().Error("Oracle invalid event batch, block has already been processed",
+				"block", ev.EthBlock)
+			return ErrInvalidEventBatch
+		}
+
+		// Multiple validators might submit batches with overlapping block ranges because the
+		// Gateway oracles will fetch events from Plasmachian at different times, with different
+		// latencies, etc. Simply skip blocks that have already been processed.
+		if ev.EthBlock <= state.LastPlasmachainBlockNum {
+			continue
+		}
+
+		switch payload := ev.Payload.(type) {
+		case *orctype.PlasmachainEvent_Card:
+			if err := validateGeneratedCard(payload.Card); err != nil {
+				return err
+			}
+			userID := payload.Card.Owner.Local.String()
+			cardID := payload.Card.CardID.Value.Int64()
+			amount := payload.Card.Amount.Value.Int64()
+			err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
+			if err != nil {
+				ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
+				return err
+			}
+			ctx.Logger().Info(fmt.Sprintf("add card: %+v", payload.Card))
+		case nil:
+			ctx.Logger().Error("Oracle missing event payload")
+			continue
+
+		default:
+			ctx.Logger().Error("Oracle unknown event payload type %T", payload)
+			continue
+		}
+
+		if ev.EthBlock > lastEthBlock {
+			blockCount++
+			lastEthBlock = ev.EthBlock
+		}
+	}
+
+	// If there are no new events in this batch return an error so that the batch tx isn't
+	// propagated to the other nodes.
+	if blockCount == 0 {
+		return fmt.Errorf("no new events found in the batch")
+	}
+
+	state.LastPlasmachainBlockNum = lastEthBlock
+
+	return saveState(ctx, state)
+}
+
+func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
+	if card == nil {
+		return errors.New("card is nil")
+	}
+	if card.CardID == nil {
+		return errors.New("card id is nil")
+	}
+	if card.Amount == nil {
+		return errors.New("card amount is nil")
+	}
+	if card.Owner == nil {
+		return errors.New("card owner is nil")
+	}
+	if card.Contract == nil {
+		return errors.New("card contract is nil")
+	}
+	return nil
+}
+
+func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardID int64, amount int64, version string) error {
+	cardCollection, err := loadCardCollection(ctx, userID)
+	// the user key might not be created at the time we fetch data from plasmachain
+	// we need to create a key to make sure gamechain does not return error
+	if err != nil && err == contract.ErrNotFound {
+		req := zb.UpsertAccountRequest{
+			UserId:  userID,
+			Version: version,
+		}
+		if err := z.CreateAccount(ctx, &req); err != nil {
+			return err
+		}
+	}
+	cardlib, err := loadCardList(ctx, version)
+	if err != nil {
+		return err
+	}
+
+	// Map from cardID to mouldID
+	// the formular is cardID = mouldID + x
+	// for example cardID 250 = 25 + 0
+	//   or 161 = 16 + 1
+	mouldID := cardID / 10
+	card, ok := findCardByMouldID(cardlib, mouldID)
+	if !ok {
+		return fmt.Errorf("card mould id %d not found in card library", mouldID)
+	}
+
+	// add to collection
+	found := false
+	for i := range cardCollection.Cards {
+		if cardCollection.Cards[i].CardName == card.Name {
+			cardCollection.Cards[i].Amount += amount
+			found = true
+			break
+		}
+	}
+	if !found {
+		cardCollection.Cards = append(cardCollection.Cards, &zb.CardCollectionCard{
+			CardName: card.Name,
+			Amount:   amount,
+		})
+	}
+
+	return saveCardCollection(ctx, userID, cardCollection)
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})

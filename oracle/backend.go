@@ -3,7 +3,6 @@ package oracle
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"math/big"
 
 	ethereum "github.com/ethereum/go-ethereum"
@@ -83,7 +82,6 @@ func (l *LoomchainBackend) FilterLogs(ctx context.Context, query ethereum.Filter
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(filter))
 	logs, err := l.GetEvmLogs(string(filter))
 	if err != nil {
 		return nil, err

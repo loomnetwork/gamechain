@@ -18,12 +18,13 @@ type (
 	PlasmachainEvent              = orctype.PlasmachainEvent
 	PlasmachainGeneratedCardEvent = orctype.PlasmachainEvent_Card
 	PlasmachainGeneratedCard      = orctype.PlasmachainGeneratedCard
+	ProcessEventBatchRequest      = orctype.ProcessEventBatchRequest
 )
 
 type plasmachainEventInfo struct {
 	BlockNum uint64
 	TxIdx    uint
-	Event    *PlasmachainEvent
+	Event    *orctype.PlasmachainEvent
 }
 
 type PlasmachainGateway struct {
@@ -85,7 +86,7 @@ func (gw *PlasmachainGateway) FetchGeneratedCard(filterOpts *bind.FilterOpts) ([
 	// var numEvents int
 	it, err := gw.cardFaucet.FilterGeneratedCard(filterOpts)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get logs for Transfer")
+		return nil, errors.Wrap(err, "failed to get logs for GeneratedCard")
 	}
 	var chainID = gw.client.GetChainID()
 	events := []*plasmachainEventInfo{}
@@ -95,6 +96,7 @@ func (gw *PlasmachainGateway) FetchGeneratedCard(filterOpts *bind.FilterOpts) ([
 			ev := it.Event
 			receipt, err := gw.client.GetEvmTxReceipt(ev.Raw.TxHash.Bytes())
 			if err != nil {
+				gw.logger.Error(err.Error(), "txHash", ev.Raw.TxHash.Hex())
 				return nil, err
 			}
 			contractAddr := loom.Address{ChainID: chainID, Local: receipt.ContractAddress}.MarshalPB()
@@ -106,7 +108,7 @@ func (gw *PlasmachainGateway) FetchGeneratedCard(filterOpts *bind.FilterOpts) ([
 					Payload: &PlasmachainGeneratedCardEvent{
 						Card: &PlasmachainGeneratedCard{
 							Owner:    receipt.CallerAddress,
-							CardId:   &ltypes.BigUInt{Value: *loom.NewBigUInt(ev.CardId)},
+							CardID:   &ltypes.BigUInt{Value: *loom.NewBigUInt(ev.CardId)},
 							Amount:   &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(1)},
 							Contract: contractAddr,
 						},
@@ -116,7 +118,7 @@ func (gw *PlasmachainGateway) FetchGeneratedCard(filterOpts *bind.FilterOpts) ([
 		} else {
 			err = it.Error()
 			if err != nil {
-				return nil, errors.Wrap(err, "Failed to get event data for Transfer")
+				return nil, errors.Wrap(err, "Failed to get event data for GeneratedCard")
 			}
 			it.Close()
 			break
