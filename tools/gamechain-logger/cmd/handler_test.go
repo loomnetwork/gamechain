@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"log"
+	"os"
 	"strings"
 	"testing"
 
@@ -46,15 +47,19 @@ func ConnectDB(dbName string) *gorm.DB {
 }
 
 func DropDB() {
-	db := ConnectDB("mysql")
-	defer db.Close()
-	db.Exec("drop database if exists gamechain_logger_test;")
+	// db := ConnectDB("mysql")
+	// defer db.Close()
+	// db.Exec("drop database if exists gamechain_logger_test;")
+	err := os.Remove("/tmp/gorm.db")
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func CreateDB() {
 	db := ConnectDB("mysql")
 	defer db.Close()
-	db.Exec("create database gamechain_logger_test;")
+	// db.Exec("create database gamechain_logger_test;")
 }
 
 func InitDB() *gorm.DB {
