@@ -3,15 +3,12 @@ package oracle
 import (
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/loomnetwork/gamechain/oracle/ethcontract"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
-	ltypes "github.com/loomnetwork/go-loom/types"
-	"github.com/pkg/errors"
 )
 
 type (
@@ -78,52 +75,6 @@ func (gw *PlasmachainGateway) LastBlockNumber() (uint64, error) {
 	if err != nil {
 		return 0, err
 	}
+	gw.LastResponseTime = time.Now()
 	return uint64(block.Number), nil
-}
-
-func (gw *PlasmachainGateway) FetchGeneratedCard(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
-	var err error
-	// var numEvents int
-	it, err := gw.cardFaucet.FilterGeneratedCard(filterOpts)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get logs for GeneratedCard")
-	}
-	var chainID = gw.client.GetChainID()
-	events := []*plasmachainEventInfo{}
-	for {
-		ok := it.Next()
-		if ok {
-			ev := it.Event
-			receipt, err := gw.client.GetEvmTxReceipt(ev.Raw.TxHash.Bytes())
-			if err != nil {
-				gw.logger.Error(err.Error(), "txHash", ev.Raw.TxHash.Hex())
-				return nil, err
-			}
-			contractAddr := loom.Address{ChainID: chainID, Local: receipt.ContractAddress}.MarshalPB()
-			events = append(events, &plasmachainEventInfo{
-				BlockNum: ev.Raw.BlockNumber,
-				TxIdx:    ev.Raw.TxIndex,
-				Event: &PlasmachainEvent{
-					EthBlock: ev.Raw.BlockNumber,
-					Payload: &PlasmachainGeneratedCardEvent{
-						Card: &PlasmachainGeneratedCard{
-							Owner:    receipt.CallerAddress,
-							CardID:   &ltypes.BigUInt{Value: *loom.NewBigUInt(ev.CardId)},
-							Amount:   &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(1)},
-							Contract: contractAddr,
-						},
-					},
-				},
-			})
-		} else {
-			err = it.Error()
-			if err != nil {
-				return nil, errors.Wrap(err, "Failed to get event data for GeneratedCard")
-			}
-			it.Close()
-			break
-		}
-	}
-	// numEvents = len(events)
-	return events, nil
 }

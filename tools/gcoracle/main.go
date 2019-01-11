@@ -17,7 +17,7 @@ func main() {
 		panic(err)
 	}
 
-	orc, err := oracle.CreateOracle(cfg, "gamechain")
+	orc, err := oracle.CreateOracle(cfg, "gcoracle")
 	if err != nil {
 		panic(err)
 	}
