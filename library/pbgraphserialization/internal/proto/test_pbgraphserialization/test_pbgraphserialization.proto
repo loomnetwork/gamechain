@@ -45,6 +45,10 @@ message ComplexType {
     repeated string stringArray = 8;
 }
 
+message InvalidType1 {
+    SerializationId card = 1;
+}
+
 enum AwesomeEnum {
     AwesomeEnum_Foo = 0;
     AwesomeEnum_Bar = 1;

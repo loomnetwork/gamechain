@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/pkg/errors"
 	"go/ast"
 	"go/build"
 	"go/format"
@@ -24,6 +25,8 @@ const (
 	serializationPackageName      = "pbgraphserialization"
 	serializationProtoPackageName = "pbgraphserialization_pb"
 	tagCommentEnable              = "pbgraphserialization:enable"
+	tagCommentSkip                = "pbgraphserialization:skip"
+	tagCommentRoot                = "pbgraphserialization:root"
 )
 
 var invalidIdentifierChar = regexp.MustCompile("[^[:digit:][:alpha:]_]")
@@ -45,6 +48,7 @@ type Generator struct {
 	deserializerType         *types.TypeName
 	protoMessageType         *types.TypeName
 	protoSerializationIdType *types.TypeName
+	protoSerializedGraphType *types.TypeName
 
 	buf                           bytes.Buffer
 	targetObjectToProtoObjectInfo map[types.Object]*targetObjectToProtoObjectInfo
@@ -56,13 +60,20 @@ type Generator struct {
 	packageRoots []string
 }
 
+type targetObjectMetadata struct {
+	generateRootSerializationMethods bool
+	skip                             bool
+}
+
 type targetObjectToProtoObjectInfo struct {
+	targetObjectMetadata    *targetObjectMetadata
 	protoObject             types.Object
 	targetFieldToProtoField map[*types.Var]*types.Var
 }
 
-func newTargetObjectToProtoObjectInfo(protoObject types.Object) *targetObjectToProtoObjectInfo {
+func newTargetObjectToProtoObjectInfo(protoObject types.Object, targetObjectMetadata *targetObjectMetadata) *targetObjectToProtoObjectInfo {
 	return &targetObjectToProtoObjectInfo{
+		targetObjectMetadata:    targetObjectMetadata,
 		protoObject:             protoObject,
 		targetFieldToProtoField: map[*types.Var]*types.Var{},
 	}
@@ -214,14 +225,20 @@ func (generator *Generator) populateKnownTypes() error {
 	}
 	generator.protoSerializationIdType = protoSerializationIdType
 
+	protoSerializedGraphType, err := generator.getKnownType(serializationProtoPackageName, "SerializedGraph", true)
+	if err != nil {
+		return err
+	}
+	generator.protoSerializedGraphType = protoSerializedGraphType
+
 	return nil
 }
 
 func (generator *Generator) populateTargetToProtoMaps() error {
-	enabledTypes := generator.getEnabledTypes()
+	enabledTypes, enabledTypesMetadata := generator.getEnabledTypes()
 
 	protoObjects := getObjectsFromScope(generator.protoPackage.Scope())
-	for _, targetObject := range enabledTypes {
+	for i, targetObject := range enabledTypes {
 		protoObjectFound := false
 		for _, protoObject := range protoObjects {
 			targetTypeName := targetObject.(*types.TypeName)
@@ -231,14 +248,15 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 			}
 
 			if generator.checkIfTypeNamesMatch(targetTypeName, protoTypeName) {
-				generator.targetObjectToProtoObjectInfo[targetObject] = newTargetObjectToProtoObjectInfo(protoObject)
+				targetObjectMetadata := enabledTypesMetadata[i]
+				generator.targetObjectToProtoObjectInfo[targetObject] = newTargetObjectToProtoObjectInfo(protoObject, targetObjectMetadata)
 				protoObjectFound = true
 				break
 			}
 		}
 
 		if !protoObjectFound {
-			return fmt.Errorf("no matching proto type found for serializable type '%s'", targetObject.Name())
+			return fmt.Errorf("no matching proto type found for serializable type '%s'", generator.renderType(targetObject.Type()))
 		}
 	}
 
@@ -253,8 +271,9 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 			}
 
 			protoFieldFound := false
+			var protoField *types.Var
 			for j := 0; j < protoStruct.NumFields(); j++ {
-				protoField := protoStruct.Field(j)
+				protoField = protoStruct.Field(j)
 				if generator.checkIfFieldsMatch(targetField, protoField) {
 					protoObjectInfo.targetFieldToProtoField[targetField] = protoField
 					protoFieldFound = true
@@ -263,7 +282,12 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 			}
 
 			if !protoFieldFound {
-				return fmt.Errorf("no matching proto field found for serializable field '%s'", targetField.Name())
+				return fmt.Errorf("no matching proto field found for serializable field '%s.%s'", generator.renderType(targetObject.Type()), targetField.Name())
+			}
+
+			err := generator.checkIfFieldMatchIsValid(targetField, protoField)
+			if err != nil {
+				return errors.Wrap(err, fmt.Sprintf("failed to handle object %s", generator.renderType(targetObject.Type())))
 			}
 		}
 	}
@@ -283,61 +307,83 @@ func (generator *Generator) checkIfFieldSerialized(targetField *types.Var) bool 
 	return true
 }
 
-func makeValidVariableName(s string) string {
-	return strings.Replace(invalidIdentifierChar.ReplaceAllString(s, ""), "_", "", -1)
-}
-
-func (generator *Generator) serializeVariable(protoVarName string, targetVarName string, targetVarType types.Type, protoVarType types.Type) error {
-	if reflect.TypeOf(protoVarType) != reflect.TypeOf(targetVarType) {
-		return fmt.Errorf(
-			"variable type mismatch, target has '%v', proto has '%v' [target var name '%s', proto var name '%s']",
-			reflect.TypeOf(targetVarType).Elem(),
-			reflect.TypeOf(protoVarType).Elem(),
-			targetVarName,
-			protoVarName,
-		)
+func (generator *Generator) checkIfFieldMatchIsValid(targetField *types.Var, protoField *types.Var) error {
+	if targetField.Type() == generator.protoSerializationIdType.Type() {
+		return fmt.Errorf("serializing '%s' (field '%s') doesn't makes sense, check your code", generator.renderType(targetField.Type()), targetField.Name())
 	}
 
-	switch protoVarType.(type) {
-	case *types.Basic:
-		protoVarBasic := protoVarType.(*types.Basic)
-		generator.printlnf("%s = %s(%s)", protoVarName, generator.renderType(protoVarBasic), targetVarName)
-	case *types.Named:
-		protoVarNamed := protoVarType.(*types.Named)
-		generator.printlnf("%s = %s(%s)", protoVarName, generator.renderType(protoVarNamed), targetVarName)
+	return nil
+}
+
+func (generator *Generator) generateVarSerializationCode(serialization bool, destinationVarName string, sourceVarName string, sourceVarType types.Type, destinationVarType types.Type) error {
+	var errorTag, elementSuffix string
+	if serialization {
+		errorTag = "serialization: "
+		elementSuffix = "Serialized"
+	} else {
+		errorTag = "deserialization: "
+		elementSuffix = "Deserialized"
+	}
+	if reflect.TypeOf(destinationVarType) != reflect.TypeOf(sourceVarType) {
+		return generator.newTypeMismatchError(errorTag, destinationVarName, sourceVarName, sourceVarType, destinationVarType)
+	}
+
+	switch destinationVarType.(type) {
+	case *types.Basic, *types.Named:
+		generator.printlnf("%s = %s(%s)", destinationVarName, generator.renderType(destinationVarType), sourceVarName)
 	case *types.Pointer:
-		protoVarPointer := protoVarType.(*types.Pointer)
-		protoVarPointerElemNamed := protoVarPointer.Elem().(*types.Named)
-		if protoVarPointerElemNamed.Obj() != generator.protoSerializationIdType {
-			return fmt.Errorf("unsupported reference type %v", protoVarPointerElemNamed.Obj())
-		}
+		destinationVarPointer := destinationVarType.(*types.Pointer)
+		destinationVarPointerElemNamed := destinationVarPointer.Elem().(*types.Named)
+		if serialization {
+			if destinationVarPointerElemNamed.Obj() != generator.protoSerializationIdType {
+				return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "unsupported reference type %s", destinationVarPointerElemNamed.Obj().Type().String())
+			}
 
-		generator.printlnf("%s = serializer.Serialize(%s).Marshal()", protoVarName, targetVarName)
+			generator.printlnf("%s = serializer.Serialize(%s).Marshal()", destinationVarName, sourceVarName)
+		} else {
+			errName := hideName("err")
+			destinationTempVarName := makeValidVariableName(destinationVarName) + elementSuffix
+			sourceRealVarType, ok := generator.targetObjectToProtoObjectInfo[destinationVarPointerElemNamed.Obj()]
+			if !ok {
+				return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "var has non-serializable type %s", generator.renderType(destinationVarPointerElemNamed))
+			}
+
+			generator.printlnf("%s, %s := deserializer.Deserialize(", destinationTempVarName, errName)
+			generator.printlnf("%s,", sourceVarName)
+
+			generator.printlnf("func() %s { return &%s{} },", generator.renderType(generator.serializableObjectType.Type()), generator.renderType(destinationVarPointerElemNamed))
+			generator.printlnf("func() %s { return &%s{} },", generator.renderType(generator.protoMessageType.Type()), generator.renderType(sourceRealVarType.protoObject.Type()))
+			generator.printlnf(")")
+			generator.println()
+			generator.printlnf("if %s != nil {", errName)
+			generator.printlnf("return nil, %s", errName)
+			generator.printlnf("}")
+			generator.println()
+			generator.printlnf("%s = %s.(%s)", destinationVarName, destinationTempVarName, generator.renderType(destinationVarType))
+		}
 	case *types.Slice:
-		targetSliceElementName := hideName(makeValidVariableName(targetVarName) + "Element")
-		targetVarSlice, ok := targetVarType.(*types.Slice)
+		sourceSliceElementName := hideName(makeValidVariableName(sourceVarName) + "Element")
+		sourceVarSlice, ok := sourceVarType.(*types.Slice)
 		if !ok {
-			return fmt.Errorf(
-				"variable type mismatch, target has '%v', proto has '%v' [target var name '%s', proto var name '%s']",
-				reflect.TypeOf(targetVarType).Elem(),
-				reflect.TypeOf(protoVarType).Elem(),
-				targetVarName,
-				protoVarName,
-			)
+			return generator.newTypeMismatchError(errorTag, destinationVarName, sourceVarName, sourceVarType, destinationVarType)
 		}
 
-		targetSliceElementType := targetVarSlice.Elem()
+		sourceSliceElementType := sourceVarSlice.Elem()
 
-		protoSliceElementName := targetSliceElementName + "Serialized"
-		protoSliceElementType := protoVarType.(*types.Slice).Elem()
+		destinationSliceElementName := sourceSliceElementName + elementSuffix
+		destinationSliceElementType := destinationVarType.(*types.Slice).Elem()
 
 		basicSliceHandled := false
-		switch protoSliceElementType.(type) {
+
+		// optimization for the case of primitive type slice with matching types
+		switch destinationSliceElementType.(type) {
 		case *types.Basic:
-			if protoSliceElementType == targetSliceElementType {
+			if destinationSliceElementType == sourceSliceElementType {
 				generator.println()
-				generator.printlnf("%s = make([]%s, len(%s))", protoVarName, generator.renderType(targetSliceElementType), targetVarName)
-				generator.printlnf("copy(%s, %s)", protoVarName, targetVarName)
+
+				// TODO: add unsafe option to re-use the reference instead of copying?
+				generator.printlnf("%s = make([]%s, len(%s))", destinationVarName, generator.renderType(sourceSliceElementType), sourceVarName)
+				generator.printlnf("copy(%s, %s)", destinationVarName, sourceVarName)
 				generator.println()
 
 				basicSliceHandled = true
@@ -346,30 +392,36 @@ func (generator *Generator) serializeVariable(protoVarName string, targetVarName
 
 		if !basicSliceHandled {
 			generator.println()
-			generator.printlnf("for _, %s := range %s {", targetSliceElementName, targetVarName)
-			generator.printlnf("var %s %s", protoSliceElementName, generator.renderType(protoSliceElementType))
-			err := generator.serializeVariable(protoSliceElementName, targetSliceElementName, targetSliceElementType, protoSliceElementType)
+			generator.printlnf("for _, %s := range %s {", sourceSliceElementName, sourceVarName)
+			generator.printlnf("var %s %s", destinationSliceElementName, generator.renderType(destinationSliceElementType))
+			err := generator.generateVarSerializationCode(serialization, destinationSliceElementName, sourceSliceElementName, sourceSliceElementType, destinationSliceElementType)
 			if err != nil {
 				return err
 			}
-			generator.printlnf("%s = append(%s, %s)", protoVarName, protoVarName, protoSliceElementName)
+			generator.printlnf("%s = append(%s, %s)", destinationVarName, destinationVarName, destinationSliceElementName)
 			generator.printlnf("}")
 			generator.println()
 		}
 	default:
-		return fmt.Errorf("unsupported type: %#v (%T)", protoVarType, protoVarType)
+		return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "unsupported type: %#v (%T)", destinationVarType, destinationVarType)
 	}
 
 	return nil
 }
 
 func (generator *Generator) generateCode() error {
+	wrapError := func(err error, prefix string, sourceVarType types.Type, destinationVarType types.Type) error {
+		return errors.Wrap(err, fmt.Sprintf("%sfailed to generate code [source type %s, target type %s]", prefix, generator.renderType(sourceVarType), generator.renderType(destinationVarType)))
+	}
+
 	for _, targetObject := range generator.sortedTargetObjectToProtoObjectInfo() {
 		protoObjectInfo := generator.targetObjectToProtoObjectInfo[targetObject]
 		thisName := hideName(lowerFirst(targetObject.Name()))
+		serializedName := hideName("serialized")
+
+		sortedTargetFieldToProtoFieldKeys := protoObjectInfo.sortedTargetFieldToProtoField()
 
 		// serializer code
-		instanceName := hideName("serialized")
 		generator.printlnf(
 			"func (%s %s) Serialize(serializer %s) %s {",
 			thisName,
@@ -377,22 +429,38 @@ func (generator *Generator) generateCode() error {
 			generator.renderType(types.NewPointer(generator.serializerType.Type())),
 			generator.renderType(generator.protoMessageType.Type()),
 		)
-		generator.printlnf("%s := &%s{}", instanceName, generator.renderType(protoObjectInfo.protoObject.Type()))
+		generator.printlnf("%s := &%s{}", serializedName, generator.renderType(protoObjectInfo.protoObject.Type()))
 
-		for _, targetField := range protoObjectInfo.sortedTargetFieldToProtoField() {
+		for _, targetField := range sortedTargetFieldToProtoFieldKeys {
 			protoField := protoObjectInfo.targetFieldToProtoField[targetField]
-			err := generator.serializeVariable(instanceName+"."+protoField.Name(), thisName+"."+targetField.Name(), targetField.Type(), protoField.Type())
+			destinationVarName := serializedName + "." + protoField.Name()
+			sourceVarName := thisName + "." + targetField.Name()
+			err := generator.generateVarSerializationCode(true, destinationVarName, sourceVarName, targetField.Type(), protoField.Type())
 			if err != nil {
-				return err
+				return wrapError(err, "serialization: ", targetField.Type(), protoField.Type())
 			}
 		}
 
-		generator.printlnf("return %s", instanceName)
+		generator.printlnf("return %s", serializedName)
 		generator.printlnf("}")
 		generator.println()
 
+		if protoObjectInfo.targetObjectMetadata.generateRootSerializationMethods {
+			serializerName := hideName("serializer")
+			generator.printlnf(
+				"func (%s %s) SerializeAsRoot() (%s, error) {",
+				thisName,
+				generator.renderType(types.NewPointer(targetObject.Type())),
+				generator.renderType(types.NewPointer(generator.protoSerializedGraphType.Type())),
+			)
+
+			generator.printlnf("%s := NewSerializerSerialize(%s)", serializerName, thisName)
+			generator.printlnf("return %s.Marshal()", serializerName)
+			generator.printlnf("}")
+			generator.println()
+		}
+
 		// deserializer code
-		instanceName = hideName("deserialized")
 		generator.printlnf(
 			"func (%s %s) Deserialize(deserializer %s, rawMessage %s) (%s, error) {",
 			thisName,
@@ -402,10 +470,53 @@ func (generator *Generator) generateCode() error {
 			generator.renderType(generator.serializableObjectType.Type()),
 		)
 
-		generator.printlnf("_message := rawMessage.(%s)", generator.renderType(types.NewPointer(protoObjectInfo.protoObject.Type())))
+		if len(protoObjectInfo.targetFieldToProtoField) > 0 {
+			generator.printlnf("%s := rawMessage.(%s)", serializedName, generator.renderType(types.NewPointer(protoObjectInfo.protoObject.Type())))
+		}
+
+		for _, targetField := range sortedTargetFieldToProtoFieldKeys {
+			protoField := protoObjectInfo.targetFieldToProtoField[targetField]
+			destinationVarName := thisName + "." + targetField.Name()
+			sourceVarName := serializedName + "." + protoField.Name()
+			err := generator.generateVarSerializationCode(false, destinationVarName, sourceVarName, protoField.Type(), targetField.Type())
+			if err != nil {
+				return wrapError(err, "deserialization: ", targetField.Type(), protoField.Type())
+			}
+		}
+
 		generator.printlnf("return %s, nil", thisName)
 		generator.printlnf("}")
 		generator.println()
+
+		if protoObjectInfo.targetObjectMetadata.generateRootSerializationMethods {
+			generator.printlnf(
+				"func DeserializeAsRoot(graph %s) (%s, error) {",
+				generator.renderType(types.NewPointer(generator.protoSerializedGraphType.Type())),
+				generator.renderType(types.NewPointer(targetObject.Type())),
+			)
+
+			generator.printlnf("deserializer, err := NewDeserializerUnmarshal(graph)")
+			generator.println()
+			generator.printlnf("if err != nil {")
+			generator.printlnf("return nil, err")
+			generator.printlnf("}")
+			generator.println()
+			generator.printlnf(
+				"deserialized, err := deserializer.DeserializeRoot(&%s{}, &%s{})",
+				generator.renderType(targetObject.Type()),
+				generator.renderType(generator.targetObjectToProtoObjectInfo[targetObject].protoObject.Type()),
+			)
+
+			generator.println()
+			generator.printlnf("if err != nil {")
+			generator.printlnf("return nil, err")
+			generator.printlnf("}")
+			generator.println()
+
+			generator.printlnf("return deserialized.(%s), nil", generator.renderType(types.NewPointer(targetObject.Type())), )
+			generator.printlnf("}")
+			generator.println()
+		}
 	}
 
 	return nil
@@ -465,11 +576,11 @@ func (generator *Generator) getKnownType(packageIdentifier string, typeName stri
 	}
 }
 
-func (generator *Generator) getEnabledTypes() []types.Object {
+func (generator *Generator) getEnabledTypes() (objects []types.Object, objectsMetadata []*targetObjectMetadata) {
 	targetPackage := generator.targetPackage
-	objects := getObjectsFromScope(targetPackage.Scope())
+	objects = getObjectsFromScope(targetPackage.Scope())
 
-	typeTest := func(object types.Object) bool {
+	typeTest := func(object types.Object) (*targetObjectMetadata, bool) {
 		switch object.(type) {
 		case *types.TypeName:
 			_, path, _ := generator.program.PathEnclosingInterval(object.Pos(), object.Pos())
@@ -479,30 +590,44 @@ func (generator *Generator) getEnabledTypes() []types.Object {
 					comment := n.Doc.Text()
 
 					scanner := bufio.NewScanner(strings.NewReader(comment))
+					targetObjectMetadata := targetObjectMetadata{}
+
+					enabled := false
 					for scanner.Scan() {
 						commentLine := strings.TrimSpace(scanner.Text())
-						if commentLine == tagCommentEnable {
-							return true
+						switch commentLine {
+						case tagCommentEnable:
+							enabled = true
+						case tagCommentRoot:
+							targetObjectMetadata.generateRootSerializationMethods = true
+						case tagCommentSkip:
+							targetObjectMetadata.skip = true
 						}
+					}
+
+					if enabled {
+						return &targetObjectMetadata, true
 					}
 				}
 			}
 
-			return false
+			return nil, false
 		default:
-			return false
+			return nil, false
 		}
 	}
 
 	tempObjects := objects
 	objects = objects[:0]
 	for _, object := range tempObjects {
-		if typeTest(object) {
+		metadata, enabled := typeTest(object)
+		if enabled {
 			objects = append(objects, object)
+			objectsMetadata = append(objectsMetadata, metadata)
 		}
 	}
 
-	return objects
+	return
 }
 
 func (generator *Generator) renderType(typ types.Type) string {
@@ -692,16 +817,16 @@ func (generator *Generator) getLocalizedPath(path string) string {
 }
 
 func (generator *Generator) printf(format string, vals ...interface{}) {
-	fmt.Fprintf(&generator.buf, format, vals...)
+	_, _ = fmt.Fprintf(&generator.buf, format, vals...)
 }
 
 func (generator *Generator) printlnf(format string, vals ...interface{}) {
 	generator.printf(format, vals...)
-	fmt.Fprintln(&generator.buf)
+	_, _ = fmt.Fprintln(&generator.buf)
 }
 
 func (generator *Generator) println() {
-	fmt.Fprintln(&generator.buf)
+	_, _ = fmt.Fprintln(&generator.buf)
 }
 
 func (info *targetObjectToProtoObjectInfo) sortedTargetFieldToProtoField() (targetFields []*types.Var) {
@@ -727,6 +852,34 @@ func getObjectsFromScope(scope *types.Scope) []types.Object {
 	}
 
 	return objects
+}
+
+func (generator *Generator) newTypeMismatchError(prefix string, destinationVarName string, sourceVarName string, sourceVarType types.Type, destinationVarType types.Type) error {
+	return fmt.Errorf(
+		prefix+"variable type mismatch, source has '%v' (%s), destination has '%v' (%s) %s",
+		reflect.TypeOf(sourceVarType).Elem(),
+		generator.renderType(sourceVarType),
+		reflect.TypeOf(destinationVarType).Elem(),
+		generator.renderType(destinationVarType),
+		createSerializationCodeGeneratorErrorExplanation(sourceVarName, destinationVarName),
+	)
+}
+
+func createSerializationCodeGeneratorError(prefix, destinationVarName, sourceVarName, format string, vals ...interface{}) error {
+	return fmt.Errorf(
+		"%s%s %s",
+		prefix,
+		fmt.Sprintf(format, vals...),
+		createSerializationCodeGeneratorErrorExplanation(sourceVarName, destinationVarName),
+	)
+}
+
+func createSerializationCodeGeneratorErrorExplanation(destinationVarName string, sourceVarName string) string {
+	return fmt.Sprintf(
+		"[source var name '%s', destination var name '%s']",
+		sourceVarName,
+		destinationVarName,
+	)
 }
 
 func calculateImport(set []string, path string) string {
@@ -756,8 +909,12 @@ func calculateTypeScore(typ types.Type) int {
 	}
 }
 
+func makeValidVariableName(s string) string {
+	return strings.Replace(invalidIdentifierChar.ReplaceAllString(s, ""), "_", "", -1)
+}
+
 func hideName(s string) string {
-	return "__" + s
+	return s
 }
 
 func lowerFirst(s string) string {
@@ -766,14 +923,4 @@ func lowerFirst(s string) string {
 	}
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToLower(r)) + s[n:]
-}
-
-func isNillable(typ types.Type) bool {
-	switch t := typ.(type) {
-	case *types.Pointer, *types.Array, *types.Map, *types.Interface, *types.Signature, *types.Chan, *types.Slice:
-		return true
-	case *types.Named:
-		return isNillable(t.Underlying())
-	}
-	return false
 }

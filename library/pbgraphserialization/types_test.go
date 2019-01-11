@@ -2,6 +2,7 @@ package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization"
 	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
 )
 
@@ -30,9 +31,14 @@ type EntityB struct {
 	bField  int32
 }
 
+//pbgraphserialization:enable
 type SelfReferenceEntity struct {
 	otherEntity *SelfReferenceEntity
 	field       int32
+}
+
+type InvalidType1 struct {
+	card pbgraphserialization_pb.SerializationId
 }
 
 type AwesomeEnum int32
@@ -44,6 +50,7 @@ const (
 
 //some cool comments
 //pbgraphserialization:enable
+//pbgraphserialization:root
 // some more comments
 type ComplexType struct {
 	intArray         []int32
