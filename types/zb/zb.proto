@@ -45,7 +45,6 @@ message Card {
     repeated CardAbility abilities = 17;
     UniqueAnimationType.Enum unique_animation_type     = 18;
     CardSetType.Enum hidden_set = 19;
-    bool hidden_set = 20;
 }
 
 message CardInstanceSpecificData {
