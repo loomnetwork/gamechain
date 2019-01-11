@@ -524,26 +524,60 @@ func populateDeckCards(
 		}
 	}
 
-	if useBackendGameLogic {
-		for _, playerState := range playerStates {
-			for _, card := range playerState.CardsInDeck {
-				filteredAbilities := make([]*zb.CardAbility, 0, 0)
-				for _, ability := range card.Prototype.Abilities {
-					switch ability.Type {
-					case zb.CardAbilityType_Rage:
-					case zb.CardAbilityType_PriorityAttack:
-						filteredAbilities = append(filteredAbilities, ability)
-					default:
-						fmt.Printf("CardAbility.Type has unexpected value %s, removed\n", zb.CardAbilityType_Enum_name[int32(ability.Type)])
-					}
-				}
-
-				card.Prototype.Abilities = filteredAbilities
-			}
-		}
-	}
+	removeUnsupportedCardFeatures(useBackendGameLogic, playerStates)
 
 	return nil
+}
+
+func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.PlayerState) {
+	if !useBackendGameLogic {
+		return
+	}
+
+	for _, playerState := range playerStates {
+		filteredCards := make([]*zb.CardInstance, 0, 0)
+
+		for _, card := range playerState.CardsInDeck {
+			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			for _, ability := range card.Prototype.Abilities {
+				switch ability.Type {
+				case zb.CardAbilityType_Rage:
+					fallthrough
+				case zb.CardAbilityType_PriorityAttack:
+					filteredAbilities = append(filteredAbilities, ability)
+				default:
+					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+				}
+			}
+
+			card.Prototype.Abilities = filteredAbilities
+
+			switch card.Prototype.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Instance.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Prototype.Kind {
+			case zb.CardKind_Creature:
+				filteredCards = append(filteredCards, card)
+			default:
+				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+			}
+		}
+
+		playerState.CardsInDeck = filteredCards
+	}
 }
 
 func getCardLibrary(ctx contract.Context, version string) (*zb.CardList, error) {
