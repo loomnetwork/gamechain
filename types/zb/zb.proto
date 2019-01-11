@@ -45,6 +45,7 @@ message Card {
     repeated CardAbility abilities = 17;
     UniqueAnimationType.Enum unique_animation_type     = 18;
     CardSetType.Enum hidden_set = 19;
+    bool hidden_set = 20;
 }
 
 message CardInstanceSpecificData {
@@ -815,6 +816,7 @@ message GameMechanicDescriptionType
         BLITZ = 25 [(gogoproto.enumvalue_customname) = "Blitz"];
         RESTORE = 26 [(gogoproto.enumvalue_customname) = "Restore"];
         CHAINSAW = 27 [(gogoproto.enumvalue_customname) = "Chainsaw"];
+        SUPER_SERUM = 28 [(gogoproto.enumvalue_customname) = "SuperSerum"];
     }
 }
 
