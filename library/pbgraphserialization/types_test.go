@@ -5,38 +5,62 @@ import (
 	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
 )
 
-//some cool comments
 //pbgraphserialization:enable
-// some more comments
 type CardAbility struct {
 	targetType string
 	effect     string
 }
 
+//pbgraphserialization:enable
 type Card struct {
 	name      string
 	abilities []*CardAbility
 }
 
+//pbgraphserialization:enable
 type CardList struct {
 	abilities []*CardAbility
 	cards     []*Card
 }
 
+//pbgraphserialization:enable
 type EntityA struct {
 	entityB *EntityB
 	aField  int32
 }
 
+//pbgraphserialization:enable
 type EntityB struct {
 	entityA *EntityA
 	bField  int32
 }
 
+//pbgraphserialization:enable
 type SelfReferenceEntity struct {
 	otherEntity *SelfReferenceEntity
 	field       int32
 }
+
+type AwesomeEnum int32
+
+const (
+	AwesomeEnum_Foo = 0
+	AwesomeEnum_Bar = 1
+)
+
+//some cool comments
+//pbgraphserialization:enable
+// some more comments
+type ComplexType struct {
+	ints []int32
+	double float64
+	byteArray []byte
+	awesomeEnum AwesomeEnum
+	awesomeEnumArray []AwesomeEnum
+	otherEntity *SelfReferenceEntity
+	otherEntityArray []*SelfReferenceEntity
+}
+
 
 func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Message {
 	return &pbgraphserialization_pb_test.SelfReferenceEntity{

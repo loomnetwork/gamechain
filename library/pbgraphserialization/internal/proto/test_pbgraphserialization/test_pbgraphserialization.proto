@@ -33,3 +33,18 @@ message SelfReferenceEntity {
     SerializationId otherEntity = 1;
     int32 field = 2;
 }
+
+message ComplexType {
+    repeated int32 ints = 1;
+    double double = 2;
+    bytes byteArray = 3;
+    AwesomeEnum awesomeEnum = 4;
+    repeated AwesomeEnum awesomeEnumArray = 5;
+    SerializationId otherEntity = 6;
+    repeated SerializationId otherEntityArray = 7;
+}
+
+enum AwesomeEnum {
+    AwesomeEnum_Foo = 0;
+    AwesomeEnum_Bar = 1;
+}
