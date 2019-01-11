@@ -235,11 +235,6 @@ func (orc *Oracle) pollPlasmaChain() error {
 		return nil
 	}
 
-	// Not sure why lower block produce error 'getting receipt: get receipt for', leveldb: not found
-	// TODO: remove this
-	if startBlock < 200000 {
-		startBlock = 200000
-	}
 	orc.logger.Info("fetching blocks", "latestBlock", startBlock, "latestBlock", latestBlock)
 	events, err := orc.fetchEvents(startBlock, latestBlock)
 	if err != nil {

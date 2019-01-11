@@ -298,6 +298,11 @@ message InitGamechainStateRequest {
     Address oracle = 1;
 }
 
+message SetLastPlasmaBlockNumRequest {
+    uint64 last_block_num = 1;
+    Address oracle = 2;
+}
+
 message UpdateCardListRequest {
     repeated Card cards = 1;
     string version = 2;

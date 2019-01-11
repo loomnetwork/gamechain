@@ -2241,4 +2241,23 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	return saveCardCollection(ctx, userID, cardCollection)
 }
 
+func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb.SetLastPlasmaBlockNumRequest) error {
+	state, err := loadState(ctx)
+	if err != nil && err != contract.ErrNotFound {
+		return err
+	}
+	// TODO: Need to validate oracle
+	// if req.Oracle == nil {
+	// 	return ErrOracleNotSpecified
+	// }
+
+	// if err := z.validateOracle(ctx, req.Oracle); err != nil {
+	// 	return err
+	// }
+	state = &zb.GamechainState{
+		LastPlasmachainBlockNum: req.LastBlockNum,
+	}
+	return saveState(ctx, state)
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
