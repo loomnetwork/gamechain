@@ -233,6 +233,12 @@
   All = true
   Expected = ["Player1: player-backend-1", "Player2: player-backend-2"]
 
+# Mulligam
+[[TestCases]]
+  RunCmd = "zb-cli send_action_mulligan -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2 -i 28"
+  Condition = "contains"
+  Expected = ["sent action mulligan successfully"]
+
 # Get some goo so we can play cards later
 # -------player-backend-2
 [[TestCases]]
