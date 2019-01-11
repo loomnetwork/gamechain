@@ -1,6 +1,4 @@
-// +build evm
-
-package gateway
+package oracle
 
 import (
 	"testing"

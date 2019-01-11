@@ -14,7 +14,7 @@ import (
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
 	ltypes "github.com/loomnetwork/go-loom/types"
-	"github.com/loomnetwork/loomchain"
+
 	"github.com/pkg/errors"
 )
 
@@ -102,7 +102,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		startupDelay:      time.Duration(cfg.OracleStartupDelay) * time.Second,
 		reconnectInterval: time.Duration(cfg.OracleReconnectInterval) * time.Second,
 		status: Status{
-			Version: loomchain.FullVersion(),
+			Version: "1.0.0",
 		},
 		hashPool: hashPool,
 	}, nil
