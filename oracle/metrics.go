@@ -17,7 +17,7 @@ type Metrics struct {
 }
 
 func NewMetrics(subsystem string) *Metrics {
-	const namespace = "loomchain"
+	const namespace = "gamechain"
 
 	return &Metrics{
 		methodCallCount: kitprometheus.NewCounterFrom(
@@ -57,7 +57,7 @@ func (m *Metrics) MethodCalled(begin time.Time, method string, err error) {
 	m.methodCallCount.With(lvs...).Add(1)
 }
 
-func (m *Metrics) FetchedMPlasmachainEvents(numEvents int, kind string) {
+func (m *Metrics) FetchedPlasmachainEvents(numEvents int, kind string) {
 	m.fetchedPlasmachainEventCount.With("kind", kind).Add(float64(numEvents))
 }
 

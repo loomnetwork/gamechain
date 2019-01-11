@@ -13,18 +13,20 @@ import (
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
+	ltypes "github.com/loomnetwork/go-loom/types"
 	"github.com/loomnetwork/loomchain"
 	"github.com/pkg/errors"
 )
 
 type Status struct {
-	Version                  string
-	OracleAddress            string
-	DAppChainGatewayAddress  string
-	MainnetGatewayAddress    string
-	NextPlasmachainBlockNum  uint64    `json:",string"`
-	MainnetGatewayLastSeen   time.Time // TODO: hook this up
-	DAppChainGatewayLastSeen time.Time
+	Version                    string
+	OracleAddress              string
+	GamechainGatewayAddress    string
+	GamechainGatewayLastSeen   time.Time
+	PlasmachainGatewayAddress  string
+	PlasmachainGatewayLastSeen time.Time
+	NextPlasmachainBlockNum    uint64 `json:",string"`
+	DAppChainGatewayLastSeen   time.Time
 	// Number of Plamachain events submitted to the DAppChain Gateway successfully
 	NumPlamachainEventsFetched uint64 `json:",string"`
 	// Total number of Plamachain events fetched
@@ -123,10 +125,14 @@ func (orc *Oracle) updateStatus() {
 	orc.status.NumPlamachainEventsFetched = orc.numPlasmachainEventsFetched
 	orc.status.NumPlamachainEventsSubmitted = orc.numPlasmachainEventsSubmitted
 
-	// if orc.goGateway != nil {
-	// 	orc.status.DAppChainGatewayAddress = orc.goGateway.Address.String()
-	// 	orc.status.DAppChainGatewayLastSeen = orc.goGateway.LastResponseTime
-	// }
+	if orc.gcGateway != nil {
+		orc.status.GamechainGatewayAddress = orc.gcGateway.Address.String()
+		orc.status.GamechainGatewayLastSeen = orc.gcGateway.LastResponseTime
+	}
+	if orc.pcGateway != nil {
+		orc.status.PlasmachainGatewayAddress = orc.pcGateway.Address.String()
+		orc.status.PlasmachainGatewayLastSeen = orc.pcGateway.LastResponseTime
+	}
 
 	orc.statusMutex.Unlock()
 }
@@ -312,10 +318,6 @@ func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	})
 }
 
-func (orc *Oracle) fetchGeneratedCard(opts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
-	return orc.pcGateway.FetchGeneratedCard(opts)
-}
-
 func LoadDappChainPrivateKey(path string) ([]byte, error) {
 	privKeyB64, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -328,4 +330,57 @@ func LoadDappChainPrivateKey(path string) ([]byte, error) {
 	}
 
 	return privKey, nil
+}
+
+func (orc *Oracle) fetchGeneratedCard(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
+	var err error
+	var numEvents int
+	defer func(begin time.Time) {
+		orc.metrics.MethodCalled(begin, "fetchGeneratedCard", err)
+		orc.metrics.FetchedPlasmachainEvents(numEvents, "GeneratedCard")
+		orc.updateStatus()
+	}(time.Now())
+
+	it, err := orc.pcGateway.cardFaucet.FilterGeneratedCard(filterOpts)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get logs for GeneratedCard")
+	}
+	var chainID = orc.pcGateway.client.GetChainID()
+	events := []*plasmachainEventInfo{}
+	for {
+		ok := it.Next()
+		if ok {
+			ev := it.Event
+			receipt, err := orc.pcGateway.client.GetEvmTxReceipt(ev.Raw.TxHash.Bytes())
+			if err != nil {
+				orc.logger.Error(err.Error(), "txHash", ev.Raw.TxHash.Hex())
+				return nil, err
+			}
+			contractAddr := loom.Address{ChainID: chainID, Local: receipt.ContractAddress}.MarshalPB()
+			events = append(events, &plasmachainEventInfo{
+				BlockNum: ev.Raw.BlockNumber,
+				TxIdx:    ev.Raw.TxIndex,
+				Event: &PlasmachainEvent{
+					EthBlock: ev.Raw.BlockNumber,
+					Payload: &PlasmachainGeneratedCardEvent{
+						Card: &PlasmachainGeneratedCard{
+							Owner:    receipt.CallerAddress,
+							CardID:   &ltypes.BigUInt{Value: *loom.NewBigUInt(ev.CardId)},
+							Amount:   &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(1)},
+							Contract: contractAddr,
+						},
+					},
+				},
+			})
+		} else {
+			err = it.Error()
+			if err != nil {
+				return nil, errors.Wrap(err, "Failed to get event data for GeneratedCard")
+			}
+			it.Close()
+			break
+		}
+	}
+	numEvents = len(events)
+	return events, nil
 }
