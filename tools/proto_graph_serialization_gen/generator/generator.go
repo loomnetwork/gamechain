@@ -50,7 +50,7 @@ type Generator struct {
 	protoSerializedGraphType *types.TypeName
 
 	buf                           *bytes.Buffer
-	enabledObjectsData            map[types.Object]*targetObjectMetadata
+	enabledObjectsData            map[types.Object]*TargetObjectMetadata
 	targetObjectToProtoObjectInfo map[types.Object]*targetObjectToProtoObjectInfo
 
 	localizationCache map[string]string
@@ -60,18 +60,18 @@ type Generator struct {
 	packageRoots []string
 }
 
-type targetObjectMetadata struct {
+type TargetObjectMetadata struct {
 	generateRootSerializationMethods bool
 	skip                             bool
 }
 
 type targetObjectToProtoObjectInfo struct {
-	targetObjectMetadata    *targetObjectMetadata
+	targetObjectMetadata    *TargetObjectMetadata
 	protoObject             types.Object
 	targetFieldToProtoField map[*types.Var]*types.Var
 }
 
-func newTargetObjectToProtoObjectInfo(protoObject types.Object, targetObjectMetadata *targetObjectMetadata) *targetObjectToProtoObjectInfo {
+func newTargetObjectToProtoObjectInfo(protoObject types.Object, targetObjectMetadata *TargetObjectMetadata) *targetObjectToProtoObjectInfo {
 	return &targetObjectToProtoObjectInfo{
 		targetObjectMetadata:    targetObjectMetadata,
 		protoObject:             protoObject,
@@ -91,7 +91,7 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 		targetPackageName: targetPackageName,
 		protoPackageName:  protoPackageName,
 
-		enabledObjectsData: map[types.Object]*targetObjectMetadata{},
+		enabledObjectsData: map[types.Object]*TargetObjectMetadata{},
 		targetObjectToProtoObjectInfo: map[types.Object]*targetObjectToProtoObjectInfo{},
 
 		localizationCache: map[string]string{},
@@ -117,7 +117,7 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 	return generator, nil
 }
 
-func (generator *Generator) AddEnabledType(packageIdentifier string, typeName string, searchByPackageName bool, metadata *targetObjectMetadata) error {
+func (generator *Generator) AddEnabledType(packageIdentifier string, typeName string, searchByPackageName bool, metadata *TargetObjectMetadata) error {
 	name, err := generator.getType(packageIdentifier, typeName, searchByPackageName)
 	if err != nil {
 		return err
@@ -606,11 +606,11 @@ func (generator *Generator) getType(packageIdentifier string, typeName string, s
 	}
 }
 
-func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*targetObjectMetadata, error) {
+func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*TargetObjectMetadata, error) {
 	targetPackage := generator.targetPackage
 	objects := getObjectsFromScope(targetPackage.Scope())
 
-	typeTest := func(object types.Object) (*targetObjectMetadata, bool, error) {
+	typeTest := func(object types.Object) (*TargetObjectMetadata, bool, error) {
 		switch object.(type) {
 		case *types.TypeName:
 			_, path, _ := generator.program.PathEnclosingInterval(object.Pos(), object.Pos())
@@ -624,7 +624,7 @@ func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*targe
 					comment := n.Doc.Text()
 
 					scanner := bufio.NewScanner(strings.NewReader(comment))
-					targetObjectMetadata := targetObjectMetadata{}
+					targetObjectMetadata := TargetObjectMetadata{}
 
 					enabled := false
 					for scanner.Scan() {
@@ -651,7 +651,7 @@ func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*targe
 		}
 	}
 
-	enabledObjects := map[types.Object]*targetObjectMetadata{}
+	enabledObjects := map[types.Object]*TargetObjectMetadata{}
 	for _, object := range objects {
 		metadata, enabled, err := typeTest(object)
 		if err != nil {

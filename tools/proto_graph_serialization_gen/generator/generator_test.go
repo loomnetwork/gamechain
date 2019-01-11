@@ -23,13 +23,13 @@ func TestGraphSerializationGenerator_1(t *testing.T) {
 func TestGraphSerializationGenerator_Skip(t *testing.T) {
 	generator := createTestGenerator(t)
 
-	err := generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &targetObjectMetadata{skip: true})
+	err := generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &TargetObjectMetadata{skip: true})
 	assert.NoError(t, err)
 	codeSkip, err := generator.Generate()
 	assert.NoError(t, err)
 	printCode(codeSkip)
 
-	err = generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &targetObjectMetadata{skip: false})
+	err = generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &TargetObjectMetadata{skip: false})
 	assert.NoError(t, err)
 	codeNoSkip, err := generator.Generate()
 	assert.NoError(t, err)
@@ -41,13 +41,13 @@ func TestGraphSerializationGenerator_Skip(t *testing.T) {
 func TestGraphSerializationGenerator_GenerateRootMethods(t *testing.T) {
 	generator := createTestGenerator(t)
 
-	err := generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &targetObjectMetadata{generateRootSerializationMethods: true})
+	err := generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &TargetObjectMetadata{generateRootSerializationMethods: true})
 	assert.NoError(t, err)
 	codeRoot, err := generator.Generate()
 	assert.NoError(t, err)
 	printCode(codeRoot)
 
-	err = generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &targetObjectMetadata{generateRootSerializationMethods: false})
+	err = generator.AddEnabledType("pbgraphserialization", "CardAbility", true, &TargetObjectMetadata{generateRootSerializationMethods: false})
 	assert.NoError(t, err)
 	codeNoRoot, err := generator.Generate()
 	assert.NoError(t, err)
@@ -58,21 +58,21 @@ func TestGraphSerializationGenerator_GenerateRootMethods(t *testing.T) {
 
 func TestGraphSerializationGenerator_AddNonExistentType(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "NonExistent", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "NonExistent", true, &TargetObjectMetadata{})
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "type 'NonExistent' not found in package 'pbgraphserialization'")
 }
 
 func TestGraphSerializationGenerator_AddTypeFromNonExistentPackage(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("NonExistent", "", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("NonExistent", "", true, &TargetObjectMetadata{})
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "package 'NonExistent' not found")
 }
 
 func TestGraphSerializationGenerator_NoMatchingProtoType(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "TypeWithNoMatchingProtoType", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "TypeWithNoMatchingProtoType", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -81,7 +81,7 @@ func TestGraphSerializationGenerator_NoMatchingProtoType(t *testing.T) {
 
 func TestGraphSerializationGenerator_FailSerializeSerializationId(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "InvalidType1", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "InvalidType1", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -90,7 +90,7 @@ func TestGraphSerializationGenerator_FailSerializeSerializationId(t *testing.T) 
 
 func TestGraphSerializationGenerator_VariableTypeMismatch(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "InvalidType2", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "InvalidType2", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -99,7 +99,7 @@ func TestGraphSerializationGenerator_VariableTypeMismatch(t *testing.T) {
 
 func TestGraphSerializationGenerator_NonPointerSerializationId(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "InvalidType3", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "InvalidType3", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -108,7 +108,7 @@ func TestGraphSerializationGenerator_NonPointerSerializationId(t *testing.T) {
 
 func TestGraphSerializationGenerator_UnsupportedReferenceType(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "InvalidType4", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "InvalidType4", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -117,7 +117,7 @@ func TestGraphSerializationGenerator_UnsupportedReferenceType(t *testing.T) {
 
 func TestGraphSerializationGenerator_MapUnsupportedType(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "InvalidType5", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "InvalidType5", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -126,7 +126,7 @@ func TestGraphSerializationGenerator_MapUnsupportedType(t *testing.T) {
 
 func TestGraphSerializationGenerator_UnknownReferenceType(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "EntityA", true, &targetObjectMetadata{})
+	err := generator.AddEnabledType("pbgraphserialization", "EntityA", true, &TargetObjectMetadata{})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
@@ -135,8 +135,8 @@ func TestGraphSerializationGenerator_UnknownReferenceType(t *testing.T) {
 
 func TestGraphSerializationGenerator_UnknownReferenceTypeIfSkip(t *testing.T) {
 	generator := createTestGenerator(t)
-	err := generator.AddEnabledType("pbgraphserialization", "EntityA", true, &targetObjectMetadata{})
-	err = generator.AddEnabledType("pbgraphserialization", "EntityB", true, &targetObjectMetadata{skip:true})
+	err := generator.AddEnabledType("pbgraphserialization", "EntityA", true, &TargetObjectMetadata{})
+	err = generator.AddEnabledType("pbgraphserialization", "EntityB", true, &TargetObjectMetadata{skip: true})
 	assert.NoError(t, err)
 	_, err = generator.Generate()
 	assert.Error(t, err)
