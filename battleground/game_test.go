@@ -198,7 +198,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 
-	// mulligan keep all the cards
+	// mulligan all the cards
 	player1Mulligan := []*zb.CardInstance{}
 	for _, mulliganCard := range gp.State.PlayerStates[0].CardsInHand[:3] {
 		player1Mulligan = append(player1Mulligan, mulliganCard)
@@ -218,6 +218,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[0].CardsInHand)
 		assert.False(t, found, "mulliganed card should not be in player hand")
 	}
+	assert.True(t, len(gp.State.PlayerStates[0].CardsInHand) >= 3, "cards in hand should still be >= 3")
 
 	// mulligan 2 of the card
 	player2Mulligan := []*zb.CardInstance{}
@@ -239,6 +240,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[1].CardsInHand)
 		assert.False(t, found, "mulliganed card should not be in player hand")
 	}
+	assert.True(t, len(gp.State.PlayerStates[1].CardsInHand) >= 3, "cards in hand should still be >= 3")
 	gp.PrintState()
 }
 
