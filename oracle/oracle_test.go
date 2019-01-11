@@ -21,32 +21,32 @@ func TestRecentHashPool(t *testing.T) {
 }
 
 func TestTransferGatewayOracleMainnetEventSort(t *testing.T) {
-	events := []*mainnetEventInfo{
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 0},
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 4},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 3},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 7},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 8, TxIdx: 4},
-		&mainnetEventInfo{BlockNum: 8, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 9, TxIdx: 0},
-		&mainnetEventInfo{BlockNum: 10, TxIdx: 5},
-		&mainnetEventInfo{BlockNum: 1, TxIdx: 2},
+	events := []*plasmachainEventInfo{
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 0},
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 4},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 3},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 7},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 8, TxIdx: 4},
+		&plasmachainEventInfo{BlockNum: 8, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 9, TxIdx: 0},
+		&plasmachainEventInfo{BlockNum: 10, TxIdx: 5},
+		&plasmachainEventInfo{BlockNum: 1, TxIdx: 2},
 	}
-	sortedEvents := []*mainnetEventInfo{
-		&mainnetEventInfo{BlockNum: 1, TxIdx: 2},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 3},
-		&mainnetEventInfo{BlockNum: 3, TxIdx: 7},
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 0},
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 5, TxIdx: 4},
-		&mainnetEventInfo{BlockNum: 8, TxIdx: 1},
-		&mainnetEventInfo{BlockNum: 8, TxIdx: 4},
-		&mainnetEventInfo{BlockNum: 9, TxIdx: 0},
-		&mainnetEventInfo{BlockNum: 10, TxIdx: 5},
+	sortedEvents := []*plasmachainEventInfo{
+		&plasmachainEventInfo{BlockNum: 1, TxIdx: 2},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 3},
+		&plasmachainEventInfo{BlockNum: 3, TxIdx: 7},
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 0},
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 5, TxIdx: 4},
+		&plasmachainEventInfo{BlockNum: 8, TxIdx: 1},
+		&plasmachainEventInfo{BlockNum: 8, TxIdx: 4},
+		&plasmachainEventInfo{BlockNum: 9, TxIdx: 0},
+		&plasmachainEventInfo{BlockNum: 10, TxIdx: 5},
 	}
-	sortMainnetEvents(events)
+	sortPlasmachainEvents(events)
 	require.EqualValues(t, sortedEvents, events, "wrong sort order")
 }
