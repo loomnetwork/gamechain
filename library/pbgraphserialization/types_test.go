@@ -41,6 +41,26 @@ type InvalidType1 struct {
 	card pbgraphserialization_pb.SerializationId
 }
 
+type InvalidType2 struct {
+	card []Card
+}
+
+type InvalidType3 struct {
+	card []Card
+}
+
+type InvalidType4 struct {
+	cardAbility *CardAbility
+}
+
+type InvalidType5 struct {
+	cardAbilities map[int]*CardAbility
+}
+
+type TypeWithNoMatchingProtoType struct {
+	cardAbility *CardAbility
+}
+
 type AwesomeEnum int32
 
 const (

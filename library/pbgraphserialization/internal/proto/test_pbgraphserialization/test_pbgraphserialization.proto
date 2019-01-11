@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "pbgraphserialization_pb_test";
 
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.proto";
 
 message CardAbility {
@@ -47,6 +48,22 @@ message ComplexType {
 
 message InvalidType1 {
     SerializationId card = 1;
+}
+
+message InvalidType2 {
+    repeated SerializationId card = 1;
+}
+
+message InvalidType3 {
+    repeated SerializationId card = 1 [(gogoproto.nullable) = false];
+}
+
+message InvalidType4 {
+    CardAbility cardAbility = 1;
+}
+
+message InvalidType5 {
+    map<int32, CardAbility> cardAbilities = 3;
 }
 
 enum AwesomeEnum {

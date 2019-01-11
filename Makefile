@@ -58,7 +58,10 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
 
-proto: types/zb/zb.pb.go types/zb/zb.cs library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.pb.go library/pbgraphserialization/internal/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
+proto: types/zb/zb.pb.go \
+	types/zb/zb.cs \
+	library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.pb.go \
+	library/pbgraphserialization/internal/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@

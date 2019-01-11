@@ -49,7 +49,7 @@ type Generator struct {
 	protoSerializationIdType *types.TypeName
 	protoSerializedGraphType *types.TypeName
 
-	buf                           bytes.Buffer
+	buf                           *bytes.Buffer
 	enabledObjectsData            map[types.Object]*targetObjectMetadata
 	targetObjectToProtoObjectInfo map[types.Object]*targetObjectToProtoObjectInfo
 
@@ -117,6 +117,16 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 	return generator, nil
 }
 
+func (generator *Generator) AddEnabledType(packageIdentifier string, typeName string, searchByPackageName bool, metadata *targetObjectMetadata) error {
+	name, err := generator.getType(packageIdentifier, typeName, searchByPackageName)
+	if err != nil {
+		return err
+	}
+
+	generator.enabledObjectsData[name] = metadata
+	return nil
+}
+
 func (generator *Generator) AddEnabledTypesFromCode() error {
 	objectsData, err := generator.getEnabledObjectsFromCode()
 	if err != nil {
@@ -131,6 +141,7 @@ func (generator *Generator) AddEnabledTypesFromCode() error {
 }
 
 func (generator *Generator) Generate() (code string, err error) {
+	generator.buf = &bytes.Buffer{}
 	generator.generatePrologue()
 
 	err = generator.populateTargetToProtoMaps()
@@ -145,8 +156,7 @@ func (generator *Generator) Generate() (code string, err error) {
 
 	formatted, err := format.Source(generator.buf.Bytes())
 	if err != nil {
-		//fmt.Println(string(generator.buf.Bytes()))
-		return "", err
+		return string(generator.buf.Bytes()), err
 	}
 
 	return string(formatted), nil
@@ -208,37 +218,37 @@ func (generator *Generator) loadCode() error {
 }
 
 func (generator *Generator) populateKnownTypes() error {
-	serializableObjectType, err := generator.getKnownType(serializationPackageName, "SerializableObject", true)
+	serializableObjectType, err := generator.getType(serializationPackageName, "SerializableObject", true)
 	if err != nil {
 		return err
 	}
 	generator.serializableObjectType = serializableObjectType
 
-	serializerType, err := generator.getKnownType(serializationPackageName, "Serializer", true)
+	serializerType, err := generator.getType(serializationPackageName, "Serializer", true)
 	if err != nil {
 		return err
 	}
 	generator.serializerType = serializerType
 
-	deserializerType, err := generator.getKnownType(serializationPackageName, "Deserializer", true)
+	deserializerType, err := generator.getType(serializationPackageName, "Deserializer", true)
 	if err != nil {
 		return err
 	}
 	generator.deserializerType = deserializerType
 
-	protoMessageType, err := generator.getKnownType("github.com/gogo/protobuf/proto", "Message", false)
+	protoMessageType, err := generator.getType("github.com/gogo/protobuf/proto", "Message", false)
 	if err != nil {
 		return err
 	}
 	generator.protoMessageType = protoMessageType
 
-	protoSerializationIdType, err := generator.getKnownType(serializationProtoPackageName, "SerializationId", true)
+	protoSerializationIdType, err := generator.getType(serializationProtoPackageName, "SerializationId", true)
 	if err != nil {
 		return err
 	}
 	generator.protoSerializationIdType = protoSerializationIdType
 
-	protoSerializedGraphType, err := generator.getKnownType(serializationProtoPackageName, "SerializedGraph", true)
+	protoSerializedGraphType, err := generator.getType(serializationProtoPackageName, "SerializedGraph", true)
 	if err != nil {
 		return err
 	}
@@ -250,6 +260,10 @@ func (generator *Generator) populateKnownTypes() error {
 func (generator *Generator) populateTargetToProtoMaps() error {
 	protoObjects := getObjectsFromScope(generator.protoPackage.Scope())
 	for targetObject, targetObjectMetadata := range generator.enabledObjectsData {
+		if targetObjectMetadata.skip {
+			continue
+		}
+
 		protoObjectFound := false
 		for _, protoObject := range protoObjects {
 			targetTypeName := targetObject.(*types.TypeName)
@@ -340,6 +354,13 @@ func (generator *Generator) generateVarSerializationCode(serialization bool, des
 
 	switch destinationVarType.(type) {
 	case *types.Basic, *types.Named:
+		switch destinationVarType.(type) {
+		case *types.Named:
+			destinationVarNamed := destinationVarType.(*types.Named)
+			if destinationVarNamed.Obj() == generator.protoSerializationIdType {
+				return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "non-pointer SerializationId is not supported")
+			}
+		}
 		generator.printlnf("%s = %s(%s)", destinationVarName, generator.renderType(destinationVarType), sourceVarName)
 	case *types.Pointer:
 		destinationVarPointer := destinationVarType.(*types.Pointer)
@@ -355,7 +376,7 @@ func (generator *Generator) generateVarSerializationCode(serialization bool, des
 			destinationTempVarName := makeValidVariableName(destinationVarName) + elementSuffix
 			sourceRealVarType, ok := generator.targetObjectToProtoObjectInfo[destinationVarPointerElemNamed.Obj()]
 			if !ok {
-				return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "var has non-serializable type %s", generator.renderType(destinationVarPointerElemNamed))
+				return createSerializationCodeGeneratorError(errorTag, destinationVarName, sourceVarName, "var has non-serialized type %s", generator.renderType(destinationVarPointerElemNamed))
 			}
 
 			generator.printlnf("%s, %s := deserializer.Deserialize(", destinationTempVarName, errName)
@@ -500,13 +521,13 @@ func (generator *Generator) generateCode() error {
 
 		if protoObjectInfo.targetObjectMetadata.generateRootSerializationMethods {
 			generator.printlnf(
-				"func DeserializeAsRoot(graph %s) (%s, error) {",
+				"func Deserialize%sAsRoot(graph %s) (%s, error) {",
+				targetObject.Name(),
 				generator.renderType(types.NewPointer(generator.protoSerializedGraphType.Type())),
 				generator.renderType(types.NewPointer(targetObject.Type())),
 			)
 
 			generator.printlnf("deserializer, err := NewDeserializerUnmarshal(graph)")
-			generator.println()
 			generator.printlnf("if err != nil {")
 			generator.printlnf("return nil, err")
 			generator.printlnf("}")
@@ -517,7 +538,6 @@ func (generator *Generator) generateCode() error {
 				generator.renderType(generator.targetObjectToProtoObjectInfo[targetObject].protoObject.Type()),
 			)
 
-			generator.println()
 			generator.printlnf("if err != nil {")
 			generator.printlnf("return nil, err")
 			generator.printlnf("}")
@@ -553,7 +573,7 @@ func (generator *Generator) generateImports() {
 	}
 }
 
-func (generator *Generator) getKnownType(packageIdentifier string, typeName string, searchByPackageName bool) (*types.TypeName, error) {
+func (generator *Generator) getType(packageIdentifier string, typeName string, searchByPackageName bool) (*types.TypeName, error) {
 	packageFound := false
 	for pkg := range generator.program.AllPackages {
 		var compared string
@@ -580,9 +600,9 @@ func (generator *Generator) getKnownType(packageIdentifier string, typeName stri
 	}
 
 	if packageFound {
-		return nil, fmt.Errorf("known type '%s' not found in package '%s'", typeName, packageIdentifier)
+		return nil, fmt.Errorf("type '%s' not found in package '%s'", typeName, packageIdentifier)
 	} else {
-		return nil, fmt.Errorf("known package '%s' not found", packageIdentifier)
+		return nil, fmt.Errorf("package '%s' not found", packageIdentifier)
 	}
 }
 
@@ -832,16 +852,16 @@ func (generator *Generator) getLocalizedPath(path string) string {
 }
 
 func (generator *Generator) printf(format string, vals ...interface{}) {
-	_, _ = fmt.Fprintf(&generator.buf, format, vals...)
+	_, _ = fmt.Fprintf(generator.buf, format, vals...)
 }
 
 func (generator *Generator) printlnf(format string, vals ...interface{}) {
 	generator.printf(format, vals...)
-	_, _ = fmt.Fprintln(&generator.buf)
+	_, _ = fmt.Fprintln(generator.buf)
 }
 
 func (generator *Generator) println() {
-	_, _ = fmt.Fprintln(&generator.buf)
+	_, _ = fmt.Fprintln(generator.buf)
 }
 
 func (info *targetObjectToProtoObjectInfo) sortedTargetFieldToProtoField() (targetFields []*types.Var) {
