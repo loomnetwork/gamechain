@@ -2140,7 +2140,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 			if err := validateGeneratedCard(payload.Card); err != nil {
 				return err
 			}
-			userID := payload.Card.Owner.Local.String()
+			userID := string(payload.Card.Owner.Local) // should be bytes that represents address
 			cardID := payload.Card.CardID.Value.Int64()
 			amount := payload.Card.Amount.Value.Int64()
 			err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
