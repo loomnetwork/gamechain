@@ -1,0 +1,195 @@
+{
+    "actions": [
+        {
+            "actionType": "CardPlay",
+            "playerId": "loom2",
+            "cardPlay": {
+                "card": {
+                    "instanceId": {
+                        "id": 9
+                    }
+                }
+            },
+            "createdAt": "1547034628"
+        },
+        {
+            "actionType": "CardPlay",
+            "playerId": "loom2",
+            "cardPlay": {
+                "card": {
+                    "instanceId": {
+                        "id": 10
+                    }
+                }
+            },
+            "createdAt": "1547034632"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "CardPlay",
+            "playerId": "loom1",
+            "cardPlay": {
+                "card": {
+                    "instanceId": {
+                        "id": 3
+                    }
+                }
+            },
+            "createdAt": "1547034807"
+        },
+        {
+            "actionType": "CardPlay",
+            "playerId": "loom1",
+            "cardPlay": {
+                "card": {
+                    "instanceId": {
+                        "id": 4
+                    }
+                }
+            },
+            "createdAt": "1547034822"
+        },
+        {
+            "actionType": "CardAttack",
+            "playerId": "loom1",
+            "cardAttack": {
+                "attacker": {
+                    "id": 3
+                },
+                "target": {
+                    "instanceId": {
+                        "id": 9
+                    },
+                    "affectObjectType": "CHARACTER"
+                }
+            },
+            "createdAt": "1547034898"
+        },
+        {
+            "actionType": "CardAttack",
+            "playerId": "loom1",
+            "cardAttack": {
+                "attacker": {
+                    "id": 4
+                },
+                "target": {
+                    "instanceId": {
+                        "id": 9
+                    },
+                    "affectObjectType": "CHARACTER"
+                }
+            },
+            "createdAt": "1547034939"
+        }
+    ],
+    "blocks": [
+        {
+            "createGame": {
+                "gameId": "1",
+                "players": [
+                    {
+                        "id": "loom1",
+                        "deck": {
+                            "id": "1",
+                            "name": "HORDE 1",
+                            "cards": [
+                                {
+                                    "cardName": "Zludge",
+                                    "amount": "2"
+                                },
+                                {
+                                    "cardName": "Whizpar",
+                                    "amount": "1"
+                                },
+                                {
+                                    "cardName": "Pushhh",
+                                    "amount": "2"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "loom2",
+                        "deck": {
+                            "id": "1",
+                            "name": "HORDE 1",
+                            "cards": [
+                                {
+                                    "cardName": "Zludge",
+                                    "amount": "2"
+                                },
+                                {
+                                    "cardName": "Whizpar",
+                                    "amount": "1"
+                                },
+                                {
+                                    "cardName": "Pushhh",
+                                    "amount": "2"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "randomSeed": "1",
+                "version": "v2"
+            }
+        },
+        {
+            "fullInstance": {
+                "instanceId": {
+                    "id": 9
+                },
+                "attack": 4,
+                "defense": 4
+            }
+        },
+        {
+            "fullInstance": {
+                "instanceId": {
+                    "id": 10
+                },
+                "attack": 1,
+                "defense": 1
+            }
+        },
+        {
+            "fullInstance": {
+                "instanceId": {
+                    "id": 3
+                },
+                "attack": 2,
+                "defense": 2
+            }
+        },
+        {
+            "fullInstance": {
+                "instanceId": {
+                    "id": 4
+                },
+                "attack": 1,
+                "defense": 1
+            }
+        },
+        {
+            "changeInstance": {
+                "instanceId": {
+                    "id": 1
+                },
+                "value": 2
+            }
+        },
+        {
+            "changeInstance": {
+                "instanceId": {
+                    "id": 1
+                },
+                "value": 2
+            }
+        }
+    ]
+}
