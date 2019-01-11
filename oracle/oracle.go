@@ -213,7 +213,7 @@ func (orc *Oracle) Run() {
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
-	orc.logger.Info("polling plasma chain")
+	orc.logger.Info("polling Plasmachain")
 	lastPlasmachainBlockNum, err := orc.gcGateway.LastPlasmaBlockNumber()
 	if err != nil {
 		return err
