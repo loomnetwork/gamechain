@@ -252,11 +252,18 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 				continue
 			}
 
+			protoFieldFound := false
 			for j := 0; j < protoStruct.NumFields(); j++ {
 				protoField := protoStruct.Field(j)
 				if generator.checkIfFieldsMatch(targetField, protoField) {
 					protoObjectInfo.targetFieldToProtoField[targetField] = protoField
+					protoFieldFound = true
+					break
 				}
+			}
+
+			if !protoFieldFound {
+				return fmt.Errorf("no matching proto field found for serializable field '%s'", targetField.Name())
 			}
 		}
 	}
@@ -321,20 +328,34 @@ func (generator *Generator) serializeVariable(protoVarName string, targetVarName
 
 		targetSliceElementType := targetVarSlice.Elem()
 
-
 		protoSliceElementName := targetSliceElementName + "Serialized"
 		protoSliceElementType := protoVarType.(*types.Slice).Elem()
 
-		generator.println()
-		generator.printlnf("for _, %s := range %s {", targetSliceElementName, targetVarName)
-		generator.printlnf("var %s %s", protoSliceElementName, generator.renderType(protoSliceElementType))
-		err := generator.serializeVariable(protoSliceElementName, targetSliceElementName, targetSliceElementType, protoSliceElementType)
-		if err != nil {
-			return err
+		basicSliceHandled := false
+		switch protoSliceElementType.(type) {
+		case *types.Basic:
+			if protoSliceElementType == targetSliceElementType {
+				generator.println()
+				generator.printlnf("%s = make([]%s, len(%s))", protoVarName, generator.renderType(targetSliceElementType), targetVarName)
+				generator.printlnf("copy(%s, %s)", protoVarName, targetVarName)
+				generator.println()
+
+				basicSliceHandled = true
+			}
 		}
-		generator.printlnf("%s = append(%s, %s)", protoVarName, protoVarName, protoSliceElementName)
-		generator.printlnf("}")
-		generator.println()
+
+		if !basicSliceHandled {
+			generator.println()
+			generator.printlnf("for _, %s := range %s {", targetSliceElementName, targetVarName)
+			generator.printlnf("var %s %s", protoSliceElementName, generator.renderType(protoSliceElementType))
+			err := generator.serializeVariable(protoSliceElementName, targetSliceElementName, targetSliceElementType, protoSliceElementType)
+			if err != nil {
+				return err
+			}
+			generator.printlnf("%s = append(%s, %s)", protoVarName, protoVarName, protoSliceElementName)
+			generator.printlnf("}")
+			generator.println()
+		}
 	default:
 		return fmt.Errorf("unsupported type: %#v (%T)", protoVarType, protoVarType)
 	}
@@ -343,11 +364,12 @@ func (generator *Generator) serializeVariable(protoVarName string, targetVarName
 }
 
 func (generator *Generator) generateCode() error {
-	for targetObject, protoObjectInfo := range generator.targetObjectToProtoObjectInfo {
-		instanceName := hideName("serialized")
+	for _, targetObject := range generator.sortedTargetObjectToProtoObjectInfo() {
+		protoObjectInfo := generator.targetObjectToProtoObjectInfo[targetObject]
+		thisName := hideName(lowerFirst(targetObject.Name()))
 
 		// serializer code
-		thisName := hideName(lowerFirst(targetObject.Name()))
+		instanceName := hideName("serialized")
 		generator.printlnf(
 			"func (%s %s) Serialize(serializer %s) %s {",
 			thisName,
@@ -357,18 +379,8 @@ func (generator *Generator) generateCode() error {
 		)
 		generator.printlnf("%s := &%s{}", instanceName, generator.renderType(protoObjectInfo.protoObject.Type()))
 
-		/*instance := &pbgraphserialization_pb_test.Card{
-			Name: card.name,
-		}
-
-		for _, ability := range card.abilities {
-			instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
-		}
-
-		return instance*/
-
-		for targetField, protoField := range protoObjectInfo.targetFieldToProtoField {
-			//err := generator.serializeField(instanceName, thisName, targetField, protoField)
+		for _, targetField := range protoObjectInfo.sortedTargetFieldToProtoField() {
+			protoField := protoObjectInfo.targetFieldToProtoField[targetField]
 			err := generator.serializeVariable(instanceName+"."+protoField.Name(), thisName+"."+targetField.Name(), targetField.Type(), protoField.Type())
 			if err != nil {
 				return err
@@ -394,30 +406,8 @@ func (generator *Generator) generateCode() error {
 		generator.printlnf("return %s, nil", thisName)
 		generator.printlnf("}")
 		generator.println()
-
-		/*
-			message := rawMessage.(*pbgraphserialization_pb_test.Card)
-
-	card.name = message.Name
-	for i := 0; i < len(message.Abilities); i++ {
-		abilityDeserialized, err := deserializer.Deserialize(
-			message.Abilities[i],
-			func() SerializableObject { return &CardAbility{} },
-			func() proto.Message { return &pbgraphserialization_pb_test.CardAbility{} },
-		)
-
-		if err != nil {
-			return nil, err
-		}
-
-		card.abilities = append(card.abilities, abilityDeserialized.(*CardAbility))
 	}
 
-	return card, nil
-		 */
-
-		protoObjectInfo = protoObjectInfo
-	}
 	return nil
 }
 
@@ -590,6 +580,17 @@ func (generator *Generator) renderType(typ types.Type) string {
 	}
 }
 
+func (generator *Generator) sortedTargetObjectToProtoObjectInfo() (targetObjects []types.Object) {
+	for key := range generator.targetObjectToProtoObjectInfo {
+		targetObjects = append(targetObjects, key)
+	}
+	sort.SliceStable(targetObjects, func(i, j int) bool {
+		return targetObjects[i].Name() > targetObjects[j].Name()
+	})
+
+	return
+}
+
 func (generator *Generator) sortedImportNames() (importNames []string) {
 	for name := range generator.nameToPackagePath {
 		importNames = append(importNames, name)
@@ -703,6 +704,21 @@ func (generator *Generator) println() {
 	fmt.Fprintln(&generator.buf)
 }
 
+func (info *targetObjectToProtoObjectInfo) sortedTargetFieldToProtoField() (targetFields []*types.Var) {
+	for key := range info.targetFieldToProtoField {
+		targetFields = append(targetFields, key)
+	}
+	sort.SliceStable(targetFields, func(i, j int) bool {
+		score := calculateTypeScore(targetFields[i].Type()) - calculateTypeScore(targetFields[j].Type())
+		if score == 0 {
+			return targetFields[i].Name() > targetFields[j].Name()
+		}
+		return score > 0
+	})
+
+	return
+}
+
 func getObjectsFromScope(scope *types.Scope) []types.Object {
 	names := scope.Names()
 	objects := make([]types.Object, 0, len(names))
@@ -725,6 +741,19 @@ func calculateImport(set []string, path string) string {
 		}
 	}
 	return path
+}
+
+func calculateTypeScore(typ types.Type) int {
+	switch typ.(type) {
+	case *types.Basic:
+		return 10
+	case *types.Named:
+		return 9
+	case *types.Pointer:
+		return 8
+	default:
+		return 0
+	}
 }
 
 func hideName(s string) string {

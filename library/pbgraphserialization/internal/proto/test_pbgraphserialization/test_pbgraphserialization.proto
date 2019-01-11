@@ -35,13 +35,14 @@ message SelfReferenceEntity {
 }
 
 message ComplexType {
-    repeated int32 ints = 1;
+    repeated int32 intArray = 1;
     double double = 2;
     bytes byteArray = 3;
     AwesomeEnum awesomeEnum = 4;
     repeated AwesomeEnum awesomeEnumArray = 5;
     SerializationId otherEntity = 6;
     repeated SerializationId otherEntityArray = 7;
+    repeated string stringArray = 8;
 }
 
 enum AwesomeEnum {
