@@ -1,7 +1,9 @@
 package generator
 
 import (
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 )
 
 var generateCmdArgs struct {
@@ -15,8 +17,27 @@ var generateCmd = &cobra.Command{
 	Use:   "pbgraphserialization-gen",
 	Short: "Protobuf graph serialization code generator tool",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		generator := NewGenerator(generateCmdArgs.targetPackagePath, generateCmdArgs.targetPackageName, generateCmdArgs.protoPackageName, generateCmdArgs.outputPath)
-		return generator.Generate()
+		generator, err := NewGenerator(generateCmdArgs.targetPackagePath, generateCmdArgs.targetPackageName, generateCmdArgs.protoPackageName)
+		if err != nil {
+			return err
+		}
+
+		err = generator.AddEnabledTypesFromCode()
+		if err != nil {
+			return err
+		}
+
+		code, err := generator.Generate()
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(generateCmdArgs.outputPath, []byte(code), 0)
+		if err != nil {
+			return errors.Wrap(err, "error while writing output file")
+		}
+
+		return nil
 	},
 }
 

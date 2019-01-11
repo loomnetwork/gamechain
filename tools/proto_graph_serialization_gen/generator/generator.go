@@ -35,7 +35,6 @@ type Generator struct {
 	targetPackagePath string
 	targetPackageName string
 	protoPackageName  string
-	outputPath        string
 
 	program                   *loader.Program
 	serializationPackage      *types.Package
@@ -51,6 +50,7 @@ type Generator struct {
 	protoSerializedGraphType *types.TypeName
 
 	buf                           bytes.Buffer
+	enabledObjectsData            map[types.Object]*targetObjectMetadata
 	targetObjectToProtoObjectInfo map[types.Object]*targetObjectToProtoObjectInfo
 
 	localizationCache map[string]string
@@ -79,7 +79,7 @@ func newTargetObjectToProtoObjectInfo(protoObject types.Object, targetObjectMeta
 	}
 }
 
-func NewGenerator(targetPackagePath string, targetPackageName string, protoPackageName string, outputPath string) *Generator {
+func NewGenerator(targetPackagePath string, targetPackageName string, protoPackageName string) (*Generator, error) {
 	var roots []string
 
 	for _, root := range filepath.SplitList(build.Default.GOPATH) {
@@ -90,8 +90,8 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 		targetPackagePath: targetPackagePath,
 		targetPackageName: targetPackageName,
 		protoPackageName:  protoPackageName,
-		outputPath:        outputPath,
 
+		enabledObjectsData: map[types.Object]*targetObjectMetadata{},
 		targetObjectToProtoObjectInfo: map[types.Object]*targetObjectToProtoObjectInfo{},
 
 		localizationCache: map[string]string{},
@@ -101,42 +101,55 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 		packageRoots: roots,
 	}
 
-	return generator
-}
-
-func (generator *Generator) Generate() error {
 	err := generator.loadCode()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = generator.populateKnownTypes()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	generator.addPackageImport(generator.protoMessageType.Pkg())
 	generator.addPackageImport(generator.serializerType.Pkg())
+
+	return generator, nil
+}
+
+func (generator *Generator) AddEnabledTypesFromCode() error {
+	objectsData, err := generator.getEnabledObjectsFromCode()
+	if err != nil {
+		return err
+	}
+
+	for k, v := range objectsData {
+		generator.enabledObjectsData[k] = v
+	}
+
+	return nil
+}
+
+func (generator *Generator) Generate() (code string, err error) {
 	generator.generatePrologue()
 
 	err = generator.populateTargetToProtoMaps()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = generator.generateCode()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	formatted, err := format.Source(generator.buf.Bytes())
 	if err != nil {
-		fmt.Println(string(generator.buf.Bytes()))
-		log.Fatal(err)
+		//fmt.Println(string(generator.buf.Bytes()))
+		return "", err
 	}
-	fmt.Println(string(formatted))
 
-	return nil
+	return string(formatted), nil
 }
 
 func (generator *Generator) loadCode() error {
@@ -235,10 +248,8 @@ func (generator *Generator) populateKnownTypes() error {
 }
 
 func (generator *Generator) populateTargetToProtoMaps() error {
-	enabledTypes, enabledTypesMetadata := generator.getEnabledTypes()
-
 	protoObjects := getObjectsFromScope(generator.protoPackage.Scope())
-	for i, targetObject := range enabledTypes {
+	for targetObject, targetObjectMetadata := range generator.enabledObjectsData {
 		protoObjectFound := false
 		for _, protoObject := range protoObjects {
 			targetTypeName := targetObject.(*types.TypeName)
@@ -248,7 +259,6 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 			}
 
 			if generator.checkIfTypeNamesMatch(targetTypeName, protoTypeName) {
-				targetObjectMetadata := enabledTypesMetadata[i]
 				generator.targetObjectToProtoObjectInfo[targetObject] = newTargetObjectToProtoObjectInfo(protoObject, targetObjectMetadata)
 				protoObjectFound = true
 				break
@@ -287,7 +297,7 @@ func (generator *Generator) populateTargetToProtoMaps() error {
 
 			err := generator.checkIfFieldMatchIsValid(targetField, protoField)
 			if err != nil {
-				return errors.Wrap(err, fmt.Sprintf("failed to handle object %s", generator.renderType(targetObject.Type())))
+				return errors.Wrap(err, fmt.Sprintf("failed to handle target object %s", generator.renderType(targetObject.Type())))
 			}
 		}
 	}
@@ -576,14 +586,18 @@ func (generator *Generator) getKnownType(packageIdentifier string, typeName stri
 	}
 }
 
-func (generator *Generator) getEnabledTypes() (objects []types.Object, objectsMetadata []*targetObjectMetadata) {
+func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*targetObjectMetadata, error) {
 	targetPackage := generator.targetPackage
-	objects = getObjectsFromScope(targetPackage.Scope())
+	objects := getObjectsFromScope(targetPackage.Scope())
 
-	typeTest := func(object types.Object) (*targetObjectMetadata, bool) {
+	typeTest := func(object types.Object) (*targetObjectMetadata, bool, error) {
 		switch object.(type) {
 		case *types.TypeName:
 			_, path, _ := generator.program.PathEnclosingInterval(object.Pos(), object.Pos())
+			if path == nil {
+				return nil, false, fmt.Errorf("failed to find path for object %s", object.Type())
+			}
+
 			for _, pathNode := range path {
 				switch n := pathNode.(type) {
 				case *ast.GenDecl:
@@ -606,28 +620,29 @@ func (generator *Generator) getEnabledTypes() (objects []types.Object, objectsMe
 					}
 
 					if enabled {
-						return &targetObjectMetadata, true
+						return &targetObjectMetadata, true, nil
 					}
 				}
 			}
 
-			return nil, false
+			return nil, false, nil
 		default:
-			return nil, false
+			return nil, false, nil
 		}
 	}
 
-	tempObjects := objects
-	objects = objects[:0]
-	for _, object := range tempObjects {
-		metadata, enabled := typeTest(object)
+	enabledObjects := map[types.Object]*targetObjectMetadata{}
+	for _, object := range objects {
+		metadata, enabled, err := typeTest(object)
+		if err != nil {
+			return nil, err
+		}
 		if enabled {
-			objects = append(objects, object)
-			objectsMetadata = append(objectsMetadata, metadata)
+			enabledObjects[object] = metadata
 		}
 	}
 
-	return
+	return enabledObjects, nil
 }
 
 func (generator *Generator) renderType(typ types.Type) string {
