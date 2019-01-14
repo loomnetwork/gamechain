@@ -1,4 +1,5 @@
 PKG = github.com/loomnetwork/gamechain
+BATTLEGROUND_PKG = $(PKG)/battleground
 GIT_SHA = `git rev-parse --verify HEAD`
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
@@ -39,10 +40,10 @@ bin/gamechain-logger:
 bin/gameplay-replay:
 	go build -o $@ $(PKG)/tools/gameplay_replay
 
-contracts/zombiebattleground.so.1.0.0: proto
+contracts/zombiebattleground.so.1.0.0: proto serialization-generate
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
 
-contracts/zombiebattleground.1.0.0: proto
+contracts/zombiebattleground.1.0.0: proto serialization-generate
 	go build -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
@@ -61,10 +62,13 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
 
+serialization-generate:
+	go generate -x $(BATTLEGROUND_PKG)/game
+
 proto: types/zb/zb.pb.go \
 	types/zb/zb.cs \
-	library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.pb.go \
-	library/pbgraphserialization/internal/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
+	library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go \
+	library/pbgraphserialization/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -129,8 +133,8 @@ clean:
 		protoc-gen-gogo \
 		types/zb/pb_zb.go \
 		types/zb/zb.cs \
-		library/pbgraphserialization/internal/proto/pbgraphserialization/pb_pbgraphserialization.go \
-		library/pbgraphserialization/internal/proto/test_pbgraphserialization/pb_test_pbgraphserialization.go \
+		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
+		library/pbgraphserialization/proto/test_pbgraphserialization/pb_test_pbgraphserialization.go \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \

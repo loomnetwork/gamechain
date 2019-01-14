@@ -2,8 +2,8 @@ package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/test_pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/test_pbgraphserialization"
 )
 
 type CardAbility struct {
@@ -89,6 +89,20 @@ type ComplexType struct {
 	otherEntity      *SelfReferenceEntity
 	otherEntityArray []*SelfReferenceEntity
 	stringArray      []string
+}
+
+func DeserializeCardAbilityAsRoot(graph *pbgraphserialization_pb.SerializedGraph) (*CardAbility, error) {
+	deserializer, err := NewDeserializerDeserializeFromGraph(graph)
+	if err != nil {
+		return nil, err
+	}
+
+	deserialized, err := deserializer.DeserializeRoot(&CardAbility{}, &pbgraphserialization_pb_test.CardAbility{})
+	if err != nil {
+		return nil, err
+	}
+
+	return deserialized.(*CardAbility), nil
 }
 
 func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Message {

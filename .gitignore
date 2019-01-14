@@ -24,10 +24,10 @@
 # Protobuf generated
 /types/zb/*.cs
 /types/zb/*.go
-/library/pbgraphserialization/internal/proto/pbgraphserialization/*.cs
-/library/pbgraphserialization/internal/proto/pbgraphserialization/*.go
-/library/pbgraphserialization/internal/proto/test_pbgraphserialization/*.cs
-/library/pbgraphserialization/internal/proto/test_pbgraphserialization/*.go
+/library/pbgraphserialization/proto/pbgraphserialization/*.cs
+/library/pbgraphserialization/proto/pbgraphserialization/*.go
+/library/pbgraphserialization/proto/test_pbgraphserialization/*.cs
+/library/pbgraphserialization/proto/test_pbgraphserialization/*.go
 
 # App specific
 /app.db

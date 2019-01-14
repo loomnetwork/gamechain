@@ -113,6 +113,8 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 
 	generator.addPackageImport(generator.protoMessageType.Pkg())
 	generator.addPackageImport(generator.serializerType.Pkg())
+	generator.addPackageImport(generator.protoSerializationIdType.Pkg())
+	generator.addPackageImport(generator.protoSerializedGraphType.Pkg())
 
 	return generator, nil
 }
@@ -144,13 +146,14 @@ func (generator *Generator) Generate() (code string, err error) {
 	generator.buf = &bytes.Buffer{}
 	generator.targetObjectToProtoObjectInfo = map[types.Object]*targetObjectToProtoObjectInfo{}
 
-	generator.generatePrologue()
-
 	err = generator.populateTargetToProtoMaps()
 	if err != nil {
 		return "", err
 	}
 
+	generator.populateImports()
+
+	generator.generatePrologue()
 	err = generator.generateCode()
 	if err != nil {
 		return "", err
@@ -162,6 +165,18 @@ func (generator *Generator) Generate() (code string, err error) {
 	}
 
 	return string(formatted), nil
+}
+
+func (generator *Generator) populateImports() {
+	for k, v := range generator.targetObjectToProtoObjectInfo {
+		generator.addPackageImport(k.Pkg())
+		generator.addPackageImport(v.protoObject.Pkg())
+
+		for k2, v2 := range v.targetFieldToProtoField {
+			generator.addPackageImport(k2.Pkg())
+			generator.addPackageImport(v2.Pkg())
+		}
+	}
 }
 
 func (generator *Generator) loadCode() error {
@@ -493,7 +508,7 @@ func (generator *Generator) generateCode() error {
 				generator.renderType(types.NewPointer(generator.protoSerializedGraphType.Type())),
 			)
 
-			generator.printlnf("%s := NewSerializerSerialize(%s)", serializerName, thisName)
+			generator.printlnf("%s := %sNewSerializerSerialize(%s)", serializerName, generator.renderSerializationPackageAccessor(), thisName)
 			generator.printlnf("return %s.SerializeToGraph()", serializerName)
 			generator.printlnf("}")
 			generator.println()
@@ -535,7 +550,7 @@ func (generator *Generator) generateCode() error {
 				generator.renderType(types.NewPointer(targetObject.Type())),
 			)
 
-			generator.printlnf("deserializer, err := NewDeserializerDeserializeFromGraph(graph)")
+			generator.printlnf("deserializer, err := %sNewDeserializerDeserializeFromGraph(graph)", generator.renderSerializationPackageAccessor())
 			generator.printlnf("if err != nil {")
 			generator.printlnf("return nil, err")
 			generator.printlnf("}")
@@ -574,6 +589,10 @@ func (generator *Generator) generatePrologue() {
 }
 
 func (generator *Generator) generateImports() {
+	if len(generator.targetObjectToProtoObjectInfo) == 0 {
+		return
+	}
+
 	targetPackagePath := generator.nameToPackagePath[generator.targetPackage.Name()]
 
 	// Sort by import name so that we get a deterministic order
@@ -676,6 +695,14 @@ func (generator *Generator) getEnabledObjectsFromCode() (map[types.Object]*Targe
 	}
 
 	return enabledObjects, nil
+}
+
+func (generator *Generator) renderSerializationPackageAccessor() string {
+	if generator.targetPackage.Name() == serializationPackageName {
+		return ""
+	} else {
+		return serializationPackageName + "."
+	}
 }
 
 func (generator *Generator) renderType(typ types.Type) string {

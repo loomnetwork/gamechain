@@ -3,7 +3,7 @@ syntax = "proto3";
 option go_package = "pbgraphserialization_pb_test";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization/pbgraphserialization.proto";
+import "library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.proto";
 
 message CardAbility {
     string targetType = 2;

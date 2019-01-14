@@ -14,6 +14,21 @@ const (
 	debugPrintCode = true
 )
 
+func TestGraphSerializationGenerator_2(t *testing.T) {
+	generator, err := NewGenerator(
+		"github.com/loomnetwork/gamechain/battleground/game/",
+		"game",
+		"zb",
+	)
+	assert.NoError(t, err)
+	err = generator.AddEnabledTypesFromCode()
+	assert.NoError(t, err)
+	code, err := generator.Generate()
+	assert.NoError(t, err)
+
+	printCode(code)
+}
+
 func TestGraphSerializationGenerator_1(t *testing.T) {
 	generator := createTestGenerator(t)
 	err := generator.AddEnabledTypesFromCode()
@@ -190,6 +205,15 @@ func TestGraphSerializationGenerator_UnknownReferenceTypeIfSkip(t *testing.T) {
 	_, err = generator.Generate()
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "var has non-serialized type EntityB")
+}
+
+func TestGraphSerializationGenerator_NoImportsInEmptyFile(t *testing.T) {
+	generator := createTestGenerator(t)
+	code, err := generator.Generate()
+	assert.NoError(t, err)
+
+	codeAst := parseCode(code)
+	assert.Nil(t, codeAst.Imports)
 }
 
 func createTestGenerator(t *testing.T) *Generator {

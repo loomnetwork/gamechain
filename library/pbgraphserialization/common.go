@@ -2,7 +2,7 @@ package pbgraphserialization
 
 import (
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/library/pbgraphserialization/internal/proto/pbgraphserialization"
+	"github.com/loomnetwork/gamechain/library/pbgraphserialization/proto/pbgraphserialization"
 	"math"
 )
 
