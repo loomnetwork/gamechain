@@ -2,6 +2,12 @@
 
 set -ex
 
+REV=`git rev-parse --short HEAD`
+
+export RELEASE=$REV
+
+DOC_IMAGE=gcr.io/robotic-catwalk-188706/gamechain-logger:$REV
+
 export GOPATH=`pwd`
 
 mkdir -p $GOPATH/bin
@@ -14,3 +20,17 @@ make deps
 make
 make gamechain-logger
 make test
+
+chmod +x bin/gamechain-logger
+
+echo "sending $DOC_IMAGE"
+docker build -t $DOC_IMAGE -f Dockerfile .
+
+echo "pushing to google container registry"
+gcloud docker -- push  $DOC_IMAGE
+
+echo "sed on k8s/${ENV}/deployment.yaml"
+sed -i 's/%REV%/'"$REV"'/g' k8s/${ENV}/deployment.yaml
+
+echo "kube apply deployment"
+kubectl apply -f k8s/${ENV}/deployment.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
