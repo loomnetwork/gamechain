@@ -49,14 +49,14 @@ func TestGraphSerialization_CrossReference(t *testing.T) {
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[0],
 				&pbgraphserialization_pb_test.EntityA{
-					EntityB: Id(1).Marshal(),
+					EntityB: SerializationId(1).Serialize(),
 					AField:  sourceEntityA.aField,
 				},
 			))
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[1],
 				&pbgraphserialization_pb_test.EntityB{
-					EntityA: Id(0).Marshal(),
+					EntityA: SerializationId(0).Serialize(),
 					BField:  sourceEntityB.bField,
 				},
 			))
@@ -80,7 +80,7 @@ func TestGraphSerialization_SelfReference(t *testing.T) {
 			assert.True(t, proto.Equal(
 				serializer.idToSerializedObject[0],
 				&pbgraphserialization_pb_test.SelfReferenceEntity{
-					OtherEntity: Id(0).Marshal(),
+					OtherEntity: SerializationId(0).Serialize(),
 					Field:       sourceEntity.field,
 				},
 			))
@@ -118,10 +118,10 @@ func fullCircleSerializationTest(
 	}
 
 	// deserialize
-	marshaled, err := serializer.Marshal()
+	serializedGraph, err := serializer.SerializeToGraph()
 	assert.NoError(t, err)
 
-	deserializer, err := NewDeserializerUnmarshal(marshaled)
+	deserializer, err := NewDeserializerDeserializeFromGraph(serializedGraph)
 	assert.NoError(t, err)
 
 	// create an empty instance with the same type as sourceRoot
@@ -146,7 +146,7 @@ func fullCircleSerializationTest(
 
 func convertSerializedGraphToDebugGraph(graph *pbgraphserialization_pb.SerializedGraph) *pbgraphserialization_pb.SerializedDebugGraph {
 	debugGraph := pbgraphserialization_pb.SerializedDebugGraph{
-		Version: SerializerFormatVersion,
+		Version: serializerFormatVersion,
 	}
 
 	for i := 0; i < len(graph.Objects); i++ {
@@ -163,12 +163,12 @@ func convertSerializedGraphToDebugGraph(graph *pbgraphserialization_pb.Serialize
 }
 
 func debugOutputGraphAsJson(serializer *Serializer) {
-	marshaled, err := serializer.DebugMarshal()
+	serializedGraph, err := serializer.SerializeToDebugGraph()
 	if err != nil {
 		panic(err)
 	}
 
-	debugGraph := convertSerializedGraphToDebugGraph(marshaled)
+	debugGraph := convertSerializedGraphToDebugGraph(serializedGraph)
 
 	debugOutputProtoMessageAsJson(debugGraph)
 }

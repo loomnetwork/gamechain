@@ -66,6 +66,13 @@ message InvalidType5 {
     map<int32, CardAbility> cardAbilities = 3;
 }
 
+message InvalidType6 {
+    repeated int32 data = 1;
+}
+
+message EmptyType {
+}
+
 enum AwesomeEnum {
     AwesomeEnum_Foo = 0;
     AwesomeEnum_Bar = 1;

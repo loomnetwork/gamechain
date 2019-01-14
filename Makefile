@@ -15,7 +15,7 @@ build-ext: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
-tools: bin/zb-enum-gen bin/zb-console-game
+tools: bin/zb-enum-gen bin/zb-console-game bin/pbgraphserialization-gen
 
 replay_logger: bin/replay-logger
 
@@ -26,6 +26,9 @@ bin/zb-cli:
 
 bin/zb-enum-gen:
 	go build -o $@ tools/cmd/templates/main.go
+
+bin/pbgraphserialization-gen:
+	go build -o $@ tools/pbgraphserialization-gen/main.go
 
 bin/zb-console-game:
 	go build -o $@ tools/cmd/console_game/main.go
@@ -96,6 +99,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/jinzhu/gorm \
 		github.com/phonkee/go-pubsub \
 		github.com/mattn/go-sqlite3 \
+		github.com/ahmetb/go-linq \
 		golang.org/x/tools/go/loader
 
 	go install github.com/golang/dep/cmd/dep
@@ -131,6 +135,7 @@ clean:
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
 		bin/zb-enum-gen \
+		bin/pbgraphserialization-gen \
 		bin/gamechain-logger \
 		bin/gameplay-replay
 

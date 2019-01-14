@@ -57,8 +57,16 @@ type InvalidType5 struct {
 	cardAbilities map[int]*CardAbility
 }
 
+type InvalidType6 struct {
+	data []string
+}
+
 type TypeWithNoMatchingProtoType struct {
 	cardAbility *CardAbility
+}
+
+type EmptyType struct {
+
 }
 
 type AwesomeEnum int32
@@ -85,7 +93,7 @@ type ComplexType struct {
 
 func (entity *SelfReferenceEntity) Serialize(serializer *Serializer) proto.Message {
 	return &pbgraphserialization_pb_test.SelfReferenceEntity{
-		OtherEntity: serializer.Serialize(entity).Marshal(),
+		OtherEntity: serializer.Serialize(entity).Serialize(),
 		Field:       entity.field,
 	}
 }
@@ -109,7 +117,7 @@ func (entity *SelfReferenceEntity) Deserialize(deserializer *Deserializer, rawMe
 
 func (entityA *EntityA) Serialize(serializer *Serializer) proto.Message {
 	return &pbgraphserialization_pb_test.EntityA{
-		EntityB: serializer.Serialize(entityA.entityB).Marshal(),
+		EntityB: serializer.Serialize(entityA.entityB).Serialize(),
 		AField:  entityA.aField,
 	}
 }
@@ -133,7 +141,7 @@ func (entityA *EntityA) Deserialize(deserializer *Deserializer, rawMessage proto
 
 func (entityB *EntityB) Serialize(serializer *Serializer) proto.Message {
 	return &pbgraphserialization_pb_test.EntityB{
-		EntityA: serializer.Serialize(entityB.entityA).Marshal(),
+		EntityA: serializer.Serialize(entityB.entityA).Serialize(),
 		BField:  entityB.bField,
 	}
 }
@@ -176,7 +184,7 @@ func (card *Card) Serialize(serializer *Serializer) proto.Message {
 	}
 
 	for _, ability := range card.abilities {
-		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Serialize())
 	}
 
 	return instance
@@ -207,11 +215,11 @@ func (cardList *CardList) Serialize(serializer *Serializer) proto.Message {
 	instance := &pbgraphserialization_pb_test.CardList{}
 
 	for _, ability := range cardList.abilities {
-		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Marshal())
+		instance.Abilities = append(instance.Abilities, serializer.Serialize(ability).Serialize())
 	}
 
 	for _, card := range cardList.cards {
-		instance.Cards = append(instance.Cards, serializer.Serialize(card).Marshal())
+		instance.Cards = append(instance.Cards, serializer.Serialize(card).Serialize())
 	}
 
 	return instance

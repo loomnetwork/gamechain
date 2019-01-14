@@ -7,48 +7,48 @@ import (
 
 type Deserializer struct {
 	idToMarshaledObject [][]byte
-	idToObject          map[Id]SerializableObject
+	idToObject          map[SerializationId]SerializableObject
 }
 
 func NewDeserializer() *Deserializer {
 	var deserializer Deserializer
-	deserializer.idToObject = make(map[Id]SerializableObject)
+	deserializer.idToObject = make(map[SerializationId]SerializableObject)
 	return &deserializer
 }
 
-func NewDeserializerUnmarshal(marshaledGraph *pbgraphserialization_pb.SerializedGraph) (*Deserializer, error) {
+func NewDeserializerDeserializeFromGraph(serializedGraph *pbgraphserialization_pb.SerializedGraph) (*Deserializer, error) {
 	deserializer := NewDeserializer()
-	err := deserializer.Unmarshal(marshaledGraph)
+	err := deserializer.DeserializeFromGraph(serializedGraph)
 	if err != nil {
 		return nil, err
 	}
 	return deserializer, nil
 }
 
-func (deserializer *Deserializer) Unmarshal(marshaledGraph *pbgraphserialization_pb.SerializedGraph) error {
-	count := len(marshaledGraph.Objects)
+func (deserializer *Deserializer) DeserializeFromGraph(serializedGraph *pbgraphserialization_pb.SerializedGraph) error {
+	count := len(serializedGraph.Objects)
 	deserializer.idToMarshaledObject = make([][]byte, count, count)
 	for i := 0; i < count; i++ {
-		deserializer.idToMarshaledObject[i] = marshaledGraph.Objects[i]
+		deserializer.idToMarshaledObject[i] = serializedGraph.Objects[i]
 	}
 
 	return nil
 }
 
-func (deserializer *Deserializer) Deserialize(id *pbgraphserialization_pb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) (SerializableObject, error) {
-	unmarshaledId := Unmarshal(id)
+func (deserializer *Deserializer) Deserialize(id *pbgraphserialization_pb.SerializationId, targetCreator SerializableObjectCreator, protoMessageCreator ProtoMessageCreator) (SerializableObject, error) {
+	deserializedId := DeserializeSerializationId(id)
 
-	if unmarshaledId == NilSerializationId {
+	if deserializedId == nilSerializationId {
 		return nil, nil
 	}
 
-	object, ok := deserializer.idToObject[unmarshaledId]
+	object, ok := deserializer.idToObject[deserializedId]
 	if ok {
 		return object, nil
 	}
 
 	marshaled := deserializer.getMarshaledObject(id)
-	unmarshaled := unmarshaledProtoMessageCreator()
+	unmarshaled := protoMessageCreator()
 
 	err := proto.Unmarshal(marshaled, unmarshaled)
 	if err != nil {
@@ -56,7 +56,7 @@ func (deserializer *Deserializer) Deserialize(id *pbgraphserialization_pb.Serial
 	}
 
 	object = targetCreator()
-	deserializer.idToObject[unmarshaledId] = object
+	deserializer.idToObject[deserializedId] = object
 	object, err = object.Deserialize(deserializer, unmarshaled)
 	if err != nil {
 		return nil, err
@@ -65,13 +65,8 @@ func (deserializer *Deserializer) Deserialize(id *pbgraphserialization_pb.Serial
 	return object, nil
 }
 
-func (deserializer *Deserializer) DeserializeNoError(id *pbgraphserialization_pb.SerializationId, targetCreator SerializableObjectCreator, unmarshaledProtoMessageCreator UnmarshaledProtoMessageCreator) SerializableObject {
-	deserialized, _ := deserializer.Deserialize(id, targetCreator, unmarshaledProtoMessageCreator)
-	return deserialized
-}
-
 func (deserializer *Deserializer) DeserializeRoot(root SerializableObject, message proto.Message) (SerializableObject, error) {
-	id := Id(0)
+	id := SerializationId(0)
 	err := proto.Unmarshal(deserializer.idToMarshaledObject[id], message)
 	if err != nil {
 		return nil, err

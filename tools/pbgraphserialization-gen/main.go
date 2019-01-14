@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/loomnetwork/gamechain/tools/proto_graph_serialization_gen/generator"
+	"github.com/loomnetwork/gamechain/tools/pbgraphserialization-gen/generator"
 	"os"
 )
 

@@ -7,28 +7,28 @@ import (
 )
 
 const (
-	SerializerFormatVersion = 1
+	serializerFormatVersion = 1
 )
 
 var (
-	NilSerializationId = Id(math.MaxUint32)
+	nilSerializationId = SerializationId(math.MaxUint32)
 )
-
-type Id uint32
 
 type SerializableObject interface {
 	Serialize(serializer *Serializer) proto.Message
 	Deserialize(deserializer *Deserializer, rawMessage proto.Message) (SerializableObject, error)
 }
 
-type UnmarshaledProtoMessageCreator func() proto.Message
+type ProtoMessageCreator func() proto.Message
 
 type SerializableObjectCreator func() SerializableObject
 
-func (id Id) Marshal() *pbgraphserialization_pb.SerializationId {
+type SerializationId uint32
+
+func (id SerializationId) Serialize() *pbgraphserialization_pb.SerializationId {
 	return &pbgraphserialization_pb.SerializationId{SerializationId: uint32(id)}
 }
 
-func Unmarshal(id *pbgraphserialization_pb.SerializationId) Id {
-	return Id(id.SerializationId)
+func DeserializeSerializationId(id *pbgraphserialization_pb.SerializationId) SerializationId {
+	return SerializationId(id.SerializationId)
 }

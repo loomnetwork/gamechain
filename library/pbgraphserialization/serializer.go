@@ -10,13 +10,13 @@ import (
 
 var (
 	ErrOnlyOneRootObject   = errors.New("only one root object is allowed")
-	initialSerializationId = Id(math.MaxUint32 - 1)
+	initialSerializationId = SerializationId(math.MaxUint32 - 1)
 )
 
 type Serializer struct {
 	serializingRoot      bool
-	currentId            Id
-	objectToId           map[interface{}]Id
+	currentId            SerializationId
+	objectToId           map[interface{}]SerializationId
 	idToSerializedObject []proto.Message
 	idToMarshaledObject  [][]byte
 }
@@ -24,7 +24,7 @@ type Serializer struct {
 func NewSerializer() *Serializer {
 	var serializer Serializer
 	serializer.currentId = initialSerializationId
-	serializer.objectToId = make(map[interface{}]Id)
+	serializer.objectToId = make(map[interface{}]SerializationId)
 	serializer.idToSerializedObject = make([]proto.Message, 8, 8)
 
 	return &serializer
@@ -36,7 +36,7 @@ func NewSerializerSerialize(object SerializableObject) *Serializer {
 	return serializer
 }
 
-func (serializer *Serializer) Serialize(object SerializableObject) Id {
+func (serializer *Serializer) Serialize(object SerializableObject) SerializationId {
 	if serializer.currentId != initialSerializationId && !serializer.serializingRoot {
 		panic(ErrOnlyOneRootObject)
 	}
@@ -54,17 +54,17 @@ func (serializer *Serializer) Serialize(object SerializableObject) Id {
 	return id
 }
 
-func (serializer *Serializer) Marshal() (*pbgraphserialization_pb.SerializedGraph, error) {
-	return serializer.marshalInternal(false)
+func (serializer *Serializer) SerializeToGraph() (*pbgraphserialization_pb.SerializedGraph, error) {
+	return serializer.serializeToGraphInternal(false)
 }
 
-func (serializer *Serializer) DebugMarshal() (*pbgraphserialization_pb.SerializedGraph, error) {
-	return serializer.marshalInternal(true)
+func (serializer *Serializer) SerializeToDebugGraph() (*pbgraphserialization_pb.SerializedGraph, error) {
+	return serializer.serializeToGraphInternal(true)
 }
 
-func (serializer *Serializer) marshalInternal(saveTypeInfo bool) (*pbgraphserialization_pb.SerializedGraph, error) {
+func (serializer *Serializer) serializeToGraphInternal(saveTypeInfo bool) (*pbgraphserialization_pb.SerializedGraph, error) {
 	instance := pbgraphserialization_pb.SerializedGraph{
-		Version: SerializerFormatVersion,
+		Version: serializerFormatVersion,
 	}
 
 	maxId := int(serializer.currentId) + 1
@@ -90,9 +90,9 @@ func (serializer *Serializer) marshalInternal(saveTypeInfo bool) (*pbgraphserial
 	return &instance, nil
 }
 
-func (serializer *Serializer) serializeInternal(object SerializableObject) Id {
+func (serializer *Serializer) serializeInternal(object SerializableObject) SerializationId {
 	if reflect.ValueOf(object).IsNil() {
-		return NilSerializationId
+		return nilSerializationId
 	}
 
 	id, alreadyAdded := serializer.addReference(object)
@@ -105,7 +105,7 @@ func (serializer *Serializer) serializeInternal(object SerializableObject) Id {
 	return id
 }
 
-func (serializer *Serializer) addSerialized(id Id, protoMessage proto.Message) {
+func (serializer *Serializer) addSerialized(id SerializationId, protoMessage proto.Message) {
 	messageCap := cap(serializer.idToSerializedObject)
 	if messageCap - 1 < int(id) {
 		serializer.idToSerializedObject = append(serializer.idToSerializedObject, make([]proto.Message, messageCap, messageCap)...)
@@ -114,7 +114,7 @@ func (serializer *Serializer) addSerialized(id Id, protoMessage proto.Message) {
 	serializer.idToSerializedObject[id] = protoMessage
 }
 
-func (serializer *Serializer) addReference(object SerializableObject) (id Id, alreadyAdded bool) {
+func (serializer *Serializer) addReference(object SerializableObject) (id SerializationId, alreadyAdded bool) {
 	id, ok := serializer.objectToId[object]
 	if ok {
 		return id, true
