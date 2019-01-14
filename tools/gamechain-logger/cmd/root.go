@@ -68,12 +68,12 @@ func Execute() {
 
 func run(wsURL string) error {
 	var (
-		dbURL      = viper.GetString("DATABASE_URL")
-		dbHost     = viper.GetString("DATABASE_HOST")
-		dbPort     = viper.GetString("DATABASE_PORT")
-		dbName     = viper.GetString("DATABASE_NAME")
-		dbUser     = viper.GetString("DATABASE_USERNAME")
-		dbPassword = viper.GetString("DATABASE_PASS")
+		dbURL      = viper.GetString("db-url")
+		dbHost     = viper.GetString("db-host")
+		dbPort     = viper.GetString("db-port")
+		dbName     = viper.GetString("db-name")
+		dbUser     = viper.GetString("db-user")
+		dbPassword = viper.GetString("db-password")
 	)
 
 	parsedURL, err := url.Parse(wsURL)
