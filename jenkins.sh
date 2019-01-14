@@ -29,6 +29,7 @@ docker build -t $DOC_IMAGE -f Dockerfile .
 echo "pushing to google container registry"
 gcloud docker -- push  $DOC_IMAGE
 
+ENV=development # TODO remove this
 echo "sed on k8s/${ENV}/deployment.yaml"
 sed -i 's/%REV%/'"$REV"'/g' k8s/${ENV}/deployment.yaml
 
