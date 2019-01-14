@@ -3,8 +3,9 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"strings"
+
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -38,6 +39,10 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	nonceKey                    = []byte("nonce")
+	currentUserIDUIntKey        = []byte("current-user-id")
+	contentVersionKey           = []byte("content-version")
+	pvpVersionKey               = []byte("pvp-version")
 )
 
 var (
@@ -77,6 +82,14 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
+func RewardClaimedKey(userID string) []byte {
+	return []byte("user:" + userID + ":rewardClaimed")
+}
+
+func UserIDUIntKey(userID string) []byte {
+	return []byte("user:" + userID + ":IDUint")
+
+}
 func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
 	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
@@ -281,6 +294,72 @@ func nextMatchID(ctx contract.Context) (int64, error) {
 	return count.CurrentId, nil
 }
 
+func getNonce(ctx contract.Context) (int64, error) {
+	var nonce zb.Nonce
+	err := ctx.Get(nonceKey, &nonce)
+	if err != nil && err != contract.ErrNotFound {
+		return 0, err
+	}
+	nonce.CurrentNonce++
+	if err := ctx.Set(nonceKey, &nonce); err != nil {
+		return 0, err
+	}
+	return nonce.CurrentNonce, nil
+}
+
+func setRewardClaimed(ctx contract.Context, userID string, rewardType string) error {
+	err := ctx.Set(RewardClaimedKey(userID), &zb.RewardClaimed{
+		RewardType: rewardType,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func getRewardClaimed(ctx contract.Context, userID string) (*zb.RewardClaimed, error) {
+	var rewardClaimed zb.RewardClaimed
+	err := ctx.Get(RewardClaimedKey(userID), &rewardClaimed)
+	if err == contract.ErrNotFound {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &rewardClaimed, nil
+}
+
+func getOrGenerateUserIDUint(ctx contract.Context, userID string) (uint64, error) {
+	var userIDUInt zb.UserIDUint
+	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
+	if err == contract.ErrNotFound {
+		userIDUInt = *nextIntUserID(ctx)
+	} else {
+		return 0, err
+	}
+	err = ctx.Set(UserIDUIntKey(userID), &userIDUInt)
+	if err != nil {
+		return 0, err
+	}
+	return userIDUInt.UserIdUint, nil
+}
+
+func nextIntUserID(ctx contract.Context) *zb.UserIDUint {
+	var currentUserIDUInt zb.UserIDUint
+	ctx.Get(currentUserIDUIntKey, &currentUserIDUInt)
+	currentUserIDUInt.UserIdUint++
+	ctx.Set(currentUserIDUIntKey, &currentUserIDUInt)
+	return &currentUserIDUInt
+}
+
+func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
+	var userIDUInt zb.UserIDUint
+	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
+	if err != nil {
+		return 0, err
+	}
+	return userIDUInt.UserIdUint, err
+}
+
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {
 	if err := ctx.Set(GameStateKey(gs.Id), gs); err != nil {
 		return err
@@ -380,10 +459,10 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
 	return &zb.CardInstanceSpecificData{
-		Attack: cardDetails.Attack,
+		Attack:  cardDetails.Attack,
 		Defense: cardDetails.Defense,
-		Type: cardDetails.Type,
-		Set: cardDetails.Set,
+		Type:    cardDetails.Type,
+		Set:     cardDetails.Set,
 		GooCost: cardDetails.GooCost,
 	}
 }
@@ -392,8 +471,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.Instanc
 	return &zb.CardInstance{
 		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
 		Owner:      owner,
-		Prototype: proto.Clone(cardDetails).(*zb.Card),
-		Instance: newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		Prototype:  proto.Clone(cardDetails).(*zb.Card),
+		Instance:   newCardInstanceSpecificDataFromCardDetails(cardDetails),
 	}
 }
 
@@ -411,7 +490,7 @@ func populateDeckCards(
 	cardLibrary *zb.CardList,
 	playerStates []*zb.PlayerState,
 	useBackendGameLogic bool,
-	) error {
+) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
 		for _, cardAmounts := range deck.Cards {
@@ -432,26 +511,60 @@ func populateDeckCards(
 		}
 	}
 
-	if useBackendGameLogic {
-		for _, playerState := range playerStates {
-			for _, card := range playerState.CardsInDeck {
-				filteredAbilities := make([]*zb.CardAbility, 0, 0)
-				for _, ability := range card.Prototype.Abilities {
-					switch ability.Type {
-					case zb.CardAbilityType_Rage:
-					case zb.CardAbilityType_PriorityAttack:
-						filteredAbilities = append(filteredAbilities, ability)
-					default:
-						fmt.Printf("CardAbility.Type has unexpected value %s, removed\n", zb.CardAbilityType_Enum_name[int32(ability.Type)])
-					}
-				}
-
-				card.Prototype.Abilities = filteredAbilities
-			}
-		}
-	}
+	removeUnsupportedCardFeatures(useBackendGameLogic, playerStates)
 
 	return nil
+}
+
+func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.PlayerState) {
+	if !useBackendGameLogic {
+		return
+	}
+
+	for _, playerState := range playerStates {
+		filteredCards := make([]*zb.CardInstance, 0, 0)
+
+		for _, card := range playerState.CardsInDeck {
+			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			for _, ability := range card.Prototype.Abilities {
+				switch ability.Type {
+				case zb.CardAbilityType_Rage:
+					fallthrough
+				case zb.CardAbilityType_PriorityAttack:
+					filteredAbilities = append(filteredAbilities, ability)
+				default:
+					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+				}
+			}
+
+			card.Prototype.Abilities = filteredAbilities
+
+			switch card.Prototype.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Instance.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Prototype.Kind {
+			case zb.CardKind_Creature:
+				filteredCards = append(filteredCards, card)
+			default:
+				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+			}
+		}
+
+		playerState.CardsInDeck = filteredCards
+	}
 }
 
 func getCardLibrary(ctx contract.Context, version string) (*zb.CardList, error) {
