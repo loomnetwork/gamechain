@@ -54,7 +54,10 @@ spec:
             value: 127.0.0.1
           - name: DATABASE_NAME
             value: loomauth
-          - name
+          - name: DATABASE_PORT
+            value: 3306
+          - name: WEBSOCKET_URL
+            value: http://battleground-testnet-asia2.dappchains.com:9999/queryws
       volumes:
         - name: cloudsql-loomauth-credentials
           secret:
