@@ -17,9 +17,9 @@ cli: bin/zb-cli
 
 tools: bin/zb-enum-gen bin/zb-console-game
 
-replay_logger: bin/replay-logger
+gamechain-logger: proto bin/gamechain-logger
 
-gameplay_replay: proto bin/gameplay-replay
+gamechain-replay: proto bin/gamechain-replay
 
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
@@ -33,8 +33,8 @@ bin/zb-console-game:
 bin/gamechain-logger:
 	go build -o $@ $(PKG)/tools/gamechain-logger
 
-bin/gameplay-replay:
-	go build -o $@ $(PKG)/tools/gameplay_replay
+bin/gamechain-replay:
+	go build -o $@ $(PKG)/tools/gamechain-replay
 
 contracts/zombiebattleground.so.1.0.0: proto
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
@@ -124,6 +124,6 @@ clean:
 		bin/zb-cli \
 		bin/zb-enum-gen \
 		bin/gamechain-logger \
-		bin/gameplay-replay
+		bin/gamechain-replay
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen
