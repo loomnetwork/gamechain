@@ -12,4 +12,5 @@ go get github.com/loomnetwork/go-loom
 cd ${GOPATH}/src/github.com/loomnetwork/gamechain
 make deps
 make
+make gamechain-logger
 make test
