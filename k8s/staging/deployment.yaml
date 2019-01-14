@@ -28,7 +28,7 @@ spec:
           - name: cloudsql
             mountPath: /cloudsql
       - name: gamechain-logger
-        image: gcr.io/robotic-catwalk-188706/loomauth:%REV%
+        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%REV%
         resources:
           requests:
             cpu: 100m
