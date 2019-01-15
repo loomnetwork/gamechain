@@ -32,22 +32,24 @@ var findMatchCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		match := resp.Match
+		if resp.Match != nil {
+			match := resp.Match
 
-		switch strings.ToLower(rootCmdArgs.outputFormat) {
-		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(match)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(output))
-		default:
-			fmt.Printf("MatchID: %d\n", match.Id)
-			fmt.Printf("Status: %s\n", match.Status)
-			fmt.Printf("Topic: %v\n", match.Topics)
-			fmt.Printf("Players:\n")
-			for _, player := range match.PlayerStates {
-				fmt.Printf("\tPlayerID: %s\n", player.Id)
+			switch strings.ToLower(rootCmdArgs.outputFormat) {
+			case "json":
+				output, err := new(jsonpb.Marshaler).MarshalToString(match)
+				if err != nil {
+					return err
+				}
+				fmt.Println(string(output))
+			default:
+				fmt.Printf("MatchID: %d\n", match.Id)
+				fmt.Printf("Status: %s\n", match.Status)
+				fmt.Printf("Topic: %v\n", match.Topics)
+				fmt.Printf("Players:\n")
+				for _, player := range match.PlayerStates {
+					fmt.Printf("\tPlayerID: %s\n", player.Id)
+				}
 			}
 		}
 
