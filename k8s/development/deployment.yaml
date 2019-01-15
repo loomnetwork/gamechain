@@ -1,0 +1,67 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gamechain-logger
+  namespace: dev2-infra
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gamechain-logger
+        instance: gamechain-logger
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy", "--dir=/cloudsql",
+                  "-instances=robotic-catwalk-188706:asia-northeast1:mysql-dev2-database=tcp:3306",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-loomauth-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+          - name: ssl-certs
+            mountPath: /etc/ssl/certs
+          - name: cloudsql
+            mountPath: /cloudsql
+      - name: gamechain-logger
+        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%REV%
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            cpu: 300m
+            memory: 1000Mi
+        env:
+          - name: db-user
+            valueFrom:
+                secretKeyRef:
+                  name: loomauth-mysql-db-credentials
+                  key: username
+          - name: db-password
+            valueFrom:
+                secretKeyRef:
+                  name: loomauth-mysql-db-credentials
+                  key: password
+          - name: db-host
+            value: 127.0.0.1
+          - name: db-name
+            value: loomauth
+          - name: db-port
+            value: 3306
+          - name: WEBSOCKET_URL
+            value: http://battleground-testnet-asia2.dappchains.com:9999/queryws
+      volumes:
+        - name: cloudsql-loomauth-credentials
+          secret:
+            secretName: cloudsql-loomauth-credentials
+        - name: cloudsql
+          emptyDir:
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
