@@ -2,6 +2,8 @@
 
 set -ex
 
+cd ${WORKSPACE}/src/github.com/loomnetwork/gamechain
+
 gsutil cp bin/zb-cli gs://private.delegatecall.com/zombie_battleground/linux/latest/zb-cli
 gsutil cp bin/zb-cli gs://private.delegatecall.com/zombie_battleground/linux/build-${BUILD_NUMBER}/zb-cli
 
