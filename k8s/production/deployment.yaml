@@ -37,21 +37,21 @@ spec:
             cpu: 300m
             memory: 1000Mi
         env:
-          - name: db-user
+          - name: DB_USER
             valueFrom:
                 secretKeyRef:
                   name: loomauth-mysql-db-credentials
                   key: username
-          - name: db-password
+          - name: DB_PASSWORD
             valueFrom:
                 secretKeyRef:
                   name: loomauth-mysql-db-credentials
                   key: password
-          - name: db-host
+          - name: DB_HOST
             value: 127.0.0.1
-          - name: db-name
+          - name: DB_NAME
             value: loomauth
-          - name: db-port
+          - name: DB_PORT
             value: "3306"
           - name: WEBSOCKET_URL
             value: http://battleground-testnet-asia2.dappchains.com:9999/queryws
