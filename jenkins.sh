@@ -2,12 +2,6 @@
 
 set -ex
 
-REV=`git rev-parse --short HEAD`
-
-export RELEASE=$REV
-
-DOC_IMAGE=gcr.io/robotic-catwalk-188706/gamechain-logger:$REV
-
 export GOPATH=`pwd`
 
 mkdir -p $GOPATH/bin
@@ -20,6 +14,12 @@ make deps
 make
 make gamechain-logger
 make test
+
+# Docker image for gamechain-logger
+
+REV=`git rev-parse --short HEAD`
+export RELEASE=$REV
+DOC_IMAGE=gcr.io/robotic-catwalk-188706/gamechain-logger:$REV
 
 chmod +x bin/gamechain-logger
 
