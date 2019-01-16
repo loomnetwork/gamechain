@@ -281,6 +281,11 @@ func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.Update
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
+	for _, card := range cardList.Cards {
+		if card.CardViewInfo == nil || card.CardViewInfo.Position == nil || card.CardViewInfo.Scale == nil {
+			return fmt.Errorf("Card '%s' missing value for CardViewInfo field", card.Name)
+		}
+	}
 	return saveCardList(ctx, req.Version, &cardList)
 }
 
