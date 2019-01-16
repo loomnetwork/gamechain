@@ -36,7 +36,9 @@ type Generator struct {
 	targetPackageName string
 	protoPackageName  string
 
-	program                   *loader.Program
+	program           *loader.Program
+	ProgramLoadErrors []error
+
 	serializationPackage      *types.Package
 	serializationProtoPackage *types.Package
 	targetPackage             *types.Package
@@ -91,7 +93,7 @@ func NewGenerator(targetPackagePath string, targetPackageName string, protoPacka
 		targetPackageName: targetPackageName,
 		protoPackageName:  protoPackageName,
 
-		enabledObjectsData: map[types.Object]*TargetObjectMetadata{},
+		enabledObjectsData:            map[types.Object]*TargetObjectMetadata{},
 		targetObjectToProtoObjectInfo: map[types.Object]*targetObjectToProtoObjectInfo{},
 
 		localizationCache: map[string]string{},
@@ -186,6 +188,10 @@ func (generator *Generator) loadCode() error {
 	}
 
 	conf.ImportWithTests(generator.targetPackagePath)
+
+	conf.TypeChecker.Error = func(err error) {
+		generator.ProgramLoadErrors = append(generator.ProgramLoadErrors, err)
+	}
 	program, err := conf.Load()
 	if err != nil {
 		return err

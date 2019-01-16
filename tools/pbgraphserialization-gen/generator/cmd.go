@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"io/ioutil"
@@ -22,6 +23,10 @@ var generateCmd = &cobra.Command{
 			return err
 		}
 
+		if len(generator.ProgramLoadErrors) > 0 {
+			fmt.Printf("Found %d errors while loading code, ignored\n", len(generator.ProgramLoadErrors))
+		}
+
 		err = generator.AddEnabledTypesFromCode()
 		if err != nil {
 			return err
@@ -36,6 +41,8 @@ var generateCmd = &cobra.Command{
 		if err != nil {
 			return errors.Wrap(err, "error while writing output file")
 		}
+
+		fmt.Printf("Written generated code to '%s'\n", generateCmdArgs.outputPath)
 
 		return nil
 	},
