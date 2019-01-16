@@ -35,7 +35,6 @@ func setupInternalPlugin(dir string) error {
 }
 
 func rune2e(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
-	t.Skip()
 	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
 	// skip multi-node tests?
 	if singlenode && validators > 1 {
