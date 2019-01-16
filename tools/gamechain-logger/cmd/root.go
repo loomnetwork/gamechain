@@ -84,7 +84,7 @@ func run(wsURL string) error {
 	// db should be optional?
 	dbConnStr := dbURL
 	if dbURL == "" {
-		dbConnStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, url.QueryEscape(dbPassword), dbHost, dbPort, dbName)
+		dbConnStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, dbPassword, dbHost, dbPort, dbName)
 	}
 	log.Printf("connecting to database host %s", dbHost)
 
