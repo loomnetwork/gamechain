@@ -60,6 +60,7 @@ protoc-gen-gogo:
 	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<-cs
 	rm $<-cs
+	ls ./types/zb/
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
 
 serialization-generate:
