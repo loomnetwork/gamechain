@@ -31,7 +31,6 @@ bin/zb-enum-gen:
 	go build -o $@ tools/cmd/templates/main.go
 
 bin/pbgraphserialization-gen:
-	rm types/zb/Zb.cs -f # file is now named zb.cs, remove this line later
 	go build -o $@ tools/pbgraphserialization-gen/main.go
 
 bin/zb-console-game:
@@ -69,7 +68,11 @@ protoc-gen-gogo:
 serialization-generate:
 	go generate -x $(BATTLEGROUND_PKG)/game
 
-proto: types/zb/zb.pb.go \
+proto-fix:
+	rm types/zb/Zb.cs -f # file is now named zb.cs, remove this line later
+
+proto: proto-fix \
+	types/zb/zb.pb.go \
 	types/zb/zb.cs \
 	library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go \
 	library/pbgraphserialization/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
