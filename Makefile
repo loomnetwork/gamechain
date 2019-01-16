@@ -8,7 +8,7 @@ LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
 
-all: build-ext cli
+all: pbgraphserialization-gen build-ext cli
 
 build: contracts/zombiebattleground.so.1.0.0
 
@@ -21,6 +21,8 @@ tools: bin/zb-enum-gen bin/zb-console-game bin/pbgraphserialization-gen
 gamechain-logger: proto bin/gamechain-logger
 
 gamechain-replay: proto bin/gamechain-replay
+
+pbgraphserialization-gen: proto bin/pbgraphserialization-gen
 
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli

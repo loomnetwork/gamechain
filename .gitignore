@@ -29,6 +29,9 @@
 /library/pbgraphserialization/proto/test_pbgraphserialization/*.cs
 /library/pbgraphserialization/proto/test_pbgraphserialization/*.go
 
+#pbgraphserialization-gen generated
+/battleground/game/types_serialization.go
+
 # App specific
 /app.db
 /chaindata
