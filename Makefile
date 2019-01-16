@@ -62,9 +62,12 @@ protoc-gen-gogo:
 	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<-cs
 	rm $<-cs
-	$(eval REAL_CS_FILE = $(shell find $(basename $(dir $@)) | grep -i "$(basename $(notdir $@)).cs" --color=never))
-	@echo Case-sensitive .cs file is "$(REAL_CS_FILE)"
-	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./$(REAL_CS_FILE) && rm ./$(REAL_CS_FILE).bak
+	$(eval REAL_CS_FILE_NAME=$(basename $(dir $@))$(shell echo "$(basename $(notdir $<))" | sed -r 's/(^|_)([a-z])/\U\2/g').cs) # convert to TitleCase
+	@echo Case-sensitive .cs file is $(REAL_CS_FILE_NAME)
+	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./$(REAL_CS_FILE_NAME) && rm ./$(REAL_CS_FILE_NAME).bak
+
+get-real-cs-file:
+	$(eval REAL_CS_FILE=$(shell ls $(basename $(dir $@))))
 
 serialization-generate:
 	go generate -x $(BATTLEGROUND_PKG)/game
