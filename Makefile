@@ -18,9 +18,9 @@ cli: bin/zb-cli
 
 tools: bin/zb-enum-gen bin/zb-console-game bin/pbgraphserialization-gen
 
-replay_logger: bin/replay-logger
+gamechain-logger: proto bin/gamechain-logger
 
-gameplay_replay: proto bin/gameplay-replay
+gamechain-replay: proto bin/gamechain-replay
 
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
@@ -37,8 +37,8 @@ bin/zb-console-game:
 bin/gamechain-logger:
 	go build -o $@ $(PKG)/tools/gamechain-logger
 
-bin/gameplay-replay:
-	go build -o $@ $(PKG)/tools/gameplay_replay
+bin/gamechain-replay:
+	go build -o $@ $(PKG)/tools/gamechain-replay
 
 contracts/zombiebattleground.so.1.0.0: proto serialization-generate
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
@@ -110,7 +110,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
 	cd $(LOOMCHAIN_DIR) && git checkout 78f7ef2f07a1b826cdbad09b7d35f3c6c25406d4 && make deps && make && cp loom $(GOPATH)/bin
-	cd $(LOOMAUTH_DIR) && git checkout zb-api && make deps && make
+	cd $(LOOMAUTH_DIR) && make deps && make
 	# cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
 	# cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 	# cd $(GOPATH)/src/github.com/loomnetwork/e2e && git checkout adjust-config-param-staging
@@ -141,6 +141,6 @@ clean:
 		bin/zb-enum-gen \
 		bin/pbgraphserialization-gen \
 		bin/gamechain-logger \
-		bin/gameplay-replay
+		bin/gamechain-replay
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen

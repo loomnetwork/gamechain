@@ -9,12 +9,12 @@ import (
 )
 
 var registerPlayerPoolCmdArgs struct {
-	userID               string
-	deckID               int64
-	version              string
-	randomSeed           int64
-	tags                 []string
-	userBackendGameLogic bool
+	userID              string
+	deckID              int64
+	version             string
+	randomSeed          int64
+	tags                []string
+	useBackendGameLogic bool
 }
 
 var registerPlayerPoolCmd = &cobra.Command{
@@ -28,7 +28,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 				DeckId:              registerPlayerPoolCmdArgs.deckID,
 				Version:             registerPlayerPoolCmdArgs.version,
 				Tags:                registerPlayerPoolCmdArgs.tags,
-				UseBackendGameLogic: registerPlayerPoolCmdArgs.userBackendGameLogic,
+				UseBackendGameLogic: registerPlayerPoolCmdArgs.useBackendGameLogic,
 			},
 		}
 		var resp zb.RegisterPlayerPoolResponse
@@ -57,5 +57,5 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", 0, "Random Seed")
 	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
-	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.userBackendGameLogic, "useBackendLogic", "b", false, "use backend game logic (if true)")
+	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.useBackendGameLogic, "useBackendGameLogic", "b", false, "useBackendGameLogic")
 }

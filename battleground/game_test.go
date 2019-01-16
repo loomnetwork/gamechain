@@ -69,7 +69,7 @@ func TestGameStateFunc(t *testing.T) {
 			CardAttack: &zb.PlayerActionCardAttack{
 				Attacker: &zb.InstanceId{Id: 2},
 				Target: &zb.Unit{
-					InstanceId: &zb.InstanceId{Id: 13},
+					InstanceId:       &zb.InstanceId{Id: 13},
 					AffectObjectType: zb.AffectObjectType_Character,
 				},
 			},
@@ -87,7 +87,7 @@ func TestGameStateFunc(t *testing.T) {
 				},
 				Targets: []*zb.Unit{
 					&zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
@@ -101,9 +101,9 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_OverlordSkillUsed{
 			OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
-				SkillId:          1,
+				SkillId: 1,
 				Target: &zb.Unit{
-					InstanceId: &zb.InstanceId{Id: 2},
+					InstanceId:       &zb.InstanceId{Id: 2},
 					AffectObjectType: zb.AffectObjectType_Card,
 				},
 			},
@@ -198,8 +198,12 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 
-	// mulligan keep all the cards
-	player1Mulligan := gp.State.PlayerStates[0].CardsInHand[:3]
+	// mulligan all the cards
+	player1Mulligan := []*zb.CardInstance{}
+	for _, mulliganCard := range gp.State.PlayerStates[0].CardsInHand[:3] {
+		player1Mulligan = append(player1Mulligan, mulliganCard)
+	}
+
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player1,
@@ -212,11 +216,16 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	assert.Nil(t, err)
 	for _, card := range player1Mulligan {
 		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[0].CardsInHand)
-		assert.True(t, found, "mulliganed card should be player hand")
+		assert.False(t, found, "mulliganed card should not be in player hand")
+	}
+	assert.True(t, len(gp.State.PlayerStates[0].CardsInHand) >= 3, "cards in hand should still be >= 3")
+
+	// mulligan 2 of the card
+	player2Mulligan := []*zb.CardInstance{}
+	for _, mulliganCard := range gp.State.PlayerStates[1].CardsInHand[:2] {
+		player2Mulligan = append(player2Mulligan, mulliganCard)
 	}
 
-	// mulligan keep only 2 of the card
-	player2Mulligan := gp.State.PlayerStates[1].CardsInHand[:2]
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player2,
@@ -229,8 +238,9 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	assert.Nil(t, err)
 	for _, card := range player2Mulligan {
 		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[1].CardsInHand)
-		assert.True(t, found, "mulliganed card should be player hand")
+		assert.False(t, found, "mulliganed card should not be in player hand")
 	}
+	assert.True(t, len(gp.State.PlayerStates[1].CardsInHand) >= 3, "cards in hand should still be >= 3")
 	gp.PrintState()
 }
 
@@ -373,7 +383,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
@@ -417,7 +427,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
@@ -463,7 +473,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
@@ -590,7 +600,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
@@ -645,7 +655,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
@@ -697,7 +707,7 @@ func TestCardAttack(t *testing.T) {
 				CardAttack: &zb.PlayerActionCardAttack{
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId:       &zb.InstanceId{Id: 2},
 						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},

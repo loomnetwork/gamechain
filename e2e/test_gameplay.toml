@@ -158,3 +158,204 @@
   RunCmd = "zb-cli end_match -k {{index $.AccountPrivKeyPathList 0}} -m 1 -u player-2 --winnerId player-2"
   Condition = "contains"
   Expected = ["end match 1 successfully"]
+
+############ Same but with backend logic enabled ############
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1"
+  All = true
+  Condition = "contains"
+  Expected = ["player-backend-1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2 -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2"
+  All = true
+  Condition = "contains"
+  Expected = ["player-backend-2"]
+# -------
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1 -d 1 -v v1 --randomSeed 1 -b true"
+  Condition = "contains"
+  Expected = ["Registered player player-backend-1 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2 -d 1 -v v1 --randomSeed 1 -b true"
+  Condition = "contains"
+  Expected = ["Registered player player-backend-2 to pool"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli find_match -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1 -m 2"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Matching"]
+
+[[TestCases]]
+  RunCmd = "zb-cli accept_match -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2 -m 2"
+  Condition = "contains"
+  Expected = ["MatchID: 2", "Status: Started"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_match -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["MatchID: 2", "Status: Started", "Player1: player-backend-1", "Player2: player-backend-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-backend-1", "Player2: player-backend-2"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-backend-1", "Player2: player-backend-2"]
+
+# Mulligam
+[[TestCases]]
+  RunCmd = "zb-cli send_action_mulligan -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2 -i 28"
+  Condition = "contains"
+  Expected = ["sent action mulligan successfully"]
+
+# Get some goo so we can play cards later
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 29"
+  Condition = "contains"
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 2"
+  Condition = "contains"
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 --attackerID 29 --targetID 2 --objectType 1"
+  Condition = "contains"
+  Expected = ["sent action cardattack successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 4"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 30"
+  Condition = "contains"
+  Iterations = 1
+  Expected = ["sent action cardplay successfully"]
+
+# -------game state
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["Player1: player-backend-1", "Player2: player-backend-2"]
+
+# -------player-backend-1 leave match
+[[TestCases]]
+  RunCmd = "zb-cli send_action_leavematch -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action leavematch successfully"]
+
+# -------game state
+[[TestCases]]
+  RunCmd = "zb-cli get_game_state -k {{index $.AccountPrivKeyPathList 0}} -m 2"
+  Condition = "contains"
+  All = true
+  Expected = ["Is ended: true", "Winner: player-backend-2"]
