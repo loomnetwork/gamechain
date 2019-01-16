@@ -4,5 +4,3 @@ package game
 
 import _ "github.com/loomnetwork/gamechain/types/zb"
 import _ "github.com/loomnetwork/gamechain/library/pbgraphserialization"
-
-1
