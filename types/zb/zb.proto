@@ -249,6 +249,8 @@ message InitRequest {
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
+    string contentVersion                      = 8;
+    string pvpVersion                          = 9;
 }
 
 message UpdateOracle {
@@ -265,6 +267,8 @@ message UpdateInitRequest {
     string version                             = 6;
     Address oracle                             = 7;
     string oldVersion                          = 8;
+    string contentVersion                      = 9;
+    string pvpVersion                          = 10;
 }
 
 message GetInitRequest {
