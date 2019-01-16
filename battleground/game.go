@@ -146,10 +146,13 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	g.State.CurrentPlayerIndex = n
 
 	// force first player cheat
+	loop:
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		if g.playersDebugCheats[i].ForceFirstTurnUserId != "" && g.playersDebugCheats[i].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
-			g.State.CurrentPlayerIndex = int32(i)
-			break
+		for j := 0; j < len(g.State.PlayerStates); j++ {
+			if g.playersDebugCheats[j].ForceFirstTurnUserId != "" && g.playersDebugCheats[j].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
+				g.State.CurrentPlayerIndex = int32(i)
+				break loop
+			}
 		}
 	}
 
