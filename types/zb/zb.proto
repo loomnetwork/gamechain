@@ -609,6 +609,8 @@ message DebugCheatsConfiguration {
     int64 customRandomSeed = 5;
 
     bool disableDeckShuffle = 6;
+
+    string forceFirstTurnUserId = 7;
 }
 
 message FindMatchRequest {
