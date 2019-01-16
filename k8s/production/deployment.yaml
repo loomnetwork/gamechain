@@ -53,8 +53,8 @@ spec:
             value: loomauth
           - name: DB_PORT
             value: "3306"
-          - name: WEBSOCKET_URL
-            value: http://battleground-testnet-asia2.dappchains.com:9999/queryws
+          - name: WS_URL
+            value: ws://battleground-testnet-asia2.dappchains.com:9999/queryws
 
       volumes:
         - name: cloudsql-loomauth-credentials

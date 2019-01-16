@@ -23,17 +23,13 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:          "gamechain-logger [url]",
+	Use:          "gamechain-logger",
 	Short:        "Loom Gamechain logger",
 	Long:         `A logger that captures events from Gamechain and creates game metadata`,
 	Example:      `  gamechain-logger ws://localhost:9999/queryws replays`,
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			cmd.Usage()
-			return fmt.Errorf("Gamechain websocket URL endpoint required")
-		}
-		return run(args[0])
+		return run()
 	},
 }
 
@@ -46,6 +42,8 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
+	rootCmd.PersistentFlags().String("ws-url", "", "WebSocket Connection URL")
+
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
 	viper.BindPFlag("db-port", rootCmd.PersistentFlags().Lookup("db-port"))
@@ -53,6 +51,7 @@ func init() {
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
+	viper.BindPFlag("ws-url", rootCmd.PersistentFlags().Lookup("ws-url"))
 }
 
 func initConfig() {
@@ -66,7 +65,7 @@ func Execute() {
 	}
 }
 
-func run(wsURL string) error {
+func run() error {
 	var (
 		dbURL      = viper.GetString("db-url")
 		dbHost     = viper.GetString("db-host")
@@ -74,6 +73,7 @@ func run(wsURL string) error {
 		dbName     = viper.GetString("db-name")
 		dbUser     = viper.GetString("db-user")
 		dbPassword = viper.GetString("db-password")
+		wsURL      = viper.GetString("ws-url")
 	)
 
 	parsedURL, err := url.Parse(wsURL)
