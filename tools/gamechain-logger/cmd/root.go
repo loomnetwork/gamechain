@@ -88,7 +88,6 @@ func run() error {
 	}
 	log.Printf("connecting to database host %s", dbHost)
 
-	log.Println("db conn str - ", dbConnStr)
 	db, err := connectDb(dbConnStr)
 	if err != nil {
 		return errors.Wrapf(err, "fail to connect to database")
