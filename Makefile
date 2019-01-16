@@ -135,6 +135,7 @@ clean:
 		types/zb/zb.cs \
 		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
 		library/pbgraphserialization/proto/test_pbgraphserialization/pb_test_pbgraphserialization.go \
+		battleground/game/types_serialization.go \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
