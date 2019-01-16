@@ -31,6 +31,7 @@ bin/zb-enum-gen:
 	go build -o $@ tools/cmd/templates/main.go
 
 bin/pbgraphserialization-gen:
+	rm types/zb/Zb.cs -f # file is now named zb.cs, remove this line later
 	go build -o $@ tools/pbgraphserialization-gen/main.go
 
 bin/zb-console-game:
