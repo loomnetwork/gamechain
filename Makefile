@@ -62,17 +62,14 @@ protoc-gen-gogo:
 	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
 	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<-cs
 	rm $<-cs
-	ls ./types/zb/
-	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/$(basename $(notdir $@)).cs && rm ./types/zb/$(basename $(notdir $@)).cs.bak
+	$(eval REAL_CS_FILE = $(shell find $(basename $(dir $@)) | grep -i "$(basename $(notdir $@)).cs" --color=never))
+	@echo Case-sensitive .cs file is "$(REAL_CS_FILE)"
+	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./$(REAL_CS_FILE) && rm ./$(REAL_CS_FILE).bak
 
 serialization-generate:
 	go generate -x $(BATTLEGROUND_PKG)/game
 
-proto-fix:
-	rm types/zb/Zb.cs -f # file is now named zb.cs, remove this line later
-
-proto: proto-fix \
-	types/zb/zb.pb.go \
+proto: types/zb/zb.pb.go \
 	types/zb/zb.cs \
 	library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go \
 	library/pbgraphserialization/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
@@ -139,6 +136,7 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/pb_zb.go \
+		types/zb/Zb.cs \
 		types/zb/zb.cs \
 		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
 		library/pbgraphserialization/proto/test_pbgraphserialization/pb_test_pbgraphserialization.go \
