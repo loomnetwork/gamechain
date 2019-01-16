@@ -3,6 +3,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: gamechain-logger
+  namespace: dev2-infra
 spec:
   replicas: 1
   template:
@@ -17,7 +18,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=robotic-catwalk-188706:us-east4:prod-control-plane-db=tcp:3306",
+                  "-instances=robotic-catwalk-188706:asia-south1:mysql-stage-database=tcp:3306",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-loomauth-credentials
@@ -54,8 +55,7 @@ spec:
           - name: DB_PORT
             value: "3306"
           - name: WS_URL
-            value: ws://gamechain.dappchains.com:9999/queryws
-
+            value: ws://battleground-testnet-asia2.dappchains.com:9999/queryws
       volumes:
         - name: cloudsql-loomauth-credentials
           secret:
