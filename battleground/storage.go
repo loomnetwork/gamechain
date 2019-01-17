@@ -13,10 +13,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	OwnerRole = "user" // TODO: change to owner
-)
-
 var (
 	cardPrefix           = []byte("card")
 	userPrefix           = []byte("user")
@@ -39,6 +35,7 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
 	contentVersionKey           = []byte("content-version")
@@ -82,6 +79,22 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
+	if err := ctx.Set(stateKey, state); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
+	err := ctx.Get(stateKey, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
 func RewardClaimedKey(userID string) []byte {
 	return []byte("user:" + userID + ":rewardClaimed")
 }
@@ -114,6 +127,23 @@ func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardColl
 
 func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
 	return ctx.Set(CardCollectionKey(userID), cardCollection)
+}
+
+// loadCardCollectionFromAddress loads address mapping to card collection
+func loadCardCollectionByAddress(ctx contract.StaticContext) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
+	addr := string(ctx.Message().Sender.Local)
+	err := ctx.Get(CardCollectionKey(addr), &userCollection)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &userCollection, nil
+}
+
+// saveCardCollectionByAddress save card collection using address as a key
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCollectionList) error {
+	addr := string(ctx.Message().Sender.Local)
+	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
 func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
@@ -583,4 +613,13 @@ func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 		}
 	}
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
+}
+
+func findCardByMouldID(cardList *zb.CardList, mouldID int64) (*zb.Card, bool) {
+	for _, card := range cardList.Cards {
+		if card.MouldId == mouldID {
+			return card, true
+		}
+	}
+	return nil, false
 }

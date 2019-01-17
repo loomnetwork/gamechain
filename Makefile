@@ -36,6 +36,9 @@ bin/gamechain-logger:
 bin/gamechain-replay:
 	go build -o $@ $(PKG)/tools/gamechain-replay
 
+bin/gcoracle:
+	go build -o $@ $(PKG)/tools/gcoracle
+
 contracts/zombiebattleground.so.1.0.0: proto
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
 
@@ -57,7 +60,7 @@ protoc-gen-gogo:
 	rm $<-cs
 	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
-proto: types/zb/zb.pb.go types/zb/zb.cs
+proto: types/zb/zb.pb.go types/zb/zb.cs types/oracle/oracle.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -89,8 +92,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
 		github.com/kr/logfmt \
-		github.com/jinzhu/gorm \
 		github.com/phonkee/go-pubsub \
+		github.com/jinzhu/gorm \
 		github.com/mattn/go-sqlite3
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
@@ -108,6 +111,9 @@ abigen:
 	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
 	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go
 
+oracle-abigen:
+	go build github.com/ethereum/go-ethereum/cmd/abigen
+	./abigen --abi oracle/abi/card_faucet.abi --pkg ethcontract --type CardFaucet --out oracle/ethcontract/card_faucet.go
 
 test:
 	#TODO fix go vet in tests
@@ -118,6 +124,7 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/zb.pb.go \
+		types/oracle/oracle.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
@@ -126,4 +133,5 @@ clean:
 		bin/gamechain-logger \
 		bin/gamechain-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen
+
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen bin/gcoracle oracle-abigen
