@@ -43,7 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().String("gamechain-write-uri", "http://localhost:46658/rpc", "Gamechain Write URI")
 	rootCmd.PersistentFlags().String("gamechain-event-uri", "ws://localhost:9999/queryws", "Gamechain Events URI")
 	rootCmd.PersistentFlags().String("gamechain-contract-name", "ZombieBattleground", "Gamechain Contract Name")
-	rootCmd.PersistentFlags().String("gamechain-card-version", "v3", "GamechainCardVersion")
+	rootCmd.PersistentFlags().String("gamechain-card-version", "v3", "Gamechain Card Version")
 	// oracle
 	rootCmd.PersistentFlags().String("oracle-query-address", ":8888", "Oracle Query Address")
 	rootCmd.PersistentFlags().String("oracle-log-level", "debug", "Oracle Log Level")

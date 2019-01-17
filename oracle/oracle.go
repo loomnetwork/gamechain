@@ -26,7 +26,6 @@ type Status struct {
 	PlasmachainGatewayAddress  string
 	PlasmachainGatewayLastSeen time.Time
 	NextPlasmachainBlockNum    uint64 `json:",string"`
-	DAppChainGatewayLastSeen   time.Time
 	// Number of Plamachain events submitted to the DAppChain Gateway successfully
 	NumPlamachainEventsFetched uint64 `json:",string"`
 	// Total number of Plamachain events fetched
