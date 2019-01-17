@@ -66,7 +66,7 @@ type Oracle struct {
 }
 
 func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
-	privKey, err := LoadDappChainPrivateKey(cfg.GamechainPrivateKeyPath)
+	privKey, err := LoadDappChainPrivateKey(cfg.GamechainPrivateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		Local:   loom.LocalAddressFromPublicKey(gcSigner.PublicKey()),
 	}
 
-	privKey, err = LoadDappChainPrivateKey(cfg.PlasmachainPrivateKeyPath)
+	privKey, err = LoadDappChainPrivateKey(cfg.PlasmachainPrivateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -313,12 +313,21 @@ func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	})
 }
 
-func LoadDappChainPrivateKey(path string) ([]byte, error) {
+func LoadDappChainPrivateKeyFile(path string) ([]byte, error) {
 	privKeyB64, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
+	privKey, err := base64.StdEncoding.DecodeString(string(privKeyB64))
+	if err != nil {
+		return nil, err
+	}
+
+	return privKey, nil
+}
+
+func LoadDappChainPrivateKey(privKeyB64 string) ([]byte, error) {
 	privKey, err := base64.StdEncoding.DecodeString(string(privKeyB64))
 	if err != nil {
 		return nil, err

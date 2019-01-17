@@ -2,7 +2,7 @@ package oracle
 
 type Config struct {
 	// Plasmachain
-	PlasmachainPrivateKeyPath     string
+	PlasmachainPrivateKey         string
 	PlasmachainChainID            string
 	PlasmachainReadURI            string
 	PlasmachainWriteURI           string
@@ -10,13 +10,13 @@ type Config struct {
 	PlasmachainContractHexAddress string
 	PlasmachainPollInterval       int // in second
 	// Gamechain
-	GamechainPrivateKeyPath string
-	GamechainChainID        string
-	GamechainReadURI        string
-	GamechainWriteURI       string
-	GamechainEventsURI      string
-	GamechainContractName   string
-	GamechainCardVersion    string // the card version e.g. v1, v3 used to map from mould id to name
+	GamechainPrivateKey   string
+	GamechainChainID      string
+	GamechainReadURI      string
+	GamechainWriteURI     string
+	GamechainEventsURI    string
+	GamechainContractName string
+	GamechainCardVersion  string // the card version e.g. v1, v3 used to map from mould id to name
 	// Oracle log verbosity (debug, info, error, etc.)
 	OracleLogLevel       string
 	OracleLogDestination string
