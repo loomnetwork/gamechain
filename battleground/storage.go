@@ -129,6 +129,23 @@ func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.
 	return ctx.Set(CardCollectionKey(userID), cardCollection)
 }
 
+// loadCardCollectionFromAddress loads address mapping to card collection
+func loadCardCollectionByAddress(ctx contract.StaticContext) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
+	addr := string(ctx.Message().Sender.Local)
+	err := ctx.Get(CardCollectionKey(addr), &userCollection)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &userCollection, nil
+}
+
+// saveCardCollectionByAddress save card collection using address as a key
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCollectionList) error {
+	addr := string(ctx.Message().Sender.Local)
+	return ctx.Set(CardCollectionKey(addr), cardCollection)
+}
+
 func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
 	var deckList zb.DeckList
 	err := ctx.Get(DecksKey(userID), &deckList)
