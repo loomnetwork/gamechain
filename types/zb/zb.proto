@@ -249,7 +249,8 @@ message InitRequest {
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
-    Address owner                              = 8;
+    string contentVersion                      = 8;
+    string pvpVersion                          = 9;
 }
 
 message UpdateOracle {
@@ -266,6 +267,8 @@ message UpdateInitRequest {
     string version                             = 6;
     Address oracle                             = 7;
     string oldVersion                          = 8;
+    string contentVersion                      = 9;
+    string pvpVersion                          = 10;
 }
 
 message GetInitRequest {
@@ -635,6 +638,8 @@ message DebugCheatsConfiguration {
     int64 customRandomSeed = 5;
 
     bool disableDeckShuffle = 6;
+
+    string forceFirstTurnUserId = 7;
 }
 
 message FindMatchRequest {
@@ -918,6 +923,7 @@ message GameMechanicDescriptionType
         BLITZ = 25 [(gogoproto.enumvalue_customname) = "Blitz"];
         RESTORE = 26 [(gogoproto.enumvalue_customname) = "Restore"];
         CHAINSAW = 27 [(gogoproto.enumvalue_customname) = "Chainsaw"];
+        SUPER_SERUM = 28 [(gogoproto.enumvalue_customname) = "SuperSerum"];
     }
 }
 
