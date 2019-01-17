@@ -1656,7 +1656,6 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 }
 
 func (z *ZombieBattleground) GetState(ctx contract.StaticContext, req *zb.GetGamechainStateRequest) (*zb.GetGamechainStateResponse, error) {
-	ctx.Logger().Info(fmt.Sprintf("--> loom address: %s", ctx.Message().Sender.Local))
 	state, err := loadState(ctx)
 	if err != nil {
 		return nil, err
