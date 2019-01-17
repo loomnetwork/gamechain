@@ -1,16 +1,76 @@
 {
     "actions": [
         {
-            "actionType": "CardPlay",
+            "actionType": "EndTurn",
             "playerId": "loom2",
-            "cardPlay": {
-                "card": {
-                    "instanceId": {
-                        "id": 9
-                    }
-                }
-            },
-            "createdAt": "1547034628"
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom2",
+            "endTurn": {},
+            "createdAt": "1547034639"
+        },
+        {
+            "actionType": "EndTurn",
+            "playerId": "loom1",
+            "endTurn": {},
+            "createdAt": "1547034639"
         },
         {
             "actionType": "CardPlay",
@@ -18,11 +78,11 @@
             "cardPlay": {
                 "card": {
                     "instanceId": {
-                        "id": 10
+                        "id": 15
                     }
                 }
             },
-            "createdAt": "1547034632"
+            "createdAt": "1547034628"
         },
         {
             "actionType": "EndTurn",
@@ -63,7 +123,7 @@
                 },
                 "target": {
                     "instanceId": {
-                        "id": 9
+                        "id": 15
                     },
                     "affectObjectType": "CHARACTER"
                 }
@@ -79,7 +139,7 @@
                 },
                 "target": {
                     "instanceId": {
-                        "id": 9
+                        "id": 15
                     },
                     "affectObjectType": "CHARACTER"
                 }
@@ -99,16 +159,8 @@
                             "name": "HORDE 1",
                             "cards": [
                                 {
-                                    "cardName": "Zludge",
-                                    "amount": "2"
-                                },
-                                {
                                     "cardName": "Whizpar",
-                                    "amount": "1"
-                                },
-                                {
-                                    "cardName": "Pushhh",
-                                    "amount": "2"
+                                    "amount": "12"
                                 }
                             ]
                         }
@@ -121,15 +173,7 @@
                             "cards": [
                                 {
                                     "cardName": "Zludge",
-                                    "amount": "2"
-                                },
-                                {
-                                    "cardName": "Whizpar",
-                                    "amount": "1"
-                                },
-                                {
-                                    "cardName": "Pushhh",
-                                    "amount": "2"
+                                    "amount": "12"
                                 }
                             ]
                         }
@@ -142,7 +186,7 @@
         {
             "fullInstance": {
                 "instanceId": {
-                    "id": 9
+                    "id": 15
                 },
                 "attack": 4,
                 "defense": 4
@@ -151,19 +195,10 @@
         {
             "fullInstance": {
                 "instanceId": {
-                    "id": 10
+                    "id": 3
                 },
                 "attack": 1,
                 "defense": 1
-            }
-        },
-        {
-            "fullInstance": {
-                "instanceId": {
-                    "id": 3
-                },
-                "attack": 2,
-                "defense": 2
             }
         },
         {
