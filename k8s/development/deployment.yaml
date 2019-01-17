@@ -123,7 +123,7 @@ spec:
           - name: ORACLE_LOG_DESTINATION
             value: ""
           - name: ORACLE_RECONNECT_INTERVAL
-            value: 5
+            value: "5"
           - name: ORACLE_STARTUP_DELAY
             value: "10"
           
