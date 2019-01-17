@@ -2171,7 +2171,6 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 				ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
 				return err
 			}
-			ctx.Logger().Info(fmt.Sprintf("add card: 0x%x, %d, %d", userID, cardID, amount))
 		case nil:
 			ctx.Logger().Error("Oracle missing event payload")
 			continue

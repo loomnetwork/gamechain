@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -107,8 +106,6 @@ func run() error {
 		OracleReconnectInterval:       int32(viper.GetInt("oracle-reconnect-interval")),
 		OracleStartupDelay:            int32(viper.GetInt("oracle-startup-delay")),
 	}
-
-	fmt.Printf("config %#v\n", cfg)
 
 	if cfg.PlasmachainPrivateKey == "" {
 		return errors.New("PlasmachainPrivateKey [--plasmachain-private-key] is required")

@@ -124,6 +124,7 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/zb.pb.go \
+		types/oracle/oracle.pb.go \
 		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
