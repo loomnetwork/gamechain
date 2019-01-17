@@ -103,7 +103,7 @@ spec:
           - name: PLASMACHAIN_CONTRACT_HEX_ADDRESS
             value: "0xea59a949651ffc6d3e039db2d89f4e047301718d"
           - name: PLASMACHAIN_POLL_INTERVAL
-            value: 10
+            value: "10"
           - name: GAMECHAIN_PRIVATE_KEY
             value: "ErjfbI2nWdp6GwtnfKJ2ImJdUId84ux4L9k/C017gkV8zZVz0oAcmZ+lFMYTmP7z17tUdInC3dPgTKhq9PXauQ=="
           - name: GAMECHAIN_CHAIN_ID
@@ -125,5 +125,5 @@ spec:
           - name: ORACLE_RECONNECT_INTERVAL
             value: 5
           - name: ORACLE_STARTUP_DELAY
-            value: 10
+            value: "10"
           
