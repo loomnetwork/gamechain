@@ -23,3 +23,8 @@ We need to set latest plasma block number using `zb-cli` so that the oracle can 
 # start from block 200
 ./bin/zb-cli -k priv set_last_plasma_block_num -n 200
 ```
+
+
+## Starting blocks
+
+Dev: the valid block starts from block number 196492
