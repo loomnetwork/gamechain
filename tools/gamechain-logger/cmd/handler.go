@@ -283,6 +283,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 
 func updateBlockHeight(db *gorm.DB, blockHeight uint64) error {
 	query := db.Model(&models.ZbHeightCheck{}).Update("last_block_height", blockHeight)
+
 	err, rows := query.Error, query.RowsAffected
 	if err != nil {
 		return err
@@ -290,5 +291,6 @@ func updateBlockHeight(db *gorm.DB, blockHeight uint64) error {
 	if rows < 1 {
 		db.Save(&models.ZbHeightCheck{LastBlockHeight: blockHeight})
 	}
+
 	return nil
 }
