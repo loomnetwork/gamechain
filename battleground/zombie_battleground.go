@@ -123,6 +123,21 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize versions
+	contentVersion := &zb.ContentVersion{
+		ContentVersion: req.ContentVersion,
+	}
+	if err := ctx.Set(contentVersionKey, contentVersion); err != nil {
+		return err
+	}
+
+	pvpVersion := &zb.PvpVersion{
+		PvpVersion: req.PvpVersion,
+	}
+	if err := ctx.Set(pvpVersionKey, pvpVersion); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -217,6 +232,14 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+		return err
+	}
+
+	// initialize versions
+	if err := z.UpdateVersions(ctx, &zb.UpdateVersionsRequest{
+		ContentVersion: req.ContentVersion,
+		PvpVersion:     req.PvpVersion,
+	}); err != nil {
 		return err
 	}
 
