@@ -80,6 +80,9 @@ func InitDB() *gorm.DB {
 	if err := db.AutoMigrate(&models.Replay{}).Error; err != nil {
 		panic(err)
 	}
+	if err := db.AutoMigrate(&models.ZbHeightCheck{}).Error; err != nil {
+		panic(err)
+	}
 
 	return db
 }
