@@ -1633,6 +1633,7 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 }
 
 func (z *ZombieBattleground) GetState(ctx contract.StaticContext, req *zb.GetGamechainStateRequest) (*zb.GetGamechainStateResponse, error) {
+	ctx.Logger().Info(fmt.Sprintf("--> loom address: %s", ctx.Message().Sender.Local))
 	state, err := loadState(ctx)
 	if err != nil {
 		return nil, err
@@ -2148,7 +2149,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 				ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
 				return err
 			}
-			ctx.Logger().Info(fmt.Sprintf("add card: %+v", payload.Card))
+			ctx.Logger().Info(fmt.Sprintf("add card: 0x%x, %d, %d", userID, cardID, amount))
 		case nil:
 			ctx.Logger().Error("Oracle missing event payload")
 			continue
@@ -2195,17 +2196,14 @@ func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
 }
 
 func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardID int64, amount int64, version string) error {
+	// check the oracle
+	addr := ctx.Message().Sender.MarshalPB()
+	if err := z.validateOracle(ctx, addr); err != nil {
+		return err
+	}
 	cardCollection, err := loadCardCollection(ctx, userID)
-	// the user key might not be created at the time we fetch data from plasmachain
-	// we need to create a key to make sure gamechain does not return error
-	if err != nil && err == contract.ErrNotFound {
-		req := zb.UpsertAccountRequest{
-			UserId:  userID,
-			Version: version,
-		}
-		if err := z.CreateAccount(ctx, &req); err != nil {
-			return err
-		}
+	if err != nil {
+		return err
 	}
 	cardlib, err := loadCardList(ctx, version)
 	if err != nil {
@@ -2237,7 +2235,6 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 			Amount:   amount,
 		})
 	}
-
 	return saveCardCollection(ctx, userID, cardCollection)
 }
 
@@ -2246,14 +2243,12 @@ func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb
 	if err != nil && err != contract.ErrNotFound {
 		return err
 	}
-	// TODO: Need to validate oracle
-	// if req.Oracle == nil {
-	// 	return ErrOracleNotSpecified
-	// }
-
-	// if err := z.validateOracle(ctx, req.Oracle); err != nil {
-	// 	return err
-	// }
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
 	state = &zb.GamechainState{
 		LastPlasmachainBlockNum: req.LastBlockNum,
 	}
