@@ -39,6 +39,7 @@ func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		Status:          match.Status.String(),
 		Version:         match.Version,
 		RandomSeed:      match.RandomSeed,
+		BlockHeight:     eventData.BlockHeight,
 	}
 
 	if err := db.Save(&m).Error; err != nil {
@@ -73,6 +74,7 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		Status:          match.Status.String(),
 		Version:         match.Version,
 		RandomSeed:      match.RandomSeed,
+		BlockHeight:     eventData.BlockHeight,
 	}
 	if err := db.Save(&m).Error; err != nil {
 		return err
@@ -112,6 +114,7 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		SecondarySkillID: int(deck.SecondarySkill),
 		Version:          event.Version,
 		SenderAddress:    event.SenderAddress,
+		BlockHeight:      eventData.BlockHeight,
 	}
 	if err := db.Save(&d).Error; err != nil {
 		return err
@@ -154,6 +157,7 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		SecondarySkillID: int(deck.SecondarySkill),
 		Version:          event.Version,
 		SenderAddress:    event.SenderAddress,
+		BlockHeight:      eventData.BlockHeight,
 	}
 	if err := db.Save(&d).Error; err != nil {
 		return err
@@ -191,6 +195,7 @@ func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 
 	match.WinnerID = event.Block.List[0].GetEndGame().WinnerId
 	match.Status = event.Match.Status.String()
+	match.BlockHeight = eventData.BlockHeight
 
 	if err := db.Save(&match).Error; err != nil {
 		return err
@@ -217,7 +222,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	// update match status
 	err = db.Model(&models.Match{}).
 		Where(&models.Match{ID: match.Id}).
-		Updates(models.Match{Status: match.Status.String()}).
+		Updates(models.Match{Status: match.Status.String(), BlockHeight: eventData.BlockHeight}).
 		Error
 	if err != nil {
 		return err
@@ -228,11 +233,13 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	if err == nil {
 		db.First(&dbReplay)
 		dbReplay.ReplayJSON = replay
+		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Save(&dbReplay)
 	} else if gorm.IsRecordNotFoundError(err) {
 		// insert
 		dbReplay.MatchID = match.Id
 		dbReplay.ReplayJSON = replay
+		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Create(&dbReplay)
 	} else {
 		return err
