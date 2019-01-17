@@ -13,7 +13,7 @@ cd ${GOPATH}/src/github.com/loomnetwork/gamechain
 make deps
 make
 make gamechain-logger
-make bin/gcoracledocker
+make bin/gcoracle
 make test
 
 # Docker image for gamechain-logger
