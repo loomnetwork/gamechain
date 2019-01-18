@@ -537,6 +537,7 @@ message PlayerActionType {
         OverlordSkillUsed = 6;
         LeaveMatch = 7;
         RankBuff = 8;
+        CheatDestroyCardsOnBoard = 9;
     }
 }
 
@@ -544,14 +545,15 @@ message PlayerAction {
     PlayerActionType.Enum actionType = 1; // not sure we really need this
     string playerId = 2;
     oneof action {
-        PlayerActionEndTurn endTurn                     = 3;
-        PlayerActionMulligan mulligan                   = 4;
-        PlayerActionCardPlay cardPlay                   = 5;
-        PlayerActionCardAttack cardAttack               = 6;
-        PlayerActionCardAbilityUsed cardAbilityUsed     = 7;
+        PlayerActionEndTurn endTurn = 3;
+        PlayerActionMulligan mulligan = 4;
+        PlayerActionCardPlay cardPlay = 5;
+        PlayerActionCardAttack cardAttack = 6;
+        PlayerActionCardAbilityUsed cardAbilityUsed = 7;
         PlayerActionOverlordSkillUsed overlordSkillUsed = 8;
-        PlayerActionLeaveMatch leaveMatch               = 9;
-        PlayerActionRankBuff rankBuff                   = 10;
+        PlayerActionLeaveMatch leaveMatch = 9;
+        PlayerActionRankBuff rankBuff = 10;
+        PlayerActionCheatDestroyCardsOnBoard cheatDestroyCardsOnBoard = 11;
     };
     repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
@@ -1317,6 +1319,10 @@ message PlayerActionEndTurn  {
 
 message PlayerActionMulligan {
     repeated InstanceId mulliganedCards = 1;
+}
+
+message PlayerActionCheatDestroyCardsOnBoard {
+    repeated InstanceId destroyedCards = 1;
 }
 
 message StartGameAction {

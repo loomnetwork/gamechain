@@ -1164,3 +1164,7 @@ func actionRankBuff(g *Gameplay) stateFn {
 		return nil
 	}
 }
+
+func actionDestroyCardsOnBoard(g *Gameplay) stateFn {
+	return nil
+}
