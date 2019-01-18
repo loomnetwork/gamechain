@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
@@ -26,7 +27,7 @@ var rootCmd = &cobra.Command{
 	Use:          "gamechain-logger",
 	Short:        "Loom Gamechain logger",
 	Long:         `A logger that captures events from Gamechain and creates game metadata`,
-	Example:      `  gamechain-logger ws://localhost:9999/queryws replays`,
+	Example:      `  gamechain-logger`,
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return run()
@@ -42,7 +43,8 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
-	rootCmd.PersistentFlags().String("ws-url", "", "WebSocket Connection URL")
+	rootCmd.PersistentFlags().String("ws-url", "ws://localhost:9999/queryws", "WebSocket Connection URL")
+	rootCmd.PersistentFlags().Int("reconnect-interval", 1, "Reconnect interval in seconds")
 
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
@@ -52,6 +54,7 @@ func init() {
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
 	viper.BindPFlag("ws-url", rootCmd.PersistentFlags().Lookup("ws-url"))
+	viper.BindPFlag("reconnect-interval", rootCmd.PersistentFlags().Lookup("reconnect-interval"))
 }
 
 func initConfig() {
@@ -67,13 +70,14 @@ func Execute() {
 
 func run() error {
 	var (
-		dbURL      = viper.GetString("db-url")
-		dbHost     = viper.GetString("db-host")
-		dbPort     = viper.GetString("db-port")
-		dbName     = viper.GetString("db-name")
-		dbUser     = viper.GetString("db-user")
-		dbPassword = viper.GetString("db-password")
-		wsURL      = viper.GetString("ws-url")
+		dbURL             = viper.GetString("db-url")
+		dbHost            = viper.GetString("db-host")
+		dbPort            = viper.GetString("db-port")
+		dbName            = viper.GetString("db-name")
+		dbUser            = viper.GetString("db-user")
+		dbPassword        = viper.GetString("db-password")
+		wsURL             = viper.GetString("ws-url")
+		reconnectInterval = viper.GetInt("reconnect-interval")
 	)
 
 	parsedURL, err := url.Parse(wsURL)
@@ -101,19 +105,17 @@ func run() error {
 	signal.Notify(sigC, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer signal.Stop(sigC)
 
-	r := NewRunner(parsedURL.String(), db, 10)
-	// Start is not blocking
-	r.Start()
+	if parsedURL.String() == "" {
+		return errors.New("WebSocket Connection URL (--ws-url) is required")
+	}
 
+	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Second
+	r := NewRunner(parsedURL.String(), db, 10, reconnectIntervalDur)
+	go r.Start()
 	go func() {
 		select {
-		case err := <-r.Error():
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "%v", err)
-			}
-			r.Stop()
-			close(doneC)
 		case <-sigC:
+			log.Println("stopping logger...")
 			r.Stop()
 			close(doneC)
 		}
