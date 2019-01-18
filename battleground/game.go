@@ -31,6 +31,7 @@ var (
 	errLimitExceeded         = errors.New("max card limit exceeded")
 	errNoCardsInHand         = errors.New("Can't play card. No cards in hand")
 	errInsufficientGoo       = errors.New("insufficient goo")
+	errCheatsRequired        = errors.New("cheats are required for this action")
 )
 
 type Gameplay struct {
@@ -513,6 +514,8 @@ func gameStart(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -610,6 +613,8 @@ func actionMulligan(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -752,6 +757,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -923,6 +930,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -970,6 +979,8 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1015,6 +1026,8 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1078,6 +1091,8 @@ func actionEndTurn(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1124,6 +1139,8 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1160,11 +1177,69 @@ func actionRankBuff(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
 }
 
-func actionDestroyCardsOnBoard(g *Gameplay) stateFn {
-	return nil
+func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
+	g.debugf("state: %v\n", zb.PlayerActionType_CheatDestroyCardsOnBoard)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	destroyedCards := current.GetCheatDestroyCardsOnBoard().DestroyedCards
+
+	for playerStateIndex, playerState := range g.State.PlayerStates {
+		if !g.playersDebugCheats[playerStateIndex].Enabled {
+			return g.captureErrorAndStop(errCheatsRequired)
+		}
+		temp := playerState.CardsInPlay[:0]
+		for _, card := range playerState.CardsInPlay {
+			isDestroyed := false
+			for _, destroyedCardId := range destroyedCards {
+				if card.InstanceId.Id == destroyedCardId.Id {
+					isDestroyed = true
+				}
+			}
+
+			if !isDestroyed {
+				temp = append(temp, card)
+			}
+		}
+		playerState.CardsInPlay = temp
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	case zb.PlayerActionType_RankBuff:
+		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
+	default:
+		return nil
+	}
 }
