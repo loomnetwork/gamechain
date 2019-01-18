@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dev-loom-games-s3
+  namespace: dev2-infra
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.frontend.passHostHeader: "false"
+spec:
+  rules:
+  - host: dev.loom.games
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dev-loom-games-external-svc
+          servicePort: http
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dev-gamechain-oracle
+  namespace: dev2-infra
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host:   dev-auth.loom.games
+    http:
+      paths:
+      - path: /status, /metrics
+        backend:
+          serviceName: dev-loom-gamechain-oracle-svc
+          servicePort: 8888  
