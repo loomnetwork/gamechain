@@ -32,6 +32,7 @@ var (
 	errLimitExceeded         = errors.New("max card limit exceeded")
 	errNoCardsInHand         = errors.New("Can't play card. No cards in hand")
 	errInsufficientGoo       = errors.New("insufficient goo")
+	errCheatsRequired        = errors.New("cheats are required for this action")
 )
 
 type Gameplay struct {
@@ -150,13 +151,14 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	loop:
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		for j := 0; j < len(g.State.PlayerStates); j++ {
-			if g.playersDebugCheats[j].ForceFirstTurnUserId != "" && g.playersDebugCheats[j].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
+			if g.playersDebugCheats[j].Enabled && g.playersDebugCheats[j].ForceFirstTurnUserId != "" && g.playersDebugCheats[j].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
 				g.State.CurrentPlayerIndex = int32(i)
 				break loop
 			}
 		}
 	}
 
+	// custom mode pre-match hook
 	if g.customGameMode != nil {
 		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g)
 		if err != nil {
@@ -299,6 +301,8 @@ func (g *Gameplay) resume() error {
 		state = actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		state = actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		state = actionCheatDestroyCardsOnBoard
 	default:
 		return errInvalidAction
 	}
@@ -343,6 +347,10 @@ func (g *Gameplay) current() *zb.PlayerAction {
 
 func (g *Gameplay) activePlayer() *zb.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
+}
+
+func (g *Gameplay) activePlayerDebugCheats() *zb.DebugCheatsConfiguration {
+	return g.playersDebugCheats[g.State.CurrentPlayerIndex]
 }
 
 func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
@@ -524,6 +532,8 @@ func gameStart(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -614,6 +624,8 @@ func actionMulligan(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -703,20 +715,21 @@ func actionCardPlay(g *Gameplay) stateFn {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
 				cardPlay.Card.InstanceId.Id,
-				// cardPlay.Card.Prototype.Name,
 			)
 			return g.captureErrorAndStop(err)
 		}
 
 		// check goo cost
-		if card.Instance.GooCost > g.activePlayer().CurrentGoo {
-			err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
-			return g.captureErrorAndStop(err)
-		}
+		if !(g.activePlayerDebugCheats().Enabled && g.activePlayerDebugCheats().IgnoreGooRequirements) {
+			if card.Instance.GooCost > g.activePlayer().CurrentGoo {
+				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
+				return g.captureErrorAndStop(err)
+			}
 
-		// change player goo
-		// TODO: abilities that change goo vials, overflow etc
-		g.activePlayer().CurrentGoo -= card.Instance.GooCost
+			// change player goo
+			// TODO: abilities that change goo vials, overflow etc
+			g.activePlayer().CurrentGoo -= card.Instance.GooCost
+		}
 
 		// put card on board
 		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
@@ -758,6 +771,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -941,6 +956,8 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -988,6 +1005,8 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1033,6 +1052,8 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1102,6 +1123,8 @@ func actionEndTurn(g *Gameplay) stateFn {
 		return actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1148,6 +1171,8 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
@@ -1184,6 +1209,68 @@ func actionRankBuff(g *Gameplay) stateFn {
 		return actionOverloadSkillUsed
 	case zb.PlayerActionType_RankBuff:
 		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
+	default:
+		return nil
+	}
+}
+
+func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
+	g.debugf("state: %v\n", zb.PlayerActionType_CheatDestroyCardsOnBoard)
+	if g.isEnded() {
+		return nil
+	}
+	// current action
+	current := g.current()
+	if current == nil {
+		return nil
+	}
+
+	destroyedCards := current.GetCheatDestroyCardsOnBoard().DestroyedCards
+
+	for playerStateIndex, playerState := range g.State.PlayerStates {
+		if !g.playersDebugCheats[playerStateIndex].Enabled {
+			return g.captureErrorAndStop(errCheatsRequired)
+		}
+		temp := playerState.CardsInPlay[:0]
+		for _, card := range playerState.CardsInPlay {
+			isDestroyed := false
+			for _, destroyedCardId := range destroyedCards {
+				if card.InstanceId.Id == destroyedCardId.Id {
+					isDestroyed = true
+				}
+			}
+
+			if !isDestroyed {
+				temp = append(temp, card)
+			}
+		}
+		playerState.CardsInPlay = temp
+	}
+
+	// determine the next action
+	g.PrintState()
+	next := g.next()
+	if next == nil {
+		return nil
+	}
+
+	switch next.ActionType {
+	case zb.PlayerActionType_EndTurn:
+		return actionEndTurn
+	case zb.PlayerActionType_CardPlay:
+		return actionCardPlay
+	case zb.PlayerActionType_CardAttack:
+		return actionCardAttack
+	case zb.PlayerActionType_CardAbilityUsed:
+		return actionCardAbilityUsed
+	case zb.PlayerActionType_OverlordSkillUsed:
+		return actionOverloadSkillUsed
+	case zb.PlayerActionType_RankBuff:
+		return actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
