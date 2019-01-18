@@ -56,6 +56,8 @@ spec:
             value: "3306"
           - name: WS_URL
             value: ws://battleground-testnet-asia2.dappchains.com:9999/queryws
+          - name: RECONNECT_INTERVAL
+            value: "1"
       volumes:
         - name: cloudsql-loomauth-credentials
           secret:
