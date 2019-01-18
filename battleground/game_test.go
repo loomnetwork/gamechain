@@ -846,3 +846,62 @@ func TestCardPlay(t *testing.T) {
 		assert.Equal(t, errNoCardsInHand, err)
 	})
 }
+
+func TestCheats(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
+	player1 := "player-1"
+	player2 := "player-2"
+	t.Run("CheatDestroyCardsOnBoard", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, []*zb.DebugCheatsConfiguration{{Enabled:true}, {Enabled:true}})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 3},
+					},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(gp.activePlayer().CardsInPlay))
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 3}},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 0, len(gp.activePlayer().CardsInPlay))
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 500}},
+				},
+			},
+		})
+		assert.NotNil(t, err)
+		assert.EqualError(t, err, "card with instance id 500 not found")
+	})
+}
