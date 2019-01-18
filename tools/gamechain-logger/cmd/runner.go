@@ -35,18 +35,20 @@ func NewRunner(wsURL string, db *gorm.DB, n int) *Runner {
 }
 
 func (r *Runner) Start() {
-	go r.processEvent()
 	for {
+		r.stopC = make(chan struct{})
 		// delay before connecting again
 		time.Sleep(500 * time.Millisecond)
 		log.Printf("connecting to %s", r.wsURL)
 		conn, err := connectGamechain(r.wsURL)
 		if err != nil {
 			log.Println(err)
+			r.Stop()
 			continue
 		}
-		defer conn.Close()
+		go r.processEvent()
 		r.watchTopic(conn)
+		conn.Close()
 	}
 }
 
