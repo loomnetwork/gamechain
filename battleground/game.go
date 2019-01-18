@@ -725,11 +725,11 @@ func actionCardPlay(g *Gameplay) stateFn {
 				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
 				return g.captureErrorAndStop(err)
 			}
-		}
 
-		// change player goo
-		// TODO: abilities that change goo vials, overflow etc
-		g.activePlayer().CurrentGoo -= card.Instance.GooCost
+			// change player goo
+			// TODO: abilities that change goo vials, overflow etc
+			g.activePlayer().CurrentGoo -= card.Instance.GooCost
+		}
 
 		// put card on board
 		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
