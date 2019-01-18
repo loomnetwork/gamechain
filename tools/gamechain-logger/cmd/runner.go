@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/loomnetwork/go-loom/plugin/types"
+	"github.com/pkg/errors"
 )
 
 type Runner struct {
@@ -32,8 +34,15 @@ func NewRunner(wsURL string, db *gorm.DB, n int) *Runner {
 }
 
 func (r *Runner) Start() {
-	go r.watchTopic()
 	go r.processEvent()
+	for {
+		err := r.watchTopic()
+		if err == nil {
+			break
+		}
+		// delay before connecting again
+		time.Sleep(500 * time.Millisecond)
+	}
 }
 
 func (r *Runner) Stop() {
@@ -44,14 +53,11 @@ func (r *Runner) Error() chan error {
 	return r.errC
 }
 
-func (r *Runner) watchTopic() {
+func (r *Runner) watchTopic() error {
 	log.Printf("connecting to %s", r.wsURL)
 	conn, err := connectGamechain(r.wsURL)
 	if err != nil {
-		select {
-		case r.errC <- err:
-			return
-		}
+		return err
 	}
 	defer conn.Close()
 
@@ -61,20 +67,17 @@ func (r *Runner) watchTopic() {
 	for {
 		_, message, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("error reading from websocket:", err)
-			return
+			return errors.Wrapf(err, "error reading from websocket")
 		}
 
 		var resp client.RPCResponse
 		if err := json.Unmarshal(message, &resp); err != nil {
-			log.Println("error parsing jsonrpc response", err)
-			continue
+			return errors.Wrapf(err, "error parsing jsonrpc response")
 		}
 
 		var eventData types.EventData
 		if err = unmarshaler.Unmarshal(bytes.NewBuffer(resp.Result), &eventData); err != nil {
-			log.Println("error parsing event data", err)
-			continue
+			return errors.Wrapf(err, "error parsing event data")
 		}
 
 		// only zombiebattleground smart contract
@@ -85,7 +88,7 @@ func (r *Runner) watchTopic() {
 		select {
 		case r.eventC <- &eventData:
 		case <-r.stopC:
-			return
+			return nil
 		}
 	}
 }
