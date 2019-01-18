@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/go-loom/client"
@@ -17,36 +16,35 @@ import (
 )
 
 type Runner struct {
-	db     *gorm.DB
-	eventC chan *types.EventData
-	stopC  chan struct{}
-	errC   chan error
-	wsURL  string
+	db                *gorm.DB
+	eventC            chan *types.EventData
+	stopC             chan struct{}
+	errC              chan error
+	wsURL             string
+	reconnectInterval time.Duration
 }
 
-func NewRunner(wsURL string, db *gorm.DB, n int) *Runner {
+func NewRunner(wsURL string, db *gorm.DB, n int, reconnectInterval time.Duration) *Runner {
 	return &Runner{
-		wsURL:  wsURL,
-		db:     db,
-		stopC:  make(chan struct{}),
-		errC:   make(chan error),
-		eventC: make(chan *types.EventData, n),
+		wsURL:             wsURL,
+		db:                db,
+		stopC:             make(chan struct{}),
+		errC:              make(chan error),
+		eventC:            make(chan *types.EventData, n),
+		reconnectInterval: reconnectInterval,
 	}
 }
 
 func (r *Runner) Start() {
 	go r.processEvent()
 	for {
-		// delay before connecting again
-		time.Sleep(500 * time.Millisecond)
-		log.Printf("connecting to %s", r.wsURL)
-		conn, err := connectGamechain(r.wsURL)
-		if err != nil {
-			log.Println(err)
-			continue
+		err := r.watchTopic()
+		if err == nil {
+			break
 		}
-		defer conn.Close()
-		r.watchTopic(conn)
+		log.Printf("error: %v", err)
+		// delay before connecting again
+		time.Sleep(r.reconnectInterval)
 	}
 }
 
@@ -58,7 +56,14 @@ func (r *Runner) Error() chan error {
 	return r.errC
 }
 
-func (r *Runner) watchTopic(conn *websocket.Conn) error {
+func (r *Runner) watchTopic() error {
+	log.Printf("connecting to chain %s", r.wsURL)
+	conn, err := connectGamechain(r.wsURL)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
 	log.Printf("connected to %s", r.wsURL)
 	log.Printf("watching events from %s", r.wsURL)
 	var unmarshaler jsonpb.Unmarshaler
