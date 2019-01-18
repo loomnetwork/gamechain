@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/go-loom/client"
@@ -36,12 +37,16 @@ func NewRunner(wsURL string, db *gorm.DB, n int) *Runner {
 func (r *Runner) Start() {
 	go r.processEvent()
 	for {
-		err := r.watchTopic()
-		if err == nil {
-			break
-		}
 		// delay before connecting again
 		time.Sleep(500 * time.Millisecond)
+		log.Printf("connecting to %s", r.wsURL)
+		conn, err := connectGamechain(r.wsURL)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		defer conn.Close()
+		r.watchTopic(conn)
 	}
 }
 
@@ -53,14 +58,7 @@ func (r *Runner) Error() chan error {
 	return r.errC
 }
 
-func (r *Runner) watchTopic() error {
-	log.Printf("connecting to %s", r.wsURL)
-	conn, err := connectGamechain(r.wsURL)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-
+func (r *Runner) watchTopic(conn *websocket.Conn) error {
 	log.Printf("connected to %s", r.wsURL)
 	log.Printf("watching events from %s", r.wsURL)
 	var unmarshaler jsonpb.Unmarshaler
