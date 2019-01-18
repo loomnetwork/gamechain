@@ -642,6 +642,7 @@ message DebugCheatsConfiguration {
     bool disableDeckShuffle = 6;
 
     string forceFirstTurnUserId = 7;
+    bool ignoreGooRequirements = 8;
 }
 
 message FindMatchRequest {

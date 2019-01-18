@@ -301,6 +301,8 @@ func (g *Gameplay) resume() error {
 		state = actionLeaveMatch
 	case zb.PlayerActionType_RankBuff:
 		state = actionRankBuff
+	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+		state = actionCheatDestroyCardsOnBoard
 	default:
 		return errInvalidAction
 	}
@@ -345,6 +347,10 @@ func (g *Gameplay) current() *zb.PlayerAction {
 
 func (g *Gameplay) activePlayer() *zb.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
+}
+
+func (g *Gameplay) activePlayerDebugCheats() *zb.DebugCheatsConfiguration {
+	return g.playersDebugCheats[g.State.CurrentPlayerIndex]
 }
 
 func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
@@ -709,15 +715,16 @@ func actionCardPlay(g *Gameplay) stateFn {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
 				cardPlay.Card.InstanceId.Id,
-				// cardPlay.Card.Prototype.Name,
 			)
 			return g.captureErrorAndStop(err)
 		}
 
 		// check goo cost
-		if card.Instance.GooCost > g.activePlayer().CurrentGoo {
-			err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
-			return g.captureErrorAndStop(err)
+		if !(g.activePlayerDebugCheats().Enabled && g.activePlayerDebugCheats().IgnoreGooRequirements) {
+			if card.Instance.GooCost > g.activePlayer().CurrentGoo {
+				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
+				return g.captureErrorAndStop(err)
+			}
 		}
 
 		// change player goo
