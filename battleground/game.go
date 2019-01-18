@@ -146,6 +146,18 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	n := r.Int31n(int32(len(g.State.PlayerStates)))
 	g.State.CurrentPlayerIndex = n
 
+	// force first player cheat
+	loop:
+	for i := 0; i < len(g.State.PlayerStates); i++ {
+		for j := 0; j < len(g.State.PlayerStates); j++ {
+			if g.playersDebugCheats[j].Enabled && g.playersDebugCheats[j].ForceFirstTurnUserId != "" && g.playersDebugCheats[j].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
+				g.State.CurrentPlayerIndex = int32(i)
+				break loop
+			}
+		}
+	}
+
+	// custom mode pre-match hook
 	if g.customGameMode != nil {
 		err := g.customGameMode.CallHookBeforeMatchStart(ctx, g)
 		if err != nil {
