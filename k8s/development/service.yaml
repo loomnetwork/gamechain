@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dev-loom-gamechain-oracle-svc
+  name: dev-gamechain-oracle-svc
   namespace: dev2-infra
 spec:
   ports:

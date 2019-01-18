@@ -8,10 +8,10 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
-  - host:   dev-auth.loom.games
+  - host:   dev-gcoracle.devdc.io
     http:
       paths:
       - path: /status, /metrics
         backend:
-          serviceName: dev-loom-gamechain-oracle-svc
-          servicePort: 8888  
+          serviceName: dev-gamechain-oracle-svc
+          servicePort: main-port  
