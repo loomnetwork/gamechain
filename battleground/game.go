@@ -259,7 +259,9 @@ func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	// skip checking for allowed actions
-	if action.ActionType == zb.PlayerActionType_Mulligan || action.ActionType == zb.PlayerActionType_LeaveMatch {
+	if action.ActionType == zb.PlayerActionType_Mulligan ||
+		action.ActionType == zb.PlayerActionType_LeaveMatch ||
+		action.ActionType == zb.PlayerActionType_CheatDestroyCardsOnBoard {
 		return nil
 	}
 	activePlayer := g.activePlayer()
