@@ -35,8 +35,8 @@ func NewRunner(wsURL string, db *gorm.DB, n int, reconnectInterval time.Duration
 	}
 }
 
+// Start runs the loop to watch topic. It's a blocking call.
 func (r *Runner) Start() {
-	go r.processEvent()
 	for {
 		err := r.watchTopic()
 		if err == nil {
