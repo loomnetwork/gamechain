@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
@@ -102,20 +103,22 @@ func run() error {
 	defer signal.Stop(sigC)
 
 	r := NewRunner(parsedURL.String(), db, 10)
-	// Start is not blocking
-	r.Start()
+	go r.Start()
 
 	go func() {
-		select {
-		case err := <-r.Error():
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "%v", err)
+		for {
+			time.Sleep(1 * time.Second)
+			select {
+			case err := <-r.Error():
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "%v", err)
+				}
+				r.Stop()
+				close(doneC)
+			case <-sigC:
+				r.Stop()
+				close(doneC)
 			}
-			r.Stop()
-			close(doneC)
-		case <-sigC:
-			r.Stop()
-			close(doneC)
 		}
 	}()
 
