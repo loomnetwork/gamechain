@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -16,7 +17,14 @@ var initStateCmd = &cobra.Command{
 	Short: "initialize gamechain state",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		_, err := commonTxObjs.contract.Call("InitState", &zb.InitGamechainStateRequest{}, signer, nil)
+		callerAddr := loom.Address{
+			ChainID: commonTxObjs.rpcClient.GetChainID(),
+			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+		}
+		req := &zb.InitGamechainStateRequest{
+			Oracle: callerAddr.MarshalPB(),
+		}
+		_, err := commonTxObjs.contract.Call("InitState", req, signer, nil)
 		if err != nil {
 			return errors.Wrap(err, "call contract")
 		}
