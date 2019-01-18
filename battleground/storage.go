@@ -13,10 +13,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	OwnerRole = "user" // TODO: change to owner
-)
-
 var (
 	cardPrefix           = []byte("card")
 	userPrefix           = []byte("user")
@@ -39,6 +35,7 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
 	contentVersionKey           = []byte("content-version")
@@ -82,6 +79,22 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
+	if err := ctx.Set(stateKey, state); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
+	err := ctx.Get(stateKey, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
 func RewardClaimedKey(userID string) []byte {
 	return []byte("user:" + userID + ":rewardClaimed")
 }
@@ -114,6 +127,23 @@ func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardColl
 
 func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
 	return ctx.Set(CardCollectionKey(userID), cardCollection)
+}
+
+// loadCardCollectionFromAddress loads address mapping to card collection
+func loadCardCollectionByAddress(ctx contract.StaticContext) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
+	addr := string(ctx.Message().Sender.Local)
+	err := ctx.Get(CardCollectionKey(addr), &userCollection)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &userCollection, nil
+}
+
+// saveCardCollectionByAddress save card collection using address as a key
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCollectionList) error {
+	addr := string(ctx.Message().Sender.Local)
+	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
 func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
@@ -511,26 +541,60 @@ func populateDeckCards(
 		}
 	}
 
-	if useBackendGameLogic {
-		for _, playerState := range playerStates {
-			for _, card := range playerState.CardsInDeck {
-				filteredAbilities := make([]*zb.CardAbility, 0, 0)
-				for _, ability := range card.Prototype.Abilities {
-					switch ability.Type {
-					case zb.CardAbilityType_Rage:
-					case zb.CardAbilityType_PriorityAttack:
-						filteredAbilities = append(filteredAbilities, ability)
-					default:
-						fmt.Printf("CardAbility.Type has unexpected value %s, removed\n", zb.CardAbilityType_Enum_name[int32(ability.Type)])
-					}
-				}
-
-				card.Prototype.Abilities = filteredAbilities
-			}
-		}
-	}
+	removeUnsupportedCardFeatures(useBackendGameLogic, playerStates)
 
 	return nil
+}
+
+func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.PlayerState) {
+	if !useBackendGameLogic {
+		return
+	}
+
+	for _, playerState := range playerStates {
+		filteredCards := make([]*zb.CardInstance, 0, 0)
+
+		for _, card := range playerState.CardsInDeck {
+			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			for _, ability := range card.Prototype.Abilities {
+				switch ability.Type {
+				case zb.CardAbilityType_Rage:
+					fallthrough
+				case zb.CardAbilityType_PriorityAttack:
+					filteredAbilities = append(filteredAbilities, ability)
+				default:
+					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+				}
+			}
+
+			card.Prototype.Abilities = filteredAbilities
+
+			switch card.Prototype.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Instance.Type {
+			case zb.CreatureType_Feral:
+				fallthrough
+			case zb.CreatureType_Heavy:
+				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CreatureType_Walker
+			}
+
+			switch card.Prototype.Kind {
+			case zb.CardKind_Creature:
+				filteredCards = append(filteredCards, card)
+			default:
+				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+			}
+		}
+
+		playerState.CardsInDeck = filteredCards
+	}
 }
 
 func getCardLibrary(ctx contract.Context, version string) (*zb.CardList, error) {
@@ -549,4 +613,13 @@ func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 		}
 	}
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
+}
+
+func findCardByMouldID(cardList *zb.CardList, mouldID int64) (*zb.Card, bool) {
+	for _, card := range cardList.Cards {
+		if card.MouldId == mouldID {
+			return card, true
+		}
+	}
+	return nil, false
 }

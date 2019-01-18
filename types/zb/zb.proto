@@ -249,6 +249,8 @@ message InitRequest {
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
+    string contentVersion                      = 8;
+    string pvpVersion                          = 9;
 }
 
 message UpdateOracle {
@@ -265,6 +267,8 @@ message UpdateInitRequest {
     string version                             = 6;
     Address oracle                             = 7;
     string oldVersion                          = 8;
+    string contentVersion                      = 9;
+    string pvpVersion                          = 10;
 }
 
 message GetInitRequest {
@@ -280,6 +284,26 @@ message GetInitResponse {
     repeated AIDeck ai_decks                   = 6;
     string version                             = 7;
     Address oracle                             = 8;
+}
+
+message GamechainState {
+    uint64 last_plasmachain_block_num = 1;
+}
+
+message GetGamechainStateRequest {
+}
+
+message GetGamechainStateResponse {
+    GamechainState state = 1;
+}
+
+message InitGamechainStateRequest {
+    Address oracle = 1;
+}
+
+message SetLastPlasmaBlockNumRequest {
+    uint64 last_block_num = 1;
+    Address oracle = 2;
 }
 
 message UpdateCardListRequest {
@@ -306,6 +330,11 @@ message UpsertAccountRequest {
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
     string version = 10;
+}
+
+message UpdateUserEloRequest {
+    string user_id = 1;
+    int64 elo_score = 2;
 }
 
 message GetAccountRequest {
@@ -611,6 +640,8 @@ message DebugCheatsConfiguration {
     int64 customRandomSeed = 5;
 
     bool disableDeckShuffle = 6;
+
+    string forceFirstTurnUserId = 7;
 }
 
 message FindMatchRequest {
@@ -894,6 +925,7 @@ message GameMechanicDescriptionType
         BLITZ = 25 [(gogoproto.enumvalue_customname) = "Blitz"];
         RESTORE = 26 [(gogoproto.enumvalue_customname) = "Restore"];
         CHAINSAW = 27 [(gogoproto.enumvalue_customname) = "Chainsaw"];
+        SUPER_SERUM = 28 [(gogoproto.enumvalue_customname) = "SuperSerum"];
     }
 }
 
@@ -1104,7 +1136,7 @@ message CreatureRank {
 
 message CreatureType {
     enum Enum {
-        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+        Undefined = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
         WALKER = 1 [(gogoproto.enumvalue_customname) = "Walker"];
         FERAL = 2 [(gogoproto.enumvalue_customname) = "Feral"];
         HEAVY = 3 [(gogoproto.enumvalue_customname) = "Heavy"];

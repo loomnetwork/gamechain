@@ -2,17 +2,19 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
 var registerPlayerPoolCmdArgs struct {
-	userID     string
-	deckID     int64
-	version    string
-	randomSeed int64
-	tags       []string
+	userID              string
+	deckID              int64
+	version             string
+	randomSeed          int64
+	tags                []string
+	useBackendGameLogic bool
 }
 
 var registerPlayerPoolCmd = &cobra.Command{
@@ -22,10 +24,11 @@ var registerPlayerPoolCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.RegisterPlayerPoolRequest{
 			RegistrationData: &zb.PlayerProfileRegistrationData{
-				UserId: registerPlayerPoolCmdArgs.userID,
-				DeckId: registerPlayerPoolCmdArgs.deckID,
-				Version: registerPlayerPoolCmdArgs.version,
-				Tags:   registerPlayerPoolCmdArgs.tags,
+				UserId:              registerPlayerPoolCmdArgs.userID,
+				DeckId:              registerPlayerPoolCmdArgs.deckID,
+				Version:             registerPlayerPoolCmdArgs.version,
+				Tags:                registerPlayerPoolCmdArgs.tags,
+				UseBackendGameLogic: registerPlayerPoolCmdArgs.useBackendGameLogic,
 			},
 		}
 		var resp zb.RegisterPlayerPoolResponse
@@ -54,4 +57,5 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", 0, "Random Seed")
 	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
+	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.useBackendGameLogic, "useBackendGameLogic", "b", false, "useBackendGameLogic")
 }
