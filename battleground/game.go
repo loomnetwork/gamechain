@@ -259,7 +259,9 @@ func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
 
 func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
 	// skip checking for allowed actions
-	if action.ActionType == zb.PlayerActionType_Mulligan || action.ActionType == zb.PlayerActionType_LeaveMatch {
+	if action.ActionType == zb.PlayerActionType_Mulligan ||
+		action.ActionType == zb.PlayerActionType_LeaveMatch ||
+		action.ActionType == zb.PlayerActionType_CheatDestroyCardsOnBoard {
 		return nil
 	}
 	activePlayer := g.activePlayer()
@@ -1228,25 +1230,27 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 	}
 
 	destroyedCards := current.GetCheatDestroyCardsOnBoard().DestroyedCards
+	for _, destroyedCard := range destroyedCards {
+		destroyedCardFound := false
+		for playerStateIndex, playerState := range g.State.PlayerStates {
+			if !g.playersDebugCheats[playerStateIndex].Enabled {
+				return g.captureErrorAndStop(errCheatsRequired)
+			}
 
-	for playerStateIndex, playerState := range g.State.PlayerStates {
-		if !g.playersDebugCheats[playerStateIndex].Enabled {
-			return g.captureErrorAndStop(errCheatsRequired)
-		}
-		temp := playerState.CardsInPlay[:0]
-		for _, card := range playerState.CardsInPlay {
-			isDestroyed := false
-			for _, destroyedCardId := range destroyedCards {
-				if card.InstanceId.Id == destroyedCardId.Id {
-					isDestroyed = true
+			temp := playerState.CardsInPlay[:0]
+			for _, card := range playerState.CardsInPlay {
+				if card.InstanceId.Id == destroyedCard.Id {
+					destroyedCardFound = true
+				} else {
+					temp = append(temp, card)
 				}
 			}
-
-			if !isDestroyed {
-				temp = append(temp, card)
-			}
+			playerState.CardsInPlay = temp
 		}
-		playerState.CardsInPlay = temp
+
+		if !destroyedCardFound {
+			return g.captureErrorAndStop(fmt.Errorf("card with instance id %d not found", destroyedCard.Id))
+		}
 	}
 
 	// determine the next action
