@@ -55,6 +55,8 @@ spec:
             value: "3306"
           - name: WS_URL
             value: ws://gamechain.dappchains.com:9999/queryws
+          - name: RECONNECT_INTERVAL
+            value: "1"
 
       volumes:
         - name: cloudsql-loomauth-credentials
