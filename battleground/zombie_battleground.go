@@ -702,6 +702,14 @@ func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.G
 	return &zb.GetCollectionResponse{Cards: collectionList.Cards}, nil
 }
 
+func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.StaticContext) (*zb.GetCollectionByAddressResponse, error) {
+	collectionList, err := loadCardCollectionByAddress(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &zb.GetCollectionByAddressResponse{Cards: collectionList.Cards}, nil
+}
+
 // ListCardLibrary list all the card library data
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
 	var cardList zb.CardList
