@@ -44,9 +44,9 @@ gcloud docker -- push  $DOC_IMAGE_ORACLE
 echo "sed on k8s/${ENV}/deployment.yaml"
 sed -i 's/%REV%/'"$REV"'/g' k8s/${ENV}/deployment.yaml
 
+echo "kube apply deployment"
+kubectl apply -f k8s/${ENV}/deployment.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
 echo "kube apply service"
 kubectl apply -f k8s/${ENV}/service.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
 echo "kube apply ingress"
 kubectl apply -f k8s/${ENV}/ingress.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
-echo "kube apply deployment"
-kubectl apply -f k8s/${ENV}/deployment.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
