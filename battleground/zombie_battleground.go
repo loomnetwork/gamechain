@@ -702,7 +702,7 @@ func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.G
 	return &zb.GetCollectionResponse{Cards: collectionList.Cards}, nil
 }
 
-func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.StaticContext) (*zb.GetCollectionByAddressResponse, error) {
+func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.StaticContext, req *zb.GetCollectionByAddressRequest) (*zb.GetCollectionByAddressResponse, error) {
 	collectionList, err := loadCardCollectionByAddress(ctx)
 	if err != nil {
 		return nil, err
