@@ -449,6 +449,10 @@ message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
 }
 
+message GetCollectionByAddressResponse {
+    repeated CardCollectionCard cards = 1;
+}
+
 message RewardTutorialCompletedRequest {
     string user_id = 1;
 }
