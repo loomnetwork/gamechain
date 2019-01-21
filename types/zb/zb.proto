@@ -449,6 +449,9 @@ message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
 }
 
+message GetCollectionByAddressRequest {
+}
+
 message GetCollectionByAddressResponse {
     repeated CardCollectionCard cards = 1;
 }
