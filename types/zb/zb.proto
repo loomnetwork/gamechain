@@ -1321,7 +1321,7 @@ message PlayerActionLeaveMatch {
 }
 
 message PlayerActionCardPlay {
-    CardInstance card = 1;
+    InstanceId card = 1;
     int32 position = 2;
 }
 
@@ -1337,7 +1337,6 @@ message PlayerActionCardAttack {
 
 message PlayerActionCardAbilityUsed {
     InstanceId card = 1;
-    CardKind.Enum cardKind = 2;
     repeated Unit targets = 3;
     CardAbilityType.Enum AbilityType = 4;
 }
