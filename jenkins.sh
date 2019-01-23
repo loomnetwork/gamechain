@@ -38,7 +38,7 @@ chmod +x bin/gcoracle
 
 echo "Building $DOC_IMAGE_ORACLE"
 docker build -t $DOC_IMAGE_ORACLE:latest -f Dockerfile_gcoracle .
-docker tag $DOC_IMAGE:latest $DOC_IMAGE:$BUILD_NUMBER
+docker tag $DOC_IMAGE_ORACLE:latest $DOC_IMAGE_ORACLE:$BUILD_NUMBER
 
 echo "Pushing $DOC_IMAGE_ORACLE to google container registry"
 gcloud docker -- push $DOC_IMAGE_ORACLE:$BUILD_NUMBER
