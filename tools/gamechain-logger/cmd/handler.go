@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/jinzhu/gorm"
@@ -40,6 +41,7 @@ func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		Version:         match.Version,
 		RandomSeed:      match.RandomSeed,
 		BlockHeight:     eventData.BlockHeight,
+		CreatedAt:       time.Now(),
 	}
 
 	if err := db.Save(&m).Error; err != nil {
@@ -76,7 +78,7 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		RandomSeed:      match.RandomSeed,
 		BlockHeight:     eventData.BlockHeight,
 	}
-	if err := db.Save(&m).Error; err != nil {
+	if err := db.Omit("created_at").Save(&m).Error; err != nil {
 		return err
 	}
 
@@ -169,7 +171,7 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		SenderAddress:    event.SenderAddress,
 		BlockHeight:      eventData.BlockHeight,
 	}
-	if err := db.Save(&d).Error; err != nil {
+	if err := db.Omit("created_at").Save(&d).Error; err != nil {
 		return err
 	}
 
@@ -203,6 +205,7 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	return nil
 }
 
+// TODO: seems this is not used anymore at all? can it be removed?
 func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 	var event zb.PlayerActionEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
@@ -219,7 +222,7 @@ func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 	match.Status = event.Match.Status.String()
 	match.BlockHeight = eventData.BlockHeight
 
-	if err := db.Save(&match).Error; err != nil {
+	if err := db.Omit("created_at").Save(&match).Error; err != nil {
 		return err
 	}
 
@@ -248,9 +251,14 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	}
 
 	// update match status
+	var winnerID string
+	if event.Block != nil && len(event.Block.List) > 0 && event.Block.List[0].GetEndGame() != nil {
+		winnerID = event.Block.List[0].GetEndGame().WinnerId
+	}
+
 	err = db.Model(&models.Match{}).
 		Where(&models.Match{ID: match.Id}).
-		Updates(models.Match{Status: match.Status.String(), BlockHeight: eventData.BlockHeight}).
+		Updates(models.Match{WinnerID: winnerID, Status: match.Status.String(), BlockHeight: eventData.BlockHeight}).
 		Error
 	if err != nil {
 		return err
