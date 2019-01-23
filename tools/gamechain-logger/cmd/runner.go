@@ -124,6 +124,7 @@ func (r *Runner) processEvent() {
 					err := topicHandler(eventData, r.db)
 					if err != nil {
 						log.Println("error calling topic handler:", err)
+						log.Printf("event: %+v", eventData)
 					}
 				}
 			}
