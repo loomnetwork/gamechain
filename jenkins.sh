@@ -24,7 +24,7 @@ chmod +x bin/gamechain-logger
 
 echo "Building $DOC_IMAGE_LOGGER"
 docker build -t $DOC_IMAGE_LOGGER:latest -f Dockerfile .
-docker tag $DOC_IMAGE_LOGGER:$BUILD_NUMBER $DOC_IMAGE_LOGGER:latest
+docker tag $DOC_IMAGE_LOGGER:latest $DOC_IMAGE_LOGGER:$BUILD_NUMBER
 
 echo "Pushing $DOC_IMAGE_LOGGER to google container registry"
 gcloud docker -- push $DOC_IMAGE_LOGGER:$BUILD_NUMBER
@@ -38,7 +38,7 @@ chmod +x bin/gcoracle
 
 echo "Building $DOC_IMAGE_ORACLE"
 docker build -t $DOC_IMAGE_ORACLE:latest -f Dockerfile_gcoracle .
-docker tag $DOC_IMAGE:$BUILD_NUMBER $DOC_IMAGE:latest
+docker tag $DOC_IMAGE:latest $DOC_IMAGE:$BUILD_NUMBER
 
 echo "Pushing $DOC_IMAGE_ORACLE to google container registry"
 gcloud docker -- push $DOC_IMAGE_ORACLE:$BUILD_NUMBER
