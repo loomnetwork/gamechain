@@ -2,15 +2,15 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: stage-gamechain-oracle
+  name: gamechain-oracle
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
-  - host:   stage-gcoracle.devdc.io
+  - host:   gcoracle.devdc.io
     http:
       paths:
       - path: /status, /metrics
         backend:
-          serviceName: stage-gamechain-oracle-svc
+          serviceName: gamechain-oracle-svc
           servicePort: main-port  
