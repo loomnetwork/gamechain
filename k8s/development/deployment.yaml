@@ -29,7 +29,7 @@ spec:
           - name: cloudsql
             mountPath: /cloudsql
       - name: gamechain-logger
-        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%REV%
+        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%BUILD_NUMBER%
         resources:
           requests:
             cpu: 100m
@@ -85,7 +85,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: gamechain-oracle
-        image: gcr.io/robotic-catwalk-188706/gamechain-oracle:%REV%
+        image: gcr.io/robotic-catwalk-188706/gamechain-oracle:%BUILD_NUMBER%
         resources:
           requests:
             cpu: 100m
@@ -128,4 +128,3 @@ spec:
             value: "5"
           - name: ORACLE_STARTUP_DELAY
             value: "10"
-          
