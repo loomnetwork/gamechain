@@ -593,6 +593,11 @@ message PlayerAction {
     };
     repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
+
+    // To be removed later. Only useful for client-logic games.
+    // After constructing the "meat" of the action, the client fills this structure with his local game state.
+    // The other client can then compare the game with his own and panic if de-sync is detected.
+    GameState controlGameState = 16;
 }
 
 message PlayerActionEvent {
