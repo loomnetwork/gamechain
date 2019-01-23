@@ -18,17 +18,17 @@ make test
 
 # Docker image for gamechain-logger
 
-DOC_IMAGE=gcr.io/robotic-catwalk-188706/gamechain-logger
+DOC_IMAGE_LOGGER=gcr.io/robotic-catwalk-188706/gamechain-logger
 
 chmod +x bin/gamechain-logger
 
-echo "Building $DOC_IMAGE"
-docker build -t $DOC_IMAGE:latest -f Dockerfile .
-docker tag $DOC_IMAGE:$BUILD_NUMBER $DOC_IMAGE:latest
+echo "Building $DOC_IMAGE_LOGGER"
+docker build -t $DOC_IMAGE_LOGGER:latest -f Dockerfile .
+docker tag $DOC_IMAGE_LOGGER:$BUILD_NUMBER $DOC_IMAGE_LOGGER:latest
 
-echo "Pushing $DOC_IMAGE to google container registry"
-gcloud docker -- push $DOC_IMAGE:$BUILD_NUMBER
-gcloud docker -- push $DOC_IMAGE:latest
+echo "Pushing $DOC_IMAGE_LOGGER to google container registry"
+gcloud docker -- push $DOC_IMAGE_LOGGER:$BUILD_NUMBER
+gcloud docker -- push $DOC_IMAGE_LOGGER:latest
 
 # Docker image for gamechain-oracle
 
