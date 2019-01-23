@@ -18,35 +18,28 @@ make test
 
 # Docker image for gamechain-logger
 
-REV=`git rev-parse --short HEAD`
-export RELEASE=$REV
-DOC_IMAGE=gcr.io/robotic-catwalk-188706/gamechain-logger:$REV
+DOC_IMAGE_LOGGER=gcr.io/robotic-catwalk-188706/gamechain-logger
 
 chmod +x bin/gamechain-logger
 
-echo "sending $DOC_IMAGE"
-docker build -t $DOC_IMAGE -f Dockerfile .
+echo "Building $DOC_IMAGE_LOGGER"
+docker build -t $DOC_IMAGE_LOGGER:latest -f Dockerfile .
+docker tag $DOC_IMAGE_LOGGER:$BUILD_NUMBER $DOC_IMAGE_LOGGER:latest
 
-echo "pushing to google container registry"
-gcloud docker -- push  $DOC_IMAGE
+echo "Pushing $DOC_IMAGE_LOGGER to google container registry"
+gcloud docker -- push $DOC_IMAGE_LOGGER:$BUILD_NUMBER
+gcloud docker -- push $DOC_IMAGE_LOGGER:latest
 
 # Docker image for gamechain-oracle
-DOC_IMAGE_ORACLE=gcr.io/robotic-catwalk-188706/gamechain-oracle:$REV
+
+DOC_IMAGE_ORACLE=gcr.io/robotic-catwalk-188706/gamechain-oracle
 
 chmod +x bin/gcoracle
 
-echo "sending $DOC_IMAGE_ORACLE"
-docker build -t $DOC_IMAGE_ORACLE -f Dockerfile_gcoracle .
+echo "Building $DOC_IMAGE_ORACLE"
+docker build -t $DOC_IMAGE_ORACLE:latest -f Dockerfile_gcoracle .
+docker tag $DOC_IMAGE:$BUILD_NUMBER $DOC_IMAGE:latest
 
-echo "pushing to google container registry"
-gcloud docker -- push  $DOC_IMAGE_ORACLE
-
-echo "sed on k8s/${ENV}/deployment.yaml"
-sed -i 's/%REV%/'"$REV"'/g' k8s/${ENV}/deployment.yaml
-
-echo "kube apply deployment"
-kubectl apply -f k8s/${ENV}/deployment.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
-echo "kube apply service"
-kubectl apply -f k8s/${ENV}/service.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
-echo "kube apply ingress"
-kubectl apply -f k8s/${ENV}/ingress.yaml  --kubeconfig=/var/lib/jenkins/${ENV}_kube_config.yaml
+echo "Pushing $DOC_IMAGE_ORACLE to google container registry"
+gcloud docker -- push $DOC_IMAGE_ORACLE:$BUILD_NUMBER
+gcloud docker -- push $DOC_IMAGE_ORACLE:latest
