@@ -37,7 +37,9 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
-				Card: &zb.InstanceId{Id: 2},
+				Card: &zb.CardInstance{
+					InstanceId: &zb.InstanceId{Id: 2},
+				},
 			},
 		},
 	})
@@ -49,7 +51,9 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
-				Card: &zb.InstanceId{Id: 13},
+				Card: &zb.CardInstance{
+					InstanceId: &zb.InstanceId{Id: 13},
+				},
 			},
 		},
 	})
@@ -78,7 +82,9 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardAbilityUsed{
 			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-				Card: &zb.InstanceId{Id: 1},
+				Card: &zb.CardInstance{
+					InstanceId: &zb.InstanceId{Id: 1},
+				},
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
@@ -111,7 +117,9 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_RankBuff{
 			RankBuff: &zb.PlayerActionRankBuff{
-				Card: &zb.InstanceId{Id: 1},
+				Card: &zb.CardInstance{
+					InstanceId: &zb.InstanceId{Id: 1},
+				},
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
@@ -162,7 +170,7 @@ func TestInvalidUserTurn(t *testing.T) {
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Equal(t, err, errInvalidPlayer)
 	cardID := gp.State.PlayerStates[0].CardsInHand[0].InstanceId
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: cardID}}})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: &zb.CardInstance{InstanceId: cardID}}}})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
@@ -737,7 +745,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 3},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 3},
+					},
 				},
 			},
 		})
@@ -756,7 +766,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: -1},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: -1},
+					},
 				},
 			},
 		})
@@ -777,7 +789,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 2},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 2},
+					},
 				},
 			},
 		})
@@ -787,7 +801,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 3},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 3},
+					},
 				},
 			},
 		})
@@ -797,7 +813,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 4},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 4},
+					},
 				},
 			},
 		})
@@ -807,7 +825,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 5},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 5},
+					},
 				},
 			},
 		})
@@ -817,7 +837,9 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 6},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 6},
+					},
 				},
 			},
 		})
@@ -851,7 +873,9 @@ func TestCheats(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 3},
+					Card: &zb.CardInstance{
+						InstanceId: &zb.InstanceId{Id: 3},
+					},
 				},
 			},
 		})
