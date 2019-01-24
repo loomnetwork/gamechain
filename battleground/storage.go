@@ -27,7 +27,6 @@ var (
 	heroListKey                 = []byte("herolist")
 	defaultDeckKey              = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
-	defaultHeroesKey            = []byte("default-heroes")
 	matchCountKey               = []byte("match-count")
 	playersInMatchmakingListKey = []byte("players-matchmaking")
 	gameModeListKey             = []byte("gamemode-list")
