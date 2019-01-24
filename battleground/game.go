@@ -712,29 +712,29 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// get card instance from cardsInHand list
-		cardIndex, cardInstance, found := findCardInCardListByInstanceId(cardPlay.Card, activeCardsInHand)
+		cardIndex, card, found := findCardInCardListByInstanceId(cardPlay.Card.InstanceId, activeCardsInHand)
 		if !found {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
-				cardPlay.Card.Id,
+				cardPlay.Card.InstanceId.Id,
 			)
 			return g.captureErrorAndStop(err)
 		}
 
 		// check goo cost
 		if !(g.activePlayerDebugCheats().Enabled && g.activePlayerDebugCheats().IgnoreGooRequirements) {
-			if cardInstance.Instance.GooCost > g.activePlayer().CurrentGoo {
-				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.Id)
+			if card.Instance.GooCost > g.activePlayer().CurrentGoo {
+				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.InstanceId.Id)
 				return g.captureErrorAndStop(err)
 			}
 
 			// change player goo
 			// TODO: abilities that change goo vials, overflow etc
-			g.activePlayer().CurrentGoo -= cardInstance.Instance.GooCost
+			g.activePlayer().CurrentGoo -= card.Instance.GooCost
 		}
 
 		// put card on board
-		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, cardInstance)
+		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, card)
 		// remove card from hand
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 		g.activePlayer().CardsInHand = activeCardsInHand
@@ -743,9 +743,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 		g.history = append(g.history, &zb.HistoryData{
 			Data: &zb.HistoryData_FullInstance{
 				FullInstance: &zb.HistoryFullInstance{
-					InstanceId: card,
-					Attack:     cardInstance.Instance.Attack,
-					Defense:    cardInstance.Instance.Defense,
+					InstanceId: card.InstanceId,
+					Attack:     card.Instance.Attack,
+					Defense:    card.Instance.Defense,
 				},
 			},
 		})
