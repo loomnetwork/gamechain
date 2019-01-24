@@ -593,6 +593,11 @@ message PlayerAction {
     };
     repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
+
+    // To be removed later. Only useful for client-logic games.
+    // After constructing the "meat" of the action, the client fills this structure with his local game state.
+    // The other client can then compare the game with his own and panic if de-sync is detected.
+    GameState controlGameState = 16;
 }
 
 message PlayerActionEvent {
@@ -1328,12 +1333,12 @@ message PlayerActionLeaveMatch {
 }
 
 message PlayerActionCardPlay {
-    CardInstance card = 1;
+    InstanceId card = 1;
     int32 position = 2;
 }
 
 message PlayerActionRankBuff {
-    CardInstance card = 1;
+    InstanceId card = 1;
     repeated Unit targets = 2;
 }
 
@@ -1343,8 +1348,7 @@ message PlayerActionCardAttack {
 }
 
 message PlayerActionCardAbilityUsed {
-    CardInstance card = 1;
-    CardKind.Enum cardKind = 2;
+    InstanceId card = 1;
     repeated Unit targets = 3;
     CardAbilityType.Enum AbilityType = 4;
 }
