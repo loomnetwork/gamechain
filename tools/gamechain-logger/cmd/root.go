@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	"os"
 	"os/signal"
@@ -13,12 +12,15 @@ import (
 	"syscall"
 	"time"
 
+	raven "github.com/getsentry/raven-go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
+	"github.com/ianschenck/envflag"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -60,10 +62,20 @@ func init() {
 func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	var sentryDsn, sentryEnvironment string
+	envflag.StringVar(&sentryDsn, "SENTRY_DSN", "", "sentry DSN, blank locally cause we dont want to send errors locally")
+	envflag.StringVar(&sentryEnvironment, "SENTRY_ENVIRONMENT", "", "sentry environment, leave it blank for dev and localhost")
+	envflag.Parse()
+
+	raven.SetEnvironment(sentryEnvironment)
+	raven.SetDSN(sentryDsn)
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
+		raven.CaptureError(err, map[string]string{})
+		log.Error(err)
 		os.Exit(1)
 	}
 }
