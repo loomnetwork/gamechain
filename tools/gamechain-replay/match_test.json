@@ -77,9 +77,7 @@
             "playerId": "loom2",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 15
-                    }
+                    "id": 15
                 }
             },
             "createdAt": "1547034628"
@@ -95,9 +93,7 @@
             "playerId": "loom1",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 3
-                    }
+                    "id": 3
                 }
             },
             "createdAt": "1547034807"
@@ -107,9 +103,7 @@
             "playerId": "loom1",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 4
-                    }
+                    "id": 4
                 }
             },
             "createdAt": "1547034822"
