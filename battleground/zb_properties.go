@@ -50,7 +50,7 @@ func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityIns
 				CardAbilityPriorityAttack: abilityType.PriorityAttack,
 			}
 		default:
-			fmt.Println("CardAbilityInstance has unexpected type %T", abilityType)
+			fmt.Printf("CardAbilityInstance has unexpected type %T", abilityType)
 		}
 
 		outcomes := fn(game, abilityInstance, card)
