@@ -3089,6 +3089,11 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	accessToken, err := createJwtToken(10, jwtSecret)
 	assert.Nil(t, err)
 
+	// make sure we have the correct reward_contract_version and tutorial_reward_amount
+	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
+	assert.Nil(t, err)
+	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
+	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
 	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
@@ -3099,10 +3104,10 @@ func TestRewardTutorialCompleted(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xc542cc5b9921df1cb2872b108c2c0faa853d13be881399af950bf94566147d6a", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x1fc8d5eaa088679e7b8b1dc32e11ed21aad6499eda6f6983156d3f1de415ad06", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x41b58413af508e1f8fd1eeec76f6dfde32b6f561a61135b3baca327cad39602c", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
+		assert.Equal(t, "0xe9fcf98a0292d5fc92ce789346628208d93312da1e88692d87b330710f102d1b", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0xcb6a1f1cc46811715ef7c4561de5f77da165ffdd1b4675492268b134d835b075", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x43b7c52ed6b3b334e580eff5b06e2cafad2bf34db03a21e52845eb8cd5428c7b", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
 	})
 
 	// send the correct request
