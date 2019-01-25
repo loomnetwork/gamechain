@@ -47,7 +47,7 @@ func init() {
 	rootCmd.PersistentFlags().String("ws-url", "ws://localhost:9999/queryws", "WebSocket Connection URL")
 	rootCmd.PersistentFlags().Int("reconnect-interval", 1, "Reconnect interval in seconds")
 	rootCmd.PersistentFlags().String("sentry-dsn", "", "sentry DSN, blank locally cause we dont want to send errors locally")
-	rootCmd.PersistentFlags().String("sentry-enviornment", "", "sentry environment, leave it blank for localhost")
+	rootCmd.PersistentFlags().String("sentry-environment", "", "sentry environment, leave it blank for localhost")
 
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
