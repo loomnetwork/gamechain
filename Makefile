@@ -94,7 +94,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/kr/logfmt \
 		github.com/phonkee/go-pubsub \
 		github.com/jinzhu/gorm \
-		github.com/mattn/go-sqlite3
+		github.com/mattn/go-sqlite3 \
+		github.com/dgrijalva/jwt-go
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
 	cd $(PLUGIN_DIR) && git checkout 0f1694777b0cbb80fe907188b0ab58506f47eba1
