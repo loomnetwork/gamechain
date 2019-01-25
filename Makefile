@@ -95,6 +95,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/phonkee/go-pubsub \
 		github.com/jinzhu/gorm \
 		github.com/mattn/go-sqlite3 \
+		github.com/dgrijalva/jwt-go \
 		github.com/getsentry/raven-go
 	
 	go install github.com/golang/dep/cmd/dep

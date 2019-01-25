@@ -12,6 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
@@ -20,18 +21,19 @@ import (
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
+	ltypes "github.com/loomnetwork/go-loom/types"
+	latypes "github.com/loomnetwork/loomauth/types"
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
 
 const (
-	MaxGameModeNameChar           = 48
-	MaxGameModeDescriptionChar    = 255
-	MaxGameModeVersionChar        = 16
-	TurnTimeout                   = 120 * time.Second
-	KeepAliveTimeout              = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
-	RewardTypeTutorialCompleted   = "tutorial-completed"
-	TutorialRewardContractVersion = 1
+	MaxGameModeNameChar         = 48
+	MaxGameModeDescriptionChar  = 255
+	MaxGameModeVersionChar      = 16
+	TurnTimeout                 = 120 * time.Second
+	KeepAliveTimeout            = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	RewardTypeTutorialCompleted = "tutorial-completed"
 )
 
 const (
@@ -57,7 +59,9 @@ var (
 	// secret
 	secret string
 	// privateKey to sign reward
-	privateKeyStr string
+	privateKeyStr = os.Getenv("CZ_KEY")
+	// privateKey to verify JWT Token from loomauth
+	jwtSecret = os.Getenv("JWT_SECRET")
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
 	ErrInvalidEventBatch  = errors.New("invalid event batch")
@@ -79,8 +83,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		secret = "justsowecantestwithoutenvvar"
 	}
 
-	privateKeyStr = os.Getenv("GAMECHAIN_PRIVATE_KEY")
-
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), OracleRole)
 		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
@@ -91,6 +93,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	// init state
 	state := zb.GamechainState{
 		LastPlasmachainBlockNum: 1,
+		RewardContractVersion:   1,
+		TutorialRewardAmount:    1,
 	}
 	if err := saveState(ctx, &state); err != nil {
 		return err
@@ -1706,6 +1710,8 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamecha
 	}
 	state = &zb.GamechainState{
 		LastPlasmachainBlockNum: 1,
+		RewardContractVersion:   1,
+		TutorialRewardAmount:    1,
 	}
 	return saveState(ctx, state)
 }
@@ -2017,19 +2023,30 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 }
 
 func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
-	if !isOwner(ctx, req.UserId) {
-		return nil, ErrUserNotVerified
-	}
-
-	rewardClaimed, err := getRewardClaimed(ctx, req.UserId)
+	token, err := jwt.ParseWithClaims(req.AccessToken, &latypes.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	if rewardClaimed != nil {
-		if rewardClaimed.RewardType == RewardTypeTutorialCompleted {
-			return nil, fmt.Errorf("reward already claimed")
-		}
+	if !token.Valid {
+		return nil, errors.New("Invalid access token")
+	}
+
+	// get user ID
+	claims, ok := token.Claims.(*latypes.UserClaims)
+	if !ok {
+		return nil, errors.Wrap(err, "error converting claims to custom claims")
+	}
+
+	rewardTutorialClaimed, err := getRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID))
+	if err != nil {
+		return nil, err
+	}
+
+	if rewardTutorialClaimed.Nonce > 0 {
+		return nil, fmt.Errorf("reward already claimed")
 	}
 
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
@@ -2037,25 +2054,12 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, fmt.Errorf("error reading private key")
 	}
 
-	/*
-		nonce, err := getNonce(ctx)
-		if err != nil {
-			return nil, err
-		}
-	*/
-
-	//rewardType := RewardTypeTutorialCompleted
-
-	// assign rewards
-	var minionPack uint64
-	minionPack = 5
-
-	userIDUint, err := getOrGenerateUserIDUint(ctx, req.UserId)
+	state, err := loadState(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	verifySignResult, err := generateVerifyHash(userIDUint, minionPack, TutorialRewardContractVersion, privateKey)
+	verifySignResult, err := generateVerifyHash(uint64(claims.UserID), state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -2073,36 +2077,40 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	}
 
 	return &zb.RewardTutorialCompletedResponse{
-		UserId:     req.UserId,
-		UserIdUint: userIDUint,
-		RewardType: RewardTypeTutorialCompleted,
-		//	Nonce:      nonce,
-		Hash:       verifySignResult.Hash,
+		UserId:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(claims.UserID))},
 		R:          r,
 		S:          s,
 		V:          v,
-		MinionPack: minionPack,
+		Hash:       verifySignResult.Hash,
+		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(state.TutorialRewardAmount))},
+		RewardType: RewardTypeTutorialCompleted,
 	}, nil
 }
 
-func (z *ZombieBattleground) ConfirmRewardClaimed(ctx contract.Context, req *zb.ConfirmRewardClaimedRequest) error {
-	if !isOwner(ctx, req.UserId) {
-		return ErrUserNotVerified
-	}
-
-	userIDUint, err := getUserIDUint(ctx, req.UserId)
+func (z *ZombieBattleground) ConfirmRewardTutorialClaimed(ctx contract.Context, req *zb.ConfirmRewardTutorialClaimedRequest) error {
+	token, err := jwt.ParseWithClaims(req.AccessToken, &latypes.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
 	if err != nil {
 		return err
 	}
 
-	// check whether the userIDUint in the request is same as the one generated by the RewardTutorialCompleted call
-	// the uint user id is generated only in the RewardTutorialCompleted call, so it can be used for safety check
-	// this is to prevent confirmation of reward claim without actually generating a reward via RewardTutorialCompleted
-	if req.UserIdUint != userIDUint {
-		return fmt.Errorf("invalid request")
+	if !token.Valid {
+		return errors.New("Invalid access token")
 	}
-	// TODO: add rewardType checks?
-	err = setRewardClaimed(ctx, req.UserId, req.RewardType)
+
+	// get user ID
+	claims, ok := token.Claims.(*latypes.UserClaims)
+	if !ok {
+		return errors.Wrap(err, "error converting claims to custom claims")
+	}
+
+	rewardClaimed, err := getRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID))
+	if err != nil {
+		return err
+	}
+	rewardClaimed.Nonce++
+	err = setRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID), rewardClaimed)
 	return err
 }
 
@@ -2111,9 +2119,8 @@ type verifySignResult struct {
 	Signature string
 }
 
-func generateVerifyHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
-
-	hash, err := createHash(userID, minionPack, tutorialRewardContractVersion)
+func generateVerifyHash(userID uint64, amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
+	hash, err := createHash(userID, amount, tutorialRewardContractVersion)
 
 	if err != nil {
 		return nil, err
@@ -2131,11 +2138,10 @@ func generateVerifyHash(userID uint64, minionPack uint64, tutorialRewardContract
 	}, nil
 }
 
-func createHash(userID uint64, minionPack uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
-
+func createHash(userID uint64, amount uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
 	hash := solsha3.SoliditySHA3(
 		solsha3.Uint256(strconv.FormatUint(userID, 10)),
-		solsha3.Uint256(strconv.FormatUint(minionPack, 10)),
+		solsha3.Uint256(strconv.FormatUint(amount, 10)),
 		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
 	)
 
@@ -2285,7 +2291,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 
 func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb.SetLastPlasmaBlockNumRequest) error {
 	state, err := loadState(ctx)
-	if err != nil && err != contract.ErrNotFound {
+	if err != nil {
 		return err
 	}
 	if req.Oracle == nil {
@@ -2294,9 +2300,37 @@ func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb
 	if err := z.validateOracle(ctx, req.Oracle); err != nil {
 		return err
 	}
-	state = &zb.GamechainState{
-		LastPlasmachainBlockNum: req.LastBlockNum,
+	state.LastPlasmachainBlockNum = req.LastBlockNum
+	return saveState(ctx, state)
+}
+
+func (z *ZombieBattleground) SetRewardContractVersion(ctx contract.Context, req *zb.SetRewardContractVersionRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
 	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state.RewardContractVersion = req.Version
+	return saveState(ctx, state)
+}
+
+func (z *ZombieBattleground) SetTutorialRewardAmount(ctx contract.Context, req *zb.SetTutorialRewardAmountRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
+	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state.TutorialRewardAmount = req.Amount
 	return saveState(ctx, state)
 }
 

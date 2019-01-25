@@ -287,7 +287,12 @@ message GetInitResponse {
 }
 
 message GamechainState {
+    // The last plasmachain block number pulling by oracle
     uint64 last_plasmachain_block_num = 1;
+    // the plasmachain reward contract version 
+    uint64 reward_contract_version = 2;
+    // the number of card packs reward when players finish tutorial
+    uint64 tutorial_reward_amount = 3;
 }
 
 message GetGamechainStateRequest {
@@ -303,6 +308,16 @@ message InitGamechainStateRequest {
 
 message SetLastPlasmaBlockNumRequest {
     uint64 last_block_num = 1;
+    Address oracle = 2;
+}
+
+message SetRewardContractVersionRequest {
+    uint64 version = 1;
+    Address oracle = 2;
+}
+
+message SetTutorialRewardAmountRequest {
+    uint64 amount = 1;
     Address oracle = 2;
 }
 
@@ -457,39 +472,30 @@ message GetCollectionByAddressResponse {
 }
 
 message RewardTutorialCompletedRequest {
-    string user_id = 1;
+    // string user_id = 1;
+    string access_token = 2;
 }
 
 message RewardTutorialCompletedResponse {
-    string user_id = 1;
+    // string user_id = 1;
     string reward_type = 2;
     string hash = 3;
     string r = 4;
     string s = 5;
     uint64 v = 6;
-    //string signature = 4;
-    int64 nonce = 7;
-    //repeated uint64 amounts = 8;
-    uint64 minion_pack = 8;
-    uint64 user_id_uint = 9;
+    // int64 nonce = 7;
+    // uint64 minion_pack = 8;
+    // uint64 user_id_uint = 9;
+    BigUInt user_id = 10;
+    BigUInt amount = 11;
 }
 
-message Nonce {
-    int64 current_nonce = 1;
+message ConfirmRewardTutorialClaimedRequest {
+    string access_token = 1;
 }
 
-message UserIDUint {
-    uint64 user_id_uint = 1;
-}
-
-message ConfirmRewardClaimedRequest {
-    string user_id = 1;
-    string reward_type = 2;
-    uint64 user_id_uint = 3;
-}
-
-message RewardClaimed {
-    string reward_type = 1;
+message RewardTutorialClaimed {
+    uint64 nonce = 1;
 }
 
 //////////// Match Making /////////////

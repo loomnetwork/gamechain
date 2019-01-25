@@ -13,6 +13,8 @@ import (
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
+	latypes "github.com/loomnetwork/loomauth/types"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 var initRequest = zb.InitRequest{
@@ -3071,47 +3073,54 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+	jwtSecret = "97985ae65b5b2e8447285c75e892c31a9dee43999b4241f89b7a58d2f9cfe1f1"
+	accessToken, err := createJwtToken(10, jwtSecret)
+	assert.Nil(t, err)
+
+	// make sure we have the correct reward_contract_version and tutorial_reward_amount
+	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
+	assert.Nil(t, err)
+	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
+	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
 	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		var err error
 		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
+			AccessToken: accessToken,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xb887d9702492f10e6529a37c69e400970795496fb0b88b67947d16b36b475d8d", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x1d830690ee4ce5afc0c267cf941ac547738212479f30f9709d679b08526c90ba", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x1c27c0d86d1e0fe248f080bfe7c258815c0e172c9a13cdd4e9115fda980b42fc", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
+		assert.Equal(t, "0xe9fcf98a0292d5fc92ce789346628208d93312da1e88692d87b330710f102d1b", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0xcb6a1f1cc46811715ef7c4561de5f77da165ffdd1b4675492268b134d835b075", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x43b7c52ed6b3b334e580eff5b06e2cafad2bf34db03a21e52845eb8cd5428c7b", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
 	})
 
-	// client confirms that reward has been claimed from faucet
-
-	// fails because the request should have the user id uint returned in the previous call
-	t.Run("ConfirmRewardClaimed fails", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-		})
-		assert.NotNil(t, err)
-	})
-
-	// send the correct request with UserIdUint
+	// send the correct request
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-			UserIdUint: rewardTutorialCompletedResp.UserIdUint,
+		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{
+			AccessToken: accessToken,
 		})
 		assert.Nil(t, err)
+	})
+
+	// attempt to claim reward again should fail
+	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
+		var err error
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
+			AccessToken: accessToken,
+		})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "reward already claimed")
+		assert.Nil(t, rewardTutorialCompletedResp)
 	})
 
 	// attempt to get reward again should fail
 	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
 		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
+			AccessToken: accessToken,
 		})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
@@ -3128,4 +3137,16 @@ func TestHashSignature(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
 	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
+}
+
+// createJwtToken creates a jwt token from a User model
+func createJwtToken(userID uint, secret string) (string, error) {
+	// create the token
+	claims := latypes.UserClaims{
+		UserID:  userID,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// sign and get the complete encoded token as string
+	return token.SignedString([]byte(secret))
 }
