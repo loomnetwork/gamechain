@@ -61,7 +61,7 @@ spec:
           - name: SENTRY_ENVIRONMENT
             value: development
           - name: SENTRY_DSN
-            value: 
+            value: "https://88b80f4acb2b445082e658d8758b6775:ca79ae92037e403594d67a19762bad8d@sentry.io/1379372"
       volumes:
         - name: cloudsql-loomauth-credentials
           secret:
