@@ -16,7 +16,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
-	"github.com/ianschenck/envflag"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
@@ -47,6 +46,8 @@ func init() {
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
 	rootCmd.PersistentFlags().String("ws-url", "ws://localhost:9999/queryws", "WebSocket Connection URL")
 	rootCmd.PersistentFlags().Int("reconnect-interval", 1, "Reconnect interval in seconds")
+	rootCmd.PersistentFlags().String("sentry-dsn", "", "sentry DSN, blank locally cause we dont want to send errors locally")
+	rootCmd.PersistentFlags().String("sentry-enviornment", "", "sentry environment, leave it blank for localhost")
 
 	viper.BindPFlag("db-url", rootCmd.PersistentFlags().Lookup("db-url"))
 	viper.BindPFlag("db-host", rootCmd.PersistentFlags().Lookup("db-host"))
@@ -57,16 +58,16 @@ func init() {
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
 	viper.BindPFlag("ws-url", rootCmd.PersistentFlags().Lookup("ws-url"))
 	viper.BindPFlag("reconnect-interval", rootCmd.PersistentFlags().Lookup("reconnect-interval"))
+	viper.BindPFlag("sentry-dsn", rootCmd.PersistentFlags().Lookup("sentry-dsn"))
+	viper.BindPFlag("sentry-environment", rootCmd.PersistentFlags().Lookup("sentry-environment"))
 }
 
 func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 
-	var sentryDsn, sentryEnvironment string
-	envflag.StringVar(&sentryDsn, "SENTRY_DSN", "", "sentry DSN, blank locally cause we dont want to send errors locally")
-	envflag.StringVar(&sentryEnvironment, "SENTRY_ENVIRONMENT", "", "sentry environment, leave it blank for dev and localhost")
-	envflag.Parse()
+	sentryDsn := viper.GetString("sentry-dsn")
+	sentryEnvironment := viper.GetString("sentry-environment")
 
 	raven.SetEnvironment(sentryEnvironment)
 	raven.SetDSN(sentryDsn)
