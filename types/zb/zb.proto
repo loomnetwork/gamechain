@@ -457,21 +457,30 @@ message GetCollectionByAddressResponse {
 }
 
 message RewardTutorialCompletedRequest {
-    string user_id = 1;
+    // string user_id = 1;
+    string access_token = 2;
 }
 
 message RewardTutorialCompletedResponse {
-    string user_id = 1;
+    // string user_id = 1;
     string reward_type = 2;
     string hash = 3;
     string r = 4;
     string s = 5;
     uint64 v = 6;
-    //string signature = 4;
-    int64 nonce = 7;
-    //repeated uint64 amounts = 8;
-    uint64 minion_pack = 8;
-    uint64 user_id_uint = 9;
+    // int64 nonce = 7;
+    // uint64 minion_pack = 8;
+    // uint64 user_id_uint = 9;
+    BigUInt user_id = 10;
+    BigUInt amount = 11;
+}
+
+message ConfirmRewardTutorialClaimedRequest {
+    string access_token = 1;
+}
+
+message RewardTutorialClaimed {
+    uint64 nonce = 1;
 }
 
 message Nonce {

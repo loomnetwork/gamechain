@@ -99,6 +99,10 @@ func RewardClaimedKey(userID string) []byte {
 	return []byte("user:" + userID + ":rewardClaimed")
 }
 
+func RewardTutorialClaimedKey(userID string) []byte {
+	return []byte("user:" + userID + ":rewardTutorialClaimed")
+}
+
 func UserIDUIntKey(userID string) []byte {
 	return []byte("user:" + userID + ":IDUint")
 
@@ -388,6 +392,19 @@ func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
 		return 0, err
 	}
 	return userIDUInt.UserIdUint, err
+}
+
+func setRewardTutorialClaimed(ctx contract.Context, userID string, claim *zb.RewardTutorialClaimed) error {
+	return ctx.Set(RewardTutorialClaimedKey(userID), claim)
+}
+
+func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb.RewardTutorialClaimed, error) {
+	var rewardClaimed zb.RewardTutorialClaimed
+	err := ctx.Get(RewardTutorialClaimedKey(userID), &rewardClaimed)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &rewardClaimed, nil
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {
