@@ -15,3 +15,20 @@ spec:
         backend:
           serviceName: dev-gamechain-oracle-svc
           servicePort: main-port  
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dev-gamechain-2-oracle
+  namespace: dev2-infra
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host:   dev-gc2oracle.devdc.io
+    http:
+      paths:
+      - path: /status, /metrics
+        backend:
+          serviceName: dev-gamechain-2-oracle-svc
+          servicePort: main-port  

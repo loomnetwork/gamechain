@@ -128,3 +128,64 @@ spec:
             value: "5"
           - name: ORACLE_STARTUP_DELAY
             value: "10"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gamechain-2-oracle
+  namespace: dev2-infra
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gamechain-2-oracle
+        instance: gamechain-2-oracle
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: gamechain-2-oracle
+        image: gcr.io/robotic-catwalk-188706/gamechain-oracle:%BUILD_NUMBER%
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            cpu: 300m
+            memory: 1000Mi
+        env:
+          - name: PLASMACHAIN_PRIVATE_KEY
+            value: "Lb8e6kt8QunIMQwtKJGvRZDaizC9eESkazwj3UZlzS+x2bAb2IRRg2cgV+qQAuokLSPKuBpAmJ1DPxB43UlTVQ=="
+          - name: PLASMACHAIN_CHAIN_ID
+            value: "asia1"
+          - name: PLASMACHAIN_READ_URI
+            value: "http://test-z-asia1.dappchains.com:80/query"
+          - name: PLASMACHAIN_WRITE_URI
+            value: "http://test-z-asia1.dappchains.com:80/rpc"
+          - name: PLASMACHAIN_CONTRACT_HEX_ADDRESS
+            value: "0xea59a949651ffc6d3e039db2d89f4e047301718d"
+          - name: PLASMACHAIN_POLL_INTERVAL
+            value: "10"
+          - name: GAMECHAIN_PRIVATE_KEY
+            value: "ErjfbI2nWdp6GwtnfKJ2ImJdUId84ux4L9k/C017gkV8zZVz0oAcmZ+lFMYTmP7z17tUdInC3dPgTKhq9PXauQ=="
+          - name: GAMECHAIN_CHAIN_ID
+            value: "default"
+          - name: GAMECHAIN_READ_URI
+            value: "http://gamechain-2.dappchains.com:46658/query"
+          - name: GAMECHAIN_WRITE_URI
+            value: "http://gamechain-2.dappchains.com:46658/rpc"
+          - name: GAMECHAIN_CONTRACT_NAME
+            value: "ZombieBattleground"
+          - name: GAMECHAIN_CARD_VERSION
+            value: "v3"
+          - name: ORACLE_QUERY_ADDRESS
+            value: ":8888"
+          - name: ORACLE_LOG_LEVEL
+            value: "debug"
+          - name: ORACLE_LOG_DESTINATION
+            value: "file://-"
+          - name: ORACLE_RECONNECT_INTERVAL
+            value: "5"
+          - name: ORACLE_STARTUP_DELAY
+            value: "10"
