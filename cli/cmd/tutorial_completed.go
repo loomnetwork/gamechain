@@ -10,7 +10,7 @@ import (
 )
 
 var tutorialCompletedCmdArgs struct {
-	userID string
+	accessToken string
 }
 
 var tutorialCompletedCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var tutorialCompletedCmd = &cobra.Command{
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
 		req := &zb.RewardTutorialCompletedRequest{
-			UserId: tutorialCompletedCmdArgs.userID,
+			AccessToken: tutorialCompletedCmdArgs.accessToken,
 		}
 		var resp zb.RewardTutorialCompletedResponse
 		_, err := commonTxObjs.contract.Call("RewardTutorialCompleted", req, signer, &resp)
@@ -37,5 +37,5 @@ var tutorialCompletedCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(tutorialCompletedCmd)
 
-	tutorialCompletedCmd.Flags().StringVarP(&tutorialCompletedCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	tutorialCompletedCmd.Flags().StringVarP(&tutorialCompletedCmdArgs.accessToken, "accessToken", "t", "", "Access Token")
 }
