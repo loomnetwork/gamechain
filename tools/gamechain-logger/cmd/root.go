@@ -74,7 +74,7 @@ func initConfig() {
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		raven.CaptureError(err, map[string]string{})
+		raven.CaptureErrorAndWait(err, map[string]string{})
 		log.Error(err)
 		os.Exit(1)
 	}
