@@ -483,24 +483,6 @@ message RewardTutorialClaimed {
     uint64 nonce = 1;
 }
 
-message Nonce {
-    int64 current_nonce = 1;
-}
-
-message UserIDUint {
-    uint64 user_id_uint = 1;
-}
-
-message ConfirmRewardClaimedRequest {
-    string user_id = 1;
-    string reward_type = 2;
-    uint64 user_id_uint = 3;
-}
-
-message RewardClaimed {
-    string reward_type = 1;
-}
-
 //////////// Match Making /////////////
 
 message PlayerState {
