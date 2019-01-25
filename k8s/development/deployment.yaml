@@ -58,6 +58,10 @@ spec:
             value: ws://battleground-testnet-asia2.dappchains.com:9999/queryws
           - name: RECONNECT_INTERVAL
             value: "1"
+          - name: SENTRY_ENVIRONMENT
+            value: development
+          - name: SENTRY_DSN
+            value: "https://88b80f4acb2b445082e658d8758b6775:ca79ae92037e403594d67a19762bad8d@sentry.io/1379372"
       volumes:
         - name: cloudsql-loomauth-credentials
           secret:
