@@ -267,14 +267,17 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	dbReplay := models.Replay{}
 	err = db.Where(&models.Replay{MatchID: match.Id}).First(&dbReplay).Error
 	if err == nil {
-		db.First(&dbReplay)
-		dbReplay.ReplayJSON = replay
+		if replay != nil {
+			dbReplay.ReplayJSON = replay
+		}
 		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Save(&dbReplay)
 	} else if gorm.IsRecordNotFoundError(err) {
 		// insert
 		dbReplay.MatchID = match.Id
-		dbReplay.ReplayJSON = replay
+		if replay != nil {
+			dbReplay.ReplayJSON = replay
+		}
 		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Create(&dbReplay)
 	} else {
