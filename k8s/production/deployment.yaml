@@ -57,6 +57,10 @@ spec:
             value: ws://gamechain.dappchains.com:9999/queryws
           - name: RECONNECT_INTERVAL
             value: "1"
+          - name: SENTRY_ENVIRONMENT
+            value: development
+          - name: SENTRY_DSN
+            value: 
 
       volumes:
         - name: cloudsql-loomauth-credentials
