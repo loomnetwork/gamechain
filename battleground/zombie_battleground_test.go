@@ -2107,9 +2107,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 8},
-						},
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -2125,9 +2123,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
@@ -2169,9 +2165,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_RankBuff{
 					RankBuff: &zb.PlayerActionRankBuff{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
@@ -2207,9 +2201,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 13},
-						},
+						Card: &zb.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -2245,9 +2237,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
@@ -2480,9 +2470,7 @@ func TestCardPlayOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 8},
-						},
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},

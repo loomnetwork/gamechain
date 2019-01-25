@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	raven "github.com/getsentry/raven-go"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/battleground"
@@ -44,6 +45,7 @@ func (r *Runner) Start() {
 			break
 		}
 		log.Printf("error: %v", err)
+		raven.CaptureErrorAndWait(err, map[string]string{})
 		// delay before connecting again
 		time.Sleep(r.reconnectInterval)
 	}
@@ -123,8 +125,10 @@ func (r *Runner) processEvent() {
 				if topicHandler != nil {
 					err := topicHandler(eventData, r.db)
 					if err != nil {
-						log.Println("error calling topic handler:", err)
+						err = errors.Wrapf(err, "error calling topic handler")
+						log.Println(err)
 						log.Printf("event: %+v", eventData)
+						raven.CaptureErrorAndWait(err, map[string]string{})
 					}
 				}
 			}
