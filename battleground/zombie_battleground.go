@@ -28,15 +28,12 @@ import (
 )
 
 const (
-	MaxGameModeNameChar           = 48
-	MaxGameModeDescriptionChar    = 255
-	MaxGameModeVersionChar        = 16
-	TurnTimeout                   = 120 * time.Second
-	KeepAliveTimeout              = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
-	RewardTypeTutorialCompleted   = "tutorial-completed"
-	TutorialRewardContractVersion = 1
-	// TutorialRewardAmount TODO: change to what the number of cards requested
-	TutorialRewardAmount = 5
+	MaxGameModeNameChar         = 48
+	MaxGameModeDescriptionChar  = 255
+	MaxGameModeVersionChar      = 16
+	TurnTimeout                 = 120 * time.Second
+	KeepAliveTimeout            = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
+	RewardTypeTutorialCompleted = "tutorial-completed"
 )
 
 const (
@@ -96,6 +93,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	// init state
 	state := zb.GamechainState{
 		LastPlasmachainBlockNum: 1,
+		RewardContractVersion:   1,
+		TutorialRewardAmount:    1,
 	}
 	if err := saveState(ctx, &state); err != nil {
 		return err
@@ -1711,6 +1710,8 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamecha
 	}
 	state = &zb.GamechainState{
 		LastPlasmachainBlockNum: 1,
+		RewardContractVersion:   1,
+		TutorialRewardAmount:    1,
 	}
 	return saveState(ctx, state)
 }
@@ -2053,7 +2054,12 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, fmt.Errorf("error reading private key")
 	}
 
-	verifySignResult, err := generateVerifyHash(uint64(claims.UserID), uint64(TutorialRewardAmount), TutorialRewardContractVersion, privateKey)
+	state, err := loadState(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	verifySignResult, err := generateVerifyHash(uint64(claims.UserID), state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -2076,7 +2082,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		S:          s,
 		V:          v,
 		Hash:       verifySignResult.Hash,
-		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(TutorialRewardAmount)},
+		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(state.TutorialRewardAmount))},
 		RewardType: RewardTypeTutorialCompleted,
 	}, nil
 }
@@ -2285,7 +2291,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 
 func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb.SetLastPlasmaBlockNumRequest) error {
 	state, err := loadState(ctx)
-	if err != nil && err != contract.ErrNotFound {
+	if err != nil {
 		return err
 	}
 	if req.Oracle == nil {
@@ -2294,9 +2300,37 @@ func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb
 	if err := z.validateOracle(ctx, req.Oracle); err != nil {
 		return err
 	}
-	state = &zb.GamechainState{
-		LastPlasmachainBlockNum: req.LastBlockNum,
+	state.LastPlasmachainBlockNum = req.LastBlockNum
+	return saveState(ctx, state)
+}
+
+func (z *ZombieBattleground) SetRewardContractVersion(ctx contract.Context, req *zb.SetRewardContractVersionRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
 	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state.RewardContractVersion = req.Version
+	return saveState(ctx, state)
+}
+
+func (z *ZombieBattleground) SetTutorialRewardAmount(ctx contract.Context, req *zb.SetTutorialRewardAmountRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
+	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state.TutorialRewardAmount = req.Amount
 	return saveState(ctx, state)
 }
 

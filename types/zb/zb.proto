@@ -287,7 +287,12 @@ message GetInitResponse {
 }
 
 message GamechainState {
+    // The last plasmachain block number pulling by oracle
     uint64 last_plasmachain_block_num = 1;
+    // the plasmachain reward contract version 
+    uint64 reward_contract_version = 2;
+    // the number of card packs reward when players finish tutorial
+    uint64 tutorial_reward_amount = 3;
 }
 
 message GetGamechainStateRequest {
@@ -303,6 +308,16 @@ message InitGamechainStateRequest {
 
 message SetLastPlasmaBlockNumRequest {
     uint64 last_block_num = 1;
+    Address oracle = 2;
+}
+
+message SetRewardContractVersionRequest {
+    uint64 version = 1;
+    Address oracle = 2;
+}
+
+message SetTutorialRewardAmountRequest {
+    uint64 amount = 1;
     Address oracle = 2;
 }
 
