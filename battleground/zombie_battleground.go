@@ -2334,4 +2334,19 @@ func (z *ZombieBattleground) SetTutorialRewardAmount(ctx contract.Context, req *
 	return saveState(ctx, state)
 }
 
+func (z *ZombieBattleground) SetDefaultPlayerDefense(ctx contract.Context, req *zb.SetDefaultPlayerDefenseRequest) error {
+	state, err := loadState(ctx)
+	if err != nil {
+		return err
+	}
+	if req.Oracle == nil {
+		return ErrOracleNotSpecified
+	}
+	if err := z.validateOracle(ctx, req.Oracle); err != nil {
+		return err
+	}
+	state.DefaultPlayerDefense = req.Defense
+	return saveState(ctx, state)
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
