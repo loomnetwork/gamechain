@@ -917,7 +917,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		UpdatedAt:        ctx.Now().Unix(),
 	}
 
-	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
+	var loadPlayerPoolFn func(contract.Context) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
 	if len(profile.RegistrationData.Tags) > 0 {
@@ -989,7 +989,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 }
 
 func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRequest) (*zb.FindMatchResponse, error) {
-	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
+	var loadPlayerPoolFn func(contract.Context) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
 	if len(req.Tags) > 0 {
@@ -1274,7 +1274,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 }
 
 // TODO remove this
-func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
+func (z *ZombieBattleground) GetPlayerPool(ctx contract.Context, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
 	pool, err := loadPlayerPool(ctx)
 	if err != nil {
 		return nil, err
@@ -1286,7 +1286,7 @@ func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.P
 }
 
 // TODO remove this
-func (z *ZombieBattleground) GetTaggedPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
+func (z *ZombieBattleground) GetTaggedPlayerPool(ctx contract.Context, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
 	pool, err := loadTaggedPlayerPool(ctx)
 	if err != nil {
 		return nil, err
@@ -1322,7 +1322,7 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 		}
 	}
 
-	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
+	var loadPlayerPoolFn func(contract.Context) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
 	if len(req.Tags) > 0 {
