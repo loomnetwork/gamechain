@@ -151,9 +151,12 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
+	db.Model(&edeck).Association("deck_cards").Clear()
+
 	cards := []models.DeckCard{}
 	for _, card := range event.Deck.Cards {
 		cards = append(cards, models.DeckCard{
+			UserID:   event.UserId,
 			CardName: card.CardName,
 			Amount:   card.Amount,
 		})
@@ -172,6 +175,12 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		BlockHeight:      eventData.BlockHeight,
 	}
 	if err := db.Omit("created_at").Save(&d).Error; err != nil {
+		return err
+	}
+
+	// clean up associated deck cards
+	err = db.Exec("DELETE FROM deck_cards WHERE deck_id IS NULL OR user_id=?", "").Error
+	if err != nil {
 		return err
 	}
 
