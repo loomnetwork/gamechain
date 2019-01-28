@@ -293,6 +293,7 @@ message GamechainState {
     uint64 reward_contract_version = 2;
     // the number of card packs reward when players finish tutorial
     uint64 tutorial_reward_amount = 3;
+    uint64 default_player_defense = 4;
 }
 
 message GetGamechainStateRequest {
@@ -318,6 +319,11 @@ message SetRewardContractVersionRequest {
 
 message SetTutorialRewardAmountRequest {
     uint64 amount = 1;
+    Address oracle = 2;
+}
+
+message SetDefaultPlayerDefenseRequest {
+    uint64 defense = 1;
     Address oracle = 2;
 }
 
