@@ -1,8 +1,11 @@
 package battleground
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/go-loom/plugin"
+	"reflect"
 	"strings"
 
 	"github.com/gogo/protobuf/proto"
@@ -273,8 +276,13 @@ func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(taggedPlayerPoolKey, &pool)
+
 	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+		rawContext := reflect.Indirect(reflect.ValueOf(ctx)).FieldByName("StaticContext").Interface().(plugin.StaticContext)
+		rawPool := rawContext.Get(taggedPlayerPoolKey)
+		rawPoolBase64 := base64.StdEncoding.EncodeToString(rawPool)
+
+		return nil, errors.Wrapf(err, "raw data: [%s]", rawPoolBase64)
 	}
 	return &pool, nil
 }
