@@ -1285,6 +1285,18 @@ func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.P
 	}, nil
 }
 
+// TODO remove this
+func (z *ZombieBattleground) GetTaggedPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
+	pool, err := loadTaggedPlayerPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.PlayerPoolResponse{
+		Pool: pool,
+	}, nil
+}
+
 func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.CancelFindMatchRequest) (*zb.CancelFindMatchResponse, error) {
 	match, _ := loadUserCurrentMatch(ctx, req.UserId)
 
