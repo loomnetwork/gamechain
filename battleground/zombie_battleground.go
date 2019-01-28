@@ -917,8 +917,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		UpdatedAt:        ctx.Now().Unix(),
 	}
 
-	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
-
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
@@ -1278,6 +1276,18 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 // TODO remove this
 func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
 	pool, err := loadPlayerPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.PlayerPoolResponse{
+		Pool: pool,
+	}, nil
+}
+
+// TODO remove this
+func (z *ZombieBattleground) GetTaggedPlayerPool(ctx contract.StaticContext, req *zb.PlayerPoolRequest) (*zb.PlayerPoolResponse, error) {
+	pool, err := loadTaggedPlayerPool(ctx)
 	if err != nil {
 		return nil, err
 	}
