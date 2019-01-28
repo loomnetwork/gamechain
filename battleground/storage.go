@@ -1,11 +1,8 @@
 package battleground
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/go-loom/plugin"
-	"reflect"
 	"strings"
 
 	"github.com/gogo/protobuf/proto"
@@ -260,29 +257,30 @@ func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(playerPoolKey, pool)
 }
 
-func loadPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
-	var pool zb.PlayerPool
-	err := ctx.Get(playerPoolKey, &pool)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-	return &pool, nil
+func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+	return loadPlayerPoolInternal(ctx, playerPoolKey)
 }
 
 func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(taggedPlayerPoolKey, pool)
 }
 
-func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
+func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+	return loadPlayerPoolInternal(ctx, taggedPlayerPoolKey)
+}
+
+func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
-	err := ctx.Get(taggedPlayerPoolKey, &pool)
-
+	err := ctx.Get(poolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
-		rawContext := reflect.Indirect(reflect.ValueOf(ctx)).FieldByName("StaticContext").Interface().(plugin.StaticContext)
-		rawPool := rawContext.Get(taggedPlayerPoolKey)
-		rawPoolBase64 := base64.StdEncoding.EncodeToString(rawPool)
+		// Try to reset the pool
+		ctx.Logger().Error("error loading pool, clearing", "key", string(taggedPlayerPoolKey), "err", err)
+		pool = zb.PlayerPool{}
+		if err = ctx.Set(taggedPlayerPoolKey, &pool); err != nil {
+			return nil, err
+		}
 
-		return nil, errors.Wrapf(err, "raw data: [%s]", rawPoolBase64)
+		return &pool, nil
 	}
 	return &pool, nil
 }
