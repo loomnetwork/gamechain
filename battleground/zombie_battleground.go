@@ -1290,7 +1290,7 @@ func (z *ZombieBattleground) GetPlayerPool(ctx contract.StaticContext, req *zb.P
 func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.CancelFindMatchRequest) (*zb.CancelFindMatchResponse, error) {
 	match, _ := loadUserCurrentMatch(ctx, req.UserId)
 
-	if match != nil {
+	if match != nil && match.Status != zb.Match_Ended {
 		// remove current match
 		for _, player := range match.PlayerStates {
 			ctx.Delete(UserMatchKey(player.Id))
@@ -1368,8 +1368,11 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
 	}
-	// delete user match
-	ctx.Delete(UserMatchKey(req.UserId))
+
+	// delete user match for both users
+	for _, playerState := range match.PlayerStates {
+		ctx.Delete(UserMatchKey(playerState.Id))
+	}
 
 	// update gamestate
 	gamestate, err := loadGameState(ctx, match.Id)
