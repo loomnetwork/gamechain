@@ -6,15 +6,15 @@ import (
 	"testing"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/stretchr/testify/assert"
 	latypes "github.com/loomnetwork/loomauth/types"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/stretchr/testify/assert"
 )
 
 var initRequest = zb.InitRequest{
@@ -1400,6 +1400,115 @@ func TestCancelFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
+	})
+}
+
+func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("EndMatch", func(t *testing.T) {
+		response, err := c.EndMatch(ctx, &zb.EndMatchRequest{
+			UserId:   "player-2",
+			MatchId:  matchID,
+			WinnerId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
+	})
+
+	t.Run("CancelFindmatch", func(t *testing.T) {
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
 	})
 }
 
@@ -3143,7 +3252,7 @@ func TestHashSignature(t *testing.T) {
 func createJwtToken(userID uint, secret string) (string, error) {
 	// create the token
 	claims := latypes.UserClaims{
-		UserID:  userID,
+		UserID: userID,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
