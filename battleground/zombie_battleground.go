@@ -917,8 +917,6 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 		UpdatedAt:        ctx.Now().Unix(),
 	}
 
-	fmt.Printf("RegisterPlayerPool: %+v\n", profile)
-
 	var loadPlayerPoolFn func(contract.StaticContext) (*zb.PlayerPool, error)
 	var savePlayerPoolFn func(contract.Context, *zb.PlayerPool) error
 	// if the tags is set, use tagged playerpool
