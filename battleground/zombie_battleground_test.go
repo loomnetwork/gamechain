@@ -3182,9 +3182,6 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
-	jwtSecret = "97985ae65b5b2e8447285c75e892c31a9dee43999b4241f89b7a58d2f9cfe1f1"
-	accessToken, err := createJwtToken(10, jwtSecret)
-	assert.Nil(t, err)
 
 	// make sure we have the correct reward_contract_version and tutorial_reward_amount
 	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
@@ -3196,31 +3193,25 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			AccessToken: accessToken,
-		})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xe9fcf98a0292d5fc92ce789346628208d93312da1e88692d87b330710f102d1b", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0xcb6a1f1cc46811715ef7c4561de5f77da165ffdd1b4675492268b134d835b075", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x43b7c52ed6b3b334e580eff5b06e2cafad2bf34db03a21e52845eb8cd5428c7b", rewardTutorialCompletedResp.S)
+		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0x25d667d7a5afa5fc9cfacf67aeaf35bff6b3d54bf40e8b3b5a90fe86ce596732", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x02a59d7fd35f07738ac2931193b92e8f31941c15a123d07f0990c28a1fef2760", rewardTutorialCompletedResp.S)
 		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
 	})
 
 	// send the correct request
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{
-			AccessToken: accessToken,
-		})
+		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{})
 		assert.Nil(t, err)
 	})
 
 	// attempt to claim reward again should fail
 	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			AccessToken: accessToken,
-		})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, rewardTutorialCompletedResp)
@@ -3228,9 +3219,7 @@ func TestRewardTutorialCompleted(t *testing.T) {
 
 	// attempt to get reward again should fail
 	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			AccessToken: accessToken,
-		})
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, resp)
@@ -3242,10 +3231,10 @@ func TestHashSignature(t *testing.T) {
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	verifySignResult, err := generateVerifyHash(149, 5, 1, privateKey)
+	verifySignResult, err := generateVerifyHash(5, 1, privateKey)
 	assert.Nil(t, err)
-	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
-	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
+	assert.Equal(t, "0xe2689cd4a84e23ad2f564004f1c9013e9589d260bde6380aba3ca7e09e4df40c", verifySignResult.Hash)
+	assert.Equal(t, "0x0e729720a48e6164451792e657bd4c68c25c67884e8852790d0cf2fbe999f2bb2833d41711917583d70dacbb5c80206edafa3bc4bca079ceafbb2fc50af1c8fc1b", verifySignResult.Signature)
 }
 
 // createJwtToken creates a jwt token from a User model
