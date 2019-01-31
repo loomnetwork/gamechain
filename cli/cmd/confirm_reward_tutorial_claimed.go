@@ -7,7 +7,6 @@ import (
 )
 
 var confirmRewardTutorialClaimedCmdArgs struct {
-	accessToken string
 }
 
 var confirmRewardTutorialClaimedCmd = &cobra.Command{
@@ -16,9 +15,7 @@ var confirmRewardTutorialClaimedCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.ConfirmRewardTutorialClaimedRequest{
-			AccessToken: confirmRewardTutorialClaimedCmdArgs.accessToken,
-		}
+		req := &zb.ConfirmRewardTutorialClaimedRequest{}
 
 		_, err := commonTxObjs.contract.Call("ConfirmRewardTutorialClaimed", req, signer, nil)
 		if err != nil {
@@ -31,6 +28,4 @@ var confirmRewardTutorialClaimedCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(confirmRewardTutorialClaimedCmd)
-
-	confirmRewardTutorialClaimedCmd.Flags().StringVarP(&confirmRewardTutorialClaimedCmdArgs.accessToken, "accessToken", "t", "t", "Access Token")
 }

@@ -33,6 +33,4 @@ var tutorialCompletedCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(tutorialCompletedCmd)
-
-	tutorialCompletedCmd.Flags().StringVarP(&tutorialCompletedCmdArgs.accessToken, "accessToken", "t", "", "Access Token")
 }
