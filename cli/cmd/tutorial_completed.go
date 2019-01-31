@@ -10,7 +10,6 @@ import (
 )
 
 var tutorialCompletedCmdArgs struct {
-	accessToken string
 }
 
 var tutorialCompletedCmd = &cobra.Command{
@@ -19,9 +18,7 @@ var tutorialCompletedCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.RewardTutorialCompletedRequest{
-			AccessToken: tutorialCompletedCmdArgs.accessToken,
-		}
+		req := &zb.RewardTutorialCompletedRequest{}
 		var resp zb.RewardTutorialCompletedResponse
 		_, err := commonTxObjs.contract.Call("RewardTutorialCompleted", req, signer, &resp)
 		if err != nil {
