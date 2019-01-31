@@ -100,7 +100,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	
 	go install github.com/golang/dep/cmd/dep
 	# use go-plugin version before we get 'timeout waiting for connection info' error
-	cd $(PLUGIN_DIR) && git checkout 0f1694777b0cbb80fe907188b0ab58506f47eba1
+	cd $(PLUGIN_DIR)
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
 	cd $(LOOMCHAIN_DIR) && git checkout 78f7ef2f07a1b826cdbad09b7d35f3c6c25406d4 && make deps && make && cp loom $(GOPATH)/bin
 	cd $(LOOMAUTH_DIR) && make deps && make
