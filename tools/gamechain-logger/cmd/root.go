@@ -18,10 +18,12 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	rpcclient "github.com/tendermint/tendermint/rpc/lib/client"
 )
 
 var rootCmd = &cobra.Command{
@@ -90,15 +92,14 @@ func run() error {
 		dbUser            = viper.GetString("db-user")
 		dbPassword        = viper.GetString("db-password")
 		wsURL             = viper.GetString("ws-url")
+		evURL             = viper.GetString("ev-url")
 		reconnectInterval = viper.GetInt("reconnect-interval")
 	)
 
-	parsedURL, err := url.Parse(wsURL)
-	if err != nil {
-		return errors.Wrapf(err, "Error parsing url %s", wsURL)
-	}
+	var parsedURL *url.URL
+	var URLType string
+	var err error
 
-	// db should be optional?
 	dbConnStr := dbURL
 	if dbURL == "" {
 		dbConnStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -112,18 +113,31 @@ func run() error {
 	log.Printf("connected to database host %s", dbHost)
 	defer db.Close()
 
+	if evURL != "" {
+		URLType = "ev"
+		parsedURL, err = url.Parse(evURL)
+		if err != nil {
+			return errors.Wrapf(err, "Error parsing url %s", wsURL)
+		}
+	} else if wsURL != "" {
+		URLType = "ws"
+		parsedURL, err = url.Parse(wsURL)
+		if err != nil {
+			return errors.Wrapf(err, "Error parsing url %s", wsURL)
+		}
+	}
+	if parsedURL.String() == "" {
+		return errors.New("Eventstore or WebSocket Connection URL (--ev-url or --ws-url) is required")
+	}
+
 	// control channels
 	doneC := make(chan struct{})
 	sigC := make(chan os.Signal, 1)
 	signal.Notify(sigC, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer signal.Stop(sigC)
 
-	if parsedURL.String() == "" {
-		return errors.New("WebSocket Connection URL (--ws-url) is required")
-	}
-
 	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Second
-	r := NewRunner(parsedURL.String(), db, 10, reconnectIntervalDur)
+	r := NewRunner(parsedURL.String(), URLType, db, 10, reconnectIntervalDur)
 	go r.Start()
 	go func() {
 		select {
@@ -159,6 +173,24 @@ func connectGamechain(wsURL string) (*websocket.Conn, error) {
 		return nil, err
 	}
 	return conn, nil
+}
+
+func queryEventStore(evURL string, fromBlock uint64, interval uint64) (*loom.ContractEventsResult, error) {
+	log.Println("Querying Events from Height: ", fromBlock)
+
+	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	params := map[string]interface{}{}
+	params["query"] = loom.ContractEventsRequest{
+		FromBlock: fromBlock,
+		ToBlock:   fromBlock + interval,
+	}
+	result := &loom.ContractEventsResult{}
+	_, err := rpcClient.Call("contractevents", params, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func connectDb(dbURL string) (*gorm.DB, error) {

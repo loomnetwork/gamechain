@@ -13,6 +13,7 @@ import (
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/loomnetwork/go-loom/plugin/types"
+	"github.com/loomnetwork/loomauth/models"
 	"github.com/pkg/errors"
 )
 
@@ -21,13 +22,15 @@ type Runner struct {
 	eventC            chan *types.EventData
 	stopC             chan struct{}
 	errC              chan error
-	wsURL             string
+	URL               string
+	URLType           string
 	reconnectInterval time.Duration
 }
 
-func NewRunner(wsURL string, db *gorm.DB, n int, reconnectInterval time.Duration) *Runner {
+func NewRunner(URL string, URLType string, db *gorm.DB, n int, reconnectInterval time.Duration) *Runner {
 	return &Runner{
-		wsURL:             wsURL,
+		URL:               URL,
+		URLType:           URLType,
 		db:                db,
 		stopC:             make(chan struct{}),
 		errC:              make(chan error),
@@ -60,41 +63,84 @@ func (r *Runner) Error() chan error {
 }
 
 func (r *Runner) watchTopic() error {
-	log.Printf("connecting to chain %s", r.wsURL)
-	conn, err := connectGamechain(r.wsURL)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
+	if r.URLType == "ev" {
+		ticker := time.NewTicker(5 * time.Second)
+		for {
+			select {
+			case <-ticker.C:
+				log.Printf("Querying eventstore %s", r.URL)
 
-	log.Printf("connected to %s", r.wsURL)
-	log.Printf("watching events from %s", r.wsURL)
-	var unmarshaler jsonpb.Unmarshaler
-	for {
-		_, message, err := conn.ReadMessage()
+				height := models.ZbHeightCheck{}
+				err := r.db.First(&height).Error
+				if err != nil {
+					return err
+				}
+
+				result, err := queryEventStore(r.URL, height.LastBlockHeight+1, 20)
+				if err != nil {
+					return err
+				}
+
+				log.Printf("RESULT %+v", result)
+
+				var newBlockHeight uint64
+
+				for _, ev := range result.Events {
+					log.Printf("EVENT: %+v", ev)
+					r.eventC <- ev
+					newBlockHeight = ev.BlockHeight
+				}
+
+				if newBlockHeight > 0 {
+					err = UpdateBlockHeight(r.db, newBlockHeight)
+					if err != nil {
+						return err
+					}
+				}
+			case <-r.stopC:
+				ticker.Stop()
+				return nil
+			}
+
+		}
+	} else {
+		// Websocket
+		log.Printf("connecting to chain %s", r.URL)
+		conn, err := connectGamechain(r.URL)
 		if err != nil {
-			return errors.Wrapf(err, "error reading from websocket")
+			return err
 		}
+		defer conn.Close()
 
-		var resp client.RPCResponse
-		if err := json.Unmarshal(message, &resp); err != nil {
-			return errors.Wrapf(err, "error parsing jsonrpc response")
-		}
+		log.Printf("connected to %s", r.URL)
+		log.Printf("watching events from %s", r.URL)
+		var unmarshaler jsonpb.Unmarshaler
+		for {
+			_, message, err := conn.ReadMessage()
+			if err != nil {
+				return errors.Wrapf(err, "error reading from websocket")
+			}
 
-		var eventData types.EventData
-		if err = unmarshaler.Unmarshal(bytes.NewBuffer(resp.Result), &eventData); err != nil {
-			return errors.Wrapf(err, "error parsing event data")
-		}
+			var resp client.RPCResponse
+			if err := json.Unmarshal(message, &resp); err != nil {
+				return errors.Wrapf(err, "error parsing jsonrpc response")
+			}
 
-		// only zombiebattleground smart contract
-		if !strings.HasPrefix(eventData.PluginName, "zombiebattleground") {
-			continue
-		}
+			var eventData types.EventData
+			if err = unmarshaler.Unmarshal(bytes.NewBuffer(resp.Result), &eventData); err != nil {
+				return errors.Wrapf(err, "error parsing event data")
+			}
 
-		select {
-		case r.eventC <- &eventData:
-		case <-r.stopC:
-			return nil
+			// only zombiebattleground smart contract
+			if !strings.HasPrefix(eventData.PluginName, "zombiebattleground") {
+				continue
+			}
+
+			select {
+			case r.eventC <- &eventData:
+			case <-r.stopC:
+				return nil
+			}
 		}
 	}
 }
