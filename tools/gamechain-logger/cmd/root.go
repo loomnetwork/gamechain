@@ -187,11 +187,10 @@ func queryEventStore(evURL string, fromBlock uint64, interval uint64, contract s
 	log.Println("Querying Events from Height: ", fromBlock)
 
 	rpcClient := rpcclient.NewJSONRPCClient(evURL)
-	params := map[string]interface{}{}
-	params["query"] = loom.ContractEventsRequest{
-		FromBlock: fromBlock,
-		ToBlock:   fromBlock + interval,
-		Contract:  contract,
+	params := map[string]interface{}{
+		"fromBlock": fromBlock,
+		"toBlock":   fromBlock + interval,
+		"contract":  contract,
 	}
 	result := &loom.ContractEventsResult{}
 	_, err := rpcClient.Call("contractevents", params, &result)
