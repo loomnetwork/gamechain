@@ -25,9 +25,11 @@ type Runner struct {
 	URL               string
 	URLType           string
 	reconnectInterval time.Duration
+	blockInterval     int
+	contractName      string
 }
 
-func NewRunner(URL string, URLType string, db *gorm.DB, n int, reconnectInterval time.Duration) *Runner {
+func NewRunner(URL string, URLType string, db *gorm.DB, n int, reconnectInterval time.Duration, blockInterval int, contractName string) *Runner {
 	return &Runner{
 		URL:               URL,
 		URLType:           URLType,
@@ -36,6 +38,8 @@ func NewRunner(URL string, URLType string, db *gorm.DB, n int, reconnectInterval
 		errC:              make(chan error),
 		eventC:            make(chan *types.EventData, n),
 		reconnectInterval: reconnectInterval,
+		blockInterval:     blockInterval,
+		contractName:      contractName,
 	}
 }
 
@@ -64,29 +68,26 @@ func (r *Runner) Error() chan error {
 
 func (r *Runner) watchTopic() error {
 	if r.URLType == "ev" {
-		ticker := time.NewTicker(5 * time.Second)
+		ticker := time.NewTicker(r.reconnectInterval)
 		for {
 			select {
 			case <-ticker.C:
-				log.Printf("Querying eventstore %s", r.URL)
-
 				height := models.ZbHeightCheck{}
-				err := r.db.First(&height).Error
-				if err != nil {
+				err := r.db.Where(&models.ZbHeightCheck{Key: 1}).First(&height).Error
+				if gorm.IsRecordNotFoundError(err) {
+					height.LastBlockHeight = 0
+				} else if err != nil {
 					return err
 				}
 
-				result, err := queryEventStore(r.URL, height.LastBlockHeight+1, 20)
+				result, err := queryEventStore(r.URL, height.LastBlockHeight+1, uint64(r.blockInterval), r.contractName)
 				if err != nil {
 					return err
 				}
-
-				log.Printf("RESULT %+v", result)
 
 				var newBlockHeight uint64
 
 				for _, ev := range result.Events {
-					log.Printf("EVENT: %+v", ev)
 					r.eventC <- ev
 					newBlockHeight = ev.BlockHeight
 				}
