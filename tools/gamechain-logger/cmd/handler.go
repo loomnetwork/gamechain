@@ -303,14 +303,14 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 
 func UpdateBlockHeight(db *gorm.DB, blockHeight uint64) error {
 	log.Println("Setting LastBlockHeight to ", blockHeight)
-	query := db.Model(&models.ZbHeightCheck{}).Update("last_block_height", blockHeight)
+	query := db.Model(&models.ZbHeightCheck{}).Where(&models.ZbHeightCheck{Key: 1}).Update("last_block_height", blockHeight)
 
 	err, rows := query.Error, query.RowsAffected
 	if err != nil {
 		return err
 	}
 	if rows < 1 {
-		db.Save(&models.ZbHeightCheck{LastBlockHeight: blockHeight})
+		db.Save(&models.ZbHeightCheck{Key: 1, LastBlockHeight: blockHeight})
 	}
 
 	return nil
