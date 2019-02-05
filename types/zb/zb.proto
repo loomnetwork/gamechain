@@ -1140,15 +1140,6 @@ message CardKind {
     }
 }
 
-message AffectObjectType {
-    enum Enum {
-        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
-        PLAYER = 1 [(gogoproto.enumvalue_customname) = "Player"];
-        CHARACTER = 2 [(gogoproto.enumvalue_customname) = "Character"];
-        CARD      = 3 [(gogoproto.enumvalue_customname) = "Card"];
-    }
-}
-
 message CreatureRank {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
@@ -1387,7 +1378,6 @@ message StartGameAction {
 
 message Unit {
     InstanceId instanceId = 1;
-    AffectObjectType.Enum affectObjectType = 2;
     Parameter Parameter = 3;
 }
 
