@@ -145,7 +145,7 @@ func run() error {
 	defer signal.Stop(sigC)
 
 	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Millisecond
-	r := NewRunner(parsedURL.String(), URLType, db, 10, reconnectIntervalDur, blockInterval, contractName)
+	r := NewRunner(parsedURL.String(), URLType, db, 0, reconnectIntervalDur, blockInterval, contractName)
 	go r.Start()
 	go func() {
 		select {
@@ -183,13 +183,13 @@ func connectGamechain(wsURL string) (*websocket.Conn, error) {
 	return conn, nil
 }
 
-func queryEventStore(evURL string, fromBlock uint64, interval uint64, contract string) (*loom.ContractEventsResult, error) {
-	log.Println("Querying Events from Height: ", fromBlock)
+func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract string) (*loom.ContractEventsResult, error) {
+	log.Println("Querying Events from block: ", fromBlock, " to block: ", toBlock)
 
 	rpcClient := rpcclient.NewJSONRPCClient(evURL)
 	params := map[string]interface{}{
 		"fromBlock": fromBlock,
-		"toBlock":   fromBlock + interval,
+		"toBlock":   toBlock,
 		"contract":  contract,
 	}
 	result := &loom.ContractEventsResult{}
@@ -197,6 +197,8 @@ func queryEventStore(evURL string, fromBlock uint64, interval uint64, contract s
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("result: %+v", result)
 
 	return result, nil
 }

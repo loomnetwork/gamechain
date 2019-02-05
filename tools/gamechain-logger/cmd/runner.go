@@ -74,13 +74,12 @@ func (r *Runner) watchTopic() error {
 			case <-ticker.C:
 				height := models.ZbHeightCheck{}
 				err := r.db.Where(&models.ZbHeightCheck{Key: 1}).First(&height).Error
-				if gorm.IsRecordNotFoundError(err) {
-					height.LastBlockHeight = 0
-				} else if err != nil {
+				if err != nil && !gorm.IsRecordNotFoundError(err) {
 					return err
 				}
-
-				result, err := queryEventStore(r.URL, height.LastBlockHeight+1, uint64(r.blockInterval), r.contractName)
+				fromBlock := height.LastBlockHeight + 1
+				toBlock := fromBlock + uint64(r.blockInterval) - 1
+				result, err := queryEventStore(r.URL, fromBlock, toBlock, r.contractName)
 				if err != nil {
 					return err
 				}
@@ -89,8 +88,8 @@ func (r *Runner) watchTopic() error {
 
 				for _, ev := range result.Events {
 					r.eventC <- ev
-					newBlockHeight = ev.BlockHeight
 				}
+				newBlockHeight = result.ToBlock
 
 				if newBlockHeight > 0 {
 					err = UpdateBlockHeight(r.db, newBlockHeight)
