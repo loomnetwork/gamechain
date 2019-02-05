@@ -103,7 +103,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	cd $(PLUGIN_DIR) && git checkout 0f1694777b0cbb80fe907188b0ab58506f47eba1
 	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
 	cd $(LOOMCHAIN_DIR) && git checkout 78f7ef2f07a1b826cdbad09b7d35f3c6c25406d4 && make deps && make && cp loom $(GOPATH)/bin
-	cd $(LOOMAUTH_DIR) && make deps && make
+	cd $(LOOMAUTH_DIR)
 	# cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
 	# cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
 	# cd $(GOPATH)/src/github.com/loomnetwork/e2e && git checkout adjust-config-param-staging
