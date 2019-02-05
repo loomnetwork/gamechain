@@ -204,22 +204,22 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	assignInstanceIds := func(playerState *zb.PlayerState, currentInstanceId *int32) {
 		for _, card := range playerState.CardsInPlay {
 			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
-			*currentInstanceId += 1
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInHand {
 			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
-			*currentInstanceId += 1
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInDeck {
 			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
-			*currentInstanceId += 1
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInGraveyard {
 			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
-			*currentInstanceId += 1
+			*currentInstanceId++
 		}
 	}
 	var instanceId int32 = 2
