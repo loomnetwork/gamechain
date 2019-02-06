@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/url"
 	"os"
 	"os/signal"
@@ -18,10 +19,11 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	rpcclient "github.com/tendermint/tendermint/rpc/lib/client"
 )
 
 var rootCmd = &cobra.Command{
@@ -44,8 +46,10 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
-	rootCmd.PersistentFlags().String("ws-url", "ws://localhost:9999/queryws", "WebSocket Connection URL")
-	rootCmd.PersistentFlags().Int("reconnect-interval", 1, "Reconnect interval in seconds")
+	rootCmd.PersistentFlags().String("ev-url", "http://localhost:9999", "Event Indexer RPC Host")
+	rootCmd.PersistentFlags().String("contract-name", "zombiebattleground:1.0.0", "Contract Name")
+	rootCmd.PersistentFlags().Int("reconnect-interval", 1000, "Reconnect interval in MS")
+	rootCmd.PersistentFlags().Int("block-interval", 20, "Amount of blocks to fetch")
 	rootCmd.PersistentFlags().String("sentry-dsn", "", "sentry DSN, blank locally cause we dont want to send errors locally")
 	rootCmd.PersistentFlags().String("sentry-environment", "", "sentry environment, leave it blank for localhost")
 
@@ -56,8 +60,10 @@ func init() {
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
-	viper.BindPFlag("ws-url", rootCmd.PersistentFlags().Lookup("ws-url"))
+	viper.BindPFlag("ev-url", rootCmd.PersistentFlags().Lookup("ev-url"))
+	viper.BindPFlag("contract-name", rootCmd.PersistentFlags().Lookup("contract-name"))
 	viper.BindPFlag("reconnect-interval", rootCmd.PersistentFlags().Lookup("reconnect-interval"))
+	viper.BindPFlag("block-interval", rootCmd.PersistentFlags().Lookup("block-interval"))
 	viper.BindPFlag("sentry-dsn", rootCmd.PersistentFlags().Lookup("sentry-dsn"))
 	viper.BindPFlag("sentry-environment", rootCmd.PersistentFlags().Lookup("sentry-environment"))
 }
@@ -76,7 +82,7 @@ func initConfig() {
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		raven.CaptureErrorAndWait(err, map[string]string{})
-		log.Error(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 }
@@ -89,16 +95,15 @@ func run() error {
 		dbName            = viper.GetString("db-name")
 		dbUser            = viper.GetString("db-user")
 		dbPassword        = viper.GetString("db-password")
-		wsURL             = viper.GetString("ws-url")
+		evURL             = viper.GetString("ev-url")
+		contractName      = viper.GetString("contract-name")
 		reconnectInterval = viper.GetInt("reconnect-interval")
+		blockInterval     = viper.GetInt("block-interval")
 	)
 
-	parsedURL, err := url.Parse(wsURL)
-	if err != nil {
-		return errors.Wrapf(err, "Error parsing url %s", wsURL)
-	}
+	var parsedURL *url.URL
+	var err error
 
-	// db should be optional?
 	dbConnStr := dbURL
 	if dbURL == "" {
 		dbConnStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -112,18 +117,22 @@ func run() error {
 	log.Printf("connected to database host %s", dbHost)
 	defer db.Close()
 
+	parsedURL, err = url.Parse(evURL)
+	if err != nil {
+		return errors.Wrapf(err, "Error parsing url %s", evURL)
+	}
+	if parsedURL.String() == "" {
+		return errors.New("Eventstore Connection URL (--ev-url) is required")
+	}
+
 	// control channels
 	doneC := make(chan struct{})
 	sigC := make(chan os.Signal, 1)
 	signal.Notify(sigC, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer signal.Stop(sigC)
 
-	if parsedURL.String() == "" {
-		return errors.New("WebSocket Connection URL (--ws-url) is required")
-	}
-
-	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Second
-	r := NewRunner(parsedURL.String(), db, 10, reconnectIntervalDur)
+	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Millisecond
+	r := NewRunner(parsedURL.String(), db, reconnectIntervalDur, blockInterval, contractName)
 	go r.Start()
 	go func() {
 		select {
@@ -159,6 +168,34 @@ func connectGamechain(wsURL string) (*websocket.Conn, error) {
 		return nil, err
 	}
 	return conn, nil
+}
+
+func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract string) (*loom.ContractEventsResult, error) {
+	log.Println("Querying Events from block:", fromBlock, "to block:", toBlock)
+
+	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	params := map[string]interface{}{
+		"fromBlock": fromBlock,
+		"toBlock":   toBlock,
+		"contract":  contract,
+	}
+	result := &loom.ContractEventsResult{}
+	_, err := rpcClient.Call("contractevents", params, &result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func queryBlockHeight(evURL string, contract string) (uint64, error) {
+	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	params := map[string]interface{}{}
+	result := uint64(1)
+	_, err := rpcClient.Call("getblockheight", params, &result)
+	if err != nil {
+		return 0, err
+	}
+	return result, nil
 }
 
 func connectDb(dbURL string) (*gorm.DB, error) {
