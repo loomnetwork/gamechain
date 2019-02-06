@@ -224,9 +224,13 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	}
 	var instanceId int32 = 2
 	if g.State.CurrentPlayerIndex == 0 {
+		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 0}
+		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 1}
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 	} else {
+		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 1}
+		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 0}
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 	}
@@ -849,43 +853,26 @@ func actionCardAttack(g *Gameplay) stateFn {
 			break
 		}
 	}
+
+	if attacker == nil {
+		if !g.useBackendGameLogic {
+			g.debugf("Attacker not found\n")
+			g.PrintState()
+			next := g.next()
+			if next == nil {
+				return nil
+			}
+		} else {
+			return g.captureErrorAndStop(errors.New("Attacker not found"))
+		}
+	}
+
 	if targetInstanceId == 0 || targetInstanceId == 1 {
+		if g.activePlayer().InstanceId.Id == targetInstanceId {
+			return g.captureErrorAndStop(errors.New("Can't attack own overlord"))
+		}
+
 		// overlord
-		if len(g.activePlayer().CardsInPlay) <= 0 {
-			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack with")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
-			}
-		}
-
-		for i, card := range g.activePlayer().CardsInPlay {
-			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
-				attacker = card
-				attackerIndex = i
-
-				break
-			}
-		}
-
-		if attacker == nil {
-			if !g.useBackendGameLogic {
-				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("Attacker not found"))
-			}
-		}
-
 		g.activePlayerOpponent().Defense -= attacker.Instance.Attack
 
 		if g.activePlayerOpponent().Defense <= 0 {
@@ -896,7 +883,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 		// card
 		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
 			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack with")
+				g.debugf("No cards on board to attack")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -904,19 +891,6 @@ func actionCardAttack(g *Gameplay) stateFn {
 				}
 			} else {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
-			}
-		}
-
-		if attacker == nil {
-			if !g.useBackendGameLogic {
-				g.debugf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("Attacker not found"))
 			}
 		}
 
