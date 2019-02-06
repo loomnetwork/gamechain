@@ -97,7 +97,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/mattn/go-sqlite3 \
 		github.com/dgrijalva/jwt-go \
 		github.com/getsentry/raven-go \
-		github.com/tendermint/tendermint \
+		github.com/tendermint/tendermint/rpc/lib/client \
 		github.com/tendermint/go-amino
 
 	go install github.com/golang/dep/cmd/dep
