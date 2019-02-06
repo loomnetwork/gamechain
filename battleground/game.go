@@ -176,7 +176,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 
 		// draw cards 3 card for mulligan
 		// HOTFIX: TODO: Check this again
-		if len(playerState.CardsInDeck) > playerState.InitialCardsInHandCount {
+		if len(playerState.CardsInDeck) > int(playerState.InitialCardsInHandCount) {
 			playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
 			playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
 		}
