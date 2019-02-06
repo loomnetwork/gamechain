@@ -35,15 +35,15 @@ const (
 )
 
 const (
-	TopicCreateAccountEvent      = "zombiebattleground:createaccount"
-	TopicUpdateAccountEvent      = "zombiebattleground:updateaccount"
-	TopicCreateDeckEvent         = "zombiebattleground:createdeck"
-	TopicEditDeckEvent           = "zombiebattleground:editdeck"
-	TopicDeleteDeckEvent         = "zombiebattleground:deletedeck"
-	TopicAddHeroExpEvent         = "zombiebattleground:addheroexperience"
-	TopicRegisterPlayerPoolEvent = "zombiebattleground:registerplayerpool"
-	TopicFindMatchEvent          = "zombiebattleground:findmatch"
-	TopicAcceptMatchEvent        = "zombiebattleground:acceptmatch"
+	TopicCreateAccountEvent      = "createaccount"
+	TopicUpdateAccountEvent      = "updateaccount"
+	TopicCreateDeckEvent         = "createdeck"
+	TopicEditDeckEvent           = "editdeck"
+	TopicDeleteDeckEvent         = "deletedeck"
+	TopicAddHeroExpEvent         = "addheroexperience"
+	TopicRegisterPlayerPoolEvent = "registerplayerpool"
+	TopicFindMatchEvent          = "findmatch"
+	TopicAcceptMatchEvent        = "acceptmatch"
 	// match pattern match:id e.g. match:1, match:2, ...
 	TopicMatchEventPrefix = "match:"
 )

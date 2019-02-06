@@ -82,11 +82,6 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
-	err := updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -124,11 +119,6 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		BlockHeight:      eventData.BlockHeight,
 	}
 	if err := db.Save(&d).Error; err != nil {
-		return err
-	}
-
-	err := updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
 		return err
 	}
 
@@ -184,11 +174,6 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -205,11 +190,6 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 	log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -232,11 +212,6 @@ func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 	match.BlockHeight = eventData.BlockHeight
 
 	if err := db.Omit("created_at").Save(&match).Error; err != nil {
-		return err
-	}
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
 		return err
 	}
 
@@ -291,25 +266,6 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		db.Create(&dbReplay)
 	} else {
 		return err
-	}
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func updateBlockHeight(db *gorm.DB, blockHeight uint64) error {
-	query := db.Model(&models.ZbHeightCheck{}).Update("last_block_height", blockHeight)
-
-	err, rows := query.Error, query.RowsAffected
-	if err != nil {
-		return err
-	}
-	if rows < 1 {
-		db.Save(&models.ZbHeightCheck{LastBlockHeight: blockHeight})
 	}
 
 	return nil
