@@ -400,6 +400,14 @@ func (g *Gameplay) changePlayerTurn() {
 	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
 }
 
+// gives the player a new goo vial and fills up all their vials
+func addGooVialAndFillAll(playerState *zb.PlayerState) {
+	if playerState.GooVials < playerState.MaxGooVials {
+		playerState.GooVials++
+	}
+	playerState.CurrentGoo = playerState.GooVials
+}
+
 func (g *Gameplay) captureErrorAndStop(err error) stateFn {
 	g.err = err
 	return nil
@@ -540,6 +548,10 @@ func gameStart(g *Gameplay) stateFn {
 	if g.isEnded() {
 		return nil
 	}
+
+	// give initial 1 vial and 1 goo
+	addGooVialAndFillAll(g.activePlayer())
+	addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// determine the next action
 	g.PrintState()
@@ -1085,11 +1097,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	// change player turn
 	g.changePlayerTurn()
 
-	// give the new player a new goo vial and fill up all their vials
-	if g.activePlayer().GooVials < maxGooVials {
-		g.activePlayer().GooVials++
-	}
-	g.activePlayer().CurrentGoo = g.activePlayer().GooVials
+	addGooVialAndFillAll(g.activePlayer())
 
 	// allow the new player to draw card on new turn
 	g.activePlayer().HasDrawnCard = false
