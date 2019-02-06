@@ -53,10 +53,10 @@ spec:
             value: loomauth
           - name: DB_PORT
             value: "3306"
-          - name: WS_URL
-            value: ws://gamechain.dappchains.com:9999/queryws
+          - name: EV_URL
+            value: "http://gamechain.dappchains.com:9999"
           - name: RECONNECT_INTERVAL
-            value: "1"
+            value: "1000"
           - name: SENTRY_ENVIRONMENT
             value: production
           - name: SENTRY_DSN
