@@ -478,8 +478,6 @@ message GetCollectionByAddressResponse {
 }
 
 message RewardTutorialCompletedRequest {
-    // string user_id = 1;
-    string access_token = 2;
 }
 
 message RewardTutorialCompletedResponse {
@@ -492,12 +490,11 @@ message RewardTutorialCompletedResponse {
     // int64 nonce = 7;
     // uint64 minion_pack = 8;
     // uint64 user_id_uint = 9;
-    BigUInt user_id = 10;
+    // BigUInt user_id = 10;
     BigUInt amount = 11;
 }
 
 message ConfirmRewardTutorialClaimedRequest {
-    string access_token = 1;
 }
 
 message RewardTutorialClaimed {

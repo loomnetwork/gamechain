@@ -12,7 +12,6 @@ import (
 	"time"
 	"unicode/utf8"
 
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
@@ -22,7 +21,6 @@ import (
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
 	ltypes "github.com/loomnetwork/go-loom/types"
-	latypes "github.com/loomnetwork/loomauth/types"
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
@@ -2036,24 +2034,8 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb.Delete
 }
 
 func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb.RewardTutorialCompletedRequest) (*zb.RewardTutorialCompletedResponse, error) {
-	token, err := jwt.ParseWithClaims(req.AccessToken, &latypes.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(jwtSecret), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	if !token.Valid {
-		return nil, errors.New("Invalid access token")
-	}
-
-	// get user ID
-	claims, ok := token.Claims.(*latypes.UserClaims)
-	if !ok {
-		return nil, errors.Wrap(err, "error converting claims to custom claims")
-	}
-
-	rewardTutorialClaimed, err := getRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID))
+	address := ctx.Message().Sender.String()
+	rewardTutorialClaimed, err := getRewardTutorialClaimed(ctx, address)
 	if err != nil {
 		return nil, err
 	}
@@ -2072,7 +2054,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		return nil, err
 	}
 
-	verifySignResult, err := generateVerifyHash(uint64(claims.UserID), state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
+	verifySignResult, err := generateVerifyHash(state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -2090,7 +2072,6 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	}
 
 	return &zb.RewardTutorialCompletedResponse{
-		UserId:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(claims.UserID))},
 		R:          r,
 		S:          s,
 		V:          v,
@@ -2101,29 +2082,13 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 }
 
 func (z *ZombieBattleground) ConfirmRewardTutorialClaimed(ctx contract.Context, req *zb.ConfirmRewardTutorialClaimedRequest) error {
-	token, err := jwt.ParseWithClaims(req.AccessToken, &latypes.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(jwtSecret), nil
-	})
-	if err != nil {
-		return err
-	}
-
-	if !token.Valid {
-		return errors.New("Invalid access token")
-	}
-
-	// get user ID
-	claims, ok := token.Claims.(*latypes.UserClaims)
-	if !ok {
-		return errors.Wrap(err, "error converting claims to custom claims")
-	}
-
-	rewardClaimed, err := getRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID))
+	address := ctx.Message().Sender.String()
+	rewardClaimed, err := getRewardTutorialClaimed(ctx, address)
 	if err != nil {
 		return err
 	}
 	rewardClaimed.Nonce++
-	err = setRewardTutorialClaimed(ctx, fmt.Sprintf("%d", claims.UserID), rewardClaimed)
+	err = setRewardTutorialClaimed(ctx, address, rewardClaimed)
 	return err
 }
 
@@ -2132,8 +2097,8 @@ type verifySignResult struct {
 	Signature string
 }
 
-func generateVerifyHash(userID uint64, amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
-	hash, err := createHash(userID, amount, tutorialRewardContractVersion)
+func generateVerifyHash(amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
+	hash, err := createHash(amount, tutorialRewardContractVersion)
 
 	if err != nil {
 		return nil, err
@@ -2151,9 +2116,8 @@ func generateVerifyHash(userID uint64, amount uint64, tutorialRewardContractVers
 	}, nil
 }
 
-func createHash(userID uint64, amount uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
+func createHash(amount uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
 	hash := solsha3.SoliditySHA3(
-		solsha3.Uint256(strconv.FormatUint(userID, 10)),
 		solsha3.Uint256(strconv.FormatUint(amount, 10)),
 		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
 	)
