@@ -46,7 +46,6 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
-	rootCmd.PersistentFlags().String("ws-url", "ws://localhost:9999/queryws", "WebSocket Connection URL")
 	rootCmd.PersistentFlags().String("ev-url", "http://localhost:9999", "Event Indexer RPC Host")
 	rootCmd.PersistentFlags().String("contract-name", "zombiebattleground:1.0.0", "Contract Name")
 	rootCmd.PersistentFlags().Int("reconnect-interval", 1000, "Reconnect interval in MS")
@@ -61,7 +60,6 @@ func init() {
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
-	viper.BindPFlag("ws-url", rootCmd.PersistentFlags().Lookup("ws-url"))
 	viper.BindPFlag("ev-url", rootCmd.PersistentFlags().Lookup("ev-url"))
 	viper.BindPFlag("contract-name", rootCmd.PersistentFlags().Lookup("contract-name"))
 	viper.BindPFlag("reconnect-interval", rootCmd.PersistentFlags().Lookup("reconnect-interval"))
@@ -97,7 +95,6 @@ func run() error {
 		dbName            = viper.GetString("db-name")
 		dbUser            = viper.GetString("db-user")
 		dbPassword        = viper.GetString("db-password")
-		wsURL             = viper.GetString("ws-url")
 		evURL             = viper.GetString("ev-url")
 		contractName      = viper.GetString("contract-name")
 		reconnectInterval = viper.GetInt("reconnect-interval")
@@ -105,7 +102,6 @@ func run() error {
 	)
 
 	var parsedURL *url.URL
-	var URLType string
 	var err error
 
 	dbConnStr := dbURL
@@ -121,21 +117,12 @@ func run() error {
 	log.Printf("connected to database host %s", dbHost)
 	defer db.Close()
 
-	if evURL != "" {
-		URLType = "ev"
-		parsedURL, err = url.Parse(evURL)
-		if err != nil {
-			return errors.Wrapf(err, "Error parsing url %s", wsURL)
-		}
-	} else if wsURL != "" {
-		URLType = "ws"
-		parsedURL, err = url.Parse(wsURL)
-		if err != nil {
-			return errors.Wrapf(err, "Error parsing url %s", wsURL)
-		}
+	parsedURL, err = url.Parse(evURL)
+	if err != nil {
+		return errors.Wrapf(err, "Error parsing url %s", evURL)
 	}
 	if parsedURL.String() == "" {
-		return errors.New("Eventstore or WebSocket Connection URL (--ev-url or --ws-url) is required")
+		return errors.New("Eventstore Connection URL (--ev-url) is required")
 	}
 
 	// control channels
@@ -145,7 +132,7 @@ func run() error {
 	defer signal.Stop(sigC)
 
 	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Millisecond
-	r := NewRunner(parsedURL.String(), URLType, db, 0, reconnectIntervalDur, blockInterval, contractName)
+	r := NewRunner(parsedURL.String(), db, reconnectIntervalDur, blockInterval, contractName)
 	go r.Start()
 	go func() {
 		select {
@@ -201,8 +188,6 @@ func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract st
 }
 
 func queryBlockHeight(evURL string, contract string) (uint64, error) {
-	log.Println("Querying last block height")
-
 	rpcClient := rpcclient.NewJSONRPCClient(evURL)
 	params := map[string]interface{}{}
 	result := uint64(1)
