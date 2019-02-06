@@ -175,8 +175,11 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		}
 
 		// draw cards 3 card for mulligan
-		playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
-		playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
+		// HOTFIX: TODO: Check this again
+		if len(playerState.CardsInDeck) > playerState.InitialCardsInHandCount {
+			playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
+			playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
+		}
 	}
 
 	// init card instance IDs
