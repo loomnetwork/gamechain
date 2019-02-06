@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/url"
 	"os"
 	"os/signal"
@@ -20,7 +21,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	rpcclient "github.com/tendermint/tendermint/rpc/lib/client"
@@ -84,7 +84,7 @@ func initConfig() {
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		raven.CaptureErrorAndWait(err, map[string]string{})
-		log.Error(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 }
@@ -184,7 +184,7 @@ func connectGamechain(wsURL string) (*websocket.Conn, error) {
 }
 
 func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract string) (*loom.ContractEventsResult, error) {
-	log.Println("Querying Events from block: ", fromBlock, " to block: ", toBlock)
+	log.Println("Querying Events from block:", fromBlock, "to block:", toBlock)
 
 	rpcClient := rpcclient.NewJSONRPCClient(evURL)
 	params := map[string]interface{}{
@@ -197,9 +197,6 @@ func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract st
 	if err != nil {
 		return nil, err
 	}
-
-	log.Printf("result: %+v", result)
-
 	return result, nil
 }
 
