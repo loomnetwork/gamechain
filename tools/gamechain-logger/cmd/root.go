@@ -200,6 +200,19 @@ func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract st
 	return result, nil
 }
 
+func queryBlockHeight(evURL string, contract string) (uint64, error) {
+	log.Println("Querying last block height")
+
+	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	params := map[string]interface{}{}
+	result := uint64(1)
+	_, err := rpcClient.Call("getblockheight", params, &result)
+	if err != nil {
+		return 0, err
+	}
+	return result, nil
+}
+
 func connectDb(dbURL string) (*gorm.DB, error) {
 	db, err := gorm.Open("mysql", dbURL)
 	if err != nil {
