@@ -82,11 +82,6 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
-	err := updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -127,11 +122,6 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
-	err := updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -151,9 +141,12 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
+	db.Model(&edeck).Association("deck_cards").Clear()
+
 	cards := []models.DeckCard{}
 	for _, card := range event.Deck.Cards {
 		cards = append(cards, models.DeckCard{
+			UserID:   event.UserId,
 			CardName: card.CardName,
 			Amount:   card.Amount,
 		})
@@ -175,7 +168,8 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 
-	err = updateBlockHeight(db, eventData.BlockHeight)
+	// clean up associated deck cards
+	err = db.Exec("DELETE FROM deck_cards WHERE deck_id IS NULL OR user_id=?", "").Error
 	if err != nil {
 		return err
 	}
@@ -196,11 +190,6 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return err
 	}
 	log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -223,11 +212,6 @@ func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 	match.BlockHeight = eventData.BlockHeight
 
 	if err := db.Omit("created_at").Save(&match).Error; err != nil {
-		return err
-	}
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
 		return err
 	}
 
@@ -267,37 +251,21 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	dbReplay := models.Replay{}
 	err = db.Where(&models.Replay{MatchID: match.Id}).First(&dbReplay).Error
 	if err == nil {
-		db.First(&dbReplay)
-		dbReplay.ReplayJSON = replay
+		if replay != nil {
+			dbReplay.ReplayJSON = replay
+		}
 		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Save(&dbReplay)
 	} else if gorm.IsRecordNotFoundError(err) {
 		// insert
 		dbReplay.MatchID = match.Id
-		dbReplay.ReplayJSON = replay
+		if replay != nil {
+			dbReplay.ReplayJSON = replay
+		}
 		dbReplay.BlockHeight = eventData.BlockHeight
 		db.Create(&dbReplay)
 	} else {
 		return err
-	}
-
-	err = updateBlockHeight(db, eventData.BlockHeight)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func updateBlockHeight(db *gorm.DB, blockHeight uint64) error {
-	query := db.Model(&models.ZbHeightCheck{}).Update("last_block_height", blockHeight)
-
-	err, rows := query.Error, query.RowsAffected
-	if err != nil {
-		return err
-	}
-	if rows < 1 {
-		db.Save(&models.ZbHeightCheck{LastBlockHeight: blockHeight})
 	}
 
 	return nil

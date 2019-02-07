@@ -6,12 +6,14 @@ import (
 	"testing"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	latypes "github.com/loomnetwork/loomauth/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -1407,6 +1409,115 @@ func TestCancelFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
+	})
+}
+
+func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("EndMatch", func(t *testing.T) {
+		response, err := c.EndMatch(ctx, &zb.EndMatchRequest{
+			UserId:   "player-2",
+			MatchId:  matchID,
+			WinnerId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
+	})
+
+	t.Run("CancelFindmatch", func(t *testing.T) {
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
 	})
 }
 
@@ -3080,48 +3191,44 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+
+	// make sure we have the correct reward_contract_version and tutorial_reward_amount
+	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
+	assert.Nil(t, err)
+	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
+	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
 	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
-		})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xb887d9702492f10e6529a37c69e400970795496fb0b88b67947d16b36b475d8d", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x1d830690ee4ce5afc0c267cf941ac547738212479f30f9709d679b08526c90ba", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x1c27c0d86d1e0fe248f080bfe7c258815c0e172c9a13cdd4e9115fda980b42fc", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
+		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0x25d667d7a5afa5fc9cfacf67aeaf35bff6b3d54bf40e8b3b5a90fe86ce596732", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x02a59d7fd35f07738ac2931193b92e8f31941c15a123d07f0990c28a1fef2760", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
 	})
 
-	// client confirms that reward has been claimed from faucet
-
-	// fails because the request should have the user id uint returned in the previous call
-	t.Run("ConfirmRewardClaimed fails", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-		})
-		assert.NotNil(t, err)
-	})
-
-	// send the correct request with UserIdUint
+	// send the correct request
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-			UserIdUint: rewardTutorialCompletedResp.UserIdUint,
-		})
+		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{})
 		assert.Nil(t, err)
+	})
+
+	// attempt to claim reward again should fail
+	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
+		var err error
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "reward already claimed")
+		assert.Nil(t, rewardTutorialCompletedResp)
 	})
 
 	// attempt to get reward again should fail
 	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
-		})
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, resp)
@@ -3133,8 +3240,20 @@ func TestHashSignature(t *testing.T) {
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	verifySignResult, err := generateVerifyHash(149, 5, 1, privateKey)
+	verifySignResult, err := generateVerifyHash(5, 1, privateKey)
 	assert.Nil(t, err)
-	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
-	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
+	assert.Equal(t, "0xe2689cd4a84e23ad2f564004f1c9013e9589d260bde6380aba3ca7e09e4df40c", verifySignResult.Hash)
+	assert.Equal(t, "0x0e729720a48e6164451792e657bd4c68c25c67884e8852790d0cf2fbe999f2bb2833d41711917583d70dacbb5c80206edafa3bc4bca079ceafbb2fc50af1c8fc1b", verifySignResult.Signature)
+}
+
+// createJwtToken creates a jwt token from a User model
+func createJwtToken(userID uint, secret string) (string, error) {
+	// create the token
+	claims := latypes.UserClaims{
+		UserID: userID,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// sign and get the complete encoded token as string
+	return token.SignedString([]byte(secret))
 }
