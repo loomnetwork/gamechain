@@ -131,9 +131,19 @@ func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool, playersDebugChe
 }
 
 func (g *Gameplay) createGame(ctx contract.Context) error {
+	gamechainState, err := loadState(ctx)
+	if err != nil {
+		return err
+	}
+
+	defaultDefense := 20
+	if gamechainState.DefaultPlayerDefense > 0 {
+		defaultDefense = int(gamechainState.DefaultPlayerDefense)
+	}
+
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].Defense = 20
+		g.State.PlayerStates[i].Defense = int32(defaultDefense)
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
 		g.State.PlayerStates[i].TurnTime = defaultTurnTime

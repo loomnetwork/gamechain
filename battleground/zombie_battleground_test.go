@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -16,6 +16,10 @@ import (
 	latypes "github.com/loomnetwork/loomauth/types"
 	"github.com/stretchr/testify/assert"
 )
+
+var fakeOracle = loom.Address{
+
+}
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
@@ -665,10 +669,7 @@ func TestDeckOperations(t *testing.T) {
 		})
 
 		assert.Equal(t, nil, err)
-		assert.NotEqual(t, 2, len(deckResponse.Decks))
-		assert.Fail(t, "lol")
-		//fmt.Println(len(deckResponse.Decks))
-		//fmt.Println(deckResponse.Decks[1])
+		assert.Equal(t, 2, len(deckResponse.Decks))
 	})
 
 	t.Run("CreateDeck (Invalid Requested Amount)", func(t *testing.T) {
@@ -791,8 +792,6 @@ func TestDeckOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, getDeckResponse)
-		fmt.Println(err)
-		fmt.Println(getDeckResponse)
 		assert.Equal(t, "Edited", getDeckResponse.Deck.Name)
 	})
 
