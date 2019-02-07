@@ -390,6 +390,9 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	}
 
 	var heroes zb.HeroList
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroes); err != nil {
+		return errors.Wrapf(err, "unable to get default hero")
+	}
 	if err := ctx.Set(HeroesKey(req.UserId), &heroes); err != nil {
 		return errors.Wrapf(err, "unable to save heroes for userId: %s", req.UserId)
 	}
