@@ -94,6 +94,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
 		TutorialRewardAmount:    1,
+		DefaultPlayerDefense: defaultOverlordDefense,
 	}
 	if err := saveState(ctx, &state); err != nil {
 		return err
