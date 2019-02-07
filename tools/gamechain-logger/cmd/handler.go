@@ -146,9 +146,10 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	cards := []models.DeckCard{}
 	for _, card := range event.Deck.Cards {
 		cards = append(cards, models.DeckCard{
-			UserID:   event.UserId,
-			CardName: card.CardName,
-			Amount:   card.Amount,
+			UserID:      event.UserId,
+			CardName:    card.CardName,
+			Amount:      card.Amount,
+			BlockHeight: eventData.BlockHeight,
 		})
 	}
 	d := models.Deck{
