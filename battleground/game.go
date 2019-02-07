@@ -14,12 +14,13 @@ import (
 )
 
 const (
-	defaultTurnTime      = 120
-	defaultMulliganCards = 3
-	maxMulliganCards     = 10
-	maxCardsInPlay       = 6
-	maxCardsInHand       = 10
-	maxGooVials          = 10
+	defaultTurnTime        = 120
+	defaultMulliganCards   = 3
+	defaultOverlordDefense = 20
+	maxMulliganCards       = 10
+	maxCardsInPlay         = 6
+	maxCardsInHand         = 10
+	maxGooVials            = 10
 )
 
 var (
@@ -136,7 +137,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		return err
 	}
 
-	defaultDefense := 20
+	defaultDefense := defaultOverlordDefense
 	if gamechainState.DefaultPlayerDefense > 0 {
 		defaultDefense = int(gamechainState.DefaultPlayerDefense)
 	}
