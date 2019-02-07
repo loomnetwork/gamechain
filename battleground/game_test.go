@@ -10,6 +10,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	firstPlayerHasFirstTurnCheats = []*zb.DebugCheatsConfiguration{{Enabled: true, ForceFirstTurnUserId: "player-1"}, {Enabled: true}}
+)
+
 func TestGameStateFunc(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
@@ -66,7 +70,6 @@ func TestGameStateFunc(t *testing.T) {
 				Attacker: &zb.InstanceId{Id: 2},
 				Target: &zb.Unit{
 					InstanceId:       &zb.InstanceId{Id: 13},
-					AffectObjectType: zb.AffectObjectType_Character,
 				},
 			},
 		},
@@ -82,7 +85,6 @@ func TestGameStateFunc(t *testing.T) {
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -98,7 +100,6 @@ func TestGameStateFunc(t *testing.T) {
 				SkillId: 1,
 				Target: &zb.Unit{
 					InstanceId:       &zb.InstanceId{Id: 2},
-					AffectObjectType: zb.AffectObjectType_Card,
 				},
 			},
 		},
@@ -115,7 +116,6 @@ func TestGameStateFunc(t *testing.T) {
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -376,7 +376,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -420,7 +419,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -466,7 +464,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -490,7 +487,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -503,9 +500,9 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						AffectObjectType: zb.AffectObjectType_Player,
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -520,11 +517,11 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, firstPlayerHasFirstTurnCheats)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -537,9 +534,9 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						AffectObjectType: zb.AffectObjectType_Player,
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -593,7 +590,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -648,7 +644,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -700,7 +695,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},

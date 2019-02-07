@@ -67,15 +67,32 @@ func NewGamePlay(ctx contract.Context,
 		customGameMode = NewCustomGameMode(*customGameAddress)
 	}
 
-	// Ensure that same random seed will result in the same player order,
-	// no matter which player joined the pool earlier
-	sort.SliceStable(players, func(i, j int) bool {
-		return players[i].Id < players[j].Id
-	})
-
 	// So we won't have to do nil checks everywhere along the way
 	if playersDebugCheats == nil {
 		playersDebugCheats = []*zb.DebugCheatsConfiguration{{}, {}}
+	}
+
+	// Ensure that same random seed will result in the same player order,
+	// no matter which player joined the pool earlier
+	type playerDataTuple struct {
+		playerState *zb.PlayerState
+		playerDebugCheats *zb.DebugCheatsConfiguration
+	}
+
+	playersData := make([]*playerDataTuple, len(players), len(players))
+	for i, player := range players {
+		playersData[i] = &playerDataTuple{}
+		playersData[i].playerState = player
+		playersData[i].playerDebugCheats = playersDebugCheats[i]
+	}
+
+	sort.SliceStable(playersData, func(i, j int) bool {
+		return playersData[i].playerState.Id < playersData[j].playerState.Id
+	})
+
+	for i, playerData := range playersData {
+		players[i] = playerData.playerState
+		playersDebugCheats[i] = playerData.playerDebugCheats
 	}
 
 	state := &zb.GameState{
@@ -182,29 +199,43 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		}
 	}
 
-	// init card instance IDs
+	// init instance IDs
 	// 0 and 1 are reserved for overlords
-	var instanceId int32 = 2
-	for _, playerState := range g.State.PlayerStates {
+	// ID 0 is the overlord of the player that has the first turn
+	// ID 1 is the overlord of the other player that has the first turn
+	// Card ID's start with the player that has the first turn
+	assignInstanceIds := func(playerState *zb.PlayerState, currentInstanceId *int32) {
 		for _, card := range playerState.CardsInPlay {
-			card.InstanceId = &zb.InstanceId{Id: instanceId}
-			instanceId++
+			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInHand {
-			card.InstanceId = &zb.InstanceId{Id: instanceId}
-			instanceId++
+			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInDeck {
-			card.InstanceId = &zb.InstanceId{Id: instanceId}
-			instanceId++
+			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInGraveyard {
-			card.InstanceId = &zb.InstanceId{Id: instanceId}
-			instanceId++
+			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			*currentInstanceId++
 		}
+	}
+	var instanceId int32 = 2
+	if g.State.CurrentPlayerIndex == 0 {
+		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 0}
+		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 1}
+		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
+		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
+	} else {
+		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 1}
+		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 0}
+		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
+		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 	}
 
 	if g.customGameMode != nil {
@@ -372,6 +403,14 @@ func (g *Gameplay) changePlayerTurn() {
 	g.State.CurrentPlayerIndex = (g.State.CurrentPlayerIndex + 1) % int32(len(g.State.PlayerStates))
 }
 
+// gives the player a new goo vial and fills up all their vials
+func addGooVialAndFillAll(playerState *zb.PlayerState) {
+	if playerState.GooVials < playerState.MaxGooVials {
+		playerState.GooVials++
+	}
+	playerState.CurrentGoo = playerState.GooVials
+}
+
 func (g *Gameplay) captureErrorAndStop(err error) stateFn {
 	g.err = err
 	return nil
@@ -512,6 +551,10 @@ func gameStart(g *Gameplay) stateFn {
 	if g.isEnded() {
 		return nil
 	}
+
+	// give initial 1 vial and 1 goo
+	addGooVialAndFillAll(g.activePlayer())
+	addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// determine the next action
 	g.PrintState()
@@ -804,23 +847,58 @@ func actionCardAttack(g *Gameplay) stateFn {
 	var attackerIndex int
 	var targetIndex int
 
-	switch current.GetCardAttack().Target.AffectObjectType {
-	case zb.AffectObjectType_Character:
-		if len(g.activePlayer().CardsInPlay) <= 0 {
-			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack with")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
+	targetInstanceId := current.GetCardAttack().Target.InstanceId.Id
+	if len(g.activePlayer().CardsInPlay) <= 0 {
+		if !g.useBackendGameLogic {
+			g.debugf("No cards on board to attack with")
+			g.PrintState()
+			next := g.next()
+			if next == nil {
+				return nil
 			}
+		} else {
+			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
 		}
+	}
+
+	for i, card := range g.activePlayer().CardsInPlay {
+		if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
+			attacker = card
+			attackerIndex = i
+			break
+		}
+	}
+
+	if attacker == nil {
+		if !g.useBackendGameLogic {
+			g.debugf("Attacker not found\n")
+			g.PrintState()
+			next := g.next()
+			if next == nil {
+				return nil
+			}
+		} else {
+			return g.captureErrorAndStop(errors.New("Attacker not found"))
+		}
+	}
+
+	if targetInstanceId == 0 || targetInstanceId == 1 {
+		if g.activePlayer().InstanceId.Id == targetInstanceId {
+			return g.captureErrorAndStop(errors.New("Can't attack own overlord"))
+		}
+
+		// overlord
+		g.activePlayerOpponent().Defense -= attacker.Instance.Attack
+
+		if g.activePlayerOpponent().Defense <= 0 {
+			g.State.Winner = g.activePlayer().Id
+			g.State.IsEnded = true
+		}
+	} else {
+		// card
 		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
 			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack with")
+				g.debugf("No cards on board to attack")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
@@ -828,27 +906,6 @@ func actionCardAttack(g *Gameplay) stateFn {
 				}
 			} else {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
-			}
-		}
-
-		for i, card := range g.activePlayer().CardsInPlay {
-			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
-				attacker = card
-				attackerIndex = i
-				break
-			}
-		}
-
-		if attacker == nil {
-			if !g.useBackendGameLogic {
-				g.debugf("zb.AffectObjectType_CHARACTER-Attacker not found\n")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("Attacker not found"))
 			}
 		}
 
@@ -883,49 +940,6 @@ func actionCardAttack(g *Gameplay) stateFn {
 		if target.Instance.Defense <= 0 {
 			g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
 			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
-		}
-
-	case zb.AffectObjectType_Player:
-		if len(g.activePlayer().CardsInPlay) <= 0 {
-			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack with")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
-			}
-		}
-
-		for i, card := range g.activePlayer().CardsInPlay {
-			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
-				attacker = card
-				attackerIndex = i
-
-				break
-			}
-		}
-
-		if attacker == nil {
-			if !g.useBackendGameLogic {
-				g.debugf("zb.AffectObjectType_PLAYER:-Attacker not found\n")
-				g.PrintState()
-				next := g.next()
-				if next == nil {
-					return nil
-				}
-			} else {
-				return g.captureErrorAndStop(errors.New("Attacker not found"))
-			}
-		}
-
-		g.activePlayerOpponent().Defense -= attacker.Instance.Attack
-
-		if g.activePlayerOpponent().Defense <= 0 {
-			g.State.Winner = g.activePlayer().Id
-			g.State.IsEnded = true
 		}
 	}
 
@@ -1086,11 +1100,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	// change player turn
 	g.changePlayerTurn()
 
-	// give the new player a new goo vial and fill up all their vials
-	if g.activePlayer().GooVials < maxGooVials {
-		g.activePlayer().GooVials++
-	}
-	g.activePlayer().CurrentGoo = g.activePlayer().GooVials
+	addGooVialAndFillAll(g.activePlayer())
 
 	// allow the new player to draw card on new turn
 	g.activePlayer().HasDrawnCard = false
