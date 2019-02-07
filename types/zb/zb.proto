@@ -242,13 +242,13 @@ message AIDeckList {
 // Request and Response
 
 message InitData {
-    repeated Deck default_decks                = 1;
+    repeated Deck default_decks = 1;
     repeated CardCollectionCard default_collection = 2;
-    repeated Card cards                        = 3;
-    repeated Hero heroes                       = 4;
-    repeated AIDeck ai_decks                   = 5;
-    string version                             = 6;
-    Address oracle                             = 7;
+    repeated Card cards = 3;
+    repeated Hero heroes = 4;
+    repeated AIDeck ai_decks = 5;
+    string version = 6;
+    Address oracle = 7;
 }
 
 message InitRequest {
