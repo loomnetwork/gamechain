@@ -63,6 +63,7 @@ var (
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
 	ErrInvalidEventBatch  = errors.New("invalid event batch")
+	ErrInvalidDefaultPlayerDefense  = errors.New("default overlord defense must be >= 1")
 )
 
 type ZombieBattleground struct {
@@ -2297,6 +2298,11 @@ func (z *ZombieBattleground) SetDefaultPlayerDefense(ctx contract.Context, req *
 	if err := z.validateOracle(ctx, req.Oracle); err != nil {
 		return err
 	}
+
+	if req.Defense <= 0 {
+		return ErrInvalidDefaultPlayerDefense
+	}
+
 	state.DefaultPlayerDefense = req.Defense
 	return saveState(ctx, state)
 }
