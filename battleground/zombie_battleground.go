@@ -428,6 +428,22 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
 	}
 
+	//Emit CreateDeck event when creating new default decks for this new account
+	for i := 0; i < len(deckList.Decks); i++ {
+		emitMsg := zb.CreateDeckEvent{
+			UserId:        req.UserId,
+			SenderAddress: ctx.Message().Sender.Local.String(),
+			Deck:          deckList.Decks[i],
+			Version:       req.Version,
+		}
+
+		data, err := proto.Marshal(&emitMsg)
+		if err != nil {
+			return err
+		}
+		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
+	}
+
 	return nil
 }
 
