@@ -12,7 +12,7 @@ go get github.com/loomnetwork/go-loom
 cd ${GOPATH}/src/github.com/loomnetwork/gamechain
 make deps
 make
-pushd
+pushd .
 cd  ${GOPATH}/src/github.com/loomnetwork/loomchain
 make gamechain-cleveldb
 popd
