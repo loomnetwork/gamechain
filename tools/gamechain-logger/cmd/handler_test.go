@@ -74,9 +74,6 @@ func InitDB() *gorm.DB {
 	if err := db.AutoMigrate(&models.Deck{}).Error; err != nil {
 		panic(err)
 	}
-	if err := db.AutoMigrate(&models.DeckCard{}).Error; err != nil {
-		panic(err)
-	}
 	if err := db.AutoMigrate(&models.Replay{}).Error; err != nil {
 		panic(err)
 	}
@@ -142,9 +139,9 @@ func TestEventHandlers(t *testing.T) {
 	err = EditDeckHandler(&eventData, db)
 	assert.Nil(t, err)
 
-	err = db.First(&deck, 1).Error
+	err = db.First(&deck).Error
 	assert.Nil(t, err)
-	assert.Equal(t, "NewDeck7asdf", deck.Name)
+	assert.Equal(t, "NewDeck7", deck.Name)
 	assert.Equal(t, "player1", deck.UserID)
 
 	// DeleteDeck event
