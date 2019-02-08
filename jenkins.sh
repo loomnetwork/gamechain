@@ -15,6 +15,7 @@ make
 pushd .
 cd  ${GOPATH}/src/github.com/loomnetwork/loomchain
 make gamechain-cleveldb
+cp gamechain $GOPATH/bin/gamechain
 popd
 make gamechain-logger
 make bin/gcoracle
