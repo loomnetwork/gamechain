@@ -167,9 +167,10 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	}
 	log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 
-	deleteQuery := fmt.Sprintf("UPDATE `decks` SET `is_deleted` = '1' WHERE `user_id` = '%s' AND `deck_id` = '%d'", event.UserId, event.DeckId)
-
-	err := db.Exec(deleteQuery).Error
+	err := db.Model(&models.Deck{}).
+		Where(&models.Deck{UserID: event.UserId, DeckID: event.DeckId}).
+		Updates(models.Deck{IsDeleted: true}).
+		Error
 	if err != nil {
 		return err
 	}
