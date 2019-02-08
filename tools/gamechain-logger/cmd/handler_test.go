@@ -74,9 +74,6 @@ func InitDB() *gorm.DB {
 	if err := db.AutoMigrate(&models.Deck{}).Error; err != nil {
 		panic(err)
 	}
-	if err := db.AutoMigrate(&models.DeckCard{}).Error; err != nil {
-		panic(err)
-	}
 	if err := db.AutoMigrate(&models.Replay{}).Error; err != nil {
 		panic(err)
 	}
