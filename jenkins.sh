@@ -12,6 +12,11 @@ go get github.com/loomnetwork/go-loom
 cd ${GOPATH}/src/github.com/loomnetwork/gamechain
 make deps
 make
+pushd .
+cd  ${GOPATH}/src/github.com/loomnetwork/loomchain
+make gamechain-cleveldb
+cp gamechain $GOPATH/bin/gamechain
+popd
 make gamechain-logger
 make bin/gcoracle
 make test
