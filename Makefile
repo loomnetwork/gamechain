@@ -101,10 +101,10 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/tendermint/go-amino
 
 	go install github.com/golang/dep/cmd/dep
-    # Need loomchain to run e2e test
-    cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
-    # Point to different loomauth branch
-    cd $(LOOMAUTH_DIR) && checkout add-card-column
+	# Need loomchain to run e2e test
+	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
+	# Point to different loomauth branch
+	cd $(LOOMAUTH_DIR) && checkout add-card-column
 
 abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
