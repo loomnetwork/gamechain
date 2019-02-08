@@ -139,7 +139,7 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
-	log.Println("cards", string(cards))
+
 	d := models.Deck{
 		UserID:           event.UserId,
 		DeckID:           deck.Id,
