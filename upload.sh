@@ -30,3 +30,7 @@ gsutil cp zb.v2.genesis.json gs://private.delegatecall.com/zombie_battleground/l
 # Custom loom
 gsutil cp ${WORKSPACE}/bin/loom gs://private.delegatecall.com/zombie_battleground/linux/latest/loom
 gsutil cp ${WORKSPACE}/bin/loom gs://private.delegatecall.com/zombie_battleground/linux/build-${BUILD_NUMBER}/loom
+
+# Custom gamechain
+gsutil cp ${WORKSPACE}/bin/gamechain gs://private.delegatecall.com/zombie_battleground/linux/latest/gamechain
+gsutil cp ${WORKSPACE}/bin/gamechain gs://private.delegatecall.com/zombie_battleground/linux/build-${BUILD_NUMBER}/gamechain
