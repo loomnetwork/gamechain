@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"os"
 	"sort"
 	"strconv"
@@ -431,14 +430,12 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	//Emit CreateDeck event when creating new default decks for this new account
 	for i := 0; i < len(deckList.Decks); i++ {
-		log.Println("THIS")
 		emitMsg := zb.CreateDeckEvent{
 			UserId:        req.UserId,
 			SenderAddress: ctx.Message().Sender.Local.String(),
 			Deck:          deckList.Decks[i],
 			Version:       req.Version,
 		}
-		log.Println(emitMsg)
 
 		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
