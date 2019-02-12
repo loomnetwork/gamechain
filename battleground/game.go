@@ -8,7 +8,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
 )
@@ -75,7 +75,7 @@ func NewGamePlay(ctx contract.Context,
 	// Ensure that same random seed will result in the same player order,
 	// no matter which player joined the pool earlier
 	type playerDataTuple struct {
-		playerState *zb.PlayerState
+		playerState       *zb.PlayerState
 		playerDebugCheats *zb.DebugCheatsConfiguration
 	}
 
@@ -165,7 +165,7 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 	g.State.CurrentPlayerIndex = n
 
 	// force first player cheat
-	loop:
+loop:
 	for i := 0; i < len(g.State.PlayerStates); i++ {
 		for j := 0; j < len(g.State.PlayerStates); j++ {
 			if g.playersDebugCheats[j].Enabled && g.playersDebugCheats[j].ForceFirstTurnUserId != "" && g.playersDebugCheats[j].ForceFirstTurnUserId == g.State.PlayerStates[i].Id {
@@ -546,6 +546,48 @@ func (g *Gameplay) PrintState() {
 	g.debugf(buf.String())
 }
 
+func (g *Gameplay) DebugState() {
+	state := g.State
+	buf := new(bytes.Buffer)
+	fmt.Fprintf(buf, "============StateInfo=============\n")
+	fmt.Fprintf(buf, "Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
+	fmt.Fprintf(buf, "Current Player Index: %v\n", state.CurrentPlayerIndex)
+
+	for i, player := range g.State.PlayerStates {
+		if g.State.CurrentPlayerIndex == int32(i) {
+			fmt.Fprintf(buf, "Player%d: %s 🧟\n", i+1, player.Id)
+		} else {
+			fmt.Fprintf(buf, "Player%d: %s\n", i+1, player.Id)
+		}
+		fmt.Fprintf(buf, "\tdefense: %v\n", player.Defense)
+		fmt.Fprintf(buf, "\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Fprintf(buf, "\tgoo vials: %v\n", player.GooVials)
+		fmt.Fprintf(buf, "\thas drawn card: %v\n", player.HasDrawnCard)
+		fmt.Fprintf(buf, "\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
+		fmt.Fprintf(buf, "\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
+		fmt.Fprintf(buf, "\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+		fmt.Fprintf(buf, "\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
+		fmt.Fprintf(buf, "\n") // extra line
+	}
+
+	fmt.Fprintf(buf, "History : count %v\n", len(g.history))
+	for i, block := range g.history {
+		fmt.Fprintf(buf, "\t[%d] %v\n", i, block)
+	}
+
+	fmt.Fprintf(buf, "Actions: count %v\n", len(state.PlayerActions))
+	for i, action := range state.PlayerActions {
+		if int64(i) == state.CurrentActionIndex {
+			fmt.Fprintf(buf, "   -->> [%d] %v\n", i, action)
+		} else {
+			fmt.Fprintf(buf, "\t[%d] %v\n", i, action)
+		}
+	}
+	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
+	fmt.Fprintf(buf, "==================================\n")
+	fmt.Println(buf.String())
+}
+
 func gameStart(g *Gameplay) stateFn {
 	g.debugf("state: gameStart\n")
 	if g.isEnded() {
@@ -785,6 +827,12 @@ func actionCardPlay(g *Gameplay) stateFn {
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 		g.activePlayer().CardsInHand = activeCardsInHand
 
+		// TODO: apply ability if needed
+		_, err := ApplyAbility(g, cardInstance, zb.CardAbilityTrigger_Entry)
+		if err != nil {
+			return g.captureErrorAndStop(err)
+		}
+
 		// record history data
 		g.history = append(g.history, &zb.HistoryData{
 			Data: &zb.HistoryData_FullInstance{
@@ -928,11 +976,15 @@ func actionCardAttack(g *Gameplay) stateFn {
 			target.InstanceId,
 			target.Prototype.Name,
 		)
-		attackerInstance := &CardInstance{attacker}
-		targetInstance := &CardInstance{target}
-		attackerInstance.SetDefense(g, targetInstance, attackerInstance.Instance.Defense-targetInstance.Instance.Attack)
-		targetInstance.SetDefense(g, attackerInstance, targetInstance.Instance.Defense-attackerInstance.Instance.Attack)
+		attackerInstance := NewCardInstance(attacker, g)
+		targetInstance := NewCardInstance(target, g)
+		// normal attack
+		attackerInstance.Attack(targetInstance)
 
+		// TODO: move changing card zone to a function
+		// g.updateZone()
+
+		// change location of the card
 		if attacker.Instance.Defense <= 0 {
 			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
 			g.activePlayer().CardsInGraveyard = append(g.activePlayer().CardsInGraveyard, attacker)
