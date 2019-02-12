@@ -354,6 +354,7 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	// Verify whether this privateKey associated with user
 	if !isOwner(ctx, req.UserId) {
+
 		return nil, ErrUserNotVerified
 	}
 
@@ -380,7 +381,9 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
 	// confirm owner doesnt exist already
 	if ctx.Has(AccountKey(req.UserId)) {
-		return errors.New("user already exists")
+		ctx.Logger().Debug(fmt.Sprintf("user already exists -%s", req.UserId))
+		return nil //right now the client can't handle this sending an error
+		//		return errors.New("user already exists")
 	}
 
 	var account zb.Account
