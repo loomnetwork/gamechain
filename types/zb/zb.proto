@@ -1231,13 +1231,18 @@ message CardAbility {
 }
 
 message CardAbilityRage {
-    int32 addedAttack = 1;
+    int32 addedAttack = 1; // TODO: Remove me
     bool wasApplied = 2;
 }
 
 message CardAbilityPriorityAttack {
     int32 attackerOldDefense = 1;
     int32 targetOldDefense = 2;
+}
+
+message CardAbilityReanimate {
+    int32 attack = 1;
+    int32 defence = 2;
 }
 
 message PlayerActionOutcome {
@@ -1261,7 +1266,10 @@ message CardAbilityInstance {
     oneof AbilityType {
         CardAbilityRage rage = 1;
         CardAbilityPriorityAttack priorityAttack = 2;
+        CardAbilityReanimate reanimate = 5;
     }
+    bool IsActive = 3;
+    CardAbilityTrigger.Enum Trigger = 4;
 }
 
 message CardInstance {

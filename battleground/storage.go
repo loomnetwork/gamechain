@@ -446,12 +446,37 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 	}
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.InstanceId, owner string) *zb.CardInstance {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string) *zb.CardInstance {
+	// init card ability. ignore error
+	var abilities []*zb.CardAbilityInstance
+	for _, raw := range cardDetails.Abilities {
+		switch raw.Type {
+		case zb.CardAbilityType_Rage:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_Rage{
+					Rage: &zb.CardAbilityRage{
+						AddedAttack: raw.Value,
+					},
+				},
+			})
+		case zb.CardAbilityType_PriorityAttack:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
+					PriorityAttack: &zb.CardAbilityPriorityAttack{},
+				},
+			})
+		}
+	}
 	return &zb.CardInstance{
-		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
-		Owner:      owner,
-		Prototype:  proto.Clone(cardDetails).(*zb.Card),
-		Instance:   newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		InstanceId:         proto.Clone(instanceID).(*zb.InstanceId),
+		Owner:              owner,
+		Prototype:          proto.Clone(cardDetails).(*zb.Card),
+		Instance:           newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		AbilitiesInstances: abilities,
 	}
 }
 
@@ -472,6 +497,10 @@ func populateDeckCards(
 ) error {
 	for _, playerState := range playerStates {
 		deck := playerState.Deck
+		// santiy check on deck
+		if deck == nil {
+			continue
+		}
 		for _, cardAmounts := range deck.Cards {
 			for i := int64(0); i < cardAmounts.Amount; i++ {
 				cardDetails, err := getCardDetails(cardLibrary, cardAmounts.CardName)
@@ -484,6 +513,8 @@ func populateDeckCards(
 					nil,
 					playerState.Id,
 				)
+
+				// also init ability
 
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 			}

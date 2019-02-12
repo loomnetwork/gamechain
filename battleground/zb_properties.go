@@ -1,157 +1,109 @@
 package battleground
 
 import (
-	"fmt"
-
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 type CardInstance struct {
 	*zb.CardInstance
+	Outcomes []*zb.PlayerActionOutcome
+	Gameplay *Gameplay
 }
 
-type CardAbility interface {
-	defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome
+func NewCardInstance(instance *zb.CardInstance, gameplay *Gameplay) *CardInstance {
+	return &CardInstance{
+		CardInstance: instance,
+		Gameplay:     gameplay,
+	}
 }
 
-type CardAbilityRage struct {
-	*zb.CardAbilityRage
-}
+func (c *CardInstance) Attack(target *CardInstance) {
+	old := c.Instance.Defense
+	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack
+	c.OnDefenseChange(old, c.Instance.Defense)
 
-type CardAbilityPriorityAttack struct {
-	*zb.CardAbilityPriorityAttack
-}
+	old = target.Instance.Defense
+	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
+	target.OnDefenseChange(old, target.Instance.Defense)
 
-type abilityInstanceFn func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome
-
-// SetDefence will set the card's defense value and call the ability's defenseChangedHandler
-func (card *CardInstance) SetDefense(game *Gameplay, opponentCard *CardInstance, defense int32) {
-	card.tryInitAbilitiesInstances(game, opponentCard)
-	card.Instance.Defense = defense
-
-	defenseChangedHook := func(game *Gameplay, ability CardAbility, card *CardInstance) []*zb.PlayerActionOutcome {
-		return ability.defenseChangedHandler(card)
+	if c.Instance.Defense <= 0 {
+		c.OnDeath(target)
 	}
 
-	// call the defense changed hook for each ability of the card
-	card.callAbilityInstancesFunc(game, defenseChangedHook)
-	//fmt.Printf("\n\ngame.actionOutcomes: %v\n\n", game.actionOutcomes)
+	if target.Instance.Defense <= 0 {
+		target.OnDeath(c)
+	}
 }
 
-// call hook for each ability instance
-func (card *CardInstance) callAbilityInstancesFunc(game *Gameplay, fn abilityInstanceFn) {
-	for _, abilityInstanceRaw := range card.AbilitiesInstances {
-		var abilityInstance CardAbility
-		switch abilityType := abilityInstanceRaw.AbilityType.(type) {
-		case *zb.CardAbilityInstance_Rage:
-			abilityInstance = &CardAbilityRage{abilityType.Rage}
-		case *zb.CardAbilityInstance_PriorityAttack:
-			abilityInstance = &CardAbilityPriorityAttack{
-				CardAbilityPriorityAttack: abilityType.PriorityAttack,
-			}
-		default:
-			fmt.Printf("CardAbilityInstance has unexpected type %T", abilityType)
-		}
+func (c *CardInstance) GotDamage(attacker *CardInstance) {
+}
 
-		outcomes := fn(game, abilityInstance, card)
-		if outcomes != nil {
-			for _, outcome := range outcomes {
-				game.actionOutcomes = append(game.actionOutcomes, outcome)
+func (c *CardInstance) OnDeath(attacker *CardInstance) {
+	// trigger target ability
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Death {
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_Reanimate:
+				reanimate := ability.Reanimate
+				// When zombie dies, return it to play with default Atk, Def and effects
+				// TODO: generate change zone first
+				c.Instance.Attack = reanimate.Attack
+				c.Instance.Defense = reanimate.Defence
+				ai.IsActive = false
 			}
 		}
 	}
-}
 
-func (card *CardInstance) initAbilityInstances(game *Gameplay, opponentCard *CardInstance) {
-	if card.Prototype.Abilities == nil {
-		return
-	}
-
-	for _, abilityInstanceRaw := range card.Prototype.Abilities {
-		switch abilityInstanceRaw.Type {
-		case zb.CardAbilityType_Rage:
-			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
-				AbilityType: &zb.CardAbilityInstance_Rage{
-					Rage: &zb.CardAbilityRage{
-						WasApplied:  false,
-						AddedAttack: abilityInstanceRaw.Value,
-					},
-				},
-			})
-		case zb.CardAbilityType_PriorityAttack:
-			card.AbilitiesInstances = append(card.AbilitiesInstances, &zb.CardAbilityInstance{
-				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
-					PriorityAttack: &zb.CardAbilityPriorityAttack{
-						AttackerOldDefense: card.Instance.Defense,
-						TargetOldDefense:   opponentCard.Instance.Defense,
-					},
-				},
-			})
-		default:
-			fmt.Printf("CardAbility.Type has unexpected value %s\n", zb.CardAbilityType_Enum_name[int32(abilityInstanceRaw.Type)])
+	// trigger attacker ability
+	for _, ai := range attacker.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+			// activate ability
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_PriorityAttack:
+				priorityAttack := ability.PriorityAttack
+				// reset the card's defense to the value before the attack, only if the opponent card dies
+				attacker.Instance.Defense = priorityAttack.AttackerOldDefense
+			}
 		}
 	}
 }
 
-func (card *CardInstance) tryInitAbilitiesInstances(game *Gameplay, opponentCard *CardInstance) {
-	if !card.AbilitiesInstancesInitialized {
-		card.initAbilityInstances(game, opponentCard)
-		card.AbilitiesInstancesInitialized = true
-	}
-}
-
-/* ability specific hooks */
-// Rage
-func (rage *CardAbilityRage) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
-	if !rage.WasApplied {
-		if card.Instance.Defense < card.Prototype.Defense {
-			rage.WasApplied = true
-			card.Instance.Attack += rage.AddedAttack
-
-			return []*zb.PlayerActionOutcome{
-				{
-					Outcome: &zb.PlayerActionOutcome_Rage{
-						Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
-							InstanceId: card.InstanceId,
-							NewAttack:  card.Instance.Attack,
+func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
+	// trigger ability
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_GotDamage {
+			// activate ability
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_Rage:
+				rage := ability.Rage
+				if !rage.WasApplied {
+					if c.Instance.Defense < c.Prototype.Defense {
+						// change state
+						rage.WasApplied = true
+						c.Instance.Attack += rage.AddedAttack
+						// generate outcome
+						c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+							Outcome: &zb.PlayerActionOutcome_Rage{
+								Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+									InstanceId: c.InstanceId,
+									NewAttack:  c.Instance.Attack,
+								},
+							},
+						})
+					}
+				} else if c.Instance.Defense >= c.Prototype.Defense {
+					rage.WasApplied = false
+					c.Instance.Attack -= rage.AddedAttack
+					c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+						Outcome: &zb.PlayerActionOutcome_Rage{
+							Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+								InstanceId: c.InstanceId,
+								NewAttack:  c.Instance.Attack,
+							},
 						},
-					},
-				},
+					})
+				}
 			}
 		}
-	} else if card.Instance.Defense >= card.Prototype.Defense {
-		rage.WasApplied = false
-		card.Instance.Attack -= rage.AddedAttack
-
-		return []*zb.PlayerActionOutcome{
-			{
-				Outcome: &zb.PlayerActionOutcome_Rage{
-					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
-						InstanceId: card.InstanceId,
-						NewAttack:  card.Instance.Attack,
-					},
-				},
-			},
-		}
-	}
-
-	return nil
-}
-
-// Priority Attack
-func (priorityAttack *CardAbilityPriorityAttack) defenseChangedHandler(card *CardInstance) []*zb.PlayerActionOutcome {
-	// reset the card's defense to the value before the attack, only if the opponent card dies
-	if priorityAttack.TargetOldDefense-card.Instance.Attack <= 0 {
-		card.Instance.Defense = priorityAttack.AttackerOldDefense
-	}
-	return []*zb.PlayerActionOutcome{
-		{
-			Outcome: &zb.PlayerActionOutcome_PriorityAttack{
-				PriorityAttack: &zb.PlayerActionOutcome_CardAbilityPriorityAttackOutcome{
-					InstanceId: card.InstanceId,
-					NewDefense: card.Instance.Defense,
-				},
-			},
-		},
 	}
 }
