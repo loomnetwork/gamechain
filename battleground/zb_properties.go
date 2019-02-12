@@ -24,6 +24,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 
 	old = target.Instance.Defense
 	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
+	target.OnBeingAttacked(c)
 	target.OnDefenseChange(old, target.Instance.Defense)
 
 	if c.Instance.Defense <= 0 {
@@ -36,6 +37,22 @@ func (c *CardInstance) Attack(target *CardInstance) {
 }
 
 func (c *CardInstance) GotDamage(attacker *CardInstance) {
+}
+
+func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) {
+	for _, ai := range attacker.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
+				additionalDamageToHeavyInAttack := ability.AdditionalDamageToHeavyInAttack
+				// When zombie dies, return it to play with default Atk, Def and effects
+				// TODO: generate change zone first
+				if c.Instance.Type == zb.CreatureType_Heavy {
+					c.Instance.Defense -= additionalDamageToHeavyInAttack.AddedAttack
+				}
+			}
+		}
+	}
 }
 
 func (c *CardInstance) OnDeath(attacker *CardInstance) {

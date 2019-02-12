@@ -827,12 +827,6 @@ func actionCardPlay(g *Gameplay) stateFn {
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 		g.activePlayer().CardsInHand = activeCardsInHand
 
-		// TODO: apply ability if needed
-		_, err := ApplyAbility(g, cardInstance, zb.CardAbilityTrigger_Entry)
-		if err != nil {
-			return g.captureErrorAndStop(err)
-		}
-
 		// record history data
 		g.history = append(g.history, &zb.HistoryData{
 			Data: &zb.HistoryData_FullInstance{
