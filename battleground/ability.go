@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
@@ -15,6 +16,10 @@ func NewCardInstance(instance *zb.CardInstance, gameplay *Gameplay) *CardInstanc
 		CardInstance: instance,
 		Gameplay:     gameplay,
 	}
+}
+
+func (c *CardInstance) Play() {
+	c.OnPlay()
 }
 
 func (c *CardInstance) Attack(target *CardInstance) {
@@ -83,6 +88,11 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) {
 			}
 		}
 	}
+
+	// after apply ability, update zone if the card instance is really dead
+	if c.Instance.Defense <= 0 {
+		c.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD)
+	}
 }
 
 func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
@@ -122,5 +132,52 @@ func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
 				}
 			}
 		}
+	}
+}
+
+func (c *CardInstance) OnPlay() {
+	c.MoveZone(zb.Zone_HAND, zb.Zone_PLAY)
+}
+
+func (c *CardInstance) MoveZone(from, to zb.ZoneType) {
+	var cardInstance *zb.CardInstance
+	var cardIndex int
+	var owner *zb.PlayerState
+	for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+		for j, card := range c.Gameplay.State.PlayerStates[i].CardsInPlay {
+			if proto.Equal(card.InstanceId, c.InstanceId) {
+				cardInstance = card
+				cardIndex = j
+				owner = c.Gameplay.State.PlayerStates[i]
+				break
+			}
+		}
+	}
+
+	if cardInstance != nil {
+		if from == zb.Zone_PLAY && to == zb.Zone_GRAVEYARD {
+			// move from play to graveyard
+			owner.CardsInPlay = append(owner.CardsInPlay[:cardIndex], owner.CardsInPlay[cardIndex+1:]...)
+			owner.CardsInGraveyard = append(owner.CardsInGraveyard, cardInstance)
+		}
+
+		// FIX ME
+		// else if from == zb.Zone_HAND && to == zb.Zone_PLAY {
+		// 	// move from hand to play
+		// 	owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
+		// 	activeCardsInHand := owner.CardsInHand
+		// 	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+		// 	owner.CardsInHand = activeCardsInHand
+		// }
+
+	}
+}
+
+func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.PlayerState) {
+	target.Defense -= c.Instance.Attack
+
+	if target.Defense <= 0 {
+		c.Gameplay.State.Winner = attacker.Id
+		c.Gameplay.State.IsEnded = true
 	}
 }
