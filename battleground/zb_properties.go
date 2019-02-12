@@ -17,6 +17,14 @@ func NewCardInstance(instance *zb.CardInstance, gameplay *Gameplay) *CardInstanc
 	}
 }
 
+func (c *CardInstance) Entry() {
+
+}
+
+func (c *CardInstance) EndOfTurn() {
+
+}
+
 func (c *CardInstance) Attack(target *CardInstance) {
 	old := c.Instance.Defense
 	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack

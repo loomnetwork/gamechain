@@ -827,6 +827,10 @@ func actionCardPlay(g *Gameplay) stateFn {
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 		g.activePlayer().CardsInHand = activeCardsInHand
 
+		//Activate entry ability
+		ci := NewCardInstance(cardInstance, g)
+		ci.Entry()
+
 		// record history data
 		g.history = append(g.history, &zb.HistoryData{
 			Data: &zb.HistoryData_FullInstance{
