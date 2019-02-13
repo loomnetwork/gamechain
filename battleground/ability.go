@@ -23,6 +23,7 @@ func (c *CardInstance) Play() {
 }
 
 func (c *CardInstance) Attack(target *CardInstance) {
+
 	old := c.Instance.Defense
 	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack
 	c.OnDefenseChange(old, c.Instance.Defense)
@@ -31,7 +32,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
 	target.OnBeingAttacked(c)
 	target.OnDefenseChange(old, target.Instance.Defense)
-	c.AfterAttacking(target)
+	c.AfterAttacking()
 
 	if c.Instance.Defense <= 0 {
 		c.OnDeath(target)
@@ -45,7 +46,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 func (c *CardInstance) GotDamage(attacker *CardInstance) {
 }
 
-func (c *CardInstance) AfterAttacking(target *CardInstance) {
+func (c *CardInstance) AfterAttacking() {
 	for _, ai := range c.AbilitiesInstances {
 		if ai.Trigger == zb.CardAbilityTrigger_Attack {
 			switch ability := ai.AbilityType.(type) {
@@ -205,10 +206,12 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) {
 }
 
 func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.PlayerState) {
+	c.Gameplay.debugf("Attack Overlord")
 	target.Defense -= c.Instance.Attack
 
 	if target.Defense <= 0 {
 		c.Gameplay.State.Winner = attacker.Id
 		c.Gameplay.State.IsEnded = true
 	}
+	c.AfterAttacking()
 }
