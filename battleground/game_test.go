@@ -33,6 +33,15 @@ func TestGameStateFunc(t *testing.T) {
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
+	assert.Equal(t, 4, len(gp.State.PlayerStates[0].CardsInHand))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInPlay))
+	assert.Equal(t, 7, len(gp.State.PlayerStates[0].CardsInDeck))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInGraveyard))
+
+	assert.Equal(t, 3, len(gp.State.PlayerStates[1].CardsInHand))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInPlay))
+	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
 	// // add more action
 	err = gp.AddAction(&zb.PlayerAction{
@@ -44,7 +53,18 @@ func TestGameStateFunc(t *testing.T) {
 			},
 		},
 	})
+	gp.DebugState()
 	assert.Nil(t, err)
+	assert.Equal(t, 3, len(gp.State.PlayerStates[0].CardsInHand))
+	assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInPlay))
+	assert.Equal(t, 7, len(gp.State.PlayerStates[0].CardsInDeck))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInGraveyard))
+
+	assert.Equal(t, 3, len(gp.State.PlayerStates[1].CardsInHand))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInPlay))
+	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
+	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
+
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{
