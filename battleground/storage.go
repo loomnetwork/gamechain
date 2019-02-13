@@ -447,6 +447,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 }
 
 func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string) *zb.CardInstance {
+	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
 	// init card ability. ignore error
 	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
@@ -469,14 +470,27 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					PriorityAttack: &zb.CardAbilityPriorityAttack{},
 				},
 			})
+		case zb.CardAbilityType_ReanimateUnit:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_Reanimate{
+					Reanimate: &zb.CardAbilityReanimate{
+						Attack:  instance.Attack,
+						Defense: instance.Defense,
+					},
+				},
+			})
 		}
+
 	}
 	return &zb.CardInstance{
 		InstanceId:         proto.Clone(instanceID).(*zb.InstanceId),
 		Owner:              owner,
 		Prototype:          proto.Clone(cardDetails).(*zb.Card),
-		Instance:           newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		Instance:           instance,
 		AbilitiesInstances: abilities,
+		Zone:               zb.Zone_DECK, // default to deck
 	}
 }
 
@@ -513,9 +527,6 @@ func populateDeckCards(
 					nil,
 					playerState.Id,
 				)
-
-				// also init ability
-
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 			}
 		}
@@ -535,19 +546,20 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 		filteredCards := make([]*zb.CardInstance, 0, 0)
 
 		for _, card := range playerState.CardsInDeck {
-			filteredAbilities := make([]*zb.CardAbility, 0, 0)
-			for _, ability := range card.Prototype.Abilities {
-				switch ability.Type {
-				case zb.CardAbilityType_Rage:
-					fallthrough
-				case zb.CardAbilityType_PriorityAttack:
-					filteredAbilities = append(filteredAbilities, ability)
-				default:
-					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
-				}
-			}
+			// WE ALREADY MOVE FILTERING ABILITY TO CARDINSTANCE
+			// filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			// for _, ability := range card.Prototype.Abilities {
+			// 	switch ability.Type {
+			// 	case zb.CardAbilityType_Rage:
+			// 		fallthrough
+			// 	case zb.CardAbilityType_PriorityAttack:
+			// 		filteredAbilities = append(filteredAbilities, ability)
+			// 	default:
+			// 		fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+			// 	}
+			// }
 
-			card.Prototype.Abilities = filteredAbilities
+			// card.Prototype.Abilities = filteredAbilities
 
 			switch card.Prototype.Type {
 			case zb.CreatureType_Feral:

@@ -523,6 +523,7 @@ message PlayerState {
     int32 turnTime = 17;
     int32 turnNumber = 18;
     InstanceId instanceId = 19;
+    repeated CardInstance mulliganCards = 20;
 }
 
 message InitialPlayerState {
@@ -1300,6 +1301,7 @@ message CardInstance {
     // FIXME: this really shouldn't be in Protobuf
     bool abilitiesInstancesInitialized = 5;
     repeated CardAbilityInstance abilitiesInstances = 6;
+    Zone.type zone = 7;
 }
 
 message DataIdOwner {
