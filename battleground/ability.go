@@ -1,6 +1,8 @@
 package battleground
 
 import (
+	"fmt"
+
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 )
@@ -150,42 +152,92 @@ func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
 	}
 }
 
-func (c *CardInstance) OnPlay() {
-	c.MoveZone(zb.Zone_HAND, zb.Zone_PLAY)
+func (c *CardInstance) OnPlay() error {
+	return c.MoveZone(zb.Zone_HAND, zb.Zone_PLAY)
 }
 
-func (c *CardInstance) MoveZone(from, to zb.ZoneType) {
+func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 	var cardInstance *zb.CardInstance
 	var cardIndex int
 	var owner *zb.PlayerState
-	for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
-		for j, card := range c.Gameplay.State.PlayerStates[i].CardsInPlay {
-			if proto.Equal(card.InstanceId, c.InstanceId) {
-				cardInstance = card
-				cardIndex = j
-				owner = c.Gameplay.State.PlayerStates[i]
-				break
+	// move from play to graveyard
+	if from == zb.Zone_PLAY && to == zb.Zone_GRAVEYARD {
+		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInPlay {
+				if proto.Equal(card.InstanceId, c.InstanceId) {
+					cardInstance = card
+					cardIndex = j
+					owner = c.Gameplay.State.PlayerStates[i]
+					break
+				}
 			}
 		}
-	}
-
-	if cardInstance != nil {
-		if from == zb.Zone_PLAY && to == zb.Zone_GRAVEYARD {
-			// move from play to graveyard
-			owner.CardsInPlay = append(owner.CardsInPlay[:cardIndex], owner.CardsInPlay[cardIndex+1:]...)
-			owner.CardsInGraveyard = append(owner.CardsInGraveyard, cardInstance)
+		if cardInstance == nil {
+			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
 		}
-
-		// FIX ME
-		// else if from == zb.Zone_HAND && to == zb.Zone_PLAY {
-		// 	// move from hand to play
-		// 	owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
-		// 	activeCardsInHand := owner.CardsInHand
-		// 	activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-		// 	owner.CardsInHand = activeCardsInHand
-		// }
-
+		owner.CardsInPlay = append(owner.CardsInPlay[:cardIndex], owner.CardsInPlay[cardIndex+1:]...)
+		owner.CardsInGraveyard = append(owner.CardsInGraveyard, cardInstance)
+		c.Zone = zb.Zone_GRAVEYARD
 	}
+	// move from hand to play
+	if from == zb.Zone_HAND && to == zb.Zone_PLAY {
+		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
+				if proto.Equal(card.InstanceId, c.InstanceId) {
+					cardInstance = card
+					cardIndex = j
+					owner = c.Gameplay.State.PlayerStates[i]
+					break
+				}
+			}
+		}
+		if cardInstance == nil {
+			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
+		}
+		owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
+		c.Zone = zb.Zone_PLAY
+	}
+	// move from hand to play
+	if from == zb.Zone_HAND && to == zb.Zone_DECK {
+		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
+				if proto.Equal(card.InstanceId, c.InstanceId) {
+					cardInstance = card
+					cardIndex = j
+					owner = c.Gameplay.State.PlayerStates[i]
+					break
+				}
+			}
+		}
+		if cardInstance == nil {
+			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
+		}
+		owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		owner.CardsInDeck = append(owner.CardsInDeck, cardInstance)
+		c.Zone = zb.Zone_DECK
+	}
+	// move from deck to hand
+	if from == zb.Zone_DECK && to == zb.Zone_HAND {
+		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInDeck {
+				if proto.Equal(card.InstanceId, c.InstanceId) {
+					cardInstance = card
+					cardIndex = j
+					owner = c.Gameplay.State.PlayerStates[i]
+					break
+				}
+			}
+		}
+		if cardInstance == nil {
+			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
+		}
+		owner.CardsInDeck = append(owner.CardsInDeck[:cardIndex], owner.CardsInDeck[cardIndex+1:]...)
+		owner.CardsInHand = append(owner.CardsInHand, cardInstance)
+		c.Zone = zb.Zone_HAND
+	}
+
+	return nil
 }
 
 func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.PlayerState) {
@@ -195,4 +247,36 @@ func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.Playe
 		c.Gameplay.State.Winner = attacker.Id
 		c.Gameplay.State.IsEnded = true
 	}
+}
+
+func (c *CardInstance) Mulligan() error {
+
+	var owner *zb.PlayerState
+	for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+		for _, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
+			if proto.Equal(card.InstanceId, c.InstanceId) {
+				owner = c.Gameplay.State.PlayerStates[i]
+				break
+			}
+		}
+	}
+
+	if owner == nil {
+		return fmt.Errorf("no owner for card instance %d", c.InstanceId)
+	}
+	// also draw a new card from deck to hand
+	if len(owner.CardsInDeck) == 0 {
+		return fmt.Errorf("no card in deck to be drawn")
+	}
+
+	if err := c.MoveZone(zb.Zone_HAND, zb.Zone_DECK); err != nil {
+		return err
+	}
+
+	owner.MulliganCards = append(owner.MulliganCards, c.CardInstance)
+
+	newcard := owner.CardsInDeck[0]
+	newCardInstance := NewCardInstance(newcard, c.Gameplay)
+	newCardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
+	return nil
 }

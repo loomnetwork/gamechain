@@ -674,6 +674,7 @@ func TestCardPlay(t *testing.T) {
 				},
 			},
 		})
+		gp.DebugState()
 		assert.Equal(t, errNoCardsInHand, err)
 	})
 }

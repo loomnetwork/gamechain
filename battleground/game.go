@@ -553,20 +553,45 @@ func (g *Gameplay) DebugState() {
 	fmt.Fprintf(buf, "Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
 	fmt.Fprintf(buf, "Current Player Index: %v\n", state.CurrentPlayerIndex)
 
+	formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+		b := new(bytes.Buffer)
+		for _, a := range abilities {
+			b.WriteString(fmt.Sprintf("[%v, active=%v]\n", a.AbilityType, a.IsActive))
+		}
+		return b.String()
+	}
+
 	for i, player := range g.State.PlayerStates {
 		if g.State.CurrentPlayerIndex == int32(i) {
 			fmt.Fprintf(buf, "Player%d: %s 🧟\n", i+1, player.Id)
 		} else {
 			fmt.Fprintf(buf, "Player%d: %s\n", i+1, player.Id)
 		}
-		fmt.Fprintf(buf, "\tdefense: %v\n", player.Defense)
-		fmt.Fprintf(buf, "\tcurrent goo: %v\n", player.CurrentGoo)
-		fmt.Fprintf(buf, "\tgoo vials: %v\n", player.GooVials)
-		fmt.Fprintf(buf, "\thas drawn card: %v\n", player.HasDrawnCard)
-		fmt.Fprintf(buf, "\tcard in hand (%d): %v\n", len(player.CardsInHand), player.CardsInHand)
-		fmt.Fprintf(buf, "\tcard in play (%d): %v\n", len(player.CardsInPlay), player.CardsInPlay)
-		fmt.Fprintf(buf, "\tcard in deck (%d): %v\n", len(player.CardsInDeck), player.CardsInDeck)
+		fmt.Fprintf(buf, "\tstats:\n")
+		fmt.Fprintf(buf, "\t\tdefense: %v\n", player.Defense)
+		fmt.Fprintf(buf, "\t\tcurrent goo: %v\n", player.CurrentGoo)
+		fmt.Fprintf(buf, "\t\tgoo vials: %v\n", player.GooVials)
+		fmt.Fprintf(buf, "\t\thas drawn card: %v\n", player.HasDrawnCard)
+		fmt.Fprintf(buf, "\tmulligan (%d):\n", len(player.MulliganCards))
+		for _, card := range player.MulliganCards {
+			fmt.Fprintf(buf, "\t\tName:%s\n", card.Prototype.Name)
+		}
+		fmt.Fprintf(buf, "\tcard in hand (%d):\n", len(player.CardsInHand))
+		for _, card := range player.CardsInHand {
+			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+		}
+		fmt.Fprintf(buf, "\tcard in play (%d):\n", len(player.CardsInPlay))
+		for _, card := range player.CardsInPlay {
+			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+		}
+		fmt.Fprintf(buf, "\tcard in deck (%d):\n", len(player.CardsInDeck))
+		for _, card := range player.CardsInDeck {
+			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+		}
 		fmt.Fprintf(buf, "\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
+		for _, card := range player.CardsInGraveyard {
+			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+		}
 		fmt.Fprintf(buf, "\n") // extra line
 	}
 
@@ -679,21 +704,28 @@ func actionMulligan(g *Gameplay) stateFn {
 		}
 
 		// draw card to replace the reroll cards
-		for range mulliganCards {
-			player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
-			// TODO: return to deck with random order
-			player.CardsInDeck = player.CardsInDeck[1:]
+		for i := 0; i < len(mulliganCards); i++ {
+
+			// move card from hand to deck
+			cardInstance := NewCardInstance(mulliganCards[i], g)
+			if err := cardInstance.Mulligan(); err != nil {
+				return g.captureErrorAndStop(err)
+			}
+
+			// player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
+			// // TODO: return to deck with random order
+			// player.CardsInDeck = player.CardsInDeck[1:]
 		}
 
-		// place cards back to deck
-		for _, mulliganCard := range mulliganCards {
-			for i, cardInHand := range player.CardsInHand {
-				if cardInHand.InstanceId == mulliganCard.InstanceId {
-					player.CardsInHand = append(player.CardsInHand[:i], player.CardsInHand[i+1:]...)
-				}
-			}
-		}
-		player.CardsInDeck = append(player.CardsInDeck, mulliganCards...)
+		// // place cards back to deck
+		// for _, mulliganCard := range mulliganCards {
+		// 	for i, cardInHand := range player.CardsInHand {
+		// 		if cardInHand.InstanceId == mulliganCard.InstanceId {
+		// 			player.CardsInHand = append(player.CardsInHand[:i], player.CardsInHand[i+1:]...)
+		// 		}
+		// 	}
+		// }
+		// player.CardsInDeck = append(player.CardsInDeck, mulliganCards...)
 	}
 
 	// determine the next action
@@ -806,7 +838,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// get card instance from cardsInHand list
-		cardIndex, cardInstance, found := findCardInCardListByInstanceId(cardPlay.Card, activeCardsInHand)
+		_, cardInstance, found := findCardInCardListByInstanceId(cardPlay.Card, activeCardsInHand)
 		if !found {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in hand",
@@ -827,13 +859,14 @@ func actionCardPlay(g *Gameplay) stateFn {
 			g.activePlayer().CurrentGoo -= cardInstance.Instance.GooCost
 		}
 
-		// FIX ME: move to card instance
-		// put card on board
-		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, cardInstance)
-		// remove card from hand
-		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
-		g.activePlayer().CardsInHand = activeCardsInHand
+		// // FIX ME: move to card instance
+		// // put card on board
+		// g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, cardInstance)
+		// // remove card from hand
+		// activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
+		// g.activePlayer().CardsInHand = activeCardsInHand
 
+		// panic(fmt.Sprintf("cardInstance: %v", cardInstance))
 		instance := NewCardInstance(cardInstance, g)
 		instance.Play()
 
