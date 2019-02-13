@@ -1254,6 +1254,11 @@ message CardAbilityReanimate {
     int32 defense = 2;
 }
 
+message CardAbilityAttackOverlord {
+    int32 damage = 1;
+    bool wasApplied = 2;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
@@ -1261,6 +1266,7 @@ message PlayerActionOutcome {
         CardAbilityAdditionalDamageToHeavyInAttackOutcome additionalDamageToHeavyInAttack = 3;
         CardAbilityChangeStatOutcome changeStat = 5;
         CardAbilityReanimateOutcome reanimate = 4;
+        CardAbilityAttackOverlordOutcome attackOverlord = 6;
     }
 
     message CardAbilityRageOutcome {
@@ -1288,6 +1294,11 @@ message PlayerActionOutcome {
         InstanceId instanceId = 1;
         int32 decreasedValue = 2;
     }
+
+    message CardAbilityAttackOverlordOutcome {
+        InstanceId instanceId = 1;
+        int32 damage = 2;
+    }
 }
 
 message CardAbilityInstance {
@@ -1297,6 +1308,7 @@ message CardAbilityInstance {
         CardAbilityReanimate reanimate = 5;
         CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 6;
         CardAbilityChangeStat changeStat = 7;
+        CardAbilityAttackOverlord attackOverlord = 8;
     }
     bool IsActive = 3;
     CardAbilityTrigger.Enum Trigger = 4;
