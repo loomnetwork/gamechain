@@ -584,6 +584,12 @@ func (g *Gameplay) DebugState() {
 		}
 	}
 	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
+
+	fmt.Fprintf(buf, "Ability Outcomes:\n")
+	for i, outcome := range g.actionOutcomes {
+		fmt.Fprintf(buf, "\t[%d] %v\n", i, outcome)
+	}
+
 	fmt.Fprintf(buf, "==================================\n")
 	fmt.Println(buf.String())
 }
