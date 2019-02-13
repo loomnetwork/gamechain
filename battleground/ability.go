@@ -58,6 +58,16 @@ func (c *CardInstance) AfterAttacking() {
 				// TODO: generate change zone first
 				c.Instance.Defense -= changeStat.DecreasedValue
 				c.Instance.Attack -= changeStat.DecreasedValue
+				// generated outcome
+				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+					Outcome: &zb.PlayerActionOutcome_ChangeStat{
+						ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
+							InstanceId: c.InstanceId,
+							NewAttack:  c.Instance.Attack,
+							NewDefense: c.Instance.Defense,
+						},
+					},
+				})
 			}
 		}
 	}
@@ -74,6 +84,7 @@ func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) {
 				if c.Instance.Type == zb.CreatureType_Heavy {
 					c.Instance.Defense -= additionalDamageToHeavyInAttack.AddedAttack
 				}
+
 			}
 		}
 	}
