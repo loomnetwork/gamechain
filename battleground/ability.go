@@ -18,17 +18,8 @@ func NewCardInstance(instance *zb.CardInstance, gameplay *Gameplay) *CardInstanc
 	}
 }
 
-<<<<<<< HEAD:battleground/zb_properties.go
-func (c *CardInstance) Entry() {
-
-}
-
-func (c *CardInstance) EndOfTurn() {
-
-=======
 func (c *CardInstance) Play() {
 	c.OnPlay()
->>>>>>> 26e8e316a52c1f7beb8052522da133f68429d2ca:battleground/ability.go
 }
 
 func (c *CardInstance) Attack(target *CardInstance) {
@@ -40,6 +31,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
 	target.OnBeingAttacked(c)
 	target.OnDefenseChange(old, target.Instance.Defense)
+	c.AfterAttacking(target)
 
 	if c.Instance.Defense <= 0 {
 		c.OnDeath(target)
@@ -53,13 +45,28 @@ func (c *CardInstance) Attack(target *CardInstance) {
 func (c *CardInstance) GotDamage(attacker *CardInstance) {
 }
 
+func (c *CardInstance) AfterAttacking(target *CardInstance) {
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_ChangeStat:
+				changeStat := ability.ChangeStat
+				// Once attacking, defense and attack values are decreased
+				// TODO: generate change zone first
+				c.Instance.Defense -= changeStat.DecreasedValue
+				c.Instance.Attack -= changeStat.DecreasedValue
+			}
+		}
+	}
+}
+
 func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) {
 	for _, ai := range attacker.AbilitiesInstances {
 		if ai.Trigger == zb.CardAbilityTrigger_Attack {
 			switch ability := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
 				additionalDamageToHeavyInAttack := ability.AdditionalDamageToHeavyInAttack
-				// When zombie dies, return it to play with default Atk, Def and effects
+				// If the target is heavy, add addtional attack to defense
 				// TODO: generate change zone first
 				if c.Instance.Type == zb.CreatureType_Heavy {
 					c.Instance.Defense -= additionalDamageToHeavyInAttack.AddedAttack
