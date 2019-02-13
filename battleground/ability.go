@@ -267,7 +267,7 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 			owner.CardsInGraveyard = append(owner.CardsInGraveyard[:cardIndex], owner.CardsInGraveyard[cardIndex+1:]...)
 		}
 		owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
-		c.Zone = zb.Zone_GRAVEYARD
+		c.Zone = zb.Zone_PLAY
 	} else if from == zb.Zone_HAND && to == zb.Zone_PLAY {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
