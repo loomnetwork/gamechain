@@ -245,6 +245,28 @@ func TestAbilityAttackOverlord(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, int32(18), gp.State.PlayerStates[0].Defense)
+
+		instance1 := &zb.CardInstance{
+			InstanceId:         &zb.InstanceId{Id: 101},
+			Instance:           newCardInstanceSpecificDataFromCardDetails(card0),
+			Prototype:          proto.Clone(card0).(*zb.Card),
+			AbilitiesInstances: []*zb.CardAbilityInstance{},
+		}
+
+		gp.State.PlayerStates[0].CardsInHand = append(gp.State.PlayerStates[0].CardsInHand, instance1)
+
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 101},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, int32(18), gp.State.PlayerStates[0].Defense)
+
 	})
 }
 

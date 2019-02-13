@@ -1297,7 +1297,7 @@ message PlayerActionOutcome {
 
     message CardAbilityAttackOverlordOutcome {
         InstanceId instanceId = 1;
-        int32 damage = 2;
+        int32 newDefense = 2;
     }
 }
 

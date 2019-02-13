@@ -242,6 +242,14 @@ func (c *CardInstance) OnPlay() error {
 					// damage player overlord
 					c.Gameplay.activePlayer().Defense -= attackOverlord.Damage
 					attackOverlord.WasApplied = true
+					c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+						Outcome: &zb.PlayerActionOutcome_AttackOverlord{
+							AttackOverlord: &zb.PlayerActionOutcome_CardAbilityAttackOverlordOutcome{
+								InstanceId: c.Gameplay.activePlayer().InstanceId,
+								NewDefense: c.Gameplay.activePlayer().Defense,
+							},
+						},
+					})
 				}
 
 			}
