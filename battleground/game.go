@@ -821,15 +821,15 @@ func actionCardPlay(g *Gameplay) stateFn {
 			g.activePlayer().CurrentGoo -= cardInstance.Instance.GooCost
 		}
 
+		// FIX ME: move to card instance
 		// put card on board
 		g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay, cardInstance)
 		// remove card from hand
 		activeCardsInHand = append(activeCardsInHand[:cardIndex], activeCardsInHand[cardIndex+1:]...)
 		g.activePlayer().CardsInHand = activeCardsInHand
 
-		//Activate entry ability
-		ci := NewCardInstance(cardInstance, g)
-		ci.Entry()
+		instance := NewCardInstance(cardInstance, g)
+		instance.Play()
 
 		// record history data
 		g.history = append(g.history, &zb.HistoryData{
@@ -888,108 +888,80 @@ func actionCardAttack(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
-	var attacker *zb.CardInstance
-	var target *zb.CardInstance
-	var attackerIndex int
-	var targetIndex int
+	if g.useBackendGameLogic {
+		var attacker *zb.CardInstance
+		var target *zb.CardInstance
 
-	targetInstanceId := current.GetCardAttack().Target.InstanceId.Id
-	if len(g.activePlayer().CardsInPlay) <= 0 {
-		if !g.useBackendGameLogic {
-			g.debugf("No cards on board to attack with")
-			g.PrintState()
-			next := g.next()
-			if next == nil {
-				return nil
-			}
-		} else {
-			return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
-		}
-	}
-
-	for i, card := range g.activePlayer().CardsInPlay {
-		if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
-			attacker = card
-			attackerIndex = i
-			break
-		}
-	}
-
-	if attacker == nil {
-		if !g.useBackendGameLogic {
-			g.debugf("Attacker not found\n")
-			g.PrintState()
-			next := g.next()
-			if next == nil {
-				return nil
-			}
-		} else {
-			return g.captureErrorAndStop(errors.New("Attacker not found"))
-		}
-	}
-
-	if targetInstanceId == 0 || targetInstanceId == 1 {
-		if g.activePlayer().InstanceId.Id == targetInstanceId {
-			return g.captureErrorAndStop(errors.New("Can't attack own overlord"))
-		}
-
-		// overlord
-		g.activePlayerOpponent().Defense -= attacker.Instance.Attack
-
-		if g.activePlayerOpponent().Defense <= 0 {
-			g.State.Winner = g.activePlayer().Id
-			g.State.IsEnded = true
-		}
-	} else {
-		// card
-		if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
+		targetInstanceID := current.GetCardAttack().Target.InstanceId.Id
+		if len(g.activePlayer().CardsInPlay) <= 0 {
 			if !g.useBackendGameLogic {
-				g.debugf("No cards on board to attack")
+				g.debugf("No cards on board to attack with")
 				g.PrintState()
 				next := g.next()
 				if next == nil {
 					return nil
 				}
 			} else {
-				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
+				return g.captureErrorAndStop(errors.New("No cards on board to attack with"))
 			}
 		}
 
-		for i, card := range g.activePlayerOpponent().CardsInPlay {
-			if proto.Equal(card.InstanceId, current.GetCardAttack().Target.InstanceId) {
-				target = card
-				targetIndex = i
+		for _, card := range g.activePlayer().CardsInPlay {
+			if proto.Equal(card.InstanceId, current.GetCardAttack().Attacker) {
+				attacker = card
 				break
 			}
 		}
 
-		if target == nil {
-			return g.captureErrorAndStop(errors.New("Target not found"))
+		if attacker == nil {
+			if !g.useBackendGameLogic {
+				g.debugf("Attacker not found\n")
+				g.PrintState()
+				next := g.next()
+				if next == nil {
+					return nil
+				}
+			} else {
+				return g.captureErrorAndStop(errors.New("Attacker not found"))
+			}
 		}
 
-		g.debugf(
-			"card {instanceId: %d, name: %s} attacking card {instanceId: %d, name: %s}",
-			attacker.InstanceId,
-			attacker.Prototype.Name,
-			target.InstanceId,
-			target.Prototype.Name,
-		)
-		attackerInstance := NewCardInstance(attacker, g)
-		targetInstance := NewCardInstance(target, g)
-		// normal attack
-		attackerInstance.Attack(targetInstance)
+		// instance id 0 and 1 are reserved for overloads
+		if targetInstanceID == 0 || targetInstanceID == 1 {
+			if g.activePlayer().InstanceId.Id == targetInstanceID {
+				return g.captureErrorAndStop(errors.New("Can't attack own overlord"))
+			}
+			attackerInstance := NewCardInstance(attacker, g)
+			attackerInstance.AttackOverload(g.activePlayerOpponent(), g.activePlayer())
+		} else {
+			// card
+			if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
+				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
 
-		// TODO: move changing card zone to a function
-		// g.updateZone()
+			}
 
-		// change location of the card
-		if attacker.Instance.Defense <= 0 {
-			g.activePlayer().CardsInPlay = append(g.activePlayer().CardsInPlay[:attackerIndex], g.activePlayer().CardsInPlay[attackerIndex+1:]...)
-			g.activePlayer().CardsInGraveyard = append(g.activePlayer().CardsInGraveyard, attacker)
-		}
-		if target.Instance.Defense <= 0 {
-			g.activePlayerOpponent().CardsInPlay = append(g.activePlayerOpponent().CardsInPlay[:targetIndex], g.activePlayerOpponent().CardsInPlay[targetIndex+1:]...)
-			g.activePlayerOpponent().CardsInGraveyard = append(g.activePlayerOpponent().CardsInGraveyard, target)
+			for _, card := range g.activePlayerOpponent().CardsInPlay {
+				if proto.Equal(card.InstanceId, current.GetCardAttack().Target.InstanceId) {
+					target = card
+					break
+				}
+			}
+
+			if target == nil {
+				return g.captureErrorAndStop(errors.New("Target not found"))
+			}
+
+			g.debugf(
+				"card {instanceId: %d, name: %s} attacking card {instanceId: %d, name: %s}",
+				attacker.InstanceId,
+				attacker.Prototype.Name,
+				target.InstanceId,
+				target.Prototype.Name,
+			)
+
+			attackerInstance := NewCardInstance(attacker, g)
+			targetInstance := NewCardInstance(target, g)
+			attackerInstance.Attack(targetInstance)
 		}
 	}
 
