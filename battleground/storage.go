@@ -488,6 +488,16 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
+		case zb.CardAbilityType_AttackOverlord:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_AttackOverlord{
+					AttackOverlord: &zb.CardAbilityAttackOverlord{
+						Damage: raw.Value,
+					},
+				},
+			})
 		}
 
 	}
