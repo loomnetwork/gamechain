@@ -170,6 +170,24 @@ func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
 }
 
 func (c *CardInstance) OnPlay() error {
+
+	// trigger card ability on play
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Entry {
+			// activate ability
+			switch ability := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_AttackOverlord:
+				attackOverlord := ability.AttackOverlord
+				if !attackOverlord.WasApplied {
+					// damage player overlord
+					c.Gameplay.activePlayer().Defense -= attackOverlord.Damage
+					attackOverlord.WasApplied = true
+				}
+
+			}
+		}
+	}
+
 	return c.MoveZone(zb.Zone_HAND, zb.Zone_PLAY)
 }
 
@@ -269,7 +287,6 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 }
 
 func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.PlayerState) {
-	c.Gameplay.debugf("Attack Overlord")
 	target.Defense -= c.Instance.Attack
 
 	if target.Defense <= 0 {

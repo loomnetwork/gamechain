@@ -504,7 +504,7 @@ func (g *Gameplay) debugf(msg string, values ...interface{}) {
 	if g.logger == nil {
 		return
 	}
-	g.logger.Debug(fmt.Sprintf(msg, values...))
+	g.logger.Info(fmt.Sprintf(msg, values...))
 }
 
 func (g *Gameplay) PrintState() {
@@ -549,7 +549,7 @@ func (g *Gameplay) PrintState() {
 	}
 	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
 	fmt.Fprintf(buf, "==================================\n")
-	g.debugf(buf.String())
+	//g.debugf(buf.String())
 }
 
 func (g *Gameplay) DebugState() {
