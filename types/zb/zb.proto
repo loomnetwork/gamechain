@@ -1258,8 +1258,8 @@ message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
         CardAbilityPriorityAttackOutcome priorityAttack = 2;
-        CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 3;
-        CardAbilityChangeStat changeStat = 5;
+        CardAbilityAdditionalDamageToHeavyInAttackOutcome additionalDamageToHeavyInAttack = 3;
+        CardAbilityChangeStatOutcome changeStat = 5;
         CardAbilityReanimateOutcome reanimate = 4;
     }
 
@@ -1277,6 +1277,16 @@ message PlayerActionOutcome {
         InstanceId instanceId = 1;
         int32 attack = 2;
         int32 defense = 3;
+    }
+
+    message CardAbilityAdditionalDamageToHeavyInAttackOutcome {
+        InstanceId instanceId = 1;
+        int32 addedAttack = 2;
+    }
+
+    message CardAbilityChangeStatOutcome {
+        InstanceId instanceId = 1;
+        int32 decreasedValue = 2;
     }
 }
 
