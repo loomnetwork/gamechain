@@ -1246,7 +1246,7 @@ message CardAbilityPriorityAttack {
 
 message CardAbilityReanimate {
     int32 attack = 1;
-    int32 defence = 2;
+    int32 defense = 2;
 }
 
 message PlayerActionOutcome {
@@ -1254,6 +1254,7 @@ message PlayerActionOutcome {
         CardAbilityRageOutcome rage = 1;
         CardAbilityPriorityAttackOutcome priorityAttack = 2;
         CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 3;
+        CardAbilityReanimateOutcome reanimate = 4;
     }
 
     message CardAbilityRageOutcome {
@@ -1264,6 +1265,12 @@ message PlayerActionOutcome {
     message CardAbilityPriorityAttackOutcome {
         InstanceId instanceId = 1;
         int32 newDefense = 2;
+    }
+
+    message CardAbilityReanimateOutcome {
+        InstanceId instanceId = 1;
+        int32 attack = 2;
+        int32 defense = 3;
     }
 }
 
