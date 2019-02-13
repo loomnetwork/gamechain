@@ -418,7 +418,6 @@ func TestAbilityRage(t *testing.T) {
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
-		gp.DebugState()
 		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
 		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId.Id)
 	})
@@ -514,11 +513,13 @@ func TestAbilityReanimate(t *testing.T) {
 				},
 			},
 		})
+		gp.DebugState()
 		assert.Nil(t, err)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, false, gp.State.PlayerStates[0].CardsInPlay[0].AbilitiesInstances[0].IsActive)
-		gp.DebugState()
+		assert.Equal(t, int32(2), gp.actionOutcomes[0].GetReanimate().Attack)
+		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetReanimate().Defense)
 	})
 }
 
