@@ -594,7 +594,7 @@ func (g *Gameplay) DebugState() {
 		for _, card := range player.CardsInDeck {
 			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
-		fmt.Fprintf(buf, "\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
+		fmt.Fprintf(buf, "\tcard in graveyard (%d):\n", len(player.CardsInGraveyard))
 		for _, card := range player.CardsInGraveyard {
 			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
@@ -967,13 +967,13 @@ func actionCardAttack(g *Gameplay) stateFn {
 			}
 		}
 
-		// instance id 0 and 1 are reserved for overloads
+		// instance id 0 and 1 are reserved for overlord
 		if targetInstanceID == 0 || targetInstanceID == 1 {
 			if g.activePlayer().InstanceId.Id == targetInstanceID {
 				return g.captureErrorAndStop(errors.New("Can't attack own overlord"))
 			}
 			attackerInstance := NewCardInstance(attacker, g)
-			attackerInstance.AttackOverload(g.activePlayerOpponent(), g.activePlayer())
+			attackerInstance.AttackOverlord(g.activePlayerOpponent(), g.activePlayer())
 		} else {
 			// card
 			if len(g.activePlayerOpponent().CardsInPlay) <= 0 {
@@ -1110,7 +1110,7 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
-	// TODO: overload skill
+	// TODO: overlord skill
 
 	// determine the next action
 	g.PrintState()
