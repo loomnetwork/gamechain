@@ -475,10 +475,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				IsActive: true,
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_Reanimate{
-					Reanimate: &zb.CardAbilityReanimate{
-						Attack:  instance.Attack,
-						Defense: instance.Defense,
-					},
+					Reanimate: &zb.CardAbilityReanimate{},
 				},
 			})
 		}
