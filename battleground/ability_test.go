@@ -40,7 +40,7 @@ func TestAbilityChangeStat(t *testing.T) {
 		},
 	}
 
-	t.Run("ChangeStat is activated when attacking", func(t *testing.T) {
+	t.Run("ChangeStat is activated when attacking a card", func(t *testing.T) {
 		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
@@ -106,7 +106,7 @@ func TestAbilityChangeStat(t *testing.T) {
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
 	})
 
-	t.Run("AdditionalDamageToHeavyInAttack ability does NOT trigger when target is NOT heavy", func(t *testing.T) {
+	t.Run("ChangeStat is activated when attacking overlord", func(t *testing.T) {
 		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
@@ -120,55 +120,49 @@ func TestAbilityChangeStat(t *testing.T) {
 			Attack:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_AdditionalDamageToHeavyInAttack,
+					Type:    zb.CardAbilityType_ChangeStat,
 					Trigger: zb.CardAbilityTrigger_Attack,
 				},
 			},
 		}
 		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
 			AbilitiesInstances: []*zb.CardAbilityInstance{
 				&zb.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
-						AdditionalDamageToHeavyInAttack: &zb.CardAbilityAdditionalDamageToHeavyInAttack{
-							AddedAttack: 2,
+					AbilityType: &zb.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb.CardAbilityChangeStat{
+							DecreasedValue: 1,
 						},
 					},
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
-				Defense: 5,
-				Attack:  1,
-				Type:    zb.CreatureType_Feral,
-			},
-		}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
-		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+
+		assert.Equal(t, int32(18), gp.State.PlayerStates[1].Defense)
 	})
+
 }
 func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 	var c *ZombieBattleground
