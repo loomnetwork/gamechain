@@ -1240,6 +1240,10 @@ message CardAbilityAdditionalDamageToHeavyInAttack {
     int32 addedAttack = 1;
 }
 
+message CardAbilityChangeStat {
+    int32 decreasedValue = 1;
+}
+
 message CardAbilityPriorityAttack {
     int32 attackerOldDefense = 1;
     int32 targetOldDefense = 2;
@@ -1255,6 +1259,7 @@ message PlayerActionOutcome {
         CardAbilityRageOutcome rage = 1;
         CardAbilityPriorityAttackOutcome priorityAttack = 2;
         CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 3;
+        CardAbilityChangeStat changeStat = 5;
         CardAbilityReanimateOutcome reanimate = 4;
     }
 
@@ -1281,6 +1286,7 @@ message CardAbilityInstance {
         CardAbilityPriorityAttack priorityAttack = 2;
         CardAbilityReanimate reanimate = 5;
         CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 6;
+        CardAbilityChangeStat changeStat = 7;
     }
     bool IsActive = 3;
     CardAbilityTrigger.Enum Trigger = 4;
