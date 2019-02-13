@@ -490,7 +490,7 @@ func TestAbilityReanimate(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_Reanimate{
 						Reanimate: &zb.CardAbilityReanimate{
 							Attack:  card0.Attack,
-							Defence: card0.Defense,
+							Defense: card0.Defense,
 						},
 					},
 				},
@@ -524,6 +524,7 @@ func TestAbilityReanimate(t *testing.T) {
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, false, gp.State.PlayerStates[0].CardsInPlay[0].AbilitiesInstances[0].IsActive)
+		gp.DebugState()
 	})
 }
 

@@ -79,6 +79,9 @@ func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) {
 func (c *CardInstance) OnDeath(attacker *CardInstance) {
 	// trigger target ability
 	for _, ai := range c.AbilitiesInstances {
+		if !ai.IsActive {
+			continue
+		}
 		if ai.Trigger == zb.CardAbilityTrigger_Death {
 			switch ability := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_Reanimate:
@@ -86,8 +89,20 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) {
 				// When zombie dies, return it to play with default Atk, Def and effects
 				// TODO: generate change zone first
 				c.Instance.Attack = reanimate.Attack
-				c.Instance.Defense = reanimate.Defence
+				c.Instance.Defense = reanimate.Defense
+				// just only trigger once
 				ai.IsActive = false
+
+				// generated outcome
+				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+					Outcome: &zb.PlayerActionOutcome_Reanimate{
+						Reanimate: &zb.PlayerActionOutcome_CardAbilityReanimateOutcome{
+							InstanceId: c.InstanceId,
+							Attack:     c.Instance.Attack,
+							Defense:    c.Instance.Defense,
+						},
+					},
+				})
 			}
 		}
 	}
