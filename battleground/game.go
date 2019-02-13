@@ -196,6 +196,12 @@ loop:
 		if len(playerState.CardsInDeck) > int(playerState.InitialCardsInHandCount) {
 			playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
 			playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
+			for i := 0; i < len(playerState.CardsInHand); i++ {
+				playerState.CardsInHand[i].Zone = zb.Zone_HAND
+			}
+			for i := 0; i < len(playerState.CardsInDeck); i++ {
+				playerState.CardsInDeck[i].Zone = zb.Zone_DECK
+			}
 		}
 	}
 
@@ -247,7 +253,7 @@ loop:
 	}
 
 	// first player draws a card immediately
-	if err := drawCard(g, 1); err != nil {
+	if err := g.drawCard(g.activePlayer(), 1); err != nil {
 		return err
 	}
 
@@ -578,19 +584,19 @@ func (g *Gameplay) DebugState() {
 		}
 		fmt.Fprintf(buf, "\tcard in hand (%d):\n", len(player.CardsInHand))
 		for _, card := range player.CardsInHand {
-			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in play (%d):\n", len(player.CardsInPlay))
 		for _, card := range player.CardsInPlay {
-			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in deck (%d):\n", len(player.CardsInDeck))
 		for _, card := range player.CardsInDeck {
-			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in graveyard (%d): %v\n", len(player.CardsInGraveyard), player.CardsInGraveyard)
 		for _, card := range player.CardsInGraveyard {
-			fmt.Fprintf(buf, "\t\tName:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%d Name:%s, Atk:%d, Def:%d, Zone:%v %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\n") // extra line
 	}
@@ -759,41 +765,37 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 }
 
-func drawCard(g *Gameplay, count int) error {
-	var card *zb.CardInstance
+func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
 
 	if g.useBackendGameLogic {
 		// check if player has already drawn a card after starting new turn
-		if g.activePlayer().HasDrawnCard {
+		if player.HasDrawnCard {
 			g.err = errInvalidAction
 			return nil
 		}
 
 		for i := 0; i < count; i++ {
 			// draw card
-			if len(g.activePlayer().CardsInDeck) < 1 {
+			if len(player.CardsInDeck) < 1 {
 				return errors.New("Can't draw card. No more cards in deck")
 			}
 
 			// handle card limit in hand
-			if len(g.activePlayer().CardsInHand)+1 > int(g.activePlayer().MaxCardsInHand) {
+			if len(player.CardsInHand)+1 > int(player.MaxCardsInHand) {
 				// TODO: assgin g.err
 				return nil
 			}
 
-			card = g.activePlayer().CardsInDeck[0]
-
-			g.activePlayer().CardsInHand = append(g.activePlayer().CardsInHand, card)
-
-			// remove card from CardsInDeck
-			g.activePlayer().CardsInDeck = g.activePlayer().CardsInDeck[1:]
+			card := player.CardsInDeck[0]
+			cardInstance := NewCardInstance(card, g)
+			cardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
 		}
 	} else {
 		// do nothing, client currently doesn't care about this at all
 	}
 
 	// card drawn, don't allow another draw until next turn
-	g.activePlayer().HasDrawnCard = true
+	player.HasDrawnCard = true
 
 	return nil
 }
@@ -1173,7 +1175,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	} else {
 		cardsToDraw = 1
 	}
-	if err := drawCard(g, cardsToDraw); err != nil {
+	if err := g.drawCard(g.activePlayer(), cardsToDraw); err != nil {
 		return g.captureErrorAndStop(err)
 	}
 

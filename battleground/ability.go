@@ -176,7 +176,6 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 	var cardInstance *zb.CardInstance
 	var cardIndex int
 	var owner *zb.PlayerState
-	// move from play to graveyard
 	if from == zb.Zone_PLAY && to == zb.Zone_GRAVEYARD {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInPlay {
@@ -191,12 +190,14 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 		if cardInstance == nil {
 			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
 		}
-		owner.CardsInPlay = append(owner.CardsInPlay[:cardIndex], owner.CardsInPlay[cardIndex+1:]...)
+		if cardIndex == 0 {
+			owner.CardsInPlay = owner.CardsInPlay[cardIndex+1:]
+		} else {
+			owner.CardsInPlay = append(owner.CardsInPlay[:cardIndex], owner.CardsInPlay[cardIndex+1:]...)
+		}
 		owner.CardsInGraveyard = append(owner.CardsInGraveyard, cardInstance)
 		c.Zone = zb.Zone_GRAVEYARD
-	}
-	// move from hand to play
-	if from == zb.Zone_HAND && to == zb.Zone_PLAY {
+	} else if from == zb.Zone_HAND && to == zb.Zone_PLAY {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
 				if proto.Equal(card.InstanceId, c.InstanceId) {
@@ -210,12 +211,14 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 		if cardInstance == nil {
 			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
 		}
-		owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		if cardIndex == 0 {
+			owner.CardsInHand = owner.CardsInHand[cardIndex+1:]
+		} else {
+			owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		}
 		owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
 		c.Zone = zb.Zone_PLAY
-	}
-	// move from hand to play
-	if from == zb.Zone_HAND && to == zb.Zone_DECK {
+	} else if from == zb.Zone_HAND && to == zb.Zone_DECK {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
 				if proto.Equal(card.InstanceId, c.InstanceId) {
@@ -229,12 +232,14 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 		if cardInstance == nil {
 			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
 		}
-		owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		if cardIndex == 0 {
+			owner.CardsInHand = owner.CardsInHand[cardIndex+1:]
+		} else {
+			owner.CardsInHand = append(owner.CardsInHand[:cardIndex], owner.CardsInHand[cardIndex+1:]...)
+		}
 		owner.CardsInDeck = append(owner.CardsInDeck, cardInstance)
 		c.Zone = zb.Zone_DECK
-	}
-	// move from deck to hand
-	if from == zb.Zone_DECK && to == zb.Zone_HAND {
+	} else if from == zb.Zone_DECK && to == zb.Zone_HAND {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInDeck {
 				if proto.Equal(card.InstanceId, c.InstanceId) {
@@ -248,9 +253,15 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 		if cardInstance == nil {
 			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
 		}
-		owner.CardsInDeck = append(owner.CardsInDeck[:cardIndex], owner.CardsInDeck[cardIndex+1:]...)
+		if cardIndex == 0 {
+			owner.CardsInDeck = owner.CardsInDeck[cardIndex+1:]
+		} else {
+			owner.CardsInDeck = append(owner.CardsInDeck[:cardIndex], owner.CardsInDeck[cardIndex+1:]...)
+		}
 		owner.CardsInHand = append(owner.CardsInHand, cardInstance)
 		c.Zone = zb.Zone_HAND
+	} else {
+		return fmt.Errorf("invalid move zone from %v to %v", from, to)
 	}
 
 	return nil

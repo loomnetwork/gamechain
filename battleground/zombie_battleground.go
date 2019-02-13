@@ -1408,7 +1408,6 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err != nil {
 		return nil, err
 	}
-
 	gamestate.Winner = req.WinnerId
 	gamestate.IsEnded = true
 	if err := saveGameState(ctx, gamestate); err != nil {
