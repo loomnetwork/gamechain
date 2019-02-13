@@ -1241,7 +1241,7 @@ message CardAbilityAdditionalDamageToHeavyInAttack {
 }
 
 message CardAbilityChangeStat {
-    int32 decreasedValue = 1;
+    int32 statAdjustment = 1;
 }
 
 message CardAbilityPriorityAttack {
