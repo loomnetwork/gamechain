@@ -463,6 +463,7 @@ func TestAbilityReanimate(t *testing.T) {
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
+			Name:    "Reanimate",
 			Defense: 3,
 			Attack:  2,
 			Abilities: []*zb.CardAbility{
@@ -482,12 +483,13 @@ func TestAbilityReanimate(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_Reanimate{
 						Reanimate: &zb.CardAbilityReanimate{
-							Attack:  card0.Attack,
-							Defense: card0.Defense,
+							DefaultAttack:  card0.Attack,
+							DefaultDefense: card0.Defense,
 						},
 					},
 				},
 			},
+			Owner: player1,
 		}
 		instance1 := &zb.CardInstance{
 			InstanceId: &zb.InstanceId{Id: 2},
@@ -496,6 +498,7 @@ func TestAbilityReanimate(t *testing.T) {
 				Defense: 5,
 				Attack:  4,
 			},
+			Owner: player2,
 		}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
@@ -518,8 +521,8 @@ func TestAbilityReanimate(t *testing.T) {
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, false, gp.State.PlayerStates[0].CardsInPlay[0].AbilitiesInstances[0].IsActive)
-		assert.Equal(t, int32(2), gp.actionOutcomes[0].GetReanimate().Attack)
-		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetReanimate().Defense)
+		assert.Equal(t, int32(2), gp.actionOutcomes[0].GetReanimate().NewCardInstance.Instance.Attack)
+		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetReanimate().NewCardInstance.Instance.Defense)
 	})
 }
 

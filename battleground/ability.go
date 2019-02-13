@@ -88,21 +88,70 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) {
 		if ai.Trigger == zb.CardAbilityTrigger_Death {
 			switch ability := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_Reanimate:
-				reanimate := ability.Reanimate
 				// When zombie dies, return it to play with default Atk, Def and effects
-				// TODO: generate change zone first
-				c.Instance.Attack = reanimate.Attack
-				c.Instance.Defense = reanimate.Defense
-				// just only trigger once
+
+				// find the new instance id
+				var nextInstanceID int32
+				for _, playerState := range c.Gameplay.State.PlayerStates {
+					for _, card := range playerState.CardsInPlay {
+						if card.InstanceId.Id > nextInstanceID {
+							nextInstanceID = card.InstanceId.Id
+						}
+					}
+					for _, card := range playerState.CardsInHand {
+						if card.InstanceId.Id > nextInstanceID {
+							nextInstanceID = card.InstanceId.Id
+						}
+					}
+					for _, card := range playerState.CardsInDeck {
+						if card.InstanceId.Id > nextInstanceID {
+							nextInstanceID = card.InstanceId.Id
+						}
+					}
+					for _, card := range playerState.CardsInGraveyard {
+						if card.InstanceId.Id > nextInstanceID {
+							nextInstanceID = card.InstanceId.Id
+						}
+					}
+				}
+				nextInstanceID++
+				c.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD)
 				ai.IsActive = false
+				reanimate := ability.Reanimate
+				newInstance := proto.Clone(c.CardInstance).(*zb.CardInstance)
+				// remove ability
+				var newAbilities []*zb.CardAbilityInstance
+				for _, ability := range newInstance.AbilitiesInstances {
+					if ability.AbilityType != ai.AbilityType {
+						newAbilities = append(newAbilities, ability)
+					}
+				}
+				newInstance.AbilitiesInstances = newAbilities
+				newInstance.InstanceId.Id = nextInstanceID
+				newInstance.Instance.Attack = reanimate.DefaultAttack
+				newInstance.Instance.Defense = reanimate.DefaultDefense
+				// FIX ME: better way to do this?
+				var activePlayer *zb.PlayerState
+				for _, playerState := range c.Gameplay.State.PlayerStates {
+					if playerState.Id == newInstance.Owner {
+						activePlayer = playerState
+						break
+					}
+				}
+				if activePlayer == nil {
+					panic("want not nil activePlayer")
+				}
+				activePlayer.CardsInGraveyard = append(activePlayer.CardsInGraveyard, newInstance)
+				newcardInstance := NewCardInstance(newInstance, c.Gameplay)
+				newcardInstance.MoveZone(zb.Zone_GRAVEYARD, zb.Zone_PLAY)
+				// just only trigger once
+				reanimate.NewInstance = newInstance
 
 				// generated outcome
 				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 					Outcome: &zb.PlayerActionOutcome_Reanimate{
 						Reanimate: &zb.PlayerActionOutcome_CardAbilityReanimateOutcome{
-							InstanceId: c.InstanceId,
-							Attack:     c.Instance.Attack,
-							Defense:    c.Instance.Defense,
+							NewCardInstance: newInstance,
 						},
 					},
 				})
@@ -198,6 +247,27 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 		}
 		owner.CardsInGraveyard = append(owner.CardsInGraveyard, cardInstance)
 		c.Zone = zb.Zone_GRAVEYARD
+	} else if from == zb.Zone_GRAVEYARD && to == zb.Zone_PLAY {
+		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
+			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInGraveyard {
+				if proto.Equal(card.InstanceId, c.InstanceId) {
+					cardInstance = card
+					cardIndex = j
+					owner = c.Gameplay.State.PlayerStates[i]
+					break
+				}
+			}
+		}
+		if cardInstance == nil {
+			return fmt.Errorf("card instance id %s not found in play", c.InstanceId)
+		}
+		if cardIndex == 0 {
+			owner.CardsInGraveyard = owner.CardsInGraveyard[cardIndex+1:]
+		} else {
+			owner.CardsInGraveyard = append(owner.CardsInGraveyard[:cardIndex], owner.CardsInGraveyard[cardIndex+1:]...)
+		}
+		owner.CardsInPlay = append(owner.CardsInPlay, cardInstance)
+		c.Zone = zb.Zone_GRAVEYARD
 	} else if from == zb.Zone_HAND && to == zb.Zone_PLAY {
 		for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 			for j, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {
@@ -268,7 +338,7 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 	return nil
 }
 
-func (c *CardInstance) AttackOverload(target *zb.PlayerState, attacker *zb.PlayerState) {
+func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.PlayerState) {
 	c.Gameplay.debugf("Attack Overlord")
 	target.Defense -= c.Instance.Attack
 

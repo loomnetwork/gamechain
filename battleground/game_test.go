@@ -110,7 +110,7 @@ func TestGameStateFunc(t *testing.T) {
 		},
 	})
 	assert.Nil(t, err)
-	// overload skill used
+	// overlord skill used
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_OverlordSkillUsed,
 		PlayerId:   player1,
