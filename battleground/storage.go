@@ -478,6 +478,16 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					Reanimate: &zb.CardAbilityReanimate{},
 				},
 			})
+		case zb.CardAbilityType_ChangeStat:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_ChangeStat{
+					ChangeStat: &zb.CardAbilityChangeStat{
+						StatAdjustment: raw.Value,
+					},
+				},
+			})
 		}
 
 	}

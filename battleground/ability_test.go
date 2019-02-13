@@ -69,7 +69,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
-							DecreasedValue: 1,
+							StatAdjustment: 1,
 						},
 					},
 				},
@@ -135,7 +135,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
-							DecreasedValue: 1,
+							StatAdjustment: 1,
 						},
 					},
 				},
