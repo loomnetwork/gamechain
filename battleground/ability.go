@@ -34,17 +34,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
 	target.OnBeingAttacked(c)
 	target.OnDefenseChange(old, target.Instance.Defense)
-	c.AfterAttacking()
-
-	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-		Outcome: &zb.PlayerActionOutcome_ChangeStat{
-			ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
-				InstanceId: target.InstanceId,
-				NewDefense: target.Instance.Defense,
-				NewAttack:  target.Instance.Attack,
-			},
-		},
-	})
+	c.AfterAttacking(target.InstanceId)
 
 	if c.Instance.Defense <= 0 {
 		c.OnDeath(target)
@@ -58,7 +48,7 @@ func (c *CardInstance) Attack(target *CardInstance) {
 func (c *CardInstance) GotDamage(attacker *CardInstance) {
 }
 
-func (c *CardInstance) AfterAttacking() {
+func (c *CardInstance) AfterAttacking(targetInstanceId *zb.InstanceId) {
 	for _, ai := range c.AbilitiesInstances {
 		if ai.Trigger == zb.CardAbilityTrigger_Attack {
 			switch ability := ai.AbilityType.(type) {
@@ -68,19 +58,32 @@ func (c *CardInstance) AfterAttacking() {
 				// TODO: generate change zone first
 				if changeStat.Stat == zb.StatType_Defense {
 					c.Instance.Defense += changeStat.StatAdjustment
+					// generated outcome
+					c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+						Outcome: &zb.PlayerActionOutcome_ChangeStat{
+							ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
+								InstanceId:       c.InstanceId,
+								NewDefense:       c.Instance.Defense,
+								Stat:             zb.StatType_Defense,
+								TargetInstanceId: targetInstanceId,
+							},
+						},
+					})
 				} else if changeStat.Stat == zb.StatType_Attack {
 					c.Instance.Attack += changeStat.StatAdjustment
-				}
-				// generated outcome
-				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-					Outcome: &zb.PlayerActionOutcome_ChangeStat{
-						ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
-							InstanceId: c.InstanceId,
-							NewAttack:  c.Instance.Attack,
-							NewDefense: c.Instance.Defense,
+					// generated outcome
+					c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+						Outcome: &zb.PlayerActionOutcome_ChangeStat{
+							ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
+								InstanceId:       c.InstanceId,
+								NewAttack:        c.Instance.Attack,
+								Stat:             zb.StatType_Attack,
+								TargetInstanceId: targetInstanceId,
+							},
 						},
-					},
-				})
+					})
+				}
+
 			}
 		}
 	}
@@ -332,20 +335,12 @@ func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.Playe
 			},
 		},
 	})
-	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-		Outcome: &zb.PlayerActionOutcome_ChangeStat{
-			ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
-				InstanceId: target.InstanceId,
-				NewDefense: target.Defense,
-				NewAttack:  0,
-			},
-		},
-	})
+
 	if target.Defense <= 0 {
 		c.Gameplay.State.Winner = attacker.Id
 		c.Gameplay.State.IsEnded = true
 	}
-	c.AfterAttacking()
+	c.AfterAttacking(target.InstanceId)
 }
 
 func (c *CardInstance) Mulligan() error {

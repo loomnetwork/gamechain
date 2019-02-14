@@ -1295,6 +1295,8 @@ message PlayerActionOutcome {
         InstanceId instanceId = 1;
         int32 newAttack = 2;
         int32 newDefense = 3;
+        StatType.Enum stat = 4;
+        InstanceId targetInstanceId = 5;
     }
 
     message CardAbilityAttackOverlordOutcome {
@@ -1306,6 +1308,7 @@ message PlayerActionOutcome {
         InstanceId instanceId = 1;
         int32 newAttack = 2;
         int32 newDefense = 3;
+
     }
 }
 
