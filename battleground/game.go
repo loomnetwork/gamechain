@@ -549,6 +549,9 @@ func (g *Gameplay) PrintState() {
 	}
 	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
 	fmt.Fprintf(buf, "==================================\n")
+	g.debugf("%v", g.actionOutcomes)
+	g.debugf("Overlord 0 defense", g.State.PlayerStates[0].Defense)
+	g.debugf("Overlord 1 defense", g.State.PlayerStates[1].Defense)
 	//g.debugf(buf.String())
 }
 
