@@ -249,6 +249,8 @@ message InitRequest {
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
+    string contentVersion                      = 8;
+    string pvpVersion                          = 9;
 }
 
 message UpdateOracle {
@@ -265,6 +267,8 @@ message UpdateInitRequest {
     string version                             = 6;
     Address oracle                             = 7;
     string oldVersion                          = 8;
+    string contentVersion                      = 9;
+    string pvpVersion                          = 10;
 }
 
 message GetInitRequest {
@@ -280,6 +284,47 @@ message GetInitResponse {
     repeated AIDeck ai_decks                   = 6;
     string version                             = 7;
     Address oracle                             = 8;
+}
+
+message GamechainState {
+    // The last plasmachain block number pulling by oracle
+    uint64 last_plasmachain_block_num = 1;
+    // the plasmachain reward contract version 
+    uint64 reward_contract_version = 2;
+    // the number of card packs reward when players finish tutorial
+    uint64 tutorial_reward_amount = 3;
+    uint64 default_player_defense = 4;
+}
+
+message GetGamechainStateRequest {
+}
+
+message GetGamechainStateResponse {
+    GamechainState state = 1;
+}
+
+message InitGamechainStateRequest {
+    Address oracle = 1;
+}
+
+message SetLastPlasmaBlockNumRequest {
+    uint64 last_block_num = 1;
+    Address oracle = 2;
+}
+
+message SetRewardContractVersionRequest {
+    uint64 version = 1;
+    Address oracle = 2;
+}
+
+message SetTutorialRewardAmountRequest {
+    uint64 amount = 1;
+    Address oracle = 2;
+}
+
+message SetDefaultPlayerDefenseRequest {
+    uint64 defense = 1;
+    Address oracle = 2;
 }
 
 message UpdateCardListRequest {
@@ -306,6 +351,11 @@ message UpsertAccountRequest {
     int32 current_tier         = 8;
     int32 game_membership_tier = 9;
     string version = 10;
+}
+
+message UpdateUserEloRequest {
+    string user_id = 1;
+    int64 elo_score = 2;
 }
 
 message GetAccountRequest {
@@ -420,40 +470,35 @@ message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
 }
 
+message GetCollectionByAddressRequest {
+}
+
+message GetCollectionByAddressResponse {
+    repeated CardCollectionCard cards = 1;
+}
+
 message RewardTutorialCompletedRequest {
-    string user_id = 1;
 }
 
 message RewardTutorialCompletedResponse {
-    string user_id = 1;
+    // string user_id = 1;
     string reward_type = 2;
     string hash = 3;
     string r = 4;
     string s = 5;
     uint64 v = 6;
-    //string signature = 4;
-    int64 nonce = 7;
-    //repeated uint64 amounts = 8;
-    uint64 minion_pack = 8;
-    uint64 user_id_uint = 9;
+    // int64 nonce = 7;
+    // uint64 minion_pack = 8;
+    // uint64 user_id_uint = 9;
+    // BigUInt user_id = 10;
+    BigUInt amount = 11;
 }
 
-message Nonce {
-    int64 current_nonce = 1;
+message ConfirmRewardTutorialClaimedRequest {
 }
 
-message UserIDUint {
-    uint64 user_id_uint = 1;
-}
-
-message ConfirmRewardClaimedRequest {
-    string user_id = 1;
-    string reward_type = 2;
-    uint64 user_id_uint = 3;
-}
-
-message RewardClaimed {
-    string reward_type = 1;
+message RewardTutorialClaimed {
+    uint64 nonce = 1;
 }
 
 //////////// Match Making /////////////
@@ -477,6 +522,7 @@ message PlayerState {
     int32 maxGooVials = 16;
     int32 turnTime = 17;
     int32 turnNumber = 18;
+    InstanceId instanceId = 19;
 }
 
 message InitialPlayerState {
@@ -537,6 +583,7 @@ message PlayerActionType {
         OverlordSkillUsed = 6;
         LeaveMatch = 7;
         RankBuff = 8;
+        CheatDestroyCardsOnBoard = 9;
     }
 }
 
@@ -544,17 +591,23 @@ message PlayerAction {
     PlayerActionType.Enum actionType = 1; // not sure we really need this
     string playerId = 2;
     oneof action {
-        PlayerActionEndTurn endTurn                     = 3;
-        PlayerActionMulligan mulligan                   = 4;
-        PlayerActionCardPlay cardPlay                   = 5;
-        PlayerActionCardAttack cardAttack               = 6;
-        PlayerActionCardAbilityUsed cardAbilityUsed     = 7;
+        PlayerActionEndTurn endTurn = 3;
+        PlayerActionMulligan mulligan = 4;
+        PlayerActionCardPlay cardPlay = 5;
+        PlayerActionCardAttack cardAttack = 6;
+        PlayerActionCardAbilityUsed cardAbilityUsed = 7;
         PlayerActionOverlordSkillUsed overlordSkillUsed = 8;
-        PlayerActionLeaveMatch leaveMatch               = 9;
-        PlayerActionRankBuff rankBuff                   = 10;
+        PlayerActionLeaveMatch leaveMatch = 9;
+        PlayerActionRankBuff rankBuff = 10;
+        PlayerActionCheatDestroyCardsOnBoard cheatDestroyCardsOnBoard = 11;
     };
     repeated PlayerActionOutcome actionOutcomes = 14;
     int64 createdAt = 15; // timestamp
+
+    // To be removed later. Only useful for client-logic games.
+    // After constructing the "meat" of the action, the client fills this structure with his local game state.
+    // The other client can then compare the game with his own and panic if de-sync is detected.
+    GameState controlGameState = 16;
 }
 
 message PlayerActionEvent {
@@ -609,6 +662,9 @@ message DebugCheatsConfiguration {
     int64 customRandomSeed = 5;
 
     bool disableDeckShuffle = 6;
+
+    string forceFirstTurnUserId = 7;
+    bool ignoreGooRequirements = 8;
 }
 
 message FindMatchRequest {
@@ -1082,15 +1138,6 @@ message CardKind {
     }
 }
 
-message AffectObjectType {
-    enum Enum {
-        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
-        PLAYER = 1 [(gogoproto.enumvalue_customname) = "Player"];
-        CHARACTER = 2 [(gogoproto.enumvalue_customname) = "Character"];
-        CARD      = 3 [(gogoproto.enumvalue_customname) = "Card"];
-    }
-}
-
 message CreatureRank {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
@@ -1287,12 +1334,12 @@ message PlayerActionLeaveMatch {
 }
 
 message PlayerActionCardPlay {
-    CardInstance card = 1;
+    InstanceId card = 1;
     int32 position = 2;
 }
 
 message PlayerActionRankBuff {
-    CardInstance card = 1;
+    InstanceId card = 1;
     repeated Unit targets = 2;
 }
 
@@ -1302,8 +1349,7 @@ message PlayerActionCardAttack {
 }
 
 message PlayerActionCardAbilityUsed {
-    CardInstance card = 1;
-    CardKind.Enum cardKind = 2;
+    InstanceId card = 1;
     repeated Unit targets = 3;
     CardAbilityType.Enum AbilityType = 4;
 }
@@ -1320,13 +1366,16 @@ message PlayerActionMulligan {
     repeated InstanceId mulliganedCards = 1;
 }
 
+message PlayerActionCheatDestroyCardsOnBoard {
+    repeated InstanceId destroyedCards = 1;
+}
+
 message StartGameAction {
     repeated PlayerState playerStates = 1;
 }
 
 message Unit {
     InstanceId instanceId = 1;
-    AffectObjectType.Enum affectObjectType = 2;
     Parameter Parameter = 3;
 }
 

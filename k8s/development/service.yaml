@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-gamechain-oracle-svc
+  namespace: dev2-infra
+spec:
+  ports:
+  - name: main-port
+    port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    app: gamechain-oracle
+  sessionAffinity: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-gamechain-2-oracle-svc
+  namespace: dev2-infra
+spec:
+  ports:
+  - name: main-port
+    port: 8888
+    protocol: TCP
+    targetPort: 8888
+  selector:
+    app: gamechain-2-oracle
+  sessionAffinity: None

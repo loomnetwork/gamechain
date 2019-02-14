@@ -23,12 +23,12 @@
   Expected = ["player-2"]
 # -------
 [[TestCases]]
-  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1 -v v1 --randomSeed 1"
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -d 1 -v v1 --enableDebugCheats --randomSeed 1"
   Condition = "contains"
   Expected = ["Registered player player-1 to pool"]
 
 [[TestCases]]
-  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1 -v v1 --randomSeed 1"
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u player-2 -d 1 -v v1 --enableDebugCheats --randomSeed 1 --forceFirstTurnUserId player-2"
   Condition = "contains"
   Expected = ["Registered player player-2 to pool"]
 
@@ -183,12 +183,12 @@
   Expected = ["player-backend-2"]
 # -------
 [[TestCases]]
-  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1 -d 1 -v v1 --randomSeed 1 -b true"
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 0}} -u player-backend-1 -d 1 -v v1 --enableDebugCheats --randomSeed 1 -b true"
   Condition = "contains"
   Expected = ["Registered player player-backend-1 to pool"]
 
 [[TestCases]]
-  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2 -d 1 -v v1 --randomSeed 1 -b true"
+  RunCmd = "zb-cli register_player_pool -k {{index $.AccountPrivKeyPathList 1}} -u player-backend-2 -d 1 -v v1 --enableDebugCheats --randomSeed 1 --forceFirstTurnUserId player-backend-2 -b true"
   Condition = "contains"
   Expected = ["Registered player player-backend-2 to pool"]
 
@@ -235,7 +235,7 @@
 
 # Mulligam
 [[TestCases]]
-  RunCmd = "zb-cli send_action_mulligan -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2 -i 28"
+  RunCmd = "zb-cli send_action_mulligan -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2 -i 3"
   Condition = "contains"
   Expected = ["sent action mulligan successfully"]
 
@@ -294,7 +294,7 @@
 
 # -------player-backend-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 29"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 4"
   Condition = "contains"
   Expected = ["sent action cardplay successfully"]
 [[TestCases]]
@@ -304,7 +304,7 @@
 
 # -------player-backend-1
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 2"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 28"
   Condition = "contains"
   Expected = ["sent action cardplay successfully"]
 [[TestCases]]
@@ -314,7 +314,7 @@
 
 # -------player-backend-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 --attackerID 29 --targetID 2 --objectType 1"
+  RunCmd = "zb-cli send_action_cardattack -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 --attackerID 4 --targetID 28"
   Condition = "contains"
   Expected = ["sent action cardattack successfully"]
 [[TestCases]]
@@ -324,7 +324,7 @@
 
 # -------player-backend-1
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 4"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1 -i 29"
   Condition = "contains"
   Iterations = 1
   Expected = ["sent action cardplay successfully"]
@@ -335,7 +335,7 @@
 
 # -------player-backend-2
 [[TestCases]]
-  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 30"
+  RunCmd = "zb-cli send_action_cardplay -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2 -i 5"
   Condition = "contains"
   Iterations = 1
   Expected = ["sent action cardplay successfully"]

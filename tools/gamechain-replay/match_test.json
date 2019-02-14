@@ -77,9 +77,7 @@
             "playerId": "loom2",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 15
-                    }
+                    "id": 3
                 }
             },
             "createdAt": "1547034628"
@@ -95,9 +93,7 @@
             "playerId": "loom1",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 3
-                    }
+                    "id": 17
                 }
             },
             "createdAt": "1547034807"
@@ -107,9 +103,7 @@
             "playerId": "loom1",
             "cardPlay": {
                 "card": {
-                    "instanceId": {
-                        "id": 4
-                    }
+                    "id": 18
                 }
             },
             "createdAt": "1547034822"
@@ -119,13 +113,12 @@
             "playerId": "loom1",
             "cardAttack": {
                 "attacker": {
-                    "id": 3
+                    "id": 17
                 },
                 "target": {
                     "instanceId": {
-                        "id": 15
-                    },
-                    "affectObjectType": "CHARACTER"
+                        "id": 3
+                    }
                 }
             },
             "createdAt": "1547034898"
@@ -135,13 +128,12 @@
             "playerId": "loom1",
             "cardAttack": {
                 "attacker": {
-                    "id": 4
+                    "id": 18
                 },
                 "target": {
                     "instanceId": {
-                        "id": 15
-                    },
-                    "affectObjectType": "CHARACTER"
+                        "id": 3
+                    }
                 }
             },
             "createdAt": "1547034939"
@@ -186,7 +178,7 @@
         {
             "fullInstance": {
                 "instanceId": {
-                    "id": 15
+                    "id": 3
                 },
                 "attack": 4,
                 "defense": 4
@@ -195,7 +187,7 @@
         {
             "fullInstance": {
                 "instanceId": {
-                    "id": 3
+                    "id": 17
                 },
                 "attack": 1,
                 "defense": 1
@@ -204,7 +196,7 @@
         {
             "fullInstance": {
                 "instanceId": {
-                    "id": 4
+                    "id": 18
                 },
                 "attack": 1,
                 "defense": 1

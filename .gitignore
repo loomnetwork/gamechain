@@ -24,6 +24,7 @@
 # Protobuf generated
 /types/zb/*.cs
 /types/zb/*.go
+/types/oracle/pb_oracle.go
 /library/pbgraphserialization/proto/pbgraphserialization/*.cs
 /library/pbgraphserialization/proto/pbgraphserialization/*.go
 /library/pbgraphserialization/proto/test_pbgraphserialization/*.cs
@@ -43,4 +44,4 @@ loom
 replays/*
 !replays/.gitkeep
 tools/replay_logger/replays/*
-replay/*
+

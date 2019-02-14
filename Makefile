@@ -42,6 +42,9 @@ bin/gamechain-logger:
 bin/gamechain-replay:
 	go build -o $@ $(PKG)/tools/gamechain-replay
 
+bin/gcoracle:
+	go build -o $@ $(PKG)/tools/gcoracle
+
 contracts/zombiebattleground.so.1.0.0: proto serialization-generate
 	go build -buildmode=plugin -o $@ $(PKG)/plugin
 
@@ -74,6 +77,7 @@ serialization-generate:
 
 proto: types/zb/zb.pb.go \
 	types/zb/zb.cs \
+	types/oracle/oracle.pb.go \
 	library/pbgraphserialization/proto/pbgraphserialization/pbgraphserialization.pb.go \
 	library/pbgraphserialization/proto/test_pbgraphserialization/test_pbgraphserialization.pb.go
 
@@ -107,20 +111,19 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/sirupsen/logrus \
 		gopkg.in/check.v1 \
 		github.com/kr/logfmt \
-		github.com/jinzhu/gorm \
 		github.com/phonkee/go-pubsub \
+		github.com/jinzhu/gorm \
 		github.com/mattn/go-sqlite3 \
+		github.com/dgrijalva/jwt-go \
+		github.com/getsentry/raven-go \
+		github.com/tendermint/tendermint/rpc/lib/client \
+		github.com/tendermint/go-amino
 		github.com/ahmetb/go-linq \
 		golang.org/x/tools/go/loader
 
 	go install github.com/golang/dep/cmd/dep
-	# use go-plugin version before we get 'timeout waiting for connection info' error
-	cd $(HASHICORP_DIR) && git checkout f4c3476bd38585f9ec669d10ed1686abd52b9961
-	cd $(LOOMCHAIN_DIR) && git checkout 78f7ef2f07a1b826cdbad09b7d35f3c6c25406d4 && make deps && make && cp loom $(GOPATH)/bin
-	cd $(LOOMAUTH_DIR) && make deps && make
-	# cd $(LOOMCHAIN_DIR) && git checkout v2 && git checkout registry/registry.pb.go && make deps && make && cp loom $(GOPATH)/bin && git checkout registry/registry.pb.go
-	# cd $(GOGO_PROTOBUF_DIR) && git checkout 1ef32a8b9fc3f8ec940126907cedb5998f6318e4
-	# cd $(GOPATH)/src/github.com/loomnetwork/e2e && git checkout adjust-config-param-staging
+	# Need loomchain to run e2e test
+	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 
 abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
@@ -129,6 +132,9 @@ abigen:
 	cat ./ethcontract/zbgame_mode.json | jq '.abi' > ./tmp_build/eth_game_mode_contract.abi
 	./abigen --abi ./tmp_build/eth_game_mode_contract.abi --pkg ethcontract --type ZGCustomGameMode --out ethcontract/zb_gamemode.go
 
+oracle-abigen:
+	go build github.com/ethereum/go-ethereum/cmd/abigen
+	./abigen --abi oracle/abi/card_faucet.abi --pkg ethcontract --type CardFaucet --out oracle/ethcontract/card_faucet.go
 
 test:
 	#TODO fix go vet in tests
@@ -139,6 +145,7 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/pb_zb.go \
+		types/oracle/oracle.pb.go \
 		types/zb/Zb.cs \
 		types/zb/zb.cs \
 		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
@@ -152,4 +159,5 @@ clean:
 		bin/gamechain-logger \
 		bin/gamechain-replay
 
-.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen
+
+.PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen bin/gcoracle oracle-abigen

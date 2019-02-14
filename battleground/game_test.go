@@ -10,6 +10,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	firstPlayerHasFirstTurnCheats = []*zb.DebugCheatsConfiguration{{Enabled: true, ForceFirstTurnUserId: "player-1"}, {Enabled: true}}
+)
+
 func TestGameStateFunc(t *testing.T) {
 	var c *ZombieBattleground
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
@@ -37,9 +41,7 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
-				Card: &zb.CardInstance{
-					InstanceId: &zb.InstanceId{Id: 2},
-				},
+				Card: &zb.InstanceId{Id: 2},
 			},
 		},
 	})
@@ -51,9 +53,7 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb.PlayerAction_CardPlay{
 			CardPlay: &zb.PlayerActionCardPlay{
-				Card: &zb.CardInstance{
-					InstanceId: &zb.InstanceId{Id: 13},
-				},
+				Card: &zb.InstanceId{Id: 13},
 			},
 		},
 	})
@@ -70,7 +70,6 @@ func TestGameStateFunc(t *testing.T) {
 				Attacker: &zb.InstanceId{Id: 2},
 				Target: &zb.Unit{
 					InstanceId:       &zb.InstanceId{Id: 13},
-					AffectObjectType: zb.AffectObjectType_Character,
 				},
 			},
 		},
@@ -82,13 +81,10 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardAbilityUsed{
 			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-				Card: &zb.CardInstance{
-					InstanceId: &zb.InstanceId{Id: 1},
-				},
+				Card: &zb.InstanceId{Id: 1},
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -104,7 +100,6 @@ func TestGameStateFunc(t *testing.T) {
 				SkillId: 1,
 				Target: &zb.Unit{
 					InstanceId:       &zb.InstanceId{Id: 2},
-					AffectObjectType: zb.AffectObjectType_Card,
 				},
 			},
 		},
@@ -117,13 +112,10 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_RankBuff{
 			RankBuff: &zb.PlayerActionRankBuff{
-				Card: &zb.CardInstance{
-					InstanceId: &zb.InstanceId{Id: 1},
-				},
+				Card: &zb.InstanceId{Id: 1},
 				Targets: []*zb.Unit{
 					&zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Card,
 					},
 				},
 			},
@@ -170,7 +162,7 @@ func TestInvalidUserTurn(t *testing.T) {
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Equal(t, err, errInvalidPlayer)
 	cardID := gp.State.PlayerStates[0].CardsInHand[0].InstanceId
-	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: &zb.CardInstance{InstanceId: cardID}}}})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: cardID}}})
 	assert.Nil(t, err)
 	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
@@ -384,7 +376,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -428,7 +419,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -474,7 +464,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -498,7 +487,7 @@ func TestCardAttack(t *testing.T) {
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -511,9 +500,9 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						AffectObjectType: zb.AffectObjectType_Player,
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -528,11 +517,11 @@ func TestCardAttack(t *testing.T) {
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
+		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, firstPlayerHasFirstTurnCheats)
 		assert.Nil(t, err)
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Attack:  2,
@@ -545,9 +534,9 @@ func TestCardAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						AffectObjectType: zb.AffectObjectType_Player,
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -601,7 +590,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -656,7 +644,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -708,7 +695,6 @@ func TestCardAttack(t *testing.T) {
 					Attacker: &zb.InstanceId{Id: 1},
 					Target: &zb.Unit{
 						InstanceId:       &zb.InstanceId{Id: 2},
-						AffectObjectType: zb.AffectObjectType_Character,
 					},
 				},
 			},
@@ -745,9 +731,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 3},
-					},
+					Card: &zb.InstanceId{Id: 3},
 				},
 			},
 		})
@@ -766,9 +750,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: -1},
-					},
+					Card: &zb.InstanceId{Id: -1},
 				},
 			},
 		})
@@ -789,9 +771,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 2},
-					},
+					Card: &zb.InstanceId{Id: 2},
 				},
 			},
 		})
@@ -801,9 +781,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 3},
-					},
+					Card: &zb.InstanceId{Id: 3},
 				},
 			},
 		})
@@ -813,9 +791,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 4},
-					},
+					Card: &zb.InstanceId{Id: 4},
 				},
 			},
 		})
@@ -825,9 +801,7 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 5},
-					},
+					Card: &zb.InstanceId{Id: 5},
 				},
 			},
 		})
@@ -837,12 +811,67 @@ func TestCardPlay(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.CardInstance{
-						InstanceId: &zb.InstanceId{Id: 6},
-					},
+					Card: &zb.InstanceId{Id: 6},
 				},
 			},
 		})
 		assert.Equal(t, errNoCardsInHand, err)
+	})
+}
+
+func TestCheats(t *testing.T) {
+	var c *ZombieBattleground
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	var deckList zb.DeckList
+	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	assert.Nil(t, err)
+	player1 := "player-1"
+	player2 := "player-2"
+	t.Run("CheatDestroyCardsOnBoard", func(t *testing.T) {
+		players := []*zb.PlayerState{
+			{Id: player1, Deck: deckList.Decks[0]},
+			{Id: player2, Deck: deckList.Decks[0]},
+		}
+		seed := int64(0)
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, []*zb.DebugCheatsConfiguration{{Enabled:true}, {Enabled:true}})
+		assert.Nil(t, err)
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 3},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(gp.activePlayer().CardsInPlay))
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 3}},
+				},
+			},
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, 0, len(gp.activePlayer().CardsInPlay))
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 500}},
+				},
+			},
+		})
+		assert.NotNil(t, err)
+		assert.EqualError(t, err, "card with instance id 500 not found")
 	})
 }

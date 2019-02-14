@@ -6,12 +6,14 @@ import (
 	"testing"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	latypes "github.com/loomnetwork/loomauth/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -62,96 +64,96 @@ var initRequest = zb.InitRequest{
 		},
 	},
 	Cards: []*zb.Card{
-		{MouldId: 1, Name: "Whizpar", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 34, Name: "Wheezy", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 50, Name: "Soothsayer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 142, Name: "Fumez", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 2, Name: "Pushhh", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 3, Name: "Ztormmcaller", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 32, Name: "Bouncer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 143, Name: "Gaz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 96, Name: "Draft", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 97, Name: "MonZoon", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 4, Name: "Zeuz", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 94, Name: "Ztorm Shield", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air},
-		{MouldId: 5, Name: "Rockky", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 7, Name: "Bolderr", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 98, Name: "Blocker", Attack: 0, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 101, Name: "Slab", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 144, Name: "Pit", Attack: 0, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 6, Name: "Golem", Attack: 2, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 9, Name: "Walley", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 35, Name: "Tiny", Attack: 0, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 59, Name: "Spiker", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 145, Name: "Crater", Attack: 1, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 36, Name: "Earthshaker", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 61, Name: "IgneouZ", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 103, Name: "Pyrite", Attack: 0, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 8, Name: "Mountain", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 104, Name: "Gaea", Attack: 4, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth},
-		{MouldId: 10, Name: "Pyromaz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 146, Name: "Quazi", Attack: 0, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 11, Name: "Burrrnn", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 12, Name: "Cynderman", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 38, Name: "Werezomb", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 147, Name: "Modo", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 14, Name: "Fire-Maw", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 67, Name: "Zhampion", Attack: 5, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 13, Name: "Gargantua", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 37, Name: "Cerberus", Attack: 7, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire},
-		{MouldId: 18, Name: "Chainsaw", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 70, Name: "Goo Beaker", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 15, Name: "Stapler", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 16, Name: "Nail Bomb", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 17, Name: "Goo Bottles", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 117, Name: "Fresh Meat", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item},
-		{MouldId: 19, Name: "Azuraz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 75, Name: "Bloomer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 148, Name: "Zap", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 20, Name: "Shroom", Attack: 4, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 21, Name: "Vindrom", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 23, Name: "Puffer", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 44, Name: "Sapper", Attack: 2, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 45, Name: "Keeper", Attack: 1, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 149, Name: "Cactuz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 22, Name: "Shammann", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 42, Name: "Z-Virus", Attack: 0, Defense: 0, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 43, Name: "Yggdrazil", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life},
-		{MouldId: 100, Name: "Zombie 1/1", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 101, Name: "Zombie 2/2", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 102, Name: "Zombie Feral", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 155, Name: "Tainted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
-		{MouldId: 156, Name: "Corrupted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others},
-		{MouldId: 78, Name: "Rainz", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 125, Name: "Blight", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 131, Name: "Zteroid", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 108, Name: "BurZt", Attack: 4, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 135, Name: "Vortex", Attack: 6, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 60, Name: "Defender", Attack: 4, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others},
-		{MouldId: 24, Name: "Poizom", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 26, Name: "Hazmaz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 46, Name: "Zpitter", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 150, Name: "Zeptic", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 25, Name: "Ghoul", Attack: 3, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 47, Name: "Zeeter", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 151, Name: "Hazzard", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 85, Name: "Zludge", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 127, Name: "Ectoplasm", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 27, Name: "Cherno-bill", Attack: 7, Defense: 9, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 132, Name: "GooZilla", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 129, Name: "Zlopper", Attack: 3, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic},
-		{MouldId: 28, Name: "Izze", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 49, Name: "Znowman", Attack: 0, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 152, Name: "Ozmoziz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 29, Name: "Jetter", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 30, Name: "Freezzee", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 153, Name: "Geyzer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 90, Name: "Blizzard", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 139, Name: "Froztbite", Attack: 0, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 48, Name: "Zhatterer", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 141, Name: "Maelstrom", Attack: 5, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 31, Name: "Tzunamy", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water},
-		{MouldId: 999999, Name: "Germs", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water}, // added this card for TestDeserializeGameStateChangeActions2 test
+		{MouldId: 1, Name: "Whizpar", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 34, Name: "Wheezy", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 50, Name: "Soothsayer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 142, Name: "Fumez", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 2, Name: "Pushhh", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 3, Name: "Ztormmcaller", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 32, Name: "Bouncer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 143, Name: "Gaz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 96, Name: "Draft", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 97, Name: "MonZoon", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 4, Name: "Zeuz", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 94, Name: "Ztorm Shield", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Air, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 5, Name: "Rockky", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 7, Name: "Bolderr", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 98, Name: "Blocker", Attack: 0, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 101, Name: "Slab", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 144, Name: "Pit", Attack: 0, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 6, Name: "Golem", Attack: 2, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 9, Name: "Walley", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 35, Name: "Tiny", Attack: 0, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 59, Name: "Spiker", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 145, Name: "Crater", Attack: 1, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 36, Name: "Earthshaker", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 61, Name: "IgneouZ", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 103, Name: "Pyrite", Attack: 0, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 8, Name: "Mountain", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 104, Name: "Gaea", Attack: 4, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Earth, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 10, Name: "Pyromaz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 146, Name: "Quazi", Attack: 0, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 11, Name: "Burrrnn", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 12, Name: "Cynderman", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 38, Name: "Werezomb", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 147, Name: "Modo", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 14, Name: "Fire-Maw", Attack: 3, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 67, Name: "Zhampion", Attack: 5, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 13, Name: "Gargantua", Attack: 6, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 37, Name: "Cerberus", Attack: 7, Defense: 8, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Fire, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 18, Name: "Chainsaw", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 70, Name: "Goo Beaker", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 15, Name: "Stapler", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 16, Name: "Nail Bomb", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 17, Name: "Goo Bottles", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 117, Name: "Fresh Meat", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Item, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 19, Name: "Azuraz", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 75, Name: "Bloomer", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 148, Name: "Zap", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 20, Name: "Shroom", Attack: 4, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 21, Name: "Vindrom", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 23, Name: "Puffer", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 44, Name: "Sapper", Attack: 2, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 45, Name: "Keeper", Attack: 1, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 149, Name: "Cactuz", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 22, Name: "Shammann", Attack: 5, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 42, Name: "Z-Virus", Attack: 0, Defense: 0, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 43, Name: "Yggdrazil", Attack: 4, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Life, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 100, Name: "Zombie 1/1", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 101, Name: "Zombie 2/2", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 102, Name: "Zombie Feral", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 155, Name: "Tainted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 156, Name: "Corrupted Goo", Attack: 0, Defense: 0, Kind: zb.CardKind_Spell, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 78, Name: "Rainz", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 125, Name: "Blight", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 131, Name: "Zteroid", Attack: 5, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 108, Name: "BurZt", Attack: 4, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 135, Name: "Vortex", Attack: 6, Defense: 7, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 60, Name: "Defender", Attack: 4, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Others, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 24, Name: "Poizom", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 26, Name: "Hazmaz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 46, Name: "Zpitter", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 150, Name: "Zeptic", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 25, Name: "Ghoul", Attack: 3, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 47, Name: "Zeeter", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 151, Name: "Hazzard", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 85, Name: "Zludge", Attack: 4, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 127, Name: "Ectoplasm", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 27, Name: "Cherno-bill", Attack: 7, Defense: 9, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 132, Name: "GooZilla", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 129, Name: "Zlopper", Attack: 3, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Toxic, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 28, Name: "Izze", Attack: 1, Defense: 1, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 49, Name: "Znowman", Attack: 0, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 152, Name: "Ozmoziz", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 29, Name: "Jetter", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 30, Name: "Freezzee", Attack: 2, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 153, Name: "Geyzer", Attack: 2, Defense: 3, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 90, Name: "Blizzard", Attack: 3, Defense: 4, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 139, Name: "Froztbite", Attack: 0, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 48, Name: "Zhatterer", Attack: 1, Defense: 2, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 141, Name: "Maelstrom", Attack: 5, Defense: 5, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 31, Name: "Tzunamy", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 999999, Name: "Germs", Attack: 6, Defense: 6, Kind: zb.CardKind_Creature, Set: zb.CardSetType_Water, CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}}, // added this card for TestDeserializeGameStateChangeActions2 test
 	},
 	DefaultDecks: []*zb.Deck{
 		{
@@ -273,14 +275,15 @@ var updateInitRequest = zb.UpdateInitRequest{
 			},
 		},
 		{
-			MouldId: 2,
-			Set:     zb.CardSetType_Air,
-			Name:    "Azuraz",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      2,
+			Set:          zb.CardSetType_Air,
+			Name:         "Azuraz",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 			Abilities: []*zb.CardAbility{
 				{
 					Type:         zb.CardAbilityType_ModificatorStats,
@@ -296,14 +299,15 @@ var updateInitRequest = zb.UpdateInitRequest{
 			},
 		},
 		{
-			MouldId: 3,
-			Set:     zb.CardSetType_Air,
-			Name:    "NewCard",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      3,
+			Set:          zb.CardSetType_Air,
+			Name:         "NewCard",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 			Abilities: []*zb.CardAbility{
 				{
 					Type:         zb.CardAbilityType_ModificatorStats,
@@ -415,14 +419,15 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			},
 		},
 		{
-			MouldId: 2,
-			Set:     zb.CardSetType_Air,
-			Name:    "Azuraz",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      2,
+			Set:          zb.CardSetType_Air,
+			Name:         "Azuraz",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 			Abilities: []*zb.CardAbility{
 				{
 					Type:         zb.CardAbilityType_ModificatorStats,
@@ -438,14 +443,15 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 			},
 		},
 		{
-			MouldId: 3,
-			Set:     zb.CardSetType_Air,
-			Name:    "NewCard",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      3,
+			Set:          zb.CardSetType_Air,
+			Name:         "NewCard",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 			Abilities: []*zb.CardAbility{
 				{
 					Type:         zb.CardAbilityType_ModificatorStats,
@@ -1033,34 +1039,37 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 	expectedCards := []*zb.Card{
 		{
-			MouldId: 1,
-			Set:     zb.CardSetType_Air,
-			Name:    "Banshee",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Feral,
-			Attack:  2,
-			Defense: 1,
-			GooCost: 2,
+			MouldId:      1,
+			Set:          zb.CardSetType_Air,
+			Name:         "Banshee",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Feral,
+			Attack:       2,
+			Defense:      1,
+			GooCost:      2,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
-			MouldId: 2,
-			Set:     zb.CardSetType_Air,
-			Name:    "Azuraz",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      2,
+			Set:          zb.CardSetType_Air,
+			Name:         "Azuraz",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
-			MouldId: 3,
-			Set:     zb.CardSetType_Air,
-			Name:    "NewCard",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  1,
-			Defense: 1,
-			GooCost: 1,
+			MouldId:      3,
+			Set:          zb.CardSetType_Air,
+			Name:         "NewCard",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
+			CardViewInfo: &zb.CardViewInfo{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 	}
 
@@ -1391,6 +1400,115 @@ func TestCancelFindMatchOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
+	})
+}
+
+func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-1",
+		Version: "v1",
+	}, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "player-2",
+		Version: "v1",
+	}, t)
+
+	var matchID int64
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-1",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("RegisterPlayerPool", func(t *testing.T) {
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
+				DeckId:  1,
+				UserId:  "player-2",
+				Version: "v1",
+			},
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("Findmatch", func(t *testing.T) {
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
+			UserId: "player-1",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		matchID = response.Match.Id
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("AcceptMatch", func(t *testing.T) {
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
+			UserId:  "player-2",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, matchID, response.Match.Id)
+	})
+
+	t.Run("EndMatch", func(t *testing.T) {
+		response, err := c.EndMatch(ctx, &zb.EndMatchRequest{
+			UserId:   "player-2",
+			MatchId:  matchID,
+			WinnerId: "player-2",
+		})
+		assert.Nil(t, err)
+		assert.NotNil(t, response)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
+	})
+
+	t.Run("CancelFindmatch", func(t *testing.T) {
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
+			UserId:  "player-1",
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetMatch", func(t *testing.T) {
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
+			MatchId: matchID,
+		})
+		assert.Nil(t, err)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
 	})
 }
 
@@ -2098,9 +2216,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 8},
-						},
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -2116,13 +2232,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2143,7 +2256,6 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 2},
-							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},
@@ -2160,13 +2272,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_RankBuff{
 					RankBuff: &zb.PlayerActionRankBuff{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2198,9 +2307,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 13},
-						},
+						Card: &zb.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -2219,7 +2326,6 @@ func TestGameStateOperations(t *testing.T) {
 						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 8},
-							AffectObjectType: zb.AffectObjectType_Character,
 						},
 					},
 				},
@@ -2236,13 +2342,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 1},
-						},
+						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2263,7 +2366,6 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 2},
-							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},
@@ -2471,9 +2573,7 @@ func TestCardPlayOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.CardInstance{
-							InstanceId: &zb.InstanceId{Id: 8},
-						},
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -3076,48 +3176,44 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	}, t)
 
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
+
+	// make sure we have the correct reward_contract_version and tutorial_reward_amount
+	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
+	assert.Nil(t, err)
+	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
+	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
 	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
-		})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xb887d9702492f10e6529a37c69e400970795496fb0b88b67947d16b36b475d8d", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x1d830690ee4ce5afc0c267cf941ac547738212479f30f9709d679b08526c90ba", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x1c27c0d86d1e0fe248f080bfe7c258815c0e172c9a13cdd4e9115fda980b42fc", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(28), rewardTutorialCompletedResp.V)
+		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
+		assert.Equal(t, "0x25d667d7a5afa5fc9cfacf67aeaf35bff6b3d54bf40e8b3b5a90fe86ce596732", rewardTutorialCompletedResp.R)
+		assert.Equal(t, "0x02a59d7fd35f07738ac2931193b92e8f31941c15a123d07f0990c28a1fef2760", rewardTutorialCompletedResp.S)
+		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
 	})
 
-	// client confirms that reward has been claimed from faucet
-
-	// fails because the request should have the user id uint returned in the previous call
-	t.Run("ConfirmRewardClaimed fails", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-		})
-		assert.NotNil(t, err)
-	})
-
-	// send the correct request with UserIdUint
+	// send the correct request
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardClaimed(ctx, &zb.ConfirmRewardClaimedRequest{
-			UserId:     "loom1",
-			RewardType: RewardTypeTutorialCompleted,
-			UserIdUint: rewardTutorialCompletedResp.UserIdUint,
-		})
+		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{})
 		assert.Nil(t, err)
+	})
+
+	// attempt to claim reward again should fail
+	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
+		var err error
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "reward already claimed")
+		assert.Nil(t, rewardTutorialCompletedResp)
 	})
 
 	// attempt to get reward again should fail
 	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{
-			UserId: "loom1",
-		})
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, resp)
@@ -3129,8 +3225,20 @@ func TestHashSignature(t *testing.T) {
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	verifySignResult, err := generateVerifyHash(149, 5, 1, privateKey)
+	verifySignResult, err := generateVerifyHash(5, 1, privateKey)
 	assert.Nil(t, err)
-	assert.Equal(t, "0x598a64bfd4dca356d6084d80cbc0d11916d52902f79e6428295e63604564a948", verifySignResult.Hash)
-	assert.Equal(t, "0x45a72d82e5d9d078f4fab32381339f75b18e1c75e66f50df799c722568d308677cfc702c01fbff19dd4677e6407c9d2a67e9119eafd87ae7f11814374bfd81f51c", verifySignResult.Signature)
+	assert.Equal(t, "0xe2689cd4a84e23ad2f564004f1c9013e9589d260bde6380aba3ca7e09e4df40c", verifySignResult.Hash)
+	assert.Equal(t, "0x0e729720a48e6164451792e657bd4c68c25c67884e8852790d0cf2fbe999f2bb2833d41711917583d70dacbb5c80206edafa3bc4bca079ceafbb2fc50af1c8fc1b", verifySignResult.Signature)
+}
+
+// createJwtToken creates a jwt token from a User model
+func createJwtToken(userID uint, secret string) (string, error) {
+	// create the token
+	claims := latypes.UserClaims{
+		UserID: userID,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// sign and get the complete encoded token as string
+	return token.SignedString([]byte(secret))
 }

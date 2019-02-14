@@ -13,10 +13,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	OwnerRole = "user" // TODO: change to owner
-)
-
 var (
 	cardPrefix           = []byte("card")
 	userPrefix           = []byte("user")
@@ -39,6 +35,7 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
+	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
 	contentVersionKey           = []byte("content-version")
@@ -82,14 +79,26 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-func RewardClaimedKey(userID string) []byte {
-	return []byte("user:" + userID + ":rewardClaimed")
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
+	if err := ctx.Set(stateKey, state); err != nil {
+		return err
+	}
+	return nil
 }
 
-func UserIDUIntKey(userID string) []byte {
-	return []byte("user:" + userID + ":IDUint")
-
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
+	err := ctx.Get(stateKey, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
+
+func RewardTutorialClaimedKey(userID string) []byte {
+	return []byte("user:" + userID + ":rewardTutorialClaimed")
+}
+
 func saveCardList(ctx contract.Context, version string, cardList *zb.CardList) error {
 	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
@@ -114,6 +123,23 @@ func loadCardCollection(ctx contract.StaticContext, userID string) (*zb.CardColl
 
 func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
 	return ctx.Set(CardCollectionKey(userID), cardCollection)
+}
+
+// loadCardCollectionFromAddress loads address mapping to card collection
+func loadCardCollectionByAddress(ctx contract.StaticContext) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
+	addr := string(ctx.Message().Sender.Local)
+	err := ctx.Get(CardCollectionKey(addr), &userCollection)
+	if err != nil && err != contract.ErrNotFound {
+		return nil, err
+	}
+	return &userCollection, nil
+}
+
+// saveCardCollectionByAddress save card collection using address as a key
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCollectionList) error {
+	addr := string(ctx.Message().Sender.Local)
+	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
 func loadDecks(ctx contract.StaticContext, userID string) (*zb.DeckList, error) {
@@ -231,24 +257,30 @@ func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(playerPoolKey, pool)
 }
 
-func loadPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
-	var pool zb.PlayerPool
-	err := ctx.Get(playerPoolKey, &pool)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-	return &pool, nil
+func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+	return loadPlayerPoolInternal(ctx, playerPoolKey)
 }
 
 func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(taggedPlayerPoolKey, pool)
 }
 
-func loadTaggedPlayerPool(ctx contract.StaticContext) (*zb.PlayerPool, error) {
+func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
+	return loadPlayerPoolInternal(ctx, taggedPlayerPoolKey)
+}
+
+func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
-	err := ctx.Get(taggedPlayerPoolKey, &pool)
+	err := ctx.Get(poolKey, &pool)
 	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+		// Try to reset the pool
+		ctx.Logger().Error("error loading pool, clearing", "key", string(taggedPlayerPoolKey), "err", err)
+		pool = zb.PlayerPool{}
+		if err = ctx.Set(taggedPlayerPoolKey, &pool); err != nil {
+			return nil, err
+		}
+
+		return &pool, nil
 	}
 	return &pool, nil
 }
@@ -294,70 +326,17 @@ func nextMatchID(ctx contract.Context) (int64, error) {
 	return count.CurrentId, nil
 }
 
-func getNonce(ctx contract.Context) (int64, error) {
-	var nonce zb.Nonce
-	err := ctx.Get(nonceKey, &nonce)
+func setRewardTutorialClaimed(ctx contract.Context, userID string, claim *zb.RewardTutorialClaimed) error {
+	return ctx.Set(RewardTutorialClaimedKey(userID), claim)
+}
+
+func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb.RewardTutorialClaimed, error) {
+	var rewardClaimed zb.RewardTutorialClaimed
+	err := ctx.Get(RewardTutorialClaimedKey(userID), &rewardClaimed)
 	if err != nil && err != contract.ErrNotFound {
-		return 0, err
-	}
-	nonce.CurrentNonce++
-	if err := ctx.Set(nonceKey, &nonce); err != nil {
-		return 0, err
-	}
-	return nonce.CurrentNonce, nil
-}
-
-func setRewardClaimed(ctx contract.Context, userID string, rewardType string) error {
-	err := ctx.Set(RewardClaimedKey(userID), &zb.RewardClaimed{
-		RewardType: rewardType,
-	})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func getRewardClaimed(ctx contract.Context, userID string) (*zb.RewardClaimed, error) {
-	var rewardClaimed zb.RewardClaimed
-	err := ctx.Get(RewardClaimedKey(userID), &rewardClaimed)
-	if err == contract.ErrNotFound {
-		return nil, nil
-	} else if err != nil {
 		return nil, err
 	}
 	return &rewardClaimed, nil
-}
-
-func getOrGenerateUserIDUint(ctx contract.Context, userID string) (uint64, error) {
-	var userIDUInt zb.UserIDUint
-	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
-	if err == contract.ErrNotFound {
-		userIDUInt = *nextIntUserID(ctx)
-	} else {
-		return 0, err
-	}
-	err = ctx.Set(UserIDUIntKey(userID), &userIDUInt)
-	if err != nil {
-		return 0, err
-	}
-	return userIDUInt.UserIdUint, nil
-}
-
-func nextIntUserID(ctx contract.Context) *zb.UserIDUint {
-	var currentUserIDUInt zb.UserIDUint
-	ctx.Get(currentUserIDUIntKey, &currentUserIDUInt)
-	currentUserIDUInt.UserIdUint++
-	ctx.Set(currentUserIDUIntKey, &currentUserIDUInt)
-	return &currentUserIDUInt
-}
-
-func getUserIDUint(ctx contract.Context, userID string) (uint64, error) {
-	var userIDUInt zb.UserIDUint
-	err := ctx.Get(UserIDUIntKey(userID), &userIDUInt)
-	if err != nil {
-		return 0, err
-	}
-	return userIDUInt.UserIdUint, err
 }
 
 func saveGameState(ctx contract.Context, gs *zb.GameState) error {
@@ -583,4 +562,13 @@ func getCardDetails(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 		}
 	}
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
+}
+
+func findCardByMouldID(cardList *zb.CardList, mouldID int64) (*zb.Card, bool) {
+	for _, card := range cardList.Cards {
+		if card.MouldId == mouldID {
+			return card, true
+		}
+	}
+	return nil, false
 }

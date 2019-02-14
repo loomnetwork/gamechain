@@ -28,7 +28,7 @@ spec:
           - name: cloudsql
             mountPath: /cloudsql
       - name: gamechain-logger
-        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%REV%
+        image: gcr.io/robotic-catwalk-188706/gamechain-logger:%BUILD_NUMBER%
         resources:
           requests:
             cpu: 100m
@@ -53,8 +53,14 @@ spec:
             value: loomauth
           - name: DB_PORT
             value: "3306"
-          - name: WS_URL
-            value: ws://battleground-testnet-asia2.dappchains.com:9999/queryws
+          - name: EV_URL
+            value: "http://gamechain.dappchains.com:9999"
+          - name: RECONNECT_INTERVAL
+            value: "1000"
+          - name: SENTRY_ENVIRONMENT
+            value: production
+          - name: SENTRY_DSN
+            value: "https://88b80f4acb2b445082e658d8758b6775:ca79ae92037e403594d67a19762bad8d@sentry.io/1379372"
 
       volumes:
         - name: cloudsql-loomauth-credentials
