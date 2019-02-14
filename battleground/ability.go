@@ -36,6 +36,16 @@ func (c *CardInstance) Attack(target *CardInstance) {
 	target.OnDefenseChange(old, target.Instance.Defense)
 	c.AfterAttacking()
 
+	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+		Outcome: &zb.PlayerActionOutcome_ChangeStat{
+			ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
+				InstanceId: target.InstanceId,
+				NewDefense: target.Instance.Defense,
+				NewAttack:  target.Instance.Attack,
+			},
+		},
+	})
+
 	if c.Instance.Defense <= 0 {
 		c.OnDeath(target)
 	}
@@ -316,6 +326,15 @@ func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.Playe
 	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 		Outcome: &zb.PlayerActionOutcome_InstanceStat{
 			InstanceStat: &zb.PlayerActionOutcome_InstanceStatOutcome{
+				InstanceId: target.InstanceId,
+				NewDefense: target.Defense,
+				NewAttack:  0,
+			},
+		},
+	})
+	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+		Outcome: &zb.PlayerActionOutcome_ChangeStat{
+			ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
 				InstanceId: target.InstanceId,
 				NewDefense: target.Defense,
 				NewAttack:  0,
