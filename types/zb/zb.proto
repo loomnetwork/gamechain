@@ -1332,6 +1332,7 @@ message CardInstance {
     bool abilitiesInstancesInitialized = 5;
     repeated CardAbilityInstance abilitiesInstances = 6;
     Zone.type zone = 7;
+    int32 ownerIndex = 8;
 }
 
 message DataIdOwner {
