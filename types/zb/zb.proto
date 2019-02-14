@@ -1242,6 +1242,7 @@ message CardAbilityAdditionalDamageToHeavyInAttack {
 
 message CardAbilityChangeStat {
     int32 statAdjustment = 1;
+    StatType.Enum stat = 2;
 }
 
 message CardAbilityPriorityAttack {

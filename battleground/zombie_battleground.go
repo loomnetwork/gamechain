@@ -1528,6 +1528,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+	gp.SetLogger(ctx.Logger())
 	// add created timestamp
 	req.PlayerAction.CreatedAt = ctx.Now().Unix()
 	if err := gp.AddAction(req.PlayerAction); err != nil {

@@ -2188,6 +2188,37 @@
           ],
           "defense2": 0,
           "cost": 0
+        },
+        {
+          "type": "CHANGE_STAT",
+          "activityType": "PASSIVE",
+          "trigger": "ATTACK",
+          "targetTypes": [
+            "NONE"
+          ],
+          "stat": "HEALTH",
+          "set": "NONE",
+          "effect": "NONE",
+          "attackRestriction": "ANY",
+          "targetCardType": "Undefined",
+          "targetUnitSpecialStatus": "NONE",
+          "targetUnitType": "Undefined",
+          "value": -1,
+          "attack": 0,
+          "defense": 0,
+          "name": "",
+          "turns": 0,
+          "count": 0,
+          "delay": 0,
+          "VisualEffectsToPlay": [
+          ],
+          "gameMechanicDescriptionType": "ATTACK",
+          "target_set": "NONE",
+          "sub_trigger": "None",
+          "choosable_abilities": [
+          ],
+          "defense2": 0,
+          "cost": 0
         }
       ],
       "unique_animation_type": "None",
