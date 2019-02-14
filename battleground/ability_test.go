@@ -645,7 +645,7 @@ func TestAbilityReanimate(t *testing.T) {
 				},
 			},
 		})
-		gp.DebugState()
+
 		assert.Nil(t, err)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)

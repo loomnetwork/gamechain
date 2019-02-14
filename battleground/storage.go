@@ -446,7 +446,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 	}
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string) *zb.CardInstance {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string, ownerIndex int32) *zb.CardInstance {
 	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
 	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
@@ -508,6 +508,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 		Instance:           instance,
 		AbilitiesInstances: abilities,
 		Zone:               zb.Zone_DECK, // default to deck
+		OwnerIndex:         ownerIndex,
 	}
 }
 
@@ -520,13 +521,8 @@ func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId 
 	return instanceIds
 }
 
-func populateDeckCards(
-	ctx contract.Context,
-	cardLibrary *zb.CardList,
-	playerStates []*zb.PlayerState,
-	useBackendGameLogic bool,
-) error {
-	for _, playerState := range playerStates {
+func populateDeckCards(cardLibrary *zb.CardList, playerStates []*zb.PlayerState, useBackendGameLogic bool) error {
+	for playerIndex, playerState := range playerStates {
 		deck := playerState.Deck
 		if deck == nil {
 			return fmt.Errorf("no card deck fro player %s", playerState.Id)
@@ -542,6 +538,7 @@ func populateDeckCards(
 					cardDetails,
 					nil,
 					playerState.Id,
+					int32(playerIndex),
 				)
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 			}

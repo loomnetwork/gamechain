@@ -43,7 +43,7 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
-	// // add more action
+	// add more action
 	err = gp.AddAction(&zb.PlayerAction{
 		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player1,
@@ -53,7 +53,6 @@ func TestGameStateFunc(t *testing.T) {
 			},
 		},
 	})
-	gp.DebugState()
 	assert.Nil(t, err)
 	assert.Equal(t, 3, len(gp.State.PlayerStates[0].CardsInHand))
 	assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInPlay))
@@ -330,7 +329,7 @@ func TestPopulateDeckCards(t *testing.T) {
 	cardLibrary, err := getCardLibrary(ctx, "v1")
 	assert.Nil(t, err)
 
-	err = populateDeckCards(ctx, cardLibrary, playerStates, true)
+	err = populateDeckCards(cardLibrary, playerStates, true)
 	assert.Nil(t, err)
 	assert.NotNil(t, playerStates[0].CardsInDeck)
 	assert.NotNil(t, playerStates[1].CardsInDeck)
@@ -394,6 +393,7 @@ func TestCardAttack(t *testing.T) {
 					Defense: 3,
 					Attack:  2,
 				},
+				OwnerIndex: 0,
 			})
 			gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 				InstanceId: &zb.InstanceId{Id: 2},
@@ -402,6 +402,7 @@ func TestCardAttack(t *testing.T) {
 					Defense: 5,
 					Attack:  1,
 				},
+				OwnerIndex: 1,
 			})
 
 			err = gp.AddAction(&zb.PlayerAction{
@@ -437,6 +438,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 3,
 				Attack:  2,
 			},
+			OwnerIndex: 0,
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: &zb.InstanceId{Id: 2},
@@ -445,6 +447,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 1,
 				Attack:  1,
 			},
+			OwnerIndex: 1,
 		})
 
 		err = gp.AddAction(&zb.PlayerAction{
@@ -482,6 +485,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 1,
 				Attack:  1,
 			},
+			OwnerIndex: 0,
 		})
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
 			InstanceId: &zb.InstanceId{Id: 2},
@@ -490,6 +494,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 1,
 				Attack:  1,
 			},
+			OwnerIndex: 1,
 		})
 
 		err = gp.AddAction(&zb.PlayerAction{
@@ -528,6 +533,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 3,
 				Attack:  2,
 			},
+			OwnerIndex: 0,
 		})
 		gp.State.PlayerStates[1].Defense = 3
 
@@ -562,6 +568,7 @@ func TestCardAttack(t *testing.T) {
 				Defense: 3,
 				Attack:  2,
 			},
+			OwnerIndex: 0,
 		})
 		gp.State.PlayerStates[1].Defense = 1
 
@@ -694,7 +701,6 @@ func TestCardPlay(t *testing.T) {
 				},
 			},
 		})
-		gp.DebugState()
 		assert.Equal(t, errNoCardsInHand, err)
 	})
 }
