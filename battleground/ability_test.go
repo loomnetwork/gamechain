@@ -70,6 +70,17 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
+							Stat:           zb.StatType_Attack,
+						},
+					},
+				},
+				&zb.CardAbilityInstance{
+					IsActive: true,
+					Trigger:  card0.Abilities[0].Trigger,
+					AbilityType: &zb.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb.CardAbilityChangeStat{
+							StatAdjustment: -1,
+							Stat:           zb.StatType_Defense,
 						},
 					},
 				},
@@ -116,8 +127,8 @@ func TestAbilityChangeStat(t *testing.T) {
 		assert.Nil(t, err)
 
 		card0 := &zb.Card{
-			Defense: 5,
-			Attack:  2,
+			Defense: 2,
+			Attack:  3,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ChangeStat,
@@ -136,6 +147,17 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
+							Stat:           zb.StatType_Attack,
+						},
+					},
+				},
+				&zb.CardAbilityInstance{
+					IsActive: true,
+					Trigger:  card0.Abilities[0].Trigger,
+					AbilityType: &zb.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb.CardAbilityChangeStat{
+							StatAdjustment: -1,
+							Stat:           zb.StatType_Defense,
 						},
 					},
 				},
@@ -156,11 +178,12 @@ func TestAbilityChangeStat(t *testing.T) {
 				},
 			},
 		})
-		assert.Nil(t, err)
-		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
 
-		assert.Equal(t, int32(18), gp.State.PlayerStates[1].Defense)
+		assert.Nil(t, err)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+
+		assert.Equal(t, int32(17), gp.State.PlayerStates[1].Defense)
 	})
 
 }
