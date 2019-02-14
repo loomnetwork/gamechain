@@ -485,6 +485,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				AbilityType: &zb.CardAbilityInstance_ChangeStat{
 					ChangeStat: &zb.CardAbilityChangeStat{
 						StatAdjustment: raw.Value,
+						Stat:           raw.Stat,
 					},
 				},
 			})

@@ -549,6 +549,7 @@ func (g *Gameplay) PrintState() {
 	}
 	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
 	fmt.Fprintf(buf, "==================================\n")
+	g.debugf("%v", g.actionOutcomes)
 	//g.debugf(buf.String())
 }
 

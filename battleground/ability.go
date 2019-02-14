@@ -56,8 +56,11 @@ func (c *CardInstance) AfterAttacking() {
 				changeStat := ability.ChangeStat
 				// Once attacking, defense and attack values are decreased
 				// TODO: generate change zone first
-				c.Instance.Defense += changeStat.StatAdjustment
-				c.Instance.Attack += changeStat.StatAdjustment
+				if changeStat.Stat == zb.StatType_Defense {
+					c.Instance.Defense += changeStat.StatAdjustment
+				} else if changeStat.Stat == zb.StatType_Attack {
+					c.Instance.Attack += changeStat.StatAdjustment
+				}
 				// generated outcome
 				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 					Outcome: &zb.PlayerActionOutcome_ChangeStat{
