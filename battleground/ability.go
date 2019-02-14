@@ -263,6 +263,7 @@ func (c *CardInstance) OnPlay() error {
 }
 
 func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
+	// TODO: remove this if/else
 	var cardInstance *zb.CardInstance
 	var cardIndex int
 	var owner *zb.PlayerState
@@ -390,7 +391,7 @@ func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.Playe
 }
 
 func (c *CardInstance) Mulligan() error {
-
+	// TODO: We should stop finding owner everytime
 	var owner *zb.PlayerState
 	for i := 0; i < len(c.Gameplay.State.PlayerStates); i++ {
 		for _, card := range c.Gameplay.State.PlayerStates[i].CardsInHand {

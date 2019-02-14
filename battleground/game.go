@@ -549,7 +549,6 @@ func (g *Gameplay) PrintState() {
 	}
 	fmt.Fprintf(buf, "Current Action Index: %v\n", state.CurrentActionIndex)
 	fmt.Fprintf(buf, "==================================\n")
-	g.debugf("%v", g.actionOutcomes)
 	//g.debugf(buf.String())
 }
 
@@ -683,9 +682,11 @@ func actionMulligan(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
 		}
 		var player *zb.PlayerState
+		var playerIndex int
 		for i := 0; i < len(g.State.PlayerStates); i++ {
 			if g.State.PlayerStates[i].Id == current.PlayerId {
 				player = g.State.PlayerStates[i]
+				playerIndex = i
 			}
 		}
 		if player == nil {
@@ -712,27 +713,17 @@ func actionMulligan(g *Gameplay) stateFn {
 
 		// draw card to replace the reroll cards
 		for i := 0; i < len(mulliganCards); i++ {
-
 			// move card from hand to deck
 			cardInstance := NewCardInstance(mulliganCards[i], g)
 			if err := cardInstance.Mulligan(); err != nil {
 				return g.captureErrorAndStop(err)
 			}
-
-			// player.CardsInHand = append(player.CardsInHand, player.CardsInDeck[0])
-			// // TODO: return to deck with random order
-			// player.CardsInDeck = player.CardsInDeck[1:]
 		}
 
-		// // place cards back to deck
-		// for _, mulliganCard := range mulliganCards {
-		// 	for i, cardInHand := range player.CardsInHand {
-		// 		if cardInHand.InstanceId == mulliganCard.InstanceId {
-		// 			player.CardsInHand = append(player.CardsInHand[:i], player.CardsInHand[i+1:]...)
-		// 		}
-		// 	}
-		// }
-		// player.CardsInDeck = append(player.CardsInDeck, mulliganCards...)
+		// re-shuffle cards in deck if player mulligan more than one card
+		if len(mulliganCards) > 0 {
+			shuffleCardInDeck(player.CardsInDeck, g.State.RandomSeed, playerIndex)
+		}
 	}
 
 	// determine the next action
@@ -1062,7 +1053,17 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		return g.captureErrorAndStop(err)
 	}
 
-	// TODO: card ability
+	if g.useBackendGameLogic {
+		// TODO: Fix me
+		cardAbilityUsed := current.GetCardAbilityUsed()
+		if cardAbilityUsed == nil {
+			return g.captureErrorAndStop(fmt.Errorf("no card ability used specified"))
+		}
+		card := cardAbilityUsed.Card
+		if card == nil {
+			return g.captureErrorAndStop(fmt.Errorf("no card in card ability used"))
+		}
+	}
 
 	// TODO: record history data
 

@@ -1311,8 +1311,8 @@ message CardAbilityInstance {
         CardAbilityChangeStat changeStat = 7;
         CardAbilityAttackOverlord attackOverlord = 8;
     }
-    bool IsActive = 3;
-    CardAbilityTrigger.Enum Trigger = 4;
+    bool isActive = 3;
+    CardAbilityTrigger.Enum trigger = 4;
 }
 
 message CardInstance {
