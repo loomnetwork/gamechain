@@ -380,9 +380,16 @@ func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 }
 
 func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.PlayerState) {
-	c.Gameplay.debugf("Attack Overlord")
 	target.Defense -= c.Instance.Attack
-
+	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+		Outcome: &zb.PlayerActionOutcome_InstanceStat{
+			InstanceStat: &zb.PlayerActionOutcome_InstanceStatOutcome{
+				InstanceId: target.InstanceId,
+				NewDefense: target.Defense,
+				NewAttack:  0,
+			},
+		},
+	})
 	if target.Defense <= 0 {
 		c.Gameplay.State.Winner = attacker.Id
 		c.Gameplay.State.IsEnded = true
