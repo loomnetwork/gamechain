@@ -145,7 +145,9 @@ clean:
 	rm -f \
 		protoc-gen-gogo \
 		types/zb/pb_zb.go \
+		types/zb/zb.pb.go \
 		types/oracle/oracle.pb.go \
+		types/oracle/pb_oracle.go \
 		types/zb/Zb.cs \
 		types/zb/zb.cs \
 		library/pbgraphserialization/proto/pbgraphserialization/pb_pbgraphserialization.go \
