@@ -1571,9 +1571,10 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerAction: req.PlayerAction,
-		Match:        match,
-		Block:        &zb.History{List: gp.history},
+		PlayerAction:       req.PlayerAction,
+		CurrentActionIndex: gamestate.CurrentActionIndex,
+		Match:              match,
+		Block:              &zb.History{List: gp.history},
 	}
 
 	data, err := proto.Marshal(&emitMsg)
