@@ -117,7 +117,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/dgrijalva/jwt-go \
 		github.com/getsentry/raven-go \
 		github.com/tendermint/tendermint/rpc/lib/client \
-		github.com/tendermint/go-amino
+		github.com/tendermint/go-amino \
 		github.com/ahmetb/go-linq \
 		golang.org/x/tools/go/loader
 
