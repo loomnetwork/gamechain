@@ -615,6 +615,7 @@ message PlayerActionEvent {
     PlayerAction playerAction = 1;
     Match match = 2;
     History block = 3;
+    int64 CurrentActionIndex = 4;
 }
 
 message PlayerProfile {
