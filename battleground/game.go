@@ -772,7 +772,7 @@ func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
 		for i := 0; i < count; i++ {
 			// draw card
 			if len(player.CardsInDeck) < 1 {
-				return errors.New("Can't draw card. No more cards in deck")
+				break
 			}
 
 			// handle card limit in hand
