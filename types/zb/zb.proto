@@ -717,6 +717,14 @@ message GetGameStateResponse {
     GameState gameState = 1;
 }
 
+message GetInitialGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetInitialGameStateResponse {
+    GameState gameState = 1;
+}
+
 message SetGameStateRequest {
     GameState gameState = 1;
 }
