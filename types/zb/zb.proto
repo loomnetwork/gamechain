@@ -1284,6 +1284,7 @@ message PlayerActionOutcome {
         CardAbilityReanimateOutcome reanimate = 4;
         CardAbilityAttackOverlordOutcome attackOverlord = 6;
         InstanceStatOutcome instanceStat = 7;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 8;
     }
 
     message CardAbilityRageOutcome {
@@ -1323,6 +1324,11 @@ message PlayerActionOutcome {
         int32 newAttack = 2;
         int32 newDefense = 3;
 
+    }
+
+    message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+        repeated CardInstance newCardInstances = 1;
+        repeated InstanceId replacedInstanceIds = 2;
     }
 }
 
