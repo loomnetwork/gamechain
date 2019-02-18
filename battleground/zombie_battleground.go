@@ -1382,6 +1382,17 @@ func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.Ge
 	}, nil
 }
 
+func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+	initialGameState, err := loadInitialGameState(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetGameStateResponse{
+		GameState: initialGameState,
+	}, nil
+}
+
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -1528,6 +1539,12 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+	// TODO: change me. this is a bit hacky way to set card libarary
+	cardlist, err := loadCardList(ctx, gamestate.Version)
+	if err != nil {
+		return nil, err
+	}
+	gp.cardLibrary = cardlist
 	gp.SetLogger(ctx.Logger())
 	// add created timestamp
 	req.PlayerAction.CreatedAt = ctx.Now().Unix()

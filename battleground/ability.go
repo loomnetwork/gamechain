@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
@@ -116,32 +117,6 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) {
 			switch ability := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_Reanimate:
 				// When zombie dies, return it to play with default Atk, Def and effects
-
-				// find the new instance id
-				var nextInstanceID int32
-				for _, playerState := range c.Gameplay.State.PlayerStates {
-					for _, card := range playerState.CardsInPlay {
-						if card.InstanceId.Id > nextInstanceID {
-							nextInstanceID = card.InstanceId.Id
-						}
-					}
-					for _, card := range playerState.CardsInHand {
-						if card.InstanceId.Id > nextInstanceID {
-							nextInstanceID = card.InstanceId.Id
-						}
-					}
-					for _, card := range playerState.CardsInDeck {
-						if card.InstanceId.Id > nextInstanceID {
-							nextInstanceID = card.InstanceId.Id
-						}
-					}
-					for _, card := range playerState.CardsInGraveyard {
-						if card.InstanceId.Id > nextInstanceID {
-							nextInstanceID = card.InstanceId.Id
-						}
-					}
-				}
-				nextInstanceID++
 				c.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD)
 				ai.IsActive = false
 				reanimate := ability.Reanimate
@@ -154,9 +129,10 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) {
 					}
 				}
 				newInstance.AbilitiesInstances = newAbilities
-				newInstance.InstanceId.Id = nextInstanceID
+				newInstance.InstanceId.Id = c.Gameplay.State.NextInstanceId
 				newInstance.Instance.Attack = reanimate.DefaultAttack
 				newInstance.Instance.Defense = reanimate.DefaultDefense
+				c.Gameplay.State.NextInstanceId++
 				// FIX ME: better way to do this?
 				var activePlayer *zb.PlayerState
 				for _, playerState := range c.Gameplay.State.PlayerStates {
@@ -246,7 +222,6 @@ func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) {
 }
 
 func (c *CardInstance) OnPlay() error {
-
 	// trigger card ability on play
 	for _, ai := range c.AbilitiesInstances {
 		if ai.Trigger == zb.CardAbilityTrigger_Entry {
@@ -267,7 +242,74 @@ func (c *CardInstance) OnPlay() error {
 						},
 					})
 				}
+			case *zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes:
+				owner := c.owner()
+				if owner == nil {
+					return fmt.Errorf("no owner for card instance %d", c.InstanceId)
+				}
+				// find the cards in card library with same types as cards in plays
+				var toReplaceCards []*zb.CardInstance
+				var replacedInstanceIDs []*zb.InstanceId
+				for _, card := range owner.CardsInPlay {
+					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
+						toReplaceCards = append(toReplaceCards, card)
+						replacedInstanceIDs = append(replacedInstanceIDs, card.InstanceId)
+					}
+				}
+				// continue if there is no same type card in play
+				if len(toReplaceCards) == 0 {
+					continue
+				}
+				var sameTypeStrongerCards []*zb.Card
+				for _, card := range c.Gameplay.cardLibrary.Cards {
+					if card.Set == c.Instance.Set && card.GooCost > c.Instance.GooCost {
+						sameTypeStrongerCards = append(sameTypeStrongerCards, card)
+					}
+				}
+				if len(sameTypeStrongerCards) == 0 {
+					continue
+				}
+				var r = rand.New(rand.NewSource(c.Gameplay.State.RandomSeed))
+				randomCardIndex := r.Perm(len(sameTypeStrongerCards))
 
+				// TODO: check index
+				var newcardInstances []*zb.CardInstance
+				for i := range toReplaceCards {
+					// create new instance from card
+					newcard := sameTypeStrongerCards[randomCardIndex[i]]
+					instanceid := &zb.InstanceId{Id: c.Gameplay.State.NextInstanceId}
+					c.Gameplay.State.NextInstanceId++
+					newinstance := newCardInstanceFromCardDetails(newcard, instanceid, c.Owner, c.OwnerIndex)
+					newinstance.Zone = zb.Zone_PLAY
+					newcardInstances = append(newcardInstances, newinstance)
+				}
+				// remove card from card in play
+				var newCardsInplay []*zb.CardInstance
+				for _, card := range owner.CardsInPlay {
+					for _, toreplace := range toReplaceCards {
+						if !proto.Equal(toreplace.InstanceId, card.InstanceId) {
+							newCardsInplay = append(newCardsInplay, card)
+						}
+					}
+				}
+				// append card in play
+				for _, card := range newcardInstances {
+					newCardsInplay = append(newCardsInplay, card)
+				}
+				// set cardinplay to gamestate
+				c.owner().CardsInPlay = newCardsInplay
+
+				ai.IsActive = false
+
+				// outcome
+				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+					Outcome: &zb.PlayerActionOutcome_ReplaceUnitsWithTypeOnStrongerOnes{
+						ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+							NewCardInstances:    newcardInstances,
+							ReplacedInstanceIds: replacedInstanceIDs,
+						},
+					},
+				})
 			}
 		}
 	}
@@ -345,11 +387,7 @@ func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.Playe
 }
 
 func (c *CardInstance) Mulligan() error {
-	if int(c.OwnerIndex) > len(c.Gameplay.State.PlayerStates)-1 {
-		return fmt.Errorf("Invalid owner index: %d", c.OwnerIndex)
-	}
-	owner := c.Gameplay.State.PlayerStates[c.OwnerIndex]
-
+	owner := c.owner()
 	if owner == nil {
 		return fmt.Errorf("no owner for card instance %d", c.InstanceId)
 	}
@@ -368,4 +406,11 @@ func (c *CardInstance) Mulligan() error {
 	newCardInstance := NewCardInstance(newcard, c.Gameplay)
 	newCardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
 	return nil
+}
+
+func (c *CardInstance) owner() *zb.PlayerState {
+	if int(c.OwnerIndex) > len(c.Gameplay.State.PlayerStates)-1 {
+		return nil
+	}
+	return c.Gameplay.State.PlayerStates[c.OwnerIndex]
 }

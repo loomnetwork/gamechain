@@ -1,8 +1,10 @@
 package battleground
 
 import (
+	"os"
 	"testing"
 
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -760,4 +762,210 @@ func TestCheats(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.EqualError(t, err, "card with instance id 500 not found")
 	})
+}
+
+/*func TestGameReplyState(t *testing.T) {
+c := &ZombieBattleground{}
+var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+var addr loom.Address
+var ctx contract.Context
+
+setup(c, pubKeyHexString, &addr, &ctx, t)
+
+setupAccount(c, ctx, &zb.UpsertAccountRequest{
+	UserId:  "ZombieSlayer_885304049522535028281909288283089888794321162558469122615045277120216755610",
+	Version: "v1",
+}, t)
+setupAccount(c, ctx, &zb.UpsertAccountRequest{
+	UserId:  "ZombieSlayer_133859560841827127472479602243651375194640870164584945309062317679873410439",
+	Version: "v1",
+}, t)
+
+setupGameStateFromFile(c, &ctx)
+setupMatchFromFile(c, &ctx)
+
+gameState := getGameStateFromFile(c, &ctx)
+for i := 0; i < len(gameState.PlayerActions); i++ {
+	_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
+		MatchId:      gameState.Id,
+		PlayerAction: gameState.PlayerActions[i],
+	})
+	if err != nil {
+		panic(err)
+	}
+}
+
+clientGameState := getClientGameStateFromFile(c, &ctx)
+
+if gameState.Id != clientGameState.Id {
+	assert.Error(t, nil, "Id are not equal")
+}
+
+if gameState.CurrentActionIndex != clientGameState.CurrentActionIndex {
+	assert.Error(t, nil, "ActionIndexes are not equal")
+}
+
+stateCompare(gameState, clientGameState, t)
+
+/*response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
+	MatchId: gameState.Id,
+})
+if err != nil {
+	panic(err)
+}
+fmt.Println(response.GameState)*/
+//fmt.Println(gameState)
+
+/*fmt.Println(response.GameState.PlayerStates[0].Defense)
+	fmt.Println(gameState.PlayerStates[0].Defense)
+	fmt.Println(clientGameState.PlayerStates[1].Defense)
+
+}*/
+
+func setupGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) {
+	// read from game-state file
+	f, err := os.Open("./init_game_state.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	var gameStateData zb.GameState
+
+	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameStateData); err != nil {
+		panic(err)
+	}
+
+	if err := saveGameState(*ctx, &gameStateData); err != nil {
+		panic(err)
+	}
+
+}
+
+func setupMatchFromFile(c *ZombieBattleground, ctx *contract.Context) {
+	// read from game-state file
+	f, err := os.Open("./match.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	var match zb.Match
+
+	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &match); err != nil {
+		panic(err)
+	}
+
+	if err := saveMatch(*ctx, &match); err != nil {
+		panic(err)
+	}
+}
+
+func getGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb.GameState {
+	f, err := os.Open("./game_state.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	var gameState zb.GameState
+
+	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameState); err != nil {
+		panic(err)
+	}
+
+	return gameState
+
+}
+
+func getClientGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb.GameState {
+	f, err := os.Open("./client_state.json")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	var gameState zb.GameState
+
+	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameState); err != nil {
+		panic(err)
+	}
+
+	return gameState
+
+}
+
+func stateCompare(serverState zb.GameState, clientState zb.GameState, t *testing.T) bool {
+	serverPlayerStates := map[string]*zb.PlayerState{}
+	clientPlayerStates := map[string]*zb.PlayerState{}
+
+	for i := 0; i < len(clientState.PlayerStates); i++ {
+		clientPlayerStates[clientState.PlayerStates[i].Id] = clientState.PlayerStates[i]
+	}
+
+	for i := 0; i < len(serverState.PlayerStates); i++ {
+		serverPlayerStates[serverState.PlayerStates[i].Id] = serverState.PlayerStates[i]
+	}
+
+	//compare player defense, goocost, deck
+	for k, v := range serverPlayerStates {
+		if clientPlayerStates[k].Defense != v.Defense {
+			t.Errorf("Overlord defenses do not match %d, %d", clientPlayerStates[k].Defense, v.Defense)
+			return false
+		}
+		if clientPlayerStates[k].CurrentGoo != v.CurrentGoo {
+			t.Errorf("CurrentGoo do not match %d, %d", clientPlayerStates[k].CurrentGoo, v.CurrentGoo)
+			return false
+		}
+		if compareDecks(clientPlayerStates[k].CardsInDeck, v.CardsInDeck, t) {
+			t.Errorf("Cards in deck do not match")
+			return false
+		}
+		if compareDecks(clientPlayerStates[k].CardsInHand, v.CardsInHand, t) {
+			t.Errorf("Cards in hand do not match")
+			return false
+		}
+		if compareDecks(clientPlayerStates[k].CardsInPlay, v.CardsInPlay, t) {
+			t.Errorf("Cards in play do not match")
+			return false
+		}
+		if compareDecks(clientPlayerStates[k].CardsInGraveyard, v.CardsInGraveyard, t) {
+			t.Errorf("Cards in graveyard do not match")
+			return false
+		}
+	}
+	return true
+}
+
+func compareDecks(d1 []*zb.CardInstance, d2 []*zb.CardInstance, t *testing.T) bool {
+	if len(d1) != len(d2) {
+		t.Errorf("Number of cards are not equal %d, %d", len(d1), len(d2))
+		return false
+	}
+
+	for i := 0; i < len(d1); i++ {
+		result := compareCards(d1[i], d2[i])
+		if !result {
+			t.Errorf("Card instances are not equal %v, %v", d1[i], d2[i])
+			return false
+		}
+	}
+
+	return true
+}
+
+func compareCards(c1 *zb.CardInstance, c2 *zb.CardInstance) bool {
+	if c1.Instance.Defense != c2.Instance.Defense {
+		return false
+	}
+
+	if c1.Instance.Attack != c2.Instance.Attack {
+		return false
+	}
+
+	if c1.Instance.GooCost != c2.Instance.GooCost {
+		return false
+	}
+
+	return true
 }
