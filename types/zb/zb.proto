@@ -718,6 +718,14 @@ message GetGameStateResponse {
     GameState gameState = 1;
 }
 
+message GetInitialGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetInitialGameStateResponse {
+    GameState gameState = 1;
+}
+
 message SetGameStateRequest {
     GameState gameState = 1;
 }
@@ -1184,6 +1192,7 @@ message GameState {
     string winner                       = 8;
     string version                      = 9;
     int64 createdAt                     = 10;
+    int32 nextInstanceId = 11;
 }
 
 message CardChoosableAbility {
@@ -1262,6 +1271,10 @@ message CardAbilityAttackOverlord {
     bool wasApplied = 2;
 }
 
+message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+    CardSetType.Enum set = 1;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
@@ -1271,6 +1284,7 @@ message PlayerActionOutcome {
         CardAbilityReanimateOutcome reanimate = 4;
         CardAbilityAttackOverlordOutcome attackOverlord = 6;
         CardAttackOutcome cardAttack = 7;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 8;
     }
 
     message CardAbilityRageOutcome {
@@ -1311,6 +1325,11 @@ message PlayerActionOutcome {
         int32 attackerNewDefense = 3;
         int32 targetNewDefense = 4;
     }
+
+    message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+        repeated CardInstance newCardInstances = 1;
+        repeated InstanceId replacedInstanceIds = 2;
+    }
 }
 
 message CardAbilityInstance {
@@ -1321,6 +1340,7 @@ message CardAbilityInstance {
         CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 6;
         CardAbilityChangeStat changeStat = 7;
         CardAbilityAttackOverlord attackOverlord = 8;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 9;
     }
     bool isActive = 3;
     CardAbilityTrigger.Enum trigger = 4;

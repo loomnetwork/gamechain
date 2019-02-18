@@ -71,6 +71,10 @@ func GameStateKey(gameStateID int64) []byte {
 	return []byte(fmt.Sprintf("gamestate:%d", gameStateID))
 }
 
+func InitialGameStateKey(gameStateID int64) []byte {
+	return []byte(fmt.Sprintf("initial-gamestate:%d", gameStateID))
+}
+
 func UserMatchKey(userID string) []byte {
 	return []byte("user:" + userID + ":match")
 }
@@ -355,6 +359,22 @@ func loadGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) 
 	return &state, nil
 }
 
+func saveInitialGameState(ctx contract.Context, gs *zb.GameState) error {
+	if err := ctx.Set(InitialGameStateKey(gs.Id), gs); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadInitialGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) {
+	var state zb.GameState
+	err := ctx.Get(InitialGameStateKey(id), &state)
+	if err != nil {
+		return nil, err
+	}
+	return &state, nil
+}
+
 func saveUserCurrentMatch(ctx contract.Context, userID string, match *zb.Match) error {
 	if err := ctx.Set(UserMatchKey(userID), match); err != nil {
 		return err
@@ -498,6 +518,16 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				AbilityType: &zb.CardAbilityInstance_AttackOverlord{
 					AttackOverlord: &zb.CardAbilityAttackOverlord{
 						Damage: raw.Value,
+					},
+				},
+			})
+		case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+						Set: cardDetails.Set,
 					},
 				},
 			})
