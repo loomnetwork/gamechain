@@ -1357,6 +1357,7 @@ message PlayerActionCardAbilityUsed {
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
     Unit target = 2;
+    repeated Unit targets = 3;
 }
 
 message PlayerActionEndTurn  {
