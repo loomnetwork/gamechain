@@ -249,9 +249,11 @@ func (c *CardInstance) OnPlay() error {
 				}
 				// find the cards in card library with same types as cards in plays
 				var toReplaceCards []*zb.CardInstance
+				var replacedInstanceIDs []*zb.InstanceId
 				for _, card := range owner.CardsInPlay {
 					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
 						toReplaceCards = append(toReplaceCards, card)
+						replacedInstanceIDs = append(replacedInstanceIDs, card.InstanceId)
 					}
 				}
 				// continue if there is no same type card in play
@@ -298,6 +300,16 @@ func (c *CardInstance) OnPlay() error {
 				c.owner().CardsInPlay = newCardsInplay
 
 				ai.IsActive = false
+
+				// outcome
+				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
+					Outcome: &zb.PlayerActionOutcome_ReplaceUnitsWithTypeOnStrongerOnes{
+						ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+							NewCardInstances:    newcardInstances,
+							ReplacedInstanceIds: replacedInstanceIDs,
+						},
+					},
+				})
 			}
 		}
 	}
