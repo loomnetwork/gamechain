@@ -1256,11 +1256,6 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			return nil, err
 		}
 
-		if err := saveInitialGameState(ctx, gp.State); err != nil {
-			return nil, err
-		}
-		ctx.Logger().Info("Save Init Gamestate")
-
 		match.Status = zb.Match_Started
 
 		emitMsg = zb.PlayerActionEvent{

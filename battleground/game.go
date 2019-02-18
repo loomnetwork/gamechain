@@ -128,6 +128,10 @@ func NewGamePlay(ctx contract.Context,
 		return nil, err
 	}
 
+	if err := saveInitialGameState(ctx, g.State); err != nil {
+		return nil, err
+	}
+
 	if err = g.run(); err != nil {
 		return nil, err
 	}
@@ -257,6 +261,11 @@ loop:
 		return err
 	}
 
+	// give initial 1 vial and 1 goo for active player
+	addGooVialAndFillAll(g.activePlayer())
+	// give initial 1 vial and 1 goo for player opponent
+	//addGooVialAndFillAll(g.activePlayerOpponent())
+
 	// add history data
 	ps := make([]*zb.Player, len(g.State.PlayerStates))
 	for i := range g.State.PlayerStates {
@@ -350,6 +359,7 @@ func (g *Gameplay) resume() error {
 	}
 
 	g.debugf("Gameplay resumed at action index %d\n", g.State.CurrentActionIndex)
+
 	for g.stateFn = state; g.stateFn != nil; {
 		g.stateFn = g.stateFn(g)
 	}
@@ -634,10 +644,6 @@ func gameStart(g *Gameplay) stateFn {
 	if g.isEnded() {
 		return nil
 	}
-
-	// give initial 1 vial and 1 goo
-	addGooVialAndFillAll(g.activePlayer())
-	addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// determine the next action
 	g.PrintState()
@@ -1135,6 +1141,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	// change player turn
 	g.changePlayerTurn()
 
+	// add GooVial to active player
 	addGooVialAndFillAll(g.activePlayer())
 
 	// allow the new player to draw card on new turn
@@ -1147,6 +1154,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 	} else {
 		cardsToDraw = 1
 	}
+
 	if err := g.drawCard(g.activePlayer(), cardsToDraw); err != nil {
 		return g.captureErrorAndStop(err)
 	}
