@@ -521,6 +521,16 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
+		case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+						Set: cardDetails.Set,
+					},
+				},
+			})
 		}
 
 	}
