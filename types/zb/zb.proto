@@ -1270,7 +1270,7 @@ message PlayerActionOutcome {
         CardAbilityChangeStatOutcome changeStat = 5;
         CardAbilityReanimateOutcome reanimate = 4;
         CardAbilityAttackOverlordOutcome attackOverlord = 6;
-        InstanceStatOutcome instanceStat = 7;
+        CardAttackOutcome cardAttack = 7;
     }
 
     message CardAbilityRageOutcome {
@@ -1305,11 +1305,11 @@ message PlayerActionOutcome {
         int32 newDefense = 2;
     }
 
-    message InstanceStatOutcome {
-        InstanceId instanceId = 1;
-        int32 newAttack = 2;
-        int32 newDefense = 3;
-
+    message CardAttackOutcome {
+        InstanceId attackerInstanceId = 1;
+        InstanceId targetInstanceId = 2;
+        int32 attackerNewDefense = 3;
+        int32 targetNewDefense = 4;
     }
 }
 
