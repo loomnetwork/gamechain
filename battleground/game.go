@@ -261,11 +261,6 @@ loop:
 		return err
 	}
 
-	// give initial 1 vial and 1 goo for active player
-	addGooVialAndFillAll(g.activePlayer())
-	// give initial 1 vial and 1 goo for player opponent
-	//addGooVialAndFillAll(g.activePlayerOpponent())
-
 	// add history data
 	ps := make([]*zb.Player, len(g.State.PlayerStates))
 	for i := range g.State.PlayerStates {
@@ -644,6 +639,10 @@ func gameStart(g *Gameplay) stateFn {
 	if g.isEnded() {
 		return nil
 	}
+
+	// give initial 1 vial and 1 goo
+	addGooVialAndFillAll(g.activePlayer())
+	addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// determine the next action
 	g.PrintState()
