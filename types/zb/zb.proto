@@ -1356,7 +1356,7 @@ message PlayerActionCardAbilityUsed {
 
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
-    // Unit target = 2; skip this fields in favor of targets
+    Unit target = 2;
     repeated Unit targets = 3;
 }
 
