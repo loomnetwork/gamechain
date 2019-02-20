@@ -94,7 +94,7 @@ var getGameStateCmd = &cobra.Command{
 				}
 			}
 			fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
-			fmt.Printf("Is ended: %v\n", state.IsEnded)
+			fmt.Printf("Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
 		}
 
 		return nil
