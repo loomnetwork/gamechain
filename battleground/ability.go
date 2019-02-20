@@ -249,32 +249,41 @@ func (c *CardInstance) OnPlay() error {
 				}
 				// find the cards in card library with same types as cards in plays
 				var toReplaceCards []*zb.CardInstance
-				var replacedInstanceIDs []*zb.InstanceId
-				for _, card := range owner.CardsInPlay {
+				var replacements []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_Replacement
+				for i, card := range owner.CardsInPlay {
 					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
 						toReplaceCards = append(toReplaceCards, card)
-						replacedInstanceIDs = append(replacedInstanceIDs, card.InstanceId)
+						replacements = append(replacements, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_Replacement{
+							Id:       card.InstanceId.Id,
+							Position: int32(i),
+						})
 					}
 				}
+
 				// continue if there is no same type card in play
 				if len(toReplaceCards) == 0 {
 					continue
 				}
-				var sameTypeStrongerCards []*zb.Card
-				for _, card := range c.Gameplay.cardLibrary.Cards {
-					if card.Set == c.Instance.Set && card.GooCost > c.Instance.GooCost {
-						sameTypeStrongerCards = append(sameTypeStrongerCards, card)
-					}
-				}
-				if len(sameTypeStrongerCards) == 0 {
-					continue
-				}
-				var r = rand.New(rand.NewSource(c.Gameplay.State.RandomSeed))
-				randomCardIndex := r.Perm(len(sameTypeStrongerCards))
 
-				// TODO: check index
+				sameTypeStrongerFn := func(cardLibrary *zb.CardList, target *zb.CardInstance) []*zb.Card {
+					var sameTypeStrongerCards []*zb.Card
+					for _, card := range cardLibrary.Cards {
+						if card.Set == target.Instance.Set && card.GooCost > target.Instance.GooCost {
+							sameTypeStrongerCards = append(sameTypeStrongerCards, card)
+						}
+					}
+					return sameTypeStrongerCards
+				}
+
 				var newcardInstances []*zb.CardInstance
-				for i := range toReplaceCards {
+				for i, card := range toReplaceCards {
+					sameTypeStrongerCards := sameTypeStrongerFn(c.Gameplay.cardLibrary, card)
+					if len(sameTypeStrongerCards) == 0 {
+						continue
+					}
+					var r = rand.New(rand.NewSource(c.Gameplay.State.RandomSeed))
+					randomCardIndex := r.Perm(len(sameTypeStrongerCards))
+
 					// create new instance from card
 					newcard := sameTypeStrongerCards[randomCardIndex[i]]
 					instanceid := &zb.InstanceId{Id: c.Gameplay.State.NextInstanceId}
@@ -283,6 +292,7 @@ func (c *CardInstance) OnPlay() error {
 					newinstance.Zone = zb.Zone_PLAY
 					newcardInstances = append(newcardInstances, newinstance)
 				}
+
 				// remove card from card in play
 				var newCardsInplay []*zb.CardInstance
 				for _, card := range owner.CardsInPlay {
@@ -292,7 +302,9 @@ func (c *CardInstance) OnPlay() error {
 						}
 					}
 				}
+
 				// append card in play
+				// TODO: maybe we don't append, we just replace?
 				for _, card := range newcardInstances {
 					newCardsInplay = append(newCardsInplay, card)
 				}
@@ -300,13 +312,12 @@ func (c *CardInstance) OnPlay() error {
 				c.owner().CardsInPlay = newCardsInplay
 
 				ai.IsActive = false
-
 				// outcome
 				c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 					Outcome: &zb.PlayerActionOutcome_ReplaceUnitsWithTypeOnStrongerOnes{
 						ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-							NewCardInstances:    newcardInstances,
-							ReplacedInstanceIds: replacedInstanceIDs,
+							NewCardInstances: newcardInstances,
+							Replacements:     replacements,
 						},
 					},
 				})
@@ -372,9 +383,9 @@ func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.Playe
 		Outcome: &zb.PlayerActionOutcome_CardAttack{
 			CardAttack: &zb.PlayerActionOutcome_CardAttackOutcome{
 				AttackerInstanceId: c.InstanceId,
-				TargetInstanceId: target.InstanceId,
+				TargetInstanceId:   target.InstanceId,
 				AttackerNewDefense: c.Instance.Defense,
-				TargetNewDefense: target.Defense,
+				TargetNewDefense:   target.Defense,
 			},
 		},
 	})
