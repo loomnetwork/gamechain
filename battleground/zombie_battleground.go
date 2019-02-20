@@ -1627,6 +1627,50 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 	}, nil
 }
 
+// ReplayGame simulate the game that has been created by initializing game from start and
+// apply actions to from the current gamestate. ReplayGame does not save any gamestate.
+func (z *ZombieBattleground) ReplayGame(ctx contract.Context, req *zb.ReplayGameRequest) (*zb.ReplayGameResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	initGameState, err := loadInitialGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := GamePlayFrom(initGameState, match.UseBackendGameLogic, match.PlayerDebugCheats)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: change me. this is a bit hacky way to set card libarary
+	cardlist, err := loadCardList(ctx, initGameState.Version)
+	if err != nil {
+		return nil, err
+	}
+	gp.cardLibrary = cardlist
+	gp.SetLogger(ctx.Logger())
+
+	// get all actions from game states
+	currentGameState, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	actions := currentGameState.PlayerActions
+	if req.StopAtActionIndex > -1 && int(req.StopAtActionIndex) < len(actions) {
+		actions = actions[:int(req.StopAtActionIndex)]
+	}
+
+	if err := gp.AddBundleAction(actions...); err != nil {
+		return nil, err
+	}
+
+	return &zb.ReplayGameResponse{
+		GameState:      initGameState,
+		ActionOutcomes: gp.actionOutcomes,
+	}, nil
+}
+
 func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRequest) (*zb.KeepAliveResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
