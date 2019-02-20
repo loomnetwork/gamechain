@@ -249,14 +249,11 @@ func (c *CardInstance) OnPlay() error {
 				}
 				// find the cards in card library with same types as cards in plays
 				var toReplaceCards []*zb.CardInstance
-				var replacements []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_Replacement
-				for i, card := range owner.CardsInPlay {
+				var oldInstanceIds []*zb.InstanceId
+				for _, card := range owner.CardsInPlay {
 					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
 						toReplaceCards = append(toReplaceCards, card)
-						replacements = append(replacements, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_Replacement{
-							InstanceId: card.InstanceId,
-							Position:   int32(i),
-						})
+						oldInstanceIds = append(oldInstanceIds, card.InstanceId)
 					}
 				}
 
@@ -275,7 +272,7 @@ func (c *CardInstance) OnPlay() error {
 					return sameTypeStrongerCards
 				}
 
-				var newcardInstances []*zb.CardInstance
+				var newcardInstances []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance
 				for i, card := range toReplaceCards {
 					sameTypeStrongerCards := sameTypeStrongerFn(c.Gameplay.cardLibrary, card)
 					if len(sameTypeStrongerCards) == 0 {
@@ -290,7 +287,10 @@ func (c *CardInstance) OnPlay() error {
 					c.Gameplay.State.NextInstanceId++
 					newinstance := newCardInstanceFromCardDetails(newcard, instanceid, c.Owner, c.OwnerIndex)
 					newinstance.Zone = zb.Zone_PLAY
-					newcardInstances = append(newcardInstances, newinstance)
+					newcardInstances = append(newcardInstances, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance{
+						CardInstance: newinstance,
+						Position:     int32(i),
+					})
 				}
 
 				// remove card from card in play
@@ -306,7 +306,7 @@ func (c *CardInstance) OnPlay() error {
 				// append card in play
 				// TODO: maybe we don't append, we just replace?
 				for _, card := range newcardInstances {
-					newCardsInplay = append(newCardsInplay, card)
+					newCardsInplay = append(newCardsInplay, card.CardInstance)
 				}
 				// set cardinplay to gamestate
 				c.owner().CardsInPlay = newCardsInplay
@@ -317,7 +317,7 @@ func (c *CardInstance) OnPlay() error {
 					Outcome: &zb.PlayerActionOutcome_ReplaceUnitsWithTypeOnStrongerOnes{
 						ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
 							NewCardInstances: newcardInstances,
-							Replacements:     replacements,
+							OldInstanceIds:   oldInstanceIds,
 						},
 					},
 				})

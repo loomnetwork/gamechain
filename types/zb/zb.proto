@@ -1337,11 +1337,11 @@ message PlayerActionOutcome {
     }
 
     message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
-        repeated CardInstance newCardInstances = 1;
-        repeated Replacement replacements = 2;
-        // info about the card that get replaced
-        message Replacement {
-            InstanceId instanceId = 1;
+        repeated NewCardInstance newCardInstances = 1;
+        repeated InstanceId oldInstanceIds = 2;
+        // info about new card and it position
+        message NewCardInstance {
+            CardInstance cardInstance = 1;
             int32 position = 2;
         }
     }
