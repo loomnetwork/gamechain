@@ -248,6 +248,8 @@ loop:
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 	}
 
+	g.State.NextInstanceId = instanceId
+
 	if g.customGameMode != nil {
 		err := g.customGameMode.CallHookAfterInitialDraw(ctx, g)
 		if err != nil {
@@ -599,19 +601,19 @@ func (g *Gameplay) DebugState() {
 		}
 		fmt.Fprintf(buf, "\tcard in hand (%d):\n", len(player.CardsInHand))
 		for _, card := range player.CardsInHand {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in play (%d):\n", len(player.CardsInPlay))
 		for _, card := range player.CardsInPlay {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in deck (%d):\n", len(player.CardsInDeck))
 		for _, card := range player.CardsInDeck {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in graveyard (%d):\n", len(player.CardsInGraveyard))
 		for _, card := range player.CardsInGraveyard {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Atk:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Attack, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\n") // extra line
 	}
