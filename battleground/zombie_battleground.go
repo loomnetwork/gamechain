@@ -1539,6 +1539,12 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+	// TODO: change me. this is a bit hacky way to set card libarary
+	cardlist, err := loadCardList(ctx, gamestate.Version)
+	if err != nil {
+		return nil, err
+	}
+	gp.cardLibrary = cardlist
 	gp.SetLogger(ctx.Logger())
 	// add created timestamp
 	req.PlayerAction.CreatedAt = ctx.Now().Unix()
