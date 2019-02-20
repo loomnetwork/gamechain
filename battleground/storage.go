@@ -592,6 +592,28 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 		filteredCards := make([]*zb.CardInstance, 0, 0)
 
 		for _, card := range playerState.CardsInDeck {
+			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			for _, ability := range card.Prototype.Abilities {
+				switch ability.Type {
+				case zb.CardAbilityType_Rage:
+					fallthrough
+				case zb.CardAbilityType_PriorityAttack:
+					fallthrough
+				case zb.CardAbilityType_ReanimateUnit:
+					fallthrough
+				case zb.CardAbilityType_ChangeStat:
+					fallthrough
+				case zb.CardAbilityType_AttackOverlord:
+					fallthrough
+				case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+					filteredAbilities = append(filteredAbilities, ability)
+				default:
+					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+				}
+			}
+
+			card.Prototype.Abilities = filteredAbilities
+
 			switch card.Prototype.Type {
 			case zb.CreatureType_Feral:
 				fallthrough
@@ -613,6 +635,16 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 				filteredCards = append(filteredCards, card)
 			default:
 				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+			}
+
+			switch card.Prototype.Rank {
+			case zb.CreatureRank_Officer:
+				fallthrough
+			case zb.CreatureRank_Commander:
+				fallthrough
+			case zb.CreatureRank_General:
+				fmt.Printf("Unsupported CreatureRank value %s, fallback to MINION (card %s)\n", zb.CreatureRank_Enum_name[int32(card.Prototype.Rank)], card.Prototype.Name)
+				card.Prototype.Rank = zb.CreatureRank_Minion
 			}
 		}
 
