@@ -848,5 +848,6 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		gp.DebugState()
 		assert.Equal(t, 3, len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Equal(t, false, gp.State.PlayerStates[0].CardsInPlay[2].AbilitiesInstances[0].IsActive)
+		assert.Equal(t, 1, len(gp.actionOutcomes[0].GetReplaceUnitsWithTypeOnStrongerOnes().NewCardInstances))
 	})
 }

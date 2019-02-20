@@ -796,6 +796,16 @@ message GetVersionsResponse {
     string pvpVersion = 2;
 }
 
+message ReplayGameRequest {
+    int64 matchId = 1;
+    int32 stopAtActionIndex = 2;
+}
+
+message ReplayGameResponse {
+    GameState gameState = 1;
+    repeated PlayerActionOutcome actionOutcomes = 2;
+}
+
 // Game Modes
 
 message GameMode {
@@ -1328,7 +1338,12 @@ message PlayerActionOutcome {
 
     message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
         repeated CardInstance newCardInstances = 1;
-        repeated InstanceId replacedInstanceIds = 2;
+        repeated Replacement replacements = 2;
+        // info about the card that get replaced
+        message Replacement {
+            int32 id = 1;
+            int32 position = 2;
+        }
     }
 }
 

@@ -7,49 +7,52 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
-var getGameStateCmdArgs struct {
-	MatchID int64
+var replayGameCmdArgs struct {
+	matchID           int64
+	stopAtActionIndex int32
 }
 
-var getGameStateCmd = &cobra.Command{
-	Use:   "get_game_state",
-	Short: "get gamestate",
+var replayGameCmd = &cobra.Command{
+	Use:   "replay_game",
+	Short: "replay_game",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := loom.Address{
-			ChainID: commonTxObjs.rpcClient.GetChainID(),
-			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+
+		var req = zb.ReplayGameRequest{
+			MatchId:           replayGameCmdArgs.matchID,
+			StopAtActionIndex: replayGameCmdArgs.stopAtActionIndex,
 		}
-		var req = zb.GetGameStateRequest{
-			MatchId: getGameStateCmdArgs.MatchID,
-		}
-		var resp zb.GetGameStateResponse
-		_, err := commonTxObjs.contract.StaticCall("GetGameState", &req, callerAddr, &resp)
+		var resp zb.ReplayGameResponse
+
+		_, err := commonTxObjs.contract.Call("ReplayGame", &req, signer, &resp)
 		if err != nil {
 			return err
 		}
 
-		state := resp.GameState
-
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(state)
+			output, err := new(jsonpb.Marshaler).MarshalToString(resp.GameState)
 			if err != nil {
 				return err
 			}
 			fmt.Println(string(output))
 		default:
+			state := resp.GameState
+			actionOutcomes := resp.ActionOutcomes
 			formatAbility := func(abilities []*zb.CardAbilityInstance) string {
 				b := new(bytes.Buffer)
 				for _, a := range abilities {
 					b.WriteString(fmt.Sprintf("Abilities: [%+v trigger=%v active=%v]\n", a.AbilityType, a.Trigger, a.IsActive))
 				}
 				return b.String()
+			}
+
+			formatAction := func(action *zb.PlayerAction) string {
+				return fmt.Sprintf("%s: %s, %+v", action.ActionType, action.PlayerId, action.Action)
 			}
 
 			for i, player := range state.PlayerStates {
@@ -88,12 +91,19 @@ var getGameStateCmd = &cobra.Command{
 			fmt.Printf("Actions: count %v\n", len(state.PlayerActions))
 			for i, action := range state.PlayerActions {
 				if int64(i) == state.CurrentActionIndex {
-					fmt.Printf("   -->> [%d] %v\n", i, action)
+					fmt.Printf("   -->> [%-2d] %v\n", i, formatAction(action))
 				} else {
-					fmt.Printf("\t[%d] %v\n", i, action)
+					fmt.Printf("\t[%2d] %v\n", i, formatAction(action))
 				}
 			}
 			fmt.Printf("Current Action Index: %v\n", state.CurrentActionIndex)
+
+			fmt.Printf("Ability Outcomes:\n")
+			for i, outcome := range actionOutcomes {
+				fmt.Printf("\t[%d] %v\n", i, outcome)
+			}
+
+			fmt.Printf("==================================\n")
 		}
 
 		return nil
@@ -101,7 +111,7 @@ var getGameStateCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getGameStateCmd)
-
-	getGameStateCmd.Flags().Int64VarP(&getGameStateCmdArgs.MatchID, "matchId", "m", 0, "Match ID")
+	rootCmd.AddCommand(replayGameCmd)
+	replayGameCmd.Flags().Int64VarP(&replayGameCmdArgs.matchID, "matchId", "m", 0, "Match Id")
+	replayGameCmd.Flags().Int32VarP(&replayGameCmdArgs.stopAtActionIndex, "stopAt", "i", -1, "stop at action index")
 }
