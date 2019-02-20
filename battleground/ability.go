@@ -248,11 +248,14 @@ func (c *CardInstance) OnPlay() error {
 					return fmt.Errorf("no owner for card instance %d", c.InstanceId)
 				}
 				// find the cards in card library with same types as cards in plays
-				var toReplaceCards []*zb.CardInstance
+				var toReplaceCards []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance
 				var oldInstanceIds []*zb.InstanceId
-				for _, card := range owner.CardsInPlay {
+				for i, card := range owner.CardsInPlay {
 					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
-						toReplaceCards = append(toReplaceCards, card)
+						toReplaceCards = append(toReplaceCards, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance{
+							CardInstance: card,
+							Position:     int32(i),
+						})
 						oldInstanceIds = append(oldInstanceIds, card.InstanceId)
 					}
 				}
@@ -274,7 +277,7 @@ func (c *CardInstance) OnPlay() error {
 
 				var newcardInstances []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance
 				for i, card := range toReplaceCards {
-					sameTypeStrongerCards := sameTypeStrongerFn(c.Gameplay.cardLibrary, card)
+					sameTypeStrongerCards := sameTypeStrongerFn(c.Gameplay.cardLibrary, card.CardInstance)
 					if len(sameTypeStrongerCards) == 0 {
 						continue
 					}
@@ -289,27 +292,19 @@ func (c *CardInstance) OnPlay() error {
 					newinstance.Zone = zb.Zone_PLAY
 					newcardInstances = append(newcardInstances, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance{
 						CardInstance: newinstance,
-						Position:     int32(i),
+						Position:     card.Position,
 					})
 				}
 
-				// remove card from card in play
-				var newCardsInplay []*zb.CardInstance
-				for _, card := range owner.CardsInPlay {
-					for _, toreplace := range toReplaceCards {
-						if !proto.Equal(toreplace.InstanceId, card.InstanceId) {
-							newCardsInplay = append(newCardsInplay, card)
+				// replace card in play
+				for i := 0; i < len(owner.CardsInPlay); i++ {
+					for j := 0; j < len(newcardInstances); j++ {
+						newcard := newcardInstances[j]
+						if i == int(newcard.Position) {
+							owner.CardsInPlay[i] = newcard.CardInstance
 						}
 					}
 				}
-
-				// append card in play
-				// TODO: maybe we don't append, we just replace?
-				for _, card := range newcardInstances {
-					newCardsInplay = append(newCardsInplay, card.CardInstance)
-				}
-				// set cardinplay to gamestate
-				c.owner().CardsInPlay = newCardsInplay
 
 				ai.IsActive = false
 				// outcome
