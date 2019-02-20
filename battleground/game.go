@@ -265,7 +265,7 @@ loop:
 
 	// give initial 1 vial and 1 goo
 	addGooVialAndFillAll(g.activePlayer())
-	addGooVialAndFillAll(g.activePlayerOpponent())
+	//addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// add history data
 	ps := make([]*zb.Player, len(g.State.PlayerStates))
