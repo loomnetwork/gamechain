@@ -254,8 +254,8 @@ func (c *CardInstance) OnPlay() error {
 					if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
 						toReplaceCards = append(toReplaceCards, card)
 						replacements = append(replacements, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_Replacement{
-							Id:       card.InstanceId.Id,
-							Position: int32(i),
+							InstanceId: card.InstanceId,
+							Position:   int32(i),
 						})
 					}
 				}

@@ -1341,7 +1341,7 @@ message PlayerActionOutcome {
         repeated Replacement replacements = 2;
         // info about the card that get replaced
         message Replacement {
-            int32 id = 1;
+            InstanceId instanceId = 1;
             int32 position = 2;
         }
     }
