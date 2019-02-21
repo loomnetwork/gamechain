@@ -1,0 +1,34 @@
+{{define "content"}}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Cli Debugger</h1>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <span class="form-control">args</span>
+  </div>
+  <div class="col-md-6">
+    <input type="text" class="form-control" id="args" placeholder="" value="" required>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-success btn-block" onclick="run()">Run</button>
+  </div>
+</div>
+<hr>
+<pre id="result">
+  
+</pre>
+<script>
+  
+  function run() {
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost:3000/run_cli',
+      data: { "args": $("#args").val() }, 
+      success: function(data) {
+        $("#result").text(JSON.stringify(data, null, 2))
+      },
+    });
+  }
+
+</script>
+{{end}}

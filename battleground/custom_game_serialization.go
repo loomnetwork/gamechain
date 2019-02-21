@@ -3,10 +3,11 @@ package battleground
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/common"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"io"
+
+	"github.com/gogo/protobuf/proto"
+	battleground "github.com/loomnetwork/gamechain/types/common"
+	"github.com/loomnetwork/gamechain/types/zb"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
@@ -38,7 +39,7 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 	return rb.readWriter.(*ReverseBuffer).GetFilledSlice(), nil
 }
 
-func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) ([]*SimpleCardInstance) {
+func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) []*SimpleCardInstance {
 	simpleCards := make([]*SimpleCardInstance, len(cards))
 	for i, card := range cards {
 		simpleCards[i] = newSimpleCardInstanceFromCardInstance(card)
@@ -110,6 +111,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		cardLibraryCard,
 		card.InstanceId,
 		card.Owner,
+		card.OwnerIndex,
 	)
 
 	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.Card)
