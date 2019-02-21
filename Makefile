@@ -139,7 +139,8 @@ clean:
 		bin/zb-cli \
 		bin/zb-enum-gen \
 		bin/gamechain-logger \
-		bin/gamechain-replay
+		bin/gamechain-replay \
+		bin/gamechain-debugger
 
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen bin/gcoracle oracle-abigen

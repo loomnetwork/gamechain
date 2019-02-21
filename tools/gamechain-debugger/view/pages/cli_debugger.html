@@ -1,120 +1,31 @@
 {{define "content"}}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-  <h1 class="h2">Gamechain State Debugger</h1>
+  <h1 class="h2">Cli Debugger</h1>
 </div>
 <div class="row">
   <div class="col-md-2">
-    <span class="form-control">Match-ID</span>
+    <span class="form-control">args</span>
+  </div>
+  <div class="col-md-6">
+    <input type="text" class="form-control" id="args" placeholder="" value="" required>
   </div>
   <div class="col-md-1">
-    <input type="text" class="form-control" id="match_id" placeholder="" value="" required>
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-primary btn-block" onclick="startUpdate()">Start</button>
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-danger btn-block" onclick="stopUpdate()">Stop</button>
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-success btn-block" onclick="saveState()">Save</button>
+    <button class="btn btn-success btn-block" onclick="run()">Run</button>
   </div>
 </div>
 <hr>
-<div class="row">
-  <div class="col-md-12 mb-12" id="player1">
-    <b>Current Action Index:</b> <span id="currentActionIndex"></span>
-    <hr>
-  </div>
-  <pre class="col-md-6 mb-6" id="player1">
-    <b>Player Id</b> <div id="p1_id"></div>
-    <b>Status</b> <div id="p1_status"></div>
-    <b>Cards In Hand:</b> <div id="p1_cards_in_hand"></div>
-    <b>Cards In Play:</b> <div id="p1_cards_in_play"></div>
-    <b>Cards In Graveyard:</b> <div id="p1_cards_in_graveyard"></div>
-    <b>Cards In Deck:</b> <div id="p1_cards_in_deck"></div>
-  </pre>
-  <pre class="col-md-6 mb-6" id="player2">
-    <b>Player Id</b> <div id="p2_id"></div>
-    <b>Status</b> <div id="p2_status"></div>
-    <b>Cards In Hand:</b><div id="p2_cards_in_hand"></div>
-    <b>Cards In Play:</b><div id="p2_cards_in_play"></div>
-    <b>Cards In Graveyard:</b> <div id="p2_cards_in_graveyard"></div>
-    <b>Cards In Deck:</b><div id="p2_cards_in_deck"></div>
-  </pre>
-</div>
-<script>
-  function cardsToArray(cards) {
-    var result = []
-    if (cards == null) return result
-    cards.forEach(element => {
-      var str = element.prototype.name + ''
-        + ' instance_id:' + element.instanceId.id
-        + ' attack:' + element.instance.attack
-        + ' defense:' + element.instance.defense;
-      result.push(str)
-    });
-    return result
-  }
-  function getStatus(player) {
-    return "Overlord defense: " + player.defense + " CurrentGoo: " + player.currentGoo + " GooVials: " + player.gooVials
-  }
-  var interval = null;
-  function startUpdate() {
-    var matchId = $("#match_id").val();
-    clearInterval(interval);
-    interval = setInterval(function () {
-      getState(matchId)
-    }, 1000);
-  }
-  function stopUpdate() {
-    clearInterval(interval);
-  }
-  function saveState() {
-    var matchId = $("#match_id").val();
-    if (matchId == '') return;
-    window.location = "./save_state/" + matchId;
-  }
-  function renderState(data) {
-    var player1 = data.playerStates[0];
-    var player2 = data.playerStates[1];
-
-    var p1_cards_in_hand = cardsToArray(player1.cardsInHand);
-    var p1_cards_in_deck = cardsToArray(player1.cardsInDeck);
-    var p1_cards_in_play = cardsToArray(player1.cardsInPlay);
-    var p1_cards_in_graveyard = cardsToArray(player1.cardsInGraveyard);
-    var p1_status = getStatus(player1);
-
-    var p2_cards_in_hand = cardsToArray(player2.cardsInHand);
-    var p2_cards_in_deck = cardsToArray(player2.cardsInDeck);
-    var p2_cards_in_play = cardsToArray(player2.cardsInPlay);
-    var p2_cards_in_graveyard = cardsToArray(player2.cardsInGraveyard);
-    var p2_status = getStatus(player2);
-
-    $("#currentActionIndex").text(data.currentActionIndex);
-
-    $("#p1_id").text(player1.id);
-    $("#p1_status").text(p1_status);
-    $("#p1_cards_in_hand").text(JSON.stringify(p1_cards_in_hand, null, 2));
-    $("#p1_cards_in_deck").text(JSON.stringify(p1_cards_in_deck, null, 2));
-    $("#p1_cards_in_play").text(JSON.stringify(p1_cards_in_play, null, 2));
-    $("#p1_cards_in_graveyard").text(JSON.stringify(p1_cards_in_graveyard, null, 2));
-
-
-    $("#p2_id").text(player2.id);
-    $("#p2_status").text(p2_status);
-    $("#p2_cards_in_hand").text(JSON.stringify(p2_cards_in_hand, null, 2));
-    $("#p2_cards_in_deck").text(JSON.stringify(p2_cards_in_deck, null, 2));
-    $("#p2_cards_in_play").text(JSON.stringify(p2_cards_in_play, null, 2));
-    $("#p2_cards_in_graveyard").text(JSON.stringify(p2_cards_in_graveyard, null, 2));
-  }
+<pre id="result">
   
-  function getState(matchId) {
+</pre>
+<script>
+  
+  function run() {
     $.ajax({
       type: 'GET',
-      url: 'http://localhost:3000/get_state/' + matchId,
-      dataType: 'json',
+      url: 'http://localhost:3000/run_cli',
+      data: { "args": $("#args").val() }, 
       success: function(data) {
-          renderState(data)
+        $("#result").text(JSON.stringify(data, null, 2))
       },
     });
   }
