@@ -858,7 +858,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		instance := NewCardInstance(cardInstance, g)
-		instance.Play()
+		if err := instance.Play(); err != nil {
+			return g.captureErrorAndStop(err)
+		}
 
 		// record history data
 		g.history = append(g.history, &zb.HistoryData{
@@ -973,7 +975,10 @@ func actionCardAttack(g *Gameplay) stateFn {
 
 			attackerInstance := NewCardInstance(attacker, g)
 			targetInstance := NewCardInstance(target, g)
-			attackerInstance.Attack(targetInstance)
+			err := attackerInstance.Attack(targetInstance)
+			if err != nil {
+				return g.captureErrorAndStop(err)
+			}
 		}
 	}
 
