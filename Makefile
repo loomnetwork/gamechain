@@ -21,6 +21,8 @@ gamechain-logger: proto bin/gamechain-logger
 
 gamechain-replay: proto bin/gamechain-replay
 
+gamechain-debugger: bin/zb-cli bin/gamechain-debugger
+
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
@@ -35,6 +37,9 @@ bin/gamechain-logger:
 
 bin/gamechain-replay:
 	go build -o $@ $(PKG)/tools/gamechain-replay
+
+bin/gamechain-debugger:
+	packr2 build -o $@ $(PKG)/tools/gamechain-debugger
 
 bin/gcoracle:
 	go build -o $@ $(PKG)/tools/gcoracle
