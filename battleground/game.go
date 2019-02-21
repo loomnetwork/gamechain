@@ -564,9 +564,6 @@ func (g *Gameplay) PrintState() {
 		fmt.Fprintf(buf, "\t[%d] %v\n", i, outcome)
 	}
 	fmt.Fprintf(buf, "==================================\n")
-	//g.debugf("Player0 - GooVials :%d, CurrentGoo :%d", g.State.PlayerStates[0].GooVials, g.State.PlayerStates[0].CurrentGoo)
-	//g.debugf("Player1 - GooVials :%d, CurrentGoo :%d", g.State.PlayerStates[1].GooVials, g.State.PlayerStates[1].CurrentGoo)
-	//g.debugf(buf.String())
 }
 
 func (g *Gameplay) DebugState() {
