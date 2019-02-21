@@ -1,0 +1,81 @@
+{
+  "id": "196",
+  "topics": [
+    "match:196"
+  ],
+  "playerStates": [
+    {
+      "id": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
+      "matchAccepted": true,
+      "deck": {
+        "id": "-1",
+        "name": "custom deck",
+        "cards": [
+          {
+            "cardName": "Ghoul",
+            "amount": "30"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
+      "matchAccepted": true,
+      "deck": {
+        "id": "-1",
+        "name": "custom deck",
+        "cards": [
+          {
+            "cardName": "Poizom",
+            "amount": "30"
+          }
+        ]
+      }
+    }
+  ],
+  "status": "Playing",
+  "version": "v1",
+  "randomSeed": "1550635653",
+  "createdAt": "1550635653",
+  "useBackendGameLogic": true,
+  "playerLastSeens": [
+    {
+      "id": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
+      "updatedAt": "1550635749"
+    },
+    {
+      "id": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
+      "updatedAt": "1550635752"
+    }
+  ],
+  "playerDebugCheats": [
+    {
+      "enabled": true,
+      "useCustomDeck": true,
+      "customDeck": {
+        "id": "-1",
+        "name": "custom deck",
+        "cards": [
+          {
+            "cardName": "Ghoul",
+            "amount": "30"
+          }
+        ]
+      }
+    },
+    {
+      "enabled": true,
+      "useCustomDeck": true,
+      "customDeck": {
+        "id": "-1",
+        "name": "custom deck",
+        "cards": [
+          {
+            "cardName": "Poizom",
+            "amount": "30"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -21,6 +21,8 @@ gamechain-logger: proto bin/gamechain-logger
 
 gamechain-replay: proto bin/gamechain-replay
 
+gamechain-debugger: bin/zb-cli bin/gamechain-debugger
+
 bin/zb-cli:
 	go build -o $@ $(PKG)/cli
 
@@ -35,6 +37,9 @@ bin/gamechain-logger:
 
 bin/gamechain-replay:
 	go build -o $@ $(PKG)/tools/gamechain-replay
+
+bin/gamechain-debugger:
+	packr2 build -o $@ $(PKG)/tools/gamechain-debugger
 
 bin/gcoracle:
 	go build -o $@ $(PKG)/tools/gcoracle
@@ -98,8 +103,11 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/dgrijalva/jwt-go \
 		github.com/getsentry/raven-go \
 		github.com/tendermint/tendermint/rpc/lib/client \
-		github.com/tendermint/go-amino
-
+		github.com/tendermint/go-amino \
+		github.com/gobuffalo/packr/v2 \
+		github.com/gobuffalo/packr/v2/... \
+		github.com/gorilla/mux 
+		
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
@@ -131,7 +139,8 @@ clean:
 		bin/zb-cli \
 		bin/zb-enum-gen \
 		bin/gamechain-logger \
-		bin/gamechain-replay
+		bin/gamechain-replay \
+		bin/gamechain-debugger
 
 
 .PHONY: all clean test deps proto cli zb_console_game tools bin/zb-enum-gen bin/gamechain-logger abigen bin/gcoracle oracle-abigen
