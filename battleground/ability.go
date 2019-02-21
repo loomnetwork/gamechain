@@ -234,22 +234,12 @@ func moveCard(c *CardInstance, from, to []*zb.CardInstance, zone zb.ZoneType) ([
 }
 
 func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.PlayerState) error {
-	//​ What if the card has ability and will trigger when doing attack overlord??
 	target.Defense -= c.Instance.Attack
-	c.Gameplay.actionOutcomes = append(c.Gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-		Outcome: &zb.PlayerActionOutcome_CardAttack{
-			CardAttack: &zb.PlayerActionOutcome_CardAttackOutcome{
-				AttackerInstanceId: c.InstanceId,
-				TargetInstanceId:   target.InstanceId,
-				AttackerNewDefense: c.Instance.Defense,
-				TargetNewDefense:   target.Defense,
-			},
-		},
-	})
 
 	if target.Defense <= 0 {
 		c.Gameplay.State.Winner = attacker.Id
 		c.Gameplay.State.IsEnded = true
+		return nil
 	}
 	return c.AfterAttacking(target.InstanceId)
 }
