@@ -7,9 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	"github.com/loomnetwork/gamechain/tools/gamechain-debugger/controller"
-	"goji.io"
-	"goji.io/pat"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -79,11 +78,11 @@ func Execute() error {
 
 func Serve() {
 	fmt.Println("Gamechain Debugger is running on port " + rootCmdArgs.port)
-	mux := goji.NewMux()
+	r := mux.NewRouter()
 	mc := controller.NewMainController(rootCmdArgs.cliFilePath, rootCmdArgs.privateKeyFilePath)
-	mux.HandleFunc(pat.Get("/"), mc.GamechainDebugger)
-	mux.HandleFunc(pat.Get("/client_state"), mc.ClientStateDebugger)
-	mux.HandleFunc(pat.Get("/get_state/:MatchId"), mc.GetState)
-	mux.HandleFunc(pat.Get("/save_state/:MatchId"), mc.SaveState)
-	http.ListenAndServe(":"+rootCmdArgs.port, mux)
+	r.HandleFunc("/", mc.GamechainDebugger)
+	r.HandleFunc("/client_state", mc.ClientStateDebugger)
+	r.HandleFunc("/get_state/{MatchId}", mc.GetState)
+	r.HandleFunc("/save_state/{MatchId}", mc.SaveState)
+	http.ListenAndServe(":"+rootCmdArgs.port, r)
 }
