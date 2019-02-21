@@ -82,7 +82,9 @@ func Serve() {
 	mc := controller.NewMainController(rootCmdArgs.cliFilePath, rootCmdArgs.privateKeyFilePath)
 	r.HandleFunc("/", mc.GamechainDebugger)
 	r.HandleFunc("/client_state", mc.ClientStateDebugger)
+	r.HandleFunc("/cli", mc.CliDebugger)
 	r.HandleFunc("/get_state/{MatchId}", mc.GetState)
 	r.HandleFunc("/save_state/{MatchId}", mc.SaveState)
+	r.HandleFunc("/run_cli", mc.RunCli)
 	http.ListenAndServe(":"+rootCmdArgs.port, r)
 }

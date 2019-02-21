@@ -123,12 +123,9 @@ func (MainController *MainController) RunCli(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	keyArray := strings.Split(keys[0], " ")
-	args := []string{}
-	args = append(args, MainController.cliFilePath)
-	args = append(args, keyArray...)
+	args := strings.Split(keys[0], " ")
 
-	cmd := exec.Command(strings.Join(args, " "))
+	cmd := exec.Command(MainController.cliFilePath, args...)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -137,7 +134,7 @@ func (MainController *MainController) RunCli(w http.ResponseWriter, r *http.Requ
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(cmd.Stderr)
-		w.Write([]byte(err.Error()))
+		w.Write([]byte(stderr.Bytes()))
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
