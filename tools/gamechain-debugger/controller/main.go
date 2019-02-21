@@ -6,18 +6,20 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
-	"goji.io/pat"
-
+	"github.com/gorilla/mux"
 	"github.com/loomnetwork/gamechain/tools/gamechain-debugger/view"
 )
 
 type MainController struct {
 	gamechainDebugger   *view.View
 	clientStateDebugger *view.View
+	cliDebugger         *view.View
 	privateKeyFilePath  string
 	cliFilePath         string
 }
@@ -26,6 +28,7 @@ func NewMainController(cliFilePath string, privateKeyFilePath string) *MainContr
 	mc := MainController{
 		gamechainDebugger:   view.NewView("base", "gamechain_debugger.html"),
 		clientStateDebugger: view.NewView("base", "client_state_debugger.html"),
+		cliDebugger:         view.NewView("base", "cli_debugger.html"),
 		cliFilePath:         cliFilePath,
 		privateKeyFilePath:  privateKeyFilePath,
 	}
@@ -110,8 +113,40 @@ func (MainController *MainController) GamechainDebugger(w http.ResponseWriter, r
 func (MainController *MainController) ClientStateDebugger(w http.ResponseWriter, r *http.Request) {
 	MainController.clientStateDebugger.Render(w, nil)
 }
+func (MainController *MainController) CliDebugger(w http.ResponseWriter, r *http.Request) {
+	MainController.cliDebugger.Render(w, nil)
+}
+func (MainController *MainController) RunCli(w http.ResponseWriter, r *http.Request) {
+	keys, ok := r.URL.Query()["args"]
+	if !ok || len(keys[0]) < 1 {
+		log.Println("Url Param 'args' is missing")
+		return
+	}
+
+	keyArray := strings.Split(keys[0], " ")
+	args := []string{}
+	args = append(args, MainController.cliFilePath)
+	args = append(args, keyArray...)
+
+	cmd := exec.Command(strings.Join(args, " "))
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(cmd.Stderr)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out.Bytes())
+
+}
 func (MainController *MainController) SaveState(w http.ResponseWriter, r *http.Request) {
-	MatchId := pat.Param(r, "MatchId")
+	vars := mux.Vars(r)
+	MatchId := vars["MatchId"]
 
 	gameState, err := MainController.RunMatchCmd(MatchId, "get_game_state")
 	if err != nil {
@@ -171,7 +206,8 @@ func (MainController *MainController) SaveState(w http.ResponseWriter, r *http.R
 
 }
 func (MainController *MainController) GetState(w http.ResponseWriter, r *http.Request) {
-	MatchId := pat.Param(r, "MatchId")
+	vars := mux.Vars(r)
+	MatchId := vars["MatchId"]
 	output, err := MainController.RunMatchCmd(MatchId, "get_game_state")
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
