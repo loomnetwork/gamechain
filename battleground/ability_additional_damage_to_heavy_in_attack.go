@@ -10,7 +10,7 @@ type additionalDamgeToHeavyInAttack struct {
 	cardAbility *zb.CardAbilityAdditionalDamageToHeavyInAttack
 }
 
-var _ Ability = &attackOverlord{}
+var _ Ability = &additionalDamgeToHeavyInAttack{}
 
 func NewAdditionalDamgeToHeavyInAttack(card *CardInstance, cardAbility *zb.CardAbilityAdditionalDamageToHeavyInAttack) *additionalDamgeToHeavyInAttack {
 	return &additionalDamgeToHeavyInAttack{

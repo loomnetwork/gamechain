@@ -12,7 +12,7 @@ type rage struct {
 	cardAbility *zb.CardAbilityRage
 }
 
-var _ Ability = &reanimate{}
+var _ Ability = &rage{}
 
 func NewRage(card *CardInstance, cardAbility *zb.CardAbilityRage) *rage {
 	return &rage{
