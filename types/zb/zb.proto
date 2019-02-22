@@ -1352,7 +1352,7 @@ message PlayerActionOutcome {
     }
 
     message CardAbilityDevourZombieAndCombineStatsOutcome {
-        InstanceId targetInstanceId = 1;
+        repeated InstanceId targetInstanceIds = 1;
     }
 }
 

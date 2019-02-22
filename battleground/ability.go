@@ -39,7 +39,7 @@ func (c *CardInstance) OnAbilityUsed(targets []*zb.Unit) error {
 			case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
 				if ai.IsActive {
 					devourZombieAndCombineStats := abilityInstance.DevourZombieAndCombineStats
-					ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets[0].InstanceId)
+					ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets)
 					if err := ability.Apply(c.Gameplay); err != nil {
 						return err
 					}
