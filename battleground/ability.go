@@ -27,11 +27,11 @@ func (c *CardInstance) Play() error {
 	return c.OnPlay()
 }
 
-func (c *CardInstance) UseAbility(targets []*zb.Unit) error {
+func (c *CardInstance) UseAbility(targets []*CardInstance) error {
 	return c.OnAbilityUsed(targets)
 }
 
-func (c *CardInstance) OnAbilityUsed(targets []*zb.Unit) error {
+func (c *CardInstance) OnAbilityUsed(targets []*CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
 		if ai.Trigger == zb.CardAbilityTrigger_Entry {

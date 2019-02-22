@@ -1,8 +1,6 @@
 package battleground
 
 import (
-	"fmt"
-
 	"github.com/loomnetwork/gamechain/types/zb"
 )
 
@@ -12,12 +10,12 @@ import (
 type devourZombieAndCombineStats struct {
 	*CardInstance
 	cardAbility *zb.CardAbilityDevourZombieAndCombineStats
-	targets     []*zb.Unit
+	targets     []*CardInstance
 }
 
 var _ Ability = &devourZombieAndCombineStats{}
 
-func NewDevourZombieAndCombineStats(card *CardInstance, cardAbility *zb.CardAbilityDevourZombieAndCombineStats, targets []*zb.Unit) *devourZombieAndCombineStats {
+func NewDevourZombieAndCombineStats(card *CardInstance, cardAbility *zb.CardAbilityDevourZombieAndCombineStats, targets []*CardInstance) *devourZombieAndCombineStats {
 	return &devourZombieAndCombineStats{
 		CardInstance: card,
 		cardAbility:  cardAbility,
@@ -26,18 +24,10 @@ func NewDevourZombieAndCombineStats(card *CardInstance, cardAbility *zb.CardAbil
 }
 
 func (c *devourZombieAndCombineStats) Apply(gameplay *Gameplay) error {
-	cardsInPlay := gameplay.activePlayer().CardsInPlay
-
 	for _, target := range c.targets {
-		_, t, found := findCardInCardListByInstanceId(target.InstanceId, cardsInPlay)
-		if !found {
-			return fmt.Errorf("no owner for card instance %d in play", target.InstanceId)
-		}
-
-		targetInstance := NewCardInstance(t, gameplay)
-		c.Instance.Defense += targetInstance.Instance.Defense
-		c.Instance.Attack += targetInstance.Instance.Attack
-		if err := targetInstance.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD); err != nil {
+		c.Instance.Defense += target.Instance.Defense
+		c.Instance.Attack += target.Instance.Attack
+		if err := target.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD); err != nil {
 			return err
 		}
 	}

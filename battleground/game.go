@@ -1063,7 +1063,25 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 
 		cardAbilityUsedInstance := NewCardInstance(cardInstance, g)
 
-		if err := cardAbilityUsedInstance.UseAbility(cardAbilityUsed.Targets); err != nil {
+		targets := []*CardInstance{}
+
+		// the target can be opponent's cards
+		activeCards = append(activeCards, g.activePlayerOpponent().CardsInPlay...)
+
+		for _, target := range cardAbilityUsed.Targets {
+			_, cardInstance, found := findCardInCardListByInstanceId(target.InstanceId, activeCards)
+			if !found {
+				err := fmt.Errorf(
+					"card (instance id: %d) not found in play",
+					target.InstanceId,
+				)
+				return g.captureErrorAndStop(err)
+			}
+			targetCardInstance := NewCardInstance(cardInstance, g)
+			targets = append(targets, targetCardInstance)
+		}
+
+		if err := cardAbilityUsedInstance.UseAbility(targets); err != nil {
 			return g.captureErrorAndStop(err)
 		}
 
