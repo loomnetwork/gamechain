@@ -49,7 +49,18 @@ func TestAbilityRage(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		instance0 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype: &zb.Card{
+				Name: "attacker",
+			},
+			Instance: &zb.CardInstanceSpecificData{
+				Defense: 5,
+				Attack:  1,
+			},
+		}
+
+		card1 := &zb.Card{
 			Defense: 5,
 			Attack:  2,
 			Abilities: []*zb.CardAbility{
@@ -60,29 +71,20 @@ func TestAbilityRage(t *testing.T) {
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
-			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+		instance1 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
+			Instance:   newCardInstanceSpecificDataFromCardDetails(card1),
+			Prototype:  proto.Clone(card1).(*zb.Card),
 			AbilitiesInstances: []*zb.CardAbilityInstance{
 				&zb.CardAbilityInstance{
 					IsActive: true,
-					Trigger:  card0.Abilities[0].Trigger,
+					Trigger:  card1.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_Rage{
 						Rage: &zb.CardAbilityRage{
-							AddedAttack: card0.Abilities[0].Value,
+							AddedAttack: card1.Abilities[0].Value,
 						},
 					},
 				},
-			},
-		}
-
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
-				Defense: 5,
-				Attack:  1,
 			},
 		}
 
@@ -94,18 +96,18 @@ func TestAbilityRage(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb.InstanceId{Id: 3},
 					},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
-		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
-		assert.Equal(t, int32(1), gp.actionOutcomes[0].GetRage().InstanceId.Id)
+		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetRage().InstanceId.Id)
 	})
 }
