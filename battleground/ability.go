@@ -28,18 +28,14 @@ func (c *CardInstance) Play() error {
 }
 
 func (c *CardInstance) Attack(target *CardInstance) error {
-	old := c.Instance.Defense
 	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack
-	if err := c.OnDefenseChange(old, c.Instance.Defense); err != nil {
+	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
+
+	if err := c.OnAttack(target); err != nil {
 		return err
 	}
 
-	old = target.Instance.Defense
-	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
 	if err := target.OnBeingAttacked(c); err != nil {
-		return err
-	}
-	if err := target.OnDefenseChange(old, target.Instance.Defense); err != nil {
 		return err
 	}
 
@@ -56,6 +52,30 @@ func (c *CardInstance) Attack(target *CardInstance) error {
 	if target.Instance.Defense <= 0 {
 		if err := target.OnDeath(c); err != nil {
 			return err
+		}
+	}
+	return nil
+}
+
+// OnAttack trigger ability when the card attacks a target
+func (c *CardInstance) OnAttack(target *CardInstance) error {
+	var ability Ability
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+			switch abilityInstance := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits:
+				dealDamageToThisAndAdjacentUnits := abilityInstance.DealDamageToThisAndAdjacentUnits
+				ability = NewDealDamageToThisAndAdjacentUnits(c, dealDamageToThisAndAdjacentUnits)
+				if err := ability.Apply(c.Gameplay); err != nil {
+					return err
+				}
+			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
+				additionalDamageToHeavyInAttack := abilityInstance.AdditionalDamageToHeavyInAttack
+				ab := NewAdditionalDamgeToHeavyInAttack(c, additionalDamageToHeavyInAttack, target)
+				if err := ab.Apply(c.Gameplay); err != nil {
+					return err
+				}
+			}
 		}
 	}
 	return nil
@@ -79,13 +99,14 @@ func (c *CardInstance) AfterAttacking(target *zb.InstanceId) error {
 }
 
 func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) error {
-	for _, ai := range attacker.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Attack {
-			switch ability := ai.AbilityType.(type) {
-			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
-				additionalDamageToHeavyInAttack := ability.AdditionalDamageToHeavyInAttack
-				ab := NewAdditionalDamgeToHeavyInAttack(c, additionalDamageToHeavyInAttack)
-				if err := ab.Apply(c.Gameplay); err != nil {
+	var ability Ability
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_GotDamage {
+			switch abilityInstance := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_Rage:
+				rage := abilityInstance.Rage
+				ability = NewRage(c, rage)
+				if err := ability.Apply(c.Gameplay); err != nil {
 					return err
 				}
 			}
@@ -132,25 +153,6 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 	if c.Instance.Defense <= 0 && c.Zone != zb.Zone_GRAVEYARD {
 		if err := c.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD); err != nil {
 			return err
-		}
-	}
-
-	return nil
-}
-
-func (c *CardInstance) OnDefenseChange(oldValue, newValue int32) error {
-	// trigger ability on defense change
-	var ability Ability
-	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_GotDamage {
-			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb.CardAbilityInstance_Rage:
-				rage := abilityInstance.Rage
-				ability = NewRage(c, rage)
-				if err := ability.Apply(c.Gameplay); err != nil {
-					return err
-				}
-			}
 		}
 	}
 
