@@ -531,6 +531,16 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
+		case zb.CardAbilityType_DealDamageToThisAndAdjacentUnits:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
+					DealDamageToThisAndAdjacentUnits: &zb.CardAbilityDealDamageToThisAndAdjacentUnits{
+						AdjacentDamage: cardDetails.Attack,
+					},
+				},
+			})
 		}
 
 	}
