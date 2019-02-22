@@ -1289,6 +1289,10 @@ message CardAbilityDealDamageToThisAndAdjacentUnits {
     int32 adjacentDamage = 1;
 }
 
+message CardAbilityDevourZombieAndCombineStats {
+    CardSetType.Enum set = 1;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
@@ -1298,8 +1302,9 @@ message PlayerActionOutcome {
         CardAbilityReanimateOutcome reanimate = 4;
         CardAbilityAttackOverlordOutcome attackOverlord = 6;
         CardAttackOutcome cardAttack = 7;
-        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 8;
-        CardAbilityDealDamageToThisAndAdjacentUnits dealDamageToThisAndAdjacentUnits = 9;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome replaceUnitsWithTypeOnStrongerOnes = 8;
+        CardAbilityDealDamageToThisAndAdjacentUnitsOutcome dealDamageToThisAndAdjacentUnits = 9;
+        CardAbilityDevourZombieAndCombineStatsOutcome devourZombieAndCombineStats = 10;
     }
 
     message CardAbilityRageOutcome {
@@ -1341,7 +1346,7 @@ message PlayerActionOutcome {
         int32 targetNewDefense = 4;
     }
 
-    message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+    message CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome {
         repeated NewCardInstance newCardInstances = 1;
         repeated InstanceId oldInstanceIds = 2;
         // info about new card and it position
@@ -1351,8 +1356,12 @@ message PlayerActionOutcome {
         }
     }
 
-    message CardAbilityDealDamageToThisAndAdjacentUnitsOutome {
+    message CardAbilityDealDamageToThisAndAdjacentUnitsOutcome {
         // TBD
+    }
+    
+    message CardAbilityDevourZombieAndCombineStatsOutcome {
+        repeated InstanceId targetInstanceIds = 1;
     }
 }
 
@@ -1366,6 +1375,7 @@ message CardAbilityInstance {
         CardAbilityAttackOverlord attackOverlord = 8;
         CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 9;
         CardAbilityDealDamageToThisAndAdjacentUnits dealDamageToThisAndAdjacentUnits = 10;
+        CardAbilityDevourZombieAndCombineStats devourZombieAndCombineStats = 11;
     }
     bool isActive = 3;
     CardAbilityTrigger.Enum trigger = 4;

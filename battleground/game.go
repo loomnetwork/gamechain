@@ -1044,6 +1044,47 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		if card == nil {
 			return g.captureErrorAndStop(fmt.Errorf("no card in card ability used"))
 		}
+
+		activeCards := g.activePlayer().CardsInPlay
+
+		// Because the game client sends cardabilityused before sending cardplay, we need to do this
+		// but once the game client is fixed, this line needs to be removed
+		activeCards = append(activeCards, g.activePlayer().CardsInHand...)
+
+		// get card instance from cardsInPlay list
+		_, cardInstance, found := findCardInCardListByInstanceId(card, activeCards)
+		if !found {
+			err := fmt.Errorf(
+				"card (instance id: %d) not found in play",
+				card.Id,
+			)
+			return g.captureErrorAndStop(err)
+		}
+
+		cardAbilityUsedInstance := NewCardInstance(cardInstance, g)
+
+		targets := []*CardInstance{}
+
+		// the target can be opponent's cards
+		activeCards = append(activeCards, g.activePlayerOpponent().CardsInPlay...)
+
+		for _, target := range cardAbilityUsed.Targets {
+			_, cardInstance, found := findCardInCardListByInstanceId(target.InstanceId, activeCards)
+			if !found {
+				err := fmt.Errorf(
+					"card (instance id: %d) not found in play",
+					target.InstanceId,
+				)
+				return g.captureErrorAndStop(err)
+			}
+			targetCardInstance := NewCardInstance(cardInstance, g)
+			targets = append(targets, targetCardInstance)
+		}
+
+		if err := cardAbilityUsedInstance.UseAbility(targets); err != nil {
+			return g.captureErrorAndStop(err)
+		}
+
 	}
 
 	// TODO: record history data
