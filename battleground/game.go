@@ -1045,10 +1045,14 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(fmt.Errorf("no card in card ability used"))
 		}
 
-		activeCardsInPlay := g.activePlayer().CardsInPlay
+		activeCards := g.activePlayer().CardsInPlay
+
+		// Because the game client sends cardabilityused before sending cardplay, we need to do this
+		// but once the game client is fixed, this line needs to be removed
+		activeCards = append(activeCards, g.activePlayer().CardsInHand...)
 
 		// get card instance from cardsInPlay list
-		_, cardInstance, found := findCardInCardListByInstanceId(card, activeCardsInPlay)
+		_, cardInstance, found := findCardInCardListByInstanceId(card, activeCards)
 		if !found {
 			err := fmt.Errorf(
 				"card (instance id: %d) not found in play",
