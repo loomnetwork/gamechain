@@ -1285,6 +1285,10 @@ message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
     CardSetType.Enum set = 1;
 }
 
+message CardAbilityDevourZombieAndCombineStats {
+    CardSetType.Enum set = 1;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
@@ -1295,6 +1299,7 @@ message PlayerActionOutcome {
         CardAbilityAttackOverlordOutcome attackOverlord = 6;
         CardAttackOutcome cardAttack = 7;
         CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 8;
+        CardAbilityDevourZombieAndCombineStatsOutcome devourZombieAndCombineStats = 9;
     }
 
     message CardAbilityRageOutcome {
@@ -1345,6 +1350,10 @@ message PlayerActionOutcome {
             int32 position = 2;
         }
     }
+
+    message CardAbilityDevourZombieAndCombineStatsOutcome {
+        InstanceId targetInstanceId = 1;
+    }
 }
 
 message CardAbilityInstance {
@@ -1356,6 +1365,7 @@ message CardAbilityInstance {
         CardAbilityChangeStat changeStat = 7;
         CardAbilityAttackOverlord attackOverlord = 8;
         CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 9;
+        CardAbilityDevourZombieAndCombineStats devourZombieAndCombineStats = 10;
     }
     bool isActive = 3;
     CardAbilityTrigger.Enum trigger = 4;
