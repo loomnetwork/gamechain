@@ -1044,6 +1044,25 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 		if card == nil {
 			return g.captureErrorAndStop(fmt.Errorf("no card in card ability used"))
 		}
+
+		activeCardsInPlay := g.activePlayer().CardsInPlay
+
+		// get card instance from cardsInPlay list
+		_, cardInstance, found := findCardInCardListByInstanceId(card, activeCardsInPlay)
+		if !found {
+			err := fmt.Errorf(
+				"card (instance id: %d) not found in play",
+				card.Id,
+			)
+			return g.captureErrorAndStop(err)
+		}
+
+		cardAbilityUsedInstance := NewCardInstance(cardInstance, g)
+
+		if err := cardAbilityUsedInstance.UseAbility(cardAbilityUsed.Targets); err != nil {
+			return g.captureErrorAndStop(err)
+		}
+
 	}
 
 	// TODO: record history data

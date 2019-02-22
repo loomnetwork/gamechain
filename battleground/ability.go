@@ -27,6 +27,28 @@ func (c *CardInstance) Play() error {
 	return c.OnPlay()
 }
 
+func (c *CardInstance) UseAbility(targets []*zb.Unit) error {
+	return c.OnAbilityUsed(targets)
+}
+
+func (c *CardInstance) OnAbilityUsed(targets []*zb.Unit) error {
+	var ability Ability
+	for _, ai := range c.AbilitiesInstances {
+		if ai.Trigger == zb.CardAbilityTrigger_Entry {
+			switch abilityInstance := ai.AbilityType.(type) {
+			case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
+
+				devourZombieAndCombineStats := abilityInstance.DevourZombieAndCombineStats
+				ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets[0].InstanceId)
+				if err := ability.Apply(c.Gameplay); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func (c *CardInstance) Attack(target *CardInstance) error {
 	old := c.Instance.Defense
 	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack
@@ -176,7 +198,15 @@ func (c *CardInstance) OnPlay() error {
 					return err
 				}
 				ai.IsActive = false
+				/*case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
+				replaceUnitsWithTypeOnStrongerOnes := abilityInstance.
+				ability = NewDevourZombieAndCombineStats(c, replaceUnitsWithTypeOnStrongerOnes, c.Gameplay.cardLibrary)
+				if err := ability.Apply(c.Gameplay); err != nil {
+					return err
+				}
+				ai.IsActive = false*/
 			}
+
 		}
 	}
 
