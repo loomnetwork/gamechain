@@ -30,11 +30,11 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 		return fmt.Errorf("no owner for card instance %d", c.InstanceId)
 	}
 	// find the cards in card library with same types as cards in plays
-	var toReplaceCards []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance
+	var toReplaceCards []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance
 	var oldInstanceIds []*zb.InstanceId
 	for i, card := range owner.CardsInPlay {
 		if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
-			toReplaceCards = append(toReplaceCards, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance{
+			toReplaceCards = append(toReplaceCards, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance{
 				CardInstance: card,
 				Position:     int32(i),
 			})
@@ -59,7 +59,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 
 	state := gameplay.State
 
-	var newcardInstances []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance
+	var newcardInstances []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance
 	for i, card := range toReplaceCards {
 		sameTypeStrongerCards := sameTypeStrongerFn(c.cardlibrary, card.CardInstance)
 		if len(sameTypeStrongerCards) == 0 {
@@ -74,7 +74,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 		state.NextInstanceId++
 		newinstance := newCardInstanceFromCardDetails(newcard, instanceid, c.Owner, c.OwnerIndex)
 		newinstance.Zone = zb.Zone_PLAY
-		newcardInstances = append(newcardInstances, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes_NewCardInstance{
+		newcardInstances = append(newcardInstances, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance{
 			CardInstance: newinstance,
 			Position:     card.Position,
 		})
@@ -93,7 +93,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 	// outcome
 	gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 		Outcome: &zb.PlayerActionOutcome_ReplaceUnitsWithTypeOnStrongerOnes{
-			ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+			ReplaceUnitsWithTypeOnStrongerOnes: &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome{
 				NewCardInstances: newcardInstances,
 				OldInstanceIds:   oldInstanceIds,
 			},

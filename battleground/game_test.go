@@ -56,9 +56,18 @@ func TestGameStateFunc(t *testing.T) {
 			},
 		},
 	})
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardPlay,
+		PlayerId:   player1,
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.InstanceId{Id: 3},
+			},
+		},
+	})
 	assert.Nil(t, err)
-	assert.Equal(t, 3, len(gp.State.PlayerStates[0].CardsInHand))
-	assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInPlay))
+	assert.Equal(t, 2, len(gp.State.PlayerStates[0].CardsInHand))
+	assert.Equal(t, 2, len(gp.State.PlayerStates[0].CardsInPlay))
 	assert.Equal(t, 7, len(gp.State.PlayerStates[0].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInGraveyard))
 
@@ -102,10 +111,10 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player1,
 		Action: &zb.PlayerAction_CardAbilityUsed{
 			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-				Card: &zb.InstanceId{Id: 1},
+				Card: &zb.InstanceId{Id: 3},
 				Targets: []*zb.Unit{
 					&zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -808,14 +817,6 @@ func TestGameReplyState(t *testing.T) {
 
 	result := stateCompare(gameState, clientGameState, t)
 	assert.Nil(t, result, "States Comparision Failed")
-
-	/*response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
-		MatchId: gameState.Id,
-	})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(response.GameState)*/
 
 }
 
