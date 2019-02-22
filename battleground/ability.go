@@ -37,11 +37,13 @@ func (c *CardInstance) OnAbilityUsed(targets []*zb.Unit) error {
 		if ai.Trigger == zb.CardAbilityTrigger_Entry {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
-
-				devourZombieAndCombineStats := abilityInstance.DevourZombieAndCombineStats
-				ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets[0].InstanceId)
-				if err := ability.Apply(c.Gameplay); err != nil {
-					return err
+				if ai.IsActive {
+					devourZombieAndCombineStats := abilityInstance.DevourZombieAndCombineStats
+					ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets[0].InstanceId)
+					if err := ability.Apply(c.Gameplay); err != nil {
+						return err
+					}
+					ai.IsActive = false
 				}
 			}
 		}
@@ -198,13 +200,6 @@ func (c *CardInstance) OnPlay() error {
 					return err
 				}
 				ai.IsActive = false
-				/*case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
-				replaceUnitsWithTypeOnStrongerOnes := abilityInstance.
-				ability = NewDevourZombieAndCombineStats(c, replaceUnitsWithTypeOnStrongerOnes, c.Gameplay.cardLibrary)
-				if err := ability.Apply(c.Gameplay); err != nil {
-					return err
-				}
-				ai.IsActive = false*/
 			}
 
 		}

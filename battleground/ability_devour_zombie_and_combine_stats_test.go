@@ -71,6 +71,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 							Set: card0.Set,
 						},
 					},
+					IsActive: true,
 				},
 			},
 		}
@@ -82,9 +83,18 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 				Attack:  1,
 			},
 		}
+		instance2 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
+				Defense: 2,
+				Attack:  1,
+			},
+		}
 
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance1)
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0, instance1, instance2)
+
+		assert.Equal(t, int(3), len(gp.State.PlayerStates[0].CardsInPlay))
 
 		err = gp.AddAction(&zb.PlayerAction{
 			ActionType: zb.PlayerActionType_CardAbilityUsed,
@@ -101,7 +111,27 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInPlay))
+		assert.Equal(t, int(2), len(gp.State.PlayerStates[0].CardsInPlay))
+		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInGraveyard))
+		assert.Equal(t, int32(6), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+
+		// Try to use the ability again but this time it should not work
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAbilityUsed,
+			PlayerId:   player1,
+			Action: &zb.PlayerAction_CardAbilityUsed{
+				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+					Card: &zb.InstanceId{Id: 1},
+					Targets: []*zb.Unit{
+						&zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
+						},
+					},
+				},
+			},
+		})
+		assert.Equal(t, int(2), len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInGraveyard))
 		assert.Equal(t, int32(6), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
