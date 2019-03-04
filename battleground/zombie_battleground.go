@@ -2407,4 +2407,12 @@ func (z *ZombieBattleground) SetDefaultPlayerDefense(ctx contract.Context, req *
 	return saveState(ctx, state)
 }
 
+func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb.GetContractBuildMetadataRequest) (*zb.GetContractBuildMetadataResponse, error) {
+	return &zb.GetContractBuildMetadataResponse{
+		Date: BuildDate,
+		GitSha: BuildGitSha,
+		Build: BuildNumber,
+	}, nil
+}
+
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
