@@ -2409,9 +2409,9 @@ func (z *ZombieBattleground) SetDefaultPlayerDefense(ctx contract.Context, req *
 
 func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb.GetContractBuildMetadataRequest) (*zb.GetContractBuildMetadataResponse, error) {
 	return &zb.GetContractBuildMetadataResponse{
-		Date: BuildDate,
+		Date:   BuildDate,
 		GitSha: BuildGitSha,
-		Build: BuildNumber,
+		Build:  BuildNumber,
 	}, nil
 }
 

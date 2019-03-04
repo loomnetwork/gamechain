@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var getContractVersionCmd = &cobra.Command{
+var getBuildMetadataCmd = &cobra.Command{
 	Use:   "get_build_metadata",
 	Short: "get contract build metadata",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -31,5 +31,5 @@ var getContractVersionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getContractVersionCmd)
+	rootCmd.AddCommand(getBuildMetadataCmd)
 }
