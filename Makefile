@@ -1,11 +1,18 @@
 PKG = github.com/loomnetwork/gamechain
+PKG_BATTLEGROUND = $(PKG)/battleground
+
 GIT_SHA = `git rev-parse --verify HEAD`
+BUILD_DATE = `date -Iseconds`
+
 PROTOC = protoc --plugin=./protoc-gen-gogo -I. -I$(GOPATH)/src -I/usr/local/include
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
+
+GOFLAGS_BASE = -X $(PKG_BATTLEGROUND).BuildDate=$(BUILD_DATE) -X $(PKG_BATTLEGROUND).BuildGitSha=$(GIT_SHA) -X $(PKG_BATTLEGROUND).BuildNumber=$(BUILD_NUMBER)
+GOFLAGS = -ldflags "$(GOFLAGS_BASE)"
 
 all: build-ext cli
 
@@ -45,10 +52,10 @@ bin/gcoracle:
 	go build -o $@ $(PKG)/tools/gcoracle
 
 contracts/zombiebattleground.so.1.0.0: proto
-	go build -buildmode=plugin -o $@ $(PKG)/plugin
+	go build $(GOFLAGS) -buildmode=plugin -o $@ $(PKG)/plugin
 
 contracts/zombiebattleground.1.0.0: proto
-	go build -o $@ $(PKG)/plugin
+	go build $(GOFLAGS) -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
 	go build github.com/gogo/protobuf/protoc-gen-gogo
