@@ -5,6 +5,15 @@ option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 
+message GetContractBuildMetadataRequest {
+}
+
+message GetContractBuildMetadataResponse {
+    string date = 1;
+    string gitSha = 2;
+    string build = 3;
+}
+
 message Account {
     string user_id             = 1;
     bool phone_number_verified = 2;
