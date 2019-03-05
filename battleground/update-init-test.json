@@ -730,8 +730,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "2",
@@ -793,8 +792,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "3",
@@ -896,8 +894,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "4",
@@ -963,8 +960,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "ZeuzArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "ZeuzArrival"
     },
     {
       "mouldId": "5",
@@ -1025,8 +1021,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "6",
@@ -1056,8 +1051,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "8",
@@ -1121,8 +1115,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "9",
@@ -1182,8 +1175,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "10",
@@ -1244,8 +1236,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "11",
@@ -1275,8 +1266,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "12",
@@ -1346,8 +1336,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "13",
@@ -1409,8 +1398,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "14",
@@ -1471,8 +1459,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "15",
@@ -1538,8 +1525,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "16",
@@ -1605,8 +1591,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "17",
@@ -1671,8 +1656,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "18",
@@ -1746,8 +1730,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "19",
@@ -1808,8 +1791,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "20",
@@ -1879,8 +1861,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "21",
@@ -1942,8 +1923,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "22",
@@ -2004,8 +1984,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "ShammannArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "ShammannArrival"
     },
     {
       "mouldId": "23",
@@ -2066,8 +2045,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "24",
@@ -2128,8 +2106,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "25",
@@ -2221,8 +2198,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "26",
@@ -2252,8 +2228,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "27",
@@ -2317,8 +2292,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "ChernoBillArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "ChernoBillArrival"
     },
     {
       "mouldId": "28",
@@ -2379,8 +2353,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "29",
@@ -2450,8 +2423,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "30",
@@ -2516,8 +2488,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "31",
@@ -2583,8 +2554,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "TzunamyArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "TzunamyArrival"
     },
     {
       "mouldId": "32",
@@ -2614,8 +2584,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "34",
@@ -2676,8 +2645,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "35",
@@ -2707,8 +2675,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "36",
@@ -2774,8 +2741,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "37",
@@ -2835,8 +2801,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "CerberusArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "CerberusArrival"
     },
     {
       "mouldId": "38",
@@ -2897,8 +2862,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "42",
@@ -2962,8 +2926,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "ZVirusArrival",
-      "hidden_set": "NONE"
+      "unique_animation_type": "ZVirusArrival"
     },
     {
       "mouldId": "43",
@@ -3025,8 +2988,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "44",
@@ -3090,8 +3052,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "45",
@@ -3152,8 +3113,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "46",
@@ -3223,8 +3183,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "47",
@@ -3285,8 +3244,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "48",
@@ -3355,8 +3313,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "49",
@@ -3416,8 +3373,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "50",
@@ -3477,8 +3433,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "59",
@@ -3508,8 +3463,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "61",
@@ -3569,8 +3523,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "67",
@@ -3631,8 +3584,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "70",
@@ -3701,8 +3653,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "75",
@@ -3762,8 +3713,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "85",
@@ -3827,8 +3777,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "90",
@@ -3893,8 +3842,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "94",
@@ -3984,8 +3932,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "96",
@@ -4046,8 +3993,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "97",
@@ -4108,8 +4054,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "98",
@@ -4139,8 +4084,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "101",
@@ -4170,8 +4114,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "103",
@@ -4231,8 +4174,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "104",
@@ -4292,8 +4234,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "117",
@@ -4358,8 +4299,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "127",
@@ -4419,8 +4359,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "132",
@@ -4480,8 +4419,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "141",
@@ -4543,8 +4481,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "142",
@@ -4604,8 +4541,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "143",
@@ -4696,8 +4632,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "144",
@@ -4757,8 +4692,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "145",
@@ -4818,8 +4752,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "146",
@@ -4883,8 +4816,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "147",
@@ -4982,8 +4914,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "148",
@@ -5043,8 +4974,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "149",
@@ -5134,8 +5064,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "150",
@@ -5234,8 +5163,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "151",
@@ -5333,8 +5261,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "152",
@@ -5398,8 +5325,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "153",
@@ -5531,8 +5457,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "155",
@@ -5622,8 +5547,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "156",
@@ -5713,8 +5637,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "157",
@@ -5744,8 +5667,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "158",
@@ -5775,8 +5697,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "159",
@@ -5806,8 +5727,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "160",
@@ -5837,8 +5757,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "68",
@@ -5898,8 +5817,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "133",
@@ -5929,8 +5847,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "128",
@@ -5990,8 +5907,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "134",
@@ -6052,8 +5968,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "136",
@@ -6083,8 +5998,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "139",
@@ -6144,8 +6058,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "122",
@@ -6205,8 +6118,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "123",
@@ -6236,8 +6148,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "126",
@@ -6297,8 +6208,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "106",
@@ -6328,8 +6238,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "107",
@@ -6359,8 +6268,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "108",
@@ -6421,8 +6329,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "113",
@@ -6487,8 +6394,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "114",
@@ -6553,8 +6459,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "99",
@@ -6584,8 +6489,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "100",
@@ -6615,8 +6519,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "91",
@@ -6646,8 +6549,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "92",
@@ -6677,8 +6579,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "93",
@@ -6738,8 +6639,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "7",
@@ -6809,8 +6709,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "79",
@@ -6871,8 +6770,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "82",
@@ -6962,8 +6860,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "74",
@@ -7029,8 +6926,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "54",
@@ -7091,8 +6987,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "62",
@@ -7153,8 +7048,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "65",
@@ -7215,8 +7109,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "33",
@@ -7277,8 +7170,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "39",
@@ -7343,8 +7235,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "40",
@@ -7410,8 +7301,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "41",
@@ -7476,8 +7366,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "51",
@@ -7538,8 +7427,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "52",
@@ -7600,8 +7488,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "53",
@@ -7662,8 +7549,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "55",
@@ -7725,8 +7611,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "56",
@@ -7787,8 +7672,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "57",
@@ -7848,8 +7732,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "58",
@@ -7909,8 +7792,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "60",
@@ -7971,8 +7853,7 @@
           "cost": 2
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "63",
@@ -8032,8 +7913,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "64",
@@ -8094,8 +7974,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "66",
@@ -8125,8 +8004,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "69",
@@ -8188,8 +8066,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "71",
@@ -8250,8 +8127,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "72",
@@ -8317,8 +8193,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "73",
@@ -8379,8 +8254,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "76",
@@ -8441,8 +8315,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "77",
@@ -8503,8 +8376,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "78",
@@ -8566,8 +8438,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "80",
@@ -8627,8 +8498,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "81",
@@ -8689,8 +8559,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "83",
@@ -8751,8 +8620,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "84",
@@ -8813,8 +8681,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "86",
@@ -8874,8 +8741,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "87",
@@ -8935,8 +8801,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "88",
@@ -8997,8 +8862,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "89",
@@ -9060,8 +8924,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "95",
@@ -9122,8 +8985,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "102",
@@ -9184,8 +9046,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "105",
@@ -9246,8 +9107,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "109",
@@ -9308,8 +9168,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "110",
@@ -9370,8 +9229,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "111",
@@ -9463,8 +9321,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "112",
@@ -9530,8 +9387,7 @@
           "cost": 3
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "116",
@@ -9596,8 +9452,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "118",
@@ -9670,8 +9525,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "119",
@@ -9737,8 +9591,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "120",
@@ -9802,8 +9655,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "121",
@@ -9864,8 +9716,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "124",
@@ -9926,8 +9777,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "125",
@@ -9988,8 +9838,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "129",
@@ -10050,8 +9899,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "130",
@@ -10111,8 +9959,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "131",
@@ -10173,8 +10020,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "135",
@@ -10235,8 +10081,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "137",
@@ -10298,8 +10143,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "138",
@@ -10361,8 +10205,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "140",
@@ -10422,8 +10265,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "154",
@@ -10489,8 +10331,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "259",
@@ -10520,8 +10361,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "LIFE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "199",
@@ -10581,8 +10421,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "163",
@@ -10612,8 +10451,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "174",
@@ -10675,8 +10513,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "239",
@@ -10706,8 +10543,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "240",
@@ -10767,8 +10603,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "241",
@@ -10798,8 +10633,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "242",
@@ -10829,8 +10663,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "243",
@@ -10860,8 +10693,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "246",
@@ -10921,8 +10753,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "250",
@@ -10982,8 +10813,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "251",
@@ -11013,8 +10843,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "252",
@@ -11044,8 +10873,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "253",
@@ -11075,8 +10903,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "254",
@@ -11137,8 +10964,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "255",
@@ -11198,8 +11024,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "256",
@@ -11229,8 +11054,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "244",
@@ -11260,8 +11084,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "264",
@@ -11291,8 +11114,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "257",
@@ -11322,8 +11144,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "248",
@@ -11387,8 +11208,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "249",
@@ -11452,8 +11272,7 @@
           "cost": 0
         }
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     },
     {
       "mouldId": "247",
@@ -11483,8 +11302,7 @@
       },
       "abilities": [
       ],
-      "unique_animation_type": "None",
-      "hidden_set": "NONE"
+      "unique_animation_type": "None"
     }
   ],
   "heroes": [
