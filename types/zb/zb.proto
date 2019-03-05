@@ -53,7 +53,8 @@ message Card {
     CardViewInfo card_view_info = 16;
     repeated CardAbility abilities = 17;
     UniqueAnimationType.Enum unique_animation_type     = 18;
-    CardSetType.Enum hidden_set = 19;
+    reserved 19;
+    bool hidden = 20;
 }
 
 message CardInstanceSpecificData {
