@@ -54,7 +54,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Defense: 3,
 			Attack:  2,
 			GooCost: 1,
-			Set:     zb.CardSetType_Water,
+			Faction: zb.Faction_Water,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes,

@@ -39,7 +39,7 @@ message Deck {
 message Card {
     int64 mouldId = 1 [json_name="id"];
     CardKind.Enum kind = 2;
-    CardSetType.Enum set = 3;
+    Faction.Enum faction = 3 [json_name="set"];
     string name = 4;
     string description = 5;
     string flavor_text = 6;
@@ -50,9 +50,9 @@ message Card {
     int32 attack = 12 [json_name="damage"];
     int32 defense = 13 [json_name="health"];
     int32 gooCost = 14 [json_name="cost"];
-    CardViewInfo card_view_info = 16;
+    PictureTransform pictureTransform = 16 [json_name="card_view_info"];
     repeated CardAbility abilities = 17;
-    UniqueAnimationType.Enum unique_animation_type     = 18;
+    UniqueAnimation.Enum uniqueAnimation = 18 [json_name="unique_animation_type"];
     reserved 19;
     bool hidden = 20;
 }
@@ -61,11 +61,11 @@ message CardInstanceSpecificData {
     int32 attack = 1;
     int32 defense = 2;
     CreatureType.Enum type = 3;
-    CardSetType.Enum set = 4;
+    Faction.Enum faction = 4;
     int32 gooCost = 5;
 }
 
-message CardViewInfo {
+message PictureTransform {
     Vector3Float position   = 1;
     Vector3Float scale      = 2;
 }
@@ -111,7 +111,7 @@ message Hero {
     string name = 3;
     string short_description = 4;
     string long_description = 5;
-    CardSetType.Enum element = 6;
+    Faction.Enum faction = 6 [json_name="element"];
 
     int64 experience = 7;
     int64 level = 8;
@@ -199,7 +199,7 @@ message Skill {
     string description = 4;
     repeated OverlordAbilityTarget.Enum skill_targets = 5;
     UnitSpecialStatus.Enum targetUnitSpecialStatus = 6 [json_name="target_unit_special_status"];
-    repeated CardSetType.Enum element_targets = 7;
+    repeated Faction.Enum faction_targets = 7 [json_name="element_targets"];
     int32 value = 8;
 
     int32 cooldown = 9;
@@ -906,7 +906,7 @@ message CustomGameModeCustomUiElement {
 
 // C# interfaces converted
 
-message UniqueAnimationType
+message UniqueAnimation
 {
     enum Enum {
         None = 0;
@@ -1187,7 +1187,7 @@ message CreatureType {
     }
 }
 
-message CardSetType {
+message Faction {
     enum Enum {
         NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
         FIRE = 1 [(gogoproto.enumvalue_customname) = "Fire"];
@@ -1226,7 +1226,7 @@ message CardAbility {
     CardAbilityTrigger.Enum trigger = 3 [json_name="call_type"];
     repeated CardAbilityTarget.Enum targetTypes = 4 [json_name = "target_type"];
     StatType.Enum stat = 5 [json_name="stat_type"];
-    CardSetType.Enum set = 6 [json_name="set_type"];
+    Faction.Enum faction = 6 [json_name = "set"];
     CardAbilityEffect.Enum effect = 7 [json_name="effect_type"];
     AttackRestriction.Enum attackRestriction = 8 [json_name="attack_restriction"];
     CreatureType.Enum targetCardType = 9 [json_name="card_type"];
@@ -1241,7 +1241,7 @@ message CardAbility {
     int32 delay = 18;
     repeated VisualEffectInfo VisualEffectsToPlay = 19;
     GameMechanicDescriptionType.Enum gameMechanicDescriptionType = 20 [json_name = "mechanic_description_type"];
-    CardSetType.Enum target_set = 21;
+    Faction.Enum target_faction = 21 [json_name="target_set"];
     CardAbilitySubTrigger.Enum sub_trigger = 22;
     repeated CardChoosableAbility choosable_abilities = 23;
     int32 defense2 = 24 [json_name="defense"]; // FIXME: Defense in client code
@@ -1292,7 +1292,7 @@ message CardAbilityAttackOverlord {
 }
 
 message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
-    CardSetType.Enum set = 1;
+    Faction.Enum faction = 1;
 }
 
 message CardAbilityDealDamageToThisAndAdjacentUnits {
@@ -1300,7 +1300,7 @@ message CardAbilityDealDamageToThisAndAdjacentUnits {
 }
 
 message CardAbilityDevourZombieAndCombineStats {
-    CardSetType.Enum set = 1;
+    Faction.Enum faction = 1;
 }
 
 message PlayerActionOutcome {
@@ -1435,7 +1435,7 @@ message OverlordPrototype {
     string longDescription = 5;
     int32 experience = 6;
     int32 level = 7;
-    CardSetType.Enum element = 8;
+    Faction.Enum faction = 8 [json_name="faction"];
     repeated OverlordSkillPrototype skills = 9;
 }
 
@@ -1455,7 +1455,7 @@ message OverlordSkillPrototype {
     int32 attack = 8;
     OverlordSkillKind.Enum overlordSkillKind = 9;
     repeated OverlordAbilityTarget.Enum skillTargetTypes = 10;
-    repeated CardSetType.Enum elementTargetTypes = 11;
+    repeated Faction.Enum factionTargetTypes = 11;
 }
 
 message PlayerActionLeaveMatch {

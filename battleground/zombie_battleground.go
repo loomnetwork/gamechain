@@ -103,8 +103,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		Cards: req.Cards,
 	}
 	for _, card := range cardList.Cards {
-		if card.CardViewInfo == nil || card.CardViewInfo.Position == nil || card.CardViewInfo.Scale == nil {
-			return fmt.Errorf("Card '%s' missing value for CardViewInfo field", card.Name)
+		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			return fmt.Errorf("Card '%s' missing value for PictureTransform field", card.Name)
 		}
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
@@ -179,8 +179,8 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	// initialize card library
 	cardList.Cards = req.Cards
 	for _, card := range cardList.Cards {
-		if card.CardViewInfo == nil || card.CardViewInfo.Position == nil || card.CardViewInfo.Scale == nil {
-			return fmt.Errorf("Card '%s' missing value for CardViewInfo field", card.Name)
+		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			return fmt.Errorf("Card '%s' missing value for PictureTransform field", card.Name)
 		}
 	}
 
@@ -328,8 +328,8 @@ func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.Update
 		Cards: req.Cards,
 	}
 	for _, card := range cardList.Cards {
-		if card.CardViewInfo == nil || card.CardViewInfo.Position == nil || card.CardViewInfo.Scale == nil {
-			return fmt.Errorf("Card '%s' missing value for CardViewInfo field", card.Name)
+		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			return fmt.Errorf("Card '%s' missing value for PictureTransform field", card.Name)
 		}
 	}
 	return saveCardList(ctx, req.Version, &cardList)

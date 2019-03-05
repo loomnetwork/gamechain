@@ -461,7 +461,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 		Attack:  cardDetails.Attack,
 		Defense: cardDetails.Defense,
 		Type:    cardDetails.Type,
-		Set:     cardDetails.Set,
+		Faction: cardDetails.Faction,
 		GooCost: cardDetails.GooCost,
 	}
 }
@@ -527,7 +527,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
 					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-						Set: cardDetails.Set,
+						Faction: cardDetails.Faction,
 					},
 				},
 			})

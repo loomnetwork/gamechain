@@ -33,7 +33,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 	var toReplaceCards []*zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance
 	var oldInstanceIds []*zb.InstanceId
 	for i, card := range owner.CardsInPlay {
-		if c.Instance.Set == card.Instance.Set && !proto.Equal(c.InstanceId, card.InstanceId) {
+		if c.Instance.Faction == card.Instance.Faction && !proto.Equal(c.InstanceId, card.InstanceId) {
 			toReplaceCards = append(toReplaceCards, &zb.PlayerActionOutcome_CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome_NewCardInstance{
 				CardInstance: card,
 				Position:     int32(i),
@@ -50,7 +50,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 	sameTypeStrongerFn := func(cardLibrary *zb.CardList, target *zb.CardInstance) []*zb.Card {
 		var sameTypeStrongerCards []*zb.Card
 		for _, card := range cardLibrary.Cards {
-			if card.Set == target.Instance.Set && card.GooCost > target.Instance.GooCost {
+			if card.Faction == target.Instance.Faction && card.GooCost > target.Instance.GooCost {
 				sameTypeStrongerCards = append(sameTypeStrongerCards, card)
 			}
 		}
