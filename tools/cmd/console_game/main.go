@@ -68,13 +68,13 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
-				Title:        "Attack",
-				Skill:        zb.OverlordSkillKind_IceBolt,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Attack",
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_AllCards,
 					zb.OverlordAbilityTarget_PlayerCard,
 				},
-				Value:        1,
+				Value: 1,
 			}},
 		},
 		{
@@ -82,20 +82,20 @@ var initRequest = zb.InitRequest{
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
-				Title:        "Deffence",
-				Skill:        zb.OverlordSkillKind_Blizzard,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum {
+				Title: "Deffence",
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
 					zb.OverlordAbilityTarget_Player,
 					zb.OverlordAbilityTarget_OpponentCard,
 				},
-				Value:        2,
+				Value: 2,
 			}},
 		},
 	},
 	Cards: []*zb.Card{
 		{
 			MouldId: 1,
-			Set:     zb.CardSetType_Air,
+			Faction: zb.Faction_Air,
 			Name:    "Soothsayer",
 			Rank:    zb.CreatureRank_Minion,
 			Type:    zb.CreatureType_Walker,
@@ -107,10 +107,10 @@ var initRequest = zb.InitRequest{
 					Type:         zb.CardAbilityType_DrawCard,
 					ActivityType: zb.CardAbilityActivityType_Passive,
 					Trigger:      zb.CardAbilityTrigger_Entry,
-					Set:          zb.CardSetType_None,
+					Faction:      zb.Faction_None,
 				},
 			},
-			CardViewInfo: &zb.CardViewInfo{
+			PictureTransform: &zb.PictureTransform{
 				Position: &zb.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
@@ -125,7 +125,7 @@ var initRequest = zb.InitRequest{
 		},
 		{
 			MouldId: 2,
-			Set:     zb.CardSetType_Air,
+			Faction: zb.Faction_Air,
 			Name:    "Azuraz",
 			Rank:    zb.CreatureRank_Minion,
 			Type:    zb.CreatureType_Walker,
@@ -140,9 +140,9 @@ var initRequest = zb.InitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:     zb.StatType_Attack,
-					Set:      zb.CardSetType_Earth,
-					Value:    1,
+					Stat:    zb.StatType_Attack,
+					Faction: zb.Faction_Earth,
+					Value:   1,
 				},
 			},
 		},
