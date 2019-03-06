@@ -23,7 +23,7 @@ var updateInitCmd = &cobra.Command{
 	Short: "updates the init data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var updateInitData zb.UpdateInitRequest
+		var initData zb.InitData
 
 		if updateInitCmdArgs.file == "" {
 			return fmt.Errorf("file name not provided")
@@ -35,7 +35,7 @@ var updateInitCmd = &cobra.Command{
 		}
 		defer f.Close()
 
-		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &updateInitData); err != nil {
+		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &initData); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 
@@ -43,8 +43,12 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("version not specified")
 		}
 
-		updateInitData.Version = updateInitCmdArgs.version
-		updateInitData.OldVersion = updateInitCmdArgs.oldVersion
+		initData.Version = updateInitCmdArgs.version
+		updateInitData := zb.UpdateInitRequest{
+			InitData: &initData,
+			OldVersion: updateInitCmdArgs.oldVersion,
+		}
+
 		_, err = commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
 		if err != nil {
 			return fmt.Errorf("error encountered while calling UpdateInit: %s", err.Error())

@@ -250,6 +250,16 @@ message AIDeckList {
 
 // Request and Response
 
+message InitData {
+    repeated Deck default_decks = 1;
+    repeated CardCollectionCard default_collection = 2;
+    repeated Card cards = 3;
+    repeated Hero heroes = 4;
+    repeated AIDeck ai_decks = 5;
+    string version = 6;
+    Address oracle = 7;
+}
+
 message InitRequest {
     repeated Deck default_decks                = 1;
     repeated CardCollectionCard default_collection = 2;
@@ -268,16 +278,9 @@ message UpdateOracle {
 }
 
 message UpdateInitRequest {
-    repeated Deck default_decks                = 1;
-    repeated CardCollectionCard default_collection = 2;
-    repeated Card cards                        = 3;
-    repeated Hero heroes                       = 4;
-    repeated AIDeck ai_decks                   = 5;
-    string version                             = 6;
-    Address oracle                             = 7;
-    string oldVersion                          = 8;
-    string contentVersion                      = 9;
-    string pvpVersion                          = 10;
+    reserved 1 to 7, 9 to 10;
+    string oldVersion = 8;
+    InitData init_data = 11;
 }
 
 message GetInitRequest {
@@ -285,14 +288,8 @@ message GetInitRequest {
 }
 
 message GetInitResponse {
-    repeated Deck default_decks                = 1;
-    repeated CardCollectionCard default_collection = 2;
-    repeated Card cards                        = 3;
-    repeated Hero heroes                       = 4;
-    repeated Hero default_heroes               = 5;
-    repeated AIDeck ai_decks                   = 6;
-    string version                             = 7;
-    Address oracle                             = 8;
+    reserved 1 to 8;
+    InitData init_data = 9;
 }
 
 message GamechainState {
