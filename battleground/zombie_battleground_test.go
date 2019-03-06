@@ -2943,7 +2943,7 @@ func TestAIDeckOperations(t *testing.T) {
 		},
 	}
 
-	t.Run("Set AI Decks", func(t *testing.T) {
+	t.Run("Faction AI Decks", func(t *testing.T) {
 		req := &zb.SetAIDecksRequest{
 			Decks:   aiDecks,
 			Version: "v1",

@@ -122,8 +122,6 @@ func createSimpleGame(t *testing.T) *Gameplay {
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
-	gp.createGame(nil)
-
 	assert.Nil(t, err)
 
 	return gp
