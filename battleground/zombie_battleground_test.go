@@ -2244,7 +2244,6 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2265,7 +2264,6 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 2},
-							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},
@@ -2286,7 +2284,6 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2337,7 +2334,6 @@ func TestGameStateOperations(t *testing.T) {
 						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 8},
-							AffectObjectType: zb.AffectObjectType_Character,
 						},
 					},
 				},
@@ -2358,7 +2354,6 @@ func TestGameStateOperations(t *testing.T) {
 						Targets: []*zb.Unit{
 							&zb.Unit{
 								InstanceId:       &zb.InstanceId{Id: 2},
-								AffectObjectType: zb.AffectObjectType_Card,
 							},
 						},
 					},
@@ -2379,7 +2374,6 @@ func TestGameStateOperations(t *testing.T) {
 						SkillId: 1,
 						Target: &zb.Unit{
 							InstanceId:       &zb.InstanceId{Id: 2},
-							AffectObjectType: zb.AffectObjectType_Card,
 						},
 					},
 				},

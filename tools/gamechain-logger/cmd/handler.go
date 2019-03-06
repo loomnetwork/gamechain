@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -98,25 +99,23 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 
 	log.Printf("Saving deck with deck ID %d, userid %s, name %s to DB", event.Deck.Id, event.UserId, event.Deck.Name)
 
-	cards := []models.DeckCard{}
-	for _, card := range event.Deck.Cards {
-		cards = append(cards, models.DeckCard{
-			UserID:   event.UserId,
-			CardName: card.CardName,
-			Amount:   card.Amount,
-		})
+	cards, err := json.Marshal(event.Deck.Cards)
+	if err != nil {
+		return err
 	}
+
 	d := models.Deck{
 		UserID:           event.UserId,
 		DeckID:           deck.Id,
 		Name:             deck.Name,
 		HeroID:           deck.HeroId,
-		DeckCards:        cards,
+		Cards:            cards,
 		PrimarySkillID:   int(deck.PrimarySkill),
 		SecondarySkillID: int(deck.SecondarySkill),
 		Version:          event.Version,
 		SenderAddress:    event.SenderAddress,
 		BlockHeight:      eventData.BlockHeight,
+		IsDeleted:        false,
 	}
 	if err := db.Save(&d).Error; err != nil {
 		return err
@@ -127,6 +126,7 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 
 func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	var event zb.EditDeckEvent
+
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -135,42 +135,25 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 		return fmt.Errorf("deck is nil")
 	}
 
-	var edeck models.Deck
-	err := db.Where(&models.Deck{UserID: event.UserId, DeckID: event.Deck.Id}).First(&edeck).Error
+	cards, err := json.Marshal(event.Deck.Cards)
 	if err != nil {
 		return err
 	}
 
-	db.Model(&edeck).Association("deck_cards").Clear()
-
-	cards := []models.DeckCard{}
-	for _, card := range event.Deck.Cards {
-		cards = append(cards, models.DeckCard{
-			UserID:   event.UserId,
-			CardName: card.CardName,
-			Amount:   card.Amount,
-		})
-	}
 	d := models.Deck{
-		ID:               edeck.ID,
 		UserID:           event.UserId,
 		DeckID:           deck.Id,
 		Name:             deck.Name,
 		HeroID:           deck.HeroId,
-		DeckCards:        cards,
+		Cards:            cards,
 		PrimarySkillID:   int(deck.PrimarySkill),
 		SecondarySkillID: int(deck.SecondarySkill),
 		Version:          event.Version,
 		SenderAddress:    event.SenderAddress,
 		BlockHeight:      eventData.BlockHeight,
+		IsDeleted:        false,
 	}
-	if err := db.Omit("created_at").Save(&d).Error; err != nil {
-		return err
-	}
-
-	// clean up associated deck cards
-	err = db.Exec("DELETE FROM deck_cards WHERE deck_id IS NULL OR user_id=?", "").Error
-	if err != nil {
+	if err := db.Save(&d).Error; err != nil {
 		return err
 	}
 
@@ -184,12 +167,13 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 	}
 	log.Printf("Deleting deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 
-	err := db.Where(&models.Deck{UserID: event.UserId, DeckID: event.DeckId}).
-		Delete(models.Deck{}).Error
+	err := db.Model(&models.Deck{}).
+		Where(&models.Deck{UserID: event.UserId, DeckID: event.DeckId}).
+		Updates(models.Deck{IsDeleted: true}).
+		Error
 	if err != nil {
 		return err
 	}
-	log.Printf("Deleted deck with deck ID %d, userid %s from DB", event.DeckId, event.UserId)
 
 	return nil
 }
@@ -242,7 +226,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 
 	err = db.Model(&models.Match{}).
 		Where(&models.Match{ID: match.Id}).
-		Updates(models.Match{WinnerID: winnerID, Status: match.Status.String(), BlockHeight: eventData.BlockHeight}).
+		Updates(models.Match{WinnerID: winnerID, Status: match.Status.String()}).
 		Error
 	if err != nil {
 		return err
