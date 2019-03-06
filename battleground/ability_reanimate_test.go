@@ -84,7 +84,7 @@ func TestAbilityReanimate(t *testing.T) {
 					Trigger:  card0.Abilities[1].Trigger,
 					AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
 						ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-							Set: zb.CardSetType_Water,
+							Faction: zb.Faction_Water,
 						},
 					},
 				},
