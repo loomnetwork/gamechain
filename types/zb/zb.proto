@@ -1432,7 +1432,7 @@ message OverlordPrototype {
     string longDescription = 5;
     int32 experience = 6;
     int32 level = 7;
-    Faction.Enum faction = 8 [json_name="faction"];
+    Faction.Enum faction = 8 [json_name="element"];
     repeated OverlordSkillPrototype skills = 9;
 }
 
