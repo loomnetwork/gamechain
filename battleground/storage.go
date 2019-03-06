@@ -70,6 +70,10 @@ func GameStateKey(gameStateID int64) []byte {
 	return []byte(fmt.Sprintf("gamestate:%d", gameStateID))
 }
 
+func InitialGameStateKey(gameStateID int64) []byte {
+	return []byte(fmt.Sprintf("initial-gamestate:%d", gameStateID))
+}
+
 func UserMatchKey(userID string) []byte {
 	return []byte("user:" + userID + ":match")
 }
@@ -354,6 +358,22 @@ func loadGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) 
 	return &state, nil
 }
 
+func saveInitialGameState(ctx contract.Context, gs *zb.GameState) error {
+	if err := ctx.Set(InitialGameStateKey(gs.Id), gs); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadInitialGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) {
+	var state zb.GameState
+	err := ctx.Get(InitialGameStateKey(id), &state)
+	if err != nil {
+		return nil, err
+	}
+	return &state, nil
+}
+
 func saveUserCurrentMatch(ctx contract.Context, userID string, match *zb.Match) error {
 	if err := ctx.Set(UserMatchKey(userID), match); err != nil {
 		return err
@@ -445,12 +465,92 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 	}
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceId *zb.InstanceId, owner string) *zb.CardInstance {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string, ownerIndex int32) *zb.CardInstance {
+	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
+	var abilities []*zb.CardAbilityInstance
+	for _, raw := range cardDetails.Abilities {
+		switch raw.Type {
+		case zb.CardAbilityType_Rage:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_Rage{
+					Rage: &zb.CardAbilityRage{
+						AddedAttack: raw.Value,
+					},
+				},
+			})
+		case zb.CardAbilityType_PriorityAttack:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
+					PriorityAttack: &zb.CardAbilityPriorityAttack{},
+				},
+			})
+		case zb.CardAbilityType_ReanimateUnit:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_Reanimate{
+					Reanimate: &zb.CardAbilityReanimate{
+						DefaultAttack:  cardDetails.Attack,
+						DefaultDefense: cardDetails.Defense,
+					},
+				},
+			})
+		case zb.CardAbilityType_ChangeStat:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_ChangeStat{
+					ChangeStat: &zb.CardAbilityChangeStat{
+						StatAdjustment: raw.Value,
+						Stat:           raw.Stat,
+					},
+				},
+			})
+		case zb.CardAbilityType_AttackOverlord:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_AttackOverlord{
+					AttackOverlord: &zb.CardAbilityAttackOverlord{
+						Damage: raw.Value,
+					},
+				},
+			})
+		case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+						Set: cardDetails.Set,
+					},
+				},
+			})
+		case zb.CardAbilityType_DealDamageToThisAndAdjacentUnits:
+			abilities = append(abilities, &zb.CardAbilityInstance{
+				IsActive: true,
+				Trigger:  raw.Trigger,
+				AbilityType: &zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
+					DealDamageToThisAndAdjacentUnits: &zb.CardAbilityDealDamageToThisAndAdjacentUnits{
+						AdjacentDamage: cardDetails.Attack,
+					},
+				},
+			})
+		}
+
+	}
 	return &zb.CardInstance{
-		InstanceId: proto.Clone(instanceId).(*zb.InstanceId),
-		Owner:      owner,
-		Prototype:  proto.Clone(cardDetails).(*zb.Card),
-		Instance:   newCardInstanceSpecificDataFromCardDetails(cardDetails),
+		InstanceId:         proto.Clone(instanceID).(*zb.InstanceId),
+		Owner:              owner,
+		Prototype:          proto.Clone(cardDetails).(*zb.Card),
+		Instance:           instance,
+		AbilitiesInstances: abilities,
+		Zone:               zb.Zone_DECK, // default to deck
+		OwnerIndex:         ownerIndex,
 	}
 }
 
@@ -463,14 +563,12 @@ func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId 
 	return instanceIds
 }
 
-func populateDeckCards(
-	ctx contract.Context,
-	cardLibrary *zb.CardList,
-	playerStates []*zb.PlayerState,
-	useBackendGameLogic bool,
-) error {
-	for _, playerState := range playerStates {
+func populateDeckCards(cardLibrary *zb.CardList, playerStates []*zb.PlayerState, useBackendGameLogic bool) error {
+	for playerIndex, playerState := range playerStates {
 		deck := playerState.Deck
+		if deck == nil {
+			return fmt.Errorf("no card deck fro player %s", playerState.Id)
+		}
 		for _, cardAmounts := range deck.Cards {
 			for i := int64(0); i < cardAmounts.Amount; i++ {
 				cardDetails, err := getCardDetails(cardLibrary, cardAmounts.CardName)
@@ -482,8 +580,8 @@ func populateDeckCards(
 					cardDetails,
 					nil,
 					playerState.Id,
+					int32(playerIndex),
 				)
-
 				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
 			}
 		}
@@ -509,6 +607,14 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 				case zb.CardAbilityType_Rage:
 					fallthrough
 				case zb.CardAbilityType_PriorityAttack:
+					fallthrough
+				case zb.CardAbilityType_ReanimateUnit:
+					fallthrough
+				case zb.CardAbilityType_ChangeStat:
+					fallthrough
+				case zb.CardAbilityType_AttackOverlord:
+					fallthrough
+				case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 					filteredAbilities = append(filteredAbilities, ability)
 				default:
 					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
@@ -538,6 +644,16 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 				filteredCards = append(filteredCards, card)
 			default:
 				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+			}
+
+			switch card.Prototype.Rank {
+			case zb.CreatureRank_Officer:
+				fallthrough
+			case zb.CreatureRank_Commander:
+				fallthrough
+			case zb.CreatureRank_General:
+				fmt.Printf("Unsupported CreatureRank value %s, fallback to MINION (card %s)\n", zb.CreatureRank_Enum_name[int32(card.Prototype.Rank)], card.Prototype.Name)
+				card.Prototype.Rank = zb.CreatureRank_Minion
 			}
 		}
 

@@ -5,6 +5,15 @@ option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 
+message GetContractBuildMetadataRequest {
+}
+
+message GetContractBuildMetadataResponse {
+    string date = 1;
+    string gitSha = 2;
+    string build = 3;
+}
+
 message Account {
     string user_id             = 1;
     bool phone_number_verified = 2;
@@ -519,6 +528,8 @@ message PlayerState {
     int32 maxGooVials = 16;
     int32 turnTime = 17;
     int32 turnNumber = 18;
+    InstanceId instanceId = 19;
+    repeated CardInstance mulliganCards = 20;
 }
 
 message InitialPlayerState {
@@ -610,6 +621,7 @@ message PlayerActionEvent {
     PlayerAction playerAction = 1;
     Match match = 2;
     History block = 3;
+    int64 CurrentActionIndex = 4;
 }
 
 message PlayerProfile {
@@ -712,6 +724,14 @@ message GetGameStateResponse {
     GameState gameState = 1;
 }
 
+message GetInitialGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetInitialGameStateResponse {
+    GameState gameState = 1;
+}
+
 message SetGameStateRequest {
     GameState gameState = 1;
 }
@@ -780,6 +800,16 @@ message GetVersionsRequest {
 message GetVersionsResponse {
     string contentVersion = 1;
     string pvpVersion = 2;
+}
+
+message ReplayGameRequest {
+    int64 matchId = 1;
+    int32 stopAtActionIndex = 2;
+}
+
+message ReplayGameResponse {
+    GameState gameState = 1;
+    repeated PlayerActionOutcome actionOutcomes = 2;
 }
 
 // Game Modes
@@ -1134,15 +1164,6 @@ message CardKind {
     }
 }
 
-message AffectObjectType {
-    enum Enum {
-        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
-        PLAYER = 1 [(gogoproto.enumvalue_customname) = "Player"];
-        CHARACTER = 2 [(gogoproto.enumvalue_customname) = "Character"];
-        CARD      = 3 [(gogoproto.enumvalue_customname) = "Card"];
-    }
-}
-
 message CreatureRank {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
@@ -1187,6 +1208,7 @@ message GameState {
     string winner                       = 8;
     string version                      = 9;
     int64 createdAt                     = 10;
+    int32 nextInstanceId = 11;
 }
 
 message CardChoosableAbility {
@@ -1236,8 +1258,17 @@ message CardAbility {
 }
 
 message CardAbilityRage {
-    int32 addedAttack = 1;
+    int32 addedAttack = 1; // TODO: Remove me
     bool wasApplied = 2;
+}
+
+message CardAbilityAdditionalDamageToHeavyInAttack {
+    int32 addedAttack = 1;
+}
+
+message CardAbilityChangeStat {
+    int32 statAdjustment = 1;
+    StatType.Enum stat = 2;
 }
 
 message CardAbilityPriorityAttack {
@@ -1245,10 +1276,41 @@ message CardAbilityPriorityAttack {
     int32 targetOldDefense = 2;
 }
 
+message CardAbilityReanimate {
+    int32 defaultAttack = 1;
+    int32 defaultDefense = 2;
+    CardInstance newInstance = 3;
+}
+
+message CardAbilityAttackOverlord {
+    int32 damage = 1;
+    bool wasApplied = 2;
+}
+
+message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+    CardSetType.Enum set = 1;
+}
+
+message CardAbilityDealDamageToThisAndAdjacentUnits {
+    int32 adjacentDamage = 1;
+}
+
+message CardAbilityDevourZombieAndCombineStats {
+    CardSetType.Enum set = 1;
+}
+
 message PlayerActionOutcome {
     oneof Outcome {
         CardAbilityRageOutcome rage = 1;
         CardAbilityPriorityAttackOutcome priorityAttack = 2;
+        CardAbilityAdditionalDamageToHeavyInAttackOutcome additionalDamageToHeavyInAttack = 3;
+        CardAbilityChangeStatOutcome changeStat = 5;
+        CardAbilityReanimateOutcome reanimate = 4;
+        CardAbilityAttackOverlordOutcome attackOverlord = 6;
+        CardAttackOutcome cardAttack = 7;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome replaceUnitsWithTypeOnStrongerOnes = 8;
+        CardAbilityDealDamageToThisAndAdjacentUnitsOutcome dealDamageToThisAndAdjacentUnits = 9;
+        CardAbilityDevourZombieAndCombineStatsOutcome devourZombieAndCombineStats = 10;
     }
 
     message CardAbilityRageOutcome {
@@ -1260,13 +1322,69 @@ message PlayerActionOutcome {
         InstanceId instanceId = 1;
         int32 newDefense = 2;
     }
+
+    message CardAbilityReanimateOutcome {
+        CardInstance newCardInstance = 1;
+    }
+
+    message CardAbilityAdditionalDamageToHeavyInAttackOutcome {
+        InstanceId instanceId = 1;
+        int32 addedAttack = 2;
+    }
+
+    message CardAbilityChangeStatOutcome {
+        InstanceId instanceId = 1;
+        int32 newAttack = 2;
+        int32 newDefense = 3;
+        StatType.Enum stat = 4;
+        InstanceId targetInstanceId = 5;
+    }
+
+    message CardAbilityAttackOverlordOutcome {
+        InstanceId instanceId = 1;
+        int32 newDefense = 2;
+    }
+
+    message CardAttackOutcome {
+        InstanceId attackerInstanceId = 1;
+        InstanceId targetInstanceId = 2;
+        int32 attackerNewDefense = 3;
+        int32 targetNewDefense = 4;
+    }
+
+    message CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome {
+        repeated NewCardInstance newCardInstances = 1;
+        repeated InstanceId oldInstanceIds = 2;
+        // info about new card and it position
+        message NewCardInstance {
+            CardInstance cardInstance = 1;
+            int32 position = 2;
+        }
+    }
+
+    message CardAbilityDealDamageToThisAndAdjacentUnitsOutcome {
+        // TBD
+    }
+    
+    message CardAbilityDevourZombieAndCombineStatsOutcome {
+        repeated InstanceId targetInstanceIds = 1;
+    }
 }
 
 message CardAbilityInstance {
     oneof AbilityType {
         CardAbilityRage rage = 1;
         CardAbilityPriorityAttack priorityAttack = 2;
+        CardAbilityReanimate reanimate = 5;
+        CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 6;
+        CardAbilityChangeStat changeStat = 7;
+        CardAbilityAttackOverlord attackOverlord = 8;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 9;
+        CardAbilityDealDamageToThisAndAdjacentUnits dealDamageToThisAndAdjacentUnits = 10;
+        CardAbilityDevourZombieAndCombineStats devourZombieAndCombineStats = 11;
     }
+    bool isActive = 3;
+    CardAbilityTrigger.Enum trigger = 4;
 }
 
 message CardInstance {
@@ -1278,6 +1396,8 @@ message CardInstance {
     // FIXME: this really shouldn't be in Protobuf
     bool abilitiesInstancesInitialized = 5;
     repeated CardAbilityInstance abilitiesInstances = 6;
+    Zone.type zone = 7;
+    int32 ownerIndex = 8;
 }
 
 message DataIdOwner {
@@ -1362,6 +1482,7 @@ message PlayerActionCardAbilityUsed {
 message PlayerActionOverlordSkillUsed {
     int64 SkillId = 1;
     Unit target = 2;
+    repeated Unit targets = 3;
 }
 
 message PlayerActionEndTurn  {
@@ -1381,7 +1502,6 @@ message StartGameAction {
 
 message Unit {
     InstanceId instanceId = 1;
-    AffectObjectType.Enum affectObjectType = 2;
     Parameter Parameter = 3;
 }
 

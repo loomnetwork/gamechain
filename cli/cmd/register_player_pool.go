@@ -12,9 +12,13 @@ var registerPlayerPoolCmdArgs struct {
 	userID              string
 	deckID              int64
 	version             string
-	randomSeed          int64
 	tags                []string
 	useBackendGameLogic bool
+
+	enableDebugCheats    bool
+	disableDeckShuffle   bool
+	forceFirstTurnUserId string
+	randomSeed           int64
 }
 
 var registerPlayerPoolCmd = &cobra.Command{
@@ -33,8 +37,14 @@ var registerPlayerPoolCmd = &cobra.Command{
 		}
 		var resp zb.RegisterPlayerPoolResponse
 
-		if registerPlayerPoolCmdArgs.randomSeed != 0 {
+		if registerPlayerPoolCmdArgs.enableDebugCheats {
 			req.RegistrationData.DebugCheats.Enabled = true
+		}
+
+		req.RegistrationData.DebugCheats.DisableDeckShuffle = registerPlayerPoolCmdArgs.disableDeckShuffle
+		req.RegistrationData.DebugCheats.ForceFirstTurnUserId = registerPlayerPoolCmdArgs.forceFirstTurnUserId
+
+		if registerPlayerPoolCmdArgs.randomSeed != 0 {
 			req.RegistrationData.DebugCheats.UseCustomRandomSeed = true
 			req.RegistrationData.DebugCheats.CustomRandomSeed = registerPlayerPoolCmdArgs.randomSeed
 		}
@@ -55,7 +65,10 @@ func init() {
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.deckID, "deckId", "d", 1, "Deck Id")
 	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
-	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "s", 0, "Random Seed")
+	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.enableDebugCheats, "enableDebugCheats", "", false, "Enable Debug Cheats")
+	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.disableDeckShuffle, "disableDeckShuffle", "", false, "Cheat - Disable Deck Shuffle")
+	registerPlayerPoolCmd.Flags().StringVarP(&registerPlayerPoolCmdArgs.forceFirstTurnUserId, "forceFirstTurnUserId", "", "", "Cheat - UserId of the player who will have the first turn")
+	registerPlayerPoolCmd.Flags().Int64VarP(&registerPlayerPoolCmdArgs.randomSeed, "randomSeed", "", 0, "Cheat - Random Seed")
 	registerPlayerPoolCmd.Flags().StringArrayVarP(&registerPlayerPoolCmdArgs.tags, "tags", "t", nil, "tags")
 	registerPlayerPoolCmd.Flags().BoolVarP(&registerPlayerPoolCmdArgs.useBackendGameLogic, "useBackendGameLogic", "b", false, "useBackendGameLogic")
 }

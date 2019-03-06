@@ -331,6 +331,7 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	// Verify whether this privateKey associated with user
 	if !isOwner(ctx, req.UserId) {
+
 		return nil, ErrUserNotVerified
 	}
 
@@ -357,7 +358,9 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
 	// confirm owner doesnt exist already
 	if ctx.Has(AccountKey(req.UserId)) {
-		return errors.New("user already exists")
+		ctx.Logger().Debug(fmt.Sprintf("user already exists -%s", req.UserId))
+		return nil //right now the client can't handle this sending an error
+		//		return errors.New("user already exists")
 	}
 
 	var account zb.Account
@@ -403,6 +406,22 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
+	}
+
+	//Emit CreateDeck event when creating new default decks for this new account
+	for i := 0; i < len(deckList.Decks); i++ {
+		emitMsg := zb.CreateDeckEvent{
+			UserId:        req.UserId,
+			SenderAddress: ctx.Message().Sender.Local.String(),
+			Deck:          deckList.Decks[i],
+			Version:       req.Version,
+		}
+
+		data, err := proto.Marshal(&emitMsg)
+		if err != nil {
+			return err
+		}
+		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
 	}
 
 	return nil
@@ -1343,6 +1362,17 @@ func (z *ZombieBattleground) GetGameState(ctx contract.StaticContext, req *zb.Ge
 	}, nil
 }
 
+func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req *zb.GetGameStateRequest) (*zb.GetGameStateResponse, error) {
+	initialGameState, err := loadInitialGameState(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetGameStateResponse{
+		GameState: initialGameState,
+	}, nil
+}
+
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -1369,7 +1399,6 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	if err != nil {
 		return nil, err
 	}
-
 	gamestate.Winner = req.WinnerId
 	gamestate.IsEnded = true
 	if err := saveGameState(ctx, gamestate); err != nil {
@@ -1490,6 +1519,13 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	if err != nil {
 		return nil, err
 	}
+	// TODO: change me. this is a bit hacky way to set card libarary
+	cardlist, err := loadCardList(ctx, gamestate.Version)
+	if err != nil {
+		return nil, err
+	}
+	gp.cardLibrary = cardlist
+	gp.SetLogger(ctx.Logger())
 	// add created timestamp
 	req.PlayerAction.CreatedAt = ctx.Now().Unix()
 	if err := gp.AddAction(req.PlayerAction); err != nil {
@@ -1516,9 +1552,10 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		PlayerAction: req.PlayerAction,
-		Match:        match,
-		Block:        &zb.History{List: gp.history},
+		PlayerAction:       req.PlayerAction,
+		CurrentActionIndex: gamestate.CurrentActionIndex,
+		Match:              match,
+		Block:              &zb.History{List: gp.history},
 	}
 
 	data, err := proto.Marshal(&emitMsg)
@@ -1567,6 +1604,50 @@ func (z *ZombieBattleground) SendBundlePlayerAction(ctx contract.Context, req *z
 		GameState: gamestate,
 		Match:     match,
 		History:   gp.history,
+	}, nil
+}
+
+// ReplayGame simulate the game that has been created by initializing game from start and
+// apply actions to from the current gamestate. ReplayGame does not save any gamestate.
+func (z *ZombieBattleground) ReplayGame(ctx contract.Context, req *zb.ReplayGameRequest) (*zb.ReplayGameResponse, error) {
+	match, err := loadMatch(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+	initGameState, err := loadInitialGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+	gp, err := GamePlayFrom(initGameState, match.UseBackendGameLogic, match.PlayerDebugCheats)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: change me. this is a bit hacky way to set card libarary
+	cardlist, err := loadCardList(ctx, initGameState.Version)
+	if err != nil {
+		return nil, err
+	}
+	gp.cardLibrary = cardlist
+	gp.SetLogger(ctx.Logger())
+
+	// get all actions from game states
+	currentGameState, err := loadGameState(ctx, match.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	actions := currentGameState.PlayerActions
+	if req.StopAtActionIndex > -1 && int(req.StopAtActionIndex) < len(actions) {
+		actions = actions[:int(req.StopAtActionIndex)]
+	}
+
+	if err := gp.AddBundleAction(actions...); err != nil {
+		return nil, err
+	}
+
+	return &zb.ReplayGameResponse{
+		GameState:      initGameState,
+		ActionOutcomes: gp.actionOutcomes,
 	}, nil
 }
 
@@ -2306,6 +2387,14 @@ func (z *ZombieBattleground) SetDefaultPlayerDefense(ctx contract.Context, req *
 
 	state.DefaultPlayerDefense = req.Defense
 	return saveState(ctx, state)
+}
+
+func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb.GetContractBuildMetadataRequest) (*zb.GetContractBuildMetadataResponse, error) {
+	return &zb.GetContractBuildMetadataResponse{
+		Date:   BuildDate,
+		GitSha: BuildGitSha,
+		Build:  BuildNumber,
+	}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})
