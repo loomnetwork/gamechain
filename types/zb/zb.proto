@@ -1226,7 +1226,7 @@ message CardAbility {
     CardAbilityTrigger.Enum trigger = 3 [json_name="call_type"];
     repeated CardAbilityTarget.Enum targetTypes = 4 [json_name = "target_type"];
     StatType.Enum stat = 5 [json_name="stat_type"];
-    Faction.Enum faction = 6 [json_name = "set"];
+    Faction.Enum faction = 6 [json_name = "set_type"];
     CardAbilityEffect.Enum effect = 7 [json_name="effect_type"];
     AttackRestriction.Enum attackRestriction = 8 [json_name="attack_restriction"];
     CreatureType.Enum targetCardType = 9 [json_name="card_type"];

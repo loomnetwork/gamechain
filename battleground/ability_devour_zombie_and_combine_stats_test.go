@@ -5,7 +5,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -68,7 +68,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 					Trigger: card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_DevourZombieAndCombineStats{
 						DevourZombieAndCombineStats: &zb.CardAbilityDevourZombieAndCombineStats{
-							Set: card0.Set,
+							Faction: card0.Faction,
 						},
 					},
 					IsActive: true,
