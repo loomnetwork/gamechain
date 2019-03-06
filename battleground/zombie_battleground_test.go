@@ -198,158 +198,137 @@ var initRequest = zb.InitRequest{
 }
 
 var updateInitRequest = zb.UpdateInitRequest{
-	Version: "v2",
-	DefaultCollection: []*zb.CardCollectionCard{
-		{CardName: "Banshee", Amount: 4},
-		{CardName: "Breezee", Amount: 3},
-		{CardName: "Buffer", Amount: 5},
-		{CardName: "Soothsayer", Amount: 4},
-		{CardName: "Wheezy", Amount: 3},
-		{CardName: "Whiffer", Amount: 5},
-		{CardName: "Whizpar", Amount: 4},
-		{CardName: "Zhocker", Amount: 3},
-		{CardName: "Bouncer", Amount: 5},
-		{CardName: "Dragger", Amount: 4},
-		{CardName: "Guzt", Amount: 3},
-		{CardName: "Pushhh", Amount: 5},
-	},
-	Heroes: []*zb.Hero{
-		{
-			HeroId:     0,
-			Experience: 0,
-			Level:      1,
-			Skills: []*zb.Skill{{
-				Title: "Attack",
-				Skill: zb.OverlordSkillKind_IceBolt,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum{
-					zb.OverlordAbilityTarget_AllCards,
-					zb.OverlordAbilityTarget_PlayerCard,
-				},
-				Value: 1,
-			}},
+	InitData: &zb.InitData{
+		Version: "v2",
+		DefaultCollection: []*zb.CardCollectionCard{
+			{CardName: "Banshee", Amount: 4},
+			{CardName: "Breezee", Amount: 3},
+			{CardName: "Buffer", Amount: 5},
+			{CardName: "Soothsayer", Amount: 4},
+			{CardName: "Wheezy", Amount: 3},
+			{CardName: "Whiffer", Amount: 5},
+			{CardName: "Whizpar", Amount: 4},
+			{CardName: "Zhocker", Amount: 3},
+			{CardName: "Bouncer", Amount: 5},
+			{CardName: "Dragger", Amount: 4},
+			{CardName: "Guzt", Amount: 3},
+			{CardName: "Pushhh", Amount: 5},
 		},
-		{
-			HeroId:     1,
-			Experience: 0,
-			Level:      2,
-			Skills: []*zb.Skill{{
-				Title: "Deffence",
-				Skill: zb.OverlordSkillKind_Blizzard,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum{
-					zb.OverlordAbilityTarget_Player,
-					zb.OverlordAbilityTarget_OpponentCard,
-				},
-				Value: 2,
-			}},
-		},
-	},
-	Cards: []*zb.Card{
-		{
-			MouldId: 1,
-			Faction: zb.Faction_Air,
-			Name:    "Soothsayer",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  2,
-			Defense: 1,
-			GooCost: 2,
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_DrawCard,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Entry,
-					Faction:      zb.Faction_None,
-				},
-			},
-			PictureTransform: &zb.PictureTransform{
-				Position: &zb.Vector3Float{
-					X: 1.5,
-					Y: 2.5,
-					Z: 3.5,
-				},
-				Scale: &zb.Vector3Float{
-					X: 0.5,
-					Y: 0.5,
-					Z: 0.5,
-				},
-			},
-		},
-		{
-			MouldId:          2,
-			Faction:          zb.Faction_Air,
-			Name:             "Azuraz",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_ModificatorStats,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Permanent,
-					TargetTypes: []zb.CardAbilityTarget_Enum{
-						zb.CardAbilityTarget_None,
+		Heroes: []*zb.Hero{
+			{
+				HeroId:     0,
+				Experience: 0,
+				Level:      1,
+				Skills: []*zb.Skill{{
+					Title: "Attack",
+					Skill: zb.OverlordSkillKind_IceBolt,
+					SkillTargets: []zb.OverlordAbilityTarget_Enum{
+						zb.OverlordAbilityTarget_AllCards,
+						zb.OverlordAbilityTarget_PlayerCard,
 					},
-					Stat:    zb.StatType_Attack,
-					Faction: zb.Faction_Earth,
-					Value:   1,
-				},
+					Value: 1,
+				}},
 			},
-		},
-		{
-			MouldId:          3,
-			Faction:          zb.Faction_Air,
-			Name:             "NewCard",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_ModificatorStats,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Permanent,
-					TargetTypes: []zb.CardAbilityTarget_Enum{
-						zb.CardAbilityTarget_None,
+			{
+				HeroId:     1,
+				Experience: 0,
+				Level:      2,
+				Skills: []*zb.Skill{{
+					Title: "Deffence",
+					Skill: zb.OverlordSkillKind_Blizzard,
+					SkillTargets: []zb.OverlordAbilityTarget_Enum{
+						zb.OverlordAbilityTarget_Player,
+						zb.OverlordAbilityTarget_OpponentCard,
 					},
-					Stat:    zb.StatType_Attack,
-					Faction: zb.Faction_Water,
-					Value:   1,
+					Value: 2,
+				}},
+			},
+		},
+		Cards: []*zb.Card{
+			{
+				MouldId: 1,
+				Faction:     zb.Faction_Air,
+				Name:    "Soothsayer",
+				Rank:    zb.CreatureRank_Minion,
+				Type:    zb.CreatureType_Walker,
+				Attack:  2,
+				Defense: 1,
+				GooCost: 2,
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_DrawCard,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Entry,
+						Faction:          zb.Faction_None,
+					},
+				},
+				PictureTransform: &zb.PictureTransform{
+					Position: &zb.Vector3Float{
+						X: 1.5,
+						Y: 2.5,
+						Z: 3.5,
+					},
+					Scale: &zb.Vector3Float{
+						X: 0.5,
+						Y: 0.5,
+						Z: 0.5,
+					},
+				},
+			},
+			{
+				MouldId:      2,
+				Faction:          zb.Faction_Air,
+				Name:         "Azuraz",
+				Rank:         zb.CreatureRank_Minion,
+				Type:         zb.CreatureType_Walker,
+				Attack:       1,
+				Defense:      1,
+				GooCost:      1,
+				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
+						},
+						Stat:  zb.StatType_Attack,
+						Faction:   zb.Faction_Earth,
+						Value: 1,
+					},
+				},
+			},
+			{
+				MouldId:      3,
+				Faction:          zb.Faction_Air,
+				Name:         "NewCard",
+				Rank:         zb.CreatureRank_Minion,
+				Type:         zb.CreatureType_Walker,
+				Attack:       1,
+				Defense:      1,
+				GooCost:      1,
+				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
+						},
+						Stat:  zb.StatType_Attack,
+						Faction:   zb.Faction_Water,
+						Value: 1,
+					},
 				},
 			},
 		},
-	},
-	DefaultDecks: []*zb.Deck{
-		{
-			Id:     0,
-			HeroId: 2,
-			Name:   "Default",
-			Cards: []*zb.DeckCard{
-				{CardName: "Banshee", Amount: 2},
-				{CardName: "Breezee", Amount: 2},
-				{CardName: "Buffer", Amount: 2},
-				{CardName: "Soothsayer", Amount: 2},
-				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whiffer", Amount: 2},
-				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Zhocker", Amount: 1},
-				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Dragger", Amount: 1},
-				{CardName: "Guzt", Amount: 1},
-				{CardName: "Pushhh", Amount: 1},
-			},
-		},
-	},
-	AiDecks: []*zb.AIDeck{
-		{
-			Deck: &zb.Deck{
-				Id:     1,
+		DefaultDecks: []*zb.Deck{
+			{
+				Id:     0,
 				HeroId: 2,
-				Name:   "AI Decks",
+				Name:   "Default",
 				Cards: []*zb.DeckCard{
 					{CardName: "Banshee", Amount: 2},
 					{CardName: "Breezee", Amount: 2},
@@ -365,135 +344,137 @@ var updateInitRequest = zb.UpdateInitRequest{
 					{CardName: "Pushhh", Amount: 1},
 				},
 			},
-			Type: zb.AIType_MIXED_AI,
+		},
+		AiDecks: []*zb.AIDeck{
+			{
+				Deck: &zb.Deck{
+					Id:     1,
+					HeroId: 2,
+					Name:   "AI Decks",
+					Cards: []*zb.DeckCard{
+						{CardName: "Banshee", Amount: 2},
+						{CardName: "Breezee", Amount: 2},
+						{CardName: "Buffer", Amount: 2},
+						{CardName: "Soothsayer", Amount: 2},
+						{CardName: "Wheezy", Amount: 2},
+						{CardName: "Whiffer", Amount: 2},
+						{CardName: "Whizpar", Amount: 1},
+						{CardName: "Zhocker", Amount: 1},
+						{CardName: "Bouncer", Amount: 1},
+						{CardName: "Dragger", Amount: 1},
+						{CardName: "Guzt", Amount: 1},
+						{CardName: "Pushhh", Amount: 1},
+					},
+				},
+				Type: zb.AIType_MIXED_AI,
+			},
 		},
 	},
 }
 
 var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
-	Version:    "v2",
 	OldVersion: "v1",
-	DefaultCollection: []*zb.CardCollectionCard{
-		{CardName: "Banshee", Amount: 4},
-		{CardName: "Breezee", Amount: 3},
-		{CardName: "Buffer", Amount: 5},
-		{CardName: "Soothsayer", Amount: 4},
-		{CardName: "Wheezy", Amount: 3},
-		{CardName: "Whiffer", Amount: 5},
-		{CardName: "Whizpar", Amount: 4},
-		{CardName: "Zhocker", Amount: 3},
-		{CardName: "Bouncer", Amount: 5},
-		{CardName: "Dragger", Amount: 4},
-		{CardName: "Guzt", Amount: 3},
-		{CardName: "Pushhh", Amount: 5},
-	},
-	Cards: []*zb.Card{
-		{
-			MouldId: 1,
-			Faction: zb.Faction_Air,
-			Name:    "Soothsayer",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
-			Attack:  2,
-			Defense: 1,
-			GooCost: 2,
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_DrawCard,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Entry,
-					Faction:      zb.Faction_None,
-				},
-			},
-			PictureTransform: &zb.PictureTransform{
-				Position: &zb.Vector3Float{
-					X: 1.5,
-					Y: 2.5,
-					Z: 3.5,
-				},
-				Scale: &zb.Vector3Float{
-					X: 0.5,
-					Y: 0.5,
-					Z: 0.5,
-				},
-			},
+	InitData: &zb.InitData{
+		Version:    "v2",
+		DefaultCollection: []*zb.CardCollectionCard{
+			{CardName: "Banshee", Amount: 4},
+			{CardName: "Breezee", Amount: 3},
+			{CardName: "Buffer", Amount: 5},
+			{CardName: "Soothsayer", Amount: 4},
+			{CardName: "Wheezy", Amount: 3},
+			{CardName: "Whiffer", Amount: 5},
+			{CardName: "Whizpar", Amount: 4},
+			{CardName: "Zhocker", Amount: 3},
+			{CardName: "Bouncer", Amount: 5},
+			{CardName: "Dragger", Amount: 4},
+			{CardName: "Guzt", Amount: 3},
+			{CardName: "Pushhh", Amount: 5},
 		},
-		{
-			MouldId:          2,
-			Faction:          zb.Faction_Air,
-			Name:             "Azuraz",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_ModificatorStats,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Permanent,
-					TargetTypes: []zb.CardAbilityTarget_Enum{
-						zb.CardAbilityTarget_None,
+		Cards: []*zb.Card{
+			{
+				MouldId: 1,
+				Faction:     zb.Faction_Air,
+				Name:    "Soothsayer",
+				Rank:    zb.CreatureRank_Minion,
+				Type:    zb.CreatureType_Walker,
+				Attack:  2,
+				Defense: 1,
+				GooCost: 2,
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_DrawCard,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Entry,
+						Faction:          zb.Faction_None,
 					},
-					Stat:    zb.StatType_Attack,
-					Faction: zb.Faction_Earth,
-					Value:   1,
 				},
-			},
-		},
-		{
-			MouldId:          3,
-			Faction:          zb.Faction_Air,
-			Name:             "NewCard",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-			Abilities: []*zb.CardAbility{
-				{
-					Type:         zb.CardAbilityType_ModificatorStats,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Permanent,
-					TargetTypes: []zb.CardAbilityTarget_Enum{
-						zb.CardAbilityTarget_None,
+				PictureTransform: &zb.PictureTransform{
+					Position: &zb.Vector3Float{
+						X: 1.5,
+						Y: 2.5,
+						Z: 3.5,
 					},
-					Stat:    zb.StatType_Attack,
-					Faction: zb.Faction_Water,
-					Value:   1,
+					Scale: &zb.Vector3Float{
+						X: 0.5,
+						Y: 0.5,
+						Z: 0.5,
+					},
+				},
+			},
+			{
+				MouldId:      2,
+				Faction:          zb.Faction_Air,
+				Name:         "Azuraz",
+				Rank:         zb.CreatureRank_Minion,
+				Type:         zb.CreatureType_Walker,
+				Attack:       1,
+				Defense:      1,
+				GooCost:      1,
+				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
+						},
+						Stat:  zb.StatType_Attack,
+						Faction:   zb.Faction_Earth,
+						Value: 1,
+					},
+				},
+			},
+			{
+				MouldId:      3,
+				Faction:          zb.Faction_Air,
+				Name:         "NewCard",
+				Rank:         zb.CreatureRank_Minion,
+				Type:         zb.CreatureType_Walker,
+				Attack:       1,
+				Defense:      1,
+				GooCost:      1,
+				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
+				Abilities: []*zb.CardAbility{
+					{
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
+						},
+						Stat:  zb.StatType_Attack,
+						Faction:   zb.Faction_Water,
+						Value: 1,
+					},
 				},
 			},
 		},
-	},
-	DefaultDecks: []*zb.Deck{
-		{
-			Id:     0,
-			HeroId: 2,
-			Name:   "Default",
-			Cards: []*zb.DeckCard{
-				{CardName: "Banshee", Amount: 2},
-				{CardName: "Breezee", Amount: 2},
-				{CardName: "Buffer", Amount: 2},
-				{CardName: "Soothsayer", Amount: 2},
-				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whiffer", Amount: 2},
-				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Zhocker", Amount: 1},
-				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Dragger", Amount: 1},
-				{CardName: "Guzt", Amount: 1},
-				{CardName: "Pushhh", Amount: 1},
-			},
-		},
-	},
-	AiDecks: []*zb.AIDeck{
-		{
-			Deck: &zb.Deck{
-				Id:     1,
+		DefaultDecks: []*zb.Deck{
+			{
+				Id:     0,
 				HeroId: 2,
-				Name:   "AI Decks",
+				Name:   "Default",
 				Cards: []*zb.DeckCard{
 					{CardName: "Banshee", Amount: 2},
 					{CardName: "Breezee", Amount: 2},
@@ -509,7 +490,30 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 					{CardName: "Pushhh", Amount: 1},
 				},
 			},
-			Type: zb.AIType_MIXED_AI,
+		},
+		AiDecks: []*zb.AIDeck{
+			{
+				Deck: &zb.Deck{
+					Id:     1,
+					HeroId: 2,
+					Name:   "AI Decks",
+					Cards: []*zb.DeckCard{
+						{CardName: "Banshee", Amount: 2},
+						{CardName: "Breezee", Amount: 2},
+						{CardName: "Buffer", Amount: 2},
+						{CardName: "Soothsayer", Amount: 2},
+						{CardName: "Wheezy", Amount: 2},
+						{CardName: "Whiffer", Amount: 2},
+						{CardName: "Whizpar", Amount: 1},
+						{CardName: "Zhocker", Amount: 1},
+						{CardName: "Bouncer", Amount: 1},
+						{CardName: "Dragger", Amount: 1},
+						{CardName: "Guzt", Amount: 1},
+						{CardName: "Pushhh", Amount: 1},
+					},
+				},
+				Type: zb.AIType_MIXED_AI,
+			},
 		},
 	},
 }
@@ -1039,36 +1043,36 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 	expectedCards := []*zb.Card{
 		{
-			MouldId:          1,
+			MouldId:      1,
 			Faction:          zb.Faction_Air,
-			Name:             "Banshee",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Feral,
-			Attack:           2,
-			Defense:          1,
-			GooCost:          2,
+			Name:         "Banshee",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Feral,
+			Attack:       2,
+			Defense:      1,
+			GooCost:      2,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
-			MouldId:          2,
+			MouldId:      2,
 			Faction:          zb.Faction_Air,
-			Name:             "Azuraz",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
+			Name:         "Azuraz",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
-			MouldId:          3,
+			MouldId:      3,
 			Faction:          zb.Faction_Air,
-			Name:             "NewCard",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CreatureType_Walker,
-			Attack:           1,
-			Defense:          1,
-			GooCost:          1,
+			Name:         "NewCard",
+			Rank:         zb.CreatureRank_Minion,
+			Type:         zb.CreatureType_Walker,
+			Attack:       1,
+			Defense:      1,
+			GooCost:      1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 	}
@@ -2235,7 +2239,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2255,7 +2259,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId:       &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -2275,7 +2279,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2325,7 +2329,7 @@ func TestGameStateOperations(t *testing.T) {
 					CardAttack: &zb.PlayerActionCardAttack{
 						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 8},
+							InstanceId:       &zb.InstanceId{Id: 8},
 						},
 					},
 				},
@@ -2345,7 +2349,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId:       &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2365,7 +2369,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId:       &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -2943,7 +2947,7 @@ func TestAIDeckOperations(t *testing.T) {
 		},
 	}
 
-	t.Run("Faction AI Decks", func(t *testing.T) {
+	t.Run("Set AI Decks", func(t *testing.T) {
 		req := &zb.SetAIDecksRequest{
 			Decks:   aiDecks,
 			Version: "v1",
