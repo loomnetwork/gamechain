@@ -62,6 +62,7 @@ message CardInstanceSpecificData {
     CreatureType.Enum type = 3;
     CardSetType.Enum set = 4;
     int32 gooCost = 5;
+    repeated CardAbility abilities = 6;
 }
 
 message CardViewInfo {
@@ -1343,6 +1344,7 @@ message PlayerActionOutcome {
     message CardAbilityAttackOverlordOutcome {
         InstanceId instanceId = 1;
         int32 newDefense = 2;
+        int32 damage = 3;
     }
 
     message CardAttackOutcome {
