@@ -696,8 +696,21 @@ func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetA
 	if err != nil {
 		return nil, err
 	}
+	// remove invalid ai deck
+	// this should be removed finally after we make sure setting AI deck works fine
+	cardLibrary, err := loadCardList(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+	var decks []*zb.AIDeck
+	for _, deck := range deckList.Decks {
+		err := validateCardLibrary(cardLibrary.Cards, deck.Deck.Cards)
+		if err == nil {
+			decks = append(decks, deck)
+		}
+	}
 	return &zb.GetAIDecksResponse{
-		Decks: deckList.Decks,
+		Decks: decks,
 	}, nil
 }
 
