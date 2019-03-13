@@ -6,20 +6,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	latypes "github.com/loomnetwork/loomauth/types"
 	"github.com/stretchr/testify/assert"
 )
 
-var fakeOracle = loom.Address{
-
-}
+var fakeOracle = loom.Address{}
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
@@ -379,7 +377,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	OldVersion: "v1",
 	InitData: &zb.InitData{
-		Version:    "v2",
+		Version: "v2",
 		DefaultCollection: []*zb.CardCollectionCard{
 			{CardName: "Banshee", Amount: 4},
 			{CardName: "Breezee", Amount: 3},
@@ -2243,7 +2241,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId:       &zb.InstanceId{Id: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2263,7 +2261,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId:       &zb.InstanceId{Id: 2},
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -2283,7 +2281,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId:       &zb.InstanceId{Id: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2333,7 +2331,7 @@ func TestGameStateOperations(t *testing.T) {
 					CardAttack: &zb.PlayerActionCardAttack{
 						Attacker: &zb.InstanceId{Id: 13},
 						Target: &zb.Unit{
-							InstanceId:       &zb.InstanceId{Id: 8},
+							InstanceId: &zb.InstanceId{Id: 8},
 						},
 					},
 				},
@@ -2353,7 +2351,7 @@ func TestGameStateOperations(t *testing.T) {
 						Card: &zb.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId:       &zb.InstanceId{Id: 2},
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -2373,7 +2371,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId:       &zb.InstanceId{Id: 2},
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -2933,18 +2931,18 @@ func TestAIDeckOperations(t *testing.T) {
 				HeroId: 2,
 				Name:   "AI Decks",
 				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
+					{CardName: "Wheezy", Amount: 2},
+					{CardName: "Ztormmcaller", Amount: 2},
+					{CardName: "Ztormmcaller", Amount: 2},
 					{CardName: "Soothsayer", Amount: 2},
 					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
+					{CardName: "Gaz", Amount: 2},
 					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
+					{CardName: "Bolderr", Amount: 1},
 					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
+					{CardName: "Blocker", Amount: 1},
+					{CardName: "Pit", Amount: 1},
+					{CardName: "Golem", Amount: 1},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,
@@ -2965,6 +2963,29 @@ func TestAIDeckOperations(t *testing.T) {
 			Version: "v1",
 		})
 		assert.Nil(t, err)
+	})
+
+	aiDecks = []*zb.AIDeck{
+		{
+			Deck: &zb.Deck{
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
+				Cards: []*zb.DeckCard{
+					{CardName: "NoName", Amount: 2},
+				},
+			},
+			Type: zb.AIType_MIXED_AI,
+		},
+	}
+
+	t.Run("Set AI Decks should fail", func(t *testing.T) {
+		req := &zb.SetAIDecksRequest{
+			Decks:   aiDecks,
+			Version: "v1",
+		}
+		err := c.SetAIDecks(ctx, req)
+		assert.NotNil(t, err)
 	})
 }
 
