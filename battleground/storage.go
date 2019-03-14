@@ -456,12 +456,14 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 }
 
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
+	cardDetails = proto.Clone(cardDetails).(*zb.Card)
 	return &zb.CardInstanceSpecificData{
-		Attack:  cardDetails.Attack,
-		Defense: cardDetails.Defense,
-		Type:    cardDetails.Type,
-		Faction: cardDetails.Faction,
-		GooCost: cardDetails.GooCost,
+		Attack:    cardDetails.Attack,
+		Defense:   cardDetails.Defense,
+		Type:      cardDetails.Type,
+		Faction:   cardDetails.Faction,
+		GooCost:   cardDetails.GooCost,
+		Abilities: cardDetails.Abilities,
 	}
 }
 

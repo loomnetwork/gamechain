@@ -32,6 +32,11 @@ var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerPro
 		}
 	}
 
+	// version
+	if targetData.Version != candidateData.Version {
+		return 0
+	}
+
 	// backend side game logic
 	if targetData.UseBackendGameLogic != candidateData.UseBackendGameLogic {
 		return 0

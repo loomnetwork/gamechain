@@ -61,9 +61,9 @@ var (
 	// privateKey to verify JWT Token from loomauth
 	jwtSecret = os.Getenv("JWT_SECRET")
 	// Error list
-	ErrOracleNotSpecified = errors.New("oracle not specified")
-	ErrInvalidEventBatch  = errors.New("invalid event batch")
-	ErrInvalidDefaultPlayerDefense  = errors.New("default overlord defense must be >= 1")
+	ErrOracleNotSpecified          = errors.New("oracle not specified")
+	ErrInvalidEventBatch           = errors.New("invalid event batch")
+	ErrInvalidDefaultPlayerDefense = errors.New("default overlord defense must be >= 1")
 )
 
 type ZombieBattleground struct {
@@ -94,7 +94,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
 		TutorialRewardAmount:    1,
-		DefaultPlayerDefense: defaultOverlordDefense,
+		DefaultPlayerDefense:    defaultOverlordDefense,
 	}
 	if err := saveState(ctx, &state); err != nil {
 		return err
@@ -675,6 +675,16 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 }
 
 func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecksRequest) error {
+	// validate version on card library
+	cardLibrary, err := loadCardList(ctx, req.Version)
+	if err != nil {
+		return err
+	}
+	for _, deck := range req.Decks {
+		if err := validateCardLibrary(cardLibrary.Cards, deck.Deck.Cards); err != nil {
+			return err
+		}
+	}
 	deckList := zb.AIDeckList{
 		Decks: req.Decks,
 	}
@@ -686,8 +696,21 @@ func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetA
 	if err != nil {
 		return nil, err
 	}
+	// remove invalid ai deck
+	// this should be removed finally after we make sure setting AI deck works fine
+	cardLibrary, err := loadCardList(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+	var decks []*zb.AIDeck
+	for _, deck := range deckList.Decks {
+		err := validateCardLibrary(cardLibrary.Cards, deck.Deck.Cards)
+		if err == nil {
+			decks = append(decks, deck)
+		}
+	}
 	return &zb.GetAIDecksResponse{
-		Decks: deckList.Decks,
+		Decks: decks,
 	}, nil
 }
 
