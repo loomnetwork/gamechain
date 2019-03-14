@@ -403,7 +403,7 @@ func TestCardAttack(t *testing.T) {
 				Prototype:  &zb.Card{},
 				Instance: &zb.CardInstanceSpecificData{
 					Defense: 3,
-					Attack:  2,
+					Damage:  2,
 				},
 				OwnerIndex: 0,
 			})
@@ -412,7 +412,7 @@ func TestCardAttack(t *testing.T) {
 				Prototype:  &zb.Card{},
 				Instance: &zb.CardInstanceSpecificData{
 					Defense: 5,
-					Attack:  1,
+					Damage:  1,
 				},
 				OwnerIndex: 1,
 			})
@@ -448,7 +448,7 @@ func TestCardAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
-				Attack:  2,
+				Damage:  2,
 			},
 			OwnerIndex: 0,
 		})
@@ -457,7 +457,7 @@ func TestCardAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
-				Attack:  1,
+				Damage:  1,
 			},
 			OwnerIndex: 1,
 		})
@@ -495,7 +495,7 @@ func TestCardAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
-				Attack:  1,
+				Damage:  1,
 			},
 			OwnerIndex: 0,
 		})
@@ -504,7 +504,7 @@ func TestCardAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
-				Attack:  1,
+				Damage:  1,
 			},
 			OwnerIndex: 1,
 		})
@@ -543,7 +543,7 @@ func TestCardAttack(t *testing.T) {
 			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
-				Attack:  2,
+				Damage:  2,
 			},
 			OwnerIndex: 0,
 		})
@@ -578,7 +578,7 @@ func TestCardAttack(t *testing.T) {
 			InstanceId: &zb.InstanceId{Id: 2},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
-				Attack:  2,
+				Damage:  2,
 			},
 			OwnerIndex: 0,
 		})
@@ -951,8 +951,8 @@ func compareCards(c1 *zb.CardInstance, c2 *zb.CardInstance) error {
 		return fmt.Errorf("defenses are not equal %d, %d\n", c1.Instance.Defense, c2.Instance.Defense)
 	}
 
-	if c1.Instance.Attack != c2.Instance.Attack {
-		return fmt.Errorf("attacks are not equal %d, %d\n", c1.Instance.Attack, c2.Instance.Attack)
+	if c1.Instance.Damage != c2.Instance.Damage {
+		return fmt.Errorf("attacks are not equal %d, %d\n", c1.Instance.Damage, c2.Instance.Damage)
 	}
 
 	if c1.Instance.GooCost != c2.Instance.GooCost {

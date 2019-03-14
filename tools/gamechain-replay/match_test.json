@@ -180,7 +180,7 @@
                 "instanceId": {
                     "id": 3
                 },
-                "attack": 4,
+                "damage": 4,
                 "defense": 4
             }
         },
@@ -189,7 +189,7 @@
                 "instanceId": {
                     "id": 17
                 },
-                "attack": 1,
+                "damage": 1,
                 "defense": 1
             }
         },
@@ -198,7 +198,7 @@
                 "instanceId": {
                     "id": 18
                 },
-                "attack": 1,
+                "damage": 1,
                 "defense": 1
             }
         },

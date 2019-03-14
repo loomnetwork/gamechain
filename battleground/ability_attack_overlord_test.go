@@ -51,7 +51,7 @@ func TestAbilityAttackOverlord(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 5,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_AttackOverlord,

@@ -52,9 +52,9 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		card0 := &zb.Card{
 			Name:    "Vortex",
 			Defense: 3,
-			Attack:  2,
+			Damage:  2,
 			GooCost: 1,
-			Set:     zb.CardSetType_Water,
+			Faction: zb.Faction_Water,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
@@ -72,7 +72,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
 						ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-							Set: card0.Set,
+							Faction: card0.Faction,
 						},
 					},
 				},
@@ -85,9 +85,9 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  4,
+				Damage:  4,
 				GooCost: 3,
-				Set:     zb.CardSetType_Water,
+				Faction: zb.Faction_Water,
 			},
 			Owner: player1,
 		}
@@ -96,9 +96,9 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  4,
+				Damage:  4,
 				GooCost: 3,
-				Set:     zb.CardSetType_Fire,
+				Faction: zb.Faction_Fire,
 			},
 			Owner: player1,
 		}
