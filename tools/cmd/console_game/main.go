@@ -99,7 +99,7 @@ var initRequest = zb.InitRequest{
 			Name:    "Soothsayer",
 			Rank:    zb.CreatureRank_Minion,
 			Type:    zb.CreatureType_Walker,
-			Attack:  2,
+			Damage:  2,
 			Defense: 1,
 			GooCost: 2,
 			Abilities: []*zb.CardAbility{
@@ -129,7 +129,7 @@ var initRequest = zb.InitRequest{
 			Name:    "Azuraz",
 			Rank:    zb.CreatureRank_Minion,
 			Type:    zb.CreatureType_Walker,
-			Attack:  1,
+			Damage:  1,
 			Defense: 1,
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
@@ -140,7 +140,7 @@ var initRequest = zb.InitRequest{
 					TargetTypes: []zb.CardAbilityTarget_Enum{
 						zb.CardAbilityTarget_None,
 					},
-					Stat:    zb.StatType_Attack,
+					Stat:    zb.StatType_Damage,
 					Faction: zb.Faction_Earth,
 					Value:   1,
 				},

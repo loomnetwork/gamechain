@@ -8,7 +8,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -18,7 +18,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -58,10 +58,10 @@
             "id": 2
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -89,7 +89,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -99,7 +99,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -139,10 +139,10 @@
             "id": 3
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -170,7 +170,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -180,7 +180,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -220,10 +220,10 @@
             "id": 4
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -251,7 +251,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -261,7 +261,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -301,10 +301,10 @@
             "id": 5
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -334,7 +334,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -344,7 +344,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -384,10 +384,10 @@
             "id": 6
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -415,7 +415,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -425,7 +425,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -465,10 +465,10 @@
             "id": 7
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -496,7 +496,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -506,7 +506,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -546,10 +546,10 @@
             "id": 8
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -577,7 +577,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -587,7 +587,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -627,10 +627,10 @@
             "id": 9
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -658,7 +658,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -668,7 +668,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -708,10 +708,10 @@
             "id": 10
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -739,7 +739,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -749,7 +749,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -789,10 +789,10 @@
             "id": 11
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -820,7 +820,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -830,7 +830,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -870,10 +870,10 @@
             "id": 12
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -901,7 +901,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -911,7 +911,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -951,10 +951,10 @@
             "id": 13
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -982,7 +982,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -992,7 +992,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1032,10 +1032,10 @@
             "id": 14
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1063,7 +1063,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1073,7 +1073,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1113,10 +1113,10 @@
             "id": 15
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1144,7 +1144,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1154,7 +1154,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1194,10 +1194,10 @@
             "id": 16
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1225,7 +1225,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1235,7 +1235,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1275,10 +1275,10 @@
             "id": 17
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1306,7 +1306,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1316,7 +1316,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1356,10 +1356,10 @@
             "id": 18
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1387,7 +1387,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1397,7 +1397,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1437,10 +1437,10 @@
             "id": 19
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1468,7 +1468,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1478,7 +1478,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1518,10 +1518,10 @@
             "id": 20
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1549,7 +1549,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1559,7 +1559,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1599,10 +1599,10 @@
             "id": 21
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1630,7 +1630,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1640,7 +1640,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1680,10 +1680,10 @@
             "id": 22
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1711,7 +1711,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1721,7 +1721,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1761,10 +1761,10 @@
             "id": 23
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1792,7 +1792,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1802,7 +1802,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1842,10 +1842,10 @@
             "id": 24
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1873,7 +1873,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1883,7 +1883,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -1923,10 +1923,10 @@
             "id": 25
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -1954,7 +1954,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -1964,7 +1964,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2004,10 +2004,10 @@
             "id": 26
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2035,7 +2035,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2045,7 +2045,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2085,10 +2085,10 @@
             "id": 27
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2116,7 +2116,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2126,7 +2126,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2166,10 +2166,10 @@
             "id": 28
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2197,7 +2197,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2207,7 +2207,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2247,10 +2247,10 @@
             "id": 29
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2278,7 +2278,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2288,7 +2288,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2328,10 +2328,10 @@
             "id": 30
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2359,7 +2359,7 @@
           "prototype": {
             "id": "25",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Ghoul",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
             "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2369,7 +2369,7 @@
             "damage": 3,
             "health": 2,
             "cost": 2,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": -0.23,
                 "y": 0.1
@@ -2409,10 +2409,10 @@
             "id": 31
           },
           "instance": {
-            "attack": 3,
+            "damage": 3,
             "defense": 2,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
@@ -2465,7 +2465,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2475,7 +2475,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2505,10 +2505,10 @@
             "id": 32
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2519,7 +2519,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2529,7 +2529,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2559,10 +2559,10 @@
             "id": 33
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2573,7 +2573,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2583,7 +2583,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2613,10 +2613,10 @@
             "id": 34
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2629,7 +2629,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2639,7 +2639,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2669,10 +2669,10 @@
             "id": 35
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2683,7 +2683,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2693,7 +2693,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2723,10 +2723,10 @@
             "id": 36
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2737,7 +2737,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2747,7 +2747,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2777,10 +2777,10 @@
             "id": 37
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2791,7 +2791,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2801,7 +2801,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2831,10 +2831,10 @@
             "id": 38
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2845,7 +2845,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2855,7 +2855,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2885,10 +2885,10 @@
             "id": 39
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2899,7 +2899,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2909,7 +2909,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2939,10 +2939,10 @@
             "id": 40
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -2953,7 +2953,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2963,7 +2963,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -2993,10 +2993,10 @@
             "id": 41
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3007,7 +3007,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3017,7 +3017,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3047,10 +3047,10 @@
             "id": 42
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3061,7 +3061,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3071,7 +3071,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3101,10 +3101,10 @@
             "id": 43
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3115,7 +3115,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3125,7 +3125,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3155,10 +3155,10 @@
             "id": 44
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3169,7 +3169,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3179,7 +3179,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3209,10 +3209,10 @@
             "id": 45
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3223,7 +3223,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3233,7 +3233,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3263,10 +3263,10 @@
             "id": 46
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3277,7 +3277,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3287,7 +3287,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3317,10 +3317,10 @@
             "id": 47
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3331,7 +3331,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3341,7 +3341,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3371,10 +3371,10 @@
             "id": 48
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3385,7 +3385,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3395,7 +3395,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3425,10 +3425,10 @@
             "id": 49
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3439,7 +3439,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3449,7 +3449,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3479,10 +3479,10 @@
             "id": 50
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3493,7 +3493,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3503,7 +3503,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3533,10 +3533,10 @@
             "id": 51
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3547,7 +3547,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3557,7 +3557,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3587,10 +3587,10 @@
             "id": 52
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3601,7 +3601,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3611,7 +3611,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3641,10 +3641,10 @@
             "id": 53
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3655,7 +3655,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3665,7 +3665,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3695,10 +3695,10 @@
             "id": 54
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3709,7 +3709,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3719,7 +3719,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3749,10 +3749,10 @@
             "id": 55
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3763,7 +3763,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3773,7 +3773,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3803,10 +3803,10 @@
             "id": 56
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3817,7 +3817,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3827,7 +3827,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3857,10 +3857,10 @@
             "id": 57
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3871,7 +3871,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3881,7 +3881,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3911,10 +3911,10 @@
             "id": 58
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3925,7 +3925,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3935,7 +3935,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -3965,10 +3965,10 @@
             "id": 59
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -3979,7 +3979,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -3989,7 +3989,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -4019,10 +4019,10 @@
             "id": 60
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
@@ -4033,7 +4033,7 @@
           "prototype": {
             "id": "24",
             "kind": "CREATURE",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "name": "Poizom",
             "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
             "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -4043,7 +4043,7 @@
             "damage": 1,
             "health": 1,
             "cost": 1,
-            "cardViewInfo": {
+            "pictureTransform": {
               "position": {
                 "x": 0.15,
                 "y": 0.1
@@ -4073,10 +4073,10 @@
             "id": 61
           },
           "instance": {
-            "attack": 1,
+            "damage": 1,
             "defense": 1,
             "type": "WALKER",
-            "set": "TOXIC",
+            "faction": "TOXIC",
             "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",

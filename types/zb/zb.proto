@@ -39,7 +39,7 @@ message Deck {
 message Card {
     int64 mouldId = 1 [json_name="id"];
     CardKind.Enum kind = 2;
-    Faction.Enum faction = 3 [json_name="set"];
+    Faction.Enum faction = 3 [json_name="faction"];
     string name = 4;
     string description = 5;
     string flavor_text = 6;
@@ -47,7 +47,7 @@ message Card {
     CreatureRank.Enum rank = 8;
     CreatureType.Enum type = 9;
     string frame = 11;
-    int32 attack = 12 [json_name="damage"];
+    int32 damage = 12 [json_name="damage"];
     int32 defense = 13 [json_name="health"];
     int32 gooCost = 14 [json_name="cost"];
     PictureTransform pictureTransform = 16 [json_name="card_view_info"];
@@ -58,7 +58,7 @@ message Card {
 }
 
 message CardInstanceSpecificData {
-    int32 attack = 1;
+    int32 damage = 1;
     int32 defense = 2;
     CreatureType.Enum type = 3;
     Faction.Enum faction = 4;
@@ -206,7 +206,7 @@ message Skill {
     int32 cooldown = 9;
     int32 initial_cooldown = 10;
 
-    int32 attack = 11;
+    int32 damage = 11;
     int32 count = 12;
 
     int64 id = 13;
@@ -1231,7 +1231,7 @@ message CardAbility {
     UnitSpecialStatus.Enum targetUnitSpecialStatus = 10 [json_name="unit_status"];
     CreatureType.Enum targetUnitType = 11 [json_name="unit_type"];
     int32 value = 12;
-    int32 attack = 13 [json_name="damage"];
+    int32 damage = 13 [json_name="damage"];
     int32 defense = 14 [json_name="health"]; // FIXME: Health in client code
     string name = 15;
     int32 turns = 16;
@@ -1260,12 +1260,12 @@ message CardAbility {
 }
 
 message CardAbilityRage {
-    int32 addedAttack = 1; // TODO: Remove me
+    int32 addedDamage = 1; // TODO: Remove me
     bool wasApplied = 2;
 }
 
 message CardAbilityAdditionalDamageToHeavyInAttack {
-    int32 addedAttack = 1;
+    int32 addedDamage = 1;
 }
 
 message CardAbilityChangeStat {
@@ -1279,7 +1279,7 @@ message CardAbilityPriorityAttack {
 }
 
 message CardAbilityReanimate {
-    int32 defaultAttack = 1;
+    int32 defaultDamage = 1;
     int32 defaultDefense = 2;
     CardInstance newInstance = 3;
 }
@@ -1317,7 +1317,7 @@ message PlayerActionOutcome {
 
     message CardAbilityRageOutcome {
         InstanceId instanceId = 1;
-        int32 newAttack = 2;
+        int32 newDamage = 2;
     }
 
     message CardAbilityPriorityAttackOutcome {
@@ -1331,12 +1331,12 @@ message PlayerActionOutcome {
 
     message CardAbilityAdditionalDamageToHeavyInAttackOutcome {
         InstanceId instanceId = 1;
-        int32 addedAttack = 2;
+        int32 addedDamage = 2;
     }
 
     message CardAbilityChangeStatOutcome {
         InstanceId instanceId = 1;
-        int32 newAttack = 2;
+        int32 newDamage = 2;
         int32 newDefense = 3;
         StatType.Enum stat = 4;
         InstanceId targetInstanceId = 5;
@@ -1451,7 +1451,7 @@ message OverlordSkillPrototype {
     int32 cooldown = 5;
     int32 initialCooldown = 6;
     int32 parameter = 7;
-    int32 attack = 8;
+    int32 damage = 8 [json_name="attack"];
     OverlordSkillKind.Enum overlordSkillKind = 9;
     repeated OverlordAbilityTarget.Enum skillTargetTypes = 10;
     repeated Faction.Enum factionTargetTypes = 11;
@@ -1509,7 +1509,7 @@ message Unit {
 }
 
 message Parameter {
-    int32 Attack  = 1;
+    int32 Damage  = 1;
     int32 Defense = 2;
     string CardName = 3;
 }
@@ -1571,7 +1571,7 @@ message StatType {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
         HEALTH = 1 [(gogoproto.enumvalue_customname) = "Defense"];
-        DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Attack"];
+        DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Damage"];
     }
 }
 
@@ -1630,7 +1630,7 @@ message HistoryCreateGame {
 
 message HistoryFullInstance {
     InstanceId instanceId = 1;
-    int32 attack = 2;
+    int32 damage = 2;
     int32 defense = 3;
 }
 
@@ -1638,7 +1638,7 @@ message HistoryInstance {
     InstanceId instanceId = 1;
     int32 value = 2;
     enum change {
-        Attack = 0;
+        Damage = 0;
         Defense = 1;
     }
 }

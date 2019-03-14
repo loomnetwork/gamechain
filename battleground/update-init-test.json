@@ -700,7 +700,7 @@
     {
       "id": "1",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Whizpar",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Water zombies",
       "flavorText": "The unfriendly ghost...",
@@ -762,7 +762,7 @@
     {
       "id": "2",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Pushhh",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Return a zombie to its owner's Hand",
       "flavorText": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
@@ -825,7 +825,7 @@
     {
       "id": "3",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Ztormcaller",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a zombie, Swing 1",
       "flavorText": "Thor's best student just got a little angrier...",
@@ -928,7 +928,7 @@
     {
       "id": "4",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "ZeuZ",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to all enemies",
       "flavorText": "From mount Zolympus in the sky - fear Ze-might of ZeuZ!",
@@ -995,7 +995,7 @@
     {
       "id": "5",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Rockky",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Air zombies",
       "flavorText": "Addriaaannn!!! Addriaaaaaannnnn!!!",
@@ -1057,7 +1057,7 @@
     {
       "id": "6",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Golem",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "mmMMWhaaaaat?",
@@ -1088,7 +1088,7 @@
     {
       "id": "8",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Mountain",
       "description": "\u003cb\u003eHeavy, Swing 6\u003c/b\u003e ",
       "flavorText": "When the mountain comes to you... you'll run!",
@@ -1153,7 +1153,7 @@
     {
       "id": "9",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Walley",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Adjacent zombies get Heavy",
       "flavorText": "\"Eeeeeeva\"",
@@ -1214,7 +1214,7 @@
     {
       "id": "10",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Pyromaz",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Toxic zombies",
       "flavorText": "He's really into that old Prodigy song... Firestarter...",
@@ -1276,7 +1276,7 @@
     {
       "id": "11",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Burrrnn",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "So he likes all the pretty bright colors, can you blame him?",
@@ -1307,7 +1307,7 @@
     {
       "id": "12",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Cynderman",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to an enemy",
       "flavorText": "Hot, so very hot - all the time!",
@@ -1378,7 +1378,7 @@
     {
       "id": "13",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Gargantua",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to all enemies",
       "flavorText": "(sing) Under pressure... coming down on you...",
@@ -1441,7 +1441,7 @@
     {
       "id": "14",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Fire-Maw",
       "description": "\u003cb\u003eFlash\u003c/b\u003e ",
       "flavorText": "There's always an aftershock, duck twice",
@@ -1503,7 +1503,7 @@
     {
       "id": "15",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Stapler",
       "description": "Restore 4 Def to a zombie",
       "flavorText": "No pain, no gain.",
@@ -1570,7 +1570,7 @@
     {
       "id": "16",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Nail Bomb",
       "description": "4 damage to a zombie, and adjacent zombies",
       "flavorText": "When you really want to nail it!",
@@ -1637,7 +1637,7 @@
     {
       "id": "17",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Goo Bottles",
       "description": "Get 2 empty goo vials",
       "flavorText": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
@@ -1703,7 +1703,7 @@
     {
       "id": "18",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Chainsaw",
       "description": "+4 Atk to a zombie; End: 4 damage to this zombie",
       "flavorText": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
@@ -1778,7 +1778,7 @@
     {
       "id": "19",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Azuraz",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Earth zombies",
       "flavorText": "Beeee yourself!",
@@ -1840,7 +1840,7 @@
     {
       "id": "20",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Shroom",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to an enemy",
       "flavorText": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
@@ -1911,7 +1911,7 @@
     {
       "id": "21",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Vindrom",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e Freeze zombie",
       "flavorText": "BDSM much?!",
@@ -1974,7 +1974,7 @@
     {
       "id": "22",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Shammann",
       "description": "\u003cb\u003eTurn:\u003c/b\u003e Summon one Azuraz zombie",
       "flavorText": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
@@ -2036,7 +2036,7 @@
     {
       "id": "23",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Puffer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e +1 Atk to all Life zombies in play",
       "flavorText": "All the pretty pretty flowers",
@@ -2098,7 +2098,7 @@
     {
       "id": "24",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Poizom",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Life zombies",
       "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
@@ -2160,7 +2160,7 @@
     {
       "id": "25",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Ghoul",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e -1 Atk and -1 Def",
       "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
@@ -2253,7 +2253,7 @@
     {
       "id": "26",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Hazmaz",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Being cooped up inside a plastic suit is no fun - now multiple this by 1,000 with all the extra gases, something's gotta give...",
@@ -2284,7 +2284,7 @@
     {
       "id": "27",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Cherno-bill",
       "description": "\u003cb\u003eHeavy, Death:\u003c/b\u003e 3 damage to everyone",
       "flavorText": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
@@ -2349,7 +2349,7 @@
     {
       "id": "28",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Izze",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e +1 damage to Fire zombies",
       "flavorText": "It would be a-lot Izzier if you just stay put!",
@@ -2411,7 +2411,7 @@
     {
       "id": "29",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Jetter",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a zombie",
       "flavorText": "Most welcomed during hot summer days on the busy city streets.",
@@ -2482,7 +2482,7 @@
     {
       "id": "30",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Freezzee",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Freeze zombie and adjacent zombies, 2 damage if Frozen",
       "flavorText": "How he loves decorating with ice sculptures... Everywhere!",
@@ -2548,7 +2548,7 @@
     {
       "id": "31",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Tzunamy",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to all enemies, then Freeze them",
       "flavorText": "Bringing a nice, big shower, cleaning an entire city at a time.",
@@ -2615,7 +2615,7 @@
     {
       "id": "32",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Bouncer",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
@@ -2646,7 +2646,7 @@
     {
       "id": "34",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Wheezy",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e A random card in your Hand gets -1 cost",
       "flavorText": "Ommmmmmmmmmm",
@@ -2708,7 +2708,7 @@
     {
       "id": "35",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Tiny",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Cooookie... just one more cooookie...",
@@ -2739,7 +2739,7 @@
     {
       "id": "36",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Earthshaker",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Destroy a Heavy zombie",
       "flavorText": "Will break ALL your WALLS!!",
@@ -2806,7 +2806,7 @@
     {
       "id": "37",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Cerberus",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e Deal damage before receiving damage",
       "flavorText": "It's ALWAYS a party of three.",
@@ -2867,7 +2867,7 @@
     {
       "id": "38",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Werezomb",
       "description": "\u003cb\u003eFeral, Entry:\u003c/b\u003e Give a Random ally Fire zombie Blitz",
       "flavorText": "Stop, stop, stop, shh-shh, you'll cause a howl",
@@ -2929,7 +2929,7 @@
     {
       "id": "42",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Z-Virus",
       "description": "Devour all ally zombies",
       "flavorText": "There ain't no party like a Z-Virus party!",
@@ -2994,7 +2994,7 @@
     {
       "id": "43",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Yggdrazil",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Summon all Life zombies that died this match",
       "flavorText": "In this case, lots of strings attached!!",
@@ -3057,7 +3057,7 @@
     {
       "id": "44",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Sapper",
       "description": "\u003cb\u003eAttack:\u003c/b\u003e Restore Def every time this deals damage",
       "flavorText": "Hungry, always so very hungry",
@@ -3122,7 +3122,7 @@
     {
       "id": "45",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Keeper",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Summon an Ember zombie minion",
       "flavorText": "They are usually such lovely beasts...",
@@ -3184,7 +3184,7 @@
     {
       "id": "46",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zpitter",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a random enemy",
       "flavorText": "Llama in my living room... bam ba balalam babam ba ba...",
@@ -3255,7 +3255,7 @@
     {
       "id": "47",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zeeter",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Devour an ally zombie, get its Atk and Def",
       "flavorText": "Nam, naam nam nam namm nam...",
@@ -3317,7 +3317,7 @@
     {
       "id": "48",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Zhatterer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Destroy a Frozen zombie",
       "flavorText": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
@@ -3387,7 +3387,7 @@
     {
       "id": "49",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Znowman",
       "description": "\u003cb\u003eHeavy,\u003c/b\u003e Freeze enemies that attack this",
       "flavorText": "Maybe the snow does have some magical power?! But not yellow snow...",
@@ -3448,7 +3448,7 @@
     {
       "id": "50",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Soothsayer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card",
       "flavorText": "Almost as good as a fortune cookie... minus the cookie",
@@ -3509,7 +3509,7 @@
     {
       "id": "59",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Spiker",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Standing really still... maybe they won't notice",
@@ -3540,7 +3540,7 @@
     {
       "id": "61",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "IgneouZ",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e +2 Def if your Overlord has 10 def or less",
       "flavorText": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
@@ -3601,7 +3601,7 @@
     {
       "id": "67",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Zhampion",
       "description": "\u003cb\u003eFeral, Entry:\u003c/b\u003e Summon two enemy Pyromaz zombies",
       "flavorText": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
@@ -3663,7 +3663,7 @@
     {
       "id": "70",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Goo Beaker",
       "description": "Get 1 empty goo vial",
       "flavorText": "So much goo, so little space",
@@ -3733,7 +3733,7 @@
     {
       "id": "75",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Bloomer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card if you have a Life zombie in play",
       "flavorText": "Fertilizing the flowers on an hourly basis",
@@ -3794,7 +3794,7 @@
     {
       "id": "85",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zludge",
       "description": "\u003cb\u003eRage:\u003c/b\u003e +2 Atk",
       "flavorText": "Bring it, bring It, BRING IT ON!!!",
@@ -3859,7 +3859,7 @@
     {
       "id": "90",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Blizzard",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Freeze all enemy zombies",
       "flavorText": "If you can't join them, FREEZE them!",
@@ -3925,7 +3925,7 @@
     {
       "id": "94",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Ztormonk",
       "description": "\u003cb\u003eGuard, Entry:\u003c/b\u003e Give adjacent zombies Guard",
       "flavorText": "Just be a good sentinel and -",
@@ -4016,7 +4016,7 @@
     {
       "id": "96",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Draft",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card from the enemy Deck",
       "flavorText": "Not your father... hopefully",
@@ -4078,7 +4078,7 @@
     {
       "id": "97",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "MonZoon",
       "description": "Costs 1 less for each Air zombie in your Hand",
       "flavorText": "Shock therapy does work wonders",
@@ -4140,7 +4140,7 @@
     {
       "id": "98",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Blocker",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Just a few more moments...",
@@ -4171,7 +4171,7 @@
     {
       "id": "101",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Slab",
       "description": "",
       "flavorText": "Supressing all those emotions does have its price...",
@@ -4202,7 +4202,7 @@
     {
       "id": "103",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Pyrite",
       "description": "\u003cb\u003eHeavy, Delayed 2:\u003c/b\u003e This loses Heavy but gets +4 Atk",
       "flavorText": "Angry enough to go though a WALL!",
@@ -4263,7 +4263,7 @@
     {
       "id": "104",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Gaea",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e All ally Earth zombies in play get +2 Atk",
       "flavorText": "Either super charismatic, or super scary... or both.",
@@ -4324,7 +4324,7 @@
     {
       "id": "117",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Fresh Meat",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e All enemy zombies get -3 Atk until the end of turn",
       "flavorText": "As if they died again and went to zombie heaven",
@@ -4390,7 +4390,7 @@
     {
       "id": "127",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Ectoplasm",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Lose a goo bottle",
       "flavorText": "Wha'ch yu lookin at' ?! ",
@@ -4451,7 +4451,7 @@
     {
       "id": "132",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "GooZilla",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Use all your goo for 2x Atk / Def",
       "flavorText": "More, more, MORE GOO! Bring me ALL the GOO",
@@ -4512,7 +4512,7 @@
     {
       "id": "141",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Maelstrom",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Return all other zombies to their owners' Hands",
       "flavorText": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
@@ -4575,7 +4575,7 @@
     {
       "id": "142",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "FumeZ",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand",
       "flavorText": "RAZENGAAAAAAAA!!!",
@@ -4636,7 +4636,7 @@
     {
       "id": "143",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Gaz",
       "description": "\u003cb\u003eGuard, Entry:\u003c/b\u003e Add a Corrupted Goo to your Hand",
       "flavorText": "No, no, no no, not a hamster, not a hamster ball....",
@@ -4728,7 +4728,7 @@
     {
       "id": "144",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Pit",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand ",
       "flavorText": "Hard to save every drop with all the spillage",
@@ -4789,7 +4789,7 @@
     {
       "id": "145",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Crater",
       "description": "\u003cb\u003eHeavy, Entry:\u003c/b\u003e Add a Corrupted Goo to your Hand ",
       "flavorText": "Try to veer from his major crater issues... it may goo deeeeep",
@@ -4850,7 +4850,7 @@
     {
       "id": "146",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Quazi",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand",
       "flavorText": "Has a great fascination with church bells...",
@@ -4915,7 +4915,7 @@
     {
       "id": "147",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Modo",
       "description": "\u003cb\u003eBlitz, Entry:\u003c/b\u003e Add a Corrupted Goo to your Hand",
       "flavorText": "JuuuZZZt WaNt a LiTtlE hUgGG...",
@@ -5014,7 +5014,7 @@
     {
       "id": "148",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Zap",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand",
       "flavorText": "Can't get enough of that goo, ever",
@@ -5075,7 +5075,7 @@
     {
       "id": "149",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Cactuz",
       "description": "\u003cb\u003eReanimate, Entry:\u003c/b\u003e Add a Corrupted Goo to your Hand",
       "flavorText": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
@@ -5166,7 +5166,7 @@
     {
       "id": "150",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zeptic",
       "description": "\u003cb\u003eOverflow 3, Entry:\u003c/b\u003e Deal 2 damage to your Overlord",
       "flavorText": "After four steps he gave up on the straight line and started puking",
@@ -5266,7 +5266,7 @@
     {
       "id": "151",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Hazzard",
       "description": "\u003cb\u003eDestroy, Entry:\u003c/b\u003e Add a Corrupted Goo to your hand",
       "flavorText": "Almost reached the Goo-Anonymous meeting - almost...",
@@ -5365,7 +5365,7 @@
     {
       "id": "152",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Ozmoziz",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand",
       "flavorText": "He always loved to tell a goo story",
@@ -5430,7 +5430,7 @@
     {
       "id": "153",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Geyzer",
       "description": "\u003cb\u003eFreeze, Entry:\u003c/b\u003e Add a Corrupted Goo to your hand",
       "flavorText": "Not in the mood for dancing...",
@@ -5563,7 +5563,7 @@
     {
       "id": "155",
       "kind": "SPELL",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Tainted Goo",
       "description": "\u003cb\u003eOverflow 3,\u003c/b\u003e Disables 1 goo vial for next turn",
       "flavorText": "Smells kinda funny, but what a rush!",
@@ -5654,7 +5654,7 @@
     {
       "id": "156",
       "kind": "SPELL",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Corrupted Goo",
       "description": "\u003cb\u003eOverflow 6,\u003c/b\u003e Disables 2 goo vials for next turn",
       "flavorText": "Hooooweeee, better than all the moonshine!",
@@ -5745,7 +5745,7 @@
     {
       "id": "157",
       "kind": "CREATURE",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Zombie 1/1",
       "description": "",
       "flavorText": "",
@@ -5776,7 +5776,7 @@
     {
       "id": "158",
       "kind": "CREATURE",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Zombie 2/2",
       "description": "",
       "flavorText": "",
@@ -5807,7 +5807,7 @@
     {
       "id": "159",
       "kind": "CREATURE",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Zombie Feral",
       "description": "",
       "flavorText": "",
@@ -5838,7 +5838,7 @@
     {
       "id": "160",
       "kind": "CREATURE",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Zombie Heavy",
       "description": "",
       "flavorText": "",
@@ -5869,7 +5869,7 @@
     {
       "id": "68",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Whistle",
       "description": "Draw a card",
       "flavorText": "Get over here, STAT!",
@@ -5930,7 +5930,7 @@
     {
       "id": "133",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Znowy",
       "description": "",
       "flavorText": "eeeehhehehehe",
@@ -5961,7 +5961,7 @@
     {
       "id": "128",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Wazte",
       "description": "\u003cb\u003eHeavy, Entry:\u003c/b\u003e Lose 1 goo bottle",
       "flavorText": "Smells like goo spirit",
@@ -6022,7 +6022,7 @@
     {
       "id": "134",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Ztalagmite",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to your Overlord",
       "flavorText": "He remembers the north",
@@ -6084,7 +6084,7 @@
     {
       "id": "136",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Igloo",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "The cold never bothered him anyway",
@@ -6115,7 +6115,7 @@
     {
       "id": "139",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Froztbite",
       "description": "\u003cb\u003eDelayed 1:\u003c/b\u003e +6 Atk",
       "flavorText": "He's been trying to get out for a millennia - thank you global warming!!",
@@ -6176,7 +6176,7 @@
     {
       "id": "122",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Amber",
       "description": "\u003cb\u003eDelayed 1:\u003c/b\u003e +3 Atk",
       "flavorText": "Literally a walking museum",
@@ -6237,7 +6237,7 @@
     {
       "id": "123",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Bark",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Worse than its bite!",
@@ -6268,7 +6268,7 @@
     {
       "id": "126",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Germ",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Add a Tainted Goo to your Hand",
       "flavorText": "Ploop... oh.. there goes another arm...",
@@ -6329,7 +6329,7 @@
     {
       "id": "106",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Ember",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Makes every BBQ a hoot!",
@@ -6360,7 +6360,7 @@
     {
       "id": "107",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Firewall",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Having a pyromaniac on the battlefield does come in handy",
@@ -6391,7 +6391,7 @@
     {
       "id": "108",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "BurZt",
       "description": "Cannot attack the enemy Overlord",
       "flavorText": "Some just like it hot!",
@@ -6453,7 +6453,7 @@
     {
       "id": "113",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Extinguisher",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Freeze all enemy zombies",
       "flavorText": "Psssshhhhhhhhhhh",
@@ -6519,7 +6519,7 @@
     {
       "id": "114",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Lawnmower",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to all enemy zombies",
       "flavorText": "It can handle both plants and zombies... wait what?",
@@ -6585,7 +6585,7 @@
     {
       "id": "115",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Shovel",
       "description": "3 damage to an enemy OR restore 3 Def to an ally",
       "flavorText": "Friendly neighborhood shovel!",
@@ -6718,7 +6718,7 @@
     {
       "id": "99",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Shale",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Thatta boy!",
@@ -6749,7 +6749,7 @@
     {
       "id": "100",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Hardy",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "This will BE, the preetiest castle in all the land!",
@@ -6780,7 +6780,7 @@
     {
       "id": "91",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Breezee",
       "description": "",
       "flavorText": "Levitating - not as easy as you'd think...",
@@ -6811,7 +6811,7 @@
     {
       "id": "92",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Banshee",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Booked until next year in haunted houses everywhere",
@@ -6842,7 +6842,7 @@
     {
       "id": "93",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zhocker",
       "description": "\u003cb\u003eDelayed 1:\u003c/b\u003e +2 Atk",
       "flavorText": "Getting jiggy with it",
@@ -6903,7 +6903,7 @@
     {
       "id": "7",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Bolderr",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a zombie",
       "flavorText": "One more step, just one more step!",
@@ -6974,7 +6974,7 @@
     {
       "id": "79",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zlimey",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to your Overlord",
       "flavorText": "Likes to sprinkle toxic goo on EVERYTHING",
@@ -7036,7 +7036,7 @@
     {
       "id": "82",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Azzazzin",
       "description": "\u003cb\u003eBlitz, Destroy\u003c/b\u003e ",
       "flavorText": "From the Shadowzzzz",
@@ -7127,7 +7127,7 @@
     {
       "id": "74",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "PreZerver",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Restore 2 Def to a zombie",
       "flavorText": "Need a hand?",
@@ -7194,7 +7194,7 @@
     {
       "id": "54",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zephyr",
       "description": "Cost 1 less if you have an Air zombie in play",
       "flavorText": "Do you want to buy AIR for a penny??",
@@ -7256,7 +7256,7 @@
     {
       "id": "62",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "BlaZter",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to an enemy zombie",
       "flavorText": "Dodgeball anyone?",
@@ -7318,7 +7318,7 @@
     {
       "id": "65",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Zlinger",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to your Overlord",
       "flavorText": "Ohhh snap!! He got'cha good",
@@ -7380,7 +7380,7 @@
     {
       "id": "33",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Mind Flayer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Take control of a random enemy zombie",
       "flavorText": "Resistance is futile --- and we have Zushi",
@@ -7442,7 +7442,7 @@
     {
       "id": "39",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Molotov",
       "description": "2 damage to a zombie, and adjacent zombies",
       "flavorText": "Not suitable for n00bs and lightweights",
@@ -7508,7 +7508,7 @@
     {
       "id": "40",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Bat",
       "description": "2 damage to a zombie and Distract it",
       "flavorText": "Simple but soooo effective ",
@@ -7575,7 +7575,7 @@
     {
       "id": "41",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Super Serum",
       "description": "Give an ally Zombie +3/+3; \u003cb\u003eEnd:\u003c/b\u003e -3 DEF",
       "flavorText": "Captain Zamberica - here we goo!!",
@@ -7641,7 +7641,7 @@
     {
       "id": "51",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Buffer",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Give an ally zombie +1 Atk",
       "flavorText": "Be like the water - only with air",
@@ -7703,7 +7703,7 @@
     {
       "id": "52",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Whiffer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Return an ally zombie to your Hand",
       "flavorText": "Get back here",
@@ -7765,7 +7765,7 @@
     {
       "id": "53",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Dragger",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Summon a zombie from your Hand that costs 2 or less",
       "flavorText": "There's more where this came from!",
@@ -7827,7 +7827,7 @@
     {
       "id": "55",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zyclone",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Return all zombies that cost 3 or less to their owners' Hands",
       "flavorText": "A little anti-social... with a dash of anger issues",
@@ -7890,7 +7890,7 @@
     {
       "id": "56",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Pebble",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a random enemy zombie",
       "flavorText": "Always forgets his head... everywhere...",
@@ -7952,7 +7952,7 @@
     {
       "id": "57",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Crumbz",
       "description": "\u003cb\u003eHeavy, Death:\u003c/b\u003e Draw a card",
       "flavorText": "Time is our greatest adversary",
@@ -8013,7 +8013,7 @@
     {
       "id": "58",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Protector",
       "description": "\u003cb\u003eHeavy, Death:\u003c/b\u003e Give a random ally zombie Heavy",
       "flavorText": "Always use protection",
@@ -8074,7 +8074,7 @@
     {
       "id": "60",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Defender",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Give all ally Earth zombies that cost 2 or less Heavy",
       "flavorText": "Forecast was clear skies... no one said fireball shower",
@@ -8136,7 +8136,7 @@
     {
       "id": "63",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Firecaller",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw a card",
       "flavorText": "Is it a vision of the future or another dimension? Who knows?!",
@@ -8197,7 +8197,7 @@
     {
       "id": "64",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "RabieZ",
       "description": "\u003cb\u003eFeral, Death:\u003c/b\u003e Give a random ally zombie Feral",
       "flavorText": "Red eyes - check! Foam in mouth - check! Shaking - check! Here, take an advil.",
@@ -8259,7 +8259,7 @@
     {
       "id": "66",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Enrager",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Don't get him angry, you won't like him when he's angry.",
@@ -8290,7 +8290,7 @@
     {
       "id": "69",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Supply Drop",
       "description": "Each player puts a random zombie from their deck into play",
       "flavorText": "\"Geronimo!\"",
@@ -8353,7 +8353,7 @@
     {
       "id": "71",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Junk Spear",
       "description": "Damage enemy Overlord equal to the number of Items you've played",
       "flavorText": "Where have I seen this contraption rising 4 times before?",
@@ -8415,7 +8415,7 @@
     {
       "id": "72",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Zed Kit",
       "description": "Restore 4 to 2 random allies ",
       "flavorText": "Mending broken limbs since 1888",
@@ -8482,7 +8482,7 @@
     {
       "id": "73",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Grower",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Restore 2 to your Overlord",
       "flavorText": "That's the fifth arm he's lost today.",
@@ -8544,7 +8544,7 @@
     {
       "id": "76",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "EverlaZting",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Shuffle this card into your deck",
       "flavorText": "\"Guess who's back?\"",
@@ -8606,7 +8606,7 @@
     {
       "id": "77",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Healz",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Overlord +3 Def; Overlord +5 Def if 10 Def or less",
       "flavorText": "His buddy Jack would be proud",
@@ -8668,7 +8668,7 @@
     {
       "id": "78",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Rainz",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Restore 10 Def randomly split among allies",
       "flavorText": "Make it R-A-A-I-N-Z!!!",
@@ -8731,7 +8731,7 @@
     {
       "id": "80",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zcavenger",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Draw an Item card from your deck",
       "flavorText": "A beton nya mombay m'bwa!",
@@ -8792,7 +8792,7 @@
     {
       "id": "81",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Spikez",
       "description": "+2 Atk on the enemy's turn",
       "flavorText": "Come closer... it's never too close",
@@ -8854,7 +8854,7 @@
     {
       "id": "83",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "RelentleZZ",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 4 damage to this zombie",
       "flavorText": "The best survival tactic: \"never give up\"",
@@ -8916,7 +8916,7 @@
     {
       "id": "84",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Polluter",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Gain 1 goo vial",
       "flavorText": "Spreading goo to a faucet near you",
@@ -8978,7 +8978,7 @@
     {
       "id": "86",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "HoZer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Gets +1 Atk if you have a Water zombie in play",
       "flavorText": "The undefeated spitting world champion, can hit a squirrel from 100ft",
@@ -9039,7 +9039,7 @@
     {
       "id": "87",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "FroZen",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Draw a card",
       "flavorText": "When grabbed - sing: \"let it go, let it go..\"",
@@ -9100,7 +9100,7 @@
     {
       "id": "88",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Slider",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Distract an enemy zombie",
       "flavorText": "Loves skating so so much!",
@@ -9162,7 +9162,7 @@
     {
       "id": "89",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Zub-Zero",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 3 damage to a random enemy zombie, and Freeze it",
       "flavorText": "Hates pointing things out...",
@@ -9225,7 +9225,7 @@
     {
       "id": "95",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zquall",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Put 2 Air zombies that cost 2 goo from your Hand to play ",
       "flavorText": "Not even close to Texas anymore",
@@ -9287,7 +9287,7 @@
     {
       "id": "102",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Groundy",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e If this is your only zombie in play, it gets Heavy",
       "flavorText": "\"Saturday... again?! \r\nThis cycle is getting on my nerves\"",
@@ -9349,7 +9349,7 @@
     {
       "id": "105",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Sparky",
       "description": "\u003cb\u003eFeral, End:\u003c/b\u003e -1 Def",
       "flavorText": "Hermes has NOTHING on him",
@@ -9411,7 +9411,7 @@
     {
       "id": "109",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Rager",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e If this is your only zombie in play, get Feral",
       "flavorText": "Always dreamed of being Superman...",
@@ -9473,7 +9473,7 @@
     {
       "id": "110",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Alpha",
       "description": "\u003cb\u003eFeral, Entry:\u003c/b\u003e Give 2 random ally Fire zombies Blitz",
       "flavorText": "Let's huddle up and do a howl",
@@ -9535,7 +9535,7 @@
     {
       "id": "111",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Volcan",
       "description": "\u003cb\u003eCannot Attack. End:\u003c/b\u003e 5 damage to a random enemy",
       "flavorText": "Loves to make it rain... RAIN of FIRE!",
@@ -9628,7 +9628,7 @@
     {
       "id": "112",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Torch",
       "description": "Destroy a random zombie that costs 3 goo or less",
       "flavorText": "Bringing out the pyro-enthusiast in all of us",
@@ -9695,7 +9695,7 @@
     {
       "id": "116",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Shopping Cart",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e All ally zombies get Swing 1",
       "flavorText": "Silly fun times... until someone loses an eye or a head!",
@@ -9761,7 +9761,7 @@
     {
       "id": "118",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Leash",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Gain control of a random enemy zombie",
       "flavorText": "No more BRAINZZZZZ",
@@ -9835,7 +9835,7 @@
     {
       "id": "119",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Bulldozer",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Destroy all zombies in play",
       "flavorText": "When you REALLY want to level (with) someone",
@@ -9902,7 +9902,7 @@
     {
       "id": "120",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "WiZp",
       "description": "Reanimate",
       "flavorText": "Zeeee... peski littl-- oh its you?!",
@@ -9967,7 +9967,7 @@
     {
       "id": "121",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Zplitter",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Place another copy of this zombie in play",
       "flavorText": "Out, OUT...GET OUT!!!",
@@ -10029,7 +10029,7 @@
     {
       "id": "124",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Zeeder",
       "description": "\u003cb\u003eEnd:\u003c/b\u003e Summon a Bark zombie minion",
       "flavorText": "You reap what you sow",
@@ -10091,7 +10091,7 @@
     {
       "id": "125",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Blight",
       "description": "\u003cb\u003eDelayed 2:\u003c/b\u003e Place two Blightlings in play then Destroy this",
       "flavorText": "If you plant it they will come... with a bang",
@@ -10153,7 +10153,7 @@
     {
       "id": "129",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zlopper",
       "description": "+1 Atk to 2 ally Toxic zombies",
       "flavorText": "What a dragggg...",
@@ -10215,7 +10215,7 @@
     {
       "id": "130",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Boomer",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Adjacent zombies get +2 Atk",
       "flavorText": "Wants to share his LOVE with everyone - free hugs?!?",
@@ -10276,7 +10276,7 @@
     {
       "id": "131",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Zteroid",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e All ally zombies in play get +2 Atk until end of turn",
       "flavorText": "Needs to flee from his fans, as they want his delicious insides",
@@ -10338,7 +10338,7 @@
     {
       "id": "135",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Vortex",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e Replace ally water zombies in play with stronger ones",
       "flavorText": "ERR, never really be satisfied...",
@@ -10400,7 +10400,7 @@
     {
       "id": "137",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Zplash",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 1 damage to a random enemy for each Water zombie in Hand",
       "flavorText": "Hey gang, watch how I mow these chumps!",
@@ -10463,7 +10463,7 @@
     {
       "id": "138",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Izicle",
       "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to an enemy if a Water zombie in play",
       "flavorText": "He just looooves his icy skewer",
@@ -10526,7 +10526,7 @@
     {
       "id": "140",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Zpring",
       "description": "As long as this is in play, you have 1 extra goo",
       "flavorText": "Can never have enough goo... here take a sip",
@@ -10587,7 +10587,7 @@
     {
       "id": "154",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Boomstick",
       "description": "2 damage to 3 random zombies in play",
       "flavorText": "Thank you for your service!",
@@ -10654,7 +10654,7 @@
     {
       "id": "259",
       "kind": "CREATURE",
-      "set": "OTHERS",
+      "faction": "OTHERS",
       "name": "Blightling",
       "description": "",
       "flavorText": "If you plant it they will come... with a bang",
@@ -10685,7 +10685,7 @@
     {
       "id": "199",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "FlowZ",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e Draw a card",
       "flavorText": "Its death shall not be in vain",
@@ -10746,7 +10746,7 @@
     {
       "id": "163",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Scab",
       "description": "\u003cb\u003eFeral\u003c/b\u003e ",
       "flavorText": "Won't stop picking away at the enemy",
@@ -10777,7 +10777,7 @@
     {
       "id": "174",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Kabomb",
       "description": "\u003cb\u003eDeath:\u003c/b\u003e 5 damage to a random enemy",
       "flavorText": "Thinks it's a mad genius -- it's half right!",
@@ -10840,7 +10840,7 @@
     {
       "id": "239",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zky",
       "description": "",
       "flavorText": "Up, up, and away!",
@@ -10871,7 +10871,7 @@
     {
       "id": "240",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zonic",
       "description": "\u003cb\u003eGuard\u003c/b\u003e ",
       "flavorText": "Yells so loud, nobody wants to come near it",
@@ -10932,7 +10932,7 @@
     {
       "id": "241",
       "kind": "CREATURE",
-      "set": "AIR",
+      "faction": "AIR",
       "name": "Zwoop",
       "description": "",
       "flavorText": "Likes to kill-steal",
@@ -10963,7 +10963,7 @@
     {
       "id": "242",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "DuZt",
       "description": "",
       "flavorText": "\"To dust you shall return!\"",
@@ -10994,7 +10994,7 @@
     {
       "id": "243",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Rubble",
       "description": "",
       "flavorText": "Finds pieces of itself all over the battlefield",
@@ -11025,7 +11025,7 @@
     {
       "id": "246",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Flare",
       "description": "\u003cb\u003eBlitz\u003c/b\u003e ",
       "flavorText": "Ready, get set... Go!",
@@ -11086,7 +11086,7 @@
     {
       "id": "250",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Huzk",
       "description": "\u003cb\u003eReanimate\u003c/b\u003e ",
       "flavorText": "An empty shell of what it was",
@@ -11147,7 +11147,7 @@
     {
       "id": "251",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Wood",
       "description": "",
       "flavorText": "Make like a tree -- and leave!",
@@ -11178,7 +11178,7 @@
     {
       "id": "252",
       "kind": "CREATURE",
-      "set": "LIFE",
+      "faction": "LIFE",
       "name": "Trunk",
       "description": "",
       "flavorText": "If a tree falls in a forest and no one is around to hear it, does it make a sound?",
@@ -11209,7 +11209,7 @@
     {
       "id": "253",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Gloop",
       "description": "",
       "flavorText": "Blub...blub...blub",
@@ -11240,7 +11240,7 @@
     {
       "id": "254",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Bane",
       "description": "\u003cb\u003eFeral, Entry:\u003c/b\u003e 1 Damage to your Overlord",
       "flavorText": "Occasionally can't tell friend from foe",
@@ -11302,7 +11302,7 @@
     {
       "id": "255",
       "kind": "CREATURE",
-      "set": "TOXIC",
+      "faction": "TOXIC",
       "name": "Ztink",
       "description": "\u003cb\u003eDestroy\u003c/b\u003e ",
       "flavorText": "Can't figure out why it's got no friends",
@@ -11363,7 +11363,7 @@
     {
       "id": "256",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Brook",
       "description": "",
       "flavorText": "All tidal waves must start from a single drop",
@@ -11394,7 +11394,7 @@
     {
       "id": "244",
       "kind": "CREATURE",
-      "set": "EARTH",
+      "faction": "EARTH",
       "name": "Zolid",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "What happens when an unstoppable force meets an immovable object?",
@@ -11425,7 +11425,7 @@
     {
       "id": "264",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Torchus",
       "description": "\u003cb\u003eHeavy\u003c/b\u003e ",
       "flavorText": "Great when paired with a Torchee",
@@ -11456,7 +11456,7 @@
     {
       "id": "257",
       "kind": "CREATURE",
-      "set": "WATER",
+      "faction": "WATER",
       "name": "Zteam",
       "description": "Freeze",
       "flavorText": "Its name is a paradox",
@@ -11487,7 +11487,7 @@
     {
       "id": "248",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Bazooka",
       "description": "5 damage to a enemy",
       "flavorText": "When you need a little extra firepower",
@@ -11552,7 +11552,7 @@
     {
       "id": "249",
       "kind": "SPELL",
-      "set": "ITEM",
+      "faction": "ITEM",
       "name": "Harpoon",
       "description": "3 damage to a enemy",
       "flavorText": "Great against legendary sea creatures",
@@ -11617,7 +11617,7 @@
     {
       "id": "247",
       "kind": "CREATURE",
-      "set": "FIRE",
+      "faction": "FIRE",
       "name": "Hot",
       "description": "",
       "flavorText": "Just as it says on the tin",
@@ -11670,7 +11670,7 @@
           "value": 2,
           "cooldown": 3,
           "initialCooldown": 3,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "0",
           "unlocked": false,
@@ -11693,7 +11693,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "1",
           "unlocked": false,
@@ -11716,7 +11716,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "2",
           "unlocked": false,
@@ -11738,7 +11738,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "3",
           "unlocked": false,
@@ -11760,7 +11760,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 2,
           "id": "4",
           "unlocked": false,
@@ -11799,7 +11799,7 @@
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "5",
           "unlocked": false,
@@ -11822,7 +11822,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "6",
           "unlocked": false,
@@ -11848,7 +11848,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "7",
           "unlocked": false,
@@ -11871,7 +11871,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 2,
           "id": "8",
           "unlocked": false,
@@ -11893,7 +11893,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "9",
           "unlocked": false,
@@ -11930,7 +11930,7 @@
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "10",
           "unlocked": false,
@@ -11953,7 +11953,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "11",
           "unlocked": false,
@@ -11978,7 +11978,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "12",
           "unlocked": false,
@@ -12000,7 +12000,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "13",
           "unlocked": false,
@@ -12021,7 +12021,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 2,
           "id": "14",
           "unlocked": false,
@@ -12058,7 +12058,7 @@
           "value": 0,
           "cooldown": 6,
           "initialCooldown": 5,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "15",
           "unlocked": false,
@@ -12079,7 +12079,7 @@
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "16",
           "unlocked": false,
@@ -12101,7 +12101,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "17",
           "unlocked": false,
@@ -12122,7 +12122,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "18",
           "unlocked": false,
@@ -12143,7 +12143,7 @@
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "19",
           "unlocked": false,
@@ -12180,7 +12180,7 @@
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "20",
           "unlocked": false,
@@ -12203,7 +12203,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 1,
+          "damage": 1,
           "count": 0,
           "id": "21",
           "unlocked": false,
@@ -12226,7 +12226,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 5,
           "id": "22",
           "unlocked": false,
@@ -12249,7 +12249,7 @@
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "23",
           "unlocked": false,
@@ -12272,7 +12272,7 @@
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 2,
           "id": "24",
           "unlocked": false,
@@ -12308,7 +12308,7 @@
           "value": 2,
           "cooldown": 3,
           "initialCooldown": 3,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "25",
           "unlocked": false,
@@ -12330,7 +12330,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "26",
           "unlocked": false,
@@ -12353,7 +12353,7 @@
           "value": 3,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 1,
           "id": "27",
           "unlocked": false,
@@ -12377,7 +12377,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 0,
           "id": "28",
           "unlocked": false,
@@ -12400,7 +12400,7 @@
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
-          "attack": 0,
+          "damage": 0,
           "count": 2,
           "id": "29",
           "unlocked": false,
@@ -14167,6 +14167,6 @@
       "type": "MIXED_BLITZ_AI"
     }
   ],
-  "version": "v3",
+  "version": "v1",
   "oracle": null
 }

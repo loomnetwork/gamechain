@@ -52,7 +52,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		card0 := &zb.Card{
 			Name:    "WiZp",
 			Defense: 3,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
@@ -84,7 +84,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 				Name: "target1",
 			},
 			Instance: &zb.CardInstanceSpecificData{
-				Attack:  1,
+				Damage:  1,
 				Defense: 1,
 			},
 			Owner:      player2,
@@ -96,7 +96,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 				Name: "target2",
 			},
 			Instance: &zb.CardInstanceSpecificData{
-				Attack:  1,
+				Damage:  1,
 				Defense: 5,
 			},
 			Owner:      player2,
@@ -108,7 +108,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 				Name: "target3",
 			},
 			Instance: &zb.CardInstanceSpecificData{
-				Attack:  3,
+				Damage:  3,
 				Defense: 3,
 			},
 			Owner:      player2,
@@ -131,12 +131,12 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, 2, len(gp.State.PlayerStates[1].CardsInPlay), "player2 cards in play should be 2")
-		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[1].Instance.Attack)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[1].Instance.Damage)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[1].Instance.Defense)
 	})
 
@@ -152,7 +152,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		card0 := &zb.Card{
 			Name:    "WiZp",
 			Defense: 3,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
@@ -184,7 +184,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 				Name: "target1",
 			},
 			Instance: &zb.CardInstanceSpecificData{
-				Attack:  1,
+				Damage:  1,
 				Defense: 1,
 			},
 			Owner:      player2,
@@ -196,7 +196,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 				Name: "target2",
 			},
 			Instance: &zb.CardInstanceSpecificData{
-				Attack:  1,
+				Damage:  1,
 				Defense: 5,
 			},
 			Owner:      player2,
@@ -219,10 +219,10 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, 1, len(gp.State.PlayerStates[1].CardsInPlay), "player2 cards in play should be 1")
-		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
 	})
 }

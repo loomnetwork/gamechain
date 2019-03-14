@@ -26,7 +26,7 @@ func NewDevourZombieAndCombineStats(card *CardInstance, cardAbility *zb.CardAbil
 func (c *devourZombieAndCombineStats) Apply(gameplay *Gameplay) error {
 	for _, target := range c.targets {
 		c.Instance.Defense += target.Instance.Defense
-		c.Instance.Attack += target.Instance.Attack
+		c.Instance.Damage += target.Instance.Damage
 		if err := target.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD); err != nil {
 			return err
 		}

@@ -5,7 +5,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -52,7 +52,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		card0 := &zb.Card{
 			Name:    "Vortex",
 			Defense: 3,
-			Attack:  2,
+			Damage:  2,
 			GooCost: 1,
 			Faction: zb.Faction_Water,
 			Abilities: []*zb.CardAbility{
@@ -85,7 +85,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  4,
+				Damage:  4,
 				GooCost: 3,
 				Faction: zb.Faction_Water,
 			},
@@ -96,7 +96,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  4,
+				Damage:  4,
 				GooCost: 3,
 				Faction: zb.Faction_Fire,
 			},

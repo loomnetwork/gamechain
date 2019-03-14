@@ -5,7 +5,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -51,7 +51,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 4,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
@@ -80,7 +80,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 		instance2 := &zb.CardInstance{
@@ -88,7 +88,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 
@@ -114,7 +114,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		assert.Equal(t, int(2), len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInGraveyard))
 		assert.Equal(t, int32(6), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 
 		// Try to use the ability again but this time it should not work
 		err = gp.AddAction(&zb.PlayerAction{
@@ -134,7 +134,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		assert.Equal(t, int(2), len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInGraveyard))
 		assert.Equal(t, int32(6), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 	})
 
 	t.Run("DevourZombieAndCombineStat is active when enter the field, devouring all ally zombies", func(t *testing.T) {
@@ -148,7 +148,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 4,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
@@ -175,7 +175,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 		instance2 := &zb.CardInstance{
@@ -183,7 +183,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 
@@ -212,7 +212,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		assert.Equal(t, int(1), len(gp.State.PlayerStates[0].CardsInPlay))
 		assert.Equal(t, int(2), len(gp.State.PlayerStates[0].CardsInGraveyard))
 		assert.Equal(t, int32(8), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 
 	})
 }
