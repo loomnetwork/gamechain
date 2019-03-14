@@ -61,8 +61,8 @@ func (c *CustomGameMode) serializeSimpleCardInstance(writer io.Writer, card *Sim
 	serializeString(writer, card.mouldName)
 	binary.Write(writer, binary.BigEndian, int32(card.defense))
 	binary.Write(writer, binary.BigEndian, bool(card.defenseInherited))
-	binary.Write(writer, binary.BigEndian, int32(card.attack))
-	binary.Write(writer, binary.BigEndian, bool(card.attackInherited))
+	binary.Write(writer, binary.BigEndian, int32(card.damage))
+	binary.Write(writer, binary.BigEndian, bool(card.damageInherited))
 	binary.Write(writer, binary.BigEndian, int32(card.gooCost))
 	binary.Write(writer, binary.BigEndian, bool(card.gooCostInherited))
 
@@ -76,8 +76,8 @@ func (c *CustomGameMode) deserializeSimpleCardInstance(reader io.Reader) (simple
 	simpleCard.mouldName, err = deserializeString(reader)
 	binary.Read(reader, binary.BigEndian, &simpleCard.defense)
 	binary.Read(reader, binary.BigEndian, &simpleCard.defenseInherited)
-	binary.Read(reader, binary.BigEndian, &simpleCard.attack)
-	binary.Read(reader, binary.BigEndian, &simpleCard.attackInherited)
+	binary.Read(reader, binary.BigEndian, &simpleCard.damage)
+	binary.Read(reader, binary.BigEndian, &simpleCard.damageInherited)
 	binary.Read(reader, binary.BigEndian, &simpleCard.gooCost)
 	binary.Read(reader, binary.BigEndian, &simpleCard.gooCostInherited)
 
@@ -120,8 +120,8 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		newCard.Prototype.Defense = simpleCard.defense
 	}
 
-	if !simpleCard.attackInherited {
-		newCard.Prototype.Attack = simpleCard.attack
+	if !simpleCard.damageInherited {
+		newCard.Prototype.Damage = simpleCard.damage
 	}
 
 	if !simpleCard.gooCostInherited {
@@ -338,8 +338,8 @@ type SimpleCardInstance struct {
 	mouldName        string
 	defense          int32
 	defenseInherited bool
-	attack           int32
-	attackInherited  bool
+	damage           int32
+	damageInherited  bool
 	gooCost          int32
 	gooCostInherited bool
 }
@@ -348,8 +348,8 @@ func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardIns
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
 		mouldName:        card.Prototype.Name,
-		attack:           card.Prototype.Attack,
-		attackInherited:  true,
+		damage:           card.Prototype.Damage,
+		damageInherited:  true,
 		defense:          card.Prototype.Defense,
 		defenseInherited: true,
 		gooCost:          card.Prototype.GooCost,

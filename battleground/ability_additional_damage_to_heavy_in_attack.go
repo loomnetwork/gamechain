@@ -4,7 +4,7 @@ import "github.com/loomnetwork/gamechain/types/zb"
 
 // additionalDamgeToHeavyInAttack ability
 // description:
-//     If the card is heavy, add addtional attack to defense
+//     If the card is heavy, add addtional damage to defense
 type additionalDamgeToHeavyInAttack struct {
 	*CardInstance
 	cardAbility *zb.CardAbilityAdditionalDamageToHeavyInAttack
@@ -24,7 +24,7 @@ func NewAdditionalDamgeToHeavyInAttack(card *CardInstance, cardAbility *zb.CardA
 func (c *additionalDamgeToHeavyInAttack) Apply(gameplay *Gameplay) error {
 	additionalDamageToHeavyInAttack := c.cardAbility
 	if c.target.Instance.Type == zb.CreatureType_Heavy {
-		c.target.Instance.Defense -= additionalDamageToHeavyInAttack.AddedAttack
+		c.target.Instance.Defense -= additionalDamageToHeavyInAttack.AddedDamage
 	}
 	return nil
 }

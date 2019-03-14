@@ -52,8 +52,8 @@ func (c *CardInstance) OnAbilityUsed(targets []*CardInstance) error {
 }
 
 func (c *CardInstance) Attack(target *CardInstance) error {
-	c.Instance.Defense = c.Instance.Defense - target.Instance.Attack
-	target.Instance.Defense = target.Instance.Defense - c.Instance.Attack
+	c.Instance.Defense = c.Instance.Defense - target.Instance.Damage
+	target.Instance.Defense = target.Instance.Defense - c.Instance.Damage
 
 	if err := c.OnAttack(target); err != nil {
 		return err
@@ -263,7 +263,7 @@ func moveCard(c *CardInstance, from, to []*zb.CardInstance, zone zb.ZoneType) ([
 }
 
 func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.PlayerState) error {
-	target.Defense -= c.Instance.Attack
+	target.Defense -= c.Instance.Damage
 
 	if target.Defense <= 0 {
 		c.Gameplay.State.Winner = attacker.Id

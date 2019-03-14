@@ -52,7 +52,7 @@ func TestAbilityReanimate(t *testing.T) {
 		card0 := &zb.Card{
 			Name:    "WiZp",
 			Defense: 3,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ReanimateUnit,
@@ -74,7 +74,7 @@ func TestAbilityReanimate(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_Reanimate{
 						Reanimate: &zb.CardAbilityReanimate{
-							DefaultAttack:  card0.Attack,
+							DefaultDamage:  card0.Damage,
 							DefaultDefense: card0.Defense,
 						},
 					},
@@ -98,7 +98,7 @@ func TestAbilityReanimate(t *testing.T) {
 			},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  4,
+				Damage:  4,
 			},
 			Owner: player2,
 		}
@@ -118,11 +118,11 @@ func TestAbilityReanimate(t *testing.T) {
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, 1, len(gp.State.PlayerStates[0].CardsInPlay[0].AbilitiesInstances), "renaimate should not be in new instance")
 		assert.NotNil(t, gp.State.PlayerStates[0].CardsInPlay[0].AbilitiesInstances[0].GetReplaceUnitsWithTypeOnStrongerOnes, "ReplaceUnitsWithTypeOnStrongerOne should be on the new instance")
-		assert.Equal(t, int32(2), gp.actionOutcomes[0].GetReanimate().NewCardInstance.Instance.Attack)
+		assert.Equal(t, int32(2), gp.actionOutcomes[0].GetReanimate().NewCardInstance.Instance.Damage)
 		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetReanimate().NewCardInstance.Instance.Defense)
 	})
 }

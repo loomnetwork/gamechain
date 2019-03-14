@@ -56,13 +56,13 @@ func TestAbilityRage(t *testing.T) {
 			},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 
 		card1 := &zb.Card{
 			Defense: 5,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_Rage,
@@ -81,7 +81,7 @@ func TestAbilityRage(t *testing.T) {
 					Trigger:  card1.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_Rage{
 						Rage: &zb.CardAbilityRage{
-							AddedAttack: card1.Abilities[0].Value,
+							AddedDamage: card1.Abilities[0].Value,
 						},
 					},
 				},
@@ -104,10 +104,10 @@ func TestAbilityRage(t *testing.T) {
 			},
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, int32(4), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(4), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(4), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewAttack)
+		assert.Equal(t, int32(4), gp.actionOutcomes[0].GetRage().NewDamage)
 		assert.Equal(t, int32(3), gp.actionOutcomes[0].GetRage().InstanceId.Id)
 	})
 }

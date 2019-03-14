@@ -51,7 +51,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 5,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_AdditionalDamageToHeavyInAttack,
@@ -69,7 +69,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
 						AdditionalDamageToHeavyInAttack: &zb.CardAbilityAdditionalDamageToHeavyInAttack{
-							AddedAttack: 2,
+							AddedDamage: 2,
 						},
 					},
 				},
@@ -80,7 +80,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  1,
+				Damage:  1,
 				Type:    zb.CreatureType_Heavy,
 			},
 		}
@@ -115,7 +115,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 5,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_AdditionalDamageToHeavyInAttack,
@@ -133,7 +133,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 					Trigger:  card0.Abilities[0].Trigger,
 					AbilityType: &zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
 						AdditionalDamageToHeavyInAttack: &zb.CardAbilityAdditionalDamageToHeavyInAttack{
-							AddedAttack: 2,
+							AddedDamage: 2,
 						},
 					},
 				},
@@ -144,7 +144,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  1,
+				Damage:  1,
 				Type:    zb.CreatureType_Feral,
 			},
 		}
