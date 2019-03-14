@@ -732,7 +732,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "WATER",
+          "set": "WATER",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -795,7 +795,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -856,7 +856,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -894,7 +894,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -961,7 +961,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "MASSIVE_LIGHTNING",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1027,7 +1027,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "AIR",
+          "set": "AIR",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1119,7 +1119,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1184,7 +1184,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1246,7 +1246,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "TOXIC",
+          "set": "TOXIC",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1340,7 +1340,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "TARGET_FIRE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1411,7 +1411,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "MASSIVE_FIRE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1473,7 +1473,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1536,7 +1536,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1603,7 +1603,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "TARGET_ADJUSTMENTS_BOMB",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1669,7 +1669,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1736,7 +1736,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1810,7 +1810,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "EARTH",
+          "set": "EARTH",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1873,7 +1873,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "TARGET_LIFE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -1944,7 +1944,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2006,7 +2006,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2068,7 +2068,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "LIFE",
+          "set": "LIFE",
           "effect_type": "TARGET_LIFE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2130,7 +2130,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "LIFE",
+          "set": "LIFE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2192,7 +2192,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2223,7 +2223,7 @@
             "NONE"
           ],
           "stat_type": "HEALTH",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2319,7 +2319,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "MASSIVE_TOXIC_ALL",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2381,7 +2381,7 @@
             "NONE"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "FIRE",
+          "set": "FIRE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2444,7 +2444,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "TARGET_WATER",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2514,7 +2514,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "STUN_OR_DAMAGE_FREEZES",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2581,7 +2581,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "MASSIVE_WATER_WAVE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2678,7 +2678,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2772,7 +2772,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "HEAVY",
@@ -2837,7 +2837,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2899,7 +2899,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "FIRE",
+          "set": "FIRE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -2960,7 +2960,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3027,7 +3027,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "LIFE",
+          "set": "LIFE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3088,7 +3088,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3154,7 +3154,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3217,7 +3217,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3287,7 +3287,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3349,7 +3349,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3418,7 +3418,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3479,7 +3479,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3571,7 +3571,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3633,7 +3633,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3695,7 +3695,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3764,7 +3764,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "LIFE",
+          "set": "LIFE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3825,7 +3825,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3891,7 +3891,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3956,7 +3956,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -3986,7 +3986,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4048,7 +4048,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4110,7 +4110,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "AIR",
+          "set": "AIR",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4233,7 +4233,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4294,7 +4294,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "EARTH",
+          "set": "EARTH",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4356,7 +4356,7 @@
             "OPPONENT_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4421,7 +4421,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4482,7 +4482,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4545,7 +4545,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4606,7 +4606,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4668,7 +4668,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4698,7 +4698,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4759,7 +4759,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4820,7 +4820,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4881,7 +4881,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4946,7 +4946,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -4980,7 +4980,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5045,7 +5045,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5106,7 +5106,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5136,7 +5136,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5197,7 +5197,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5232,7 +5232,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5297,7 +5297,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5331,7 +5331,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5396,7 +5396,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5461,7 +5461,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5495,7 +5495,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5529,7 +5529,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5594,7 +5594,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5624,7 +5624,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5685,7 +5685,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5715,7 +5715,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5900,7 +5900,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -5992,7 +5992,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6054,7 +6054,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6146,7 +6146,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6207,7 +6207,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6299,7 +6299,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6423,7 +6423,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6485,7 +6485,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6551,7 +6551,7 @@
             "OPPONENT_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6618,7 +6618,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6648,7 +6648,7 @@
                   "OPPONENT_CARD"
                 ],
                 "stat_type": "UNDEFINED",
-                "set_type": "NONE",
+                "set": "NONE",
                 "effect_type": "NONE",
                 "attack_restriction": "ANY",
                 "card_type": "Undefined",
@@ -6683,7 +6683,7 @@
                   "PLAYER_CARD"
                 ],
                 "stat_type": "UNDEFINED",
-                "set_type": "NONE",
+                "set": "NONE",
                 "effect_type": "NONE",
                 "attack_restriction": "ANY",
                 "card_type": "Undefined",
@@ -6873,7 +6873,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -6936,7 +6936,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "TARGET_ROCK",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7006,7 +7006,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7067,7 +7067,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7097,7 +7097,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7160,7 +7160,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7226,7 +7226,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "AIR",
+          "set": "AIR",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7288,7 +7288,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7350,7 +7350,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7412,7 +7412,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7474,7 +7474,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7541,7 +7541,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7607,7 +7607,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7673,7 +7673,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7735,7 +7735,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7797,7 +7797,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7860,7 +7860,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7922,7 +7922,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -7983,7 +7983,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8044,7 +8044,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8106,7 +8106,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "EARTH",
+          "set": "EARTH",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8167,7 +8167,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8229,7 +8229,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8323,7 +8323,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8385,7 +8385,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8448,7 +8448,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8514,7 +8514,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8576,7 +8576,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8638,7 +8638,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8701,7 +8701,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8762,7 +8762,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "ITEM",
+          "set": "ITEM",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8824,7 +8824,7 @@
             "OPPONENT"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8886,7 +8886,7 @@
             "ITSELF"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -8948,7 +8948,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9009,7 +9009,7 @@
           "target_type": [
           ],
           "stat_type": "DAMAGE",
-          "set_type": "WATER",
+          "set": "WATER",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9070,7 +9070,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9132,7 +9132,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9195,7 +9195,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9257,7 +9257,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "AIR",
+          "set": "AIR",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9319,7 +9319,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9381,7 +9381,7 @@
             "ITSELF"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9443,7 +9443,7 @@
             "NONE"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9505,7 +9505,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "FIRE",
+          "set": "FIRE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9568,7 +9568,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9598,7 +9598,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9661,7 +9661,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9727,7 +9727,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9793,7 +9793,7 @@
             "OPPONENT_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9868,7 +9868,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9933,7 +9933,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -9999,7 +9999,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10061,7 +10061,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10123,7 +10123,7 @@
             "ITSELF"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10185,7 +10185,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "TOXIC",
+          "set": "TOXIC",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10246,7 +10246,7 @@
           "target_type": [
           ],
           "stat_type": "DAMAGE",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10308,7 +10308,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "DAMAGE",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10370,7 +10370,7 @@
             "PLAYER_CARD"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "WATER",
+          "set": "WATER",
           "effect_type": "MASSIVE_WATER_WAVE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10433,7 +10433,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "WATER",
+          "set": "WATER",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10496,7 +10496,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "WATER",
+          "set": "WATER",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10557,7 +10557,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10620,7 +10620,7 @@
             "PLAYER_ALL_CARDS"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10716,7 +10716,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10810,7 +10810,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -10902,7 +10902,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11056,7 +11056,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11117,7 +11117,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11272,7 +11272,7 @@
             "PLAYER"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11333,7 +11333,7 @@
           "target_type": [
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11522,7 +11522,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",
@@ -11587,7 +11587,7 @@
             "OPPONENT"
           ],
           "stat_type": "UNDEFINED",
-          "set_type": "NONE",
+          "set": "NONE",
           "effect_type": "NONE",
           "attack_restriction": "ANY",
           "card_type": "Undefined",

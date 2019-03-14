@@ -20,7 +20,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "toxic",
+            "set": "toxic",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -58,7 +58,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "toxic",
+            "set": "toxic",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -425,7 +425,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "fire",
+            "set": "fire",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -837,7 +837,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "air",
+            "set": "air",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -1296,7 +1296,7 @@
             "type": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS",
             "activity_type": "passive",
             "call_type": "ENTRY",
-            "set_type": "EARTH",
+            "set": "EARTH",
             "health": 0,
             "damage": 1,
             "buff_type": "ENTRY"
@@ -1335,7 +1335,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "water",
+            "set": "water",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -1407,7 +1407,7 @@
             "type": "DRAW_CARD",
             "activity_type": "passive",
             "call_type": "ENTRY",
-            "set_type": "none",
+            "set": "none",
             "buff_type": "ENTRY"
           }
         ],
@@ -1659,7 +1659,7 @@
             "activity_type": "passive",
             "call_type": "IN_HAND",
             "target_type": "player",
-            "set_type": "air",
+            "set": "air",
             "buff_type": "PERMANENT",
             "value": -1
           }
@@ -1775,7 +1775,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "earth",
+            "set": "earth",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -1811,7 +1811,7 @@
             "type": "DRAW_CARD",
             "activity_type": "passive",
             "call_type": "ENTRY",
-            "set_type": "life",
+            "set": "life",
             "buff_type": "ENTRY"
           }
         ],
@@ -1966,7 +1966,7 @@
             "target_type": "player_card",
             "value": 1,
             "stat_type": "DAMAGE",
-            "set_type": "LIFE",
+            "set": "LIFE",
             "effect_type": "TARGET_LIFE",
             "buff_type": "ENTRY"
           }
@@ -2191,7 +2191,7 @@
             "activity_type": "passive",
             "call_type": "ENTRY",
             "target_type": "opponent_card|player_card",
-            "set_type": "LIFE",
+            "set": "LIFE",
             "buff_type": "ENTRY"
           }
         ],
@@ -2228,7 +2228,7 @@
             "call_type": "permanent",
             "target_type": "none",
             "stat_type": "damage",
-            "set_type": "life",
+            "set": "life",
             "value": 1,
             "buff_type": "ATTACK"
           }
@@ -2638,7 +2638,7 @@
             "target_type": "player_card",
             "value": 1,
             "stat_type": "DAMAGE",
-            "set_type": "TOXIC",
+            "set": "TOXIC",
             "effect_type": "TARGET_TOXIC",
             "buff_type": "ENTRY"
           }
@@ -3057,7 +3057,7 @@
             "activity_type": "PASSIVE",
             "call_type": "ENTRY",
             "target_type": "PLAYER_CARD",
-            "set_type": "WATER",
+            "set": "WATER",
             "effect_type": "MASSIVE_WATER_WAVE",
             "buff_type": "ENTRY"
           }
@@ -3175,7 +3175,7 @@
             "activity_type": "PASSIVE",
             "call_type": "ENTRY",
             "target_type": "PLAYER_CARD",
-            "set_type": "WATER",
+            "set": "WATER",
             "effect_type": "MASSIVE_WATER_WAVE",
             "buff_type": "ENTRY"
           }

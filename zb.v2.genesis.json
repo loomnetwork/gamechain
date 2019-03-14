@@ -1422,7 +1422,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "WATER"
+                "set": "WATER"
               }
             ],
             "card_view_info": {
@@ -1588,7 +1588,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "AIR"
+                "set": "AIR"
               }
             ],
             "card_view_info": {
@@ -1724,7 +1724,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "TOXIC"
+                "set": "TOXIC"
               }
             ],
             "card_view_info": {
@@ -2067,7 +2067,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "EARTH"
+                "set": "EARTH"
               }
             ],
             "card_view_info": {
@@ -2225,7 +2225,7 @@
                 "mechanic_description_type": "ENTRY",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "effect_type": "TARGET_LIFE"
               }
             ],
@@ -2266,7 +2266,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE"
+                "set": "LIFE"
               }
             ],
             "card_view_info": {
@@ -2412,7 +2412,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "FIRE"
+                "set": "FIRE"
               }
             ],
             "card_view_info": {
@@ -2808,7 +2808,7 @@
                   "PLAYER_CARD"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "set_type": "LIFE"
+                "set": "LIFE"
               }
             ],
             "card_view_info": {
@@ -3065,7 +3065,7 @@
                 "activity_type": "PASSIVE",
                 "call_type": "ENTRY",
                 "mechanic_description_type": "ENTRY",
-                "set_type": "NONE"
+                "set": "NONE"
               }
             ],
             "card_view_info": {
@@ -3241,7 +3241,7 @@
                 "activity_type": "PASSIVE",
                 "call_type": "ENTRY",
                 "mechanic_description_type": "ENTRY",
-                "set_type": "LIFE"
+                "set": "LIFE"
               }
             ],
             "card_view_info": {
@@ -3430,7 +3430,7 @@
                 ],
                 "mechanic_description_type": "PERMANENT",
                 "value": -1,
-                "set_type": "AIR"
+                "set": "AIR"
               }
             ],
             "card_view_info": {
@@ -3555,7 +3555,7 @@
                 "activity_type": "PASSIVE",
                 "call_type": "ENTRY",
                 "mechanic_description_type": "ENTRY",
-                "set_type": "EARTH",
+                "set": "EARTH",
                 "damage": 2
               }
             ],
@@ -5182,7 +5182,7 @@
                 ],
                 "mechanic_description_type": "PERMANENT",
                 "value": -1,
-                "set_type": "AIR"
+                "set": "AIR"
               }
             ],
             "card_view_info": {
@@ -5716,7 +5716,7 @@
                   "PLAYER_CARD"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "set_type": "EARTH",
+                "set": "EARTH",
                 "unit_type": "HEAVY",
                 "cost": 2,
                 "sub_trigger": "AllyUnitsByFactionThatCost"
@@ -6173,7 +6173,7 @@
                 "mechanic_description_type": "TURN",
                 "value": 2,
                 "stat_type": "DAMAGE",
-                "set_type": "NONE"
+                "set": "NONE"
               }
             ],
             "card_view_info": {
@@ -6283,7 +6283,7 @@
                 "mechanic_description_type": "ATTACK",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "WATER"
+                "set": "WATER"
               }
             ],
             "card_view_info": {
@@ -6433,7 +6433,7 @@
                 ],
                 "mechanic_description_type": "ENTRY",
                 "value": 2,
-                "set_type": "AIR",
+                "set": "AIR",
                 "count": 2
               }
             ],
@@ -6588,7 +6588,7 @@
                   "NONE"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "set_type": "FIRE",
+                "set": "FIRE",
                 "unit_type": "FERAL",
                 "sub_trigger": "AllOtherAllyUnitsInPlay"
               }
@@ -7033,7 +7033,7 @@
                 "mechanic_description_type": "ENTRY",
                 "value": 1,
                 "stat_type": "DAMAGE",
-                "set_type": "TOXIC",
+                "set": "TOXIC",
                 "sub_trigger": "AllAllyUnitsByFactionInPlay"
               }
             ],
@@ -7147,7 +7147,7 @@
                   "PLAYER_CARD"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "set_type": "WATER",
+                "set": "WATER",
                 "effect_type": "MASSIVE_WATER_WAVE"
               }
             ],
@@ -7187,7 +7187,7 @@
                   "OPPONENT"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "set_type": "WATER",
+                "set": "WATER",
                 "damage": 1,
                 "count": 1,
                 "sub_trigger": "ForEachFactionOfUnitInHand"
@@ -7230,7 +7230,7 @@
                 ],
                 "mechanic_description_type": "ENTRY",
                 "value": 2,
-                "set_type": "WATER",
+                "set": "WATER",
                 "sub_trigger": "IfHasUnitsWithFactionInPlay"
               }
             ],

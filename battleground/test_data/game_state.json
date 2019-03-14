@@ -2498,7 +2498,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2552,7 +2552,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2606,7 +2606,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2660,7 +2660,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2714,7 +2714,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2770,7 +2770,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2825,7 +2825,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2879,7 +2879,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2933,7 +2933,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -2987,7 +2987,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3041,7 +3041,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3095,7 +3095,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3149,7 +3149,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3203,7 +3203,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3257,7 +3257,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3311,7 +3311,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3365,7 +3365,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3419,7 +3419,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3473,7 +3473,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3527,7 +3527,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3581,7 +3581,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3635,7 +3635,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3689,7 +3689,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3743,7 +3743,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3797,7 +3797,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3851,7 +3851,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3905,7 +3905,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -3959,7 +3959,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -4013,7 +4013,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
@@ -4083,7 +4083,7 @@
                   "NONE"
                 ],
                 "stat_type": "DAMAGE",
-                "set_type": "LIFE",
+                "set": "LIFE",
                 "value": 1,
                 "mechanic_description_type": "ATTACK"
               }
