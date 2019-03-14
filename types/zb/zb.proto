@@ -1569,8 +1569,11 @@ enum OverlordSkillSelectionType {
 
 message StatType {
     enum Enum {
+        option allow_alias = true;
+
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
-        HEALTH = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        DEFENSE = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        HEALTH = 1 [(gogoproto.enumvalue_customname) = "_XXXHealth"]; // for backwards compatibility
         DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Damage"];
     }
 }
