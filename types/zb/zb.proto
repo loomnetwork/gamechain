@@ -39,7 +39,7 @@ message Deck {
 message Card {
     int64 mouldId = 1 [json_name="id"];
     CardKind.Enum kind = 2;
-    Faction.Enum faction = 3 [json_name="faction"];
+    Faction.Enum faction = 3 [json_name="set"];
     string name = 4;
     string description = 5;
     string flavor_text = 6;
@@ -47,7 +47,7 @@ message Card {
     CreatureRank.Enum rank = 8;
     CreatureType.Enum type = 9;
     string frame = 11;
-    int32 damage = 12 [json_name="damage"];
+    int32 damage = 12 [json_name="attack"];
     int32 defense = 13 [json_name="health"];
     int32 gooCost = 14 [json_name="cost"];
     PictureTransform pictureTransform = 16 [json_name="card_view_info"];
@@ -1224,14 +1224,14 @@ message CardAbility {
     CardAbilityTrigger.Enum trigger = 3 [json_name="call_type"];
     repeated CardAbilityTarget.Enum targetTypes = 4 [json_name = "target_type"];
     StatType.Enum stat = 5 [json_name="stat_type"];
-    Faction.Enum faction = 6 [json_name = "set_type"];
+    Faction.Enum faction = 6 [json_name = "set"];
     CardAbilityEffect.Enum effect = 7 [json_name="effect_type"];
     AttackRestriction.Enum attackRestriction = 8 [json_name="attack_restriction"];
     CreatureType.Enum targetCardType = 9 [json_name="card_type"];
     UnitSpecialStatus.Enum targetUnitSpecialStatus = 10 [json_name="unit_status"];
     CreatureType.Enum targetUnitType = 11 [json_name="unit_type"];
     int32 value = 12;
-    int32 damage = 13 [json_name="damage"];
+    int32 damage = 13 [json_name="attack"];
     int32 defense = 14 [json_name="health"]; // FIXME: Health in client code
     string name = 15;
     int32 turns = 16;
@@ -1569,8 +1569,11 @@ enum OverlordSkillSelectionType {
 
 message StatType {
     enum Enum {
+        option allow_alias = true;
+
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
-        HEALTH = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        DEFENSE = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        HEALTH = 1 [(gogoproto.enumvalue_customname) = "_XXXHealth"]; // for backwards compatibility
         DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Damage"];
     }
 }
