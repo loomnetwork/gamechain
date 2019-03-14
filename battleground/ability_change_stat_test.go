@@ -51,7 +51,7 @@ func TestAbilityChangeStat(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 5,
-			Attack:  2,
+			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ChangeStat,
@@ -70,7 +70,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Attack,
+							Stat:           zb.StatType_Damage,
 						},
 					},
 				},
@@ -91,7 +91,7 @@ func TestAbilityChangeStat(t *testing.T) {
 			Prototype:  &zb.Card{},
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
-				Attack:  1,
+				Damage:  1,
 			},
 		}
 
@@ -112,9 +112,9 @@ func TestAbilityChangeStat(t *testing.T) {
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 		assert.Equal(t, int32(3), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(1), gp.State.PlayerStates[1].CardsInPlay[0].Instance.Damage)
 	})
 
 	t.Run("ChangeStat is activated when attacking overlord", func(t *testing.T) {
@@ -128,7 +128,7 @@ func TestAbilityChangeStat(t *testing.T) {
 
 		card0 := &zb.Card{
 			Defense: 2,
-			Attack:  3,
+			Damage:  3,
 			Abilities: []*zb.CardAbility{
 				{
 					Type:    zb.CardAbilityType_ChangeStat,
@@ -147,7 +147,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Attack,
+							Stat:           zb.StatType_Damage,
 						},
 					},
 				},
@@ -181,7 +181,7 @@ func TestAbilityChangeStat(t *testing.T) {
 
 		assert.Nil(t, err)
 		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
-		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Attack)
+		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 
 		assert.Equal(t, int32(17), gp.State.PlayerStates[1].Defense)
 	})

@@ -6,7 +6,7 @@ import (
 
 // rage ability
 // description:
-//     when being attacked, if not dies, increase card attack
+//     when being attacked, if not dies, increase card damage
 type rage struct {
 	*CardInstance
 	cardAbility *zb.CardAbilityRage
@@ -27,25 +27,25 @@ func (c *rage) Apply(gameplay *Gameplay) error {
 		if c.Instance.Defense < c.Prototype.Defense {
 			// change state
 			rage.WasApplied = true
-			c.Instance.Attack += rage.AddedAttack
+			c.Instance.Damage += rage.AddedDamage
 			// generate outcome
 			gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 				Outcome: &zb.PlayerActionOutcome_Rage{
 					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
 						InstanceId: c.InstanceId,
-						NewAttack:  c.Instance.Attack,
+						NewDamage:  c.Instance.Damage,
 					},
 				},
 			})
 		}
 	} else if c.Instance.Defense >= c.Prototype.Defense {
 		rage.WasApplied = false
-		c.Instance.Attack -= rage.AddedAttack
+		c.Instance.Damage -= rage.AddedDamage
 		gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
 			Outcome: &zb.PlayerActionOutcome_Rage{
 				Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
 					InstanceId: c.InstanceId,
-					NewAttack:  c.Instance.Attack,
+					NewDamage:  c.Instance.Damage,
 				},
 			},
 		})

@@ -9,7 +9,7 @@ import (
 
 // reanimate ability
 // description:
-//     When zombie dies, return it to play with default Atk, Def and effects
+//     When zombie dies, return it to play with default Dmg, Def and effects
 type reanimate struct {
 	*CardInstance
 	cardAbility *zb.CardAbilityReanimate
@@ -48,7 +48,7 @@ func (c *reanimate) Apply(gameplay *Gameplay) error {
 	}
 	newInstance.AbilitiesInstances = newAbilityInstances
 	newInstance.InstanceId.Id = state.NextInstanceId
-	newInstance.Instance.Attack = reanimate.DefaultAttack
+	newInstance.Instance.Damage = reanimate.DefaultDamage
 	newInstance.Instance.Defense = reanimate.DefaultDefense
 	state.NextInstanceId++
 

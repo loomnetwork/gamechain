@@ -458,10 +458,10 @@ func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList,
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
 	cardDetails = proto.Clone(cardDetails).(*zb.Card)
 	return &zb.CardInstanceSpecificData{
-		Attack:    cardDetails.Attack,
+		Damage:    cardDetails.Damage,
 		Defense:   cardDetails.Defense,
 		Type:      cardDetails.Type,
-		Set:       cardDetails.Set,
+		Faction:   cardDetails.Faction,
 		GooCost:   cardDetails.GooCost,
 		Abilities: cardDetails.Abilities,
 	}
@@ -478,7 +478,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_Rage{
 					Rage: &zb.CardAbilityRage{
-						AddedAttack: raw.Value,
+						AddedDamage: raw.Value,
 					},
 				},
 			})
@@ -496,7 +496,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_Reanimate{
 					Reanimate: &zb.CardAbilityReanimate{
-						DefaultAttack:  cardDetails.Attack,
+						DefaultDamage:  cardDetails.Damage,
 						DefaultDefense: cardDetails.Defense,
 					},
 				},
@@ -528,7 +528,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
 					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-						Set: cardDetails.Set,
+						Faction: cardDetails.Faction,
 					},
 				},
 			})
@@ -538,7 +538,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 				Trigger:  raw.Trigger,
 				AbilityType: &zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
 					DealDamageToThisAndAdjacentUnits: &zb.CardAbilityDealDamageToThisAndAdjacentUnits{
-						AdjacentDamage: cardDetails.Attack,
+						AdjacentDamage: cardDetails.Damage,
 					},
 				},
 			})

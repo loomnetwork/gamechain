@@ -1,7 +1,7 @@
 {
     "cards": [
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 0,
         "kind": "CREATURE",
         "name": "Pyromaz",
@@ -39,7 +39,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 100001,
         "kind": "CREATURE",
         "name": "NewNewCard",
@@ -78,7 +78,7 @@
       },
 
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 0,
         "kind": "CREATURE",
         "name": "Quazi",
@@ -120,7 +120,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 1,
         "kind": "CREATURE",
         "name": "Burrrnn",
@@ -146,7 +146,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 3,
         "kind": "CREATURE",
         "name": "Cynderman",
@@ -183,7 +183,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 2,
         "kind": "CREATURE",
         "name": "Werezomb",
@@ -219,7 +219,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 3,
         "kind": "CREATURE",
         "name": "Modo",
@@ -261,7 +261,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 5,
         "kind": "CREATURE",
         "name": "Fire-Maw",
@@ -298,7 +298,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 4,
         "kind": "CREATURE",
         "name": "Zhampion",
@@ -335,7 +335,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 7,
         "kind": "CREATURE",
         "name": "Gargantua",
@@ -372,7 +372,7 @@
         }
       },
       {
-        "set": "Fire",
+        "faction": "Fire",
         "id": 6,
         "kind": "CREATURE",
         "name": "Cerberus",
@@ -406,7 +406,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 9,
         "kind": "CREATURE",
         "name": "Izze",
@@ -444,7 +444,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 10,
         "kind": "CREATURE",
         "name": "Znowman",
@@ -478,7 +478,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 10,
         "kind": "CREATURE",
         "name": "Ozmoziz",
@@ -521,7 +521,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 11,
         "kind": "CREATURE",
         "name": "Jetter",
@@ -558,7 +558,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 14,
         "kind": "CREATURE",
         "name": "Freezzee",
@@ -595,7 +595,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 14,
         "kind": "CREATURE",
         "name": "Geyzer",
@@ -638,7 +638,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 12,
         "kind": "CREATURE",
         "name": "Blizzard",
@@ -674,7 +674,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 13,
         "kind": "CREATURE",
         "name": "Froztbite",
@@ -710,7 +710,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 8,
         "kind": "CREATURE",
         "name": "Zhatterer",
@@ -746,7 +746,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 15,
         "kind": "CREATURE",
         "name": "Maelstrom",
@@ -781,7 +781,7 @@
         }
       },
       {
-        "set": "Water",
+        "faction": "Water",
         "id": 16,
         "kind": "CREATURE",
         "name": "Tzunamy",
@@ -818,7 +818,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 19,
         "kind": "CREATURE",
         "name": "Rockky",
@@ -856,7 +856,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 23,
         "kind": "CREATURE",
         "name": "Bolderr",
@@ -893,7 +893,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 17,
         "kind": "CREATURE",
         "name": "Blocker",
@@ -919,7 +919,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 18,
         "kind": "CREATURE",
         "name": "Slab",
@@ -945,7 +945,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 22,
         "kind": "CREATURE",
         "name": "Pit",
@@ -980,7 +980,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 22,
         "kind": "CREATURE",
         "name": "Golem",
@@ -1006,7 +1006,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 20,
         "kind": "CREATURE",
         "name": "Walley",
@@ -1040,7 +1040,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 21,
         "kind": "CREATURE",
         "name": "Tiny",
@@ -1066,7 +1066,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 22,
         "kind": "CREATURE",
         "name": "Spiker",
@@ -1101,7 +1101,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 17,
         "kind": "CREATURE",
         "name": "Crater",
@@ -1136,7 +1136,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 24,
         "kind": "CREATURE",
         "name": "Earthshaker",
@@ -1172,7 +1172,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 24,
         "kind": "CREATURE",
         "name": "IgneouZ",
@@ -1208,7 +1208,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 25,
         "kind": "CREATURE",
         "name": "Pyrite",
@@ -1244,7 +1244,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 27,
         "kind": "CREATURE",
         "name": "Mountain",
@@ -1279,7 +1279,7 @@
         }
       },
       {
-        "set": "Earth",
+        "faction": "Earth",
         "id": 26,
         "kind": "CREATURE",
         "name": "Gaea",
@@ -1316,7 +1316,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 17,
         "kind": "CREATURE",
         "name": "Whizpar",
@@ -1354,7 +1354,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 18,
         "kind": "CREATURE",
         "name": "Wheezy",
@@ -1390,7 +1390,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 19,
         "kind": "CREATURE",
         "name": "Soothsayer",
@@ -1425,7 +1425,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 17,
         "kind": "CREATURE",
         "name": "Fumez",
@@ -1460,7 +1460,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 20,
         "kind": "CREATURE",
         "name": "Pushhh",
@@ -1495,7 +1495,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 21,
         "kind": "CREATURE",
         "name": "Ztormmcaller",
@@ -1538,7 +1538,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 17,
         "kind": "CREATURE",
         "name": "Bouncer",
@@ -1564,7 +1564,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 19,
         "kind": "CREATURE",
         "name": "Gaz",
@@ -1606,7 +1606,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 20,
         "kind": "CREATURE",
         "name": "Draft",
@@ -1641,7 +1641,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 20,
         "kind": "CREATURE",
         "name": "MonZoon",
@@ -1678,7 +1678,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 22,
         "kind": "CREATURE",
         "name": "Zeuz",
@@ -1715,7 +1715,7 @@
         }
       },
       {
-        "set": "Air",
+        "faction": "Air",
         "id": 34,
         "kind": "CREATURE",
         "name": "Ztorm Shield",
@@ -1756,7 +1756,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 23,
         "kind": "CREATURE",
         "name": "Azuraz",
@@ -1794,7 +1794,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 24,
         "kind": "CREATURE",
         "name": "Bloomer",
@@ -1829,7 +1829,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 24,
         "kind": "CREATURE",
         "name": "Zap",
@@ -1873,7 +1873,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 25,
         "kind": "CREATURE",
         "name": "Shroom",
@@ -1910,7 +1910,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 27,
         "kind": "CREATURE",
         "name": "Vindrom",
@@ -1946,7 +1946,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 26,
         "kind": "CREATURE",
         "name": "Puffer",
@@ -1985,7 +1985,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 27,
         "kind": "CREATURE",
         "name": "Sapper",
@@ -2020,7 +2020,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 27,
         "kind": "CREATURE",
         "name": "Keeper",
@@ -2057,7 +2057,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 27,
         "kind": "CREATURE",
         "name": "Cactuz",
@@ -2101,7 +2101,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 28,
         "kind": "CREATURE",
         "name": "Shammann",
@@ -2138,7 +2138,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 29,
         "kind": "CREATURE",
         "name": "Z-Virus",
@@ -2173,7 +2173,7 @@
         }
       },
       {
-        "set": "Life",
+        "faction": "Life",
         "id": 27,
         "kind": "CREATURE",
         "name": "Yggdrazil",
@@ -2209,7 +2209,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 30,
         "kind": "CREATURE",
         "name": "Poizom",
@@ -2247,7 +2247,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 32,
         "kind": "CREATURE",
         "name": "Hazmaz",
@@ -2274,7 +2274,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 30,
         "kind": "CREATURE",
         "name": "Zpitter",
@@ -2310,7 +2310,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 30,
         "kind": "CREATURE",
         "name": "Zeptic",
@@ -2353,7 +2353,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 31,
         "kind": "CREATURE",
         "name": "Ghoul",
@@ -2390,7 +2390,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 32,
         "kind": "CREATURE",
         "name": "Zeeter",
@@ -2426,7 +2426,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 32,
         "kind": "CREATURE",
         "name": "Hazzard",
@@ -2469,7 +2469,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 32,
         "kind": "CREATURE",
         "name": "Zludge",
@@ -2504,7 +2504,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 30,
         "kind": "CREATURE",
         "name": "Ectoplasm",
@@ -2539,7 +2539,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 33,
         "kind": "CREATURE",
         "name": "Cherno-bill",
@@ -2576,7 +2576,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 33,
         "kind": "CREATURE",
         "name": "GooZilla",
@@ -2618,7 +2618,7 @@
         }
       },
       {
-        "set": "Toxic",
+        "faction": "Toxic",
         "id": 34,
         "kind": "CREATURE",
         "name": "Zlopper",
@@ -2657,7 +2657,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 30,
         "kind": "SPELL",
         "name": "Chainsaw",
@@ -2694,7 +2694,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 30,
         "kind": "SPELL",
         "name": "Goo Beaker",
@@ -2731,7 +2731,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 34,
         "kind": "SPELL",
         "name": "Stapler",
@@ -2768,7 +2768,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 35,
         "kind": "SPELL",
         "name": "Nail Bomb",
@@ -2805,7 +2805,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 36,
         "kind": "SPELL",
         "name": "Goo Bottles",
@@ -2842,7 +2842,7 @@
         }
       },
       {
-        "set": "Item",
+        "faction": "Item",
         "id": 30,
         "kind": "SPELL",
         "name": "Fresh Meat",
@@ -2878,7 +2878,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 100,
         "kind": "CREATURE",
         "name": "Zombie 1/1",
@@ -2903,7 +2903,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 101,
         "kind": "CREATURE",
         "name": "Zombie 2/2",
@@ -2928,7 +2928,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 102,
         "kind": "CREATURE",
         "name": "Zombie Feral",
@@ -2953,7 +2953,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 30,
         "kind": "SPELL",
         "name": "Tainted Goo",
@@ -2996,7 +2996,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 30,
         "kind": "SPELL",
         "name": "Corrupted Goo",
@@ -3039,7 +3039,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "Rainz",
@@ -3076,7 +3076,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "Blight",
@@ -3103,7 +3103,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "Zteroid",
@@ -3130,7 +3130,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "BurZt",
@@ -3157,7 +3157,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "Vortex",
@@ -3194,7 +3194,7 @@
         }
       },
       {
-        "set": "Others",
+        "faction": "Others",
         "id": 34,
         "kind": "CREATURE",
         "name": "Defender",

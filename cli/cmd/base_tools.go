@@ -10,7 +10,7 @@ import (
 
 func printProtoMessageAsJSONToStdout(pb proto.Message) error {
 	m := jsonpb.Marshaler{
-		OrigName:     true,
+		OrigName:     false,
 		Indent:       "  ",
 		EmitDefaults: true,
 	}
