@@ -22,9 +22,9 @@ func TestAbilityChangeStat(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:     0,
-		HeroId: 2,
-		Name:   "Default",
+		Id:         0,
+		OverlordId: 2,
+		Name:       "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
 			{CardName: "Breezee", Amount: 2},
@@ -54,7 +54,7 @@ func TestAbilityChangeStat(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.AbilityData{
 				{
-					Type:    zb.AbilityType_ChangeStat,
+					Ability: zb.AbilityType_ChangeStat,
 					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},
@@ -131,7 +131,7 @@ func TestAbilityChangeStat(t *testing.T) {
 			Damage:  3,
 			Abilities: []*zb.AbilityData{
 				{
-					Type:    zb.AbilityType_ChangeStat,
+					Ability: zb.AbilityType_ChangeStat,
 					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},

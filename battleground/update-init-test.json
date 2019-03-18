@@ -3,7 +3,7 @@
     {
       "id": "0",
       "name": "Default",
-      "heroId": "4",
+      "overlordId": "4",
       "cards": [
         {
           "cardName": "Poizom",
@@ -11646,9 +11646,9 @@
       "hidden": false
     }
   ],
-  "heroes": [
+  "overlords": [
     {
-      "heroId": "0",
+      "overlordId": "0",
       "icon": "icon",
       "name": "Brakuus",
       "shortDescription": "The Guardian",
@@ -11773,7 +11773,7 @@
       "secondarySkill": "NONE"
     },
     {
-      "heroId": "1",
+      "overlordId": "1",
       "icon": "icon",
       "name": "Razu",
       "shortDescription": "The Fire Daemon",
@@ -11906,7 +11906,7 @@
       "secondarySkill": "NONE"
     },
     {
-      "heroId": "2",
+      "overlordId": "2",
       "icon": "icon",
       "name": "Vash'Kala",
       "shortDescription": "The Ancient One",
@@ -12034,7 +12034,7 @@
       "secondarySkill": "NONE"
     },
     {
-      "heroId": "3",
+      "overlordId": "3",
       "icon": "icon",
       "name": "Kalile",
       "shortDescription": "Tempest of Storms",
@@ -12156,7 +12156,7 @@
       "secondarySkill": "NONE"
     },
     {
-      "heroId": "4",
+      "overlordId": "4",
       "icon": "icon",
       "name": "Mhalik",
       "shortDescription": "Lord of Pestilence",
@@ -12285,7 +12285,7 @@
       "secondarySkill": "NONE"
     },
     {
-      "heroId": "5",
+      "overlordId": "5",
       "icon": "icon",
       "name": "Valash",
       "shortDescription": "Nature's Warden",
@@ -12418,7 +12418,7 @@
       "deck": {
         "id": "0",
         "name": "FireAggro",
-        "heroId": "1",
+        "overlordId": "1",
         "cards": [
           {
             "cardName": "Sparky",
@@ -12494,7 +12494,7 @@
       "deck": {
         "id": "1",
         "name": "EarthControl",
-        "heroId": "0",
+        "overlordId": "0",
         "cards": [
           {
             "cardName": "Rockky",
@@ -12570,7 +12570,7 @@
       "deck": {
         "id": "2",
         "name": "ToxicRamp",
-        "heroId": "4",
+        "overlordId": "4",
         "cards": [
           {
             "cardName": "Zlimey",
@@ -12642,7 +12642,7 @@
       "deck": {
         "id": "3",
         "name": "WaterFreeze",
-        "heroId": "2",
+        "overlordId": "2",
         "cards": [
           {
             "cardName": "Izze",
@@ -12722,7 +12722,7 @@
       "deck": {
         "id": "4",
         "name": "AirMidrange",
-        "heroId": "3",
+        "overlordId": "3",
         "cards": [
           {
             "cardName": "Fumez",
@@ -12798,7 +12798,7 @@
       "deck": {
         "id": "5",
         "name": "LifeZoo",
-        "heroId": "5",
+        "overlordId": "5",
         "cards": [
           {
             "cardName": "Zap",
@@ -12874,7 +12874,7 @@
       "deck": {
         "id": "6",
         "name": "EasyFireAggro",
-        "heroId": "1",
+        "overlordId": "1",
         "cards": [
           {
             "cardName": "BlaZter",
@@ -12946,7 +12946,7 @@
       "deck": {
         "id": "7",
         "name": "MediumFireAggro",
-        "heroId": "1",
+        "overlordId": "1",
         "cards": [
           {
             "cardName": "BlaZter",
@@ -13018,7 +13018,7 @@
       "deck": {
         "id": "8",
         "name": "HardFireAggro",
-        "heroId": "1",
+        "overlordId": "1",
         "cards": [
           {
             "cardName": "BlaZter",
@@ -13090,7 +13090,7 @@
       "deck": {
         "id": "9",
         "name": "EasyEarthControl",
-        "heroId": "0",
+        "overlordId": "0",
         "cards": [
           {
             "cardName": "Azuraz",
@@ -13162,7 +13162,7 @@
       "deck": {
         "id": "10",
         "name": "MediumEarthControl",
-        "heroId": "0",
+        "overlordId": "0",
         "cards": [
           {
             "cardName": "Azuraz",
@@ -13234,7 +13234,7 @@
       "deck": {
         "id": "11",
         "name": "HardEarthControl",
-        "heroId": "0",
+        "overlordId": "0",
         "cards": [
           {
             "cardName": "Azuraz",
@@ -13306,7 +13306,7 @@
       "deck": {
         "id": "12",
         "name": "EasyToxicRamp",
-        "heroId": "4",
+        "overlordId": "4",
         "cards": [
           {
             "cardName": "Zeptic",
@@ -13378,7 +13378,7 @@
       "deck": {
         "id": "13",
         "name": "MediumToxicRamp",
-        "heroId": "4",
+        "overlordId": "4",
         "cards": [
           {
             "cardName": "Trunk",
@@ -13450,7 +13450,7 @@
       "deck": {
         "id": "14",
         "name": "HardToxicRamp",
-        "heroId": "4",
+        "overlordId": "4",
         "cards": [
           {
             "cardName": "Trunk",
@@ -13522,7 +13522,7 @@
       "deck": {
         "id": "15",
         "name": "EasyWaterFreeze",
-        "heroId": "2",
+        "overlordId": "2",
         "cards": [
           {
             "cardName": "Zky",
@@ -13594,7 +13594,7 @@
       "deck": {
         "id": "16",
         "name": "MediumWaterFreeze",
-        "heroId": "2",
+        "overlordId": "2",
         "cards": [
           {
             "cardName": "FroZen",
@@ -13666,7 +13666,7 @@
       "deck": {
         "id": "17",
         "name": "HardWaterFreeze",
-        "heroId": "2",
+        "overlordId": "2",
         "cards": [
           {
             "cardName": "FroZen",
@@ -13738,7 +13738,7 @@
       "deck": {
         "id": "18",
         "name": "EasyAirMidrange",
-        "heroId": "3",
+        "overlordId": "3",
         "cards": [
           {
             "cardName": "Banshee",
@@ -13810,7 +13810,7 @@
       "deck": {
         "id": "19",
         "name": "MediumAirMidrange",
-        "heroId": "3",
+        "overlordId": "3",
         "cards": [
           {
             "cardName": "FumeZ",
@@ -13882,7 +13882,7 @@
       "deck": {
         "id": "20",
         "name": "HardAirMidrange",
-        "heroId": "3",
+        "overlordId": "3",
         "cards": [
           {
             "cardName": "Soothsayer",
@@ -13954,7 +13954,7 @@
       "deck": {
         "id": "21",
         "name": "EasyLifeZoo",
-        "heroId": "5",
+        "overlordId": "5",
         "cards": [
           {
             "cardName": "Amber",
@@ -14026,7 +14026,7 @@
       "deck": {
         "id": "22",
         "name": "MediumLifeZoo",
-        "heroId": "5",
+        "overlordId": "5",
         "cards": [
           {
             "cardName": "Puffer",
@@ -14098,7 +14098,7 @@
       "deck": {
         "id": "23",
         "name": "HardLifeZoo",
-        "heroId": "5",
+        "overlordId": "5",
         "cards": [
           {
             "cardName": "PreZerver",

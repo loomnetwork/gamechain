@@ -625,7 +625,7 @@
   "default_decks": [
     {
       "id": 0,
-      "hero_id": 4,
+      "overlord_id": 4,
       "name": "Default",
       "cards": [
         {
@@ -704,7 +704,7 @@
       "type": "BLITZ_AI",
       "deck": {
         "id": 0,
-        "hero_id": 1,
+        "overlord_id": 1,
         "name": "BLITZ_AI",
         "cards": [
           {
@@ -770,7 +770,7 @@
       "type": "DEFENSE_AI",
       "deck": {
         "id": 1,
-        "hero_id": 0,
+        "overlord_id": 0,
         "name": "DEFENSE_AI",
         "cards": [
           {
@@ -844,7 +844,7 @@
       "type": "MIXED_AI",
       "deck": {
         "id": 2,
-        "hero_id": 4,
+        "overlord_id": 4,
         "name": "MIXED_AI",
         "cards": [
           {
@@ -910,7 +910,7 @@
       "type": "MIXED_BLITZ_AI",
       "deck": {
         "id": 3,
-        "hero_id": 2,
+        "overlord_id": 2,
         "name": "MIXED_BLITZ_AI",
         "cards": [
           {
@@ -992,7 +992,7 @@
       "type": "TIME_BLITZ_AI",
       "deck": {
         "id": 4,
-        "hero_id": 3,
+        "overlord_id": 3,
         "name": "TIME_BLITZ_AI",
         "cards": [
           {
@@ -1078,7 +1078,7 @@
       "type": "MIXED_DEFENSE_AI",
       "deck": {
         "id": 5,
-        "hero_id": 5,
+        "overlord_id": 5,
         "name": "MIXED_DEFENSE_AI",
         "cards": [
           {
@@ -1145,9 +1145,9 @@
       }
     }
   ],
-  "heroes": [
+  "overlords": [
     {
-      "hero_id": 0,
+      "overlord_id": 0,
       "icon": "icon",
       "name": "Brakuus",
       "short_description": "The Guardian",
@@ -1186,7 +1186,7 @@
       "secondary_skill": 1
     },
     {
-      "hero_id": 1,
+      "overlord_id": 1,
       "icon": "icon",
       "name": "Razu",
       "short_description": "The Fire Daemon",
@@ -1230,7 +1230,7 @@
       "secondary_skill": 1
     },
     {
-      "hero_id": 2,
+      "overlord_id": 2,
       "icon": "icon",
       "name": "Vash'Kala",
       "short_description": "The Ancient One",
@@ -1270,7 +1270,7 @@
       "secondary_skill": 1
     },
     {
-      "hero_id": 3,
+      "overlord_id": 3,
       "icon": "icon",
       "name": "Kalile",
       "short_description": "Tempest of Storms",
@@ -1309,7 +1309,7 @@
       "secondary_skill": 1
     },
     {
-      "hero_id": 4,
+      "overlord_id": 4,
       "icon": "icon",
       "name": "Mhalik",
       "short_description": "Lord of Pestilence",
@@ -1352,7 +1352,7 @@
       "secondary_skill": 1
     },
     {
-      "hero_id": 5,
+      "overlord_id": 5,
       "icon": "icon",
       "name": "Valash",
       "short_description": "Nature's Warden",

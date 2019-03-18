@@ -51,7 +51,7 @@ func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) [
 func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb.Deck) (err error) {
 	binary.Write(writer, binary.BigEndian, int64(deck.Id))
 	serializeString(writer, deck.Name)
-	binary.Write(writer, binary.BigEndian, int64(deck.HeroId))
+	binary.Write(writer, binary.BigEndian, int64(deck.OverlordId))
 
 	return nil
 }

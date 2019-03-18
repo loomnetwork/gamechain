@@ -62,9 +62,9 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
-	Heroes: []*zb.Hero{
+	Overlords: []*zb.Overlord{
 		{
-			HeroId:     0,
+			OverlordId: 0,
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
@@ -78,7 +78,7 @@ var initRequest = zb.InitRequest{
 			}},
 		},
 		{
-			HeroId:     1,
+			OverlordId: 1,
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
@@ -104,10 +104,10 @@ var initRequest = zb.InitRequest{
 			GooCost: 2,
 			Abilities: []*zb.AbilityData{
 				{
-					Type:         zb.AbilityType_DrawCard,
-					ActivityType: zb.AbilityActivity_Passive,
-					Trigger:      zb.AbilityTrigger_Entry,
-					Faction:      zb.Faction_None,
+					Ability:  zb.AbilityType_DrawCard,
+					Activity: zb.AbilityActivity_Passive,
+					Trigger:  zb.AbilityTrigger_Entry,
+					Faction:  zb.Faction_None,
 				},
 			},
 			PictureTransform: &zb.PictureTransform{
@@ -134,10 +134,10 @@ var initRequest = zb.InitRequest{
 			GooCost: 1,
 			Abilities: []*zb.AbilityData{
 				{
-					Type:         zb.AbilityType_ModificatorStats,
-					ActivityType: zb.AbilityActivity_Passive,
-					Trigger:      zb.AbilityTrigger_Permanent,
-					TargetTypes: []zb.Target_Enum{
+					Ability:  zb.AbilityType_ModificatorStats,
+					Activity: zb.AbilityActivity_Passive,
+					Trigger:  zb.AbilityTrigger_Permanent,
+					Targets: []zb.Target_Enum{
 						zb.Target_None,
 					},
 					Stat:    zb.Stat_Damage,
@@ -149,9 +149,9 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
-			Id:     0,
-			HeroId: 2,
-			Name:   "Default",
+			Id:         0,
+			OverlordId: 2,
+			Name:       "Default",
 			Cards: []*zb.DeckCard{
 				{
 					CardName: "Banshee",
