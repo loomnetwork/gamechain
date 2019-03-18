@@ -472,7 +472,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
 		switch raw.Type {
-		case zb.CardAbilityType_Rage:
+		case zb.AbilityType_Rage:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -482,7 +482,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_PriorityAttack:
+		case zb.AbilityType_PriorityAttack:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -490,7 +490,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					PriorityAttack: &zb.CardAbilityPriorityAttack{},
 				},
 			})
-		case zb.CardAbilityType_ReanimateUnit:
+		case zb.AbilityType_ReanimateUnit:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -501,7 +501,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_ChangeStat:
+		case zb.AbilityType_ChangeStat:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -512,7 +512,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_AttackOverlord:
+		case zb.AbilityType_AttackOverlord:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -522,7 +522,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+		case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -532,7 +532,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_DealDamageToThisAndAdjacentUnits:
+		case zb.AbilityType_DealDamageToThisAndAdjacentUnits:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -606,39 +606,39 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 			filteredAbilities := make([]*zb.CardAbility, 0, 0)
 			for _, ability := range card.Prototype.Abilities {
 				switch ability.Type {
-				case zb.CardAbilityType_Rage:
+				case zb.AbilityType_Rage:
 					fallthrough
-				case zb.CardAbilityType_PriorityAttack:
+				case zb.AbilityType_PriorityAttack:
 					fallthrough
-				case zb.CardAbilityType_ReanimateUnit:
+				case zb.AbilityType_ReanimateUnit:
 					fallthrough
-				case zb.CardAbilityType_ChangeStat:
+				case zb.AbilityType_ChangeStat:
 					fallthrough
-				case zb.CardAbilityType_AttackOverlord:
+				case zb.AbilityType_AttackOverlord:
 					fallthrough
-				case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+				case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 					filteredAbilities = append(filteredAbilities, ability)
 				default:
-					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb.AbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
 				}
 			}
 
 			card.Prototype.Abilities = filteredAbilities
 
 			switch card.Prototype.Type {
-			case zb.CreatureType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb.CreatureType_Heavy:
-				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
-				card.Prototype.Type = zb.CreatureType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CardType_Walker
 			}
 
 			switch card.Instance.Type {
-			case zb.CreatureType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb.CreatureType_Heavy:
-				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
-				card.Instance.Type = zb.CreatureType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CardType_Walker
 			}
 
 			switch card.Prototype.Kind {

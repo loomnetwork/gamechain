@@ -65,8 +65,8 @@ func TestAbilityRage(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_Rage,
-					Trigger: zb.CardAbilityTrigger_GotDamage,
+					Type:    zb.AbilityType_Rage,
+					Trigger: zb.AbilityTrigger_GotDamage,
 					Value:   2,
 				},
 			},

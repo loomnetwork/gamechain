@@ -54,8 +54,8 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.CardAbilityTrigger_Entry,
+					Type:    zb.AbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
@@ -151,8 +151,8 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.CardAbilityTrigger_Entry,
+					Type:    zb.AbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}

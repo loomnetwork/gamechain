@@ -55,12 +55,12 @@ func TestAbilityReanimate(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_ReanimateUnit,
-					Trigger: zb.CardAbilityTrigger_Death,
+					Type:    zb.AbilityType_ReanimateUnit,
+					Trigger: zb.AbilityTrigger_Death,
 				},
 				{
-					Type:    zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
-					Trigger: zb.CardAbilityTrigger_Entry,
+					Type:    zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}

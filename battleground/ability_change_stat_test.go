@@ -54,8 +54,8 @@ func TestAbilityChangeStat(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_ChangeStat,
-					Trigger: zb.CardAbilityTrigger_Attack,
+					Type:    zb.AbilityType_ChangeStat,
+					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},
 		}
@@ -70,7 +70,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Damage,
+							Stat:           zb.Stat_Damage,
 						},
 					},
 				},
@@ -80,7 +80,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Defense,
+							Stat:           zb.Stat_Defense,
 						},
 					},
 				},
@@ -131,8 +131,8 @@ func TestAbilityChangeStat(t *testing.T) {
 			Damage:  3,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_ChangeStat,
-					Trigger: zb.CardAbilityTrigger_Attack,
+					Type:    zb.AbilityType_ChangeStat,
+					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},
 		}
@@ -147,7 +147,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Damage,
+							Stat:           zb.Stat_Damage,
 						},
 					},
 				},
@@ -157,7 +157,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.StatType_Defense,
+							Stat:           zb.Stat_Defense,
 						},
 					},
 				},

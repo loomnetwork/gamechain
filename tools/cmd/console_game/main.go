@@ -69,10 +69,10 @@ var initRequest = zb.InitRequest{
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title: "Attack",
-				Skill: zb.OverlordSkillKind_IceBolt,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum{
-					zb.OverlordAbilityTarget_AllCards,
-					zb.OverlordAbilityTarget_PlayerCard,
+				Skill: zb.OverlordSkill_IceBolt,
+				SkillTargets: []zb.SkillTarget_Enum{
+					zb.SkillTarget_AllCards,
+					zb.SkillTarget_PlayerCard,
 				},
 				Value: 1,
 			}},
@@ -83,10 +83,10 @@ var initRequest = zb.InitRequest{
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title: "Deffence",
-				Skill: zb.OverlordSkillKind_Blizzard,
-				SkillTargets: []zb.OverlordAbilityTarget_Enum{
-					zb.OverlordAbilityTarget_Player,
-					zb.OverlordAbilityTarget_OpponentCard,
+				Skill: zb.OverlordSkill_Blizzard,
+				SkillTargets: []zb.SkillTarget_Enum{
+					zb.SkillTarget_Player,
+					zb.SkillTarget_OpponentCard,
 				},
 				Value: 2,
 			}},
@@ -98,15 +98,15 @@ var initRequest = zb.InitRequest{
 			Faction: zb.Faction_Air,
 			Name:    "Soothsayer",
 			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
+			Type:    zb.CardType_Walker,
 			Damage:  2,
 			Defense: 1,
 			GooCost: 2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_DrawCard,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Entry,
+					Type:         zb.AbilityType_DrawCard,
+					ActivityType: zb.AbilityActivity_Passive,
+					Trigger:      zb.AbilityTrigger_Entry,
 					Faction:      zb.Faction_None,
 				},
 			},
@@ -128,19 +128,19 @@ var initRequest = zb.InitRequest{
 			Faction: zb.Faction_Air,
 			Name:    "Azuraz",
 			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CreatureType_Walker,
+			Type:    zb.CardType_Walker,
 			Damage:  1,
 			Defense: 1,
 			GooCost: 1,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:         zb.CardAbilityType_ModificatorStats,
-					ActivityType: zb.CardAbilityActivityType_Passive,
-					Trigger:      zb.CardAbilityTrigger_Permanent,
-					TargetTypes: []zb.CardAbilityTarget_Enum{
-						zb.CardAbilityTarget_None,
+					Type:         zb.AbilityType_ModificatorStats,
+					ActivityType: zb.AbilityActivity_Passive,
+					Trigger:      zb.AbilityTrigger_Permanent,
+					TargetTypes: []zb.Target_Enum{
+						zb.Target_None,
 					},
-					Stat:    zb.StatType_Damage,
+					Stat:    zb.Stat_Damage,
 					Faction: zb.Faction_Earth,
 					Value:   1,
 				},

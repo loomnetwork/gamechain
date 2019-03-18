@@ -57,8 +57,8 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Faction: zb.Faction_Water,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
-					Trigger: zb.CardAbilityTrigger_Entry,
+					Type:    zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
