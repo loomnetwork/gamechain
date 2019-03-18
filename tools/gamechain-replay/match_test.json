@@ -181,7 +181,7 @@
                     "id": 3
                 },
                 "damage": 4,
-                "defense2": 4
+                "defense": 4
             }
         },
         {
@@ -190,7 +190,7 @@
                     "id": 17
                 },
                 "damage": 1,
-                "defense2": 1
+                "defense": 1
             }
         },
         {
@@ -199,7 +199,7 @@
                     "id": 18
                 },
                 "damage": 1,
-                "defense2": 1
+                "defense": 1
             }
         },
         {

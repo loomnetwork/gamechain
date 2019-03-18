@@ -462,7 +462,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 		Defense:   cardDetails.Defense,
 		Type:      cardDetails.Type,
 		Faction:   cardDetails.Faction,
-		GooCost:   cardDetails.GooCost,
+		Cost:   cardDetails.Cost,
 		Abilities: cardDetails.Abilities,
 	}
 }

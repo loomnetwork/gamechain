@@ -49,7 +49,7 @@ message Card {
     string frame = 11;
     int32 damage = 12;
     int32 defense = 13;
-    int32 gooCost = 14;
+    int32 cost = 14;
     PictureTransform pictureTransform = 16;
     repeated AbilityData abilities = 17;
     UniqueAnimation.Enum uniqueAnimation = 18;
@@ -62,7 +62,7 @@ message CardInstanceSpecificData {
     int32 defense = 2;
     CardType.Enum type = 3;
     Faction.Enum faction = 4;
-    int32 gooCost = 5;
+    int32 cost = 5;
     repeated AbilityData abilities = 6;
 }
 

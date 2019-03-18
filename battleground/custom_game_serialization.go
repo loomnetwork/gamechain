@@ -63,7 +63,7 @@ func (c *CustomGameMode) serializeSimpleCardInstance(writer io.Writer, card *Sim
 	binary.Write(writer, binary.BigEndian, bool(card.defenseInherited))
 	binary.Write(writer, binary.BigEndian, int32(card.damage))
 	binary.Write(writer, binary.BigEndian, bool(card.damageInherited))
-	binary.Write(writer, binary.BigEndian, int32(card.gooCost))
+	binary.Write(writer, binary.BigEndian, int32(card.cost))
 	binary.Write(writer, binary.BigEndian, bool(card.gooCostInherited))
 
 	return nil
@@ -78,7 +78,7 @@ func (c *CustomGameMode) deserializeSimpleCardInstance(reader io.Reader) (simple
 	binary.Read(reader, binary.BigEndian, &simpleCard.defenseInherited)
 	binary.Read(reader, binary.BigEndian, &simpleCard.damage)
 	binary.Read(reader, binary.BigEndian, &simpleCard.damageInherited)
-	binary.Read(reader, binary.BigEndian, &simpleCard.gooCost)
+	binary.Read(reader, binary.BigEndian, &simpleCard.cost)
 	binary.Read(reader, binary.BigEndian, &simpleCard.gooCostInherited)
 
 	return
@@ -125,7 +125,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 	}
 
 	if !simpleCard.gooCostInherited {
-		newCard.Prototype.GooCost = simpleCard.gooCost
+		newCard.Prototype.Cost = simpleCard.cost
 	}
 
 	newCard.Instance = newCardInstanceSpecificDataFromCardDetails(newCard.Prototype)
@@ -340,7 +340,7 @@ type SimpleCardInstance struct {
 	defenseInherited bool
 	damage           int32
 	damageInherited  bool
-	gooCost          int32
+	cost          int32
 	gooCostInherited bool
 }
 
@@ -352,7 +352,7 @@ func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardIns
 		damageInherited:  true,
 		defense:          card.Prototype.Defense,
 		defenseInherited: true,
-		gooCost:          card.Prototype.GooCost,
+		cost:          card.Prototype.Cost,
 		gooCostInherited: true,
 	}
 }

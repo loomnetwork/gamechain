@@ -4,763 +4,763 @@
     "chainId": "default",
     "local": "hvNtnxu2r5a6gJ16p4EiUUJGQaU="
   },
-  "default_collection": [
+  "defaultCollection": [
     {
-      "card_name": "Whizpar",
+      "cardName": "Whizpar",
       "amount": 4
     },
     {
-      "card_name": "Pushhh",
+      "cardName": "Pushhh",
       "amount": 4
     },
     {
-      "card_name": "Ztormcaller",
+      "cardName": "Ztormcaller",
       "amount": 4
     },
     {
-      "card_name": "ZeuZ",
+      "cardName": "ZeuZ",
       "amount": 4
     },
     {
-      "card_name": "Rockky",
+      "cardName": "Rockky",
       "amount": 4
     },
     {
-      "card_name": "Golem",
+      "cardName": "Golem",
       "amount": 4
     },
     {
-      "card_name": "Mountain",
+      "cardName": "Mountain",
       "amount": 4
     },
     {
-      "card_name": "Walley",
+      "cardName": "Walley",
       "amount": 4
     },
     {
-      "card_name": "Pyromaz",
+      "cardName": "Pyromaz",
       "amount": 4
     },
     {
-      "card_name": "Burrrnn",
+      "cardName": "Burrrnn",
       "amount": 4
     },
     {
-      "card_name": "Cynderman",
+      "cardName": "Cynderman",
       "amount": 4
     },
     {
-      "card_name": "Gargantua",
+      "cardName": "Gargantua",
       "amount": 4
     },
     {
-      "card_name": "Fire-Maw",
+      "cardName": "Fire-Maw",
       "amount": 4
     },
     {
-      "card_name": "Stapler",
+      "cardName": "Stapler",
       "amount": 4
     },
     {
-      "card_name": "Nail Bomb",
+      "cardName": "Nail Bomb",
       "amount": 4
     },
     {
-      "card_name": "Goo Bottles",
+      "cardName": "Goo Bottles",
       "amount": 4
     },
     {
-      "card_name": "Chainsaw",
+      "cardName": "Chainsaw",
       "amount": 4
     },
     {
-      "card_name": "Azuraz",
+      "cardName": "Azuraz",
       "amount": 4
     },
     {
-      "card_name": "Shroom",
+      "cardName": "Shroom",
       "amount": 4
     },
     {
-      "card_name": "Vindrom",
+      "cardName": "Vindrom",
       "amount": 4
     },
     {
-      "card_name": "Shammann",
+      "cardName": "Shammann",
       "amount": 4
     },
     {
-      "card_name": "Puffer",
+      "cardName": "Puffer",
       "amount": 4
     },
     {
-      "card_name": "Poizom",
+      "cardName": "Poizom",
       "amount": 4
     },
     {
-      "card_name": "Ghoul",
+      "cardName": "Ghoul",
       "amount": 4
     },
     {
-      "card_name": "Hazmaz",
+      "cardName": "Hazmaz",
       "amount": 4
     },
     {
-      "card_name": "Cherno-bill",
+      "cardName": "Cherno-bill",
       "amount": 4
     },
     {
-      "card_name": "Izze",
+      "cardName": "Izze",
       "amount": 4
     },
     {
-      "card_name": "Jetter",
+      "cardName": "Jetter",
       "amount": 4
     },
     {
-      "card_name": "Freezzee",
+      "cardName": "Freezzee",
       "amount": 4
     },
     {
-      "card_name": "Tzunamy",
+      "cardName": "Tzunamy",
       "amount": 4
     },
     {
-      "card_name": "Bouncer",
+      "cardName": "Bouncer",
       "amount": 4
     },
     {
-      "card_name": "Wheezy",
+      "cardName": "Wheezy",
       "amount": 4
     },
     {
-      "card_name": "Tiny",
+      "cardName": "Tiny",
       "amount": 4
     },
     {
-      "card_name": "Earthshaker",
+      "cardName": "Earthshaker",
       "amount": 4
     },
     {
-      "card_name": "Cerberus",
+      "cardName": "Cerberus",
       "amount": 4
     },
     {
-      "card_name": "Werezomb",
+      "cardName": "Werezomb",
       "amount": 4
     },
     {
-      "card_name": "Z-Virus",
+      "cardName": "Z-Virus",
       "amount": 4
     },
     {
-      "card_name": "Yggdrazil",
+      "cardName": "Yggdrazil",
       "amount": 4
     },
     {
-      "card_name": "Sapper",
+      "cardName": "Sapper",
       "amount": 4
     },
     {
-      "card_name": "Keeper",
+      "cardName": "Keeper",
       "amount": 4
     },
     {
-      "card_name": "Zpitter",
+      "cardName": "Zpitter",
       "amount": 4
     },
     {
-      "card_name": "Zeeter",
+      "cardName": "Zeeter",
       "amount": 4
     },
     {
-      "card_name": "Zhatterer",
+      "cardName": "Zhatterer",
       "amount": 4
     },
     {
-      "card_name": "Znowman",
+      "cardName": "Znowman",
       "amount": 4
     },
     {
-      "card_name": "Soothsayer",
+      "cardName": "Soothsayer",
       "amount": 4
     },
     {
-      "card_name": "Spiker",
+      "cardName": "Spiker",
       "amount": 4
     },
     {
-      "card_name": "IgneouZ",
+      "cardName": "IgneouZ",
       "amount": 4
     },
     {
-      "card_name": "Zhampion",
+      "cardName": "Zhampion",
       "amount": 4
     },
     {
-      "card_name": "Goo Beaker",
+      "cardName": "Goo Beaker",
       "amount": 4
     },
     {
-      "card_name": "Bloomer",
+      "cardName": "Bloomer",
       "amount": 4
     },
     {
-      "card_name": "Zludge",
+      "cardName": "Zludge",
       "amount": 4
     },
     {
-      "card_name": "Blizzard",
+      "cardName": "Blizzard",
       "amount": 4
     },
     {
-      "card_name": "Ztormonk",
+      "cardName": "Ztormonk",
       "amount": 4
     },
     {
-      "card_name": "Draft",
+      "cardName": "Draft",
       "amount": 4
     },
     {
-      "card_name": "MonZoon",
+      "cardName": "MonZoon",
       "amount": 4
     },
     {
-      "card_name": "Blocker",
+      "cardName": "Blocker",
       "amount": 4
     },
     {
-      "card_name": "Slab",
+      "cardName": "Slab",
       "amount": 4
     },
     {
-      "card_name": "Pyrite",
+      "cardName": "Pyrite",
       "amount": 4
     },
     {
-      "card_name": "Gaea",
+      "cardName": "Gaea",
       "amount": 4
     },
     {
-      "card_name": "Fresh Meat",
+      "cardName": "Fresh Meat",
       "amount": 4
     },
     {
-      "card_name": "Ectoplasm",
+      "cardName": "Ectoplasm",
       "amount": 4
     },
     {
-      "card_name": "GooZilla",
+      "cardName": "GooZilla",
       "amount": 4
     },
     {
-      "card_name": "Maelstrom",
+      "cardName": "Maelstrom",
       "amount": 4
     },
     {
-      "card_name": "Fumez",
+      "cardName": "Fumez",
       "amount": 4
     },
     {
-      "card_name": "Gaz",
+      "cardName": "Gaz",
       "amount": 4
     },
     {
-      "card_name": "Pit",
+      "cardName": "Pit",
       "amount": 4
     },
     {
-      "card_name": "Crater",
+      "cardName": "Crater",
       "amount": 4
     },
     {
-      "card_name": "Quazi",
+      "cardName": "Quazi",
       "amount": 4
     },
     {
-      "card_name": "Modo",
+      "cardName": "Modo",
       "amount": 4
     },
     {
-      "card_name": "Zap",
+      "cardName": "Zap",
       "amount": 4
     },
     {
-      "card_name": "Cactuz",
+      "cardName": "Cactuz",
       "amount": 4
     },
     {
-      "card_name": "Zeptic",
+      "cardName": "Zeptic",
       "amount": 4
     },
     {
-      "card_name": "Hazzard",
+      "cardName": "Hazzard",
       "amount": 4
     },
     {
-      "card_name": "Ozmoziz",
+      "cardName": "Ozmoziz",
       "amount": 4
     },
     {
-      "card_name": "Geyzer",
+      "cardName": "Geyzer",
       "amount": 4
     },
     {
-      "card_name": "Whistle",
+      "cardName": "Whistle",
       "amount": 4
     },
     {
-      "card_name": "Znowy",
+      "cardName": "Znowy",
       "amount": 4
     },
     {
-      "card_name": "Wazte",
+      "cardName": "Wazte",
       "amount": 4
     },
     {
-      "card_name": "Ztalagmite",
+      "cardName": "Ztalagmite",
       "amount": 4
     },
     {
-      "card_name": "Igloo",
+      "cardName": "Igloo",
       "amount": 4
     },
     {
-      "card_name": "Froztbite",
+      "cardName": "Froztbite",
       "amount": 4
     },
     {
-      "card_name": "Amber",
+      "cardName": "Amber",
       "amount": 4
     },
     {
-      "card_name": "Bark",
+      "cardName": "Bark",
       "amount": 4
     },
     {
-      "card_name": "Germ",
+      "cardName": "Germ",
       "amount": 4
     },
     {
-      "card_name": "Ember",
+      "cardName": "Ember",
       "amount": 4
     },
     {
-      "card_name": "Firewall",
+      "cardName": "Firewall",
       "amount": 4
     },
     {
-      "card_name": "BurZt",
+      "cardName": "BurZt",
       "amount": 4
     },
     {
-      "card_name": "Extinguisher",
+      "cardName": "Extinguisher",
       "amount": 4
     },
     {
-      "card_name": "Lawnmower",
+      "cardName": "Lawnmower",
       "amount": 4
     },
     {
-      "card_name": "Shale",
+      "cardName": "Shale",
       "amount": 4
     },
     {
-      "card_name": "Hardy",
+      "cardName": "Hardy",
       "amount": 4
     },
     {
-      "card_name": "Breezee",
+      "cardName": "Breezee",
       "amount": 4
     },
     {
-      "card_name": "Banshee",
+      "cardName": "Banshee",
       "amount": 4
     },
     {
-      "card_name": "Zhocker",
+      "cardName": "Zhocker",
       "amount": 4
     },
     {
-      "card_name": "Bolderr",
+      "cardName": "Bolderr",
       "amount": 4
     },
     {
-      "card_name": "Zlimey",
+      "cardName": "Zlimey",
       "amount": 4
     },
     {
-      "card_name": "Azzazzin",
+      "cardName": "Azzazzin",
       "amount": 4
     },
     {
-      "card_name": "PreZerver",
+      "cardName": "PreZerver",
       "amount": 4
     },
     {
-      "card_name": "Zephyr",
+      "cardName": "Zephyr",
       "amount": 4
     },
     {
-      "card_name": "BlaZter",
+      "cardName": "BlaZter",
       "amount": 4
     },
     {
-      "card_name": "Zlinger",
+      "cardName": "Zlinger",
       "amount": 4
     },
     {
-      "card_name": "Mind Flayer",
+      "cardName": "Mind Flayer",
       "amount": 4
     },
     {
-      "card_name": "Molotov",
+      "cardName": "Molotov",
       "amount": 4
     },
     {
-      "card_name": "Bat",
+      "cardName": "Bat",
       "amount": 4
     },
     {
-      "card_name": "Super Serum",
+      "cardName": "Super Serum",
       "amount": 4
     },
     {
-      "card_name": "Buffer",
+      "cardName": "Buffer",
       "amount": 4
     },
     {
-      "card_name": "Whiffer",
+      "cardName": "Whiffer",
       "amount": 4
     },
     {
-      "card_name": "Dragger",
+      "cardName": "Dragger",
       "amount": 4
     },
     {
-      "card_name": "Zyclone",
+      "cardName": "Zyclone",
       "amount": 4
     },
     {
-      "card_name": "Pebble",
+      "cardName": "Pebble",
       "amount": 4
     },
     {
-      "card_name": "Crumbz",
+      "cardName": "Crumbz",
       "amount": 4
     },
     {
-      "card_name": "Protector",
+      "cardName": "Protector",
       "amount": 4
     },
     {
-      "card_name": "Defender",
+      "cardName": "Defender",
       "amount": 4
     },
     {
-      "card_name": "Firecaller",
+      "cardName": "Firecaller",
       "amount": 4
     },
     {
-      "card_name": "RabieZ",
+      "cardName": "RabieZ",
       "amount": 4
     },
     {
-      "card_name": "Enrager",
+      "cardName": "Enrager",
       "amount": 4
     },
     {
-      "card_name": "Supply Drop",
+      "cardName": "Supply Drop",
       "amount": 4
     },
     {
-      "card_name": "Junk Spear",
+      "cardName": "Junk Spear",
       "amount": 4
     },
     {
-      "card_name": "Zed Kit",
+      "cardName": "Zed Kit",
       "amount": 4
     },
     {
-      "card_name": "Grower",
+      "cardName": "Grower",
       "amount": 4
     },
     {
-      "card_name": "EverlaZting",
+      "cardName": "EverlaZting",
       "amount": 4
     },
     {
-      "card_name": "Healz",
+      "cardName": "Healz",
       "amount": 4
     },
     {
-      "card_name": "Rainz",
+      "cardName": "Rainz",
       "amount": 4
     },
     {
-      "card_name": "Zcavenger",
+      "cardName": "Zcavenger",
       "amount": 4
     },
     {
-      "card_name": "Spikez",
+      "cardName": "Spikez",
       "amount": 4
     },
     {
-      "card_name": "RelentleZZ",
+      "cardName": "RelentleZZ",
       "amount": 4
     },
     {
-      "card_name": "Polluter",
+      "cardName": "Polluter",
       "amount": 4
     },
     {
-      "card_name": "HoZer",
+      "cardName": "HoZer",
       "amount": 4
     },
     {
-      "card_name": "FroZen",
+      "cardName": "FroZen",
       "amount": 4
     },
     {
-      "card_name": "Slider",
+      "cardName": "Slider",
       "amount": 4
     },
     {
-      "card_name": "Zub-Zero",
+      "cardName": "Zub-Zero",
       "amount": 4
     },
     {
-      "card_name": "Zquall",
+      "cardName": "Zquall",
       "amount": 4
     },
     {
-      "card_name": "Groundy",
+      "cardName": "Groundy",
       "amount": 4
     },
     {
-      "card_name": "Sparky",
+      "cardName": "Sparky",
       "amount": 4
     },
     {
-      "card_name": "Rager",
+      "cardName": "Rager",
       "amount": 4
     },
     {
-      "card_name": "Alpha",
+      "cardName": "Alpha",
       "amount": 4
     },
     {
-      "card_name": "Volcan",
+      "cardName": "Volcan",
       "amount": 4
     },
     {
-      "card_name": "Torch",
+      "cardName": "Torch",
       "amount": 4
     },
     {
-      "card_name": "Shovel",
+      "cardName": "Shovel",
       "amount": 4
     },
     {
-      "card_name": "Shopping Cart",
+      "cardName": "Shopping Cart",
       "amount": 4
     },
     {
-      "card_name": "Leash",
+      "cardName": "Leash",
       "amount": 4
     },
     {
-      "card_name": "Bulldozer",
+      "cardName": "Bulldozer",
       "amount": 4
     },
     {
-      "card_name": "WiZp",
+      "cardName": "WiZp",
       "amount": 4
     },
     {
-      "card_name": "Zplitter",
+      "cardName": "Zplitter",
       "amount": 4
     },
     {
-      "card_name": "Zeeder",
+      "cardName": "Zeeder",
       "amount": 4
     },
     {
-      "card_name": "Blight",
+      "cardName": "Blight",
       "amount": 4
     },
     {
-      "card_name": "Zlopper",
+      "cardName": "Zlopper",
       "amount": 4
     },
     {
-      "card_name": "Boomer",
+      "cardName": "Boomer",
       "amount": 4
     },
     {
-      "card_name": "Zteroid",
+      "cardName": "Zteroid",
       "amount": 4
     },
     {
-      "card_name": "Vortex",
+      "cardName": "Vortex",
       "amount": 4
     },
     {
-      "card_name": "Zplash",
+      "cardName": "Zplash",
       "amount": 4
     },
     {
-      "card_name": "Izicle",
+      "cardName": "Izicle",
       "amount": 4
     },
     {
-      "card_name": "Zpring",
+      "cardName": "Zpring",
       "amount": 4
     },
     {
-      "card_name": "Boomstick",
+      "cardName": "Boomstick",
       "amount": 4
     }
   ],
-  "default_decks": [
+  "defaultDecks": [
     {
       "id": 0,
-      "overlord_id": 4,
+      "overlordId": 4,
       "name": "Default",
       "cards": [
         {
-          "card_name": "Poizom",
+          "cardName": "Poizom",
           "amount": 4
         },
         {
-          "card_name": "Hazmaz",
+          "cardName": "Hazmaz",
           "amount": 2
         },
         {
-          "card_name": "Zeeter",
+          "cardName": "Zeeter",
           "amount": 1
         },
         {
-          "card_name": "Zhatterer",
+          "cardName": "Zhatterer",
           "amount": 4
         },
         {
-          "card_name": "Zludge",
+          "cardName": "Zludge",
           "amount": 2
         },
         {
-          "card_name": "Znowman",
+          "cardName": "Znowman",
           "amount": 4
         },
         {
-          "card_name": "Z-Virus",
+          "cardName": "Z-Virus",
           "amount": 1
         },
         {
-          "card_name": "Gaea",
+          "cardName": "Gaea",
           "amount": 1
         },
         {
-          "card_name": "Earthshaker",
+          "cardName": "Earthshaker",
           "amount": 1
         },
         {
-          "card_name": "Zeptic",
+          "cardName": "Zeptic",
           "amount": 1
         },
         {
-          "card_name": "Ghoul",
+          "cardName": "Ghoul",
           "amount": 1
         },
         {
-          "card_name": "Hazzard",
+          "cardName": "Hazzard",
           "amount": 1
         },
         {
-          "card_name": "Ectoplasm",
+          "cardName": "Ectoplasm",
           "amount": 1
         },
         {
-          "card_name": "Bouncer",
+          "cardName": "Bouncer",
           "amount": 2
         },
         {
-          "card_name": "Stapler",
+          "cardName": "Stapler",
           "amount": 1
         },
         {
-          "card_name": "Goo Bottles",
+          "cardName": "Goo Bottles",
           "amount": 1
         },
         {
-          "card_name": "Chainsaw",
+          "cardName": "Chainsaw",
           "amount": 2
         }
       ]
     }
   ],
-  "ai_decks": [
+  "aiDecks": [
     {
       "type": "BLITZ_AI",
       "deck": {
         "id": 0,
-        "overlord_id": 1,
+        "overlordId": 1,
         "name": "BLITZ_AI",
         "cards": [
           {
-            "card_name": "Pyromaz",
+            "cardName": "Pyromaz",
             "amount": 4
           },
           {
-            "card_name": "Modo",
+            "cardName": "Modo",
             "amount": 2
           },
           {
-            "card_name": "Cerberus",
+            "cardName": "Cerberus",
             "amount": 1
           },
           {
-            "card_name": "Jetter",
+            "cardName": "Jetter",
             "amount": 2
           },
           {
-            "card_name": "Tiny",
+            "cardName": "Tiny",
             "amount": 2
           },
           {
-            "card_name": "Quazi",
+            "cardName": "Quazi",
             "amount": 4
           },
           {
-            "card_name": "Fire-Maw",
+            "cardName": "Fire-Maw",
             "amount": 1
           },
           {
-            "card_name": "Burrrnn",
+            "cardName": "Burrrnn",
             "amount": 2
           },
           {
-            "card_name": "Rockky",
+            "cardName": "Rockky",
             "amount": 4
           },
           {
-            "card_name": "Werezomb",
+            "cardName": "Werezomb",
             "amount": 2
           },
           {
-            "card_name": "Cynderman",
+            "cardName": "Cynderman",
             "amount": 2
           },
           {
-            "card_name": "Gargantua",
+            "cardName": "Gargantua",
             "amount": 1
           },
           {
-            "card_name": "Zhampion",
+            "cardName": "Zhampion",
             "amount": 2
           },
           {
-            "card_name": "Fresh Meat",
+            "cardName": "Fresh Meat",
             "amount": 1
           }
         ]
@@ -770,219 +770,219 @@
       "type": "DEFENSE_AI",
       "deck": {
         "id": 1,
-        "overlord_id": 0,
+        "overlordId": 0,
         "name": "DEFENSE_AI",
         "cards": [
           {
-            "card_name": "Tiny",
+            "cardName": "Tiny",
             "amount": 2
           },
           {
-            "card_name": "Crater",
+            "cardName": "Crater",
             "amount": 1
           },
           {
-            "card_name": "Walley",
+            "cardName": "Walley",
             "amount": 1
           },
           {
-            "card_name": "Spiker",
+            "cardName": "Spiker",
             "amount": 2
           },
           {
-            "card_name": "Earthshaker",
+            "cardName": "Earthshaker",
             "amount": 2
           },
           {
-            "card_name": "IgneouZ",
+            "cardName": "IgneouZ",
             "amount": 2
           },
           {
-            "card_name": "Zeuz",
+            "cardName": "Zeuz",
             "amount": 1
           },
           {
-            "card_name": "Poizom",
+            "cardName": "Poizom",
             "amount": 4
           },
           {
-            "card_name": "Werezomb",
+            "cardName": "Werezomb",
             "amount": 1
           },
           {
-            "card_name": "Gargantua",
+            "cardName": "Gargantua",
             "amount": 1
           },
           {
-            "card_name": "Izze",
+            "cardName": "Izze",
             "amount": 2
           },
           {
-            "card_name": "Znowman",
+            "cardName": "Znowman",
             "amount": 2
           },
           {
-            "card_name": "Rockky",
+            "cardName": "Rockky",
             "amount": 2
           },
           {
-            "card_name": "Cherno-bill",
+            "cardName": "Cherno-bill",
             "amount": 1
           },
           {
-            "card_name": "Ghoul",
+            "cardName": "Ghoul",
             "amount": 2
           },
           {
-            "card_name": "Pyromaz",
+            "cardName": "Pyromaz",
             "amount": 4
           }
         ]
       }
     },
     {
-      "ability": "MIXED_AI",
+      "type": "MIXED_AI",
       "deck": {
         "id": 2,
-        "overlord_id": 4,
+        "overlordId": 4,
         "name": "MIXED_AI",
         "cards": [
           {
-            "card_name": "Poizom",
+            "cardName": "Poizom",
             "amount": 4
           },
           {
-            "card_name": "Zpitter",
+            "cardName": "Zpitter",
             "amount": 4
           },
           {
-            "card_name": "Zeptic",
+            "cardName": "Zeptic",
             "amount": 4
           },
           {
-            "card_name": "Ghoul",
+            "cardName": "Ghoul",
             "amount": 2
           },
           {
-            "card_name": "Hazzard",
+            "cardName": "Hazzard",
             "amount": 2
           },
           {
-            "card_name": "Zludge",
+            "cardName": "Zludge",
             "amount": 2
           },
           {
-            "card_name": "Ectoplasm",
+            "cardName": "Ectoplasm",
             "amount": 2
           },
           {
-            "card_name": "Cherno-bill",
+            "cardName": "Cherno-bill",
             "amount": 1
           },
           {
-            "card_name": "GooZilla",
+            "cardName": "GooZilla",
             "amount": 1
           },
           {
-            "card_name": "Slab",
+            "cardName": "Slab",
             "amount": 1
           },
           {
-            "card_name": "Rockky",
+            "cardName": "Rockky",
             "amount": 4
           },
           {
-            "card_name": "Hazmaz",
+            "cardName": "Hazmaz",
             "amount": 1
           },
           {
-            "card_name": "Izze",
+            "cardName": "Izze",
             "amount": 1
           },
           {
-            "card_name": "Znowman",
+            "cardName": "Znowman",
             "amount": 1
           }
         ]
       }
     },
     {
-      "ability": "MIXED_BLITZ_AI",
+      "type": "MIXED_BLITZ_AI",
       "deck": {
         "id": 3,
-        "overlord_id": 2,
+        "overlordId": 2,
         "name": "MIXED_BLITZ_AI",
         "cards": [
           {
-            "card_name": "Izze",
+            "cardName": "Izze",
             "amount": 2
           },
           {
-            "card_name": "Znowman",
+            "cardName": "Znowman",
             "amount": 2
           },
           {
-            "card_name": "Ozmoziz",
+            "cardName": "Ozmoziz",
             "amount": 2
           },
           {
-            "card_name": "Jetter",
+            "cardName": "Jetter",
             "amount": 2
           },
           {
-            "card_name": "Geyzer",
+            "cardName": "Geyzer",
             "amount": 2
           },
           {
-            "card_name": "Rockky",
+            "cardName": "Rockky",
             "amount": 2
           },
           {
-            "card_name": "Azuraz",
+            "cardName": "Azuraz",
             "amount": 1
           },
           {
-            "card_name": "Bloomer",
+            "cardName": "Bloomer",
             "amount": 2
           },
           {
-            "card_name": "Vindrom",
+            "cardName": "Vindrom",
             "amount": 2
           },
           {
-            "card_name": "Shroom",
+            "cardName": "Shroom",
             "amount": 2
           },
           {
-            "card_name": "Sapper",
+            "cardName": "Sapper",
             "amount": 1
           },
           {
-            "card_name": "Keeper",
+            "cardName": "Keeper",
             "amount": 1
           },
           {
-            "card_name": "Puffer",
+            "cardName": "Puffer",
             "amount": 2
           },
           {
-            "card_name": "Poizom",
+            "cardName": "Poizom",
             "amount": 2
           },
           {
-            "card_name": "Ghoul",
+            "cardName": "Ghoul",
             "amount": 1
           },
           {
-            "card_name": "Goo Beaker",
+            "cardName": "Goo Beaker",
             "amount": 2
           },
           {
-            "card_name": "Burrrnn",
+            "cardName": "Burrrnn",
             "amount": 2
           },
           {
-            "card_name": "Werezomb",
+            "cardName": "Werezomb",
             "amount": 1
           }
         ]
@@ -992,83 +992,83 @@
       "type": "TIME_BLITZ_AI",
       "deck": {
         "id": 4,
-        "overlord_id": 3,
+        "overlordId": 3,
         "name": "TIME_BLITZ_AI",
         "cards": [
           {
-            "card_name": "Whizpar",
+            "cardName": "Whizpar",
             "amount": 2
           },
           {
-            "card_name": "Pushhh",
+            "cardName": "Pushhh",
             "amount": 2
           },
           {
-            "card_name": "Fumez",
+            "cardName": "Fumez",
             "amount": 1
           },
           {
-            "card_name": "Soothsayer",
+            "cardName": "Soothsayer",
             "amount": 1
           },
           {
-            "card_name": "Ztormcaller",
+            "cardName": "Ztormcaller",
             "amount": 2
           },
           {
-            "card_name": "Gaz",
+            "cardName": "Gaz",
             "amount": 2
           },
           {
-            "card_name": "Draft",
+            "cardName": "Draft",
             "amount": 1
           },
           {
-            "card_name": "MonZoon",
+            "cardName": "MonZoon",
             "amount": 2
           },
           {
-            "card_name": "Zeuz",
+            "cardName": "Zeuz",
             "amount": 2
           },
           {
-            "card_name": "Corrupted Goo",
+            "cardName": "Corrupted Goo",
             "amount": 1
           },
           {
-            "card_name": "Tainted Goo",
+            "cardName": "Tainted Goo",
             "amount": 1
           },
           {
-            "card_name": "Znowman",
+            "cardName": "Znowman",
             "amount": 2
           },
           {
-            "card_name": "Burrrnn",
+            "cardName": "Burrrnn",
             "amount": 2
           },
           {
-            "card_name": "Cynderman",
+            "cardName": "Cynderman",
             "amount": 2
           },
           {
-            "card_name": "Fire-Maw",
+            "cardName": "Fire-Maw",
             "amount": 1
           },
           {
-            "card_name": "Zhampion",
+            "cardName": "Zhampion",
             "amount": 2
           },
           {
-            "card_name": "Zpitter",
+            "cardName": "Zpitter",
             "amount": 3
           },
           {
-            "card_name": "Poizom",
+            "cardName": "Poizom",
             "amount": 1
           },
           {
-            "card_name": "Wheezy",
+            "cardName": "Wheezy",
             "amount": 2
           }
         ]
@@ -1078,67 +1078,67 @@
       "type": "MIXED_DEFENSE_AI",
       "deck": {
         "id": 5,
-        "overlord_id": 5,
+        "overlordId": 5,
         "name": "MIXED_DEFENSE_AI",
         "cards": [
           {
-            "card_name": "Azuraz",
+            "cardName": "Azuraz",
             "amount": 4
           },
           {
-            "card_name": "Bloomer",
+            "cardName": "Bloomer",
             "amount": 4
           },
           {
-            "card_name": "Zap",
+            "cardName": "Zap",
             "amount": 4
           },
           {
-            "card_name": "Shroom",
+            "cardName": "Shroom",
             "amount": 2
           },
           {
-            "card_name": "Vindrom",
+            "cardName": "Vindrom",
             "amount": 2
           },
           {
-            "card_name": "Z-Virus",
+            "cardName": "Z-Virus",
             "amount": 1
           },
           {
-            "card_name": "Yggdrazil",
+            "cardName": "Yggdrazil",
             "amount": 1
           },
           {
-            "card_name": "Izze",
+            "cardName": "Izze",
             "amount": 2
           },
           {
-            "card_name": "Znowman",
+            "cardName": "Znowman",
             "amount": 2
           },
           {
-            "card_name": "Jetter",
+            "cardName": "Jetter",
             "amount": 1
           },
           {
-            "card_name": "Pyromaz",
+            "cardName": "Pyromaz",
             "amount": 1
           },
           {
-            "card_name": "Cynderman",
+            "cardName": "Cynderman",
             "amount": 1
           },
           {
-            "card_name": "Burrrnn",
+            "cardName": "Burrrnn",
             "amount": 1
           },
           {
-            "card_name": "Werezomb",
+            "cardName": "Werezomb",
             "amount": 1
           },
           {
-            "card_name": "Rockky",
+            "cardName": "Rockky",
             "amount": 3
           }
         ]
@@ -1147,11 +1147,11 @@
   ],
   "overlords": [
     {
-      "overlord_id": 0,
+      "overlordId": 0,
       "icon": "icon",
       "name": "Brakuus",
-      "short_description": "The Guardian",
-      "long_description": "",
+      "shortDescription": "The Guardian",
+      "longDescription": "",
       "faction": "EARTH",
       "experience": 0,
       "level": 0,
@@ -1159,38 +1159,38 @@
         {
           "title": "Harden",
           "skill": "HARDEN",
-          "icon_path": "overlordability_earth",
+          "iconPath": "overlordability_earth",
           "description": "Give +2 Def to your Overlord",
-          "skill_targets": [],
+          "skillTargets": [],
           "cooldown": 3,
-          "initial_cooldown": 3,
+          "initialCooldown": 3,
           "value": 2
         },
         {
           "title": "Stoneskin",
           "skill": "STONE_SKIN",
-          "icon_path": "overlordability_earth_stone_skin",
+          "iconPath": "overlordability_earth_stone_skin",
           "description": "Give an ally Earth zombie +1 Def",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER_CARD"
           ],
           "targetFactions": [
             "EARTH"
           ],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 1
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     },
     {
-      "overlord_id": 1,
+      "overlordId": 1,
       "icon": "icon",
       "name": "Razu",
-      "short_description": "The Fire Daemon",
-      "long_description": "",
+      "shortDescription": "The Fire Daemon",
+      "longDescription": "",
       "faction": "FIRE",
       "experience": 0,
       "level": 0,
@@ -1198,43 +1198,43 @@
         {
           "title": "Fire Bolt",
           "skill": "FIRE_BOLT",
-          "icon_path": "overlordability_fire",
+          "iconPath": "overlordability_fire",
           "description": "Deal 1 damage to target",
-          "skill_targets": [
+          "skillTargets": [
             "OPPONENT_CARD",
             "PLAYER_CARD",
             "PLAYER",
             "OPPONENT"
           ],
           "cooldown": 3,
-          "initial_cooldown": 3,
+          "initialCooldown": 3,
           "value": 1
         },
         {
           "title": "Rabies",
           "skill": "RABIES",
-          "icon_path": "overlordability_fire_rabies",
+          "iconPath": "overlordability_fire_rabies",
           "description": "Give an ally Fire zombie Feral",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER_CARD"
           ],
           "targetFactions": [
             "FIRE"
           ],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 1
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     },
     {
-      "overlord_id": 2,
+      "overlordId": 2,
       "icon": "icon",
       "name": "Vash'Kala",
-      "short_description": "The Ancient One",
-      "long_description": "",
+      "shortDescription": "The Ancient One",
+      "longDescription": "",
       "faction": "WATER",
       "experience": 0,
       "level": 0,
@@ -1242,39 +1242,39 @@
         {
           "title": "Freeze",
           "skill": "FREEZE",
-          "icon_path": "overlordability_water",
+          "iconPath": "overlordability_water",
           "description": "Freeze a zombie",
-          "skill_targets": [
+          "skillTargets": [
             "OPPONENT_CARD",
             "PLAYER_CARD"
           ],
           "cooldown": 3,
-          "initial_cooldown": 3,
+          "initialCooldown": 3,
           "value": 1
         },
         {
           "title": "Ice Bolt",
           "skill": "ICE_BOLT",
-          "icon_path": "overlordability_water_ice_bolt",
+          "iconPath": "overlordability_water_ice_bolt",
           "description": "Deal 2 damage to a target zombie. If it survives, Freeze it",
-          "skill_targets": [
+          "skillTargets": [
             "OPPONENT_CARD",
             "PLAYER_CARD"
           ],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 2
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     },
     {
-      "overlord_id": 3,
+      "overlordId": 3,
       "icon": "icon",
       "name": "Kalile",
-      "short_description": "Tempest of Storms",
-      "long_description": "",
+      "shortDescription": "Tempest of Storms",
+      "longDescription": "",
       "faction": "AIR",
       "experience": 0,
       "level": 0,
@@ -1282,38 +1282,38 @@
         {
           "title": "Push",
           "skill": "PUSH",
-          "icon_path": "overlordability_air_push",
+          "iconPath": "overlordability_air_push",
           "description": "Return an ally Air zombie to your hand",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER_CARD"
           ],
           "targetFactions": [
             "AIR"
           ],
           "cooldown": 6,
-          "initial_cooldown": 5,
+          "initialCooldown": 5,
           "value": 0
         },
         {
           "title": "Draw",
           "skill": "DRAW",
-          "icon_path": "overlordability_air_draw",
+          "iconPath": "overlordability_air_draw",
           "description": "Draw a card",
-          "skill_targets": [],
+          "skillTargets": [],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 0
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     },
     {
-      "overlord_id": 4,
+      "overlordId": 4,
       "icon": "icon",
       "name": "Mhalik",
-      "short_description": "Lord of Pestilence",
-      "long_description": "",
+      "shortDescription": "Lord of Pestilence",
+      "longDescription": "",
       "faction": "TOXIC",
       "experience": 0,
       "level": 0,
@@ -1321,42 +1321,42 @@
         {
           "title": "Poison Dart",
           "skill": "POISON_DART",
-          "icon_path": "overlordability_toxic",
+          "iconPath": "overlordability_toxic",
           "description": "Deal 1 damage to an enemy",
-          "skill_targets": [
+          "skillTargets": [
             "OPPONENT_CARD",
             "OPPONENT"
           ],
           "cooldown": 3,
-          "initial_cooldown": 3,
+          "initialCooldown": 3,
           "value": 1
         },
         {
           "title": "Toxic Power",
           "skill": "TOXIC_POWER",
-          "icon_path": "overlordability_toxic_toxic_power",
+          "iconPath": "overlordability_toxic_toxic_power",
           "description": "Deal 1 damage to an ally Toxic zombie and give it +1 Atk",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER_CARD"
           ],
           "targetFactions": [
             "TOXIC"
           ],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 1,
           "damage": 1
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     },
     {
-      "overlord_id": 5,
+      "overlordId": 5,
       "icon": "icon",
       "name": "Valash",
-      "short_description": "Nature's Warden",
-      "long_description": "",
+      "shortDescription": "Nature's Warden",
+      "longDescription": "",
       "faction": "LIFE",
       "experience": 0,
       "level": 0,
@@ -1364,35 +1364,35 @@
         {
           "title": "Healing Touch",
           "skill": "HEALING_TOUCH",
-          "icon_path": "overlordability_life",
+          "iconPath": "overlordability_life",
           "description": "Restore 2 Def to an ally zombie",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER_CARD"
           ],
           "cooldown": 3,
-          "initial_cooldown": 3,
+          "initialCooldown": 3,
           "value": 2
         },
         {
           "title": "Mend",
           "skill": "MEND",
-          "icon_path": "overlordability_life_mend",
+          "iconPath": "overlordability_life_mend",
           "description": "Restore 2 Def to your Overlord",
-          "skill_targets": [
+          "skillTargets": [
             "PLAYER"
           ],
           "cooldown": 4,
-          "initial_cooldown": 4,
+          "initialCooldown": 4,
           "value": 2
         }
       ],
-      "primary_skill": 0,
-      "secondary_skill": 1
+      "primarySkill": 0,
+      "secondarySkill": 1
     }
   ],
   "cards": [
     {
-      "id": 1,
+      "mouldId": 1,
       "name": "Whizpar",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -1403,7 +1403,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Water zombies",
       "picture": "Whizpar",
-      "flavor_text": "The unfriendly ghost...",
+      "flavorText": "The unfriendly ghost...",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -1432,7 +1432,7 @@
       }
     },
     {
-      "id": 2,
+      "mouldId": 2,
       "name": "Pushhh",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -1443,7 +1443,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> Return a zombie to its owner's Hand",
       "picture": "Pushhh",
-      "flavor_text": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
+      "flavorText": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
       "abilities": [
         {
           "ability": "CARD_RETURN",
@@ -1470,7 +1470,7 @@
       }
     },
     {
-      "id": 3,
+      "mouldId": 3,
       "name": "Ztormcaller",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -1481,7 +1481,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> 1 damage to a zombie, Swing 1",
       "picture": "ztormmcaller",
-      "flavor_text": "Thor's best student just got a little angrier...",
+      "flavorText": "Thor's best student just got a little angrier...",
       "abilities": [
         {
           "ability": "SWING",
@@ -1518,7 +1518,7 @@
       }
     },
     {
-      "id": 4,
+      "mouldId": 4,
       "name": "ZeuZ",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -1529,7 +1529,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> 3 damage to all enemies",
       "picture": "ZeuZ",
-      "flavor_text": "From mount Zolympus in the sky - fear Ze-might of ZeuZ!",
+      "flavorText": "From mount Zolympus in the sky - fear Ze-might of ZeuZ!",
       "abilities": [
         {
           "ability": "MASSIVE_DAMAGE",
@@ -1558,7 +1558,7 @@
       }
     },
     {
-      "id": 5,
+      "mouldId": 5,
       "name": "Rockky",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -1569,7 +1569,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Air zombies",
       "picture": "Rockky",
-      "flavor_text": "Addriaaannn!!! Addriaaaaaannnnn!!!",
+      "flavorText": "Addriaaannn!!! Addriaaaaaannnnn!!!",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -1598,7 +1598,7 @@
       }
     },
     {
-      "id": 6,
+      "mouldId": 6,
       "name": "Golem",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -1609,7 +1609,7 @@
       "cost": 5,
       "description": "<b>Heavy</b> ",
       "picture": "Golem",
-      "flavor_text": "mmMMWhaaaaat?",
+      "flavorText": "mmMMWhaaaaat?",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -1625,7 +1625,7 @@
       }
     },
     {
-      "id": 8,
+      "mouldId": 8,
       "name": "Mountain",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -1636,7 +1636,7 @@
       "cost": 11,
       "description": "<b>Heavy, Swing 4</b> ",
       "picture": "Mountain",
-      "flavor_text": "When the mountain comes to you... you'll run!",
+      "flavorText": "When the mountain comes to you... you'll run!",
       "abilities": [
         {
           "ability": "SWING",
@@ -1660,7 +1660,7 @@
       }
     },
     {
-      "id": 9,
+      "mouldId": 9,
       "name": "Walley",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -1671,7 +1671,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> Adjacent zombies get Heavy",
       "picture": "Walley",
-      "flavor_text": "\"Eeeeeeva\"",
+      "flavorText": "\"Eeeeeeva\"",
       "abilities": [
         {
           "ability": "ADJACENT_UNITS_GET_HEAVY",
@@ -1694,7 +1694,7 @@
       }
     },
     {
-      "id": 10,
+      "mouldId": 10,
       "name": "Pyromaz",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -1705,7 +1705,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Toxic zombies",
       "picture": "Pyromaz",
-      "flavor_text": "He's really into that old Prodigy song... Firestarter...",
+      "flavorText": "He's really into that old Prodigy song... Firestarter...",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "id": 11,
+      "mouldId": 11,
       "name": "Burrrnn",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -1745,7 +1745,7 @@
       "cost": 3,
       "description": "<b>Feral</b> ",
       "picture": "Burrrnn",
-      "flavor_text": "So he likes all the pretty bright colors, can you blame him?",
+      "flavorText": "So he likes all the pretty bright colors, can you blame him?",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -1761,7 +1761,7 @@
       }
     },
     {
-      "id": 12,
+      "mouldId": 12,
       "name": "Cynderman",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -1772,7 +1772,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> 2 damage to a zombie",
       "picture": "Cynderman",
-      "flavor_text": "Hot, so very hot - all the time!",
+      "flavorText": "Hot, so very hot - all the time!",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -1801,7 +1801,7 @@
       }
     },
     {
-      "id": 13,
+      "mouldId": 13,
       "name": "Gargantua",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -1812,7 +1812,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> 2 damage to all enemies",
       "picture": "Gargantua",
-      "flavor_text": "(sing) Under pressure... coming down on you...",
+      "flavorText": "(sing) Under pressure... coming down on you...",
       "abilities": [
         {
           "ability": "MASSIVE_DAMAGE",
@@ -1841,7 +1841,7 @@
       }
     },
     {
-      "id": 14,
+      "mouldId": 14,
       "name": "Fire-Maw",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -1852,7 +1852,7 @@
       "cost": 5,
       "description": "<b>Flash</b> ",
       "picture": "Fire-Maw",
-      "flavor_text": "There's always an aftershock, duck twice",
+      "flavorText": "There's always an aftershock, duck twice",
       "abilities": [
         {
           "ability": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
@@ -1879,7 +1879,7 @@
       }
     },
     {
-      "id": 15,
+      "mouldId": 15,
       "name": "Stapler",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -1890,7 +1890,7 @@
       "cost": 4,
       "description": "Restore 4 Def to a zombie",
       "picture": "Stapler",
-      "flavor_text": "No pain, no gain.",
+      "flavorText": "No pain, no gain.",
       "abilities": [
         {
           "ability": "HEAL",
@@ -1918,7 +1918,7 @@
       }
     },
     {
-      "id": 16,
+      "mouldId": 16,
       "name": "Nail Bomb",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -1929,7 +1929,7 @@
       "cost": 4,
       "description": "4 damage to a zombie, Swing 4",
       "picture": "NailBomb",
-      "flavor_text": "When you really want to nail it!",
+      "flavorText": "When you really want to nail it!",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET_ADJUSTMENTS",
@@ -1958,7 +1958,7 @@
       }
     },
     {
-      "id": 17,
+      "mouldId": 17,
       "name": "Goo Bottles",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -1969,7 +1969,7 @@
       "cost": 4,
       "description": "Get 2 empty goo vials",
       "picture": "GooBottles",
-      "flavor_text": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
+      "flavorText": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
       "abilities": [
         {
           "ability": "ADD_GOO_VIAL",
@@ -1997,7 +1997,7 @@
       }
     },
     {
-      "id": 18,
+      "mouldId": 18,
       "name": "Chainsaw",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -2008,7 +2008,7 @@
       "cost": 4,
       "description": "+4 Atk to a zombie; End: 4 damage to this zombie",
       "picture": "Chainsaw",
-      "flavor_text": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
+      "flavorText": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
       "abilities": [
         {
           "ability": "UNIT_WEAPON",
@@ -2037,7 +2037,7 @@
       }
     },
     {
-      "id": 19,
+      "mouldId": 19,
       "name": "Azuraz",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2048,7 +2048,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Earth zombies",
       "picture": "Azuraz",
-      "flavor_text": "Beeee yourself!",
+      "flavorText": "Beeee yourself!",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -2077,7 +2077,7 @@
       }
     },
     {
-      "id": 20,
+      "mouldId": 20,
       "name": "Shroom",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2088,7 +2088,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> 2 damage to an enemy",
       "picture": "Shroom",
-      "flavor_text": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
+      "flavorText": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -2117,7 +2117,7 @@
       }
     },
     {
-      "id": 21,
+      "mouldId": 21,
       "name": "Vindrom",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2128,7 +2128,7 @@
       "cost": 4,
       "description": "<b>Attack:</b> Freeze zombie",
       "picture": "Vindrom",
-      "flavor_text": "BDSM much?!",
+      "flavorText": "BDSM much?!",
       "abilities": [
         {
           "ability": "STUN",
@@ -2156,7 +2156,7 @@
       }
     },
     {
-      "id": 22,
+      "mouldId": 22,
       "name": "Shammann",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2167,7 +2167,7 @@
       "cost": 11,
       "description": "<b>Turn:</b> Summon one Azuraz zombie",
       "picture": "Shammann",
-      "flavor_text": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
+      "flavorText": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
       "abilities": [
         {
           "ability": "SUMMON",
@@ -2195,7 +2195,7 @@
       }
     },
     {
-      "id": 23,
+      "mouldId": 23,
       "name": "Puffer",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2206,7 +2206,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> +1 Atk to all Life zombies in play",
       "picture": "Puffer",
-      "flavor_text": "All the pretty pretty flowers",
+      "flavorText": "All the pretty pretty flowers",
       "abilities": [
         {
           "ability": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
@@ -2236,7 +2236,7 @@
       }
     },
     {
-      "id": 24,
+      "mouldId": 24,
       "name": "Poizom",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2247,7 +2247,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Life zombies",
       "picture": "Poizom",
-      "flavor_text": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
+      "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -2276,7 +2276,7 @@
       }
     },
     {
-      "id": 25,
+      "mouldId": 25,
       "name": "Ghoul",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2287,7 +2287,7 @@
       "cost": 2,
       "description": "<b>Attack:</b> -1 Atk",
       "picture": "Ghoul",
-      "flavor_text": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
+      "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
       "abilities": [
         {
           "ability": "CHANGE_STAT",
@@ -2315,7 +2315,7 @@
       }
     },
     {
-      "id": 26,
+      "mouldId": 26,
       "name": "Hazmaz",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2326,7 +2326,7 @@
       "cost": 2,
       "description": "<b>Feral</b> ",
       "picture": "Hazmaz",
-      "flavor_text": "Being cooped up inside a plastic suit is no fun - now multiple this by 1,000 with all the extra gases, something's gotta give...",
+      "flavorText": "Being cooped up inside a plastic suit is no fun - now multiple this by 1,000 with all the extra gases, something's gotta give...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -2342,7 +2342,7 @@
       }
     },
     {
-      "id": 27,
+      "mouldId": 27,
       "name": "Cherno-bill",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2353,7 +2353,7 @@
       "cost": 11,
       "description": "<b>Heavy, Death:</b> 3 damage to all zombies",
       "picture": "Cherno-bill",
-      "flavor_text": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
+      "flavorText": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
       "abilities": [
         {
           "ability": "MASSIVE_DAMAGE",
@@ -2382,7 +2382,7 @@
       }
     },
     {
-      "id": 28,
+      "mouldId": 28,
       "name": "Izze",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -2393,7 +2393,7 @@
       "cost": 1,
       "description": "<b>Attack:</b> +1 damage to Fire zombies",
       "picture": "Izze",
-      "flavor_text": "It would be a-lot Izzier if you just stay put!",
+      "flavorText": "It would be a-lot Izzier if you just stay put!",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -2422,7 +2422,7 @@
       }
     },
     {
-      "id": 29,
+      "mouldId": 29,
       "name": "Jetter",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -2433,7 +2433,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> 1 damage to a zombie",
       "picture": "Jetter",
-      "flavor_text": "Most welcomed during hot summer days on the busy city streets.",
+      "flavorText": "Most welcomed during hot summer days on the busy city streets.",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -2462,7 +2462,7 @@
       }
     },
     {
-      "id": 30,
+      "mouldId": 30,
       "name": "Freezzee",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -2473,7 +2473,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Freeze zombie and adjacent zombies, 2 damage if Frozen",
       "picture": "Freezzee",
-      "flavor_text": "How he loves decorating with ice sculptures... Everywhere!",
+      "flavorText": "How he loves decorating with ice sculptures... Everywhere!",
       "abilities": [
         {
           "ability": "STUN_OR_DAMAGE_ADJUSTMENTS",
@@ -2501,7 +2501,7 @@
       }
     },
     {
-      "id": 31,
+      "mouldId": 31,
       "name": "Tzunamy",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -2512,7 +2512,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> 2 damage to all enemies, then Freeze them",
       "picture": "Tzunamy",
-      "flavor_text": "Bringing a nice, big shower, cleaning an entire city at a time.",
+      "flavorText": "Bringing a nice, big shower, cleaning an entire city at a time.",
       "abilities": [
         {
           "ability": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
@@ -2541,7 +2541,7 @@
       }
     },
     {
-      "id": 32,
+      "mouldId": 32,
       "name": "Bouncer",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -2552,7 +2552,7 @@
       "cost": 4,
       "description": "<b>Heavy</b> ",
       "picture": "Bouncer",
-      "flavor_text": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
+      "flavorText": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -2568,7 +2568,7 @@
       }
     },
     {
-      "id": 34,
+      "mouldId": 34,
       "name": "Wheezy",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -2579,7 +2579,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> A random card in your Hand gets -1 cost",
       "picture": "Wheezy",
-      "flavor_text": "Ommmmmmmmmmm",
+      "flavorText": "Ommmmmmmmmmm",
       "abilities": [
         {
           "ability": "LOWER_COST_OF_CARD_IN_HAND",
@@ -2606,7 +2606,7 @@
       }
     },
     {
-      "id": 35,
+      "mouldId": 35,
       "name": "Tiny",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -2617,7 +2617,7 @@
       "cost": 3,
       "description": "<b>Heavy</b> ",
       "picture": "Tiny",
-      "flavor_text": "Cooookie... just one more cooookie...",
+      "flavorText": "Cooookie... just one more cooookie...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -2633,7 +2633,7 @@
       }
     },
     {
-      "id": 36,
+      "mouldId": 36,
       "name": "Earthshaker",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -2644,7 +2644,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Destroy a Heavy zombie",
       "picture": "Earthshaker",
-      "flavor_text": "Will break ALL your WALLS!!",
+      "flavorText": "Will break ALL your WALLS!!",
       "abilities": [
         {
           "ability": "DESTROY_UNIT_BY_TYPE",
@@ -2672,7 +2672,7 @@
       }
     },
     {
-      "id": 37,
+      "mouldId": 37,
       "name": "Cerberus",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -2683,7 +2683,7 @@
       "cost": 12,
       "description": "<b>Attack:</b> Deal damage before receiving damage",
       "picture": "Cerberus",
-      "flavor_text": "It's ALWAYS a party of three.",
+      "flavorText": "It's ALWAYS a party of three.",
       "abilities": [
         {
           "ability": "PRIORITY_ATTACK",
@@ -2706,7 +2706,7 @@
       }
     },
     {
-      "id": 38,
+      "mouldId": 38,
       "name": "Werezomb",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -2717,7 +2717,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> Ally zombie gets Feral",
       "picture": "Werezomb",
-      "flavor_text": "Stop, stop, stop, shh-shh, you'll cause a howl",
+      "flavorText": "Stop, stop, stop, shh-shh, you'll cause a howl",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -2744,7 +2744,7 @@
       }
     },
     {
-      "id": 42,
+      "mouldId": 42,
       "name": "Z-Virus",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2755,7 +2755,7 @@
       "cost": 12,
       "description": "Devour all ally zombies",
       "picture": "Z-Virus",
-      "flavor_text": "There ain't no party like a Z-Virus party!",
+      "flavorText": "There ain't no party like a Z-Virus party!",
       "abilities": [
         {
           "ability": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
@@ -2779,7 +2779,7 @@
       }
     },
     {
-      "id": 43,
+      "mouldId": 43,
       "name": "Yggdrazil",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2790,7 +2790,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> Entry: Reanimate all Life zombies that died this match",
       "picture": "Yggdrazil",
-      "flavor_text": "In this case, lots of strings attached!!",
+      "flavorText": "In this case, lots of strings attached!!",
       "abilities": [
         {
           "ability": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH",
@@ -2818,7 +2818,7 @@
       }
     },
     {
-      "id": 44,
+      "mouldId": 44,
       "name": "Sapper",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2829,7 +2829,7 @@
       "cost": 4,
       "description": "<b>Attack:</b> Restore 1 Def for each damage this deals",
       "picture": "Sapper",
-      "flavor_text": "Hungry, always so very hungry",
+      "flavorText": "Hungry, always so very hungry",
       "abilities": [
         {
           "ability": "GAIN_NUMBER_OF_LIFE_FOR_EACH_DAMAGE_THIS_DEALS",
@@ -2853,7 +2853,7 @@
       }
     },
     {
-      "id": 45,
+      "mouldId": 45,
       "name": "Keeper",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -2864,7 +2864,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> Summon 1 Ember zombie minion",
       "picture": "Keeper",
-      "flavor_text": "They are usually such lovely beasts...",
+      "flavorText": "They are usually such lovely beasts...",
       "abilities": [
         {
           "ability": "SUMMON",
@@ -2892,7 +2892,7 @@
       }
     },
     {
-      "id": 46,
+      "mouldId": 46,
       "name": "Zpitter",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2903,7 +2903,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> 1 damage to a random enemy",
       "picture": "Zpitter",
-      "flavor_text": "Llama in my living room... bam ba balalam babam ba ba...",
+      "flavorText": "Llama in my living room... bam ba balalam babam ba ba...",
       "abilities": [
         {
           "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -2931,7 +2931,7 @@
       }
     },
     {
-      "id": 47,
+      "mouldId": 47,
       "name": "Zeeter",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -2942,7 +2942,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Devour an ally zombie, get its Atk and Def",
       "picture": "Zeeter",
-      "flavor_text": "Nam, naam nam nam namm nam...",
+      "flavorText": "Nam, naam nam nam namm nam...",
       "abilities": [
         {
           "ability": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
@@ -2969,7 +2969,7 @@
       }
     },
     {
-      "id": 48,
+      "mouldId": 48,
       "name": "Zhatterer",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -2980,7 +2980,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Destroy a Frozen zombie",
       "picture": "Zhatterer",
-      "flavor_text": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
+      "flavorText": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
       "abilities": [
         {
           "ability": "DESTROY_FROZEN_UNIT",
@@ -3006,7 +3006,7 @@
       }
     },
     {
-      "id": 49,
+      "mouldId": 49,
       "name": "Znowman",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -3017,7 +3017,7 @@
       "cost": 3,
       "description": "<b>Heavy,</b> Freeze enemies that attack this",
       "picture": "Znowman",
-      "flavor_text": "Maybe the snow does have some magical power?! But not yellow snow...",
+      "flavorText": "Maybe the snow does have some magical power?! But not yellow snow...",
       "abilities": [
         {
           "ability": "ENEMY_THAT_ATTACKS_BECOME_FROZEN",
@@ -3040,7 +3040,7 @@
       }
     },
     {
-      "id": 50,
+      "mouldId": 50,
       "name": "Soothsayer",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3051,7 +3051,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Draw a card",
       "picture": "Soothsayer",
-      "flavor_text": "Almost as good as a fortune cookie... minus the cookie",
+      "flavorText": "Almost as good as a fortune cookie... minus the cookie",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -3075,7 +3075,7 @@
       }
     },
     {
-      "id": 59,
+      "mouldId": 59,
       "name": "Spiker",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3086,7 +3086,7 @@
       "cost": 4,
       "description": "<b>Heavy</b> ",
       "picture": "Spiker",
-      "flavor_text": "Standing really still... maybe they won't notice",
+      "flavorText": "Standing really still... maybe they won't notice",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -3102,7 +3102,7 @@
       }
     },
     {
-      "id": 61,
+      "mouldId": 61,
       "name": "IgneouZ",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3113,7 +3113,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> +2 Def if your Overlord has 10 def or less",
       "picture": "IgneouZ",
-      "flavor_text": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
+      "flavorText": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
       "abilities": [
         {
           "ability": "TAKE_DEFENSE_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
@@ -3138,7 +3138,7 @@
       }
     },
     {
-      "id": 67,
+      "mouldId": 67,
       "name": "Zhampion",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -3149,7 +3149,7 @@
       "cost": 5,
       "description": "<b>Feral, Entry:</b> Summon two enemy Pyromaz zombies",
       "picture": "Zhampion",
-      "flavor_text": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
+      "flavorText": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
       "abilities": [
         {
           "ability": "SUMMON",
@@ -3177,7 +3177,7 @@
       }
     },
     {
-      "id": 70,
+      "mouldId": 70,
       "name": "Goo Beaker",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -3188,7 +3188,7 @@
       "cost": 2,
       "description": "Get 1 empty goo vial",
       "picture": "GooBeaker",
-      "flavor_text": "So much goo, so little space",
+      "flavorText": "So much goo, so little space",
       "abilities": [
         {
           "ability": "ADD_GOO_VIAL",
@@ -3216,7 +3216,7 @@
       }
     },
     {
-      "id": 75,
+      "mouldId": 75,
       "name": "Bloomer",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -3227,7 +3227,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Draw a card if you have a Life zombie in play",
       "picture": "Bloomer",
-      "flavor_text": "Fertilizing the flowers on an hourly basis",
+      "flavorText": "Fertilizing the flowers on an hourly basis",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -3251,7 +3251,7 @@
       }
     },
     {
-      "id": 85,
+      "mouldId": 85,
       "name": "Zludge",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -3262,7 +3262,7 @@
       "cost": 5,
       "description": "<b>Rage:</b> +2 Atk",
       "picture": "Zludge",
-      "flavor_text": "Bring it, bring It, BRING IT ON!!!",
+      "flavorText": "Bring it, bring It, BRING IT ON!!!",
       "abilities": [
         {
           "ability": "RAGE",
@@ -3286,7 +3286,7 @@
       }
     },
     {
-      "id": 90,
+      "mouldId": 90,
       "name": "Blizzard",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -3297,7 +3297,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> Freeze all enemy zombies",
       "picture": "Blizzard",
-      "flavor_text": "If you can't join them, FREEZE them!",
+      "flavorText": "If you can't join them, FREEZE them!",
       "abilities": [
         {
           "ability": "FREEZE_UNITS",
@@ -3324,7 +3324,7 @@
       }
     },
     {
-      "id": 94,
+      "mouldId": 94,
       "name": "Ztormonk",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3335,7 +3335,7 @@
       "cost": 6,
       "description": "<b>Guard, Entry:</b> Give adjacent zombies Guard",
       "picture": "ztormshield",
-      "flavor_text": "Just be a good sentinel and -",
+      "flavorText": "Just be a good sentinel and -",
       "abilities": [
         {
           "ability": "GUARD",
@@ -3364,7 +3364,7 @@
       }
     },
     {
-      "id": 96,
+      "mouldId": 96,
       "name": "Draft",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3375,7 +3375,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Draw a card from the enemy Deck",
       "picture": "Draft",
-      "flavor_text": "Not your father... hopefully",
+      "flavorText": "Not your father... hopefully",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -3401,7 +3401,7 @@
       }
     },
     {
-      "id": 97,
+      "mouldId": 97,
       "name": "MonZoon",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3412,7 +3412,7 @@
       "cost": 9,
       "description": "Costs 1 less for each Air zombie in your Hand",
       "picture": "MonZoon",
-      "flavor_text": "Shock therapy does work wonders",
+      "flavorText": "Shock therapy does work wonders",
       "abilities": [
         {
           "ability": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
@@ -3440,7 +3440,7 @@
       }
     },
     {
-      "id": 98,
+      "mouldId": 98,
       "name": "Blocker",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3451,7 +3451,7 @@
       "cost": 2,
       "description": "<b>Heavy</b> ",
       "picture": "Blocker",
-      "flavor_text": "Just a few more moments...",
+      "flavorText": "Just a few more moments...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -3467,7 +3467,7 @@
       }
     },
     {
-      "id": 101,
+      "mouldId": 101,
       "name": "Slab",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3478,7 +3478,7 @@
       "cost": 3,
       "description": "",
       "picture": "Slab",
-      "flavor_text": "Supressing all those emotions does have its price...",
+      "flavorText": "Supressing all those emotions does have its price...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -3494,7 +3494,7 @@
       }
     },
     {
-      "id": 103,
+      "mouldId": 103,
       "name": "Pyrite",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3505,7 +3505,7 @@
       "cost": 6,
       "description": "<b>Heavy, Delayed 2:</b> This loses Heavy but gets +4 Atk",
       "picture": "Pyrite",
-      "flavor_text": "Angry enough to go though a WALL!",
+      "flavorText": "Angry enough to go though a WALL!",
       "abilities": [
         {
           "ability": "DELAYED_LOSE_HEAVY_GAIN_ATTACK",
@@ -3530,7 +3530,7 @@
       }
     },
     {
-      "id": 104,
+      "mouldId": 104,
       "name": "Gaea",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3541,7 +3541,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> All ally Earth zombies in play get +2 Atk",
       "picture": "Gaea",
-      "flavor_text": "Either super charismatic, or super scary... or both.",
+      "flavorText": "Either super charismatic, or super scary... or both.",
       "abilities": [
         {
           "ability": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS",
@@ -3566,7 +3566,7 @@
       }
     },
     {
-      "id": 117,
+      "mouldId": 117,
       "name": "Fresh Meat",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -3577,7 +3577,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> All enemy zombies get -3 Atk until the end of turn",
       "picture": "FreshMeat",
-      "flavor_text": "As if they died again and went to zombie heaven",
+      "flavorText": "As if they died again and went to zombie heaven",
       "abilities": [
         {
           "ability": "CHANGE_STAT_UNTILL_END_OF_TURN",
@@ -3605,7 +3605,7 @@
       }
     },
     {
-      "id": 127,
+      "mouldId": 127,
       "name": "Ectoplasm",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -3616,7 +3616,7 @@
       "cost": 1,
       "description": "<b>Entry:</b> Lose a goo bottle",
       "picture": "Ectoplasm",
-      "flavor_text": "Wha'ch yu lookin at' ?! ",
+      "flavorText": "Wha'ch yu lookin at' ?! ",
       "abilities": [
         {
           "ability": "LOSE_GOO",
@@ -3640,7 +3640,7 @@
       }
     },
     {
-      "id": 132,
+      "mouldId": 132,
       "name": "GooZilla",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -3651,7 +3651,7 @@
       "cost": 8,
       "description": "<b>Entry:</b> Use all your goo for 2x Atk / Def",
       "picture": "GooZilla",
-      "flavor_text": "More, more, MORE GOO! Bring me ALL the GOO",
+      "flavorText": "More, more, MORE GOO! Bring me ALL the GOO",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -3682,7 +3682,7 @@
       }
     },
     {
-      "id": 141,
+      "mouldId": 141,
       "name": "Maelstrom",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -3693,7 +3693,7 @@
       "cost": 8,
       "description": "<b>Entry:</b> Return all other zombies to their owners' Hands",
       "picture": "Maelstrom",
-      "flavor_text": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
+      "flavorText": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
       "abilities": [
         {
           "ability": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
@@ -3720,7 +3720,7 @@
       }
     },
     {
-      "id": 142,
+      "mouldId": 142,
       "name": "Fumez",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3731,7 +3731,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Add a Tainted Goo to your Hand",
       "picture": "Fumez",
-      "flavor_text": "RAZENGAAAAAAAA!!!",
+      "flavorText": "RAZENGAAAAAAAA!!!",
       "abilities": [
         {
           "ability": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3755,7 +3755,7 @@
       }
     },
     {
-      "id": 143,
+      "mouldId": 143,
       "name": "Gaz",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -3766,7 +3766,7 @@
       "cost": 4,
       "description": "<b>Guard, Entry:</b> Add a Corrupted Goo to your Hand",
       "picture": "Gaz",
-      "flavor_text": "No, no, no no, not a hamster, not a hamster ball....",
+      "flavorText": "No, no, no no, not a hamster, not a hamster ball....",
       "abilities": [
         {
           "ability": "GUARD",
@@ -3799,7 +3799,7 @@
       }
     },
     {
-      "id": 144,
+      "mouldId": 144,
       "name": "Pit",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3810,7 +3810,7 @@
       "cost": 1,
       "description": "<b>Heavy, Entry:</b> Add a Tainted Goo to your Hand ",
       "picture": "Pit",
-      "flavor_text": "Hard to save every drop with all the spillage",
+      "flavorText": "Hard to save every drop with all the spillage",
       "abilities": [
         {
           "ability": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3834,7 +3834,7 @@
       }
     },
     {
-      "id": 145,
+      "mouldId": 145,
       "name": "Crater",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -3845,7 +3845,7 @@
       "cost": 3,
       "description": "<b>Heavy, Entry:</b> Add a Corrupted Goo to your Hand ",
       "picture": "Crater",
-      "flavor_text": "Try to veer from his major crater issues... it may goo deeeeep",
+      "flavorText": "Try to veer from his major crater issues... it may goo deeeeep",
       "abilities": [
         {
           "ability": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3869,7 +3869,7 @@
       }
     },
     {
-      "id": 146,
+      "mouldId": 146,
       "name": "Quazi",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -3880,7 +3880,7 @@
       "cost": 1,
       "description": "<b>Feral, Overflow 2, End:</b> 2 damage to this and adjacent zombies",
       "picture": "Quazi",
-      "flavor_text": "Has a great fascination with church bells...",
+      "flavorText": "Has a great fascination with church bells...",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -3911,7 +3911,7 @@
       }
     },
     {
-      "id": 147,
+      "mouldId": 147,
       "name": "Modo",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -3922,7 +3922,7 @@
       "cost": 3,
       "description": "<b>Feral, Overflow 5, End:</b>  4 damage to this and adjacent zombies",
       "picture": "Modo",
-      "flavor_text": "JuuuZZZt WaNt a LiTtlE hUgGG...",
+      "flavorText": "JuuuZZZt WaNt a LiTtlE hUgGG...",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -3953,7 +3953,7 @@
       }
     },
     {
-      "id": 148,
+      "mouldId": 148,
       "name": "Zap",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -3964,7 +3964,7 @@
       "cost": 1,
       "description": "<b>Overflow 3, Entry:</b> Summon a 1/1 enemy zombie minion",
       "picture": "Zap",
-      "flavor_text": "Can't get enough of that goo, ever",
+      "flavorText": "Can't get enough of that goo, ever",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -3999,7 +3999,7 @@
       }
     },
     {
-      "id": 149,
+      "mouldId": 149,
       "name": "Cactuz",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -4010,7 +4010,7 @@
       "cost": 4,
       "description": "<b>Overflow 6, Entry:</b> Summon two 1/1 enemy zombie minions",
       "picture": "Cactuz",
-      "flavor_text": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
+      "flavorText": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -4045,7 +4045,7 @@
       }
     },
     {
-      "id": 150,
+      "mouldId": 150,
       "name": "Zeptic",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -4056,7 +4056,7 @@
       "cost": 1,
       "description": "<b>Overflow 2,</b> Deal 2 damage to your Overlord",
       "picture": "Zeptic",
-      "flavor_text": "After four steps he gave up on the straight line and started puking",
+      "flavorText": "After four steps he gave up on the straight line and started puking",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -4090,7 +4090,7 @@
       }
     },
     {
-      "id": 151,
+      "mouldId": 151,
       "name": "Hazzard",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -4101,7 +4101,7 @@
       "cost": 5,
       "description": "<b>Overflow 7,</b> Deal 4 damage to your Overlord",
       "picture": "Hazzard",
-      "flavor_text": "Almost reached the Goo-Anonymous meeting - almost...",
+      "flavorText": "Almost reached the Goo-Anonymous meeting - almost...",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -4135,7 +4135,7 @@
       }
     },
     {
-      "id": 152,
+      "mouldId": 152,
       "name": "Ozmoziz",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4146,7 +4146,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Freeze a random ally, add Tainted Goo to your Hand",
       "picture": "Ozmoziz",
-      "flavor_text": "He always loved to tell a goo story",
+      "flavorText": "He always loved to tell a goo story",
       "abilities": [
         {
           "ability": "FREEZE_NUMBER_OF_RANDOM_ALLY",
@@ -4178,7 +4178,7 @@
       }
     },
     {
-      "id": 153,
+      "mouldId": 153,
       "name": "Geyzer",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4189,7 +4189,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> Freeze 2 random allies, add Corrupted Goo to your Hand",
       "picture": "Geyzer",
-      "flavor_text": "Not in the mood for dancing...",
+      "flavorText": "Not in the mood for dancing...",
       "abilities": [
         {
           "ability": "FREEZE_NUMBER_OF_RANDOM_ALLY",
@@ -4221,7 +4221,7 @@
       }
     },
     {
-      "id": 155,
+      "mouldId": 155,
       "name": "Tainted Goo",
       "kind": "SPELL",
       "faction": "OTHERS",
@@ -4233,7 +4233,7 @@
       "description": "<b>Overflow 3,</b> Disables 1 goo vial for next turn",
       "frame": "frame_item_minion",
       "picture": "TaintedGoo",
-      "flavor_text": "Smells kinda funny, but what a rush!",
+      "flavorText": "Smells kinda funny, but what a rush!",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -4264,7 +4264,7 @@
       }
     },
     {
-      "id": 156,
+      "mouldId": 156,
       "name": "Corrupted Goo",
       "kind": "SPELL",
       "faction": "OTHERS",
@@ -4276,7 +4276,7 @@
       "description": "<b>Overflow 6,</b> Disables 2 goo vials for next turn",
       "frame": "frame_item_minion",
       "picture": "CorruptedGoo",
-      "flavor_text": "Hooooweeee, better than all the moonshine!",
+      "flavorText": "Hooooweeee, better than all the moonshine!",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -4307,7 +4307,7 @@
       }
     },
     {
-      "id": 157,
+      "mouldId": 157,
       "name": "Zombie 1/1",
       "kind": "CREATURE",
       "faction": "OTHERS",
@@ -4332,7 +4332,7 @@
       }
     },
     {
-      "id": 158,
+      "mouldId": 158,
       "name": "Zombie 2/2",
       "kind": "CREATURE",
       "faction": "OTHERS",
@@ -4357,7 +4357,7 @@
       }
     },
     {
-      "id": 159,
+      "mouldId": 159,
       "name": "Zombie Feral",
       "kind": "CREATURE",
       "faction": "OTHERS",
@@ -4382,7 +4382,7 @@
       }
     },
     {
-      "id": 160,
+      "mouldId": 160,
       "name": "Zombie Heavy",
       "kind": "CREATURE",
       "faction": "OTHERS",
@@ -4407,7 +4407,7 @@
       }
     },
     {
-      "id": 68,
+      "mouldId": 68,
       "name": "Whistle",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -4418,7 +4418,7 @@
       "cost": 0,
       "description": "Draw a card",
       "picture": "Whistle",
-      "flavor_text": "Get over here, STAT!",
+      "flavorText": "Get over here, STAT!",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -4441,7 +4441,7 @@
       }
     },
     {
-      "id": 133,
+      "mouldId": 133,
       "name": "Znowy",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4451,7 +4451,7 @@
       "defense": 1,
       "cost": 1,
       "picture": "Znowy",
-      "flavor_text": "eeeehhehehehe",
+      "flavorText": "eeeehhehehehe",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4467,7 +4467,7 @@
       }
     },
     {
-      "id": 128,
+      "mouldId": 128,
       "name": "Wazte",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -4478,7 +4478,7 @@
       "cost": 2,
       "description": "<b>Heavy, Entry:</b> Lose 1 goo bottle",
       "picture": "Wazte",
-      "flavor_text": "Smells like goo spirit",
+      "flavorText": "Smells like goo spirit",
       "abilities": [
         {
           "ability": "LOSE_GOO",
@@ -4502,7 +4502,7 @@
       }
     },
     {
-      "id": 134,
+      "mouldId": 134,
       "name": "Ztalagmite",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4513,7 +4513,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> 2 damage to your Overlord",
       "picture": "Ztalagmite",
-      "flavor_text": "He remembers the north",
+      "flavorText": "He remembers the north",
       "abilities": [
         {
           "ability": "ATTACK_OVERLORD",
@@ -4540,7 +4540,7 @@
       }
     },
     {
-      "id": 136,
+      "mouldId": 136,
       "name": "Igloo",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4551,7 +4551,7 @@
       "cost": 5,
       "description": "<b>Heavy</b> ",
       "picture": "Igloo",
-      "flavor_text": "The cold never bothered him anyway",
+      "flavorText": "The cold never bothered him anyway",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4567,7 +4567,7 @@
       }
     },
     {
-      "id": 139,
+      "mouldId": 139,
       "name": "Froztbite",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -4578,7 +4578,7 @@
       "cost": 4,
       "description": "<b>Delayed 2:</b> +6 Atk",
       "picture": "Froztbite",
-      "flavor_text": "He's been trying to get out for a millennia - thank you global warming!!",
+      "flavorText": "He's been trying to get out for a millennia - thank you global warming!!",
       "abilities": [
         {
           "ability": "DELAYED_GAIN_ATTACK",
@@ -4603,7 +4603,7 @@
       }
     },
     {
-      "id": 122,
+      "mouldId": 122,
       "name": "Amber",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -4614,7 +4614,7 @@
       "cost": 2,
       "description": "<b>Delayed 1:</b> +3 Atk",
       "picture": "Amber",
-      "flavor_text": "Literally a walking museum",
+      "flavorText": "Literally a walking museum",
       "abilities": [
         {
           "ability": "DELAYED_GAIN_ATTACK",
@@ -4639,7 +4639,7 @@
       }
     },
     {
-      "id": 123,
+      "mouldId": 123,
       "name": "Bark",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -4650,7 +4650,7 @@
       "cost": 2,
       "description": "<b>Heavy</b> ",
       "picture": "Bark",
-      "flavor_text": "Worse than its bite!",
+      "flavorText": "Worse than its bite!",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4666,7 +4666,7 @@
       }
     },
     {
-      "id": 126,
+      "mouldId": 126,
       "name": "Germ",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -4676,7 +4676,7 @@
       "defense": 1,
       "cost": 1,
       "picture": "Germ",
-      "flavor_text": "Ploop... oh.. there goes another arm...",
+      "flavorText": "Ploop... oh.. there goes another arm...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4692,7 +4692,7 @@
       }
     },
     {
-      "id": 106,
+      "mouldId": 106,
       "name": "Ember",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -4703,7 +4703,7 @@
       "cost": 2,
       "description": "<b>Feral</b> ",
       "picture": "Ember",
-      "flavor_text": "Makes every BBQ a hoot!",
+      "flavorText": "Makes every BBQ a hoot!",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4719,7 +4719,7 @@
       }
     },
     {
-      "id": 107,
+      "mouldId": 107,
       "name": "Firewall",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -4730,7 +4730,7 @@
       "cost": 2,
       "description": "<b>Heavy</b> ",
       "picture": "Firewall",
-      "flavor_text": "Having a pyromaniac on the battlefield does come in handy",
+      "flavorText": "Having a pyromaniac on the battlefield does come in handy",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4746,7 +4746,7 @@
       }
     },
     {
-      "id": 108,
+      "mouldId": 108,
       "name": "BurZt",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -4756,7 +4756,7 @@
       "defense": 1,
       "cost": 2,
       "picture": "BurZt",
-      "flavor_text": "Some just like it hot!",
+      "flavorText": "Some just like it hot!",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4772,7 +4772,7 @@
       }
     },
     {
-      "id": 113,
+      "mouldId": 113,
       "name": "Extinguisher",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -4783,7 +4783,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> Freeze all enemy zombies",
       "picture": "extinguisher",
-      "flavor_text": "Psssshhhhhhhhhhh",
+      "flavorText": "Psssshhhhhhhhhhh",
       "abilities": [
         {
           "ability": "FREEZE_UNITS",
@@ -4810,7 +4810,7 @@
       }
     },
     {
-      "id": 114,
+      "mouldId": 114,
       "name": "Lawnmower",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -4821,7 +4821,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> 2 damage to all enemy zombies",
       "picture": "Lawnmower",
-      "flavor_text": "It can handle both plants and zombies... wait what?",
+      "flavorText": "It can handle both plants and zombies... wait what?",
       "abilities": [
         {
           "ability": "MASSIVE_DAMAGE",
@@ -4848,7 +4848,7 @@
       }
     },
     {
-      "id": 99,
+      "mouldId": 99,
       "name": "Shale",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -4859,7 +4859,7 @@
       "cost": 3,
       "description": "<b>Feral</b> ",
       "picture": "Shale",
-      "flavor_text": "Thatta boy!",
+      "flavorText": "Thatta boy!",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4875,7 +4875,7 @@
       }
     },
     {
-      "id": 100,
+      "mouldId": 100,
       "name": "Hardy",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -4886,7 +4886,7 @@
       "cost": 3,
       "description": "<b>Heavy</b> ",
       "picture": "Hardy",
-      "flavor_text": "This will BE, the preetiest castle in all the land!",
+      "flavorText": "This will BE, the preetiest castle in all the land!",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4902,7 +4902,7 @@
       }
     },
     {
-      "id": 91,
+      "mouldId": 91,
       "name": "Breezee",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -4913,7 +4913,7 @@
       "cost": 1,
       "description": "",
       "picture": "Breezee",
-      "flavor_text": "Levitating - not as easy as you'd think...",
+      "flavorText": "Levitating - not as easy as you'd think...",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4929,7 +4929,7 @@
       }
     },
     {
-      "id": 92,
+      "mouldId": 92,
       "name": "Banshee",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -4940,7 +4940,7 @@
       "cost": 2,
       "description": "<b>Feral</b> ",
       "picture": "Banshee",
-      "flavor_text": "Booked until next year in haunted houses everywhere",
+      "flavorText": "Booked until next year in haunted houses everywhere",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -4956,7 +4956,7 @@
       }
     },
     {
-      "id": 93,
+      "mouldId": 93,
       "name": "Zhocker",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -4967,7 +4967,7 @@
       "cost": 2,
       "description": "<b>Delayed 1:</b> +2 Atk",
       "picture": "Zhocker",
-      "flavor_text": "Getting jiggy with it",
+      "flavorText": "Getting jiggy with it",
       "abilities": [
         {
           "ability": "DELAYED_GAIN_ATTACK",
@@ -4992,7 +4992,7 @@
       }
     },
     {
-      "id": 7,
+      "mouldId": 7,
       "name": "Bolderr",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -5003,7 +5003,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> 1 damage to a zombie",
       "picture": "Bolderr",
-      "flavor_text": "One more step, just one more step!",
+      "flavorText": "One more step, just one more step!",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -5032,7 +5032,7 @@
       }
     },
     {
-      "id": 79,
+      "mouldId": 79,
       "name": "Zlimey",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -5043,7 +5043,7 @@
       "cost": 1,
       "description": "<b>Entry:</b> 2 damage to your Overlord",
       "picture": "zmiley",
-      "flavor_text": "Likes to sprinkle toxic goo on EVERYTHING",
+      "flavorText": "Likes to sprinkle toxic goo on EVERYTHING",
       "abilities": [
         {
           "ability": "ATTACK_OVERLORD",
@@ -5070,7 +5070,7 @@
       }
     },
     {
-      "id": 82,
+      "mouldId": 82,
       "name": "Azzazzin",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -5081,7 +5081,7 @@
       "cost": 3,
       "description": "<b>Blitz, Destroy</b> ",
       "picture": "Azzazzin",
-      "flavor_text": "From the Shadowzzzz",
+      "flavorText": "From the Shadowzzzz",
       "abilities": [
         {
           "ability": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
@@ -5114,7 +5114,7 @@
       }
     },
     {
-      "id": 74,
+      "mouldId": 74,
       "name": "PreZerver",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -5125,7 +5125,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Restore 2 Def to a zombie",
       "picture": "PreZerver",
-      "flavor_text": "Need a hand?",
+      "flavorText": "Need a hand?",
       "abilities": [
         {
           "ability": "HEAL",
@@ -5153,7 +5153,7 @@
       }
     },
     {
-      "id": 54,
+      "mouldId": 54,
       "name": "Zephyr",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5164,7 +5164,7 @@
       "cost": 5,
       "description": "Costs 1 less for each Air zombie you have in play",
       "picture": "Zephyr",
-      "flavor_text": "Do you want to buy AIR for a penny??",
+      "flavorText": "Do you want to buy AIR for a penny??",
       "abilities": [
         {
           "ability": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
@@ -5192,7 +5192,7 @@
       }
     },
     {
-      "id": 62,
+      "mouldId": 62,
       "name": "BlaZter",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -5203,7 +5203,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> 1 damage to an enemy zombie",
       "picture": "BlaZter",
-      "flavor_text": "Dodgeball anyone?",
+      "flavorText": "Dodgeball anyone?",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -5230,7 +5230,7 @@
       }
     },
     {
-      "id": 65,
+      "mouldId": 65,
       "name": "Zlinger",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -5241,7 +5241,7 @@
       "cost": 1,
       "description": "<b>Entry:</b> 3 damage to your Overlord",
       "picture": "Zlinger",
-      "flavor_text": "Ohhh snap!! He got'cha good",
+      "flavorText": "Ohhh snap!! He got'cha good",
       "abilities": [
         {
           "ability": "ATTACK_OVERLORD",
@@ -5268,7 +5268,7 @@
       }
     },
     {
-      "id": 33,
+      "mouldId": 33,
       "name": "Mind Flayer",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5279,7 +5279,7 @@
       "cost": 7,
       "description": "<b>Entry:</b> Take control of an enemy zombie",
       "picture": "MindFlayer",
-      "flavor_text": "Resistance is futile --- and we have Zushi",
+      "flavorText": "Resistance is futile --- and we have Zushi",
       "abilities": [
         {
           "ability": "TAKE_CONTROL_ENEMY_UNIT",
@@ -5305,7 +5305,7 @@
       }
     },
     {
-      "id": 39,
+      "mouldId": 39,
       "name": "Molotov",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5316,7 +5316,7 @@
       "cost": 4,
       "description": "3 damage to a zombie, Swing 3",
       "picture": "Molotov",
-      "flavor_text": "Not suitable for n00bs and lightweights",
+      "flavorText": "Not suitable for n00bs and lightweights",
       "abilities": [
         {
           "ability": "DEAL_DAMAGE_TO_UNIT_AND_SWING",
@@ -5344,7 +5344,7 @@
       }
     },
     {
-      "id": 40,
+      "mouldId": 40,
       "name": "Bat",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5355,7 +5355,7 @@
       "cost": 3,
       "description": "2 damage to a zombie and Distract it",
       "picture": "Bat",
-      "flavor_text": "Simple but soooo effective ",
+      "flavorText": "Simple but soooo effective ",
       "abilities": [
         {
           "ability": "DAMAGE_AND_DISTRACT_TARGET",
@@ -5384,7 +5384,7 @@
       }
     },
     {
-      "id": 41,
+      "mouldId": 41,
       "name": "Super Serum",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5395,7 +5395,7 @@
       "cost": 5,
       "description": "Give an ally Zombie +3/+3; <b>End:</b> -3 DEF",
       "picture": "superserum",
-      "flavor_text": "Captain Zamberica - here we goo!!",
+      "flavorText": "Captain Zamberica - here we goo!!",
       "abilities": [
         {
           "ability": "UNIT_WEAPON",
@@ -5424,7 +5424,7 @@
       }
     },
     {
-      "id": 51,
+      "mouldId": 51,
       "name": "Buffer",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5435,7 +5435,7 @@
       "cost": 2,
       "description": "<b>Death:</b> Give an ally zombie +1 Atk",
       "picture": "Buffer",
-      "flavor_text": "Be like the water - only with air",
+      "flavorText": "Be like the water - only with air",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -5448,7 +5448,7 @@
           "value": 1,
           "stat": "DAMAGE",
           "count": 1,
-          "sub_trigger": "RandomUnit"
+          "subTrigger": "RandomUnit"
         }
       ],
       "pictureTransform": {
@@ -5465,7 +5465,7 @@
       }
     },
     {
-      "id": 52,
+      "mouldId": 52,
       "name": "Whiffer",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5476,7 +5476,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> Return an ally zombie to your Hand",
       "picture": "Whiffer",
-      "flavor_text": "Get back here",
+      "flavorText": "Get back here",
       "abilities": [
         {
           "ability": "CARD_RETURN",
@@ -5502,7 +5502,7 @@
       }
     },
     {
-      "id": 53,
+      "mouldId": 53,
       "name": "Dragger",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5513,7 +5513,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> Summon a zombie from your Hand that costs 2 or less",
       "picture": "Dragger",
-      "flavor_text": "There's more where this came from!",
+      "flavorText": "There's more where this came from!",
       "abilities": [
         {
           "ability": "SUMMON_UNIT_FROM_HAND",
@@ -5541,7 +5541,7 @@
       }
     },
     {
-      "id": 55,
+      "mouldId": 55,
       "name": "Zyclone",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -5552,7 +5552,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> Return all zombies that cost 3 or less to their owners' Hands",
       "picture": "Zyclone",
-      "flavor_text": "A little anti-social... with a dash of anger issues",
+      "flavorText": "A little anti-social... with a dash of anger issues",
       "abilities": [
         {
           "ability": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
@@ -5580,7 +5580,7 @@
       }
     },
     {
-      "id": 56,
+      "mouldId": 56,
       "name": "Pebble",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -5591,7 +5591,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> 1 damage to a random enemy zombie",
       "picture": "Pebble",
-      "flavor_text": "Always forgets his head... everywhere...",
+      "flavorText": "Always forgets his head... everywhere...",
       "abilities": [
         {
           "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -5618,7 +5618,7 @@
       }
     },
     {
-      "id": 57,
+      "mouldId": 57,
       "name": "Crumbz",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -5629,7 +5629,7 @@
       "cost": 3,
       "description": "<b>Heavy, Death:</b> Draw a card",
       "picture": "Crumbz",
-      "flavor_text": "Time is our greatest adversary",
+      "flavorText": "Time is our greatest adversary",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -5652,7 +5652,7 @@
       }
     },
     {
-      "id": 58,
+      "mouldId": 58,
       "name": "Protector",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -5663,7 +5663,7 @@
       "cost": 2,
       "description": "<b>Heavy, Death:</b> Give a random ally zombie Heavy",
       "picture": "Protector",
-      "flavor_text": "Always use protection",
+      "flavorText": "Always use protection",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5671,7 +5671,7 @@
           "trigger": "DEATH",
           "gameMechanicDescription": "DEATH",
           "targetUnitType": "HEAVY",
-          "sub_trigger": "RandomUnit"
+          "subTrigger": "RandomUnit"
         }
       ],
       "pictureTransform": {
@@ -5688,7 +5688,7 @@
       }
     },
     {
-      "id": 60,
+      "mouldId": 60,
       "name": "Defender",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -5699,7 +5699,7 @@
       "cost": 7,
       "description": "<b>Entry:</b> Give ally Earth zombies that cost 2 or less Heavy",
       "picture": "Defender",
-      "flavor_text": "Forecast was clear skies... no one said fireball shower",
+      "flavorText": "Forecast was clear skies... no one said fireball shower",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5712,7 +5712,7 @@
           "faction": "EARTH",
           "targetUnitType": "HEAVY",
           "cost": 2,
-          "sub_trigger": "AllyUnitsByFactionThatCost"
+          "subTrigger": "AllyUnitsByFactionThatCost"
         }
       ],
       "pictureTransform": {
@@ -5729,7 +5729,7 @@
       }
     },
     {
-      "id": 63,
+      "mouldId": 63,
       "name": "Firecaller",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -5740,7 +5740,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Draw a card if there is a damaged zombie in play",
       "picture": "Firecaller",
-      "flavor_text": "Is it a vision of the future or another dimension? Who knows?!",
+      "flavorText": "Is it a vision of the future or another dimension? Who knows?!",
       "abilities": [
         {
           "ability": "DRAW_CARD_IF_DAMAGED_ZOMBIE_IN_PLAY",
@@ -5763,7 +5763,7 @@
       }
     },
     {
-      "id": 64,
+      "mouldId": 64,
       "name": "RabieZ",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -5774,7 +5774,7 @@
       "cost": 3,
       "description": "<b>Feral, Death:</b> Give a random ally zombie Feral",
       "picture": "RabieZ",
-      "flavor_text": "Red eyes - check! Foam in mouth - check! Shaking - check! Here, take an advil.",
+      "flavorText": "Red eyes - check! Foam in mouth - check! Shaking - check! Here, take an advil.",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5785,7 +5785,7 @@
           ],
           "gameMechanicDescription": "DEATH",
           "targetUnitType": "FERAL",
-          "sub_trigger": "RandomUnit"
+          "subTrigger": "RandomUnit"
         }
       ],
       "pictureTransform": {
@@ -5802,7 +5802,7 @@
       }
     },
     {
-      "id": 66,
+      "mouldId": 66,
       "name": "Enrager",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -5813,7 +5813,7 @@
       "cost": 6,
       "description": "<b>Feral, Entry:</b> If your Overlord has 10 Def or less this gets +2 Atk",
       "picture": "Enrager",
-      "flavor_text": "Don't get him angry, you won't like him when he's angry.",
+      "flavorText": "Don't get him angry, you won't like him when he's angry.",
       "abilities": [
         {
           "ability": "TAKE_STAT_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
@@ -5839,7 +5839,7 @@
       }
     },
     {
-      "id": 69,
+      "mouldId": 69,
       "name": "Supply Drop",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5850,7 +5850,7 @@
       "cost": 3,
       "description": "Each player puts a random zombie from their deck into play",
       "picture": "SupplyDrop",
-      "flavor_text": "\"Geronimo!\"",
+      "flavorText": "\"Geronimo!\"",
       "abilities": [
         {
           "ability": "PUT_RANDOM_UNIT_FROM_DECK_ON_BOARD",
@@ -5878,7 +5878,7 @@
       }
     },
     {
-      "id": 71,
+      "mouldId": 71,
       "name": "Junk Spear",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5889,7 +5889,7 @@
       "cost": 4,
       "description": "Damage enemy Overlord equal to the number of Items you've played",
       "picture": "junk_spear",
-      "flavor_text": "Where have I seen this contraption rising 4 times before?",
+      "flavorText": "Where have I seen this contraption rising 4 times before?",
       "abilities": [
         {
           "ability": "DAMAGE_OVERLORD_ON_COUNT_ITEMS_PLAYED",
@@ -5915,7 +5915,7 @@
       }
     },
     {
-      "id": 72,
+      "mouldId": 72,
       "name": "Zed Kit",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -5926,7 +5926,7 @@
       "cost": 4,
       "description": "Restore all Def to 2 random ally zombies",
       "picture": "zedkit",
-      "flavor_text": "Mending broken limbs since 1888",
+      "flavorText": "Mending broken limbs since 1888",
       "abilities": [
         {
           "ability": "HEAL",
@@ -5954,7 +5954,7 @@
       }
     },
     {
-      "id": 73,
+      "mouldId": 73,
       "name": "Grower",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -5965,7 +5965,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Your Overlord gets 2 Def",
       "picture": "Grower",
-      "flavor_text": "That's the fifth arm he's lost today.",
+      "flavorText": "That's the fifth arm he's lost today.",
       "abilities": [
         {
           "ability": "HEAL",
@@ -5976,7 +5976,7 @@
           ],
           "gameMechanicDescription": "ENTRY",
           "value": 2,
-          "sub_trigger": "YourOverlord"
+          "subTrigger": "YourOverlord"
         }
       ],
       "pictureTransform": {
@@ -5993,7 +5993,7 @@
       }
     },
     {
-      "id": 76,
+      "mouldId": 76,
       "name": "EverlaZting",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6004,7 +6004,7 @@
       "cost": 4,
       "description": "<b>Death:</b> Shuffle this card into your deck",
       "picture": "EverlaZting",
-      "flavor_text": "\"Guess who's back?\"",
+      "flavorText": "\"Guess who's back?\"",
       "abilities": [
         {
           "ability": "SHUFFLE_THIS_CARD_TO_DECK",
@@ -6030,7 +6030,7 @@
       }
     },
     {
-      "id": 77,
+      "mouldId": 77,
       "name": "Healz",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6041,7 +6041,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> Overlord +3 Def. If Overlord 10 Def or less, Overlord +5 Def",
       "picture": "Healz",
-      "flavor_text": "His buddy Jack would be proud",
+      "flavorText": "His buddy Jack would be proud",
       "abilities": [
         {
           "ability": "TAKE_DEFENSE_TO_OVERLORD_WITH_DEFENSE",
@@ -6070,7 +6070,7 @@
       }
     },
     {
-      "id": 78,
+      "mouldId": 78,
       "name": "Rainz",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6081,7 +6081,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> Restore 10 Def randomly split among allies",
       "picture": "Rainz",
-      "flavor_text": "Make it R-A-A-I-N-Z!!!",
+      "flavorText": "Make it R-A-A-I-N-Z!!!",
       "abilities": [
         {
           "ability": "RESTORE_DEF_RANDOMLY_SPLIT",
@@ -6109,7 +6109,7 @@
       }
     },
     {
-      "id": 80,
+      "mouldId": 80,
       "name": "Zcavenger",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -6120,7 +6120,7 @@
       "cost": 2,
       "description": "If this zombie kills a zombie, draw a random card",
       "picture": "Zcavenger",
-      "flavor_text": "A beton nya mombay m'bwa!",
+      "flavorText": "A beton nya mombay m'bwa!",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -6143,7 +6143,7 @@
       }
     },
     {
-      "id": 81,
+      "mouldId": 81,
       "name": "Spikez",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -6154,7 +6154,7 @@
       "cost": 3,
       "description": "+2 Atk on the enemy's turn",
       "picture": "Spikez",
-      "flavor_text": "Come closer... it's never too close",
+      "flavorText": "Come closer... it's never too close",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -6183,7 +6183,7 @@
       }
     },
     {
-      "id": 83,
+      "mouldId": 83,
       "name": "RelentleZZ",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -6194,7 +6194,7 @@
       "cost": 3,
       "description": "<b>Entry:</b> 4 damage to this zombie",
       "picture": "RelentleZZ",
-      "flavor_text": "The best survival tactic: \"never give up\"",
+      "flavorText": "The best survival tactic: \"never give up\"",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -6221,7 +6221,7 @@
       }
     },
     {
-      "id": 84,
+      "mouldId": 84,
       "name": "Polluter",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -6232,7 +6232,7 @@
       "cost": 4,
       "description": "<b>Death:</b> Gain 1 goo",
       "picture": "Polluter",
-      "flavor_text": "Spreading goo to a faucet near you",
+      "flavorText": "Spreading goo to a faucet near you",
       "abilities": [
         {
           "ability": "OVERFLOW_GOO",
@@ -6256,7 +6256,7 @@
       }
     },
     {
-      "id": 86,
+      "mouldId": 86,
       "name": "HoZer",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -6267,7 +6267,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Gets +1 Atk if you have a Water zombie in play",
       "picture": "HoZer",
-      "flavor_text": "The undefeated spitting world champion, can hit a squirrel from 100ft",
+      "flavorText": "The undefeated spitting world champion, can hit a squirrel from 100ft",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -6293,7 +6293,7 @@
       }
     },
     {
-      "id": 87,
+      "mouldId": 87,
       "name": "FroZen",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -6304,7 +6304,7 @@
       "cost": 2,
       "description": "<b>Death:</b> Draw a card if there is a Frozen zombie in play",
       "picture": "FroZen",
-      "flavor_text": "When grabbed - sing: \"let it go, let it go..\"",
+      "flavorText": "When grabbed - sing: \"let it go, let it go..\"",
       "abilities": [
         {
           "ability": "DRAW_CARD",
@@ -6328,7 +6328,7 @@
       }
     },
     {
-      "id": 88,
+      "mouldId": 88,
       "name": "Slider",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -6339,7 +6339,7 @@
       "cost": 2,
       "description": "<b>Entry:</b> Distract an enemy zombie",
       "picture": "Slider",
-      "flavor_text": "Loves skating so so much!",
+      "flavorText": "Loves skating so so much!",
       "abilities": [
         {
           "ability": "DISTRACT",
@@ -6365,7 +6365,7 @@
       }
     },
     {
-      "id": 89,
+      "mouldId": 89,
       "name": "Zub-Zero",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -6376,7 +6376,7 @@
       "cost": 7,
       "description": "<b>Entry:</b> 3 damage to a zombie, if it survives Freeze it",
       "picture": "zubzero",
-      "flavor_text": "Hates pointing things out...",
+      "flavorText": "Hates pointing things out...",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET_FREEZE_IT_IF_SURVIVES",
@@ -6404,7 +6404,7 @@
       }
     },
     {
-      "id": 95,
+      "mouldId": 95,
       "name": "Zquall",
       "kind": "CREATURE",
       "faction": "AIR",
@@ -6415,7 +6415,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> Put 2 Air zombies that cost 2 goo from your Hand to play ",
       "picture": "Zquall",
-      "flavor_text": "Not even close to Texas anymore",
+      "flavorText": "Not even close to Texas anymore",
       "abilities": [
         {
           "ability": "SUMMON_UNIT_FROM_HAND",
@@ -6444,7 +6444,7 @@
       }
     },
     {
-      "id": 102,
+      "mouldId": 102,
       "name": "Groundy",
       "kind": "CREATURE",
       "faction": "EARTH",
@@ -6455,7 +6455,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> If this is your only zombie in play, it gets Heavy",
       "picture": "Groundy",
-      "flavor_text": "\"Saturday... again?! \r\nThis cycle is getting on my nerves\"",
+      "flavorText": "\"Saturday... again?! \r\nThis cycle is getting on my nerves\"",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6466,7 +6466,7 @@
           ],
           "gameMechanicDescription": "ENTRY",
           "targetUnitType": "HEAVY",
-          "sub_trigger": "OnlyThisUnitInPlay"
+          "subTrigger": "OnlyThisUnitInPlay"
         }
       ],
       "pictureTransform": {
@@ -6483,7 +6483,7 @@
       }
     },
     {
-      "id": 105,
+      "mouldId": 105,
       "name": "Sparky",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -6494,7 +6494,7 @@
       "cost": 1,
       "description": "<b>Feral, End:</b> 1 damage to this",
       "picture": "Sparky",
-      "flavor_text": "Hermes has NOTHING on him",
+      "flavorText": "Hermes has NOTHING on him",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -6521,7 +6521,7 @@
       }
     },
     {
-      "id": 109,
+      "mouldId": 109,
       "name": "Rager",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -6532,7 +6532,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> If this is your only zombie in play, get Feral",
       "picture": "Rager",
-      "flavor_text": "Always dreamed of being Superman...",
+      "flavorText": "Always dreamed of being Superman...",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6543,7 +6543,7 @@
           ],
           "gameMechanicDescription": "ENTRY",
           "targetUnitType": "FERAL",
-          "sub_trigger": "OnlyThisUnitInPlay"
+          "subTrigger": "OnlyThisUnitInPlay"
         }
       ],
       "pictureTransform": {
@@ -6560,7 +6560,7 @@
       }
     },
     {
-      "id": 110,
+      "mouldId": 110,
       "name": "Alpha",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -6571,7 +6571,7 @@
       "cost": 5,
       "description": "<b>Entry:</b> All other ally Fire zombies in play get Feral",
       "picture": "Alpha",
-      "flavor_text": "Let's huddle up and do a howl",
+      "flavorText": "Let's huddle up and do a howl",
       "abilities": [
         {
           "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6583,7 +6583,7 @@
           "gameMechanicDescription": "ENTRY",
           "faction": "FIRE",
           "targetUnitType": "FERAL",
-          "sub_trigger": "AllOtherAllyUnitsInPlay"
+          "subTrigger": "AllOtherAllyUnitsInPlay"
         }
       ],
       "pictureTransform": {
@@ -6600,7 +6600,7 @@
       }
     },
     {
-      "id": 111,
+      "mouldId": 111,
       "name": "Volcan",
       "kind": "CREATURE",
       "faction": "FIRE",
@@ -6611,7 +6611,7 @@
       "cost": 5,
       "description": "<b>Cannot Attack. End:</b> 5 damage to a random enemy",
       "picture": "Volcan",
-      "flavor_text": "Loves to make it rain... RAIN of FIRE!",
+      "flavorText": "Loves to make it rain... RAIN of FIRE!",
       "abilities": [
         {
           "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -6646,7 +6646,7 @@
       }
     },
     {
-      "id": 112,
+      "mouldId": 112,
       "name": "Torch",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -6657,7 +6657,7 @@
       "cost": 3,
       "description": "Destroy a zombie that costs 3 goo or less",
       "picture": "Torch",
-      "flavor_text": "Bringing out the pyro-enthusiast in all of us",
+      "flavorText": "Bringing out the pyro-enthusiast in all of us",
       "abilities": [
         {
           "ability": "DESTROY_UNIT_BY_COST",
@@ -6683,7 +6683,7 @@
       }
     },
     {
-      "id": 115,
+      "mouldId": 115,
       "name": "Shovel",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -6694,7 +6694,7 @@
       "cost": 3,
       "description": "3 damage to an enemy OR restore 3 Def to an ally",
       "picture": "shovel_normal",
-      "flavor_text": "Friendly neighborhood shovel!",
+      "flavorText": "Friendly neighborhood shovel!",
       "abilities": [
         {
           "ability": "CHOOSABLE_ABILITIES",
@@ -6705,7 +6705,7 @@
             "PLAYER_CARD"
           ],
           "gameMechanicDescription": "ENTRY",
-          "choosable_abilities": [
+          "choosableAbilities": [
             {
               "description": "3 damage to an enemy",
               "ability_data": {
@@ -6751,7 +6751,7 @@
       }
     },
     {
-      "id": 116,
+      "mouldId": 116,
       "name": "Shopping Cart",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -6762,7 +6762,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> All ally zombies get Swing 1",
       "picture": "ShoppingCart",
-      "flavor_text": "Silly fun times... until someone loses an eye or a head!",
+      "flavorText": "Silly fun times... until someone loses an eye or a head!",
       "abilities": [
         {
           "ability": "TAKE_SWING_TO_UNITS",
@@ -6772,7 +6772,7 @@
             "PLAYER_CARD"
           ],
           "gameMechanicDescription": "ENTRY",
-          "sub_trigger": "AllAllyUnitsInPlay"
+          "subTrigger": "AllAllyUnitsInPlay"
         }
       ],
       "pictureTransform": {
@@ -6789,7 +6789,7 @@
       }
     },
     {
-      "id": 118,
+      "mouldId": 118,
       "name": "Leash",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -6800,7 +6800,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> Gain control of an enemy zombie",
       "picture": "Leash",
-      "flavor_text": "No more BRAINZZZZZ",
+      "flavorText": "No more BRAINZZZZZ",
       "abilities": [
         {
           "ability": "TAKE_CONTROL_ENEMY_UNIT",
@@ -6826,7 +6826,7 @@
       }
     },
     {
-      "id": 119,
+      "mouldId": 119,
       "name": "Bulldozer",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -6837,7 +6837,7 @@
       "cost": 10,
       "description": "<b>Entry:</b> Destroy all zombies in play",
       "picture": "Bulldozer",
-      "flavor_text": "When you REALLY want to level (with) someone",
+      "flavorText": "When you REALLY want to level (with) someone",
       "abilities": [
         {
           "ability": "DESTROY_UNITS",
@@ -6864,7 +6864,7 @@
       }
     },
     {
-      "id": 120,
+      "mouldId": 120,
       "name": "WiZp",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6875,7 +6875,7 @@
       "cost": 3,
       "description": "Reanimate",
       "picture": "WiZp",
-      "flavor_text": "Zeeee... peski littl-- oh its you?!",
+      "flavorText": "Zeeee... peski littl-- oh its you?!",
       "abilities": [
         {
           "ability": "REANIMATE_UNIT",
@@ -6898,7 +6898,7 @@
       }
     },
     {
-      "id": 121,
+      "mouldId": 121,
       "name": "Zplitter",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6909,7 +6909,7 @@
       "cost": 7,
       "description": "<b>Entry:</b> Place another copy of this zombie in play",
       "picture": "embryo",
-      "flavor_text": "Out, OUT...GET OUT!!!",
+      "flavorText": "Out, OUT...GET OUT!!!",
       "abilities": [
         {
           "ability": "SUMMON",
@@ -6937,7 +6937,7 @@
       }
     },
     {
-      "id": 124,
+      "mouldId": 124,
       "name": "Zeeder",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6948,7 +6948,7 @@
       "cost": 5,
       "description": "<b>End:</b> Summon 1 Bark zombie minion",
       "picture": "embryo",
-      "flavor_text": "You reap what you sow",
+      "flavorText": "You reap what you sow",
       "abilities": [
         {
           "ability": "SUMMON",
@@ -6976,7 +6976,7 @@
       }
     },
     {
-      "id": 125,
+      "mouldId": 125,
       "name": "Blight",
       "kind": "CREATURE",
       "faction": "LIFE",
@@ -6987,7 +6987,7 @@
       "cost": 6,
       "description": "<b>Delayed 3:</b> Place 2 4/4 Blight Minions in play then Destroy this",
       "picture": "Blight",
-      "flavor_text": "If you plant it they will come... with a bang",
+      "flavorText": "If you plant it they will come... with a bang",
       "abilities": [],
       "pictureTransform": {
         "position": {
@@ -7003,7 +7003,7 @@
       }
     },
     {
-      "id": 129,
+      "mouldId": 129,
       "name": "Zlopper",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -7014,7 +7014,7 @@
       "cost": 7,
       "description": "+1 Atk to all ally Toxic zombies",
       "picture": "Zlopper",
-      "flavor_text": "What a dragggg...",
+      "flavorText": "What a dragggg...",
       "abilities": [
         {
           "ability": "MODIFICATOR_STATS",
@@ -7027,7 +7027,7 @@
           "value": 1,
           "stat": "DAMAGE",
           "faction": "TOXIC",
-          "sub_trigger": "AllAllyUnitsByFactionInPlay"
+          "subTrigger": "AllAllyUnitsByFactionInPlay"
         }
       ],
       "pictureTransform": {
@@ -7044,7 +7044,7 @@
       }
     },
     {
-      "id": 130,
+      "mouldId": 130,
       "name": "Boomer",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -7055,7 +7055,7 @@
       "cost": 7,
       "description": "<b>Death:</b> Adjacent zombies get +2 Atk",
       "picture": "Boomer",
-      "flavor_text": "Wants to share his LOVE with everyone - free hugs?!?",
+      "flavorText": "Wants to share his LOVE with everyone - free hugs?!?",
       "abilities": [
         {
           "ability": "ADJACENT_UNITS_GET_STAT",
@@ -7080,7 +7080,7 @@
       }
     },
     {
-      "id": 131,
+      "mouldId": 131,
       "name": "Zteroid",
       "kind": "CREATURE",
       "faction": "TOXIC",
@@ -7091,7 +7091,7 @@
       "cost": 6,
       "description": "<b>Death:</b> All ally zombies in play get +2 Atk until end of turn",
       "picture": "Zteroid",
-      "flavor_text": "Needs to flee from his fans, as they want his delicious insides",
+      "flavorText": "Needs to flee from his fans, as they want his delicious insides",
       "abilities": [
         {
           "ability": "CHANGE_STAT_UNTILL_END_OF_TURN",
@@ -7119,7 +7119,7 @@
       }
     },
     {
-      "id": 135,
+      "mouldId": 135,
       "name": "Vortex",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -7130,7 +7130,7 @@
       "cost": 11,
       "description": "<b>Entry:</b> Replace ally water zombies in play with stronger ones",
       "picture": "Vortex",
-      "flavor_text": "ERR, never really be satisfied...",
+      "flavorText": "ERR, never really be satisfied...",
       "abilities": [
         {
           "ability": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
@@ -7158,7 +7158,7 @@
       }
     },
     {
-      "id": 137,
+      "mouldId": 137,
       "name": "Zplash",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -7169,7 +7169,7 @@
       "cost": 6,
       "description": "<b>Entry:</b> 1 damage to a random enemy for each Water zombie in your Hand",
       "picture": "Zplash",
-      "flavor_text": "Hey gang, watch how I mow these chumps!",
+      "flavorText": "Hey gang, watch how I mow these chumps!",
       "abilities": [
         {
           "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -7183,7 +7183,7 @@
           "faction": "WATER",
           "damage": 1,
           "count": 1,
-          "sub_trigger": "ForEachFactionOfUnitInHand"
+          "subTrigger": "ForEachFactionOfUnitInHand"
         }
       ],
       "pictureTransform": {
@@ -7200,7 +7200,7 @@
       }
     },
     {
-      "id": 138,
+      "mouldId": 138,
       "name": "Izicle",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -7211,7 +7211,7 @@
       "cost": 4,
       "description": "<b>Entry:</b> 2 damage to an enemy if a Water zombie in play",
       "picture": "Izicle",
-      "flavor_text": "He just looooves his icy skewer",
+      "flavorText": "He just looooves his icy skewer",
       "abilities": [
         {
           "ability": "DAMAGE_TARGET",
@@ -7224,7 +7224,7 @@
           "gameMechanicDescription": "ENTRY",
           "value": 2,
           "faction": "WATER",
-          "sub_trigger": "IfHasUnitsWithFactionInPlay"
+          "subTrigger": "IfHasUnitsWithFactionInPlay"
         }
       ],
       "pictureTransform": {
@@ -7241,7 +7241,7 @@
       }
     },
     {
-      "id": 140,
+      "mouldId": 140,
       "name": "Zpring",
       "kind": "CREATURE",
       "faction": "WATER",
@@ -7252,7 +7252,7 @@
       "cost": 5,
       "description": "As long as this is in play, you have 1 extra goo",
       "picture": "Zpring",
-      "flavor_text": "Can never have enough goo... here take a sip",
+      "flavorText": "Can never have enough goo... here take a sip",
       "abilities": [
         {
           "ability": "EXTRA_GOO_IF_UNIT_IN_PLAY",
@@ -7276,7 +7276,7 @@
       }
     },
     {
-      "id": 154,
+      "mouldId": 154,
       "name": "Boomstick",
       "kind": "SPELL",
       "faction": "ITEM",
@@ -7287,7 +7287,7 @@
       "cost": 2,
       "description": "2 damage to 3 random zombies in play",
       "picture": "Boomstick",
-      "flavor_text": "Thank you for your service!",
+      "flavorText": "Thank you for your service!",
       "abilities": [
         {
           "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -7316,7 +7316,7 @@
       }
     },
     {
-      "id": 161,
+      "mouldId": 161,
       "name": "Blight Minion",
       "kind": "CREATURE",
       "faction": "OTHERS",
@@ -7326,7 +7326,7 @@
       "defense": 4,
       "cost": 1,
       "picture": "Blight",
-      "flavor_text": "If you plant it they will come... with a bang",
+      "flavorText": "If you plant it they will come... with a bang",
       "abilities": [],
       "pictureTransform": {
         "position": {
