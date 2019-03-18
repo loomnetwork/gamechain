@@ -11,763 +11,763 @@
           "chainId": "default",
           "local": "hvNtnxu2r5a6gJ16p4EiUUJGQaU="
         },
-        "defaultCollection": [
+        "default_collection": [
           {
-            "cardName": "Whizpar",
+            "card_name": "Whizpar",
             "amount": 4
           },
           {
-            "cardName": "Pushhh",
+            "card_name": "Pushhh",
             "amount": 4
           },
           {
-            "cardName": "Ztormcaller",
+            "card_name": "Ztormcaller",
             "amount": 4
           },
           {
-            "cardName": "ZeuZ",
+            "card_name": "ZeuZ",
             "amount": 4
           },
           {
-            "cardName": "Rockky",
+            "card_name": "Rockky",
             "amount": 4
           },
           {
-            "cardName": "Golem",
+            "card_name": "Golem",
             "amount": 4
           },
           {
-            "cardName": "Mountain",
+            "card_name": "Mountain",
             "amount": 4
           },
           {
-            "cardName": "Walley",
+            "card_name": "Walley",
             "amount": 4
           },
           {
-            "cardName": "Pyromaz",
+            "card_name": "Pyromaz",
             "amount": 4
           },
           {
-            "cardName": "Burrrnn",
+            "card_name": "Burrrnn",
             "amount": 4
           },
           {
-            "cardName": "Cynderman",
+            "card_name": "Cynderman",
             "amount": 4
           },
           {
-            "cardName": "Gargantua",
+            "card_name": "Gargantua",
             "amount": 4
           },
           {
-            "cardName": "Fire-Maw",
+            "card_name": "Fire-Maw",
             "amount": 4
           },
           {
-            "cardName": "Stapler",
+            "card_name": "Stapler",
             "amount": 4
           },
           {
-            "cardName": "Nail Bomb",
+            "card_name": "Nail Bomb",
             "amount": 4
           },
           {
-            "cardName": "Goo Bottles",
+            "card_name": "Goo Bottles",
             "amount": 4
           },
           {
-            "cardName": "Chainsaw",
+            "card_name": "Chainsaw",
             "amount": 4
           },
           {
-            "cardName": "Azuraz",
+            "card_name": "Azuraz",
             "amount": 4
           },
           {
-            "cardName": "Shroom",
+            "card_name": "Shroom",
             "amount": 4
           },
           {
-            "cardName": "Vindrom",
+            "card_name": "Vindrom",
             "amount": 4
           },
           {
-            "cardName": "Shammann",
+            "card_name": "Shammann",
             "amount": 4
           },
           {
-            "cardName": "Puffer",
+            "card_name": "Puffer",
             "amount": 4
           },
           {
-            "cardName": "Poizom",
+            "card_name": "Poizom",
             "amount": 4
           },
           {
-            "cardName": "Ghoul",
+            "card_name": "Ghoul",
             "amount": 4
           },
           {
-            "cardName": "Hazmaz",
+            "card_name": "Hazmaz",
             "amount": 4
           },
           {
-            "cardName": "Cherno-bill",
+            "card_name": "Cherno-bill",
             "amount": 4
           },
           {
-            "cardName": "Izze",
+            "card_name": "Izze",
             "amount": 4
           },
           {
-            "cardName": "Jetter",
+            "card_name": "Jetter",
             "amount": 4
           },
           {
-            "cardName": "Freezzee",
+            "card_name": "Freezzee",
             "amount": 4
           },
           {
-            "cardName": "Tzunamy",
+            "card_name": "Tzunamy",
             "amount": 4
           },
           {
-            "cardName": "Bouncer",
+            "card_name": "Bouncer",
             "amount": 4
           },
           {
-            "cardName": "Wheezy",
+            "card_name": "Wheezy",
             "amount": 4
           },
           {
-            "cardName": "Tiny",
+            "card_name": "Tiny",
             "amount": 4
           },
           {
-            "cardName": "Earthshaker",
+            "card_name": "Earthshaker",
             "amount": 4
           },
           {
-            "cardName": "Cerberus",
+            "card_name": "Cerberus",
             "amount": 4
           },
           {
-            "cardName": "Werezomb",
+            "card_name": "Werezomb",
             "amount": 4
           },
           {
-            "cardName": "Z-Virus",
+            "card_name": "Z-Virus",
             "amount": 4
           },
           {
-            "cardName": "Yggdrazil",
+            "card_name": "Yggdrazil",
             "amount": 4
           },
           {
-            "cardName": "Sapper",
+            "card_name": "Sapper",
             "amount": 4
           },
           {
-            "cardName": "Keeper",
+            "card_name": "Keeper",
             "amount": 4
           },
           {
-            "cardName": "Zpitter",
+            "card_name": "Zpitter",
             "amount": 4
           },
           {
-            "cardName": "Zeeter",
+            "card_name": "Zeeter",
             "amount": 4
           },
           {
-            "cardName": "Zhatterer",
+            "card_name": "Zhatterer",
             "amount": 4
           },
           {
-            "cardName": "Znowman",
+            "card_name": "Znowman",
             "amount": 4
           },
           {
-            "cardName": "Soothsayer",
+            "card_name": "Soothsayer",
             "amount": 4
           },
           {
-            "cardName": "Spiker",
+            "card_name": "Spiker",
             "amount": 4
           },
           {
-            "cardName": "IgneouZ",
+            "card_name": "IgneouZ",
             "amount": 4
           },
           {
-            "cardName": "Zhampion",
+            "card_name": "Zhampion",
             "amount": 4
           },
           {
-            "cardName": "Goo Beaker",
+            "card_name": "Goo Beaker",
             "amount": 4
           },
           {
-            "cardName": "Bloomer",
+            "card_name": "Bloomer",
             "amount": 4
           },
           {
-            "cardName": "Zludge",
+            "card_name": "Zludge",
             "amount": 4
           },
           {
-            "cardName": "Blizzard",
+            "card_name": "Blizzard",
             "amount": 4
           },
           {
-            "cardName": "Ztormonk",
+            "card_name": "Ztormonk",
             "amount": 4
           },
           {
-            "cardName": "Draft",
+            "card_name": "Draft",
             "amount": 4
           },
           {
-            "cardName": "MonZoon",
+            "card_name": "MonZoon",
             "amount": 4
           },
           {
-            "cardName": "Blocker",
+            "card_name": "Blocker",
             "amount": 4
           },
           {
-            "cardName": "Slab",
+            "card_name": "Slab",
             "amount": 4
           },
           {
-            "cardName": "Pyrite",
+            "card_name": "Pyrite",
             "amount": 4
           },
           {
-            "cardName": "Gaea",
+            "card_name": "Gaea",
             "amount": 4
           },
           {
-            "cardName": "Fresh Meat",
+            "card_name": "Fresh Meat",
             "amount": 4
           },
           {
-            "cardName": "Ectoplasm",
+            "card_name": "Ectoplasm",
             "amount": 4
           },
           {
-            "cardName": "GooZilla",
+            "card_name": "GooZilla",
             "amount": 4
           },
           {
-            "cardName": "Maelstrom",
+            "card_name": "Maelstrom",
             "amount": 4
           },
           {
-            "cardName": "Fumez",
+            "card_name": "Fumez",
             "amount": 4
           },
           {
-            "cardName": "Gaz",
+            "card_name": "Gaz",
             "amount": 4
           },
           {
-            "cardName": "Pit",
+            "card_name": "Pit",
             "amount": 4
           },
           {
-            "cardName": "Crater",
+            "card_name": "Crater",
             "amount": 4
           },
           {
-            "cardName": "Quazi",
+            "card_name": "Quazi",
             "amount": 4
           },
           {
-            "cardName": "Modo",
+            "card_name": "Modo",
             "amount": 4
           },
           {
-            "cardName": "Zap",
+            "card_name": "Zap",
             "amount": 4
           },
           {
-            "cardName": "Cactuz",
+            "card_name": "Cactuz",
             "amount": 4
           },
           {
-            "cardName": "Zeptic",
+            "card_name": "Zeptic",
             "amount": 4
           },
           {
-            "cardName": "Hazzard",
+            "card_name": "Hazzard",
             "amount": 4
           },
           {
-            "cardName": "Ozmoziz",
+            "card_name": "Ozmoziz",
             "amount": 4
           },
           {
-            "cardName": "Geyzer",
+            "card_name": "Geyzer",
             "amount": 4
           },
           {
-            "cardName": "Whistle",
+            "card_name": "Whistle",
             "amount": 4
           },
           {
-            "cardName": "Znowy",
+            "card_name": "Znowy",
             "amount": 4
           },
           {
-            "cardName": "Wazte",
+            "card_name": "Wazte",
             "amount": 4
           },
           {
-            "cardName": "Ztalagmite",
+            "card_name": "Ztalagmite",
             "amount": 4
           },
           {
-            "cardName": "Igloo",
+            "card_name": "Igloo",
             "amount": 4
           },
           {
-            "cardName": "Froztbite",
+            "card_name": "Froztbite",
             "amount": 4
           },
           {
-            "cardName": "Amber",
+            "card_name": "Amber",
             "amount": 4
           },
           {
-            "cardName": "Bark",
+            "card_name": "Bark",
             "amount": 4
           },
           {
-            "cardName": "Germ",
+            "card_name": "Germ",
             "amount": 4
           },
           {
-            "cardName": "Ember",
+            "card_name": "Ember",
             "amount": 4
           },
           {
-            "cardName": "Firewall",
+            "card_name": "Firewall",
             "amount": 4
           },
           {
-            "cardName": "BurZt",
+            "card_name": "BurZt",
             "amount": 4
           },
           {
-            "cardName": "Extinguisher",
+            "card_name": "Extinguisher",
             "amount": 4
           },
           {
-            "cardName": "Lawnmower",
+            "card_name": "Lawnmower",
             "amount": 4
           },
           {
-            "cardName": "Shale",
+            "card_name": "Shale",
             "amount": 4
           },
           {
-            "cardName": "Hardy",
+            "card_name": "Hardy",
             "amount": 4
           },
           {
-            "cardName": "Breezee",
+            "card_name": "Breezee",
             "amount": 4
           },
           {
-            "cardName": "Banshee",
+            "card_name": "Banshee",
             "amount": 4
           },
           {
-            "cardName": "Zhocker",
+            "card_name": "Zhocker",
             "amount": 4
           },
           {
-            "cardName": "Bolderr",
+            "card_name": "Bolderr",
             "amount": 4
           },
           {
-            "cardName": "Zlimey",
+            "card_name": "Zlimey",
             "amount": 4
           },
           {
-            "cardName": "Azzazzin",
+            "card_name": "Azzazzin",
             "amount": 4
           },
           {
-            "cardName": "PreZerver",
+            "card_name": "PreZerver",
             "amount": 4
           },
           {
-            "cardName": "Zephyr",
+            "card_name": "Zephyr",
             "amount": 4
           },
           {
-            "cardName": "BlaZter",
+            "card_name": "BlaZter",
             "amount": 4
           },
           {
-            "cardName": "Zlinger",
+            "card_name": "Zlinger",
             "amount": 4
           },
           {
-            "cardName": "Mind Flayer",
+            "card_name": "Mind Flayer",
             "amount": 4
           },
           {
-            "cardName": "Molotov",
+            "card_name": "Molotov",
             "amount": 4
           },
           {
-            "cardName": "Bat",
+            "card_name": "Bat",
             "amount": 4
           },
           {
-            "cardName": "Super Serum",
+            "card_name": "Super Serum",
             "amount": 4
           },
           {
-            "cardName": "Buffer",
+            "card_name": "Buffer",
             "amount": 4
           },
           {
-            "cardName": "Whiffer",
+            "card_name": "Whiffer",
             "amount": 4
           },
           {
-            "cardName": "Dragger",
+            "card_name": "Dragger",
             "amount": 4
           },
           {
-            "cardName": "Zyclone",
+            "card_name": "Zyclone",
             "amount": 4
           },
           {
-            "cardName": "Pebble",
+            "card_name": "Pebble",
             "amount": 4
           },
           {
-            "cardName": "Crumbz",
+            "card_name": "Crumbz",
             "amount": 4
           },
           {
-            "cardName": "Protector",
+            "card_name": "Protector",
             "amount": 4
           },
           {
-            "cardName": "Defender",
+            "card_name": "Defender",
             "amount": 4
           },
           {
-            "cardName": "Firecaller",
+            "card_name": "Firecaller",
             "amount": 4
           },
           {
-            "cardName": "RabieZ",
+            "card_name": "RabieZ",
             "amount": 4
           },
           {
-            "cardName": "Enrager",
+            "card_name": "Enrager",
             "amount": 4
           },
           {
-            "cardName": "Supply Drop",
+            "card_name": "Supply Drop",
             "amount": 4
           },
           {
-            "cardName": "Junk Spear",
+            "card_name": "Junk Spear",
             "amount": 4
           },
           {
-            "cardName": "Zed Kit",
+            "card_name": "Zed Kit",
             "amount": 4
           },
           {
-            "cardName": "Grower",
+            "card_name": "Grower",
             "amount": 4
           },
           {
-            "cardName": "EverlaZting",
+            "card_name": "EverlaZting",
             "amount": 4
           },
           {
-            "cardName": "Healz",
+            "card_name": "Healz",
             "amount": 4
           },
           {
-            "cardName": "Rainz",
+            "card_name": "Rainz",
             "amount": 4
           },
           {
-            "cardName": "Zcavenger",
+            "card_name": "Zcavenger",
             "amount": 4
           },
           {
-            "cardName": "Spikez",
+            "card_name": "Spikez",
             "amount": 4
           },
           {
-            "cardName": "RelentleZZ",
+            "card_name": "RelentleZZ",
             "amount": 4
           },
           {
-            "cardName": "Polluter",
+            "card_name": "Polluter",
             "amount": 4
           },
           {
-            "cardName": "HoZer",
+            "card_name": "HoZer",
             "amount": 4
           },
           {
-            "cardName": "FroZen",
+            "card_name": "FroZen",
             "amount": 4
           },
           {
-            "cardName": "Slider",
+            "card_name": "Slider",
             "amount": 4
           },
           {
-            "cardName": "Zub-Zero",
+            "card_name": "Zub-Zero",
             "amount": 4
           },
           {
-            "cardName": "Zquall",
+            "card_name": "Zquall",
             "amount": 4
           },
           {
-            "cardName": "Groundy",
+            "card_name": "Groundy",
             "amount": 4
           },
           {
-            "cardName": "Sparky",
+            "card_name": "Sparky",
             "amount": 4
           },
           {
-            "cardName": "Rager",
+            "card_name": "Rager",
             "amount": 4
           },
           {
-            "cardName": "Alpha",
+            "card_name": "Alpha",
             "amount": 4
           },
           {
-            "cardName": "Volcan",
+            "card_name": "Volcan",
             "amount": 4
           },
           {
-            "cardName": "Torch",
+            "card_name": "Torch",
             "amount": 4
           },
           {
-            "cardName": "Shovel",
+            "card_name": "Shovel",
             "amount": 4
           },
           {
-            "cardName": "Shopping Cart",
+            "card_name": "Shopping Cart",
             "amount": 4
           },
           {
-            "cardName": "Leash",
+            "card_name": "Leash",
             "amount": 4
           },
           {
-            "cardName": "Bulldozer",
+            "card_name": "Bulldozer",
             "amount": 4
           },
           {
-            "cardName": "WiZp",
+            "card_name": "WiZp",
             "amount": 4
           },
           {
-            "cardName": "Zplitter",
+            "card_name": "Zplitter",
             "amount": 4
           },
           {
-            "cardName": "Zeeder",
+            "card_name": "Zeeder",
             "amount": 4
           },
           {
-            "cardName": "Blight",
+            "card_name": "Blight",
             "amount": 4
           },
           {
-            "cardName": "Zlopper",
+            "card_name": "Zlopper",
             "amount": 4
           },
           {
-            "cardName": "Boomer",
+            "card_name": "Boomer",
             "amount": 4
           },
           {
-            "cardName": "Zteroid",
+            "card_name": "Zteroid",
             "amount": 4
           },
           {
-            "cardName": "Vortex",
+            "card_name": "Vortex",
             "amount": 4
           },
           {
-            "cardName": "Zplash",
+            "card_name": "Zplash",
             "amount": 4
           },
           {
-            "cardName": "Izicle",
+            "card_name": "Izicle",
             "amount": 4
           },
           {
-            "cardName": "Zpring",
+            "card_name": "Zpring",
             "amount": 4
           },
           {
-            "cardName": "Boomstick",
+            "card_name": "Boomstick",
             "amount": 4
           }
         ],
-        "defaultDecks": [
+        "default_decks": [
           {
             "id": 0,
-            "overlordId": 4,
+            "hero_id": 4,
             "name": "Default",
             "cards": [
               {
-                "cardName": "Poizom",
+                "card_name": "Poizom",
                 "amount": 4
               },
               {
-                "cardName": "Hazmaz",
+                "card_name": "Hazmaz",
                 "amount": 2
               },
               {
-                "cardName": "Zeeter",
+                "card_name": "Zeeter",
                 "amount": 1
               },
               {
-                "cardName": "Zhatterer",
+                "card_name": "Zhatterer",
                 "amount": 4
               },
               {
-                "cardName": "Zludge",
+                "card_name": "Zludge",
                 "amount": 2
               },
               {
-                "cardName": "Znowman",
+                "card_name": "Znowman",
                 "amount": 4
               },
               {
-                "cardName": "Z-Virus",
+                "card_name": "Z-Virus",
                 "amount": 1
               },
               {
-                "cardName": "Gaea",
+                "card_name": "Gaea",
                 "amount": 1
               },
               {
-                "cardName": "Earthshaker",
+                "card_name": "Earthshaker",
                 "amount": 1
               },
               {
-                "cardName": "Zeptic",
+                "card_name": "Zeptic",
                 "amount": 1
               },
               {
-                "cardName": "Ghoul",
+                "card_name": "Ghoul",
                 "amount": 1
               },
               {
-                "cardName": "Hazzard",
+                "card_name": "Hazzard",
                 "amount": 1
               },
               {
-                "cardName": "Ectoplasm",
+                "card_name": "Ectoplasm",
                 "amount": 1
               },
               {
-                "cardName": "Bouncer",
+                "card_name": "Bouncer",
                 "amount": 2
               },
               {
-                "cardName": "Stapler",
+                "card_name": "Stapler",
                 "amount": 1
               },
               {
-                "cardName": "Goo Bottles",
+                "card_name": "Goo Bottles",
                 "amount": 1
               },
               {
-                "cardName": "Chainsaw",
+                "card_name": "Chainsaw",
                 "amount": 2
               }
             ]
           }
         ],
-        "aiDecks": [
+        "ai_decks": [
           {
             "type": "BLITZ_AI",
             "deck": {
               "id": 0,
-              "overlordId": 1,
+              "hero_id": 1,
               "name": "BLITZ_AI",
               "cards": [
                 {
-                  "cardName": "Pyromaz",
+                  "card_name": "Pyromaz",
                   "amount": 4
                 },
                 {
-                  "cardName": "Modo",
+                  "card_name": "Modo",
                   "amount": 2
                 },
                 {
-                  "cardName": "Cerberus",
+                  "card_name": "Cerberus",
                   "amount": 1
                 },
                 {
-                  "cardName": "Jetter",
+                  "card_name": "Jetter",
                   "amount": 2
                 },
                 {
-                  "cardName": "Tiny",
+                  "card_name": "Tiny",
                   "amount": 2
                 },
                 {
-                  "cardName": "Quazi",
+                  "card_name": "Quazi",
                   "amount": 4
                 },
                 {
-                  "cardName": "Fire-Maw",
+                  "card_name": "Fire-Maw",
                   "amount": 1
                 },
                 {
-                  "cardName": "Burrrnn",
+                  "card_name": "Burrrnn",
                   "amount": 2
                 },
                 {
-                  "cardName": "Rockky",
+                  "card_name": "Rockky",
                   "amount": 4
                 },
                 {
-                  "cardName": "Werezomb",
+                  "card_name": "Werezomb",
                   "amount": 2
                 },
                 {
-                  "cardName": "Cynderman",
+                  "card_name": "Cynderman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Gargantua",
+                  "card_name": "Gargantua",
                   "amount": 1
                 },
                 {
-                  "cardName": "Zhampion",
+                  "card_name": "Zhampion",
                   "amount": 2
                 },
                 {
-                  "cardName": "Fresh Meat",
+                  "card_name": "Fresh Meat",
                   "amount": 1
                 }
               ]
@@ -777,71 +777,71 @@
             "type": "DEFENSE_AI",
             "deck": {
               "id": 1,
-              "overlordId": 0,
+              "hero_id": 0,
               "name": "DEFENSE_AI",
               "cards": [
                 {
-                  "cardName": "Tiny",
+                  "card_name": "Tiny",
                   "amount": 2
                 },
                 {
-                  "cardName": "Crater",
+                  "card_name": "Crater",
                   "amount": 1
                 },
                 {
-                  "cardName": "Walley",
+                  "card_name": "Walley",
                   "amount": 1
                 },
                 {
-                  "cardName": "Spiker",
+                  "card_name": "Spiker",
                   "amount": 2
                 },
                 {
-                  "cardName": "Earthshaker",
+                  "card_name": "Earthshaker",
                   "amount": 2
                 },
                 {
-                  "cardName": "IgneouZ",
+                  "card_name": "IgneouZ",
                   "amount": 2
                 },
                 {
-                  "cardName": "Zeuz",
+                  "card_name": "Zeuz",
                   "amount": 1
                 },
                 {
-                  "cardName": "Poizom",
+                  "card_name": "Poizom",
                   "amount": 4
                 },
                 {
-                  "cardName": "Werezomb",
+                  "card_name": "Werezomb",
                   "amount": 1
                 },
                 {
-                  "cardName": "Gargantua",
+                  "card_name": "Gargantua",
                   "amount": 1
                 },
                 {
-                  "cardName": "Izze",
+                  "card_name": "Izze",
                   "amount": 2
                 },
                 {
-                  "cardName": "Znowman",
+                  "card_name": "Znowman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Rockky",
+                  "card_name": "Rockky",
                   "amount": 2
                 },
                 {
-                  "cardName": "Cherno-bill",
+                  "card_name": "Cherno-bill",
                   "amount": 1
                 },
                 {
-                  "cardName": "Ghoul",
+                  "card_name": "Ghoul",
                   "amount": 2
                 },
                 {
-                  "cardName": "Pyromaz",
+                  "card_name": "Pyromaz",
                   "amount": 4
                 }
               ]
@@ -851,63 +851,63 @@
             "type": "MIXED_AI",
             "deck": {
               "id": 2,
-              "overlordId": 4,
+              "hero_id": 4,
               "name": "MIXED_AI",
               "cards": [
                 {
-                  "cardName": "Poizom",
+                  "card_name": "Poizom",
                   "amount": 4
                 },
                 {
-                  "cardName": "Zpitter",
+                  "card_name": "Zpitter",
                   "amount": 4
                 },
                 {
-                  "cardName": "Zeptic",
+                  "card_name": "Zeptic",
                   "amount": 4
                 },
                 {
-                  "cardName": "Ghoul",
+                  "card_name": "Ghoul",
                   "amount": 2
                 },
                 {
-                  "cardName": "Hazzard",
+                  "card_name": "Hazzard",
                   "amount": 2
                 },
                 {
-                  "cardName": "Zludge",
+                  "card_name": "Zludge",
                   "amount": 2
                 },
                 {
-                  "cardName": "Ectoplasm",
+                  "card_name": "Ectoplasm",
                   "amount": 2
                 },
                 {
-                  "cardName": "Cherno-bill",
+                  "card_name": "Cherno-bill",
                   "amount": 1
                 },
                 {
-                  "cardName": "GooZilla",
+                  "card_name": "GooZilla",
                   "amount": 1
                 },
                 {
-                  "cardName": "Slab",
+                  "card_name": "Slab",
                   "amount": 1
                 },
                 {
-                  "cardName": "Rockky",
+                  "card_name": "Rockky",
                   "amount": 4
                 },
                 {
-                  "cardName": "Hazmaz",
+                  "card_name": "Hazmaz",
                   "amount": 1
                 },
                 {
-                  "cardName": "Izze",
+                  "card_name": "Izze",
                   "amount": 1
                 },
                 {
-                  "cardName": "Znowman",
+                  "card_name": "Znowman",
                   "amount": 1
                 }
               ]
@@ -917,79 +917,79 @@
             "type": "MIXED_BLITZ_AI",
             "deck": {
               "id": 3,
-              "overlordId": 2,
+              "hero_id": 2,
               "name": "MIXED_BLITZ_AI",
               "cards": [
                 {
-                  "cardName": "Izze",
+                  "card_name": "Izze",
                   "amount": 2
                 },
                 {
-                  "cardName": "Znowman",
+                  "card_name": "Znowman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Ozmoziz",
+                  "card_name": "Ozmoziz",
                   "amount": 2
                 },
                 {
-                  "cardName": "Jetter",
+                  "card_name": "Jetter",
                   "amount": 2
                 },
                 {
-                  "cardName": "Geyzer",
+                  "card_name": "Geyzer",
                   "amount": 2
                 },
                 {
-                  "cardName": "Rockky",
+                  "card_name": "Rockky",
                   "amount": 2
                 },
                 {
-                  "cardName": "Azuraz",
+                  "card_name": "Azuraz",
                   "amount": 1
                 },
                 {
-                  "cardName": "Bloomer",
+                  "card_name": "Bloomer",
                   "amount": 2
                 },
                 {
-                  "cardName": "Vindrom",
+                  "card_name": "Vindrom",
                   "amount": 2
                 },
                 {
-                  "cardName": "Shroom",
+                  "card_name": "Shroom",
                   "amount": 2
                 },
                 {
-                  "cardName": "Sapper",
+                  "card_name": "Sapper",
                   "amount": 1
                 },
                 {
-                  "cardName": "Keeper",
+                  "card_name": "Keeper",
                   "amount": 1
                 },
                 {
-                  "cardName": "Puffer",
+                  "card_name": "Puffer",
                   "amount": 2
                 },
                 {
-                  "cardName": "Poizom",
+                  "card_name": "Poizom",
                   "amount": 2
                 },
                 {
-                  "cardName": "Ghoul",
+                  "card_name": "Ghoul",
                   "amount": 1
                 },
                 {
-                  "cardName": "Goo Beaker",
+                  "card_name": "Goo Beaker",
                   "amount": 2
                 },
                 {
-                  "cardName": "Burrrnn",
+                  "card_name": "Burrrnn",
                   "amount": 2
                 },
                 {
-                  "cardName": "Werezomb",
+                  "card_name": "Werezomb",
                   "amount": 1
                 }
               ]
@@ -999,83 +999,83 @@
             "type": "TIME_BLITZ_AI",
             "deck": {
               "id": 4,
-              "overlordId": 3,
+              "hero_id": 3,
               "name": "TIME_BLITZ_AI",
               "cards": [
                 {
-                  "cardName": "Whizpar",
+                  "card_name": "Whizpar",
                   "amount": 2
                 },
                 {
-                  "cardName": "Pushhh",
+                  "card_name": "Pushhh",
                   "amount": 2
                 },
                 {
-                  "cardName": "Fumez",
+                  "card_name": "Fumez",
                   "amount": 1
                 },
                 {
-                  "cardName": "Soothsayer",
+                  "card_name": "Soothsayer",
                   "amount": 1
                 },
                 {
-                  "cardName": "Ztormcaller",
+                  "card_name": "Ztormcaller",
                   "amount": 2
                 },
                 {
-                  "cardName": "Gaz",
+                  "card_name": "Gaz",
                   "amount": 2
                 },
                 {
-                  "cardName": "Draft",
+                  "card_name": "Draft",
                   "amount": 1
                 },
                 {
-                  "cardName": "MonZoon",
+                  "card_name": "MonZoon",
                   "amount": 2
                 },
                 {
-                  "cardName": "Zeuz",
+                  "card_name": "Zeuz",
                   "amount": 2
                 },
                 {
-                  "cardName": "Corrupted Goo",
+                  "card_name": "Corrupted Goo",
                   "amount": 1
                 },
                 {
-                  "cardName": "Tainted Goo",
+                  "card_name": "Tainted Goo",
                   "amount": 1
                 },
                 {
-                  "cardName": "Znowman",
+                  "card_name": "Znowman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Burrrnn",
+                  "card_name": "Burrrnn",
                   "amount": 2
                 },
                 {
-                  "cardName": "Cynderman",
+                  "card_name": "Cynderman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Fire-Maw",
+                  "card_name": "Fire-Maw",
                   "amount": 1
                 },
                 {
-                  "cardName": "Zhampion",
+                  "card_name": "Zhampion",
                   "amount": 2
                 },
                 {
-                  "cardName": "Zpitter",
+                  "card_name": "Zpitter",
                   "amount": 3
                 },
                 {
-                  "cardName": "Poizom",
+                  "card_name": "Poizom",
                   "amount": 1
                 },
                 {
-                  "cardName": "Wheezy",
+                  "card_name": "Wheezy",
                   "amount": 2
                 }
               ]
@@ -1085,80 +1085,80 @@
             "type": "MIXED_DEFENSE_AI",
             "deck": {
               "id": 5,
-              "overlordId": 5,
+              "hero_id": 5,
               "name": "MIXED_DEFENSE_AI",
               "cards": [
                 {
-                  "cardName": "Azuraz",
+                  "card_name": "Azuraz",
                   "amount": 4
                 },
                 {
-                  "cardName": "Bloomer",
+                  "card_name": "Bloomer",
                   "amount": 4
                 },
                 {
-                  "cardName": "Zap",
+                  "card_name": "Zap",
                   "amount": 4
                 },
                 {
-                  "cardName": "Shroom",
+                  "card_name": "Shroom",
                   "amount": 2
                 },
                 {
-                  "cardName": "Vindrom",
+                  "card_name": "Vindrom",
                   "amount": 2
                 },
                 {
-                  "cardName": "Z-Virus",
+                  "card_name": "Z-Virus",
                   "amount": 1
                 },
                 {
-                  "cardName": "Yggdrazil",
+                  "card_name": "Yggdrazil",
                   "amount": 1
                 },
                 {
-                  "cardName": "Izze",
+                  "card_name": "Izze",
                   "amount": 2
                 },
                 {
-                  "cardName": "Znowman",
+                  "card_name": "Znowman",
                   "amount": 2
                 },
                 {
-                  "cardName": "Jetter",
+                  "card_name": "Jetter",
                   "amount": 1
                 },
                 {
-                  "cardName": "Pyromaz",
+                  "card_name": "Pyromaz",
                   "amount": 1
                 },
                 {
-                  "cardName": "Cynderman",
+                  "card_name": "Cynderman",
                   "amount": 1
                 },
                 {
-                  "cardName": "Burrrnn",
+                  "card_name": "Burrrnn",
                   "amount": 1
                 },
                 {
-                  "cardName": "Werezomb",
+                  "card_name": "Werezomb",
                   "amount": 1
                 },
                 {
-                  "cardName": "Rockky",
+                  "card_name": "Rockky",
                   "amount": 3
                 }
               ]
             }
           }
         ],
-        "overlords": [
+        "heroes": [
           {
-            "overlordId": 0,
+            "hero_id": 0,
             "icon": "icon",
             "name": "Brakuus",
-            "shortDescription": "The Guardian",
-            "longDescription": "",
+            "short_description": "The Guardian",
+            "long_description": "",
             "element": "EARTH",
             "experience": 0,
             "level": 0,
@@ -1166,38 +1166,38 @@
               {
                 "title": "Harden",
                 "skill": "HARDEN",
-                "iconPath": "overlordability_earth",
+                "icon_path": "overlordability_earth",
                 "description": "Give +2 Def to your Overlord",
-                "skillTargets": [],
+                "skill_targets": [],
                 "cooldown": 3,
-                "initialCooldown": 3,
+                "initial_cooldown": 3,
                 "value": 2
               },
               {
                 "title": "Stoneskin",
                 "skill": "STONE_SKIN",
-                "iconPath": "overlordability_earth_stone_skin",
+                "icon_path": "overlordability_earth_stone_skin",
                 "description": "Give an ally Earth zombie +1 Def",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER_CARD"
                 ],
                 "element_targets": [
                   "EARTH"
                 ],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "overlordId": 1,
+            "hero_id": 1,
             "icon": "icon",
             "name": "Razu",
-            "shortDescription": "The Fire Daemon",
-            "longDescription": "",
+            "short_description": "The Fire Daemon",
+            "long_description": "",
             "element": "FIRE",
             "experience": 0,
             "level": 0,
@@ -1205,43 +1205,43 @@
               {
                 "title": "Fire Bolt",
                 "skill": "FIRE_BOLT",
-                "iconPath": "overlordability_fire",
+                "icon_path": "overlordability_fire",
                 "description": "Deal 1 damage to target",
-                "skillTargets": [
+                "skill_targets": [
                   "OPPONENT_CARD",
                   "PLAYER_CARD",
                   "PLAYER",
                   "OPPONENT"
                 ],
                 "cooldown": 3,
-                "initialCooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
                 "title": "Rabies",
                 "skill": "RABIES",
-                "iconPath": "overlordability_fire_rabies",
+                "icon_path": "overlordability_fire_rabies",
                 "description": "Give an ally Fire zombie Feral",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER_CARD"
                 ],
                 "element_targets": [
                   "FIRE"
                 ],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "overlordId": 2,
+            "hero_id": 2,
             "icon": "icon",
             "name": "Vash'Kala",
-            "shortDescription": "The Ancient One",
-            "longDescription": "",
+            "short_description": "The Ancient One",
+            "long_description": "",
             "element": "WATER",
             "experience": 0,
             "level": 0,
@@ -1249,39 +1249,39 @@
               {
                 "title": "Freeze",
                 "skill": "FREEZE",
-                "iconPath": "overlordability_water",
+                "icon_path": "overlordability_water",
                 "description": "Freeze a zombie",
-                "skillTargets": [
+                "skill_targets": [
                   "OPPONENT_CARD",
                   "PLAYER_CARD"
                 ],
                 "cooldown": 3,
-                "initialCooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
                 "title": "Ice Bolt",
                 "skill": "ICE_BOLT",
-                "iconPath": "overlordability_water_ice_bolt",
+                "icon_path": "overlordability_water_ice_bolt",
                 "description": "Deal 2 damage to a target zombie. If it survives, Freeze it",
-                "skillTargets": [
+                "skill_targets": [
                   "OPPONENT_CARD",
                   "PLAYER_CARD"
                 ],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 2
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "overlordId": 3,
+            "hero_id": 3,
             "icon": "icon",
             "name": "Kalile",
-            "shortDescription": "Tempest of Storms",
-            "longDescription": "",
+            "short_description": "Tempest of Storms",
+            "long_description": "",
             "element": "AIR",
             "experience": 0,
             "level": 0,
@@ -1289,38 +1289,38 @@
               {
                 "title": "Push",
                 "skill": "PUSH",
-                "iconPath": "overlordability_air_push",
+                "icon_path": "overlordability_air_push",
                 "description": "Return an ally Air zombie to your hand",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER_CARD"
                 ],
                 "element_targets": [
                   "AIR"
                 ],
                 "cooldown": 6,
-                "initialCooldown": 5,
+                "initial_cooldown": 5,
                 "value": 0
               },
               {
                 "title": "Draw",
                 "skill": "DRAW",
-                "iconPath": "overlordability_air_draw",
+                "icon_path": "overlordability_air_draw",
                 "description": "Draw a card",
-                "skillTargets": [],
+                "skill_targets": [],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 0
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "overlordId": 4,
+            "hero_id": 4,
             "icon": "icon",
             "name": "Mhalik",
-            "shortDescription": "Lord of Pestilence",
-            "longDescription": "",
+            "short_description": "Lord of Pestilence",
+            "long_description": "",
             "element": "TOXIC",
             "experience": 0,
             "level": 0,
@@ -1328,42 +1328,42 @@
               {
                 "title": "Poison Dart",
                 "skill": "POISON_DART",
-                "iconPath": "overlordability_toxic",
+                "icon_path": "overlordability_toxic",
                 "description": "Deal 1 damage to an enemy",
-                "skillTargets": [
+                "skill_targets": [
                   "OPPONENT_CARD",
                   "OPPONENT"
                 ],
                 "cooldown": 3,
-                "initialCooldown": 3,
+                "initial_cooldown": 3,
                 "value": 1
               },
               {
                 "title": "Toxic Power",
                 "skill": "TOXIC_POWER",
-                "iconPath": "overlordability_toxic_toxic_power",
+                "icon_path": "overlordability_toxic_toxic_power",
                 "description": "Deal 1 damage to an ally Toxic zombie and give it +1 Atk",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER_CARD"
                 ],
                 "element_targets": [
                   "TOXIC"
                 ],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 1,
                 "damage": 1
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           },
           {
-            "overlordId": 5,
+            "hero_id": 5,
             "icon": "icon",
             "name": "Valash",
-            "shortDescription": "Nature's Warden",
-            "longDescription": "",
+            "short_description": "Nature's Warden",
+            "long_description": "",
             "element": "LIFE",
             "experience": 0,
             "level": 0,
@@ -1371,30 +1371,30 @@
               {
                 "title": "Healing Touch",
                 "skill": "HEALING_TOUCH",
-                "iconPath": "overlordability_life",
+                "icon_path": "overlordability_life",
                 "description": "Restore 2 Def to an ally zombie",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER_CARD"
                 ],
                 "cooldown": 3,
-                "initialCooldown": 3,
+                "initial_cooldown": 3,
                 "value": 2
               },
               {
                 "title": "Mend",
                 "skill": "MEND",
-                "iconPath": "overlordability_life_mend",
+                "icon_path": "overlordability_life_mend",
                 "description": "Restore 2 Def to your Overlord",
-                "skillTargets": [
+                "skill_targets": [
                   "PLAYER"
                 ],
                 "cooldown": 4,
-                "initialCooldown": 4,
+                "initial_cooldown": 4,
                 "value": 2
               }
             ],
-            "primarySkill": 0,
-            "secondarySkill": 1
+            "primary_skill": 0,
+            "secondary_skill": 1
           }
         ],
         "cards": [
@@ -1410,7 +1410,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Water zombies",
             "picture": "Whizpar",
-            "flavorText": "The unfriendly ghost...",
+            "flavor_text": "The unfriendly ghost...",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -1450,7 +1450,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> Return a zombie to its owner's Hand",
             "picture": "Pushhh",
-            "flavorText": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
+            "flavor_text": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
             "abilities": [
               {
                 "type": "CARD_RETURN",
@@ -1488,7 +1488,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> 1 damage to a zombie, Swing 1",
             "picture": "ztormmcaller",
-            "flavorText": "Thor's best student just got a little angrier...",
+            "flavor_text": "Thor's best student just got a little angrier...",
             "abilities": [
               {
                 "type": "SWING",
@@ -1536,7 +1536,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> 3 damage to all enemies",
             "picture": "ZeuZ",
-            "flavorText": "From mount Zolympus in the sky - fear Ze-might of ZeuZ!",
+            "flavor_text": "From mount Zolympus in the sky - fear Ze-might of ZeuZ!",
             "abilities": [
               {
                 "type": "MASSIVE_DAMAGE",
@@ -1576,7 +1576,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Air zombies",
             "picture": "Rockky",
-            "flavorText": "Addriaaannn!!! Addriaaaaaannnnn!!!",
+            "flavor_text": "Addriaaannn!!! Addriaaaaaannnnn!!!",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -1616,7 +1616,7 @@
             "cost": 5,
             "description": "<b>Heavy</b> ",
             "picture": "Golem",
-            "flavorText": "mmMMWhaaaaat?",
+            "flavor_text": "mmMMWhaaaaat?",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -1643,7 +1643,7 @@
             "cost": 11,
             "description": "<b>Heavy, Swing 4</b> ",
             "picture": "Mountain",
-            "flavorText": "When the mountain comes to you... you'll run!",
+            "flavor_text": "When the mountain comes to you... you'll run!",
             "abilities": [
               {
                 "type": "SWING",
@@ -1678,7 +1678,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> Adjacent zombies get Heavy",
             "picture": "Walley",
-            "flavorText": "\"Eeeeeeva\"",
+            "flavor_text": "\"Eeeeeeva\"",
             "abilities": [
               {
                 "type": "ADJACENT_UNITS_GET_HEAVY",
@@ -1712,7 +1712,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Toxic zombies",
             "picture": "Pyromaz",
-            "flavorText": "He's really into that old Prodigy song... Firestarter...",
+            "flavor_text": "He's really into that old Prodigy song... Firestarter...",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -1752,7 +1752,7 @@
             "cost": 3,
             "description": "<b>Feral</b> ",
             "picture": "Burrrnn",
-            "flavorText": "So he likes all the pretty bright colors, can you blame him?",
+            "flavor_text": "So he likes all the pretty bright colors, can you blame him?",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -1779,7 +1779,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> 2 damage to a zombie",
             "picture": "Cynderman",
-            "flavorText": "Hot, so very hot - all the time!",
+            "flavor_text": "Hot, so very hot - all the time!",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -1819,7 +1819,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> 2 damage to all enemies",
             "picture": "Gargantua",
-            "flavorText": "(sing) Under pressure... coming down on you...",
+            "flavor_text": "(sing) Under pressure... coming down on you...",
             "abilities": [
               {
                 "type": "MASSIVE_DAMAGE",
@@ -1859,7 +1859,7 @@
             "cost": 5,
             "description": "<b>Flash</b> ",
             "picture": "Fire-Maw",
-            "flavorText": "There's always an aftershock, duck twice",
+            "flavor_text": "There's always an aftershock, duck twice",
             "abilities": [
               {
                 "type": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
@@ -1897,7 +1897,7 @@
             "cost": 4,
             "description": "Restore 4 Def to a zombie",
             "picture": "Stapler",
-            "flavorText": "No pain, no gain.",
+            "flavor_text": "No pain, no gain.",
             "abilities": [
               {
                 "type": "HEAL",
@@ -1936,7 +1936,7 @@
             "cost": 4,
             "description": "4 damage to a zombie, Swing 4",
             "picture": "NailBomb",
-            "flavorText": "When you really want to nail it!",
+            "flavor_text": "When you really want to nail it!",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET_ADJUSTMENTS",
@@ -1976,7 +1976,7 @@
             "cost": 4,
             "description": "Get 2 empty goo vials",
             "picture": "GooBottles",
-            "flavorText": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
+            "flavor_text": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
             "abilities": [
               {
                 "type": "ADD_GOO_VIAL",
@@ -2015,7 +2015,7 @@
             "cost": 4,
             "description": "+4 Atk to a zombie; End: 4 damage to this zombie",
             "picture": "Chainsaw",
-            "flavorText": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
+            "flavor_text": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
             "abilities": [
               {
                 "type": "UNIT_WEAPON",
@@ -2055,7 +2055,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Earth zombies",
             "picture": "Azuraz",
-            "flavorText": "Beeee yourself!",
+            "flavor_text": "Beeee yourself!",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -2095,7 +2095,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> 2 damage to an enemy",
             "picture": "Shroom",
-            "flavorText": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
+            "flavor_text": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -2135,7 +2135,7 @@
             "cost": 4,
             "description": "<b>Attack:</b> Freeze zombie",
             "picture": "Vindrom",
-            "flavorText": "BDSM much?!",
+            "flavor_text": "BDSM much?!",
             "abilities": [
               {
                 "type": "STUN",
@@ -2174,7 +2174,7 @@
             "cost": 11,
             "description": "<b>Turn:</b> Summon one Azuraz zombie",
             "picture": "Shammann",
-            "flavorText": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
+            "flavor_text": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
             "abilities": [
               {
                 "type": "SUMMON",
@@ -2213,7 +2213,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> +1 Atk to all Life zombies in play",
             "picture": "Puffer",
-            "flavorText": "All the pretty pretty flowers",
+            "flavor_text": "All the pretty pretty flowers",
             "abilities": [
               {
                 "type": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
@@ -2254,7 +2254,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Life zombies",
             "picture": "Poizom",
-            "flavorText": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
+            "flavor_text": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -2294,7 +2294,7 @@
             "cost": 2,
             "description": "<b>Attack:</b> -1 Atk",
             "picture": "Ghoul",
-            "flavorText": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
+            "flavor_text": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one.",
             "abilities": [
               {
                 "type": "CHANGE_STAT",
@@ -2333,7 +2333,7 @@
             "cost": 2,
             "description": "<b>Feral</b> ",
             "picture": "Hazmaz",
-            "flavorText": "Being cooped up inside a plastic suit is no fun - now multiple this by 1,000 with all the extra gases, something's gotta give...",
+            "flavor_text": "Being cooped up inside a plastic suit is no fun - now multiple this by 1,000 with all the extra gases, something's gotta give...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -2360,7 +2360,7 @@
             "cost": 11,
             "description": "<b>Heavy, Death:</b> 3 damage to all zombies",
             "picture": "Cherno-bill",
-            "flavorText": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
+            "flavor_text": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
             "abilities": [
               {
                 "type": "MASSIVE_DAMAGE",
@@ -2400,7 +2400,7 @@
             "cost": 1,
             "description": "<b>Attack:</b> +1 damage to Fire zombies",
             "picture": "Izze",
-            "flavorText": "It would be a-lot Izzier if you just stay put!",
+            "flavor_text": "It would be a-lot Izzier if you just stay put!",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -2440,7 +2440,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> 1 damage to a zombie",
             "picture": "Jetter",
-            "flavorText": "Most welcomed during hot summer days on the busy city streets.",
+            "flavor_text": "Most welcomed during hot summer days on the busy city streets.",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -2480,7 +2480,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Freeze zombie and adjacent zombies, 2 damage if Frozen",
             "picture": "Freezzee",
-            "flavorText": "How he loves decorating with ice sculptures... Everywhere!",
+            "flavor_text": "How he loves decorating with ice sculptures... Everywhere!",
             "abilities": [
               {
                 "type": "STUN_OR_DAMAGE_ADJUSTMENTS",
@@ -2519,7 +2519,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> 2 damage to all enemies, then Freeze them",
             "picture": "Tzunamy",
-            "flavorText": "Bringing a nice, big shower, cleaning an entire city at a time.",
+            "flavor_text": "Bringing a nice, big shower, cleaning an entire city at a time.",
             "abilities": [
               {
                 "type": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
@@ -2559,7 +2559,7 @@
             "cost": 4,
             "description": "<b>Heavy</b> ",
             "picture": "Bouncer",
-            "flavorText": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
+            "flavor_text": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -2586,7 +2586,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> A random card in your Hand gets -1 cost",
             "picture": "Wheezy",
-            "flavorText": "Ommmmmmmmmmm",
+            "flavor_text": "Ommmmmmmmmmm",
             "abilities": [
               {
                 "type": "LOWER_COST_OF_CARD_IN_HAND",
@@ -2624,7 +2624,7 @@
             "cost": 3,
             "description": "<b>Heavy</b> ",
             "picture": "Tiny",
-            "flavorText": "Cooookie... just one more cooookie...",
+            "flavor_text": "Cooookie... just one more cooookie...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -2651,7 +2651,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Destroy a Heavy zombie",
             "picture": "Earthshaker",
-            "flavorText": "Will break ALL your WALLS!!",
+            "flavor_text": "Will break ALL your WALLS!!",
             "abilities": [
               {
                 "type": "DESTROY_UNIT_BY_TYPE",
@@ -2690,7 +2690,7 @@
             "cost": 12,
             "description": "<b>Attack:</b> Deal damage before receiving damage",
             "picture": "Cerberus",
-            "flavorText": "It's ALWAYS a party of three.",
+            "flavor_text": "It's ALWAYS a party of three.",
             "abilities": [
               {
                 "type": "PRIORITY_ATTACK",
@@ -2724,7 +2724,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> Ally zombie gets Feral",
             "picture": "Werezomb",
-            "flavorText": "Stop, stop, stop, shh-shh, you'll cause a howl",
+            "flavor_text": "Stop, stop, stop, shh-shh, you'll cause a howl",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -2762,7 +2762,7 @@
             "cost": 12,
             "description": "Devour all ally zombies",
             "picture": "Z-Virus",
-            "flavorText": "There ain't no party like a Z-Virus party!",
+            "flavor_text": "There ain't no party like a Z-Virus party!",
             "abilities": [
               {
                 "type": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
@@ -2797,7 +2797,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> Entry: Reanimate all Life zombies that died this match",
             "picture": "Yggdrazil",
-            "flavorText": "In this case, lots of strings attached!!",
+            "flavor_text": "In this case, lots of strings attached!!",
             "abilities": [
               {
                 "type": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH",
@@ -2836,7 +2836,7 @@
             "cost": 4,
             "description": "<b>Attack:</b> Restore 1 Def for each damage this deals",
             "picture": "Sapper",
-            "flavorText": "Hungry, always so very hungry",
+            "flavor_text": "Hungry, always so very hungry",
             "abilities": [
               {
                 "type": "GAIN_NUMBER_OF_LIFE_FOR_EACH_DAMAGE_THIS_DEALS",
@@ -2871,7 +2871,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> Summon 1 Ember zombie minion",
             "picture": "Keeper",
-            "flavorText": "They are usually such lovely beasts...",
+            "flavor_text": "They are usually such lovely beasts...",
             "abilities": [
               {
                 "type": "SUMMON",
@@ -2910,7 +2910,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> 1 damage to a random enemy",
             "picture": "Zpitter",
-            "flavorText": "Llama in my living room... bam ba balalam babam ba ba...",
+            "flavor_text": "Llama in my living room... bam ba balalam babam ba ba...",
             "abilities": [
               {
                 "type": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -2949,7 +2949,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Devour an ally zombie, get its Atk and Def",
             "picture": "Zeeter",
-            "flavorText": "Nam, naam nam nam namm nam...",
+            "flavor_text": "Nam, naam nam nam namm nam...",
             "abilities": [
               {
                 "type": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
@@ -2987,7 +2987,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Destroy a Frozen zombie",
             "picture": "Zhatterer",
-            "flavorText": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
+            "flavor_text": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
             "abilities": [
               {
                 "type": "DESTROY_FROZEN_UNIT",
@@ -3024,7 +3024,7 @@
             "cost": 3,
             "description": "<b>Heavy,</b> Freeze enemies that attack this",
             "picture": "Znowman",
-            "flavorText": "Maybe the snow does have some magical power?! But not yellow snow...",
+            "flavor_text": "Maybe the snow does have some magical power?! But not yellow snow...",
             "abilities": [
               {
                 "type": "ENEMY_THAT_ATTACKS_BECOME_FROZEN",
@@ -3058,7 +3058,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Draw a card",
             "picture": "Soothsayer",
-            "flavorText": "Almost as good as a fortune cookie... minus the cookie",
+            "flavor_text": "Almost as good as a fortune cookie... minus the cookie",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -3093,7 +3093,7 @@
             "cost": 4,
             "description": "<b>Heavy</b> ",
             "picture": "Spiker",
-            "flavorText": "Standing really still... maybe they won't notice",
+            "flavor_text": "Standing really still... maybe they won't notice",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -3120,7 +3120,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> +2 Def if your Overlord has 10 def or less",
             "picture": "IgneouZ",
-            "flavorText": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
+            "flavor_text": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
             "abilities": [
               {
                 "type": "TAKE_DEFENSE_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
@@ -3156,7 +3156,7 @@
             "cost": 5,
             "description": "<b>Feral, Entry:</b> Summon two enemy Pyromaz zombies",
             "picture": "Zhampion",
-            "flavorText": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
+            "flavor_text": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
             "abilities": [
               {
                 "type": "SUMMON",
@@ -3195,7 +3195,7 @@
             "cost": 2,
             "description": "Get 1 empty goo vial",
             "picture": "GooBeaker",
-            "flavorText": "So much goo, so little space",
+            "flavor_text": "So much goo, so little space",
             "abilities": [
               {
                 "type": "ADD_GOO_VIAL",
@@ -3234,7 +3234,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Draw a card if you have a Life zombie in play",
             "picture": "Bloomer",
-            "flavorText": "Fertilizing the flowers on an hourly basis",
+            "flavor_text": "Fertilizing the flowers on an hourly basis",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -3269,7 +3269,7 @@
             "cost": 5,
             "description": "<b>Rage:</b> +2 Atk",
             "picture": "Zludge",
-            "flavorText": "Bring it, bring It, BRING IT ON!!!",
+            "flavor_text": "Bring it, bring It, BRING IT ON!!!",
             "abilities": [
               {
                 "type": "RAGE",
@@ -3304,7 +3304,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> Freeze all enemy zombies",
             "picture": "Blizzard",
-            "flavorText": "If you can't join them, FREEZE them!",
+            "flavor_text": "If you can't join them, FREEZE them!",
             "abilities": [
               {
                 "type": "FREEZE_UNITS",
@@ -3342,7 +3342,7 @@
             "cost": 6,
             "description": "<b>Guard, Entry:</b> Give adjacent zombies Guard",
             "picture": "ztormshield",
-            "flavorText": "Just be a good sentinel and -",
+            "flavor_text": "Just be a good sentinel and -",
             "abilities": [
               {
                 "type": "GUARD",
@@ -3382,7 +3382,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Draw a card from the enemy Deck",
             "picture": "Draft",
-            "flavorText": "Not your father... hopefully",
+            "flavor_text": "Not your father... hopefully",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -3419,7 +3419,7 @@
             "cost": 9,
             "description": "Costs 1 less for each Air zombie in your Hand",
             "picture": "MonZoon",
-            "flavorText": "Shock therapy does work wonders",
+            "flavor_text": "Shock therapy does work wonders",
             "abilities": [
               {
                 "type": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
@@ -3458,7 +3458,7 @@
             "cost": 2,
             "description": "<b>Heavy</b> ",
             "picture": "Blocker",
-            "flavorText": "Just a few more moments...",
+            "flavor_text": "Just a few more moments...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -3485,7 +3485,7 @@
             "cost": 3,
             "description": "",
             "picture": "Slab",
-            "flavorText": "Supressing all those emotions does have its price...",
+            "flavor_text": "Supressing all those emotions does have its price...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -3512,7 +3512,7 @@
             "cost": 6,
             "description": "<b>Heavy, Delayed 2:</b> This loses Heavy but gets +4 Atk",
             "picture": "Pyrite",
-            "flavorText": "Angry enough to go though a WALL!",
+            "flavor_text": "Angry enough to go though a WALL!",
             "abilities": [
               {
                 "type": "DELAYED_LOSE_HEAVY_GAIN_ATTACK",
@@ -3548,7 +3548,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> All ally Earth zombies in play get +2 Atk",
             "picture": "Gaea",
-            "flavorText": "Either super charismatic, or super scary... or both.",
+            "flavor_text": "Either super charismatic, or super scary... or both.",
             "abilities": [
               {
                 "type": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS",
@@ -3584,7 +3584,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> All enemy zombies get -3 Atk until the end of turn",
             "picture": "FreshMeat",
-            "flavorText": "As if they died again and went to zombie heaven",
+            "flavor_text": "As if they died again and went to zombie heaven",
             "abilities": [
               {
                 "type": "CHANGE_STAT_UNTILL_END_OF_TURN",
@@ -3623,7 +3623,7 @@
             "cost": 1,
             "description": "<b>Entry:</b> Lose a goo bottle",
             "picture": "Ectoplasm",
-            "flavorText": "Wha'ch yu lookin at' ?! ",
+            "flavor_text": "Wha'ch yu lookin at' ?! ",
             "abilities": [
               {
                 "type": "LOSE_GOO",
@@ -3658,7 +3658,7 @@
             "cost": 8,
             "description": "<b>Entry:</b> Use all your goo for 2x Atk / Def",
             "picture": "GooZilla",
-            "flavorText": "More, more, MORE GOO! Bring me ALL the GOO",
+            "flavor_text": "More, more, MORE GOO! Bring me ALL the GOO",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -3700,7 +3700,7 @@
             "cost": 8,
             "description": "<b>Entry:</b> Return all other zombies to their owners' Hands",
             "picture": "Maelstrom",
-            "flavorText": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
+            "flavor_text": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
             "abilities": [
               {
                 "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
@@ -3738,7 +3738,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Add a Tainted Goo to your Hand",
             "picture": "Fumez",
-            "flavorText": "RAZENGAAAAAAAA!!!",
+            "flavor_text": "RAZENGAAAAAAAA!!!",
             "abilities": [
               {
                 "type": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3773,7 +3773,7 @@
             "cost": 4,
             "description": "<b>Guard, Entry:</b> Add a Corrupted Goo to your Hand",
             "picture": "Gaz",
-            "flavorText": "No, no, no no, not a hamster, not a hamster ball....",
+            "flavor_text": "No, no, no no, not a hamster, not a hamster ball....",
             "abilities": [
               {
                 "type": "GUARD",
@@ -3817,7 +3817,7 @@
             "cost": 1,
             "description": "<b>Heavy, Entry:</b> Add a Tainted Goo to your Hand ",
             "picture": "Pit",
-            "flavorText": "Hard to save every drop with all the spillage",
+            "flavor_text": "Hard to save every drop with all the spillage",
             "abilities": [
               {
                 "type": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3852,7 +3852,7 @@
             "cost": 3,
             "description": "<b>Heavy, Entry:</b> Add a Corrupted Goo to your Hand ",
             "picture": "Crater",
-            "flavorText": "Try to veer from his major crater issues... it may goo deeeeep",
+            "flavor_text": "Try to veer from his major crater issues... it may goo deeeeep",
             "abilities": [
               {
                 "type": "ADD_CARD_BY_NAME_TO_HAND",
@@ -3887,7 +3887,7 @@
             "cost": 1,
             "description": "<b>Feral, Overflow 2, End:</b> 2 damage to this and adjacent zombies",
             "picture": "Quazi",
-            "flavorText": "Has a great fascination with church bells...",
+            "flavor_text": "Has a great fascination with church bells...",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -3929,7 +3929,7 @@
             "cost": 3,
             "description": "<b>Feral, Overflow 5, End:</b>  4 damage to this and adjacent zombies",
             "picture": "Modo",
-            "flavorText": "JuuuZZZt WaNt a LiTtlE hUgGG...",
+            "flavor_text": "JuuuZZZt WaNt a LiTtlE hUgGG...",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -3971,7 +3971,7 @@
             "cost": 1,
             "description": "<b>Overflow 3, Entry:</b> Summon a 1/1 enemy zombie minion",
             "picture": "Zap",
-            "flavorText": "Can't get enough of that goo, ever",
+            "flavor_text": "Can't get enough of that goo, ever",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4017,7 +4017,7 @@
             "cost": 4,
             "description": "<b>Overflow 6, Entry:</b> Summon two 1/1 enemy zombie minions",
             "picture": "Cactuz",
-            "flavorText": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
+            "flavor_text": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4063,7 +4063,7 @@
             "cost": 1,
             "description": "<b>Overflow 2,</b> Deal 2 damage to your Overlord",
             "picture": "Zeptic",
-            "flavorText": "After four steps he gave up on the straight line and started puking",
+            "flavor_text": "After four steps he gave up on the straight line and started puking",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4108,7 +4108,7 @@
             "cost": 5,
             "description": "<b>Overflow 7,</b> Deal 4 damage to your Overlord",
             "picture": "Hazzard",
-            "flavorText": "Almost reached the Goo-Anonymous meeting - almost...",
+            "flavor_text": "Almost reached the Goo-Anonymous meeting - almost...",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4153,7 +4153,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Freeze a random ally, add Tainted Goo to your Hand",
             "picture": "Ozmoziz",
-            "flavorText": "He always loved to tell a goo story",
+            "flavor_text": "He always loved to tell a goo story",
             "abilities": [
               {
                 "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
@@ -4196,7 +4196,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> Freeze 2 random allies, add Corrupted Goo to your Hand",
             "picture": "Geyzer",
-            "flavorText": "Not in the mood for dancing...",
+            "flavor_text": "Not in the mood for dancing...",
             "abilities": [
               {
                 "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
@@ -4240,7 +4240,7 @@
             "description": "<b>Overflow 3,</b> Disables 1 goo vial for next turn",
             "frame": "frame_item_minion",
             "picture": "TaintedGoo",
-            "flavorText": "Smells kinda funny, but what a rush!",
+            "flavor_text": "Smells kinda funny, but what a rush!",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4283,7 +4283,7 @@
             "description": "<b>Overflow 6,</b> Disables 2 goo vials for next turn",
             "frame": "frame_item_minion",
             "picture": "CorruptedGoo",
-            "flavorText": "Hooooweeee, better than all the moonshine!",
+            "flavor_text": "Hooooweeee, better than all the moonshine!",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -4425,7 +4425,7 @@
             "cost": 0,
             "description": "Draw a card",
             "picture": "Whistle",
-            "flavorText": "Get over here, STAT!",
+            "flavor_text": "Get over here, STAT!",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -4458,7 +4458,7 @@
             "health": 1,
             "cost": 1,
             "picture": "Znowy",
-            "flavorText": "eeeehhehehehe",
+            "flavor_text": "eeeehhehehehe",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4485,7 +4485,7 @@
             "cost": 2,
             "description": "<b>Heavy, Entry:</b> Lose 1 goo bottle",
             "picture": "Wazte",
-            "flavorText": "Smells like goo spirit",
+            "flavor_text": "Smells like goo spirit",
             "abilities": [
               {
                 "type": "LOSE_GOO",
@@ -4520,7 +4520,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> 2 damage to your Overlord",
             "picture": "Ztalagmite",
-            "flavorText": "He remembers the north",
+            "flavor_text": "He remembers the north",
             "abilities": [
               {
                 "type": "ATTACK_OVERLORD",
@@ -4558,7 +4558,7 @@
             "cost": 5,
             "description": "<b>Heavy</b> ",
             "picture": "Igloo",
-            "flavorText": "The cold never bothered him anyway",
+            "flavor_text": "The cold never bothered him anyway",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4585,7 +4585,7 @@
             "cost": 4,
             "description": "<b>Delayed 2:</b> +6 Atk",
             "picture": "Froztbite",
-            "flavorText": "He's been trying to get out for a millennia - thank you global warming!!",
+            "flavor_text": "He's been trying to get out for a millennia - thank you global warming!!",
             "abilities": [
               {
                 "type": "DELAYED_GAIN_ATTACK",
@@ -4621,7 +4621,7 @@
             "cost": 2,
             "description": "<b>Delayed 1:</b> +3 Atk",
             "picture": "Amber",
-            "flavorText": "Literally a walking museum",
+            "flavor_text": "Literally a walking museum",
             "abilities": [
               {
                 "type": "DELAYED_GAIN_ATTACK",
@@ -4657,7 +4657,7 @@
             "cost": 2,
             "description": "<b>Heavy</b> ",
             "picture": "Bark",
-            "flavorText": "Worse than its bite!",
+            "flavor_text": "Worse than its bite!",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4683,7 +4683,7 @@
             "health": 1,
             "cost": 1,
             "picture": "Germ",
-            "flavorText": "Ploop... oh.. there goes another arm...",
+            "flavor_text": "Ploop... oh.. there goes another arm...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4710,7 +4710,7 @@
             "cost": 2,
             "description": "<b>Feral</b> ",
             "picture": "Ember",
-            "flavorText": "Makes every BBQ a hoot!",
+            "flavor_text": "Makes every BBQ a hoot!",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4737,7 +4737,7 @@
             "cost": 2,
             "description": "<b>Heavy</b> ",
             "picture": "Firewall",
-            "flavorText": "Having a pyromaniac on the battlefield does come in handy",
+            "flavor_text": "Having a pyromaniac on the battlefield does come in handy",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4763,7 +4763,7 @@
             "health": 1,
             "cost": 2,
             "picture": "BurZt",
-            "flavorText": "Some just like it hot!",
+            "flavor_text": "Some just like it hot!",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4790,7 +4790,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> Freeze all enemy zombies",
             "picture": "extinguisher",
-            "flavorText": "Psssshhhhhhhhhhh",
+            "flavor_text": "Psssshhhhhhhhhhh",
             "abilities": [
               {
                 "type": "FREEZE_UNITS",
@@ -4828,7 +4828,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> 2 damage to all enemy zombies",
             "picture": "Lawnmower",
-            "flavorText": "It can handle both plants and zombies... wait what?",
+            "flavor_text": "It can handle both plants and zombies... wait what?",
             "abilities": [
               {
                 "type": "MASSIVE_DAMAGE",
@@ -4866,7 +4866,7 @@
             "cost": 3,
             "description": "<b>Feral</b> ",
             "picture": "Shale",
-            "flavorText": "Thatta boy!",
+            "flavor_text": "Thatta boy!",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4893,7 +4893,7 @@
             "cost": 3,
             "description": "<b>Heavy</b> ",
             "picture": "Hardy",
-            "flavorText": "This will BE, the preetiest castle in all the land!",
+            "flavor_text": "This will BE, the preetiest castle in all the land!",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4920,7 +4920,7 @@
             "cost": 1,
             "description": "",
             "picture": "Breezee",
-            "flavorText": "Levitating - not as easy as you'd think...",
+            "flavor_text": "Levitating - not as easy as you'd think...",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4947,7 +4947,7 @@
             "cost": 2,
             "description": "<b>Feral</b> ",
             "picture": "Banshee",
-            "flavorText": "Booked until next year in haunted houses everywhere",
+            "flavor_text": "Booked until next year in haunted houses everywhere",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -4974,7 +4974,7 @@
             "cost": 2,
             "description": "<b>Delayed 1:</b> +2 Atk",
             "picture": "Zhocker",
-            "flavorText": "Getting jiggy with it",
+            "flavor_text": "Getting jiggy with it",
             "abilities": [
               {
                 "type": "DELAYED_GAIN_ATTACK",
@@ -5010,7 +5010,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> 1 damage to a zombie",
             "picture": "Bolderr",
-            "flavorText": "One more step, just one more step!",
+            "flavor_text": "One more step, just one more step!",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -5050,7 +5050,7 @@
             "cost": 1,
             "description": "<b>Entry:</b> 2 damage to your Overlord",
             "picture": "zmiley",
-            "flavorText": "Likes to sprinkle toxic goo on EVERYTHING",
+            "flavor_text": "Likes to sprinkle toxic goo on EVERYTHING",
             "abilities": [
               {
                 "type": "ATTACK_OVERLORD",
@@ -5088,7 +5088,7 @@
             "cost": 3,
             "description": "<b>Blitz, Destroy</b> ",
             "picture": "Azzazzin",
-            "flavorText": "From the Shadowzzzz",
+            "flavor_text": "From the Shadowzzzz",
             "abilities": [
               {
                 "type": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
@@ -5132,7 +5132,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Restore 2 Def to a zombie",
             "picture": "PreZerver",
-            "flavorText": "Need a hand?",
+            "flavor_text": "Need a hand?",
             "abilities": [
               {
                 "type": "HEAL",
@@ -5171,7 +5171,7 @@
             "cost": 5,
             "description": "Costs 1 less for each Air zombie you have in play",
             "picture": "Zephyr",
-            "flavorText": "Do you want to buy AIR for a penny??",
+            "flavor_text": "Do you want to buy AIR for a penny??",
             "abilities": [
               {
                 "type": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
@@ -5210,7 +5210,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> 1 damage to an enemy zombie",
             "picture": "BlaZter",
-            "flavorText": "Dodgeball anyone?",
+            "flavor_text": "Dodgeball anyone?",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -5248,7 +5248,7 @@
             "cost": 1,
             "description": "<b>Entry:</b> 3 damage to your Overlord",
             "picture": "Zlinger",
-            "flavorText": "Ohhh snap!! He got'cha good",
+            "flavor_text": "Ohhh snap!! He got'cha good",
             "abilities": [
               {
                 "type": "ATTACK_OVERLORD",
@@ -5286,7 +5286,7 @@
             "cost": 7,
             "description": "<b>Entry:</b> Take control of an enemy zombie",
             "picture": "MindFlayer",
-            "flavorText": "Resistance is futile --- and we have Zushi",
+            "flavor_text": "Resistance is futile --- and we have Zushi",
             "abilities": [
               {
                 "type": "TAKE_CONTROL_ENEMY_UNIT",
@@ -5323,7 +5323,7 @@
             "cost": 4,
             "description": "3 damage to a zombie, Swing 3",
             "picture": "Molotov",
-            "flavorText": "Not suitable for n00bs and lightweights",
+            "flavor_text": "Not suitable for n00bs and lightweights",
             "abilities": [
               {
                 "type": "DEAL_DAMAGE_TO_UNIT_AND_SWING",
@@ -5362,7 +5362,7 @@
             "cost": 3,
             "description": "2 damage to a zombie and Distract it",
             "picture": "Bat",
-            "flavorText": "Simple but soooo effective ",
+            "flavor_text": "Simple but soooo effective ",
             "abilities": [
               {
                 "type": "DAMAGE_AND_DISTRACT_TARGET",
@@ -5402,7 +5402,7 @@
             "cost": 5,
             "description": "Give an ally Zombie +3/+3; <b>End:</b> -3 DEF",
             "picture": "superserum",
-            "flavorText": "Captain Zamberica - here we goo!!",
+            "flavor_text": "Captain Zamberica - here we goo!!",
             "abilities": [
               {
                 "type": "UNIT_WEAPON",
@@ -5442,7 +5442,7 @@
             "cost": 2,
             "description": "<b>Death:</b> Give an ally zombie +1 Atk",
             "picture": "Buffer",
-            "flavorText": "Be like the water - only with air",
+            "flavor_text": "Be like the water - only with air",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -5455,7 +5455,7 @@
                 "value": 1,
                 "stat_type": "DAMAGE",
                 "count": 1,
-                "subTrigger": "RandomUnit"
+                "sub_trigger": "RandomUnit"
               }
             ],
             "card_view_info": {
@@ -5483,7 +5483,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> Return an ally zombie to your Hand",
             "picture": "Whiffer",
-            "flavorText": "Get back here",
+            "flavor_text": "Get back here",
             "abilities": [
               {
                 "type": "CARD_RETURN",
@@ -5520,7 +5520,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> Summon a zombie from your Hand that costs 2 or less",
             "picture": "Dragger",
-            "flavorText": "There's more where this came from!",
+            "flavor_text": "There's more where this came from!",
             "abilities": [
               {
                 "type": "SUMMON_UNIT_FROM_HAND",
@@ -5559,7 +5559,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> Return all zombies that cost 3 or less to their owners' Hands",
             "picture": "Zyclone",
-            "flavorText": "A little anti-social... with a dash of anger issues",
+            "flavor_text": "A little anti-social... with a dash of anger issues",
             "abilities": [
               {
                 "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
@@ -5598,7 +5598,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> 1 damage to a random enemy zombie",
             "picture": "Pebble",
-            "flavorText": "Always forgets his head... everywhere...",
+            "flavor_text": "Always forgets his head... everywhere...",
             "abilities": [
               {
                 "type": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -5636,7 +5636,7 @@
             "cost": 3,
             "description": "<b>Heavy, Death:</b> Draw a card",
             "picture": "Crumbz",
-            "flavorText": "Time is our greatest adversary",
+            "flavor_text": "Time is our greatest adversary",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -5670,7 +5670,7 @@
             "cost": 2,
             "description": "<b>Heavy, Death:</b> Give a random ally zombie Heavy",
             "picture": "Protector",
-            "flavorText": "Always use protection",
+            "flavor_text": "Always use protection",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5678,7 +5678,7 @@
                 "call_type": "DEATH",
                 "mechanic_description_type": "DEATH",
                 "unit_type": "HEAVY",
-                "subTrigger": "RandomUnit"
+                "sub_trigger": "RandomUnit"
               }
             ],
             "card_view_info": {
@@ -5706,7 +5706,7 @@
             "cost": 7,
             "description": "<b>Entry:</b> Give ally Earth zombies that cost 2 or less Heavy",
             "picture": "Defender",
-            "flavorText": "Forecast was clear skies... no one said fireball shower",
+            "flavor_text": "Forecast was clear skies... no one said fireball shower",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5719,7 +5719,7 @@
                 "set": "EARTH",
                 "unit_type": "HEAVY",
                 "cost": 2,
-                "subTrigger": "AllyUnitsByFactionThatCost"
+                "sub_trigger": "AllyUnitsByFactionThatCost"
               }
             ],
             "card_view_info": {
@@ -5747,7 +5747,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Draw a card if there is a damaged zombie in play",
             "picture": "Firecaller",
-            "flavorText": "Is it a vision of the future or another dimension? Who knows?!",
+            "flavor_text": "Is it a vision of the future or another dimension? Who knows?!",
             "abilities": [
               {
                 "type": "DRAW_CARD_IF_DAMAGED_ZOMBIE_IN_PLAY",
@@ -5781,7 +5781,7 @@
             "cost": 3,
             "description": "<b>Feral, Death:</b> Give a random ally zombie Feral",
             "picture": "RabieZ",
-            "flavorText": "Red eyes - check! Foam in mouth - check! Shaking - check! Here, take an advil.",
+            "flavor_text": "Red eyes - check! Foam in mouth - check! Shaking - check! Here, take an advil.",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -5792,7 +5792,7 @@
                 ],
                 "mechanic_description_type": "DEATH",
                 "unit_type": "FERAL",
-                "subTrigger": "RandomUnit"
+                "sub_trigger": "RandomUnit"
               }
             ],
             "card_view_info": {
@@ -5820,7 +5820,7 @@
             "cost": 6,
             "description": "<b>Feral, Entry:</b> If your Overlord has 10 Def or less this gets +2 Atk",
             "picture": "Enrager",
-            "flavorText": "Don't get him angry, you won't like him when he's angry.",
+            "flavor_text": "Don't get him angry, you won't like him when he's angry.",
             "abilities": [
               {
                 "type": "TAKE_STAT_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
@@ -5857,7 +5857,7 @@
             "cost": 3,
             "description": "Each player puts a random zombie from their deck into play",
             "picture": "SupplyDrop",
-            "flavorText": "\"Geronimo!\"",
+            "flavor_text": "\"Geronimo!\"",
             "abilities": [
               {
                 "type": "PUT_RANDOM_UNIT_FROM_DECK_ON_BOARD",
@@ -5896,7 +5896,7 @@
             "cost": 4,
             "description": "Damage enemy Overlord equal to the number of Items you've played",
             "picture": "junk_spear",
-            "flavorText": "Where have I seen this contraption rising 4 times before?",
+            "flavor_text": "Where have I seen this contraption rising 4 times before?",
             "abilities": [
               {
                 "type": "DAMAGE_OVERLORD_ON_COUNT_ITEMS_PLAYED",
@@ -5933,7 +5933,7 @@
             "cost": 4,
             "description": "Restore all Def to 2 random ally zombies",
             "picture": "zedkit",
-            "flavorText": "Mending broken limbs since 1888",
+            "flavor_text": "Mending broken limbs since 1888",
             "abilities": [
               {
                 "type": "HEAL",
@@ -5972,7 +5972,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Your Overlord gets 2 Def",
             "picture": "Grower",
-            "flavorText": "That's the fifth arm he's lost today.",
+            "flavor_text": "That's the fifth arm he's lost today.",
             "abilities": [
               {
                 "type": "HEAL",
@@ -5983,7 +5983,7 @@
                 ],
                 "mechanic_description_type": "ENTRY",
                 "value": 2,
-                "subTrigger": "YourOverlord"
+                "sub_trigger": "YourOverlord"
               }
             ],
             "card_view_info": {
@@ -6011,7 +6011,7 @@
             "cost": 4,
             "description": "<b>Death:</b> Shuffle this card into your deck",
             "picture": "EverlaZting",
-            "flavorText": "\"Guess who's back?\"",
+            "flavor_text": "\"Guess who's back?\"",
             "abilities": [
               {
                 "type": "SHUFFLE_THIS_CARD_TO_DECK",
@@ -6048,7 +6048,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> Overlord +3 Def. If Overlord 10 Def or less, Overlord +5 Def",
             "picture": "Healz",
-            "flavorText": "His buddy Jack would be proud",
+            "flavor_text": "His buddy Jack would be proud",
             "abilities": [
               {
                 "type": "TAKE_DEFENSE_TO_OVERLORD_WITH_DEFENSE",
@@ -6088,7 +6088,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> Restore 10 Def randomly split among allies",
             "picture": "Rainz",
-            "flavorText": "Make it R-A-A-I-N-Z!!!",
+            "flavor_text": "Make it R-A-A-I-N-Z!!!",
             "abilities": [
               {
                 "type": "RESTORE_DEF_RANDOMLY_SPLIT",
@@ -6127,7 +6127,7 @@
             "cost": 2,
             "description": "If this zombie kills a zombie, draw a random card",
             "picture": "Zcavenger",
-            "flavorText": "A beton nya mombay m'bwa!",
+            "flavor_text": "A beton nya mombay m'bwa!",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -6161,7 +6161,7 @@
             "cost": 3,
             "description": "+2 Atk on the enemy's turn",
             "picture": "Spikez",
-            "flavorText": "Come closer... it's never too close",
+            "flavor_text": "Come closer... it's never too close",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -6201,7 +6201,7 @@
             "cost": 3,
             "description": "<b>Entry:</b> 4 damage to this zombie",
             "picture": "RelentleZZ",
-            "flavorText": "The best survival tactic: \"never give up\"",
+            "flavor_text": "The best survival tactic: \"never give up\"",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -6239,7 +6239,7 @@
             "cost": 4,
             "description": "<b>Death:</b> Gain 1 goo",
             "picture": "Polluter",
-            "flavorText": "Spreading goo to a faucet near you",
+            "flavor_text": "Spreading goo to a faucet near you",
             "abilities": [
               {
                 "type": "OVERFLOW_GOO",
@@ -6274,7 +6274,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Gets +1 Atk if you have a Water zombie in play",
             "picture": "HoZer",
-            "flavorText": "The undefeated spitting world champion, can hit a squirrel from 100ft",
+            "flavor_text": "The undefeated spitting world champion, can hit a squirrel from 100ft",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -6311,7 +6311,7 @@
             "cost": 2,
             "description": "<b>Death:</b> Draw a card if there is a Frozen zombie in play",
             "picture": "FroZen",
-            "flavorText": "When grabbed - sing: \"let it go, let it go..\"",
+            "flavor_text": "When grabbed - sing: \"let it go, let it go..\"",
             "abilities": [
               {
                 "type": "DRAW_CARD",
@@ -6346,7 +6346,7 @@
             "cost": 2,
             "description": "<b>Entry:</b> Distract an enemy zombie",
             "picture": "Slider",
-            "flavorText": "Loves skating so so much!",
+            "flavor_text": "Loves skating so so much!",
             "abilities": [
               {
                 "type": "DISTRACT",
@@ -6383,7 +6383,7 @@
             "cost": 7,
             "description": "<b>Entry:</b> 3 damage to a zombie, if it survives Freeze it",
             "picture": "zubzero",
-            "flavorText": "Hates pointing things out...",
+            "flavor_text": "Hates pointing things out...",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET_FREEZE_IT_IF_SURVIVES",
@@ -6422,7 +6422,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> Put 2 Air zombies that cost 2 goo from your Hand to play ",
             "picture": "Zquall",
-            "flavorText": "Not even close to Texas anymore",
+            "flavor_text": "Not even close to Texas anymore",
             "abilities": [
               {
                 "type": "SUMMON_UNIT_FROM_HAND",
@@ -6462,7 +6462,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> If this is your only zombie in play, it gets Heavy",
             "picture": "Groundy",
-            "flavorText": "\"Saturday... again?! \r\nThis cycle is getting on my nerves\"",
+            "flavor_text": "\"Saturday... again?! \r\nThis cycle is getting on my nerves\"",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6473,7 +6473,7 @@
                 ],
                 "mechanic_description_type": "ENTRY",
                 "unit_type": "HEAVY",
-                "subTrigger": "OnlyThisUnitInPlay"
+                "sub_trigger": "OnlyThisUnitInPlay"
               }
             ],
             "card_view_info": {
@@ -6501,7 +6501,7 @@
             "cost": 1,
             "description": "<b>Feral, End:</b> 1 damage to this",
             "picture": "Sparky",
-            "flavorText": "Hermes has NOTHING on him",
+            "flavor_text": "Hermes has NOTHING on him",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -6539,7 +6539,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> If this is your only zombie in play, get Feral",
             "picture": "Rager",
-            "flavorText": "Always dreamed of being Superman...",
+            "flavor_text": "Always dreamed of being Superman...",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6550,7 +6550,7 @@
                 ],
                 "mechanic_description_type": "ENTRY",
                 "unit_type": "FERAL",
-                "subTrigger": "OnlyThisUnitInPlay"
+                "sub_trigger": "OnlyThisUnitInPlay"
               }
             ],
             "card_view_info": {
@@ -6578,7 +6578,7 @@
             "cost": 5,
             "description": "<b>Entry:</b> All other ally Fire zombies in play get Feral",
             "picture": "Alpha",
-            "flavorText": "Let's huddle up and do a howl",
+            "flavor_text": "Let's huddle up and do a howl",
             "abilities": [
               {
                 "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
@@ -6590,7 +6590,7 @@
                 "mechanic_description_type": "ENTRY",
                 "set": "FIRE",
                 "unit_type": "FERAL",
-                "subTrigger": "AllOtherAllyUnitsInPlay"
+                "sub_trigger": "AllOtherAllyUnitsInPlay"
               }
             ],
             "card_view_info": {
@@ -6618,7 +6618,7 @@
             "cost": 5,
             "description": "<b>Cannot Attack. End:</b> 5 damage to a random enemy",
             "picture": "Volcan",
-            "flavorText": "Loves to make it rain... RAIN of FIRE!",
+            "flavor_text": "Loves to make it rain... RAIN of FIRE!",
             "abilities": [
               {
                 "type": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -6664,7 +6664,7 @@
             "cost": 3,
             "description": "Destroy a zombie that costs 3 goo or less",
             "picture": "Torch",
-            "flavorText": "Bringing out the pyro-enthusiast in all of us",
+            "flavor_text": "Bringing out the pyro-enthusiast in all of us",
             "abilities": [
               {
                 "type": "DESTROY_UNIT_BY_COST",
@@ -6701,7 +6701,7 @@
             "cost": 3,
             "description": "3 damage to an enemy OR restore 3 Def to an ally",
             "picture": "shovel_normal",
-            "flavorText": "Friendly neighborhood shovel!",
+            "flavor_text": "Friendly neighborhood shovel!",
             "abilities": [
               {
                 "type": "CHOOSABLE_ABILITIES",
@@ -6712,7 +6712,7 @@
                   "PLAYER_CARD"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "choosableAbilities": [
+                "choosable_abilities": [
                   {
                     "description": "3 damage to an enemy",
                     "ability_data": {
@@ -6769,7 +6769,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> All ally zombies get Swing 1",
             "picture": "ShoppingCart",
-            "flavorText": "Silly fun times... until someone loses an eye or a head!",
+            "flavor_text": "Silly fun times... until someone loses an eye or a head!",
             "abilities": [
               {
                 "type": "TAKE_SWING_TO_UNITS",
@@ -6779,7 +6779,7 @@
                   "PLAYER_CARD"
                 ],
                 "mechanic_description_type": "ENTRY",
-                "subTrigger": "AllAllyUnitsInPlay"
+                "sub_trigger": "AllAllyUnitsInPlay"
               }
             ],
             "card_view_info": {
@@ -6807,7 +6807,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> Gain control of an enemy zombie",
             "picture": "Leash",
-            "flavorText": "No more BRAINZZZZZ",
+            "flavor_text": "No more BRAINZZZZZ",
             "abilities": [
               {
                 "type": "TAKE_CONTROL_ENEMY_UNIT",
@@ -6844,7 +6844,7 @@
             "cost": 10,
             "description": "<b>Entry:</b> Destroy all zombies in play",
             "picture": "Bulldozer",
-            "flavorText": "When you REALLY want to level (with) someone",
+            "flavor_text": "When you REALLY want to level (with) someone",
             "abilities": [
               {
                 "type": "DESTROY_UNITS",
@@ -6882,7 +6882,7 @@
             "cost": 3,
             "description": "Reanimate",
             "picture": "WiZp",
-            "flavorText": "Zeeee... peski littl-- oh its you?!",
+            "flavor_text": "Zeeee... peski littl-- oh its you?!",
             "abilities": [
               {
                 "type": "REANIMATE_UNIT",
@@ -6916,7 +6916,7 @@
             "cost": 7,
             "description": "<b>Entry:</b> Place another copy of this zombie in play",
             "picture": "embryo",
-            "flavorText": "Out, OUT...GET OUT!!!",
+            "flavor_text": "Out, OUT...GET OUT!!!",
             "abilities": [
               {
                 "type": "SUMMON",
@@ -6955,7 +6955,7 @@
             "cost": 5,
             "description": "<b>End:</b> Summon 1 Bark zombie minion",
             "picture": "embryo",
-            "flavorText": "You reap what you sow",
+            "flavor_text": "You reap what you sow",
             "abilities": [
               {
                 "type": "SUMMON",
@@ -6994,7 +6994,7 @@
             "cost": 6,
             "description": "<b>Delayed 3:</b> Place 2 4/4 Blight Minions in play then Destroy this",
             "picture": "Blight",
-            "flavorText": "If you plant it they will come... with a bang",
+            "flavor_text": "If you plant it they will come... with a bang",
             "abilities": [],
             "card_view_info": {
               "position": {
@@ -7021,7 +7021,7 @@
             "cost": 7,
             "description": "+1 Atk to all ally Toxic zombies",
             "picture": "Zlopper",
-            "flavorText": "What a dragggg...",
+            "flavor_text": "What a dragggg...",
             "abilities": [
               {
                 "type": "MODIFICATOR_STATS",
@@ -7034,7 +7034,7 @@
                 "value": 1,
                 "stat_type": "DAMAGE",
                 "set": "TOXIC",
-                "subTrigger": "AllAllyUnitsByFactionInPlay"
+                "sub_trigger": "AllAllyUnitsByFactionInPlay"
               }
             ],
             "card_view_info": {
@@ -7062,7 +7062,7 @@
             "cost": 7,
             "description": "<b>Death:</b> Adjacent zombies get +2 Atk",
             "picture": "Boomer",
-            "flavorText": "Wants to share his LOVE with everyone - free hugs?!?",
+            "flavor_text": "Wants to share his LOVE with everyone - free hugs?!?",
             "abilities": [
               {
                 "type": "ADJACENT_UNITS_GET_STAT",
@@ -7098,7 +7098,7 @@
             "cost": 6,
             "description": "<b>Death:</b> All ally zombies in play get +2 Atk until end of turn",
             "picture": "Zteroid",
-            "flavorText": "Needs to flee from his fans, as they want his delicious insides",
+            "flavor_text": "Needs to flee from his fans, as they want his delicious insides",
             "abilities": [
               {
                 "type": "CHANGE_STAT_UNTILL_END_OF_TURN",
@@ -7137,7 +7137,7 @@
             "cost": 11,
             "description": "<b>Entry:</b> Replace ally water zombies in play with stronger ones",
             "picture": "Vortex",
-            "flavorText": "ERR, never really be satisfied...",
+            "flavor_text": "ERR, never really be satisfied...",
             "abilities": [
               {
                 "type": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
@@ -7176,7 +7176,7 @@
             "cost": 6,
             "description": "<b>Entry:</b> 1 damage to a random enemy for each Water zombie in your Hand",
             "picture": "Zplash",
-            "flavorText": "Hey gang, watch how I mow these chumps!",
+            "flavor_text": "Hey gang, watch how I mow these chumps!",
             "abilities": [
               {
                 "type": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -7190,7 +7190,7 @@
                 "set": "WATER",
                 "damage": 1,
                 "count": 1,
-                "subTrigger": "ForEachFactionOfUnitInHand"
+                "sub_trigger": "ForEachFactionOfUnitInHand"
               }
             ],
             "card_view_info": {
@@ -7218,7 +7218,7 @@
             "cost": 4,
             "description": "<b>Entry:</b> 2 damage to an enemy if a Water zombie in play",
             "picture": "Izicle",
-            "flavorText": "He just looooves his icy skewer",
+            "flavor_text": "He just looooves his icy skewer",
             "abilities": [
               {
                 "type": "DAMAGE_TARGET",
@@ -7231,7 +7231,7 @@
                 "mechanic_description_type": "ENTRY",
                 "value": 2,
                 "set": "WATER",
-                "subTrigger": "IfHasUnitsWithFactionInPlay"
+                "sub_trigger": "IfHasUnitsWithFactionInPlay"
               }
             ],
             "card_view_info": {
@@ -7259,7 +7259,7 @@
             "cost": 5,
             "description": "As long as this is in play, you have 1 extra goo",
             "picture": "Zpring",
-            "flavorText": "Can never have enough goo... here take a sip",
+            "flavor_text": "Can never have enough goo... here take a sip",
             "abilities": [
               {
                 "type": "EXTRA_GOO_IF_UNIT_IN_PLAY",
@@ -7294,7 +7294,7 @@
             "cost": 2,
             "description": "2 damage to 3 random zombies in play",
             "picture": "Boomstick",
-            "flavorText": "Thank you for your service!",
+            "flavor_text": "Thank you for your service!",
             "abilities": [
               {
                 "type": "TAKE_DAMAGE_RANDOM_ENEMY",
@@ -7333,7 +7333,7 @@
             "health": 4,
             "cost": 1,
             "picture": "Blight",
-            "flavorText": "If you plant it they will come... with a bang",
+            "flavor_text": "If you plant it they will come... with a bang",
             "abilities": [],
             "card_view_info": {
               "position": {
