@@ -16,7 +16,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -31,26 +31,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -59,7 +59,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -97,7 +97,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -112,26 +112,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -140,7 +140,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -178,7 +178,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -193,26 +193,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -221,7 +221,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -259,7 +259,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -274,26 +274,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -302,7 +302,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -342,7 +342,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -357,26 +357,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -385,7 +385,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -423,7 +423,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -438,26 +438,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -466,7 +466,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -504,7 +504,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -519,26 +519,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -547,7 +547,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -585,7 +585,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -600,26 +600,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -628,7 +628,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -666,7 +666,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -681,26 +681,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -709,7 +709,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -747,7 +747,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -762,26 +762,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -790,7 +790,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -828,7 +828,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -843,26 +843,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -871,7 +871,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -909,7 +909,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -924,26 +924,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -952,7 +952,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -990,7 +990,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1005,26 +1005,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1033,7 +1033,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1071,7 +1071,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1086,26 +1086,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1114,7 +1114,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1152,7 +1152,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1167,26 +1167,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1195,7 +1195,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1233,7 +1233,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1248,26 +1248,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1276,7 +1276,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1314,7 +1314,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1329,26 +1329,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1357,7 +1357,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1395,7 +1395,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1410,26 +1410,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1438,7 +1438,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1476,7 +1476,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1491,26 +1491,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1519,7 +1519,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1557,7 +1557,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1572,26 +1572,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1600,7 +1600,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1638,7 +1638,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1653,26 +1653,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1681,7 +1681,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1719,7 +1719,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1734,26 +1734,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1762,7 +1762,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1800,7 +1800,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1815,26 +1815,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1843,7 +1843,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1881,7 +1881,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1896,26 +1896,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -1924,7 +1924,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -1962,7 +1962,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1977,26 +1977,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2005,7 +2005,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2043,7 +2043,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2058,26 +2058,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2086,7 +2086,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2124,7 +2124,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2139,26 +2139,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2167,7 +2167,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2205,7 +2205,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2220,26 +2220,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2248,7 +2248,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2286,7 +2286,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2301,26 +2301,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2329,7 +2329,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2367,7 +2367,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "health": 2,
+            "defense": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2382,26 +2382,26 @@
             },
             "abilities": [
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
+                "stat": "DAMAGE",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               },
               {
-                "type": "CHANGE_STAT",
-                "activity_type": "PASSIVE",
-                "call_type": "ATTACK",
-                "target_type": [
+                "ability": "CHANGE_STAT",
+                "activity": "PASSIVE",
+                "trigger": "ATTACK",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "HEALTH",
+                "stat": "HEALTH",
                 "value": -1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2410,7 +2410,7 @@
           },
           "instance": {
             "damage": 3,
-            "defense": 2,
+            "defense2": 2,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 2
@@ -2447,7 +2447,7 @@
           }
         ]
       },
-      "defense": 20,
+      "defense2": 20,
       "currentGoo": 1,
       "gooVials": 1,
       "hasDrawnCard": true,
@@ -2473,7 +2473,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2488,16 +2488,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2506,7 +2506,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2527,7 +2527,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2542,16 +2542,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2560,7 +2560,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2581,7 +2581,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2596,16 +2596,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2614,7 +2614,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2637,7 +2637,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2652,16 +2652,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2670,7 +2670,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2691,7 +2691,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2706,16 +2706,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2724,7 +2724,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2745,7 +2745,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2760,16 +2760,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2778,7 +2778,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2799,7 +2799,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2814,16 +2814,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2832,7 +2832,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2853,7 +2853,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2868,16 +2868,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2886,7 +2886,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2907,7 +2907,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2922,16 +2922,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2940,7 +2940,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -2961,7 +2961,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2976,16 +2976,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -2994,7 +2994,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3015,7 +3015,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3030,16 +3030,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3048,7 +3048,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3069,7 +3069,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3084,16 +3084,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3102,7 +3102,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3123,7 +3123,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3138,16 +3138,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3156,7 +3156,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3177,7 +3177,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3192,16 +3192,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3210,7 +3210,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3231,7 +3231,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3246,16 +3246,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3264,7 +3264,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3285,7 +3285,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3300,16 +3300,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3318,7 +3318,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3339,7 +3339,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3354,16 +3354,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3372,7 +3372,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3393,7 +3393,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3408,16 +3408,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3426,7 +3426,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3447,7 +3447,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3462,16 +3462,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3480,7 +3480,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3501,7 +3501,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3516,16 +3516,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3534,7 +3534,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3555,7 +3555,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3570,16 +3570,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3588,7 +3588,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3609,7 +3609,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3624,16 +3624,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3642,7 +3642,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3663,7 +3663,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3678,16 +3678,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3696,7 +3696,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3717,7 +3717,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3732,16 +3732,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3750,7 +3750,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3771,7 +3771,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3786,16 +3786,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3804,7 +3804,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3825,7 +3825,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3840,16 +3840,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3858,7 +3858,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3879,7 +3879,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3894,16 +3894,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3912,7 +3912,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3933,7 +3933,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3948,16 +3948,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -3966,7 +3966,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -3987,7 +3987,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -4002,16 +4002,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -4020,7 +4020,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -4041,7 +4041,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "health": 1,
+            "defense": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -4056,16 +4056,16 @@
             },
             "abilities": [
               {
-                "type": "MODIFICATOR_STATS",
-                "activity_type": "PASSIVE",
-                "call_type": "PERMANENT",
-                "target_type": [
+                "ability": "MODIFICATOR_STATS",
+                "activity": "PASSIVE",
+                "trigger": "PERMANENT",
+                "targets": [
                   "NONE"
                 ],
-                "stat_type": "DAMAGE",
-                "set": "LIFE",
+                "stat": "DAMAGE",
+                "faction": "LIFE",
                 "value": 1,
-                "mechanic_description_type": "ATTACK"
+                "gameMechanicDescription": "ATTACK"
               }
             ]
           },
@@ -4074,7 +4074,7 @@
           },
           "instance": {
             "damage": 1,
-            "defense": 1,
+            "defense2": 1,
             "type": "WALKER",
             "faction": "TOXIC",
             "gooCost": 1
@@ -4094,7 +4094,7 @@
           }
         ]
       },
-      "defense": 20,
+      "defense2": 20,
       "initialCardsInHandCount": 3,
       "maxCardsInPlay": 6,
       "maxCardsInHand": 10,

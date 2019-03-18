@@ -10,22 +10,22 @@
         "flavor_text": "Really into that old Prodigy song... Firestarter...",
         "picture": "Pyromaz",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "toxic",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "toxic",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.05,
             "y": 0,
@@ -48,22 +48,22 @@
         "flavor_text": "Really into that old Prodigy song... Firestarter...",
         "picture": "Pyromaz",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "toxic",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "toxic",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.05,
             "y": 0,
@@ -87,26 +87,26 @@
         "flavor_text": "Has a great fascination with church bells...",
         "picture": "Quazi",
         "damage": 0,
-        "health": 1,
+        "defense": 1,
         "type": "FERAL",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 2,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
-            "activity_type": "passive",
-            "call_type": "END",
+            "ability": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
+            "activity": "passive",
+            "trigger": "END",
             "value": 2,
             "buff_type": "END"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.15,
             "y": 0.2,
@@ -129,10 +129,10 @@
         "flavor_text": "So he likes all the pretty bright colors, can you blame him?",
         "picture": "Burrrnn",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "FERAL",
         "rank": "OFFICER",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.3,
             "y": 0.1,
@@ -155,21 +155,21 @@
         "flavor_text": "Hot, so very hot - all the time!",
         "picture": "cynderman",
         "damage": 2,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "DAMAGE_TARGET",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "DAMAGE_TARGET",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 2,
-            "effect_type": "TARGET_FIRE",
+            "effect": "TARGET_FIRE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -192,20 +192,20 @@
         "flavor_text": "Stop, stop, stop, shh-shh, you'll cause a howel",
         "picture": "Werezomb",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "player_card",
-            "unit_type": "FERAL",
+            "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "player_card",
+            "targetUnitType": "FERAL",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -228,26 +228,26 @@
         "flavor_text": "JuuuZZZt WaNt a LiTtlE hUgGG...",
         "picture": "modo",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "FERAL",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 5,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
-            "activity_type": "passive",
-            "call_type": "END",
+            "ability": "DEAL_DAMAGE_TO_THIS_AND_ADJACENT_UNITS",
+            "activity": "passive",
+            "trigger": "END",
             "value": 4,
             "buff_type": "END"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.15,
             "y": 0.2,
@@ -270,21 +270,21 @@
         "flavor_text": "There's always an aftershock, duck twice",
         "picture": "fire-maw",
         "damage": 3,
-        "health": 3,
+        "defense": 3,
         "type": "FERAL",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
-            "activity_type": "passive",
-            "call_type": "PERMANENT",
-            "target_type": "player_card",
+            "ability": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
+            "activity": "passive",
+            "trigger": "PERMANENT",
+            "targets": "player_card",
             "value": 2,
             "attack_info": "ANY",
             "buff_type": "FLASH"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -307,21 +307,21 @@
         "flavor_text": "I AM THE CHAMPION - my friend!! ME - ONLY ME!!!",
         "picture": "Zhampion",
         "damage": 5,
-        "health": 2,
+        "defense": 2,
         "type": "FERAL",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "SUMMON",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent",
+            "ability": "SUMMON",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent",
             "count": 2,
             "name": "Pyromaz",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0.05,
@@ -344,21 +344,21 @@
         "flavor_text": "(sing) Under pressure... coming down on you...",
         "picture": "Gargantua",
         "damage": 6,
-        "health": 8,
+        "defense": 8,
         "type": "HEAVY",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "MASSIVE_DAMAGE",
-            "activity_type": "PASSIVE",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT_ALL_CARDS|opponent",
+            "ability": "MASSIVE_DAMAGE",
+            "activity": "PASSIVE",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT_ALL_CARDS|opponent",
             "value": 2,
-            "effect_type": "MASSIVE_FIRE",
+            "effect": "MASSIVE_FIRE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -381,18 +381,18 @@
         "flavor_text": "Its ALWAYS a party of three",
         "picture": "Cerberus",
         "damage": 7,
-        "health": 8,
+        "defense": 8,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "PRIORITY_ATTACK",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "PRIORITY_ATTACK",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -415,22 +415,22 @@
         "flavor_text": "It would be a-lot Izzier if you just stay put!",
         "picture": "Izze",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "fire",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "fire",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.1,
             "y": 0,
@@ -453,18 +453,18 @@
         "flavor_text": "Maybe the snow does have some magical power?! But not yellow snow...",
         "picture": "Znowman",
         "damage": 0,
-        "health": 5,
+        "defense": 5,
         "type": "HEAVY",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "ENEMY_THAT_ATTACKS_BECOME_FROZEN",
-            "activity_type": "passive",
-            "call_type": "AT_DEFENCE",
+            "ability": "ENEMY_THAT_ATTACKS_BECOME_FROZEN",
+            "activity": "passive",
+            "trigger": "AT_DEFENCE",
             "buff_type": "FREEZE"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.1,
             "y": 0,
@@ -487,27 +487,27 @@
         "flavor_text": "He always loved to tell a goo story",
         "picture": "Ozmoziz",
         "damage": 1,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "FREEZE_NUMBER_OF_RANDOM_ALLY",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 1,
             "turns": 1,
             "buff_type": "ENTRY"
           },
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Tainted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.3,
             "y": -0.08,
@@ -530,21 +530,21 @@
         "flavor_text": "Most welcomed during hot summer days on the busy city streets",
         "picture": "Jetter",
         "damage": 3,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "DAMAGE_TARGET",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "DAMAGE_TARGET",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 1,
-            "effect_type": "TARGET_WATER",
+            "effect": "TARGET_WATER",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.4,
             "y": 0.1,
@@ -567,21 +567,21 @@
         "flavor_text": "How he loves decorating with ice sculptures... Everywhere!",
         "picture": "Freezzee",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "STUN_OR_DAMAGE_ADJUSTMENTS",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "opponent_card",
+            "ability": "STUN_OR_DAMAGE_ADJUSTMENTS",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "opponent_card",
             "value": 2,
-            "effect_type": "STUN_OR_DAMAGE_FREEZES",
+            "effect": "STUN_OR_DAMAGE_FREEZES",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.15,
             "y": 0.1,
@@ -604,27 +604,27 @@
         "flavor_text": "Not in the mood for dancing...",
         "picture": "geyzer",
         "damage": 2,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "FREEZE_NUMBER_OF_RANDOM_ALLY",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "FREEZE_NUMBER_OF_RANDOM_ALLY",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 2,
             "turns": 1,
             "buff_type": "ENTRY"
           },
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Corrupted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -647,20 +647,20 @@
         "flavor_text": "If you can't join them, FREEZE them!",
         "picture": "Blizzard",
         "damage": 3,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "FREEZE_UNITS",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent_card",
+            "ability": "FREEZE_UNITS",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent_card",
             "value": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.05,
             "y": 0,
@@ -683,20 +683,20 @@
         "flavor_text": "He's been trying to get out for a millennia - thank you global warming!!",
         "picture": "Froztbite",
         "damage": 0,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "DELAYED_GAIN_ATTACK",
-            "activity_type": "passive",
-            "call_type": "TURN",
+            "ability": "DELAYED_GAIN_ATTACK",
+            "activity": "passive",
+            "trigger": "TURN",
             "value": 6,
             "delay": 2,
             "buff_type": "DELAYED"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.3,
             "y": 0,
@@ -719,20 +719,20 @@
         "flavor_text": "So the other day Gargantua asked for a toothpick.. and it needs to be really cold to actually work...",
         "picture": "Zhatterer",
         "damage": 1,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "DESTROY_FROZEN_UNIT",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT_CARD",
-            "unit_status": "FROZEN",
+            "ability": "DESTROY_FROZEN_UNIT",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT_CARD",
+            "targetUnitSpecialStatus": "FROZEN",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.1,
             "y": 0,
@@ -755,19 +755,19 @@
         "flavor_text": "Sometimes pukes a little in his mouth from all the spinning, but keeps a scary face!",
         "picture": "Maelstrom",
         "damage": 5,
-        "health": 5,
+        "defense": 5,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent_all_cards|player_all_cards",
+            "ability": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent_all_cards|player_all_cards",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -790,21 +790,21 @@
         "flavor_text": "Bringing a nice, big shower, cleaning an entire city at a time.",
         "picture": "Tzunamy",
         "damage": 6,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
-            "activity_type": "PASSIVE",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT_ALL_CARDS | OPPONENT",
+            "ability": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
+            "activity": "PASSIVE",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT_ALL_CARDS | OPPONENT",
             "value": 2,
-            "effect_type": "MASSIVE_WATER_WAVE",
+            "effect": "MASSIVE_WATER_WAVE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.11,
             "y": -0.16,
@@ -827,22 +827,22 @@
         "flavor_text": "Addriaaannn!!! Addriaaaaaannnnn!!!",
         "picture": "Rockky",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "air",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "air",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -865,21 +865,21 @@
         "flavor_text": "One more step, just one more step!",
         "picture": "Bolderr",
         "damage": 1,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "DAMAGE_TARGET",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "DAMAGE_TARGET",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 1,
-            "effect_type": "TARGET_ROCK",
+            "effect": "TARGET_ROCK",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -902,10 +902,10 @@
         "flavor_text": "Just a few more moments...",
         "picture": "Blocker",
         "damage": 0,
-        "health": 3,
+        "defense": 3,
         "type": "HEAVY",
         "rank": "MINION",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.6,
             "y": 0,
@@ -928,10 +928,10 @@
         "flavor_text": "Supressing all those emotions does have it's price...",
         "picture": "Slab",
         "damage": 3,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "MINION",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0.1,
@@ -954,19 +954,19 @@
         "flavor_text": "Hard to save every drop with all the spillage",
         "picture": "pit",
         "damage": 0,
-        "health": 2,
+        "defense": 2,
         "type": "HEAVY",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Tainted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.07,
             "y": 0.1,
@@ -989,10 +989,10 @@
         "flavor_text": "mmMMWhaaaaat?",
         "picture": "Golem",
         "damage": 2,
-        "health": 6,
+        "defense": 6,
         "type": "HEAVY",
         "rank": "OFFICER",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.62,
             "y": 0,
@@ -1015,18 +1015,18 @@
         "flavor_text": "Eeeeeeva",
         "picture": "Walley",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "ADJACENT_UNITS_GET_HEAVY",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADJACENT_UNITS_GET_HEAVY",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1049,10 +1049,10 @@
         "flavor_text": "Cooookie... just one more cooookie...",
         "picture": "Tiny",
         "damage": 0,
-        "health": 7,
+        "defense": 7,
         "type": "HEAVY",
         "rank": "OFFICER",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.15,
             "y": 0,
@@ -1075,19 +1075,19 @@
         "flavor_text": "Standing really still... maybe they won't notice",
         "picture": "Spiker",
         "damage": 2,
-        "health": 3,
+        "defense": 3,
         "type": "HEAVY",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "ADDITIONAL_DAMAGE_TO_HEAVY_IN_ATTACK",
-            "activity_type": "passive",
-            "call_type": "permanent",
+            "ability": "ADDITIONAL_DAMAGE_TO_HEAVY_IN_ATTACK",
+            "activity": "passive",
+            "trigger": "permanent",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1110,19 +1110,19 @@
         "flavor_text": "Try to veer from his major crater issues... it may goo deeeeep",
         "picture": "Crater",
         "damage": 1,
-        "health": 4,
+        "defense": 4,
         "type": "HEAVY",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Corrupted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -1145,20 +1145,20 @@
         "flavor_text": "Will break ALL your WALLS!!",
         "picture": "Earthshaker",
         "damage": 4,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "DESTROY_UNIT_BY_TYPE",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "opponent_card|player_card",
-            "card_type": "HEAVY",
+            "ability": "DESTROY_UNIT_BY_TYPE",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "opponent_card|player_card",
+            "targetCardType": "HEAVY",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1181,20 +1181,20 @@
         "flavor_text": "Mmmm, nothing like the smell of fresh cinder and ash in the morning",
         "picture": "IgneouZ",
         "damage": 3,
-        "health": 3,
+        "defense": 3,
         "type": "HEAVY",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "TAKE_DEFENSE_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "TAKE_DEFENSE_IF_OVERLORD_HAS_LESS_DEFENSE_THAN",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 2,
-            "health": 10,
+            "defense": 10,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1217,20 +1217,20 @@
         "flavor_text": "Angry enough to go though a WALL!",
         "picture": "Pyrite",
         "damage": 0,
-        "health": 8,
+        "defense": 8,
         "type": "HEAVY",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "DELAYED_LOSE_HEAVY_GAIN_ATTACK",
-            "activity_type": "passive",
-            "call_type": "TURN",
+            "ability": "DELAYED_LOSE_HEAVY_GAIN_ATTACK",
+            "activity": "passive",
+            "trigger": "TURN",
             "value": 4,
             "delay": 2,
             "buff_type": "DELAYED"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": -0.25,
@@ -1253,19 +1253,19 @@
         "flavor_text": "When the mountain comes to you... you'll run!",
         "picture": "Mountain",
         "damage": 6,
-        "health": 8,
+        "defense": 8,
         "type": "HEAVY",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "SWING",
-            "activity_type": "passive",
-            "call_type": "ATTACK",
+            "ability": "SWING",
+            "activity": "passive",
+            "trigger": "ATTACK",
             "value": 4,
             "buff_type": "SWING"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1288,21 +1288,21 @@
         "flavor_text": "Either super charismatic, or super scary... or both",
         "picture": "Gaea",
         "damage": 4,
-        "health": 7,
+        "defense": 7,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "set": "EARTH",
-            "health": 0,
+            "ability": "ALLY_UNITS_OF_TYPE_IN_PLAY_GET_STATS",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "faction": "EARTH",
+            "defense": 0,
             "damage": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1325,22 +1325,22 @@
         "flavor_text": "The unfriendly ghost...",
         "picture": "Whizpar",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "water",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "water",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.3,
             "y": 0.2,
@@ -1363,20 +1363,20 @@
         "flavor_text": "Ommmmmmmmmmm",
         "picture": "Wheezy",
         "damage": 1,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "LOWER_COST_OF_CARD_IN_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "player_card",
+            "ability": "LOWER_COST_OF_CARD_IN_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "player_card",
             "buff_type": "ENTRY",
             "value": -1
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -1399,19 +1399,19 @@
         "flavor_text": "Almost as good as a fortune cookie... minus the cookie",
         "picture": "Soothsayer",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "DRAW_CARD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "set": "none",
+            "ability": "DRAW_CARD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "faction": "none",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1434,19 +1434,19 @@
         "flavor_text": "RAZENGAAAAAAAA!!!",
         "picture": "Fumez",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Tainted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -1469,19 +1469,19 @@
         "flavor_text": "Like any adolescent child that wishes you to leave him be... so GO AWAY!!",
         "picture": "Pushhh",
         "damage": 3,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "CARD_RETURN",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "CARD_RETURN",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.075,
             "y": -0.05,
@@ -1504,27 +1504,27 @@
         "flavor_text": "Thor's best student just got a little angrier...",
         "picture": "ztormmcaller",
         "damage": 3,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "SWING",
-            "activity_type": "passive",
-            "call_type": "ATTACK",
+            "ability": "SWING",
+            "activity": "passive",
+            "trigger": "ATTACK",
             "value": 1,
             "buff_type": "SWING"
           },
           {
-            "type": "DAMAGE_TARGET",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card|player|opponent",
+            "ability": "DAMAGE_TARGET",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card|player|opponent",
             "value": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0.075,
@@ -1547,10 +1547,10 @@
         "flavor_text": "From a young age he just loves to bounce things - especially rocks... on other rocks... ",
         "picture": "Bouncer",
         "damage": 2,
-        "health": 3,
+        "defense": 3,
         "type": "HEAVY",
         "rank": "OFFICER",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.45,
             "y": -0.12,
@@ -1573,26 +1573,26 @@
         "flavor_text": "No, no, no no, not a hamster, not a hamster ball....",
         "picture": "gaz",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "GUARD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "none",
+            "ability": "GUARD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "none",
             "buff_type": "GUARD"
           },
           {
-            "type": "ADD_CARD_BY_NAME_TO_HAND",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADD_CARD_BY_NAME_TO_HAND",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "name": "Corrupted Goo",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1615,19 +1615,19 @@
         "flavor_text": "Not your father... hopefully",
         "picture": "Draft",
         "damage": 4,
-        "health": 5,
+        "defense": 5,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "DRAW_CARD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT",
+            "ability": "DRAW_CARD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.075,
             "y": -0.05,
@@ -1650,21 +1650,21 @@
         "flavor_text": "Shock therapy does work wonders",
         "picture": "MonZoon",
         "damage": 6,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
-            "activity_type": "passive",
-            "call_type": "IN_HAND",
-            "target_type": "player",
-            "set": "air",
+            "ability": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
+            "activity": "passive",
+            "trigger": "IN_HAND",
+            "targets": "player",
+            "faction": "air",
             "buff_type": "PERMANENT",
             "value": -1
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.075,
             "y": -0.05,
@@ -1687,21 +1687,21 @@
         "flavor_text": "From mount Zolimpus in the sky - fear Ze-might of ZeuZ!",
         "picture": "Zeuz",
         "damage": 5,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "MASSIVE_DAMAGE",
-            "activity_type": "PASSIVE",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT_ALL_CARDS | OPPONENT",
+            "ability": "MASSIVE_DAMAGE",
+            "activity": "PASSIVE",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT_ALL_CARDS | OPPONENT",
             "value": 3,
-            "effect_type": "MASSIVE_LIGHTNING",
+            "effect": "MASSIVE_LIGHTNING",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.1,
             "y": -0.27,
@@ -1724,25 +1724,25 @@
         "flavor_text": "A zombie doing ninja hand signs to produce a sphere of wind around it, to protect it from various projectives coming at it.",
         "picture": "ZtormShield",
         "damage": 4,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "GUARD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "none",
+            "ability": "GUARD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "none",
             "buff_type": "GUARD"
           },
           {
-            "type": "ADJACENT_UNITS_GET_HEAVY",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "ADJACENT_UNITS_GET_HEAVY",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -1765,22 +1765,22 @@
         "flavor_text": "Beeee yourself!",
         "picture": "Azuraz",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "earth",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "earth",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -1803,19 +1803,19 @@
         "flavor_text": "Fertilizing the flowers on an hourly basis",
         "picture": "Bloomer",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "DRAW_CARD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "set": "life",
+            "ability": "DRAW_CARD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "faction": "life",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1838,28 +1838,28 @@
         "flavor_text": "Can't get enough of that goo, ever",
         "picture": "zap",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 3,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "SUMMON",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent",
+            "ability": "SUMMON",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent",
             "count": 1,
             "name": "Zombie 1/1",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -1882,21 +1882,21 @@
         "flavor_text": "Some like to grow flowers, others grow hallucinogenic poison mushrooms...",
         "picture": "Shroom",
         "damage": 4,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "DAMAGE_TARGET",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "DAMAGE_TARGET",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 2,
-            "effect_type": "TARGET_LIFE",
+            "effect": "TARGET_LIFE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.35,
             "y": 0,
@@ -1919,20 +1919,20 @@
         "flavor_text": "BDSM much?!",
         "picture": "Vindrom",
         "damage": 2,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "STUN",
-            "activity_type": "passive",
-            "call_type": "ATTACK",
-            "target_type": "opponent_card|opponent",
+            "ability": "STUN",
+            "activity": "passive",
+            "trigger": "ATTACK",
+            "targets": "opponent_card|opponent",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0.1,
@@ -1955,23 +1955,23 @@
         "flavor_text": "All the pretty pretty flowers",
         "picture": "Puffer",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
-            "activity_type": "passive",
-            "call_type": "PERMANENT",
-            "target_type": "player_card",
+            "ability": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
+            "activity": "passive",
+            "trigger": "PERMANENT",
+            "targets": "player_card",
             "value": 1,
-            "stat_type": "DAMAGE",
-            "set": "LIFE",
-            "effect_type": "TARGET_LIFE",
+            "stat": "DAMAGE",
+            "faction": "LIFE",
+            "effect": "TARGET_LIFE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -1994,19 +1994,19 @@
         "flavor_text": "Hungry, always so very hungry",
         "picture": "Sapper",
         "damage": 2,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "GAIN_NUMBER_OF_LIFE_FOR_EACH_DAMAGE_THIS_DEALS",
-            "activity_type": "passive",
-            "call_type": "ATTACK",
+            "ability": "GAIN_NUMBER_OF_LIFE_FOR_EACH_DAMAGE_THIS_DEALS",
+            "activity": "passive",
+            "trigger": "ATTACK",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -2029,21 +2029,21 @@
         "flavor_text": "They are usually such lovely beasts...",
         "picture": "Keeper",
         "damage": 1,
-        "health": 3,
+        "defense": 3,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "SUMMON",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "player",
+            "ability": "SUMMON",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "player",
             "count": 1,
             "name": "Zombie Feral",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -2066,28 +2066,28 @@
         "flavor_text": "And so he walked the desert for 40 years, only to find he's been walking in circles....",
         "picture": "Cactuz",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 6,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "SUMMON",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent",
+            "ability": "SUMMON",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent",
             "count": 1,
             "name": "Zombie 2/2",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -2110,21 +2110,21 @@
         "flavor_text": "Dancing around a fire alone is a hoot, but bringing all your dead friends to join is a party!",
         "picture": "Shammann",
         "damage": 5,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "SUMMON",
-            "activity_type": "passive",
-            "call_type": "TURN",
-            "target_type": "player",
+            "ability": "SUMMON",
+            "activity": "passive",
+            "trigger": "TURN",
+            "targets": "player",
             "count": 1,
             "name": "Zombie 1/1",
             "buff_type": "TURN"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.05,
             "y": 0,
@@ -2147,19 +2147,19 @@
         "flavor_text": "There ain't no party like a Z-Virus party!",
         "picture": "Z-Virus",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
-            "activity_type": "active",
-            "call_type": "ENTRY",
+            "ability": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
+            "activity": "active",
+            "trigger": "ENTRY",
             "value": -1,
             "buff_type": "DEVOUR"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.05,
             "y": 0,
@@ -2182,20 +2182,20 @@
         "flavor_text": "In this case, lots of strings attached!!",
         "picture": "Yggdrazil",
         "damage": 4,
-        "health": 5,
+        "defense": 5,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent_card|player_card",
-            "set": "LIFE",
+            "ability": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent_card|player_card",
+            "faction": "LIFE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": 0,
@@ -2218,22 +2218,22 @@
         "flavor_text": "Just like any frat boy, after the Friday night bash - bloated, gassy, puking and generally unpleasant to be around...",
         "picture": "Poizom",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "MODIFICATOR_STATS",
-            "activity_type": "passive",
-            "call_type": "permanent",
-            "target_type": "none",
-            "stat_type": "damage",
-            "set": "life",
+            "ability": "MODIFICATOR_STATS",
+            "activity": "passive",
+            "trigger": "permanent",
+            "targets": "none",
+            "stat": "damage",
+            "faction": "life",
             "value": 1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.15,
             "y": 0.1,
@@ -2256,11 +2256,11 @@
         "flavor_text": "Being cooped up inside a plastic suit is no fun - now time this by a 1,000 with all the extra gases, something's gotta give...",
         "picture": "Hazmaz",
         "damage": 1,
-        "health": 2,
+        "defense": 2,
         "type": "FERAL",
         "rank": "MINION",
         "abilities": [],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.4,
             "y": 0.125,
@@ -2283,20 +2283,20 @@
         "flavor_text": "Lamma in my living room... bam ba balalam babam ba ba...",
         "picture": "Zpitter",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "TAKE_DAMAGE_RANDOM_ENEMY",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "OPPONENT_CARD|OPPONENT",
+            "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "OPPONENT_CARD|OPPONENT",
             "value": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -2319,27 +2319,27 @@
         "flavor_text": "After four steps he gave up on the straight light and started puking",
         "picture": "Zeptic",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 2,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "ATTACK_OVERLORD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "player",
+            "ability": "ATTACK_OVERLORD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "player",
             "value": 2,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -2362,21 +2362,21 @@
         "flavor_text": "Being dead has its perks, but in this case time and humidity has not been kind - the rotting flesh is literally sapping off the bone on this one",
         "picture": "Ghoul",
         "damage": 3,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "CHANGE_STAT",
-            "activity_type": "passive",
-            "call_type": "ATTACK",
-            "target_type": "none",
-            "stat_type": "damage",
+            "ability": "CHANGE_STAT",
+            "activity": "passive",
+            "trigger": "ATTACK",
+            "targets": "none",
+            "stat": "damage",
             "value": -1,
             "buff_type": "ATTACK"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0.1,
@@ -2399,20 +2399,20 @@
         "flavor_text": "Nam, naam nam nam namm nam...",
         "picture": "Zeeter",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "PLAYER_CARD",
+            "ability": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "PLAYER_CARD",
             "value": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.4,
             "y": 0.125,
@@ -2435,27 +2435,27 @@
         "flavor_text": "Almost reached the Goo-Anonymous meeting - almost...",
         "picture": "Hazzard",
         "damage": 4,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "OFFICER",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 7,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "ATTACK_OVERLORD",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "player",
+            "ability": "ATTACK_OVERLORD",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "player",
             "value": 4,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -2478,19 +2478,19 @@
         "flavor_text": "Bring it, bring It, BRING IT ON!!!",
         "picture": "Zludge",
         "damage": 4,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "RAGE",
-            "activity_type": "passive",
-            "call_type": "GOT_DAMAGE",
+            "ability": "RAGE",
+            "activity": "passive",
+            "trigger": "GOT_DAMAGE",
             "value": 2,
             "buff_type": "RAGE"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0,
@@ -2513,19 +2513,19 @@
         "flavor_text": "Wha'ch yu lookin at' ?! ",
         "picture": "Ectoplasm",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "LOSE_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "LOSE_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0,
             "y": 0.1,
@@ -2548,21 +2548,21 @@
         "flavor_text": "Lumbering around in a world made of butter gets old real fast, maybe that's why he's sooo angry!",
         "picture": "Cherno-bill",
         "damage": 7,
-        "health": 9,
+        "defense": 9,
         "type": "HEAVY",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "MASSIVE_DAMAGE",
-            "activity_type": "PASSIVE",
-            "call_type": "DEATH",
-            "target_type": "PLAYER_ALL_CARDS|OPPONENT_ALL_CARDS",
+            "ability": "MASSIVE_DAMAGE",
+            "activity": "PASSIVE",
+            "trigger": "DEATH",
+            "targets": "PLAYER_ALL_CARDS|OPPONENT_ALL_CARDS",
             "value": 3,
-            "effect_type": "MASSIVE_TOXIC_ALL",
+            "effect": "MASSIVE_TOXIC_ALL",
             "buff_type": "DEATH"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.1,
             "y": -0.2,
@@ -2585,26 +2585,26 @@
         "flavor_text": "More, more, MORE GOO! Bring me ALL the GOO",
         "picture": "GooZilla",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 4,
             "buff_type": "ENTRY"
           },
           {
-            "type": "USE_ALL_GOO_TO_INCREASE_STATS",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "USE_ALL_GOO_TO_INCREASE_STATS",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 2,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -2627,23 +2627,23 @@
         "flavor_text": "A frail zombie with one massive arm that he's dragging on the floor.",
         "picture": "Zlopper",
         "damage": 3,
-        "health": 5,
+        "defense": 5,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
-            "activity_type": "passive",
-            "call_type": "PERMANENT",
-            "target_type": "player_card",
+            "ability": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
+            "activity": "passive",
+            "trigger": "PERMANENT",
+            "targets": "player_card",
             "value": 1,
-            "stat_type": "DAMAGE",
-            "set": "TOXIC",
-            "effect_type": "TARGET_TOXIC",
+            "stat": "DAMAGE",
+            "faction": "TOXIC",
+            "effect": "TARGET_TOXIC",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -2666,21 +2666,21 @@
         "flavor_text": "Cutting through flesh, bone and even steel, it's easy to see why this is a fan-favorite!",
         "picture": "Chainsaw",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "UNIT_WEAPON",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "UNIT_WEAPON",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 4,
             "damage": 4,
             "buff_type": "END"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2703,21 +2703,21 @@
         "flavor_text": "So much goo, so little space",
         "picture": "goobeaker",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "ADD_GOO_VIAL",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "none",
+            "ability": "ADD_GOO_VIAL",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "none",
             "value": 1,
             "buff_type": "ENTRY",
             "count": 1
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2740,21 +2740,21 @@
         "flavor_text": "No pain, no gain.",
         "picture": "Stapler",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "heal",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "heal",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 4,
-            "effect_type": "HEAL",
+            "effect": "HEAL",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2777,21 +2777,21 @@
         "flavor_text": "When you really want to nail it!",
         "picture": "NailBomb",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "DAMAGE_TARGET_ADJUSTMENTS",
-            "activity_type": "active",
-            "call_type": "ENTRY",
-            "target_type": "player_card|opponent_card",
+            "ability": "DAMAGE_TARGET_ADJUSTMENTS",
+            "activity": "active",
+            "trigger": "ENTRY",
+            "targets": "player_card|opponent_card",
             "value": 4,
-            "effect_type": "TARGET_ADJUSTMENTS_BOMB",
+            "effect": "TARGET_ADJUSTMENTS_BOMB",
             "buff_type": "SWING"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2814,21 +2814,21 @@
         "flavor_text": "Adding more goo to an already overly-goo-ed party is just too goo-d!",
         "picture": "goobottles",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "ADD_GOO_VIAL",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "none",
+            "ability": "ADD_GOO_VIAL",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "none",
             "value": 2,
             "buff_type": "ENTRY",
             "count": 2
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2851,20 +2851,20 @@
         "flavor_text": "As if they died again and went to zombie heaven",
         "picture": "FreshMeat",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [
           {
-            "type": "CHANGE_STAT_UNTILL_END_OF_TURN",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
-            "target_type": "opponent_all_cards",
+            "ability": "CHANGE_STAT_UNTILL_END_OF_TURN",
+            "activity": "passive",
+            "trigger": "ENTRY",
+            "targets": "opponent_all_cards",
             "damage": -3,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -2886,10 +2886,10 @@
         "description": "",
         "picture": "Zombie",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "WALKER",
         "rank": "MINION",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.45,
             "y": 0,
@@ -2911,10 +2911,10 @@
         "description": "",
         "picture": "Zombie",
         "damage": 2,
-        "health": 2,
+        "defense": 2,
         "type": "WALKER",
         "rank": "MINION",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.45,
             "y": 0,
@@ -2936,10 +2936,10 @@
         "description": "",
         "picture": "Zombie",
         "damage": 1,
-        "health": 1,
+        "defense": 1,
         "type": "FERAL",
         "rank": "MINION",
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.45,
             "y": 0,
@@ -2962,27 +2962,27 @@
         "flavor_text": "Smells kinda funny, but what a rush!",
         "picture": "taintedgoo",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "frame": "frame_item_minion",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 3,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "DISABLE_NEXT_TURN_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "DISABLE_NEXT_TURN_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": -1,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -3005,27 +3005,27 @@
         "flavor_text": "Hooooweeee, better than all the moonshine!",
         "picture": "corruptedgoo",
         "damage": 0,
-        "health": 0,
+        "defense": 0,
         "type": "WALKER",
         "rank": "MINION",
         "frame": "frame_item_minion",
         "abilities": [
           {
-            "type": "OVERFLOW_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "OVERFLOW_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": 6,
             "buff_type": "OVERFLOW"
           },
           {
-            "type": "DISABLE_NEXT_TURN_GOO",
-            "activity_type": "passive",
-            "call_type": "ENTRY",
+            "ability": "DISABLE_NEXT_TURN_GOO",
+            "activity": "passive",
+            "trigger": "ENTRY",
             "value": -2,
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": -0.2,
             "y": 0,
@@ -3048,21 +3048,21 @@
         "flavor_text": "A zombie wearing the typical yellow raincoat, looking up to the sky, with its hands outstretched to the sky, and goo is raining around it. Use a worm's eye view angle to show the goo falling from the sky more clearly.",
         "picture": "Rainz",
         "damage": 3,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [
           {
-            "type": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
-            "activity_type": "PASSIVE",
-            "call_type": "ENTRY",
-            "target_type": "PLAYER_CARD",
-            "set": "WATER",
-            "effect_type": "MASSIVE_WATER_WAVE",
+            "ability": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
+            "activity": "PASSIVE",
+            "trigger": "ENTRY",
+            "targets": "PLAYER_CARD",
+            "faction": "WATER",
+            "effect": "MASSIVE_WATER_WAVE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -3085,11 +3085,11 @@
         "flavor_text": "Show a bunch of plants, with blooming flowers, dripping with goo. 2 flowers however have not yet bloomed. They are still closed and inside the buds you can see a transulcent pod containing a life zombie embryo.",
         "picture": "Blight",
         "damage": 5,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -3112,11 +3112,11 @@
         "flavor_text": "A muscular zombie with a hump on its back. A transparent membrane on the hump shows that it's full of goo. (like a camel)",
         "picture": "Zteroid",
         "damage": 5,
-        "health": 4,
+        "defense": 4,
         "type": "WALKER",
         "rank": "COMMANDER",
         "abilities": [],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -3139,11 +3139,11 @@
         "flavor_text": "A zombie holidng the head of another zombie from behind with both hands. The zombie in front is set ablaze, and screams in agony.",
         "picture": "BurZt",
         "damage": 4,
-        "health": 1,
+        "defense": 1,
         "type": "FERAL",
         "rank": "MINION",
         "abilities": [],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -3166,21 +3166,21 @@
         "flavor_text": "A water zombie carrying another zombie over its head, lion king style, about to throw it into a violent whirlpool.",
         "picture": "Vortex",
         "damage": 6,
-        "health": 7,
+        "defense": 7,
         "type": "WALKER",
         "rank": "GENERAL",
         "abilities": [
           {
-            "type": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
-            "activity_type": "PASSIVE",
-            "call_type": "ENTRY",
-            "target_type": "PLAYER_CARD",
-            "set": "WATER",
-            "effect_type": "MASSIVE_WATER_WAVE",
+            "ability": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
+            "activity": "PASSIVE",
+            "trigger": "ENTRY",
+            "targets": "PLAYER_CARD",
+            "faction": "WATER",
+            "effect": "MASSIVE_WATER_WAVE",
             "buff_type": "ENTRY"
           }
         ],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,
@@ -3203,11 +3203,11 @@
         "flavor_text": "A rock zombie using itself as a human shield to protect another zombie from that looks like fireballs being flung at them.",
         "picture": "Defender",
         "damage": 4,
-        "health": 6,
+        "defense": 6,
         "type": "WALKER",
         "rank": "MINION",
         "abilities": [],
-        "card_view_info": {
+        "pictureTransform": {
           "position": {
             "x": 0.4,
             "y": 0,

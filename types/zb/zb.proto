@@ -28,21 +28,21 @@ message Account {
 }
 
 message Deck {
-    int64 Id = 1;
-    string Name = 2;
-    int64 OverlordId = 3;
-    repeated DeckCard Cards = 4;
-    OverlordSkill.Enum PrimarySkill = 5;
-    OverlordSkill.Enum SecondarySkill = 6;
+    int64 id = 1;
+    string name = 2;
+    int64 overlordId = 3;
+    repeated DeckCard cards = 4;
+    OverlordSkill.Enum primarySkill = 5;
+    OverlordSkill.Enum secondarySkill = 6;
 }
 
 message Card {
-    int64 MouldId = 1;
+    int64 mouldId = 1;
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
     string description = 5;
-    string flavor_text = 6;
+    string flavorText = 6;
     string picture = 7;
     CreatureRank.Enum rank = 8;
     CardType.Enum type = 9;
@@ -92,7 +92,7 @@ message CardList {
 }
 
 message CardCollectionCard {
-    string card_name  = 1;
+    string cardName  = 1;
     int64 amount      = 2;
 }
 
@@ -106,20 +106,20 @@ message CardLibrary {
 }
 
 message Overlord {
-    int64 OverlordId = 1;
+    int64 overlordId = 1;
 
-    string Icon = 2;
-    string Name = 3;
-    string ShortDescription = 4;
-    string LongDescription = 5;
-    Faction.Enum Faction = 6;
+    string icon = 2;
+    string name = 3;
+    string shortDescription = 4;
+    string longDescription = 5;
+    Faction.Enum faction = 6;
 
-    int64 Experience = 7;
-    int64 Level = 8;
-    repeated Skill Skills = 9;
+    int64 experience = 7;
+    int64 level = 8;
+    repeated Skill skills = 9;
 
-    OverlordSkill.Enum PrimarySkill = 10;
-    OverlordSkill.Enum SecondarySkill = 11;
+    OverlordSkill.Enum primarySkill = 10;
+    OverlordSkill.Enum secondarySkill = 11;
 }
 
 message ListOverlordsRequest {
@@ -196,25 +196,25 @@ message GetOverlordSkillsResponse {
 message Skill {
     string title = 1;
     OverlordSkill.Enum skill = 2;
-    string icon_path = 3;
+    string iconPath = 3;
     string description = 4;
-    repeated SkillTarget.Enum skill_targets = 5;
+    repeated SkillTarget.Enum skillTargets = 5;
     UnitSpecialStatus.Enum targetUnitSpecialStatus = 6;
-    repeated Faction.Enum target_factions = 7;
+    repeated Faction.Enum targetFactions = 7;
     int32 value = 8;
 
     int32 cooldown = 9;
-    int32 initial_cooldown = 10;
+    int32 initialCooldown = 10;
 
     int32 damage = 11;
     int32 count = 12;
 
     int64 id = 13;
     bool unlocked = 14;
-    bool can_select_target = 15;
+    bool canSelectTarget = 15;
     string unitStatus = 16;
 
-    bool single_use = 17;
+    bool singleUse = 17;
 }
 
 message OverlordList {
@@ -253,21 +253,21 @@ message AIDeckList {
 // Request and Response
 
 message InitData {
-    repeated Deck default_decks = 1;
-    repeated CardCollectionCard default_collection = 2;
+    repeated Deck defaultDecks = 1;
+    repeated CardCollectionCard defaultCollection = 2;
     repeated Card cards = 3;
     repeated Overlord overlords = 4;
-    repeated AIDeck ai_decks = 5;
+    repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
 }
 
 message InitRequest {
-    repeated Deck default_decks                = 1;
-    repeated CardCollectionCard default_collection = 2;
+    repeated Deck defaultDecks                = 1;
+    repeated CardCollectionCard defaultCollection = 2;
     repeated Card cards                        = 3;
     repeated Overlord overlords                       = 4;
-    repeated AIDeck ai_decks                   = 5;
+    repeated AIDeck aiDecks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
     string contentVersion                      = 8;
@@ -282,7 +282,7 @@ message UpdateOracle {
 message UpdateInitRequest {
     reserved 1 to 7, 9 to 10;
     string oldVersion = 8;
-    InitData init_data = 11;
+    InitData initData = 11;
 }
 
 message GetInitRequest {
@@ -291,7 +291,7 @@ message GetInitRequest {
 
 message GetInitResponse {
     reserved 1 to 8;
-    InitData init_data = 9;
+    InitData initData = 9;
 }
 
 message GamechainState {
@@ -1237,7 +1237,7 @@ message AbilityData {
     int32 turns = 16;
     int32 count = 17;
     int32 delay = 18;
-    repeated VisualEffectInfo VisualEffectsToPlay = 19;
+    repeated VisualEffectInfo visualEffectsToPlay = 19;
     GameMechanicDescription.Enum gameMechanicDescription = 20;
     Faction.Enum targetFaction = 21;
     AbilitySubTrigger.Enum subTrigger = 22;
