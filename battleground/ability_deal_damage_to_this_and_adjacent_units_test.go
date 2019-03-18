@@ -55,8 +55,8 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
-					Trigger: zb.CardAbilityTrigger_Attack,
+					Type:    zb.AbilityType_DealDamageToThisAndAdjacentUnits,
+					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},
 		}
@@ -155,8 +155,8 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
-					Trigger: zb.CardAbilityTrigger_Attack,
+					Type:    zb.AbilityType_DealDamageToThisAndAdjacentUnits,
+					Trigger: zb.AbilityTrigger_Attack,
 				},
 			},
 		}

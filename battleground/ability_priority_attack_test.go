@@ -54,7 +54,7 @@ func TestAbilityPriorityAttack(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type: zb.CardAbilityType_PriorityAttack,
+					Type: zb.AbilityType_PriorityAttack,
 				},
 			},
 		}

@@ -54,8 +54,8 @@ func TestAbilityAttackOverlord(t *testing.T) {
 			Damage:  2,
 			Abilities: []*zb.CardAbility{
 				{
-					Type:    zb.CardAbilityType_AttackOverlord,
-					Trigger: zb.CardAbilityTrigger_Entry,
+					Type:    zb.AbilityType_AttackOverlord,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
