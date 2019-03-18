@@ -53,7 +53,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Name:    "Vortex",
 			Defense: 3,
 			Damage:  2,
-			GooCost: 1,
+			Cost: 1,
 			Faction: zb.Faction_Water,
 			Abilities: []*zb.AbilityData{
 				{
@@ -86,7 +86,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  4,
-				GooCost: 3,
+				Cost: 3,
 				Faction: zb.Faction_Water,
 			},
 			Owner: player1,
@@ -97,7 +97,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  4,
-				GooCost: 3,
+				Cost: 3,
 				Faction: zb.Faction_Fire,
 			},
 			Owner: player1,

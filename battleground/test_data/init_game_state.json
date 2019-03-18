@@ -6,7 +6,7 @@
       "cardsInHand": [
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -59,10 +59,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -87,7 +87,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -140,10 +140,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -168,7 +168,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -221,10 +221,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -249,7 +249,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -302,10 +302,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -332,7 +332,7 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -385,10 +385,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -413,7 +413,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -466,10 +466,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -494,7 +494,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -547,10 +547,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -575,7 +575,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -628,10 +628,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -656,7 +656,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -709,10 +709,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -737,7 +737,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -790,10 +790,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -818,7 +818,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -871,10 +871,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -899,7 +899,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -952,10 +952,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -980,7 +980,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1033,10 +1033,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1061,7 +1061,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1114,10 +1114,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1142,7 +1142,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1195,10 +1195,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1223,7 +1223,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1276,10 +1276,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1304,7 +1304,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1357,10 +1357,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1385,7 +1385,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1438,10 +1438,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1466,7 +1466,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1519,10 +1519,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1547,7 +1547,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1600,10 +1600,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1628,7 +1628,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1681,10 +1681,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1709,7 +1709,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1762,10 +1762,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1790,7 +1790,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1843,10 +1843,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1871,7 +1871,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1924,10 +1924,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1952,7 +1952,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2005,10 +2005,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2033,7 +2033,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2086,10 +2086,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2114,7 +2114,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2167,10 +2167,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2195,7 +2195,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2248,10 +2248,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2276,7 +2276,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2329,10 +2329,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2357,7 +2357,7 @@
         },
         {
           "prototype": {
-            "id": "25",
+            "mouldId": 25,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2410,10 +2410,10 @@
           },
           "instance": {
             "damage": 3,
-            "defense2": 2,
+            "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 2
+            "cost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2447,7 +2447,7 @@
           }
         ]
       },
-      "defense2": 20,
+      "defense": 20,
       "currentGoo": 1,
       "gooVials": 1,
       "hasDrawnCard": true,
@@ -2463,7 +2463,7 @@
       "cardsInHand": [
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2506,10 +2506,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2517,7 +2517,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2560,10 +2560,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2571,7 +2571,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2614,10 +2614,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2627,7 +2627,7 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2670,10 +2670,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2681,7 +2681,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2724,10 +2724,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2735,7 +2735,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2778,10 +2778,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2789,7 +2789,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2832,10 +2832,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2843,7 +2843,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2886,10 +2886,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2897,7 +2897,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2940,10 +2940,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2951,7 +2951,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2994,10 +2994,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3005,7 +3005,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3048,10 +3048,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3059,7 +3059,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3102,10 +3102,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3113,7 +3113,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3156,10 +3156,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3167,7 +3167,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3210,10 +3210,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3221,7 +3221,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3264,10 +3264,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3275,7 +3275,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3318,10 +3318,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3329,7 +3329,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3372,10 +3372,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3383,7 +3383,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3426,10 +3426,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3437,7 +3437,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3480,10 +3480,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3491,7 +3491,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3534,10 +3534,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3545,7 +3545,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3588,10 +3588,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3599,7 +3599,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3642,10 +3642,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3653,7 +3653,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3696,10 +3696,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3707,7 +3707,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3750,10 +3750,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3761,7 +3761,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3804,10 +3804,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3815,7 +3815,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3858,10 +3858,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3869,7 +3869,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3912,10 +3912,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3923,7 +3923,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3966,10 +3966,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3977,7 +3977,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4020,10 +4020,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -4031,7 +4031,7 @@
         },
         {
           "prototype": {
-            "id": "24",
+            "mouldId": 24,
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4074,10 +4074,10 @@
           },
           "instance": {
             "damage": 1,
-            "defense2": 1,
+            "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "gooCost": 1
+            "cost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -4094,7 +4094,7 @@
           }
         ]
       },
-      "defense2": 20,
+      "defense": 20,
       "initialCardsInHandCount": 3,
       "maxCardsInPlay": 6,
       "maxCardsInHand": 10,

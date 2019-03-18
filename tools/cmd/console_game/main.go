@@ -101,7 +101,7 @@ var initRequest = zb.InitRequest{
 			Type:    zb.CardType_Walker,
 			Damage:  2,
 			Defense: 1,
-			GooCost: 2,
+			Cost: 2,
 			Abilities: []*zb.AbilityData{
 				{
 					Ability:  zb.AbilityType_DrawCard,
@@ -131,7 +131,7 @@ var initRequest = zb.InitRequest{
 			Type:    zb.CardType_Walker,
 			Damage:  1,
 			Defense: 1,
-			GooCost: 1,
+			Cost: 1,
 			Abilities: []*zb.AbilityData{
 				{
 					Ability:  zb.AbilityType_ModificatorStats,

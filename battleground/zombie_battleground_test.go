@@ -253,7 +253,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Type:    zb.CardType_Walker,
 				Damage:  2,
 				Defense: 1,
-				GooCost: 2,
+				Cost: 2,
 				Abilities: []*zb.AbilityData{
 					{
 						Ability:  zb.AbilityType_DrawCard,
@@ -283,7 +283,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Type:             zb.CardType_Walker,
 				Damage:           1,
 				Defense:          1,
-				GooCost:          1,
+				Cost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 				Abilities: []*zb.AbilityData{
 					{
@@ -307,7 +307,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Type:             zb.CardType_Walker,
 				Damage:           1,
 				Defense:          1,
-				GooCost:          1,
+				Cost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 				Abilities: []*zb.AbilityData{
 					{
@@ -399,7 +399,7 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Type:    zb.CardType_Walker,
 				Damage:  2,
 				Defense: 1,
-				GooCost: 2,
+				Cost: 2,
 				Abilities: []*zb.AbilityData{
 					{
 						Ability:  zb.AbilityType_DrawCard,
@@ -429,7 +429,7 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Type:             zb.CardType_Walker,
 				Damage:           1,
 				Defense:          1,
-				GooCost:          1,
+				Cost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 				Abilities: []*zb.AbilityData{
 					{
@@ -453,7 +453,7 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Type:             zb.CardType_Walker,
 				Damage:           1,
 				Defense:          1,
-				GooCost:          1,
+				Cost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 				Abilities: []*zb.AbilityData{
 					{
@@ -1050,7 +1050,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Type:             zb.CardType_Feral,
 			Damage:           2,
 			Defense:          1,
-			GooCost:          2,
+			Cost:          2,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
@@ -1061,7 +1061,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Type:             zb.CardType_Walker,
 			Damage:           1,
 			Defense:          1,
-			GooCost:          1,
+			Cost:          1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
@@ -1072,7 +1072,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Type:             zb.CardType_Walker,
 			Damage:           1,
 			Defense:          1,
-			GooCost:          1,
+			Cost:          1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 	}
