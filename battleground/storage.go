@@ -16,7 +16,7 @@ import (
 var (
 	cardPrefix           = []byte("card")
 	userPrefix           = []byte("user")
-	heroesPrefix         = []byte("heroes")
+	overlordsPrefix      = []byte("heroes")
 	collectionPrefix     = []byte("collection")
 	decksPrefix          = []byte("decks")
 	matchesPrefix        = []byte("matches")
@@ -24,7 +24,7 @@ var (
 	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
-	heroListKey                 = []byte("herolist")
+	overlordListKey             = []byte("herolist")
 	defaultDeckKey              = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
 	matchCountKey               = []byte("match-count")
@@ -58,7 +58,7 @@ func CardCollectionKey(userID string) []byte {
 	return []byte("user:" + userID + ":collection")
 }
 
-func HeroesKey(userID string) []byte {
+func OverlordsKey(userID string) []byte {
 	return []byte("user:" + userID + ":heroes")
 }
 
@@ -171,17 +171,17 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, er
 	return &deckList, nil
 }
 
-func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
-	var heroes zb.HeroList
-	err := ctx.Get(HeroesKey(userID), &heroes)
+func loadOverlords(ctx contract.StaticContext, userID string) (*zb.OverlordList, error) {
+	var overlords zb.OverlordList
+	err := ctx.Get(OverlordsKey(userID), &overlords)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
-	return &heroes, nil
+	return &overlords, nil
 }
 
-func saveHeroes(ctx contract.Context, userID string, heroes *zb.HeroList) error {
-	return ctx.Set(HeroesKey(userID), heroes)
+func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordList) error {
+	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {

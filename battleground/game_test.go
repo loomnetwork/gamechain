@@ -371,7 +371,7 @@ func TestCardAttack(t *testing.T) {
 
 	deck0 := &zb.Deck{
 		Id:     0,
-		HeroId: 2,
+		OverlordId: 2,
 		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},

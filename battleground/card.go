@@ -78,21 +78,21 @@ func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 	return nil
 }
 
-func getHeroById(heroList []*zb.Hero, heroId int64) *zb.Hero {
-	for _, hero := range heroList {
-		if hero.HeroId == heroId {
-			return hero
+func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord {
+	for _, overlord := range overlordList {
+		if overlord.OverlordId == overlordId {
+			return overlord
 		}
 	}
 	return nil
 }
 
-func validateDeckHero(heroList []*zb.Hero, heroID int64) error {
-	// check if the user has hero
-	if getHeroById(heroList, heroID) != nil {
+func validateDeckOverlord(overlordList []*zb.Overlord, overlordID int64) error {
+	// check if the user has overlord
+	if getOverlordById(overlordList, overlordID) != nil {
 		return nil
 	}
-	return fmt.Errorf("hero: %d cannot be part of deck, since it is not owned by User", heroID)
+	return fmt.Errorf("overlord: %d cannot be part of deck, since it is not owned by User", overlordID)
 }
 
 func shuffleCardInDeck(deck []*zb.CardInstance, seed int64, playerIndex int) []*zb.CardInstance {

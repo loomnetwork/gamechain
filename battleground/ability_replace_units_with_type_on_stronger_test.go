@@ -22,9 +22,9 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:     0,
-		HeroId: 2,
-		Name:   "Default",
+		Id:         0,
+		OverlordId: 2,
+		Name:       "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Znowy", Amount: 5},
 			{CardName: "Igloo", Amount: 10},
@@ -32,9 +32,9 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 	}
 
 	deck1 := &zb.Deck{
-		Id:     0,
-		HeroId: 2,
-		Name:   "Default",
+		Id:         0,
+		OverlordId: 2,
+		Name:       "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Burrrnn", Amount: 15},
 		},
@@ -57,7 +57,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Faction: zb.Faction_Water,
 			Abilities: []*zb.AbilityData{
 				{
-					Type:    zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
+					Ability: zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
 					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},

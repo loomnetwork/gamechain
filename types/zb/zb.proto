@@ -28,16 +28,16 @@ message Account {
 }
 
 message Deck {
-    int64 id = 1;
-    string name = 2;
-    int64 hero_id = 3;
-    repeated DeckCard cards = 4;
-    OverlordSkill.Enum primary_skill = 5;
-    OverlordSkill.Enum secondary_skill = 6;
+    int64 Id = 1;
+    string Name = 2;
+    int64 OverlordId = 3;
+    repeated DeckCard Cards = 4;
+    OverlordSkill.Enum PrimarySkill = 5;
+    OverlordSkill.Enum SecondarySkill = 6;
 }
 
 message Card {
-    int64 mouldId = 1;
+    int64 MouldId = 1;
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
@@ -105,91 +105,91 @@ message CardLibrary {
     repeated Card cards = 1;
 }
 
-message Hero {
-    int64 hero_id = 1;
+message Overlord {
+    int64 OverlordId = 1;
 
-    string icon = 2;
-    string name = 3;
-    string short_description = 4;
-    string long_description = 5;
-    Faction.Enum faction = 6;
+    string Icon = 2;
+    string Name = 3;
+    string ShortDescription = 4;
+    string LongDescription = 5;
+    Faction.Enum Faction = 6;
 
-    int64 experience = 7;
-    int64 level = 8;
-    repeated Skill skills = 9;
+    int64 Experience = 7;
+    int64 Level = 8;
+    repeated Skill Skills = 9;
 
-    OverlordSkill.Enum primary_skill = 10;
-    OverlordSkill.Enum secondary_skill = 11;
+    OverlordSkill.Enum PrimarySkill = 10;
+    OverlordSkill.Enum SecondarySkill = 11;
 }
 
-message ListHeroesRequest {
+message ListOverlordsRequest {
     string user_id = 1;
 }
 
-message ListHeroesResponse {
-    repeated Hero heroes  = 1;
+message ListOverlordsResponse {
+    repeated Overlord overlords  = 1;
 }
 
-message AddHeroExperienceRequest {
+message AddOverlordExperienceRequest {
     string user_id = 1;
-    int64 hero_id = 2;
+    int64 overlord_id = 2;
     int64 experience = 3;
 }
 
-message AddHeroExperienceResponse {
-    int64 hero_id = 1;
+message AddOverlordExperienceResponse {
+    int64 overlord_id = 1;
     int64 experience = 2;
 }
 
-message SetHeroExperienceRequest {
+message SetOverlordExperienceRequest {
     string user_id = 1;
-    int64 hero_id = 2;
+    int64 overlord_id = 2;
     int64 experience = 3;
 }
 
-message SetHeroExperienceResponse {
-    int64 hero_id = 1;
+message SetOverlordExperienceResponse {
+    int64 overlord_id = 1;
     int64 experience = 2;
 }
 
-message SetHeroLevelRequest {
+message SetOverlordLevelRequest {
     string user_id = 1;
-    int64 hero_id = 2;
+    int64 overlord_id = 2;
     int64 level = 3;
 }
 
-message SetHeroLevelResponse {
-    int64 hero_id = 1;
+message SetOverlordLevelResponse {
+    int64 overlord_id = 1;
     int64 level = 2;
 }
 
-message GetHeroRequest {
+message GetOverlordRequest {
     string user_id = 1;
-    int64 hero_id = 2;
+    int64 overlord_id = 2;
 }
 
-message GetHeroResponse {
-    Hero hero = 1;
+message GetOverlordResponse {
+    Overlord overlord = 1;
 }
 
 
-message SetHeroRequest {
+message SetOverlordRequest {
     string user_id = 1;
-    int64 hero_id = 2;
-    Hero hero = 3;
+    int64 overlord_id = 2;
+    Overlord overlord = 3;
 }
 
-message SetHeroResponse {
-    Hero hero = 1;
+message SetOverlordResponse {
+    Overlord overlord = 1;
 }
 
-message GetHeroSkillsRequest {
+message GetOverlordSkillsRequest {
     string user_id = 1;
-    int64 hero_id = 2;
+    int64 overlord_id = 2;
 }
 
-message GetHeroSkillsResponse {
-    int64 hero_id = 1;
+message GetOverlordSkillsResponse {
+    int64 overlord_id = 1;
     repeated Skill skills = 2;
 }
 
@@ -217,8 +217,8 @@ message Skill {
     bool single_use = 17;
 }
 
-message HeroList {
-    repeated Hero heroes = 1;
+message OverlordList {
+    repeated Overlord overlords = 1;
 }
 
 message CardCollectionList {
@@ -256,7 +256,7 @@ message InitData {
     repeated Deck default_decks = 1;
     repeated CardCollectionCard default_collection = 2;
     repeated Card cards = 3;
-    repeated Hero heroes = 4;
+    repeated Overlord overlords = 4;
     repeated AIDeck ai_decks = 5;
     string version = 6;
     Address oracle = 7;
@@ -266,7 +266,7 @@ message InitRequest {
     repeated Deck default_decks                = 1;
     repeated CardCollectionCard default_collection = 2;
     repeated Card cards                        = 3;
-    repeated Hero heroes                       = 4;
+    repeated Overlord overlords                       = 4;
     repeated AIDeck ai_decks                   = 5;
     string version                             = 6;
     Address oracle                             = 7;
@@ -454,20 +454,20 @@ message ListCardLibraryResponse {
     repeated Card cards = 1;
 }
 
-message ListHeroLibraryRequest {
+message ListOverlordLibraryRequest {
     string version = 1;
 }
 
-message ListHeroLibraryResponse {
-    repeated Hero heroes  = 1;
+message ListOverlordLibraryResponse {
+    repeated Overlord overlords  = 1;
 }
 
-message UpdateHeroLibraryRequest {
+message UpdateOverlordLibraryRequest {
     string version = 1;
-    repeated Hero heroes  = 2;
+    repeated Overlord overlords  = 2;
 }
 
-message UpdateHeroLibraryResponse {
+message UpdateOverlordLibraryResponse {
 }
 
 message GetCollectionRequest {
@@ -1427,7 +1427,7 @@ message OverlordInstance {
 }
 
 message OverlordPrototype {
-    int32 heroId = 1;
+    int32 overlordId = 1;
     string icon = 2;
     string name = 3;
     string shortDescription = 4;
