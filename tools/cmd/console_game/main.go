@@ -102,7 +102,7 @@ var initRequest = zb.InitRequest{
 			Damage:  2,
 			Defense: 1,
 			GooCost: 2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:         zb.AbilityType_DrawCard,
 					ActivityType: zb.AbilityActivity_Passive,
@@ -132,7 +132,7 @@ var initRequest = zb.InitRequest{
 			Damage:  1,
 			Defense: 1,
 			GooCost: 1,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:         zb.AbilityType_ModificatorStats,
 					ActivityType: zb.AbilityActivity_Passive,

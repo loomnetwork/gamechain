@@ -52,7 +52,7 @@ func TestAbilityPriorityAttack(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type: zb.AbilityType_PriorityAttack,
 				},

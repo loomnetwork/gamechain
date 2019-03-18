@@ -52,7 +52,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_DevourZombiesAndCombineStats,
 					Trigger: zb.AbilityTrigger_Entry,
@@ -149,7 +149,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_DevourZombiesAndCombineStats,
 					Trigger: zb.AbilityTrigger_Entry,

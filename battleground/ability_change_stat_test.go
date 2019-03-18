@@ -52,7 +52,7 @@ func TestAbilityChangeStat(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_ChangeStat,
 					Trigger: zb.AbilityTrigger_Attack,
@@ -129,7 +129,7 @@ func TestAbilityChangeStat(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 2,
 			Damage:  3,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_ChangeStat,
 					Trigger: zb.AbilityTrigger_Attack,
