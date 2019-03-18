@@ -471,7 +471,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
 	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
-		switch raw.Type {
+		switch raw.Ability {
 		case zb.AbilityType_Rage:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
@@ -603,9 +603,9 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 		filteredCards := make([]*zb.CardInstance, 0, 0)
 
 		for _, card := range playerState.CardsInDeck {
-			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			filteredAbilities := make([]*zb.AbilityData, 0, 0)
 			for _, ability := range card.Prototype.Abilities {
-				switch ability.Type {
+				switch ability.Ability {
 				case zb.AbilityType_Rage:
 					fallthrough
 				case zb.AbilityType_PriorityAttack:
@@ -619,7 +619,7 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 				case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 					filteredAbilities = append(filteredAbilities, ability)
 				default:
-					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb.AbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb.AbilityType_Enum_name[int32(ability.Ability)], card.Prototype.Name)
 				}
 			}
 

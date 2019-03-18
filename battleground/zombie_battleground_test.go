@@ -254,7 +254,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Damage:  2,
 				Defense: 1,
 				GooCost: 2,
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_DrawCard,
 						ActivityType: zb.AbilityActivity_Passive,
@@ -285,7 +285,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Defense:          1,
 				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_ModificatorStats,
 						ActivityType: zb.AbilityActivity_Passive,
@@ -309,7 +309,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Defense:          1,
 				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_ModificatorStats,
 						ActivityType: zb.AbilityActivity_Passive,
@@ -400,7 +400,7 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 				Damage:  2,
 				Defense: 1,
 				GooCost: 2,
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_DrawCard,
 						ActivityType: zb.AbilityActivity_Passive,
@@ -431,7 +431,7 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 				Defense:          1,
 				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_ModificatorStats,
 						ActivityType: zb.AbilityActivity_Passive,
@@ -455,7 +455,7 @@ var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 				Defense:          1,
 				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.CardAbility{
+				Abilities: []*zb.AbilityData{
 					{
 						Type:         zb.AbilityType_ModificatorStats,
 						ActivityType: zb.AbilityActivity_Passive,

@@ -53,7 +53,7 @@ func TestAbilityReanimate(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_ReanimateUnit,
 					Trigger: zb.AbilityTrigger_Death,

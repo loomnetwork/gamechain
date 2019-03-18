@@ -53,7 +53,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_DealDamageToThisAndAdjacentUnits,
 					Trigger: zb.AbilityTrigger_Attack,
@@ -153,7 +153,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
 					Type:    zb.AbilityType_DealDamageToThisAndAdjacentUnits,
 					Trigger: zb.AbilityTrigger_Attack,
