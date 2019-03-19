@@ -25,7 +25,7 @@ func (c *changeStat) Apply(gameplay *Gameplay) error {
 	changeStat := c.cardAbility
 	// Once attacking, defense and damage values are decreased
 	// TODO: generate change zone first
-	if changeStat.Stat == zb.StatType_Defense {
+	if changeStat.Stat == zb.Stat_Defense {
 		c.Instance.Defense += changeStat.StatAdjustment
 		// generate outcome
 		gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
@@ -33,12 +33,12 @@ func (c *changeStat) Apply(gameplay *Gameplay) error {
 				ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
 					InstanceId:       c.InstanceId,
 					NewDefense:       c.Instance.Defense,
-					Stat:             zb.StatType_Defense,
+					Stat:             zb.Stat_Defense,
 					TargetInstanceId: c.target,
 				},
 			},
 		})
-	} else if changeStat.Stat == zb.StatType_Damage {
+	} else if changeStat.Stat == zb.Stat_Damage {
 		c.Instance.Damage += changeStat.StatAdjustment
 		// generate outcome
 		gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
@@ -46,7 +46,7 @@ func (c *changeStat) Apply(gameplay *Gameplay) error {
 				ChangeStat: &zb.PlayerActionOutcome_CardAbilityChangeStatOutcome{
 					InstanceId:       c.InstanceId,
 					NewDamage:        c.Instance.Damage,
-					Stat:             zb.StatType_Damage,
+					Stat:             zb.Stat_Damage,
 					TargetInstanceId: c.target,
 				},
 			},

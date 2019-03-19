@@ -10,13 +10,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var listHeroLibraryCmdArgs struct {
+var listOverlordsLibraryCmdArgs struct {
 	version string
 }
 
-var listHeroLibraryCmd = &cobra.Command{
-	Use:   "list_hero_library",
-	Short: "list hero library",
+var listOverlordsLibraryCmd = &cobra.Command{
+	Use:   "list_overlord_library",
+	Short: "list overlord library",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -24,12 +24,12 @@ var listHeroLibraryCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.ListHeroLibraryRequest{
-			Version: listHeroLibraryCmdArgs.version,
+		req := zb.ListOverlordLibraryRequest{
+			Version: listOverlordsLibraryCmdArgs.version,
 		}
-		result := zb.ListHeroLibraryResponse{}
+		result := zb.ListOverlordLibraryResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("ListHeroLibrary", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("ListOverlordLibrary", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
@@ -38,9 +38,9 @@ var listHeroLibraryCmd = &cobra.Command{
 		case "json":
 			return printProtoMessageAsJSONToStdout(&result)
 		default:
-			for _, heroInfo := range result.Heroes {
-				fmt.Printf("hero_id: %d\n", heroInfo.HeroId)
-				for _, skill := range heroInfo.Skills {
+			for _, overlordInfo := range result.Overlords {
+				fmt.Printf("overlord_id: %d\n", overlordInfo.OverlordId)
+				for _, skill := range overlordInfo.Skills {
 					fmt.Printf("skill title: %s\n", skill.Title)
 				}
 			}
@@ -51,7 +51,7 @@ var listHeroLibraryCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(listHeroLibraryCmd)
+	rootCmd.AddCommand(listOverlordsLibraryCmd)
 
-	listHeroLibraryCmd.Flags().StringVarP(&listHeroLibraryCmdArgs.version, "version", "v", "v1", "Version")
+	listOverlordsLibraryCmd.Flags().StringVarP(&listOverlordsLibraryCmdArgs.version, "version", "v", "v1", "Version")
 }

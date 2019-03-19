@@ -16,7 +16,7 @@ import (
 var (
 	cardPrefix           = []byte("card")
 	userPrefix           = []byte("user")
-	heroesPrefix         = []byte("heroes")
+	overlordsPrefix      = []byte("heroes")
 	collectionPrefix     = []byte("collection")
 	decksPrefix          = []byte("decks")
 	matchesPrefix        = []byte("matches")
@@ -24,7 +24,7 @@ var (
 	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
-	heroListKey                 = []byte("herolist")
+	overlordListKey             = []byte("herolist")
 	defaultDeckKey              = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
 	matchCountKey               = []byte("match-count")
@@ -58,7 +58,7 @@ func CardCollectionKey(userID string) []byte {
 	return []byte("user:" + userID + ":collection")
 }
 
-func HeroesKey(userID string) []byte {
+func OverlordsKey(userID string) []byte {
 	return []byte("user:" + userID + ":heroes")
 }
 
@@ -171,17 +171,17 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, er
 	return &deckList, nil
 }
 
-func loadHeroes(ctx contract.StaticContext, userID string) (*zb.HeroList, error) {
-	var heroes zb.HeroList
-	err := ctx.Get(HeroesKey(userID), &heroes)
+func loadOverlords(ctx contract.StaticContext, userID string) (*zb.OverlordList, error) {
+	var overlords zb.OverlordList
+	err := ctx.Get(OverlordsKey(userID), &overlords)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
 	}
-	return &heroes, nil
+	return &overlords, nil
 }
 
-func saveHeroes(ctx contract.Context, userID string, heroes *zb.HeroList) error {
-	return ctx.Set(HeroesKey(userID), heroes)
+func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordList) error {
+	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
@@ -462,7 +462,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 		Defense:   cardDetails.Defense,
 		Type:      cardDetails.Type,
 		Faction:   cardDetails.Faction,
-		GooCost:   cardDetails.GooCost,
+		Cost:   cardDetails.Cost,
 		Abilities: cardDetails.Abilities,
 	}
 }
@@ -471,8 +471,8 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
 	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
-		switch raw.Type {
-		case zb.CardAbilityType_Rage:
+		switch raw.Ability {
+		case zb.AbilityType_Rage:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -482,7 +482,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_PriorityAttack:
+		case zb.AbilityType_PriorityAttack:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -490,7 +490,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					PriorityAttack: &zb.CardAbilityPriorityAttack{},
 				},
 			})
-		case zb.CardAbilityType_ReanimateUnit:
+		case zb.AbilityType_ReanimateUnit:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -501,7 +501,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_ChangeStat:
+		case zb.AbilityType_ChangeStat:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -512,7 +512,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_AttackOverlord:
+		case zb.AbilityType_AttackOverlord:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -522,7 +522,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+		case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -532,7 +532,7 @@ func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.Instanc
 					},
 				},
 			})
-		case zb.CardAbilityType_DealDamageToThisAndAdjacentUnits:
+		case zb.AbilityType_DealDamageToThisAndAdjacentUnits:
 			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
@@ -603,42 +603,42 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.
 		filteredCards := make([]*zb.CardInstance, 0, 0)
 
 		for _, card := range playerState.CardsInDeck {
-			filteredAbilities := make([]*zb.CardAbility, 0, 0)
+			filteredAbilities := make([]*zb.AbilityData, 0, 0)
 			for _, ability := range card.Prototype.Abilities {
-				switch ability.Type {
-				case zb.CardAbilityType_Rage:
+				switch ability.Ability {
+				case zb.AbilityType_Rage:
 					fallthrough
-				case zb.CardAbilityType_PriorityAttack:
+				case zb.AbilityType_PriorityAttack:
 					fallthrough
-				case zb.CardAbilityType_ReanimateUnit:
+				case zb.AbilityType_ReanimateUnit:
 					fallthrough
-				case zb.CardAbilityType_ChangeStat:
+				case zb.AbilityType_ChangeStat:
 					fallthrough
-				case zb.CardAbilityType_AttackOverlord:
+				case zb.AbilityType_AttackOverlord:
 					fallthrough
-				case zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+				case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 					filteredAbilities = append(filteredAbilities, ability)
 				default:
-					fmt.Printf("Unsupported CardAbilityType value %s, removed (card '%s')\n", zb.CardAbilityType_Enum_name[int32(ability.Type)], card.Prototype.Name)
+					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb.AbilityType_Enum_name[int32(ability.Ability)], card.Prototype.Name)
 				}
 			}
 
 			card.Prototype.Abilities = filteredAbilities
 
 			switch card.Prototype.Type {
-			case zb.CreatureType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb.CreatureType_Heavy:
-				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
-				card.Prototype.Type = zb.CreatureType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CardType_Walker
 			}
 
 			switch card.Instance.Type {
-			case zb.CreatureType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb.CreatureType_Heavy:
-				fmt.Printf("Unsupported CreatureType value %s, fallback to WALKER (card %s)\n", zb.CreatureType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
-				card.Instance.Type = zb.CreatureType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CardType_Walker
 			}
 
 			switch card.Prototype.Kind {

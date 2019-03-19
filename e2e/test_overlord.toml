@@ -1,0 +1,47 @@
+[[TestCases]]
+  RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
+  Condition = "contains"
+  Expected = ["created successfully"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_account -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["loom"]
+
+[[TestCases]]
+  RunCmd = "zb-cli list_overlords -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  All = true
+  Condition = "contains"
+  Expected = ["overlord_id: 0", "overlord_id: 1", "overlord_id: 2", "overlord_id: 3", "overlord_id: 4", "overlord_id: 5"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_overlord -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
+  All = true
+  Condition = "contains"
+  Expected = ["overlord_id: 1", "experience: 0"]
+
+[[TestCases]]
+  RunCmd = "zb-cli get_overlord_skills -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
+  All = true
+  Condition = "contains"
+  Expected = ["overlord_id: 1"]
+
+[[TestCases]]
+  RunCmd = "zb-cli add_overlord_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -e 10"
+  Condition = "contains"
+  Expected = ["overlord_id: 1", "experience: 10"]
+
+[[TestCases]]
+  RunCmd = "zb-cli add_overlord_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -e 5"
+  Condition = "contains"
+  Expected = ["overlord_id: 1", "experience: 15"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli get_overlord -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
+  All = true
+  Condition = "contains"
+  Expected = ["overlord_id: 1", "experience: 15"]
