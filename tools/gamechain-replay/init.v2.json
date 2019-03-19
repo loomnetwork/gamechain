@@ -6708,7 +6708,7 @@
           "choosableAbilities": [
             {
               "description": "3 damage to an enemy",
-              "ability_data": {
+              "abilityData": {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
@@ -6722,7 +6722,7 @@
             },
             {
               "description": "restore 3 def to an ally",
-              "ability_data": {
+              "abilityData": {
                 "ability": "HEAL",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",

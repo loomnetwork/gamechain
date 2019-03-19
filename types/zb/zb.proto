@@ -132,40 +132,40 @@ message ListOverlordsResponse {
 
 message AddOverlordExperienceRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
     int64 experience = 3;
 }
 
 message AddOverlordExperienceResponse {
-    int64 overlord_id = 1;
+    int64 overlordId = 1;
     int64 experience = 2;
 }
 
 message SetOverlordExperienceRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
     int64 experience = 3;
 }
 
 message SetOverlordExperienceResponse {
-    int64 overlord_id = 1;
+    int64 overlordId = 1;
     int64 experience = 2;
 }
 
 message SetOverlordLevelRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
     int64 level = 3;
 }
 
 message SetOverlordLevelResponse {
-    int64 overlord_id = 1;
+    int64 overlordId = 1;
     int64 level = 2;
 }
 
 message GetOverlordRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
 }
 
 message GetOverlordResponse {
@@ -175,7 +175,7 @@ message GetOverlordResponse {
 
 message SetOverlordRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
     Overlord overlord = 3;
 }
 
@@ -185,11 +185,11 @@ message SetOverlordResponse {
 
 message GetOverlordSkillsRequest {
     string user_id = 1;
-    int64 overlord_id = 2;
+    int64 overlordId = 2;
 }
 
 message GetOverlordSkillsResponse {
-    int64 overlord_id = 1;
+    int64 overlordId = 1;
     repeated Skill skills = 2;
 }
 
@@ -1215,7 +1215,7 @@ message GameState {
 
 message CardChoosableAbility {
     string description = 1;
-    AbilityData ability_data = 2;
+    AbilityData abilityData = 2;
 }
 
 message AbilityData {
@@ -1434,7 +1434,7 @@ message OverlordPrototype {
     string longDescription = 5;
     int32 experience = 6;
     int32 level = 7;
-    Faction.Enum faction = 8 [json_name="element"];
+    Faction.Enum faction = 8;
     repeated OverlordSkillPrototype skills = 9;
 }
 
@@ -1451,7 +1451,7 @@ message OverlordSkillPrototype {
     int32 cooldown = 5;
     int32 initialCooldown = 6;
     int32 parameter = 7;
-    int32 damage = 8 [json_name="attack"];
+    int32 damage = 8;
     OverlordSkill.Enum overlordSkillKind = 9;
     repeated SkillTarget.Enum skillTargetTypes = 10;
     repeated Faction.Enum factionTargetTypes = 11;
