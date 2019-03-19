@@ -6,7 +6,7 @@
       "cardsInHand": [
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -16,7 +16,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -31,26 +31,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -62,7 +62,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -87,7 +87,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -97,7 +97,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -112,26 +112,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -143,7 +143,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -168,7 +168,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -178,7 +178,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -193,26 +193,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -224,7 +224,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -249,7 +249,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -259,7 +259,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -274,26 +274,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -305,7 +305,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -332,7 +332,7 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -342,7 +342,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -357,26 +357,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -388,7 +388,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -413,7 +413,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -423,7 +423,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -438,26 +438,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -469,7 +469,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -494,7 +494,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -504,7 +504,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -519,26 +519,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -550,7 +550,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -575,7 +575,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -585,7 +585,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -600,26 +600,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -631,7 +631,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -656,7 +656,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -666,7 +666,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -681,26 +681,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -712,7 +712,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -737,7 +737,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -747,7 +747,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -762,26 +762,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -793,7 +793,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -818,7 +818,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -828,7 +828,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -843,26 +843,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -874,7 +874,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -899,7 +899,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -909,7 +909,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -924,26 +924,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -955,7 +955,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -980,7 +980,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -990,7 +990,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1005,26 +1005,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1036,7 +1036,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1061,7 +1061,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1071,7 +1071,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1086,26 +1086,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1117,7 +1117,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1142,7 +1142,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1152,7 +1152,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1167,26 +1167,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1198,7 +1198,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1223,7 +1223,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1233,7 +1233,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1248,26 +1248,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1279,7 +1279,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1304,7 +1304,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1314,7 +1314,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1329,26 +1329,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1360,7 +1360,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1385,7 +1385,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1395,7 +1395,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1410,26 +1410,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1441,7 +1441,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1466,7 +1466,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1476,7 +1476,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1491,26 +1491,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1522,7 +1522,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1547,7 +1547,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1557,7 +1557,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1572,26 +1572,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1603,7 +1603,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1628,7 +1628,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1638,7 +1638,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1653,26 +1653,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1684,7 +1684,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1709,7 +1709,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1719,7 +1719,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1734,26 +1734,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1765,7 +1765,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1790,7 +1790,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1800,7 +1800,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1815,26 +1815,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1846,7 +1846,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1871,7 +1871,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1881,7 +1881,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1896,26 +1896,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -1927,7 +1927,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -1952,7 +1952,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1962,7 +1962,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -1977,26 +1977,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2008,7 +2008,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2033,7 +2033,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2043,7 +2043,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2058,26 +2058,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2089,7 +2089,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2114,7 +2114,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2124,7 +2124,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2139,26 +2139,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2170,7 +2170,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2195,7 +2195,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2205,7 +2205,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2220,26 +2220,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2251,7 +2251,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2276,7 +2276,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2286,7 +2286,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2301,26 +2301,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2332,7 +2332,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2357,7 +2357,7 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "id": "25",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2367,7 +2367,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 3,
-            "defense": 2,
+            "health": 2,
             "cost": 2,
             "pictureTransform": {
               "position": {
@@ -2382,26 +2382,26 @@
             },
             "abilities": [
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
+                "stat_type": "DAMAGE",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               },
               {
-                "ability": "CHANGE_STAT",
-                "activity": "PASSIVE",
-                "trigger": "ATTACK",
-                "targets": [
+                "type": "CHANGE_STAT",
+                "activity_type": "PASSIVE",
+                "call_type": "ATTACK",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "HEALTH",
+                "stat_type": "HEALTH",
                 "value": -1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2413,7 +2413,7 @@
             "defense": 2,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 2
+            "gooCost": 2
           },
           "owner": "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
           "abilitiesInstances": [
@@ -2463,7 +2463,7 @@
       "cardsInHand": [
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2473,7 +2473,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2488,16 +2488,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2509,7 +2509,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2517,7 +2517,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2527,7 +2527,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2542,16 +2542,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2563,7 +2563,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2571,7 +2571,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2581,7 +2581,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2596,16 +2596,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2617,7 +2617,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "HAND",
@@ -2627,7 +2627,7 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2637,7 +2637,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2652,16 +2652,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2673,7 +2673,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2681,7 +2681,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2691,7 +2691,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2706,16 +2706,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2727,7 +2727,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2735,7 +2735,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2745,7 +2745,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2760,16 +2760,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2781,7 +2781,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2789,7 +2789,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2799,7 +2799,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2814,16 +2814,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2835,7 +2835,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2843,7 +2843,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2853,7 +2853,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2868,16 +2868,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2889,7 +2889,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2897,7 +2897,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2907,7 +2907,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2922,16 +2922,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2943,7 +2943,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -2951,7 +2951,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2961,7 +2961,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -2976,16 +2976,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -2997,7 +2997,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3005,7 +3005,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3015,7 +3015,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3030,16 +3030,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3051,7 +3051,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3059,7 +3059,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3069,7 +3069,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3084,16 +3084,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3105,7 +3105,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3113,7 +3113,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3123,7 +3123,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3138,16 +3138,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3159,7 +3159,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3167,7 +3167,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3177,7 +3177,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3192,16 +3192,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3213,7 +3213,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3221,7 +3221,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3231,7 +3231,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3246,16 +3246,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3267,7 +3267,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3275,7 +3275,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3285,7 +3285,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3300,16 +3300,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3321,7 +3321,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3329,7 +3329,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3339,7 +3339,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3354,16 +3354,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3375,7 +3375,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3383,7 +3383,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3393,7 +3393,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3408,16 +3408,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3429,7 +3429,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3437,7 +3437,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3447,7 +3447,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3462,16 +3462,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3483,7 +3483,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3491,7 +3491,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3501,7 +3501,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3516,16 +3516,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3537,7 +3537,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3545,7 +3545,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3555,7 +3555,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3570,16 +3570,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3591,7 +3591,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3599,7 +3599,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3609,7 +3609,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3624,16 +3624,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3645,7 +3645,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3653,7 +3653,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3663,7 +3663,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3678,16 +3678,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3699,7 +3699,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3707,7 +3707,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3717,7 +3717,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3732,16 +3732,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3753,7 +3753,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3761,7 +3761,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3771,7 +3771,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3786,16 +3786,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3807,7 +3807,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3815,7 +3815,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3825,7 +3825,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3840,16 +3840,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3861,7 +3861,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3869,7 +3869,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3879,7 +3879,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3894,16 +3894,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3915,7 +3915,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3923,7 +3923,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3933,7 +3933,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -3948,16 +3948,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -3969,7 +3969,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -3977,7 +3977,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3987,7 +3987,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -4002,16 +4002,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -4023,7 +4023,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",
@@ -4031,7 +4031,7 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "id": "24",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4041,7 +4041,7 @@
             "rank": "MINION",
             "type": "WALKER",
             "damage": 1,
-            "defense": 1,
+            "health": 1,
             "cost": 1,
             "pictureTransform": {
               "position": {
@@ -4056,16 +4056,16 @@
             },
             "abilities": [
               {
-                "ability": "MODIFICATOR_STATS",
-                "activity": "PASSIVE",
-                "trigger": "PERMANENT",
-                "targets": [
+                "type": "MODIFICATOR_STATS",
+                "activity_type": "PASSIVE",
+                "call_type": "PERMANENT",
+                "target_type": [
                   "NONE"
                 ],
-                "stat": "DAMAGE",
-                "faction": "LIFE",
+                "stat_type": "DAMAGE",
+                "set": "LIFE",
                 "value": 1,
-                "gameMechanicDescription": "ATTACK"
+                "mechanic_description_type": "ATTACK"
               }
             ]
           },
@@ -4077,7 +4077,7 @@
             "defense": 1,
             "type": "WALKER",
             "faction": "TOXIC",
-            "cost": 1
+            "gooCost": 1
           },
           "owner": "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
           "zone": "DECK",

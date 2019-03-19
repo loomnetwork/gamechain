@@ -22,9 +22,9 @@ func TestAbilityChangeStat(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:         0,
-		OverlordId: 2,
-		Name:       "Default",
+		Id:     0,
+		HeroId: 2,
+		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
 			{CardName: "Breezee", Amount: 2},
@@ -52,10 +52,10 @@ func TestAbilityChangeStat(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_ChangeStat,
-					Trigger: zb.AbilityTrigger_Attack,
+					Type:    zb.CardAbilityType_ChangeStat,
+					Trigger: zb.CardAbilityTrigger_Attack,
 				},
 			},
 		}
@@ -70,7 +70,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Damage,
+							Stat:           zb.StatType_Damage,
 						},
 					},
 				},
@@ -80,7 +80,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Defense,
+							Stat:           zb.StatType_Defense,
 						},
 					},
 				},
@@ -129,10 +129,10 @@ func TestAbilityChangeStat(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 2,
 			Damage:  3,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_ChangeStat,
-					Trigger: zb.AbilityTrigger_Attack,
+					Type:    zb.CardAbilityType_ChangeStat,
+					Trigger: zb.CardAbilityTrigger_Attack,
 				},
 			},
 		}
@@ -147,7 +147,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Damage,
+							Stat:           zb.StatType_Damage,
 						},
 					},
 				},
@@ -157,7 +157,7 @@ func TestAbilityChangeStat(t *testing.T) {
 					AbilityType: &zb.CardAbilityInstance_ChangeStat{
 						ChangeStat: &zb.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Defense,
+							Stat:           zb.StatType_Defense,
 						},
 					},
 				},

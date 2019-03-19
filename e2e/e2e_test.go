@@ -83,8 +83,8 @@ func TestE2EAccountDeck(t *testing.T) {
 		{"zb-account-4", "test_account.toml", 4, 10, "../zb.genesis.json"},
 		{"zb-deck-1", "test_deck.toml", 1, 10, "../zb.genesis.json"},
 		{"zb-deck-4", "test_deck.toml", 4, 10, "../zb.genesis.json"},
-		{"zb-overlord-1", "test_overlord.toml", 1, 10, "../zb.genesis.json"},
-		{"zb-overlord-4", "test_overlord.toml", 4, 10, "../zb.genesis.json"},
+		{"zb-hero-1", "test_hero.toml", 1, 10, "../zb.genesis.json"},
+		{"zb-hero-4", "test_hero.toml", 4, 10, "../zb.genesis.json"},
 	}
 
 	// required to have loom binary
