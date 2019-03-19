@@ -59,6 +59,6 @@ func init() {
 	rootCmd.AddCommand(createDeckCmd)
 
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.data, "data", "d", "{\"overlord_id\":1, \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}", "Deck data in serialized json format")
+	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.data, "data", "d", "{\"hero_id\":1, \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}", "Deck data in serialized json format")
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.version, "version", "v", "v1", "Version")
 }

@@ -40,7 +40,7 @@ const (
 	TopicCreateDeckEvent         = "createdeck"
 	TopicEditDeckEvent           = "editdeck"
 	TopicDeleteDeckEvent         = "deletedeck"
-	TopicAddOverlordExpEvent         = "addheroexperience"
+	TopicAddHeroExpEvent         = "addheroexperience"
 	TopicRegisterPlayerPoolEvent = "registerplayerpool"
 	TopicFindMatchEvent          = "findmatch"
 	TopicAcceptMatchEvent        = "acceptmatch"
@@ -113,11 +113,11 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
-	// initialize overlords
-	overlordList := zb.OverlordList{
-		Overlords: req.Overlords,
+	// initialize heroes
+	heroList := zb.HeroList{
+		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return err
 	}
 
@@ -165,8 +165,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
 	initData := req.InitData
-	var overlordList zb.OverlordList
-	var defaultOverlordList zb.OverlordList
+	var heroList zb.HeroList
+	var defaultHeroList zb.HeroList
 	var cardList zb.CardList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
@@ -192,12 +192,12 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return err
 	}
 
-	// initialize overlords
-	overlordList.Overlords = initData.Overlords
-	defaultOverlordList.Overlords = initData.Overlords
-	if initData.Overlords == nil {
+	// initialize heroes
+	heroList.Heroes = initData.Heroes
+	defaultHeroList.Heroes = initData.Heroes
+	if initData.Heroes == nil {
 		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, overlordListKey), &overlordList); err != nil {
+			if err := ctx.Get(MakeVersionedKey(req.OldVersion, heroListKey), &heroList); err != nil {
 				return err
 			}
 		} else {
@@ -205,7 +205,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		}
 
 	}
-	if err := ctx.Set(MakeVersionedKey(initData.Version, overlordListKey), &overlordList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(initData.Version, heroListKey), &heroList); err != nil {
 		return err
 	}
 
@@ -263,7 +263,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 
 func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInitRequest) (*zb.GetInitResponse, error) {
 	var cardList zb.CardList
-	var overlordList zb.OverlordList
+	var heroList zb.HeroList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
 	var aiDeckList zb.AIDeckList
@@ -272,8 +272,8 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting cardList")
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
-		return nil, errors.Wrap(err, "error getting overlordList")
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
+		return nil, errors.Wrap(err, "error getting heroList")
 	}
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
@@ -291,7 +291,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	return &zb.GetInitResponse{
 		InitData: &zb.InitData{
 			Cards:             cardList.Cards,
-			Overlords:            overlordList.Overlords,
+			Heroes:            heroList.Heroes,
 			DefaultDecks:      deckList.Decks,
 			DefaultCollection: cardCollectionList.Cards,
 			AiDecks:           aiDeckList.Decks,
@@ -394,12 +394,12 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 		return errors.Wrapf(err, "unable to save decks for userId: %s", req.UserId)
 	}
 
-	var overlords zb.OverlordList
-	if err := ctx.Get(MakeVersionedKey(req.Version, overlordListKey), &overlords); err != nil {
-		return errors.Wrapf(err, "unable to get default overlord")
+	var heroes zb.HeroList
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroes); err != nil {
+		return errors.Wrapf(err, "unable to get default hero")
 	}
-	if err := ctx.Set(OverlordsKey(req.UserId), &overlords); err != nil {
-		return errors.Wrapf(err, "unable to save overlords for userId: %s", req.UserId)
+	if err := ctx.Set(HeroesKey(req.UserId), &heroes); err != nil {
+		return errors.Wrapf(err, "unable to save heroes for userId: %s", req.UserId)
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
@@ -464,12 +464,12 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	if !isOwner(ctx, req.UserId) {
 		return nil, ErrUserNotVerified
 	}
-	// validate overlord
-	overlords, err := loadOverlords(ctx, req.UserId)
+	// validate hero
+	heroes, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
-		return nil, errors.Wrapf(err, "unable to get overlord data for userId: %s", req.UserId)
+		return nil, errors.Wrapf(err, "unable to get hero data for userId: %s", req.UserId)
 	}
-	if err := validateDeckOverlord(overlords.Overlords, req.Deck.OverlordId); err != nil {
+	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
 		return nil, err
 	}
 	// validate version on card library
@@ -542,9 +542,9 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	if !isOwner(ctx, req.UserId) {
 		return ErrUserNotVerified
 	}
-	// validate overlord
-	overlords, err := loadOverlords(ctx, req.UserId)
-	if err := validateDeckOverlord(overlords.Overlords, req.Deck.OverlordId); err != nil {
+	// validate hero
+	heroes, err := loadHeroes(ctx, req.UserId)
+	if err := validateDeckHero(heroes.Heroes, req.Deck.HeroId); err != nil {
 		return err
 	}
 	// validate version on card library
@@ -587,7 +587,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	// update deck
 	existingDeck.Name = req.Deck.Name
 	existingDeck.Cards = req.Deck.Cards
-	existingDeck.OverlordId = req.Deck.OverlordId
+	existingDeck.HeroId = req.Deck.HeroId
 	existingDeck.PrimarySkill = req.Deck.PrimarySkill
 	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
@@ -741,77 +741,77 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 	return &zb.ListCardLibraryResponse{Cards: cardList.Cards}, nil
 }
 
-func (z *ZombieBattleground) ListOverlordLibrary(ctx contract.StaticContext, req *zb.ListOverlordLibraryRequest) (*zb.ListOverlordLibraryResponse, error) {
-	var overlordList zb.OverlordList
-	if err := ctx.Get(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
+func (z *ZombieBattleground) ListHeroLibrary(ctx contract.StaticContext, req *zb.ListHeroLibraryRequest) (*zb.ListHeroLibraryResponse, error) {
+	var heroList zb.HeroList
+	if err := ctx.Get(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return nil, err
 	}
-	return &zb.ListOverlordLibraryResponse{Overlords: overlordList.Overlords}, nil
+	return &zb.ListHeroLibraryResponse{Heroes: heroList.Heroes}, nil
 }
 
-func (z *ZombieBattleground) UpdateOverlordLibrary(ctx contract.Context, req *zb.UpdateOverlordLibraryRequest) (*zb.UpdateOverlordLibraryResponse, error) {
-	var overlordList = zb.OverlordList{
-		Overlords: req.Overlords,
+func (z *ZombieBattleground) UpdateHeroLibrary(ctx contract.Context, req *zb.UpdateHeroLibraryRequest) (*zb.UpdateHeroLibraryResponse, error) {
+	var heroList = zb.HeroList{
+		Heroes: req.Heroes,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, heroListKey), &heroList); err != nil {
 		return nil, err
 	}
-	return &zb.UpdateOverlordLibraryResponse{}, nil
+	return &zb.UpdateHeroLibraryResponse{}, nil
 }
 
-func (z *ZombieBattleground) ListOverlords(ctx contract.StaticContext, req *zb.ListOverlordsRequest) (*zb.ListOverlordsResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
+func (z *ZombieBattleground) ListHeroes(ctx contract.StaticContext, req *zb.ListHeroesRequest) (*zb.ListHeroesResponse, error) {
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
-	return &zb.ListOverlordsResponse{Overlords: overlordList.Overlords}, nil
+	return &zb.ListHeroesResponse{Heroes: heroList.Heroes}, nil
 }
 
-func (z *ZombieBattleground) GetOverlord(ctx contract.StaticContext, req *zb.GetOverlordRequest) (*zb.GetOverlordResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
+func (z *ZombieBattleground) GetHero(ctx contract.StaticContext, req *zb.GetHeroRequest) (*zb.GetHeroResponse, error) {
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	return &zb.GetOverlordResponse{Overlord: overlord}, nil
+	return &zb.GetHeroResponse{Hero: hero}, nil
 }
 
-func (z *ZombieBattleground) SetOverlord(ctx contract.Context, req *zb.SetOverlordRequest) (*zb.SetOverlordResponse, error) {
-	if req.Overlord == nil {
-		return nil, fmt.Errorf("Overlord is null")
+func (z *ZombieBattleground) SetHero(ctx contract.Context, req *zb.SetHeroRequest) (*zb.SetHeroResponse, error) {
+	if req.Hero == nil {
+		return nil, fmt.Errorf("Hero is null")
 	}
 
-	overlordList, err := loadOverlords(ctx, req.UserId)
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	overlord = proto.Clone(req.Overlord).(*zb.Overlord)
+	hero = proto.Clone(req.Hero).(*zb.Hero)
 
-	// make sure we don't override overlord id
-	overlord.OverlordId = req.OverlordId
+	// make sure we don't override hero id
+	hero.HeroId = req.HeroId
 
-	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setOverlord")
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHero")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:sethero")
 	}
 
-	return &zb.SetOverlordResponse{Overlord: overlord}, nil
+	return &zb.SetHeroResponse{Hero: hero}, nil
 }
 
-func (z *ZombieBattleground) AddOverlordExperience(ctx contract.Context, req *zb.AddOverlordExperienceRequest) (*zb.AddOverlordExperienceResponse, error) {
+func (z *ZombieBattleground) AddHeroExperience(ctx contract.Context, req *zb.AddHeroExperienceRequest) (*zb.AddHeroExperienceResponse, error) {
 	if req.Experience <= 0 {
 		return nil, fmt.Errorf("experience needs to be greater than zero")
 	}
@@ -819,98 +819,98 @@ func (z *ZombieBattleground) AddOverlordExperience(ctx contract.Context, req *zb
 		return nil, ErrUserNotVerified
 	}
 
-	overlordList, err := loadOverlords(ctx, req.UserId)
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	overlord.Experience += req.Experience
+	hero.Experience += req.Experience
 
-	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "addOverlordExperience")
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "addHeroExperience")
 	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, TopicAddOverlordExpEvent)
+		ctx.EmitTopics(emitMsgJSON, TopicAddHeroExpEvent)
 	}
 
-	return &zb.AddOverlordExperienceResponse{OverlordId: overlord.OverlordId, Experience: overlord.Experience}, nil
+	return &zb.AddHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
 }
 
-func (z *ZombieBattleground) SetOverlordExperience(ctx contract.Context, req *zb.SetOverlordExperienceRequest) (*zb.SetOverlordExperienceResponse, error) {
+func (z *ZombieBattleground) SetHeroExperience(ctx contract.Context, req *zb.SetHeroExperienceRequest) (*zb.SetHeroExperienceResponse, error) {
 	if req.Experience <= 0 {
 		return nil, fmt.Errorf("experience needs to be greater than zero")
 	}
 
-	overlordList, err := loadOverlords(ctx, req.UserId)
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	overlord.Experience = req.Experience
+	hero.Experience = req.Experience
 
-	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setOverlordExperience")
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroExperience")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setheroexperience")
 	}
 
-	return &zb.SetOverlordExperienceResponse{OverlordId: overlord.OverlordId, Experience: overlord.Experience}, nil
+	return &zb.SetHeroExperienceResponse{HeroId: hero.HeroId, Experience: hero.Experience}, nil
 }
 
-func (z *ZombieBattleground) SetOverlordLevel(ctx contract.Context, req *zb.SetOverlordLevelRequest) (*zb.SetOverlordLevelResponse, error) {
+func (z *ZombieBattleground) SetHeroLevel(ctx contract.Context, req *zb.SetHeroLevelRequest) (*zb.SetHeroLevelResponse, error) {
 	if req.Level <= 0 {
 		return nil, fmt.Errorf("level needs to be greater than zero")
 	}
 
-	overlordList, err := loadOverlords(ctx, req.UserId)
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	overlord.Level = req.Level
+	hero.Level = req.Level
 
-	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
+	if err := saveHeroes(ctx, req.UserId, heroList); err != nil {
 		return nil, err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setOverlordLevel")
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setHeroLevel")
 	if err == nil {
 		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:setherolevel")
 	}
 
-	return &zb.SetOverlordLevelResponse{OverlordId: overlord.OverlordId, Level: overlord.Level}, nil
+	return &zb.SetHeroLevelResponse{HeroId: hero.HeroId, Level: hero.Level}, nil
 }
 
-func (z *ZombieBattleground) GetOverlordSkills(ctx contract.StaticContext, req *zb.GetOverlordSkillsRequest) (*zb.GetOverlordSkillsResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
+func (z *ZombieBattleground) GetHeroSkills(ctx contract.StaticContext, req *zb.GetHeroSkillsRequest) (*zb.GetHeroSkillsResponse, error) {
+	heroList, err := loadHeroes(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
+	hero := getHeroById(heroList.Heroes, req.HeroId)
+	if hero == nil {
 		return nil, contract.ErrNotFound
 	}
-	return &zb.GetOverlordSkillsResponse{OverlordId: overlord.OverlordId, Skills: overlord.Skills}, nil
+	return &zb.GetHeroSkillsResponse{HeroId: hero.HeroId, Skills: hero.Skills}, nil
 }
 
 func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.RegisterPlayerPoolRequest) (*zb.RegisterPlayerPoolResponse, error) {

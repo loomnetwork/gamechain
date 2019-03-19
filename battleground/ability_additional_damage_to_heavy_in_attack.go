@@ -23,7 +23,7 @@ func NewAdditionalDamgeToHeavyInAttack(card *CardInstance, cardAbility *zb.CardA
 
 func (c *additionalDamgeToHeavyInAttack) Apply(gameplay *Gameplay) error {
 	additionalDamageToHeavyInAttack := c.cardAbility
-	if c.target.Instance.Type == zb.CardType_Heavy {
+	if c.target.Instance.Type == zb.CreatureType_Heavy {
 		c.target.Instance.Defense -= additionalDamageToHeavyInAttack.AddedDamage
 	}
 	return nil

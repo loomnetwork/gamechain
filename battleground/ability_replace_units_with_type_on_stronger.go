@@ -50,7 +50,7 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 	sameTypeStrongerFn := func(cardLibrary *zb.CardList, target *zb.CardInstance) []*zb.Card {
 		var sameTypeStrongerCards []*zb.Card
 		for _, card := range cardLibrary.Cards {
-			if card.Faction == target.Instance.Faction && card.Cost > target.Instance.Cost {
+			if card.Faction == target.Instance.Faction && card.GooCost > target.Instance.GooCost {
 				sameTypeStrongerCards = append(sameTypeStrongerCards, card)
 			}
 		}

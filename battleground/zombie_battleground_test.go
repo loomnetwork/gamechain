@@ -33,31 +33,31 @@ var initRequest = zb.InitRequest{
 		{CardName: "Guzt", Amount: 3},
 		{CardName: "Pushhh", Amount: 5},
 	},
-	Overlords: []*zb.Overlord{
+	Heroes: []*zb.Hero{
 		{
-			OverlordId: 0,
+			HeroId:     0,
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title: "Attack",
-				Skill: zb.OverlordSkill_IceBolt,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_AllCards,
-					zb.SkillTarget_PlayerCard,
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
 				},
 				Value: 1,
 			}},
 		},
 		{
-			OverlordId: 1,
+			HeroId:     1,
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title: "Deffence",
-				Skill: zb.OverlordSkill_Blizzard,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_Player,
-					zb.SkillTarget_OpponentCard,
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
 				},
 				Value: 2,
 			}},
@@ -157,9 +157,9 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
-			Id:         0,
-			OverlordId: 2,
-			Name:       "Default",
+			Id:     0,
+			HeroId: 2,
+			Name:   "Default",
 			Cards: []*zb.DeckCard{
 				{CardName: "Azuraz", Amount: 2},
 				{CardName: "Puffer", Amount: 2},
@@ -174,9 +174,9 @@ var initRequest = zb.InitRequest{
 	AiDecks: []*zb.AIDeck{
 		{
 			Deck: &zb.Deck{
-				Id:         1,
-				OverlordId: 2,
-				Name:       "AI Decks",
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
 				Cards: []*zb.DeckCard{
 					{CardName: "Banshee", Amount: 2},
 					{CardName: "Breezee", Amount: 2},
@@ -214,31 +214,31 @@ var updateInitRequest = zb.UpdateInitRequest{
 			{CardName: "Guzt", Amount: 3},
 			{CardName: "Pushhh", Amount: 5},
 		},
-		Overlords: []*zb.Overlord{
+		Heroes: []*zb.Hero{
 			{
-				OverlordId: 0,
+				HeroId:     0,
 				Experience: 0,
 				Level:      1,
 				Skills: []*zb.Skill{{
 					Title: "Attack",
-					Skill: zb.OverlordSkill_IceBolt,
-					SkillTargets: []zb.SkillTarget_Enum{
-						zb.SkillTarget_AllCards,
-						zb.SkillTarget_PlayerCard,
+					Skill: zb.OverlordSkillKind_IceBolt,
+					SkillTargets: []zb.OverlordAbilityTarget_Enum{
+						zb.OverlordAbilityTarget_AllCards,
+						zb.OverlordAbilityTarget_PlayerCard,
 					},
 					Value: 1,
 				}},
 			},
 			{
-				OverlordId: 1,
+				HeroId:     1,
 				Experience: 0,
 				Level:      2,
 				Skills: []*zb.Skill{{
 					Title: "Deffence",
-					Skill: zb.OverlordSkill_Blizzard,
-					SkillTargets: []zb.SkillTarget_Enum{
-						zb.SkillTarget_Player,
-						zb.SkillTarget_OpponentCard,
+					Skill: zb.OverlordSkillKind_Blizzard,
+					SkillTargets: []zb.OverlordAbilityTarget_Enum{
+						zb.OverlordAbilityTarget_Player,
+						zb.OverlordAbilityTarget_OpponentCard,
 					},
 					Value: 2,
 				}},
@@ -250,16 +250,16 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Faction: zb.Faction_Air,
 				Name:    "Soothsayer",
 				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CardType_Walker,
+				Type:    zb.CreatureType_Walker,
 				Damage:  2,
 				Defense: 1,
-				Cost: 2,
-				Abilities: []*zb.AbilityData{
+				GooCost: 2,
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_DrawCard,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Entry,
-						Faction:  zb.Faction_None,
+						Type:         zb.CardAbilityType_DrawCard,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Entry,
+						Faction:      zb.Faction_None,
 					},
 				},
 				PictureTransform: &zb.PictureTransform{
@@ -280,20 +280,20 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Faction:          zb.Faction_Air,
 				Name:             "Azuraz",
 				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
+				Type:             zb.CreatureType_Walker,
 				Damage:           1,
 				Defense:          1,
-				Cost:          1,
+				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
 						},
-						Stat:    zb.Stat_Damage,
+						Stat:    zb.StatType_Damage,
 						Faction: zb.Faction_Earth,
 						Value:   1,
 					},
@@ -304,20 +304,20 @@ var updateInitRequest = zb.UpdateInitRequest{
 				Faction:          zb.Faction_Air,
 				Name:             "NewCard",
 				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
+				Type:             zb.CreatureType_Walker,
 				Damage:           1,
 				Defense:          1,
-				Cost:          1,
+				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
 						},
-						Stat:    zb.Stat_Damage,
+						Stat:    zb.StatType_Damage,
 						Faction: zb.Faction_Water,
 						Value:   1,
 					},
@@ -326,9 +326,9 @@ var updateInitRequest = zb.UpdateInitRequest{
 		},
 		DefaultDecks: []*zb.Deck{
 			{
-				Id:         0,
-				OverlordId: 2,
-				Name:       "Default",
+				Id:     0,
+				HeroId: 2,
+				Name:   "Default",
 				Cards: []*zb.DeckCard{
 					{CardName: "Banshee", Amount: 2},
 					{CardName: "Breezee", Amount: 2},
@@ -348,9 +348,9 @@ var updateInitRequest = zb.UpdateInitRequest{
 		AiDecks: []*zb.AIDeck{
 			{
 				Deck: &zb.Deck{
-					Id:         1,
-					OverlordId: 2,
-					Name:       "AI Decks",
+					Id:     1,
+					HeroId: 2,
+					Name:   "AI Decks",
 					Cards: []*zb.DeckCard{
 						{CardName: "Banshee", Amount: 2},
 						{CardName: "Breezee", Amount: 2},
@@ -372,7 +372,7 @@ var updateInitRequest = zb.UpdateInitRequest{
 	},
 }
 
-var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
+var updateInitRequestWithoutHeroes = zb.UpdateInitRequest{
 	OldVersion: "v1",
 	InitData: &zb.InitData{
 		Version: "v2",
@@ -396,16 +396,16 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Faction: zb.Faction_Air,
 				Name:    "Soothsayer",
 				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CardType_Walker,
+				Type:    zb.CreatureType_Walker,
 				Damage:  2,
 				Defense: 1,
-				Cost: 2,
-				Abilities: []*zb.AbilityData{
+				GooCost: 2,
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_DrawCard,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Entry,
-						Faction:  zb.Faction_None,
+						Type:         zb.CardAbilityType_DrawCard,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Entry,
+						Faction:      zb.Faction_None,
 					},
 				},
 				PictureTransform: &zb.PictureTransform{
@@ -426,20 +426,20 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Faction:          zb.Faction_Air,
 				Name:             "Azuraz",
 				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
+				Type:             zb.CreatureType_Walker,
 				Damage:           1,
 				Defense:          1,
-				Cost:          1,
+				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
 						},
-						Stat:    zb.Stat_Damage,
+						Stat:    zb.StatType_Damage,
 						Faction: zb.Faction_Earth,
 						Value:   1,
 					},
@@ -450,20 +450,20 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				Faction:          zb.Faction_Air,
 				Name:             "NewCard",
 				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
+				Type:             zb.CreatureType_Walker,
 				Damage:           1,
 				Defense:          1,
-				Cost:          1,
+				GooCost:          1,
 				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
+				Abilities: []*zb.CardAbility{
 					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
+						Type:         zb.CardAbilityType_ModificatorStats,
+						ActivityType: zb.CardAbilityActivityType_Passive,
+						Trigger:      zb.CardAbilityTrigger_Permanent,
+						TargetTypes: []zb.CardAbilityTarget_Enum{
+							zb.CardAbilityTarget_None,
 						},
-						Stat:    zb.Stat_Damage,
+						Stat:    zb.StatType_Damage,
 						Faction: zb.Faction_Water,
 						Value:   1,
 					},
@@ -472,9 +472,9 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 		},
 		DefaultDecks: []*zb.Deck{
 			{
-				Id:         0,
-				OverlordId: 2,
-				Name:       "Default",
+				Id:     0,
+				HeroId: 2,
+				Name:   "Default",
 				Cards: []*zb.DeckCard{
 					{CardName: "Banshee", Amount: 2},
 					{CardName: "Breezee", Amount: 2},
@@ -494,9 +494,9 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 		AiDecks: []*zb.AIDeck{
 			{
 				Deck: &zb.Deck{
-					Id:         1,
-					OverlordId: 2,
-					Name:       "AI Decks",
+					Id:     1,
+					HeroId: 2,
+					Name:   "AI Decks",
 					Cards: []*zb.DeckCard{
 						{CardName: "Banshee", Amount: 2},
 						{CardName: "Breezee", Amount: 2},
@@ -642,8 +642,8 @@ func TestDeckOperations(t *testing.T) {
 		createDeckResponse, err = c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:       "NewDeck",
-				OverlordId: 1,
+				Name:   "NewDeck",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -672,8 +672,8 @@ func TestDeckOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:       "NewDeck",
-				OverlordId: 1,
+				Name:   "NewDeck",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   200,
@@ -695,8 +695,8 @@ func TestDeckOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:       "NewDeck",
-				OverlordId: 1,
+				Name:   "NewDeck",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   2,
@@ -718,8 +718,8 @@ func TestDeckOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:       "Default",
-				OverlordId: 1,
+				Name:   "Default",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -741,8 +741,8 @@ func TestDeckOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Name:       "nEWdECK",
-				OverlordId: 1,
+				Name:   "nEWdECK",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -764,9 +764,9 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:         2,
-				Name:       "Edited",
-				OverlordId: 1,
+				Id:     2,
+				Name:   "Edited",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -796,9 +796,9 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:         2,
-				Name:       "Edited",
-				OverlordId: 1,
+				Id:     2,
+				Name:   "Edited",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   100,
@@ -819,9 +819,9 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:         2,
-				Name:       "Edited",
-				OverlordId: 1,
+				Id:     2,
+				Name:   "Edited",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -843,9 +843,9 @@ func TestDeckOperations(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
 			Deck: &zb.Deck{
-				Id:         2,
-				Name:       "dEFAULT",
-				OverlordId: 1,
+				Id:     2,
+				Name:   "dEFAULT",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -901,17 +901,17 @@ func TestCardOperations(t *testing.T) {
 		assert.Equal(t, 90, len(cardResponse.Cards))
 	})
 
-	t.Run("ListOverlordLibrary", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlordLibrary(ctx, &zb.ListOverlordLibraryRequest{
+	t.Run("ListHeroLibrary", func(t *testing.T) {
+		heroResponse, err := c.ListHeroLibrary(ctx, &zb.ListHeroLibraryRequest{
 			Version: "v1",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, 2, len(overlordsResponse.Overlords))
+		assert.Equal(t, 2, len(heroResponse.Heroes))
 	})
 }
 
-func TestOverlordsOperations(t *testing.T) {
+func TestHeroOperations(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "7696b824516b283f81ea1747fbddbe73fe4b5fce0eac0728e47de41d8e306701"
 	var addr loom.Address
@@ -919,43 +919,43 @@ func TestOverlordsOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId:  "OverlordUser",
+		UserId:  "HeroUser",
 		Image:   "PathToImage",
 		Version: "v1",
 	}, t)
 
-	t.Run("ListOverlords", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlords(ctx, &zb.ListOverlordsRequest{
-			UserId: "OverlordUser",
+	t.Run("ListHeroes", func(t *testing.T) {
+		heroesResponse, err := c.ListHeroes(ctx, &zb.ListHeroesRequest{
+			UserId: "HeroUser",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, 2, len(overlordsResponse.Overlords))
+		assert.Equal(t, 2, len(heroesResponse.Heroes))
 	})
 
-	t.Run("GetOverlord", func(t *testing.T) {
-		overlordResponse, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 1,
+	t.Run("GetHero", func(t *testing.T) {
+		heroResponse, err := c.GetHero(ctx, &zb.GetHeroRequest{
+			UserId: "HeroUser",
+			HeroId: 1,
 		})
 
 		assert.Nil(t, err)
-		assert.NotNil(t, overlordResponse.Overlord)
+		assert.NotNil(t, heroResponse.Hero)
 	})
 
-	t.Run("GetOverlord (Overlord not exists)", func(t *testing.T) {
-		_, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 10,
+	t.Run("GetHero (Hero not exists)", func(t *testing.T) {
+		_, err := c.GetHero(ctx, &zb.GetHeroRequest{
+			UserId: "HeroUser",
+			HeroId: 10,
 		})
 
 		assert.NotNil(t, err)
 	})
 
-	t.Run("AddOverlordExperience", func(t *testing.T) {
-		resp, err := c.AddOverlordExperience(ctx, &zb.AddOverlordExperienceRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 0,
+	t.Run("AddHeroExperience", func(t *testing.T) {
+		resp, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     0,
 			Experience: 2,
 		})
 
@@ -963,40 +963,40 @@ func TestOverlordsOperations(t *testing.T) {
 		assert.Equal(t, int64(2), resp.Experience)
 	})
 
-	t.Run("AddOverlordExperience (Negative experience)", func(t *testing.T) {
-		_, err := c.AddOverlordExperience(ctx, &zb.AddOverlordExperienceRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 0,
+	t.Run("AddHeroExperience (Negative experience)", func(t *testing.T) {
+		_, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     0,
 			Experience: -2,
 		})
 
 		assert.NotNil(t, err)
 	})
 
-	t.Run("AddOverlordExperience (Non existant overlord)", func(t *testing.T) {
-		_, err := c.AddOverlordExperience(ctx, &zb.AddOverlordExperienceRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 100,
+	t.Run("AddHeroExperience (Non existant hero)", func(t *testing.T) {
+		_, err := c.AddHeroExperience(ctx, &zb.AddHeroExperienceRequest{
+			UserId:     "HeroUser",
+			HeroId:     100,
 			Experience: 2,
 		})
 
 		assert.NotNil(t, err)
 	})
 
-	t.Run("GetOverlordSkills", func(t *testing.T) {
-		skillResponse, err := c.GetOverlordSkills(ctx, &zb.GetOverlordSkillsRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 0,
+	t.Run("GetHeroSkills", func(t *testing.T) {
+		skillResponse, err := c.GetHeroSkills(ctx, &zb.GetHeroSkillsRequest{
+			UserId: "HeroUser",
+			HeroId: 0,
 		})
 
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(skillResponse.Skills))
 	})
 
-	t.Run("GetOverlordSkills (Non existant overlord)", func(t *testing.T) {
-		_, err := c.GetOverlordSkills(ctx, &zb.GetOverlordSkillsRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 100,
+	t.Run("GetHeroSkills (Non existant hero)", func(t *testing.T) {
+		_, err := c.GetHeroSkills(ctx, &zb.GetHeroSkillsRequest{
+			UserId: "HeroUser",
+			HeroId: 100,
 		})
 
 		assert.NotNil(t, err)
@@ -1019,14 +1019,14 @@ func TestUpdateInitDataOperations(t *testing.T) {
 	})
 
 	t.Run("UpdateInit with old card data", func(t *testing.T) {
-		err := c.UpdateInit(ctx, &updateInitRequestWithoutOverlords)
+		err := c.UpdateInit(ctx, &updateInitRequestWithoutHeroes)
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("UpdateInit with old card data but without old version (failing)", func(t *testing.T) {
-		updateInitRequestWithoutOverlords.OldVersion = ""
-		err := c.UpdateInit(ctx, &updateInitRequestWithoutOverlords)
+		updateInitRequestWithoutHeroes.OldVersion = ""
+		err := c.UpdateInit(ctx, &updateInitRequestWithoutHeroes)
 
 		assert.NotNil(t, err)
 	})
@@ -1047,10 +1047,10 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Faction:          zb.Faction_Air,
 			Name:             "Banshee",
 			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Feral,
+			Type:             zb.CreatureType_Feral,
 			Damage:           2,
 			Defense:          1,
-			Cost:          2,
+			GooCost:          2,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
@@ -1058,10 +1058,10 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Faction:          zb.Faction_Air,
 			Name:             "Azuraz",
 			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Walker,
+			Type:             zb.CreatureType_Walker,
 			Damage:           1,
 			Defense:          1,
-			Cost:          1,
+			GooCost:          1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 		{
@@ -1069,10 +1069,10 @@ func TestUpdateCardListOperations(t *testing.T) {
 			Faction:          zb.Faction_Air,
 			Name:             "NewCard",
 			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Walker,
+			Type:             zb.CreatureType_Walker,
 			Damage:           1,
 			Defense:          1,
-			Cost:          1,
+			GooCost:          1,
 			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
 		},
 	}
@@ -1111,8 +1111,8 @@ func TestUpdateCardListOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "user1",
 			Deck: &zb.Deck{
-				Name:       "deck1",
-				OverlordId: 1,
+				Name:   "deck1",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -1132,8 +1132,8 @@ func TestUpdateCardListOperations(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "user1",
 			Deck: &zb.Deck{
-				Name:       "deck2",
-				OverlordId: 1,
+				Name:   "deck2",
+				HeroId: 1,
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
@@ -1152,7 +1152,7 @@ func TestUpdateCardListOperations(t *testing.T) {
 
 }
 
-func TestUpdateOverlordLibraryOperations(t *testing.T) {
+func TestUpdateHeroLibraryOperations(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
@@ -1160,46 +1160,46 @@ func TestUpdateOverlordLibraryOperations(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	expectedOverlords := []*zb.Overlord{
+	expectedHeroes := []*zb.Hero{
 		{
-			OverlordId:       1,
+			HeroId:           1,
 			Name:             "Hero1v2",
 			ShortDescription: "Hero1v2",
 		},
 		{
-			OverlordId:       2,
+			HeroId:           2,
 			Name:             "Hero2v2",
 			ShortDescription: "Hero2v2",
 		},
 		{
-			OverlordId:       3,
+			HeroId:           3,
 			Name:             "Hero3v2",
 			ShortDescription: "Hero2v2",
 		},
 	}
 
-	var updateOverlordLibraryRequest = zb.UpdateOverlordLibraryRequest{
-		Version:   "v2",
-		Overlords: expectedOverlords,
+	var updateHeroLibraryRequest = zb.UpdateHeroLibraryRequest{
+		Version: "v2",
+		Heroes:  expectedHeroes,
 	}
 
-	t.Run("Update overlord library v2", func(t *testing.T) {
-		_, err := c.UpdateOverlordLibrary(ctx, &updateOverlordLibraryRequest)
+	t.Run("Update hero library v2", func(t *testing.T) {
+		_, err := c.UpdateHeroLibrary(ctx, &updateHeroLibraryRequest)
 		assert.Nil(t, err)
 	})
-	t.Run("Check overlord library v2", func(t *testing.T) {
-		req := zb.ListOverlordLibraryRequest{Version: "v2"}
-		resp, err := c.ListOverlordLibrary(ctx, &req)
-		expected := &zb.ListOverlordLibraryResponse{
-			Overlords: expectedOverlords,
+	t.Run("Check hero library v2", func(t *testing.T) {
+		req := zb.ListHeroLibraryRequest{Version: "v2"}
+		resp, err := c.ListHeroLibrary(ctx, &req)
+		expected := &zb.ListHeroLibraryResponse{
+			Heroes: expectedHeroes,
 		}
 		assert.Nil(t, err)
 		assert.NotNil(t, resp)
 		assert.True(t, proto.Equal(expected, resp))
 	})
 	t.Run("Check not exsiting version v3", func(t *testing.T) {
-		req := zb.ListOverlordLibraryRequest{Version: "v3"}
-		_, err := c.ListOverlordLibrary(ctx, &req)
+		req := zb.ListHeroLibraryRequest{Version: "v3"}
+		_, err := c.ListHeroLibrary(ctx, &req)
 		assert.NotNil(t, err)
 	})
 }
@@ -2925,9 +2925,9 @@ func TestAIDeckOperations(t *testing.T) {
 	aiDecks := []*zb.AIDeck{
 		{
 			Deck: &zb.Deck{
-				Id:         1,
-				OverlordId: 2,
-				Name:       "AI Decks",
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
 				Cards: []*zb.DeckCard{
 					{CardName: "Wheezy", Amount: 2},
 					{CardName: "Ztormmcaller", Amount: 2},
@@ -2966,9 +2966,9 @@ func TestAIDeckOperations(t *testing.T) {
 	aiDecks = []*zb.AIDeck{
 		{
 			Deck: &zb.Deck{
-				Id:         1,
-				OverlordId: 2,
-				Name:       "AI Decks",
+				Id:     1,
+				HeroId: 2,
+				Name:   "AI Decks",
 				Cards: []*zb.DeckCard{
 					{CardName: "NoName", Amount: 2},
 				},

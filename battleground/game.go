@@ -609,19 +609,19 @@ func (g *Gameplay) DebugState() {
 		}
 		fmt.Fprintf(buf, "\tcard in hand (%d):\n", len(player.CardsInHand))
 		for _, card := range player.CardsInHand {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.Cost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in play (%d):\n", len(player.CardsInPlay))
 		for _, card := range player.CardsInPlay {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.Cost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in deck (%d):\n", len(player.CardsInDeck))
 		for _, card := range player.CardsInDeck {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.Cost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\tcard in graveyard (%d):\n", len(player.CardsInGraveyard))
 		for _, card := range player.CardsInGraveyard {
-			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.Cost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
+			fmt.Fprintf(buf, "\t\tId:%-2d Name:%-14s Dmg:%2d Def:%2d Goo:%2d, Zone:%0v, OwnerIndex:%d %s\n", card.InstanceId.Id, card.Prototype.Name, card.Instance.Damage, card.Instance.Defense, card.Instance.GooCost, card.Zone, card.OwnerIndex, formatAbility(card.AbilitiesInstances))
 		}
 		fmt.Fprintf(buf, "\n") // extra line
 	}
@@ -855,14 +855,14 @@ func actionCardPlay(g *Gameplay) stateFn {
 
 		// check goo cost
 		if !(g.activePlayerDebugCheats().Enabled && g.activePlayerDebugCheats().IgnoreGooRequirements) {
-			if cardInstance.Instance.Cost > g.activePlayer().CurrentGoo {
+			if cardInstance.Instance.GooCost > g.activePlayer().CurrentGoo {
 				err := fmt.Errorf("Not enough goo to play card with instanceId %d", cardPlay.Card.Id)
 				return g.captureErrorAndStop(err)
 			}
 
 			// change player goo
 			// TODO: abilities that change goo vials, overflow etc
-			g.activePlayer().CurrentGoo -= cardInstance.Instance.Cost
+			g.activePlayer().CurrentGoo -= cardInstance.Instance.GooCost
 		}
 
 		instance := NewCardInstance(cardInstance, g)

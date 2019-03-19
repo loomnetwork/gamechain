@@ -23,7 +23,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 	deck0 := &zb.Deck{
 		Id:     0,
-		OverlordId: 2,
+		HeroId: 2,
 		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Z-Virus", Amount: 2},
@@ -52,10 +52,10 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.AbilityTrigger_Entry,
+					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.CardAbilityTrigger_Entry,
 				},
 			},
 		}
@@ -149,10 +149,10 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.AbilityTrigger_Entry,
+					Type:    zb.CardAbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.CardAbilityTrigger_Entry,
 				},
 			},
 		}
