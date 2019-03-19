@@ -16,7 +16,7 @@
   Expected = ["deck size: 1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"overlord_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"hero_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1" 
   Condition = "contains"
   Expected = ["deck created successfully"]
 
@@ -45,7 +45,7 @@
   Expected = ["NewDeck1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"id\": 2, \"overlord_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1"
+  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"id\": 2, \"hero_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1" 
   Condition = "contains"
   Expected = ["deck edited successfully"]
 
@@ -69,7 +69,7 @@
   Expected = ["deck size: 0"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"overlord_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -d '{\"hero_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"card_name\": \"Pyromaz\", \"amount\": 2}, {\"card_name\": \"Burrrnn\", \"amount\": 1} ]}' -v v1"
   Condition = "contains"
   Expected = ["deck created successfully"]
 

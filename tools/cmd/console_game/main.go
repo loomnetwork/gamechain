@@ -62,31 +62,31 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
-	Overlords: []*zb.Overlord{
+	Heroes: []*zb.Hero{
 		{
-			OverlordId: 0,
+			HeroId:     0,
 			Experience: 0,
 			Level:      1,
 			Skills: []*zb.Skill{{
 				Title: "Attack",
-				Skill: zb.OverlordSkill_IceBolt,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_AllCards,
-					zb.SkillTarget_PlayerCard,
+				Skill: zb.OverlordSkillKind_IceBolt,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_AllCards,
+					zb.OverlordAbilityTarget_PlayerCard,
 				},
 				Value: 1,
 			}},
 		},
 		{
-			OverlordId: 1,
+			HeroId:     1,
 			Experience: 0,
 			Level:      2,
 			Skills: []*zb.Skill{{
 				Title: "Deffence",
-				Skill: zb.OverlordSkill_Blizzard,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_Player,
-					zb.SkillTarget_OpponentCard,
+				Skill: zb.OverlordSkillKind_Blizzard,
+				SkillTargets: []zb.OverlordAbilityTarget_Enum{
+					zb.OverlordAbilityTarget_Player,
+					zb.OverlordAbilityTarget_OpponentCard,
 				},
 				Value: 2,
 			}},
@@ -98,16 +98,16 @@ var initRequest = zb.InitRequest{
 			Faction: zb.Faction_Air,
 			Name:    "Soothsayer",
 			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CardType_Walker,
+			Type:    zb.CreatureType_Walker,
 			Damage:  2,
 			Defense: 1,
-			Cost: 2,
-			Abilities: []*zb.AbilityData{
+			GooCost: 2,
+			Abilities: []*zb.CardAbility{
 				{
-					Ability:  zb.AbilityType_DrawCard,
-					Activity: zb.AbilityActivity_Passive,
-					Trigger:  zb.AbilityTrigger_Entry,
-					Faction:  zb.Faction_None,
+					Type:         zb.CardAbilityType_DrawCard,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Entry,
+					Faction:      zb.Faction_None,
 				},
 			},
 			PictureTransform: &zb.PictureTransform{
@@ -128,19 +128,19 @@ var initRequest = zb.InitRequest{
 			Faction: zb.Faction_Air,
 			Name:    "Azuraz",
 			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CardType_Walker,
+			Type:    zb.CreatureType_Walker,
 			Damage:  1,
 			Defense: 1,
-			Cost: 1,
-			Abilities: []*zb.AbilityData{
+			GooCost: 1,
+			Abilities: []*zb.CardAbility{
 				{
-					Ability:  zb.AbilityType_ModificatorStats,
-					Activity: zb.AbilityActivity_Passive,
-					Trigger:  zb.AbilityTrigger_Permanent,
-					Targets: []zb.Target_Enum{
-						zb.Target_None,
+					Type:         zb.CardAbilityType_ModificatorStats,
+					ActivityType: zb.CardAbilityActivityType_Passive,
+					Trigger:      zb.CardAbilityTrigger_Permanent,
+					TargetTypes: []zb.CardAbilityTarget_Enum{
+						zb.CardAbilityTarget_None,
 					},
-					Stat:    zb.Stat_Damage,
+					Stat:    zb.StatType_Damage,
 					Faction: zb.Faction_Earth,
 					Value:   1,
 				},
@@ -149,9 +149,9 @@ var initRequest = zb.InitRequest{
 	},
 	DefaultDecks: []*zb.Deck{
 		{
-			Id:         0,
-			OverlordId: 2,
-			Name:       "Default",
+			Id:     0,
+			HeroId: 2,
+			Name:   "Default",
 			Cards: []*zb.DeckCard{
 				{
 					CardName: "Banshee",
