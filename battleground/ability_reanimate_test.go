@@ -22,9 +22,9 @@ func TestAbilityReanimate(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:         0,
-		OverlordId: 2,
-		Name:       "Default",
+		Id:     0,
+		HeroId: 2,
+		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
 			{CardName: "Breezee", Amount: 2},
@@ -53,14 +53,14 @@ func TestAbilityReanimate(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_ReanimateUnit,
-					Trigger: zb.AbilityTrigger_Death,
+					Type:    zb.CardAbilityType_ReanimateUnit,
+					Trigger: zb.CardAbilityTrigger_Death,
 				},
 				{
-					Ability: zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
-					Trigger: zb.AbilityTrigger_Entry,
+					Type:    zb.CardAbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
+					Trigger: zb.CardAbilityTrigger_Entry,
 				},
 			},
 		}

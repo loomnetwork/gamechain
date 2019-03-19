@@ -12,37 +12,37 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var updateOverlordLibraryCmdArgs struct {
+var updateHeroLibraryCmdArgs struct {
 	version string
 	file    string
 }
 
-var updateOverlordLibraryCmd = &cobra.Command{
-	Use:   "update_overlord_library",
-	Short: "updates the overlord library",
+var updateHeroLibraryCmd = &cobra.Command{
+	Use:   "update_hero_libary",
+	Short: "updates the hero library",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		if updateOverlordLibraryCmdArgs.version == "" {
+		if updateHeroLibraryCmdArgs.version == "" {
 			return fmt.Errorf("version not specified")
 		}
-		if updateOverlordLibraryCmdArgs.file == "" {
+		if updateHeroLibraryCmdArgs.file == "" {
 			return fmt.Errorf("file name not provided")
 		}
 
-		f, err := os.Open(updateOverlordLibraryCmdArgs.file)
+		f, err := os.Open(updateHeroLibraryCmdArgs.file)
 		if err != nil {
 			return fmt.Errorf("error reading file: %s", err.Error())
 		}
 		defer f.Close()
 
-		req := zb.UpdateOverlordLibraryRequest{}
+		req := zb.UpdateHeroLibraryRequest{}
 		if err := new(jsonpb.Unmarshaler).Unmarshal(f, &req); err != nil {
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
-		req.Version = updateOverlordLibraryCmdArgs.version
-		_, err = commonTxObjs.contract.Call("UpdateOverlordLibrary", &req, signer, nil)
+		req.Version = updateHeroLibraryCmdArgs.version
+		_, err = commonTxObjs.contract.Call("UpdateHeroLibrary", &req, signer, nil)
 		if err != nil {
-			return fmt.Errorf("error encountered while calling UpdateOverlordLibrary: %s", err.Error())
+			return fmt.Errorf("error encountered while calling UpdateHeroLibrary: %s", err.Error())
 		}
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
@@ -61,8 +61,8 @@ var updateOverlordLibraryCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(updateOverlordLibraryCmd)
+	rootCmd.AddCommand(updateHeroLibraryCmd)
 
-	updateOverlordLibraryCmd.Flags().StringVarP(&updateOverlordLibraryCmdArgs.version, "version", "v", "v1", "Version")
-	updateOverlordLibraryCmd.Flags().StringVarP(&updateOverlordLibraryCmdArgs.file, "file", "f", "", "File containing cards data to be updated in serialized json format")
+	updateHeroLibraryCmd.Flags().StringVarP(&updateHeroLibraryCmdArgs.version, "version", "v", "v1", "Version")
+	updateHeroLibraryCmd.Flags().StringVarP(&updateHeroLibraryCmdArgs.file, "file", "f", "", "File containing cards data to be updated in serialized json format")
 }

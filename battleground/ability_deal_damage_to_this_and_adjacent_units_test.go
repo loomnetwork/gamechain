@@ -22,9 +22,9 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:         0,
-		OverlordId: 2,
-		Name:       "Default",
+		Id:     0,
+		HeroId: 2,
+		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
 			{CardName: "Breezee", Amount: 2},
@@ -53,10 +53,10 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_DealDamageToThisAndAdjacentUnits,
-					Trigger: zb.AbilityTrigger_Attack,
+					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
+					Trigger: zb.CardAbilityTrigger_Attack,
 				},
 			},
 		}
@@ -153,10 +153,10 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb.CardAbility{
 				{
-					Ability: zb.AbilityType_DealDamageToThisAndAdjacentUnits,
-					Trigger: zb.AbilityTrigger_Attack,
+					Type:    zb.CardAbilityType_DealDamageToThisAndAdjacentUnits,
+					Trigger: zb.CardAbilityTrigger_Attack,
 				},
 			},
 		}

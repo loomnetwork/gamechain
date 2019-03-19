@@ -46,7 +46,7 @@ loom genkey -k priv
 ./bin/zb-cli get_deck -k priv -u loom --deckId 0
 
 # Add Deck
-./bin/zb-cli create_deck -k priv -u loom -v v2 -d "{\"overlordId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": \"Breezee\", \"amount\": 1} ]}"
+./bin/zb-cli create_deck -k priv -u loom -v v2 -d "{\"heroId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": \"Breezee\", \"amount\": 1} ]}"
 
 # Delete Deck by id
 ./bin/zb-cli delete_deck -k priv -u loom --deckId 0
