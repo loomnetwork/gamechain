@@ -10,7 +10,7 @@
   Expected = ["loom"]
 
 [[TestCases]]
-  RunCmd = "zb-cli list_overlord -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  RunCmd = "zb-cli list_overlords -k {{index $.AccountPrivKeyPathList 0}} -u loom"
   All = true
   Condition = "contains"
   Expected = ["overlord_id: 0", "overlord_id: 1", "overlord_id: 2", "overlord_id: 3", "overlord_id: 4", "overlord_id: 5"]
