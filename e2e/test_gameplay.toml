@@ -280,6 +280,7 @@
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
+
 # -------player-backend-2
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
@@ -299,6 +300,42 @@
   Expected = ["sent action cardplay successfully"]
 [[TestCases]]
   RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-1
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 0}} -m 2 -u player-backend-1"
+  Condition = "contains"
+  Expected = ["sent action endturn successfully"]
+
+# -------player-backend-2
+[[TestCases]]
+  RunCmd = "zb-cli send_action_endturn -k {{index $.AccountPrivKeyPathList 1}} -m 2 -u player-backend-2"
   Condition = "contains"
   Expected = ["sent action endturn successfully"]
 

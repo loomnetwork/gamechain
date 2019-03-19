@@ -15,7 +15,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -28,7 +28,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -41,7 +41,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -54,7 +54,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -67,7 +67,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 }
             ],
@@ -82,7 +82,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -95,7 +95,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -108,7 +108,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -121,7 +121,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -134,7 +134,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -147,7 +147,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -160,7 +160,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -173,7 +173,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -186,7 +186,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -199,7 +199,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -212,7 +212,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -225,7 +225,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -238,7 +238,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -251,7 +251,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -264,7 +264,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -277,7 +277,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -290,7 +290,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -303,7 +303,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -316,7 +316,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -329,7 +329,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -342,7 +342,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -355,7 +355,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -368,7 +368,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 },
                 {
@@ -381,7 +381,7 @@
                         "defense": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 }
             ],
@@ -398,7 +398,7 @@
                         "damage": 2,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 2
+                        "cost": 2
                     }
                 }
             ],
@@ -418,7 +418,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -431,7 +431,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -444,7 +444,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -457,7 +457,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -470,7 +470,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 }
             ],
@@ -485,7 +485,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 }
             ],
@@ -500,7 +500,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -513,7 +513,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -526,7 +526,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -539,7 +539,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -552,7 +552,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -565,7 +565,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -578,7 +578,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -591,7 +591,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -604,7 +604,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -617,7 +617,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -630,7 +630,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -643,7 +643,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -656,7 +656,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -669,7 +669,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -682,7 +682,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -695,7 +695,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -708,7 +708,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -721,7 +721,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -734,7 +734,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -747,7 +747,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -760,7 +760,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -773,7 +773,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 },
                 {
@@ -786,7 +786,7 @@
                         "defense": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 }
             ],
@@ -803,7 +803,7 @@
                         "damage": 1,
                         "type": "WALKER",
                         "faction": "TOXIC",
-                        "gooCost": 1
+                        "cost": 1
                     }
                 }
             ],

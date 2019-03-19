@@ -10,14 +10,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var getHeroSkillsCmdArgs struct {
+var getOverlordSkillsCmdArgs struct {
 	userID string
-	heroID int64
+	overlordID int64
 }
 
-var getHeroSkillsCmd = &cobra.Command{
-	Use:   "get_hero_skills",
-	Short: "get hero skills",
+var getOverlordSkillsCmd = &cobra.Command{
+	Use:   "get_overlord_skills",
+	Short: "get overlord skills",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
@@ -25,13 +25,13 @@ var getHeroSkillsCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetHeroSkillsRequest{
-			UserId: getHeroSkillsCmdArgs.userID,
-			HeroId: getHeroSkillsCmdArgs.heroID,
+		req := zb.GetOverlordSkillsRequest{
+			UserId: getOverlordSkillsCmdArgs.userID,
+			OverlordId: getOverlordSkillsCmdArgs.overlordID,
 		}
-		result := zb.GetHeroSkillsResponse{}
+		result := zb.GetOverlordSkillsResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("GetHeroSkills", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("GetOverlordSkills", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
@@ -40,7 +40,7 @@ var getHeroSkillsCmd = &cobra.Command{
 		case "json":
 			return printProtoMessageAsJSONToStdout(&result)
 		default:
-			fmt.Printf("hero_id: %d\n", result.HeroId)
+			fmt.Printf("overlord_id: %d\n", result.OverlordId)
 			for _, skill := range result.Skills {
 				fmt.Printf("skill title: %s\n", skill.Title)
 				fmt.Println(skill.SkillTargets)
@@ -52,8 +52,8 @@ var getHeroSkillsCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getHeroSkillsCmd)
+	rootCmd.AddCommand(getOverlordSkillsCmd)
 
-	getHeroSkillsCmd.Flags().StringVarP(&getHeroSkillsCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	getHeroSkillsCmd.Flags().Int64VarP(&getHeroSkillsCmdArgs.heroID, "heroId", "", 1, "heroID of hero")
+	getOverlordSkillsCmd.Flags().StringVarP(&getOverlordSkillsCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	getOverlordSkillsCmd.Flags().Int64VarP(&getOverlordSkillsCmdArgs.overlordID, "overlordId", "", 1, "overlordID of overlord")
 }
