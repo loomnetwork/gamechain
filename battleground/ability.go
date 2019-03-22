@@ -34,7 +34,7 @@ func (c *CardInstance) UseAbility(targets []*CardInstance) error {
 func (c *CardInstance) OnAbilityUsed(targets []*CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Entry {
+		if ai.Trigger == zb.AbilityTrigger_Entry {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
 				if ai.IsActive {
@@ -80,7 +80,7 @@ func (c *CardInstance) Attack(target *CardInstance) error {
 func (c *CardInstance) OnAttack(target *CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
 				additionalDamageToHeavyInAttack := abilityInstance.AdditionalDamageToHeavyInAttack
@@ -102,7 +102,7 @@ func (c *CardInstance) OnAttack(target *CardInstance) error {
 
 func (c *CardInstance) AfterAttacking(target *zb.InstanceId) error {
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch ability := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_ChangeStat:
 				changeStat := ability.ChangeStat
@@ -120,7 +120,7 @@ func (c *CardInstance) AfterAttacking(target *zb.InstanceId) error {
 func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_GotDamage {
+		if ai.Trigger == zb.AbilityTrigger_GotDamage {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_Rage:
 				rage := abilityInstance.Rage
@@ -148,7 +148,7 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 		if !ai.IsActive {
 			continue
 		}
-		if ai.Trigger == zb.CardAbilityTrigger_Death {
+		if ai.Trigger == zb.AbilityTrigger_Death {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_Reanimate:
 				reanimate := abilityInstance.Reanimate
@@ -163,7 +163,7 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 
 	// trigger attacker ability
 	for _, ai := range attacker.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_PriorityAttack:
 				priorityAttack := abilityInstance.PriorityAttack
@@ -189,7 +189,7 @@ func (c *CardInstance) OnPlay() error {
 	// trigger card ability on play
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb.CardAbilityTrigger_Entry {
+		if ai.Trigger == zb.AbilityTrigger_Entry {
 			switch abilityInstance := ai.AbilityType.(type) {
 			case *zb.CardAbilityInstance_AttackOverlord:
 				attackOverlord := abilityInstance.AttackOverlord
