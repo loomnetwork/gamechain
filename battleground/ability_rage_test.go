@@ -22,9 +22,9 @@ func TestAbilityRage(t *testing.T) {
 	player2 := "player-2"
 
 	deck0 := &zb.Deck{
-		Id:     0,
-		HeroId: 2,
-		Name:   "Default",
+		Id:         0,
+		OverlordId: 2,
+		Name:       "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
 			{CardName: "Breezee", Amount: 2},
@@ -63,10 +63,10 @@ func TestAbilityRage(t *testing.T) {
 		card1 := &zb.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.CardAbility{
+			Abilities: []*zb.AbilityData{
 				{
-					Type:    zb.CardAbilityType_Rage,
-					Trigger: zb.CardAbilityTrigger_GotDamage,
+					Ability: zb.AbilityType_Rage,
+					Trigger: zb.AbilityTrigger_GotDamage,
 					Value:   2,
 				},
 			},

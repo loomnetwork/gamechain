@@ -114,6 +114,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/gobuffalo/packr/v2 \
 		github.com/gobuffalo/packr/v2/... \
 		github.com/gorilla/mux 
+		
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin

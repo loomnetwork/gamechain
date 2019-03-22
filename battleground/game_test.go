@@ -371,7 +371,7 @@ func TestCardAttack(t *testing.T) {
 
 	deck0 := &zb.Deck{
 		Id:     0,
-		HeroId: 2,
+		OverlordId: 2,
 		Name:   "Default",
 		Cards: []*zb.DeckCard{
 			{CardName: "Banshee", Amount: 2},
@@ -774,7 +774,7 @@ func TestCheats(t *testing.T) {
 	})
 }
 
-func TestGameReplyState(t *testing.T) {
+func TestGameReplayState(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
@@ -955,8 +955,8 @@ func compareCards(c1 *zb.CardInstance, c2 *zb.CardInstance) error {
 		return fmt.Errorf("attacks are not equal %d, %d\n", c1.Instance.Damage, c2.Instance.Damage)
 	}
 
-	if c1.Instance.GooCost != c2.Instance.GooCost {
-		return fmt.Errorf("goocost are not equal %d, %d\n", c1.Instance.GooCost, c2.Instance.GooCost)
+	if c1.Instance.Cost != c2.Instance.Cost {
+		return fmt.Errorf("goocost are not equal %d, %d\n", c1.Instance.Cost, c2.Instance.Cost)
 	}
 
 	return nil
