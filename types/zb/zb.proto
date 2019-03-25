@@ -1216,7 +1216,7 @@ message GameState {
 message CardChoosableAbility {
     string description = 1;
     AbilityData abilityData = 2;
-    string Attribute = 3;
+    string attribute = 3;
 }
 
 message AbilityData {
