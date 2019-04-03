@@ -55,7 +55,7 @@ spec:
           - name: DB_PORT
             value: "3306"
           - name: EV_URL
-            value: "http://battleground-testnet-asia2.dappchains.com:9999"
+            value: "http://battleground-testnet-asia2.dappchains.com:46658/query"
           - name: RECONNECT_INTERVAL
             value: "1000"
           - name: SENTRY_ENVIRONMENT

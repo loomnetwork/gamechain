@@ -23,7 +23,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	rpcclient "github.com/tendermint/tendermint/rpc/lib/client"
 )
 
 var rootCmd = &cobra.Command{
@@ -46,7 +45,7 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
-	rootCmd.PersistentFlags().String("ev-url", "http://localhost:9999", "Event Indexer RPC Host")
+	rootCmd.PersistentFlags().String("ev-url", "http://localhost:46658/query", "Event Indexer RPC Host")
 	rootCmd.PersistentFlags().String("contract-name", "zombiebattleground:1.0.0", "Contract Name")
 	rootCmd.PersistentFlags().Int("reconnect-interval", 1000, "Reconnect interval in MS")
 	rootCmd.PersistentFlags().Int("block-interval", 20, "Amount of blocks to fetch")
@@ -173,7 +172,7 @@ func connectGamechain(wsURL string) (*websocket.Conn, error) {
 func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract string) (*loom.ContractEventsResult, error) {
 	log.Println("Querying Events from block:", fromBlock, "to block:", toBlock)
 
-	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	rpcClient := NewJSONRPCClient(evURL)
 	params := map[string]interface{}{
 		"fromBlock": fromBlock,
 		"toBlock":   toBlock,
@@ -188,7 +187,7 @@ func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract st
 }
 
 func queryBlockHeight(evURL string, contract string) (uint64, error) {
-	rpcClient := rpcclient.NewJSONRPCClient(evURL)
+	rpcClient := NewJSONRPCClient(evURL)
 	params := map[string]interface{}{}
 	result := uint64(1)
 	_, err := rpcClient.Call("getblockheight", params, &result)
