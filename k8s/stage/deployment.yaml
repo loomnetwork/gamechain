@@ -54,7 +54,7 @@ spec:
           - name: DB_PORT
             value: "3306"
           - name: EV_URL
-            value: "http://gamechain-2.dappchains.com:9999"
+            value: "http://gamechain-staging.dappchains.com:46658/query"
           - name: RECONNECT_INTERVAL
             value: "1000"
           - name: SENTRY_ENVIRONMENT
@@ -115,9 +115,9 @@ spec:
           - name: GAMECHAIN_CHAIN_ID
             value: "default"
           - name: GAMECHAIN_READ_URI
-            value: "http://gamechain-2.dappchains.com:46658/query"
+            value: "http://gamechain-staging.dappchains.com:46658/query"
           - name: GAMECHAIN_WRITE_URI
-            value: "http://gamechain-2.dappchains.com:46658/rpc"
+            value: "http://gamechain-staging.dappchains.com:46658/rpc"
           - name: GAMECHAIN_CONTRACT_NAME
             value: "ZombieBattleground"
           - name: GAMECHAIN_CARD_VERSION
