@@ -1025,6 +1025,7 @@ message AbilityTrigger {
         AT_DEFENCE = 8 [(gogoproto.enumvalue_customname) = "AtDefence"];
         IN_HAND = 9 [(gogoproto.enumvalue_customname) = "InHand"];
         KILL_UNIT = 10 [(gogoproto.enumvalue_customname) = "KillUnit"];
+        RAGE = 11 [(gogoproto.enumvalue_customname) = "Rage"];
     }
 }
 
@@ -1195,7 +1196,6 @@ message Faction {
         LIFE = 5 [(gogoproto.enumvalue_customname) = "Life"];
         TOXIC = 6 [(gogoproto.enumvalue_customname) = "Toxic"];
         ITEM = 7 [(gogoproto.enumvalue_customname) = "Item"];
-        OTHERS = 8 [(gogoproto.enumvalue_customname) = "Others"];
     }
 }
 
@@ -1245,6 +1245,8 @@ message AbilityData {
     repeated CardChoosableAbility choosableAbilities = 23;
     int32 defense2 = 24;
     int32 cost = 25;
+    CardKind.Enum targetCardKind = 26;
+    repeated GameMechanicDescription.Enum targetGameMechanicDescriptionTypes = 27;
 
     message VisualEffectInfo {
         enum VisualEffectType {
