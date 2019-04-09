@@ -40,7 +40,7 @@ const (
 	TopicCreateDeckEvent         = "createdeck"
 	TopicEditDeckEvent           = "editdeck"
 	TopicDeleteDeckEvent         = "deletedeck"
-	TopicAddOverlordExpEvent         = "addheroexperience"
+	TopicAddOverlordExpEvent     = "addheroexperience"
 	TopicRegisterPlayerPoolEvent = "registerplayerpool"
 	TopicFindMatchEvent          = "findmatch"
 	TopicAcceptMatchEvent        = "acceptmatch"
