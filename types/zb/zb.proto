@@ -1223,6 +1223,7 @@ message Faction {
         LIFE = 5 [(gogoproto.enumvalue_customname) = "Life"];
         TOXIC = 6 [(gogoproto.enumvalue_customname) = "Toxic"];
         ITEM = 7 [(gogoproto.enumvalue_customname) = "Item"];
+        OTHERS = 8 [(gogoproto.enumvalue_customname) = "Others"];
     }
 }
 
