@@ -1026,6 +1026,7 @@ message AbilityTrigger {
         IN_HAND = 9 [(gogoproto.enumvalue_customname) = "InHand"];
         KILL_UNIT = 10 [(gogoproto.enumvalue_customname) = "KillUnit"];
         RAGE = 11 [(gogoproto.enumvalue_customname) = "Rage"];
+        AURA = 12 [(gogoproto.enumvalue_customname) = "Aura"];
     }
 }
 
@@ -1139,6 +1140,22 @@ message AbilityType {
         GAIN_GOO = 84 [(gogoproto.enumvalue_customname) = "GainGoo"];
         BLITZ = 85 [(gogoproto.enumvalue_customname) = "Blitz"];
         DRAW_CARD_BY_FACTION = 86 [(gogoproto.enumvalue_customname) = "DrawCardByFaction"];
+        DESTROY_TARGET_UNIT = 87 [(gogoproto.enumvalue_customname) = "DestroyTargetUnit"];
+        AGILE = 88 [(gogoproto.enumvalue_customname) = "Agile"];
+        CHANGE_STAT_OF_CARDS_IN_HAND = 89 [(gogoproto.enumvalue_customname) = "ChangeStatOfCardInHand"];
+        GIVE_BUFFS_TO_UNIT = 90 [(gogoproto.enumvalue_customname) = "GiveBuffsToUnit"];
+        DISCARD_CARD_FROM_HAND = 91 [(gogoproto.enumvalue_customname) = "DiscardCardFromHand"];
+        GET_GOO_THIS_TURN = 92 [(gogoproto.enumvalue_customname) = "GetGooThisTurn"];
+        COSTS_LESS = 93 [(gogoproto.enumvalue_customname) = "CostsLess"];
+        FILL_BOARD_BY_UNITS = 94 [(gogoproto.enumvalue_customname) = "FillBoardByUnits"];
+        DEAL_DAMAGE_TO_TARGET_THAT_ATTACK_THIS = 95 [(gogoproto.enumvalue_customname) = "DealDamageToTargetThatAttackThis"];
+        CHANGE_COST = 96 [(gogoproto.enumvalue_customname) = "ChangeCost"];
+        GAIN_STATS_OF_ADJACENT_UNITS = 97 [(gogoproto.enumvalue_customname) = "GainStatsOfAdjacentUnits"];
+        DISTRACT_AND_CHANGE_STAT = 98 [(gogoproto.enumvalue_customname) = "DistractAndChangeStat"];
+        DAMAGE_AND_DISTRACT = 99 [(gogoproto.enumvalue_customname) = "DamangeAndDistract"];
+        PUT_UNITS_FROM_DISCARD_INTO_PLAY = 100 [(gogoproto.enumvalue_customname) = "PutUnitsFromDiscardIntoPlay"];
+        PUT_UNITS_FRON_LIBRARY_INTO_PLAY = 101 [(gogoproto.enumvalue_customname) = "PutUnitsFromLibraryIntoPlay"];
+        BLOCK_TAKE_DAMAGE = 102 [(gogoproto.enumvalue_customname) = "BlockTakeDamage"];
     }
 }
 
@@ -1156,6 +1173,16 @@ message AbilitySubTrigger
         IfHasUnitsWithFactionInPlay = 8;
         AllyUnitsByFactionThatCost = 9;
         YourOverlord = 10;
+        PermanentChanges = 11;
+        HasChangesInParameters = 12;
+        LessDefThanInOpponent = 13;
+        OverlordDefenseEqualOrLess = 14;
+        OnlyThisCardInHand = 15;
+        AllCardsInHand = 16;
+        CardCostMoreThanCostOfThis = 17;
+        ForEachEnemyUnitInPlay = 18;
+        ForEachAllyUnitInPlay = 19;
+        IfHaveFewerUnitsInPlay = 20;
     }
 }
 
