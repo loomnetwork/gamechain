@@ -675,6 +675,8 @@ message DebugCheatsConfiguration {
 
     string forceFirstTurnUserId = 7;
     bool ignoreGooRequirements = 8;
+
+    bool skipMulligan = 9;
 }
 
 message FindMatchRequest {
