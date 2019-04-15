@@ -979,6 +979,7 @@ message GameMechanicDescription
         RESTORE = 26 [(gogoproto.enumvalue_customname) = "Restore"];
         CHAINSAW = 27 [(gogoproto.enumvalue_customname) = "Chainsaw"];
         SUPER_SERUM = 28 [(gogoproto.enumvalue_customname) = "SuperSerum"];
+        AURA = 29 [(gogoproto.enumvalue_customname) = "Aura"];
     }
 }
 
