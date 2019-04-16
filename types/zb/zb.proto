@@ -1159,6 +1159,8 @@ message AbilityType {
         PUT_UNITS_FROM_DISCARD_INTO_PLAY = 100 [(gogoproto.enumvalue_customname) = "PutUnitsFromDiscardIntoPlay"];
         PUT_UNITS_FRON_LIBRARY_INTO_PLAY = 101 [(gogoproto.enumvalue_customname) = "PutUnitsFromLibraryIntoPlay"];
         BLOCK_TAKE_DAMAGE = 102 [(gogoproto.enumvalue_customname) = "BlockTakeDamage"];
+        TAKE_UNIT_TYPE_TO_TARGET_UNIT = 103 [(gogoproto.enumvalue_customname) = "TakeUnitTypeToTargetUnit"];
+        CHANGE_STAT_THIS_TURN = 104 [(gogoproto.enumvalue_customname) = "ChangeStatThisTurn"];
     }
 }
 
@@ -1186,6 +1188,13 @@ message AbilitySubTrigger
         ForEachEnemyUnitInPlay = 18;
         ForEachAllyUnitInPlay = 19;
         IfHaveFewerUnitsInPlay = 20;
+        ToOpponentOverlord = 21;
+        UntilStartOfNextPlayerTurn = 22;
+        DuringCardInHand = 23;
+        ForEachUnitInPlay = 24;
+        HighestCost = 25;
+        EqualToUnitAttack = 26;
+        NumberOfUnspentGoo = 27;
     }
 }
 
