@@ -414,7 +414,7 @@ message DeleteDeckEvent {
 message EditDeckRequest {
     string user_id = 1;
     Deck deck = 2;
-    string version = 4;
+    string version = 3;
 }
 
 message EditDeckEvent {
