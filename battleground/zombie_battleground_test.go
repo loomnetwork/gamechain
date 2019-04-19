@@ -881,6 +881,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId: "DeckUser",
 			DeckId: createDeckResponse.DeckId,
+			Version: "v1",
 		})
 
 		assert.Nil(t, err)
@@ -890,6 +891,7 @@ func TestDeckOperations(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
+			Version: "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -911,7 +913,7 @@ func TestCardOperations(t *testing.T) {
 
 		assert.Nil(t, err)
 		// we expect all the cards in InitRequest.Cards
-		assert.Equal(t, 90, len(cardResponse.Cards))
+		assert.Equal(t, len(initRequest.Cards), len(cardResponse.Cards))
 	})
 
 	t.Run("ListOverlordLibrary", func(t *testing.T) {
@@ -924,31 +926,89 @@ func TestCardOperations(t *testing.T) {
 	})
 }
 
-func TestCardDataUpgrade(t *testing.T) {
+func TestCardDataUpgradeAndValidation(t *testing.T) {
 	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var pubKeyHexString = "7796b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
 	var addr loom.Address
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
+		UserId:  "DeckUser",
+		Image:   "PathToImage",
+		Version: "v1",
+	}, t)
 
-	t.Run("ListCardLibrary", func(t *testing.T) {
-		cardResponse, err := c.ListCardLibrary(ctx, &zb.ListCardLibraryRequest{
+	t.Run("Should upgrade data to use mould ID", func(t *testing.T) {
+		// Create deck with card names
+		deckList := &zb.DeckList{
+			Decks: []*zb.Deck{
+				{
+					Name:       "NewDeck",
+					OverlordId: 1,
+					Cards: []*zb.DeckCard{
+						{
+							Amount:             1,
+							CardNameDeprecated: "Whizpar",
+						},
+						{
+							Amount:             2,
+							CardNameDeprecated: "Wheezy",
+						},
+					},
+				},
+			},
+		}
+
+		err := saveDecks(ctx, "DeckUser", deckList)
+		assert.Nil(t, err)
+
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+			UserId: "DeckUser",
 			Version: "v1",
 		})
 
-		assert.Nil(t, err)
-		// we expect all the cards in InitRequest.Cards
-		assert.Equal(t, 90, len(cardResponse.Cards))
+		assert.Equal(t, nil, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
+		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
+		assert.Equal(t, int64(2), deckResponse.Decks[0].Cards[1].MouldId)
+		assert.Equal(t, "", deckResponse.Decks[0].Cards[1].CardNameDeprecated)
 	})
 
-	t.Run("ListOverlordLibrary", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlordLibrary(ctx, &zb.ListOverlordLibraryRequest{
+	t.Run("Should remove unknown cards from decks", func(t *testing.T) {
+		deckList := &zb.DeckList{
+			Decks: []*zb.Deck{
+				{
+					Name:       "NewDeck",
+					OverlordId: 1,
+					Cards: []*zb.DeckCard{
+						{
+							Amount:  1,
+							MouldId: -1,
+						},
+						{
+							Amount:  2,
+							MouldId: 1,
+						},
+					},
+				},
+			},
+		}
+
+		err := saveDecks(ctx, "DeckUser", deckList)
+		assert.Nil(t, err)
+
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
+			UserId: "DeckUser",
 			Version: "v1",
 		})
 
-		assert.Nil(t, err)
-		assert.Equal(t, 2, len(overlordsResponse.Overlords))
+		assert.Equal(t, nil, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, 1, len(deckResponse.Decks[0].Cards))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
+		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
 	})
 }
 
@@ -1157,11 +1217,11 @@ func TestUpdateCardListOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:  1,
-						MouldId: 100,
+						MouldId: 1,
 					},
 					{
 						Amount:  3,
-						MouldId: 101,
+						MouldId: 3,
 					},
 				},
 			},
@@ -1178,11 +1238,11 @@ func TestUpdateCardListOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						MouldId: 2,
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						MouldId: -1,
 					},
 				},
 			},
@@ -2985,7 +3045,7 @@ func TestAIDeckOperations(t *testing.T) {
 					{MouldId: 9, Amount: 1},
 					{MouldId: 10, Amount: 1},
 					{MouldId: 11, Amount: 1},
-					{MouldId: 112, Amount: 1},
+					{MouldId: 12, Amount: 1},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,
@@ -3015,7 +3075,7 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb.DeckCard{
-					{MouldId: 1, Amount: 2},
+					{MouldId: -1, Amount: 2},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,

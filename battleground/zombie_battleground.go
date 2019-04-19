@@ -339,7 +339,6 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	// Verify whether this privateKey associated with user
 	if !isOwner(ctx, req.UserId) {
-
 		return nil, ErrUserNotVerified
 	}
 
@@ -565,40 +564,6 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	overlords, err := loadOverlords(ctx, req.UserId)
 	if err := validateDeckOverlord(overlords.Overlords, req.Deck.OverlordId); err != nil {
 		return err
-	}
-	// update card data
-	var deckCardsInterface = make([]interface{}, len(req.Deck.Cards))
-	for i, d := range req.Deck.Cards {
-		deckCardsInterface[i] = d
-	}
-	changed, changedDeckCards, err :=
-		validateAndUpdateCardList(
-			ctx,
-			deckCardsInterface,
-			req.Version,
-			true,
-			func(card interface{}) int64 {
-				return card.(*zb.DeckCard).MouldId
-			},
-			func(card interface{}, mouldId int64) {
-				card.(*zb.DeckCard).MouldId = mouldId
-			},
-			func(card interface{}) string {
-				return card.(*zb.DeckCard).CardNameDeprecated
-			},
-			func(card interface{}) {
-				card.(*zb.DeckCard).CardNameDeprecated = ""
-			},
-		)
-	if err != nil {
-		return err
-	}
-
-	if changed {
-		req.Deck.Cards = make([]*zb.DeckCard, len(changedDeckCards))
-		for i := range changedDeckCards {
-			req.Deck.Cards[i] = changedDeckCards[i].(*zb.DeckCard)
-		}
 	}
 
 	// validate version on card library
