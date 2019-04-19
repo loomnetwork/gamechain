@@ -69,4 +69,7 @@ func init() {
 
 	updateCardsCmd.Flags().StringVarP(&updateCardsCmdArgs.version, "version", "v", "v1", "Version")
 	updateCardsCmd.Flags().StringVarP(&updateCardsCmdArgs.file, "file", "f", "", "File containing cards data to be updated in serialized json format")
+
+	_ = updateCardsCmd.MarkFlagRequired("version")
+	_ = updateCardsCmd.MarkFlagRequired("file")
 }

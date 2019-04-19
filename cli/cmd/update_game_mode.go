@@ -61,4 +61,6 @@ func init() {
 	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	updateGameModeCmd.Flags().IntVarP(&updateGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
 	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.oracle, "oracle", "o", "", "oracle address")
+
+	_ = updateGameModeCmd.MarkFlagRequired("version")
 }

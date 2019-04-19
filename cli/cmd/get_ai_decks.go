@@ -6,7 +6,6 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -20,16 +19,11 @@ var getAIDecksCmd = &cobra.Command{
 	Short: "get AI decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := loom.Address{
-			ChainID: commonTxObjs.rpcClient.GetChainID(),
-			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
-		}
-
 		req := &zb.GetAIDecksRequest{
 			Version: getAIDecksCmdArgs.version,
 		}
 		var result zb.GetAIDecksResponse
-		_, err := commonTxObjs.contract.StaticCall("GetAIDecks", req, callerAddr, &result)
+		_, err := commonTxObjs.contract.Call("GetAIDecks", req, signer, &result)
 		if err != nil {
 			return err
 		}
@@ -52,4 +46,6 @@ func init() {
 	rootCmd.AddCommand(getAIDecksCmd)
 
 	getAIDecksCmd.Flags().StringVarP(&getAIDecksCmdArgs.version, "version", "v", "v1", "version")
+
+	_ = getAIDecksCmd.MarkFlagRequired("version")
 }

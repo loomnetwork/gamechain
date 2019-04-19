@@ -26,17 +26,17 @@ func TestAbilityChangeStat(t *testing.T) {
 		OverlordId: 2,
 		Name:       "Default",
 		Cards: []*zb.DeckCard{
-			{CardName: "Banshee", Amount: 2},
-			{CardName: "Breezee", Amount: 2},
-			{CardName: "Buffer", Amount: 2},
-			{CardName: "Soothsayer", Amount: 2},
-			{CardName: "Wheezy", Amount: 2},
-			{CardName: "Whiffer", Amount: 2},
-			{CardName: "Whizpar", Amount: 1},
-			{CardName: "Zhocker", Amount: 1},
-			{CardName: "Bouncer", Amount: 1},
-			{CardName: "Dragger", Amount: 1},
-			{CardName: "Pushhh", Amount: 1},
+			{MouldId: 90, Amount: 2},
+			{MouldId: 91, Amount: 2},
+			{MouldId: 96, Amount: 2},
+			{MouldId: 3, Amount: 2},
+			{MouldId: 2, Amount: 2},
+			{MouldId: 92, Amount: 2},
+			{MouldId: 1, Amount: 1},
+			{MouldId: 93, Amount: 1},
+			{MouldId: 7, Amount: 1},
+			{MouldId: 94, Amount: 1},
+			{MouldId: 5, Amount: 1},
 		},
 	}
 
@@ -183,7 +183,7 @@ func TestAbilityChangeStat(t *testing.T) {
 		assert.Equal(t, int32(1), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Defense)
 		assert.Equal(t, int32(2), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 
-		assert.Equal(t, int32(17), gp.State.PlayerStates[1].Defense)
+		assert.Equal(t, int32(47), gp.State.PlayerStates[1].Defense)
 	})
 
 }
