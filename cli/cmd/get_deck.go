@@ -13,6 +13,7 @@ import (
 var getDeckCmdArgs struct {
 	userID string
 	deckID int64
+	version string
 }
 
 var getDeckCmd = &cobra.Command{
@@ -24,6 +25,7 @@ var getDeckCmd = &cobra.Command{
 		req := &zb.GetDeckRequest{
 			UserId: getDeckCmdArgs.userID,
 			DeckId: getDeckCmdArgs.deckID,
+			Version: getDeckCmdArgs.version,
 		}
 		var result zb.GetDeckResponse
 		_, err := commonTxObjs.contract.Call("GetDeck", req, signer, &result)
@@ -55,4 +57,7 @@ func init() {
 
 	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	getDeckCmd.Flags().Int64VarP(&getDeckCmdArgs.deckID, "deckId", "", 0, "DeckId of account")
+	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = getDeckCmd.MarkFlagRequired("version")
 }

@@ -13,6 +13,7 @@ import (
 var deleteDeckCmdArgs struct {
 	userID string
 	deckID int64
+	version string
 }
 
 var deleteDeckCmd = &cobra.Command{
@@ -24,6 +25,7 @@ var deleteDeckCmd = &cobra.Command{
 		req := &zb.DeleteDeckRequest{
 			UserId: deleteDeckCmdArgs.userID,
 			DeckId: deleteDeckCmdArgs.deckID,
+			Version: deleteDeckCmdArgs.version,
 		}
 
 		_, err := commonTxObjs.contract.Call("DeleteDeck", req, signer, nil)
@@ -51,4 +53,7 @@ func init() {
 
 	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	deleteDeckCmd.Flags().Int64VarP(&deleteDeckCmdArgs.deckID, "deckId", "", 0, "DeckId of account")
+	deleteDeckCmd.Flags().StringVarP(&deleteDeckCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = deleteDeckCmd.MarkFlagRequired("version")
 }
