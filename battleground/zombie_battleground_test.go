@@ -20,18 +20,18 @@ import (
 var initRequest = zb.InitRequest{
 	Version: "v1",
 	DefaultCollection: []*zb.CardCollectionCard{
-		{CardName: "Banshee", Amount: 4},
-		{CardName: "Breezee", Amount: 3},
-		{CardName: "Buffer", Amount: 5},
-		{CardName: "Soothsayer", Amount: 4},
-		{CardName: "Wheezy", Amount: 3},
-		{CardName: "Whiffer", Amount: 5},
-		{CardName: "Whizpar", Amount: 4},
-		{CardName: "Zhocker", Amount: 3},
-		{CardName: "Bouncer", Amount: 5},
-		{CardName: "Dragger", Amount: 4},
-		{CardName: "Guzt", Amount: 3},
-		{CardName: "Pushhh", Amount: 5},
+		{MouldId: 90, Amount: 4},
+		{MouldId: 91, Amount: 3},
+		{MouldId: 96, Amount: 5},
+		{MouldId: 3, Amount: 4},
+		{MouldId: 2, Amount: 3},
+		{MouldId: 92, Amount: 5},
+		{MouldId: 1, Amount: 4},
+		{MouldId: 93, Amount: 3},
+		{MouldId: 7, Amount: 5},
+		{MouldId: 94, Amount: 4},
+		{MouldId: 95, Amount: 3},
+		{MouldId: 5, Amount: 5},
 	},
 	Overlords: []*zb.Overlord{
 		{
@@ -65,95 +65,102 @@ var initRequest = zb.InitRequest{
 	},
 	Cards: []*zb.Card{
 		{MouldId: 1, Name: "Whizpar", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 34, Name: "Wheezy", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 50, Name: "Soothsayer", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 142, Name: "Fumez", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 2, Name: "Pushhh", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 3, Name: "Ztormmcaller", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 32, Name: "Bouncer", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 143, Name: "Gaz", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 96, Name: "Draft", Damage: 4, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 97, Name: "MonZoon", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 4, Name: "Zeuz", Damage: 5, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 94, Name: "Ztorm Shield", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 5, Name: "Rockky", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 7, Name: "Bolderr", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 98, Name: "Blocker", Damage: 0, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 101, Name: "Slab", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 144, Name: "Pit", Damage: 0, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 6, Name: "Golem", Damage: 2, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 9, Name: "Walley", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 35, Name: "Tiny", Damage: 0, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 59, Name: "Spiker", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 145, Name: "Crater", Damage: 1, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 36, Name: "Earthshaker", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 61, Name: "IgneouZ", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 103, Name: "Pyrite", Damage: 0, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 8, Name: "Mountain", Damage: 6, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 104, Name: "Gaea", Damage: 4, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 10, Name: "Pyromaz", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 146, Name: "Quazi", Damage: 0, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 11, Name: "Burrrnn", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 12, Name: "Cynderman", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 38, Name: "Werezomb", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 147, Name: "Modo", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 14, Name: "Fire-Maw", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 67, Name: "Zhampion", Damage: 5, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 13, Name: "Gargantua", Damage: 6, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 37, Name: "Cerberus", Damage: 7, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 18, Name: "Chainsaw", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 70, Name: "Goo Beaker", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 15, Name: "Stapler", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 16, Name: "Nail Bomb", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 17, Name: "Goo Bottles", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 117, Name: "Fresh Meat", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 19, Name: "Azuraz", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 75, Name: "Bloomer", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 148, Name: "Zap", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 20, Name: "Shroom", Damage: 4, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 21, Name: "Vindrom", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 23, Name: "Puffer", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 44, Name: "Sapper", Damage: 2, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 45, Name: "Keeper", Damage: 1, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 149, Name: "Cactuz", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 22, Name: "Shammann", Damage: 5, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 42, Name: "Z-Virus", Damage: 0, Defense: 0, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 43, Name: "Yggdrazil", Damage: 4, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 100, Name: "Zombie 1/1", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 101, Name: "Zombie 2/2", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 102, Name: "Zombie Feral", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 155, Name: "Tainted Goo", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 156, Name: "Corrupted Goo", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 78, Name: "Rainz", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 125, Name: "Blight", Damage: 5, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 131, Name: "Zteroid", Damage: 5, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 108, Name: "BurZt", Damage: 4, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 135, Name: "Vortex", Damage: 6, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 60, Name: "Defender", Damage: 4, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 24, Name: "Poizom", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 26, Name: "Hazmaz", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 46, Name: "Zpitter", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 150, Name: "Zeptic", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 25, Name: "Ghoul", Damage: 3, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 47, Name: "Zeeter", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 151, Name: "Hazzard", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 85, Name: "Zludge", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 127, Name: "Ectoplasm", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 27, Name: "Cherno-bill", Damage: 7, Defense: 9, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 132, Name: "GooZilla", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 129, Name: "Zlopper", Damage: 3, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 28, Name: "Izze", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 49, Name: "Znowman", Damage: 0, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 152, Name: "Ozmoziz", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 29, Name: "Jetter", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 30, Name: "Freezzee", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 153, Name: "Geyzer", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 90, Name: "Blizzard", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 139, Name: "Froztbite", Damage: 0, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 48, Name: "Zhatterer", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 141, Name: "Maelstrom", Damage: 5, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 31, Name: "Tzunamy", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
-		{MouldId: 999999, Name: "Germs", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}}, // added this card for TestDeserializeGameStateChangeActions2 test
+		{MouldId: 2, Name: "Wheezy", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 3, Name: "Soothsayer", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 4, Name: "Fumez", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 5, Name: "Pushhh", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 6, Name: "Ztormmcaller", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 7, Name: "Bouncer", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 8, Name: "Gaz", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 9, Name: "Draft", Damage: 4, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 10, Name: "MonZoon", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 11, Name: "Zeuz", Damage: 5, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 12, Name: "Ztorm Shield", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 13, Name: "Rockky", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 14, Name: "Bolderr", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 15, Name: "Blocker", Damage: 0, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 16, Name: "Slab", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 17, Name: "Pit", Damage: 0, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 18, Name: "Golem", Damage: 2, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 19, Name: "Walley", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 20, Name: "Tiny", Damage: 0, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 21, Name: "Spiker", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 21, Name: "Crater", Damage: 1, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 22, Name: "Earthshaker", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 23, Name: "IgneouZ", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 24, Name: "Pyrite", Damage: 0, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 25, Name: "Mountain", Damage: 6, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 26, Name: "Gaea", Damage: 4, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Earth, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 27, Name: "Pyromaz", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 28, Name: "Quazi", Damage: 0, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 29, Name: "Burrrnn", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 30, Name: "Cynderman", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 31, Name: "Werezomb", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 32, Name: "Modo", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 33, Name: "Fire-Maw", Damage: 3, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 34, Name: "Zhampion", Damage: 5, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 35, Name: "Gargantua", Damage: 6, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 36, Name: "Cerberus", Damage: 7, Defense: 8, Kind: zb.CardKind_Creature, Faction: zb.Faction_Fire, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 37, Name: "Chainsaw", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 38, Name: "Goo Beaker", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 39, Name: "Stapler", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 40, Name: "Nail Bomb", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 41, Name: "Goo Bottles", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 42, Name: "Fresh Meat", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Item, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 43, Name: "Azuraz", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 44, Name: "Bloomer", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 45, Name: "Zap", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 46, Name: "Shroom", Damage: 4, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 47, Name: "Vindrom", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 48, Name: "Puffer", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 49, Name: "Sapper", Damage: 2, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 50, Name: "Keeper", Damage: 1, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 51, Name: "Cactuz", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 52, Name: "Shammann", Damage: 5, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 53, Name: "Z-Virus", Damage: 0, Defense: 0, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 54, Name: "Yggdrazil", Damage: 4, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Life, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 55, Name: "Zombie 1/1", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 56, Name: "Zombie 2/2", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 57, Name: "Zombie Feral", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 58, Name: "Tainted Goo", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 59, Name: "Corrupted Goo", Damage: 0, Defense: 0, Kind: zb.CardKind_Spell, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 60, Name: "Rainz", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 61, Name: "Blight", Damage: 5, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 62, Name: "Zteroid", Damage: 5, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 63, Name: "BurZt", Damage: 4, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 64, Name: "Vortex", Damage: 6, Defense: 7, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 65, Name: "Defender", Damage: 4, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Others, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 66, Name: "Poizom", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 67, Name: "Hazmaz", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 68, Name: "Zpitter", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 69, Name: "Zeptic", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 70, Name: "Ghoul", Damage: 3, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 71, Name: "Zeeter", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 72, Name: "Hazzard", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 73, Name: "Zludge", Damage: 4, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 74, Name: "Ectoplasm", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 75, Name: "Cherno-bill", Damage: 7, Defense: 9, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 76, Name: "GooZilla", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 77, Name: "Zlopper", Damage: 3, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Toxic, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 78, Name: "Izze", Damage: 1, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 79, Name: "Znowman", Damage: 0, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 80, Name: "Ozmoziz", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 81, Name: "Jetter", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 82, Name: "Freezzee", Damage: 2, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 83, Name: "Geyzer", Damage: 2, Defense: 3, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 84, Name: "Blizzard", Damage: 3, Defense: 4, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 85, Name: "Froztbite", Damage: 0, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 86, Name: "Zhatterer", Damage: 1, Defense: 2, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 87, Name: "Maelstrom", Damage: 5, Defense: 5, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 88, Name: "Tzunamy", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 89, Name: "Germs", Damage: 6, Defense: 6, Kind: zb.CardKind_Creature, Faction: zb.Faction_Water, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 90, Name: "Banshee", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 91, Name: "Breezee", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 92, Name: "Whiffer", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 93, Name: "Zhocker", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 94, Name: "Dragger", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 95, Name: "Gust", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
+		{MouldId: 96, Name: "Buffer", Damage: 2, Defense: 1, Kind: zb.CardKind_Creature, Faction: zb.Faction_Air, PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}}},
 	},
 	DefaultDecks: []*zb.Deck{
 		{
@@ -161,13 +168,13 @@ var initRequest = zb.InitRequest{
 			OverlordId: 2,
 			Name:       "Default",
 			Cards: []*zb.DeckCard{
-				{CardName: "Azuraz", Amount: 2},
-				{CardName: "Puffer", Amount: 2},
-				{CardName: "Soothsayer", Amount: 2},
-				{CardName: "Wheezy", Amount: 2},
-				{CardName: "Whizpar", Amount: 1},
-				{CardName: "Bouncer", Amount: 1},
-				{CardName: "Pushhh", Amount: 1},
+				{MouldId: 43, Amount: 2},
+				{MouldId: 48, Amount: 2},
+				{MouldId: 3, Amount: 2},
+				{MouldId: 2, Amount: 2},
+				{MouldId: 1, Amount: 1},
+				{MouldId: 7, Amount: 1},
+				{MouldId: 5, Amount: 1},
 			},
 		},
 	},
@@ -178,18 +185,18 @@ var initRequest = zb.InitRequest{
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
+					{MouldId: 90, Amount: 2},
+					{MouldId: 91, Amount: 2},
+					{MouldId: 96, Amount: 2},
+					{MouldId: 3, Amount: 2},
+					{MouldId: 2, Amount: 2},
+					{MouldId: 92, Amount: 2},
+					{MouldId: 1, Amount: 1},
+					{MouldId: 93, Amount: 1},
+					{MouldId: 7, Amount: 1},
+					{MouldId: 94, Amount: 1},
+					{MouldId: 95, Amount: 1},
+					{MouldId: 5, Amount: 1},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,
@@ -201,18 +208,18 @@ var updateInitRequest = zb.UpdateInitRequest{
 	InitData: &zb.InitData{
 		Version: "v2",
 		DefaultCollection: []*zb.CardCollectionCard{
-			{CardName: "Banshee", Amount: 4},
-			{CardName: "Breezee", Amount: 3},
-			{CardName: "Buffer", Amount: 5},
-			{CardName: "Soothsayer", Amount: 4},
-			{CardName: "Wheezy", Amount: 3},
-			{CardName: "Whiffer", Amount: 5},
-			{CardName: "Whizpar", Amount: 4},
-			{CardName: "Zhocker", Amount: 3},
-			{CardName: "Bouncer", Amount: 5},
-			{CardName: "Dragger", Amount: 4},
-			{CardName: "Guzt", Amount: 3},
-			{CardName: "Pushhh", Amount: 5},
+			{MouldId: 90, Amount: 4},
+			{MouldId: 91, Amount: 3},
+			{MouldId: 96, Amount: 5},
+			{MouldId: 3, Amount: 4},
+			{MouldId: 2, Amount: 3},
+			{MouldId: 92, Amount: 5},
+			{MouldId: 1, Amount: 4},
+			{MouldId: 93, Amount: 3},
+			{MouldId: 7, Amount: 5},
+			{MouldId: 94, Amount: 4},
+			{MouldId: 95, Amount: 3},
+			{MouldId: 5, Amount: 5},
 		},
 		Overlords: []*zb.Overlord{
 			{
@@ -330,18 +337,18 @@ var updateInitRequest = zb.UpdateInitRequest{
 				OverlordId: 2,
 				Name:       "Default",
 				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
+					{MouldId: 90, Amount: 2},
+					{MouldId: 91, Amount: 2},
+					{MouldId: 96, Amount: 2},
+					{MouldId: 3, Amount: 2},
+					{MouldId: 2, Amount: 2},
+					{MouldId: 92, Amount: 2},
+					{MouldId: 1, Amount: 1},
+					{MouldId: 93, Amount: 1},
+					{MouldId: 7, Amount: 1},
+					{MouldId: 94, Amount: 1},
+					{MouldId: 95, Amount: 1},
+					{MouldId: 5, Amount: 1},
 				},
 			},
 		},
@@ -352,18 +359,18 @@ var updateInitRequest = zb.UpdateInitRequest{
 					OverlordId: 2,
 					Name:       "AI Decks",
 					Cards: []*zb.DeckCard{
-						{CardName: "Banshee", Amount: 2},
-						{CardName: "Breezee", Amount: 2},
-						{CardName: "Buffer", Amount: 2},
-						{CardName: "Soothsayer", Amount: 2},
-						{CardName: "Wheezy", Amount: 2},
-						{CardName: "Whiffer", Amount: 2},
-						{CardName: "Whizpar", Amount: 1},
-						{CardName: "Zhocker", Amount: 1},
-						{CardName: "Bouncer", Amount: 1},
-						{CardName: "Dragger", Amount: 1},
-						{CardName: "Guzt", Amount: 1},
-						{CardName: "Pushhh", Amount: 1},
+						{MouldId: 90, Amount: 2},
+						{MouldId: 91, Amount: 2},
+						{MouldId: 96, Amount: 2},
+						{MouldId: 3, Amount: 2},
+						{MouldId: 2, Amount: 2},
+						{MouldId: 92, Amount: 2},
+						{MouldId: 1, Amount: 1},
+						{MouldId: 93, Amount: 1},
+						{MouldId: 7, Amount: 1},
+						{MouldId: 94, Amount: 1},
+						{MouldId: 95, Amount: 1},
+						{MouldId: 5, Amount: 1},
 					},
 				},
 				Type: zb.AIType_MIXED_AI,
@@ -377,18 +384,18 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 	InitData: &zb.InitData{
 		Version: "v2",
 		DefaultCollection: []*zb.CardCollectionCard{
-			{CardName: "Banshee", Amount: 4},
-			{CardName: "Breezee", Amount: 3},
-			{CardName: "Buffer", Amount: 5},
-			{CardName: "Soothsayer", Amount: 4},
-			{CardName: "Wheezy", Amount: 3},
-			{CardName: "Whiffer", Amount: 5},
-			{CardName: "Whizpar", Amount: 4},
-			{CardName: "Zhocker", Amount: 3},
-			{CardName: "Bouncer", Amount: 5},
-			{CardName: "Dragger", Amount: 4},
-			{CardName: "Guzt", Amount: 3},
-			{CardName: "Pushhh", Amount: 5},
+			{MouldId: 90, Amount: 4},
+			{MouldId: 91, Amount: 3},
+			{MouldId: 96, Amount: 5},
+			{MouldId: 3, Amount: 4},
+			{MouldId: 2, Amount: 3},
+			{MouldId: 92, Amount: 5},
+			{MouldId: 1, Amount: 4},
+			{MouldId: 93, Amount: 3},
+			{MouldId: 7, Amount: 5},
+			{MouldId: 94, Amount: 4},
+			{MouldId: 95, Amount: 3},
+			{MouldId: 5, Amount: 5},
 		},
 		Cards: []*zb.Card{
 			{
@@ -476,18 +483,18 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 				OverlordId: 2,
 				Name:       "Default",
 				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
+					{MouldId: 90, Amount: 2},
+					{MouldId: 91, Amount: 2},
+					{MouldId: 96, Amount: 2},
+					{MouldId: 3, Amount: 2},
+					{MouldId: 2, Amount: 2},
+					{MouldId: 92, Amount: 2},
+					{MouldId: 1, Amount: 1},
+					{MouldId: 93, Amount: 1},
+					{MouldId: 7, Amount: 1},
+					{MouldId: 94, Amount: 1},
+					{MouldId: 95, Amount: 1},
+					{MouldId: 5, Amount: 1},
 				},
 			},
 		},
@@ -498,18 +505,18 @@ var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
 					OverlordId: 2,
 					Name:       "AI Decks",
 					Cards: []*zb.DeckCard{
-						{CardName: "Banshee", Amount: 2},
-						{CardName: "Breezee", Amount: 2},
-						{CardName: "Buffer", Amount: 2},
-						{CardName: "Soothsayer", Amount: 2},
-						{CardName: "Wheezy", Amount: 2},
-						{CardName: "Whiffer", Amount: 2},
-						{CardName: "Whizpar", Amount: 1},
-						{CardName: "Zhocker", Amount: 1},
-						{CardName: "Bouncer", Amount: 1},
-						{CardName: "Dragger", Amount: 1},
-						{CardName: "Guzt", Amount: 1},
-						{CardName: "Pushhh", Amount: 1},
+						{MouldId: 90, Amount: 2},
+						{MouldId: 91, Amount: 2},
+						{MouldId: 96, Amount: 2},
+						{MouldId: 3, Amount: 2},
+						{MouldId: 2, Amount: 2},
+						{MouldId: 92, Amount: 2},
+						{MouldId: 1, Amount: 1},
+						{MouldId: 93, Amount: 1},
+						{MouldId: 7, Amount: 1},
+						{MouldId: 94, Amount: 1},
+						{MouldId: 95, Amount: 1},
+						{MouldId: 5, Amount: 1},
 					},
 				},
 				Type: zb.AIType_MIXED_AI,
@@ -588,6 +595,7 @@ func TestCardCollectionCardOperations(t *testing.T) {
 
 	CardCollectionCard, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "CardUser",
+		Version: "v1",
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, 12, len(CardCollectionCard.Cards))
@@ -610,6 +618,7 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("ListDecks", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
+			Version: "v1",
 		})
 		assert.Equal(t, nil, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
@@ -621,6 +630,7 @@ func TestDeckOperations(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
+			Version: "v1",
 		})
 		assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
 		assert.Equal(t, contract.ErrNotFound, err)
@@ -630,6 +640,7 @@ func TestDeckOperations(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 1,
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, int64(1), deckResponse.Deck.Id) // id should start from 1
@@ -647,11 +658,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -662,6 +673,7 @@ func TestDeckOperations(t *testing.T) {
 
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
+			Version: "v1",
 		})
 
 		assert.Equal(t, nil, err)
@@ -677,11 +689,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   200,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   100,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -700,11 +712,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   2,
-						CardName: "InvalidName1",
+						MouldId: -100,
 					},
 					{
 						Amount:   1,
-						CardName: "InvalidName2",
+						MouldId: -101,
 					},
 				},
 			},
@@ -723,11 +735,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -746,11 +758,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -770,11 +782,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -785,6 +797,7 @@ func TestDeckOperations(t *testing.T) {
 		getDeckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 2,
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, getDeckResponse)
@@ -801,12 +814,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb.DeckCard{
 					{
-						Amount:   100,
-						CardName: "Azuraz",
+						Amount:  100,
+						MouldId: 43,
 					},
 					{
-						Amount:   1,
-						CardName: "Puffer",
+						Amount:  1,
+						MouldId: 48,
 					},
 				},
 			},
@@ -825,11 +838,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -849,11 +862,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -884,6 +897,34 @@ func TestDeckOperations(t *testing.T) {
 }
 
 func TestCardOperations(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	t.Run("ListCardLibrary", func(t *testing.T) {
+		cardResponse, err := c.ListCardLibrary(ctx, &zb.ListCardLibraryRequest{
+			Version: "v1",
+		})
+
+		assert.Nil(t, err)
+		// we expect all the cards in InitRequest.Cards
+		assert.Equal(t, 90, len(cardResponse.Cards))
+	})
+
+	t.Run("ListOverlordLibrary", func(t *testing.T) {
+		overlordsResponse, err := c.ListOverlordLibrary(ctx, &zb.ListOverlordLibraryRequest{
+			Version: "v1",
+		})
+
+		assert.Nil(t, err)
+		assert.Equal(t, 2, len(overlordsResponse.Overlords))
+	})
+}
+
+func TestCardDataUpgrade(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
 	var addr loom.Address
@@ -1115,12 +1156,12 @@ func TestUpdateCardListOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb.DeckCard{
 					{
-						Amount:   1,
-						CardName: "Banshee",
+						Amount:  1,
+						MouldId: 100,
 					},
 					{
-						Amount:   3,
-						CardName: "NewCard",
+						Amount:  3,
+						MouldId: 101,
 					},
 				},
 			},
@@ -1137,11 +1178,11 @@ func TestUpdateCardListOperations(t *testing.T) {
 				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
-						CardName: "Azuraz",
+						MouldId: 43,
 					},
 					{
 						Amount:   1,
-						CardName: "Puffer",
+						MouldId: 48,
 					},
 				},
 			},
@@ -1224,6 +1265,7 @@ func TestFindMatchOperations(t *testing.T) {
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
@@ -1233,6 +1275,7 @@ func TestFindMatchOperations(t *testing.T) {
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
@@ -2075,6 +2118,7 @@ func TestGameStateOperations(t *testing.T) {
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-1",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
@@ -2084,6 +2128,7 @@ func TestGameStateOperations(t *testing.T) {
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-2",
+			Version: "v1",
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
@@ -2929,18 +2974,18 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb.DeckCard{
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Ztormmcaller", Amount: 2},
-					{CardName: "Ztormmcaller", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Gaz", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Bolderr", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Blocker", Amount: 1},
-					{CardName: "Pit", Amount: 1},
-					{CardName: "Golem", Amount: 1},
+					{MouldId: 1, Amount: 2},
+					{MouldId: 2, Amount: 2},
+					{MouldId: 3, Amount: 2},
+					{MouldId: 4, Amount: 2},
+					{MouldId: 5, Amount: 2},
+					{MouldId: 6, Amount: 2},
+					{MouldId: 7, Amount: 1},
+					{MouldId: 8, Amount: 1},
+					{MouldId: 9, Amount: 1},
+					{MouldId: 10, Amount: 1},
+					{MouldId: 11, Amount: 1},
+					{MouldId: 112, Amount: 1},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,
@@ -2970,7 +3015,7 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb.DeckCard{
-					{CardName: "NoName", Amount: 2},
+					{MouldId: 1, Amount: 2},
 				},
 			},
 			Type: zb.AIType_MIXED_AI,

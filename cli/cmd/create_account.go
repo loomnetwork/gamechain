@@ -61,4 +61,5 @@ func init() {
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.data, "data", "d", "{\"image\":\"Image\", \"game_membership_tier\": 1}", "Account data in serialized json format")
 	createAccountCmd.Flags().StringVarP(&createAccCmdArgs.version, "version", "v", "v1", "Version")
 
+	_ = createAccountCmd.MarkFlagRequired("version")
 }

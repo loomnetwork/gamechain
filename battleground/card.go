@@ -23,32 +23,36 @@ var (
 )
 
 func validateCardLibrary(cards []*zb.Card, deckCards []*zb.DeckCard) error {
-	cardmap := make(map[string]interface{})
+	cardmap := make(map[int64]interface{})
 	for _, card := range cards {
-		cardmap[card.Name] = struct{}{}
+		cardmap[card.MouldId] = struct{}{}
 	}
-	for _, collection := range deckCards {
-		if _, ok := cardmap[collection.CardName]; !ok {
-			return fmt.Errorf("card %s not found in card library", collection.CardName)
+	for _, deckCard := range deckCards {
+		if deckCard.MouldId == 0 {
+			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
+		}
+
+		if _, ok := cardmap[deckCard.MouldId]; !ok {
+			return fmt.Errorf("card %d not found in card library", deckCard.MouldId)
 		}
 	}
 	return nil
 }
 
 func validateDeckCollections(userCollections []*zb.CardCollectionCard, deckCollections []*zb.CardCollectionCard) error {
-	maxAmountMap := make(map[string]int64)
+	maxAmountMap := make(map[int64]int64)
 	for _, collection := range userCollections {
-		maxAmountMap[collection.CardName] = collection.Amount
+		maxAmountMap[collection.MouldId] = collection.Amount
 	}
 
 	var errorString = ""
 	for _, collection := range deckCollections {
-		cardAmount, ok := maxAmountMap[collection.CardName]
+		cardAmount, ok := maxAmountMap[collection.MouldId]
 		if !ok {
-			return fmt.Errorf("cannot add card %s", collection.CardName)
+			return fmt.Errorf("cannot add card %d", collection.MouldId)
 		}
 		if cardAmount < collection.Amount {
-			errorString += fmt.Sprintf("%s: %d ", collection.CardName, cardAmount)
+			errorString += fmt.Sprintf("%d: %d ", collection.MouldId, cardAmount)
 		}
 	}
 

@@ -45,4 +45,6 @@ var getInitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(getInitCmd)
 	getInitCmd.Flags().StringVarP(&getInitCmdArgs.version, "version", "v", "", "Version")
+
+	_ = getInitCmd.MarkFlagRequired("version")
 }

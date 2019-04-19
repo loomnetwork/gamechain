@@ -65,6 +65,9 @@ var setAIDecksCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(setAIDecksCmd)
 
-	setAIDecksCmd.Flags().StringVarP(&setAIDecksCmdArgs.file, "file", "f", "", "json file containing decks data")
 	setAIDecksCmd.Flags().StringVarP(&setAIDecksCmdArgs.version, "version", "v", "v1", "Version")
+	setAIDecksCmd.Flags().StringVarP(&setAIDecksCmdArgs.file, "file", "f", "", "json file containing decks data")
+
+	_ = setAIDecksCmd.MarkFlagRequired("version")
+	_ = setAIDecksCmd.MarkFlagRequired("file")
 }

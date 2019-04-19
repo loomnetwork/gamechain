@@ -65,4 +65,7 @@ func init() {
 
 	updateOverlordLibraryCmd.Flags().StringVarP(&updateOverlordLibraryCmdArgs.version, "version", "v", "v1", "Version")
 	updateOverlordLibraryCmd.Flags().StringVarP(&updateOverlordLibraryCmdArgs.file, "file", "f", "", "File containing cards data to be updated in serialized json format")
+
+	_ = updateOverlordLibraryCmd.MarkFlagRequired("version")
+	_ = updateOverlordLibraryCmd.MarkFlagRequired("file")
 }
