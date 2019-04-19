@@ -59,6 +59,10 @@ var rootCmd = &cobra.Command{
 	Use:   "zb-cli",
 	Short: "ZombieBattleGround cli tool",
 	PersistentPreRunE: func(command *cobra.Command, args []string) error {
+		if command.Use == "merge_json_to_init" {
+			return nil
+		}
+
 		var err error
 
 		err = readKeyFile()
