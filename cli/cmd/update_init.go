@@ -13,7 +13,6 @@ import (
 )
 
 var updateInitCmdArgs struct {
-	version    string
 	file       string
 	oldVersion string
 }
@@ -39,14 +38,12 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("error parsing JSON file: %s", err.Error())
 		}
 
-		if updateInitCmdArgs.version == "" {
+		if initData.Version == "" {
 			return fmt.Errorf("version not specified")
 		}
 
-		initData.Version = updateInitCmdArgs.version
 		updateInitData := zb.UpdateInitRequest{
 			InitData: &initData,
-			OldVersion: updateInitCmdArgs.oldVersion,
 		}
 
 		_, err = commonTxObjs.contract.Call("UpdateInit", &updateInitData, signer, nil)
@@ -72,7 +69,5 @@ var updateInitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateInitCmd)
 
-	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.version, "version", "v", "", "Version to update")
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
-	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.oldVersion, "old_version", "o", "", "Old version to copy missing keys from")
 }
