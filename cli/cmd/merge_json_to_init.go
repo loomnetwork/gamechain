@@ -1,12 +1,9 @@
 package cmd
 
 import (
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"io/ioutil"
 	"os"
 )
 
@@ -91,28 +88,6 @@ var mergeJsonToInitCmd = &cobra.Command{
 
 		return nil
 	},
-}
-
-func readJsonFileToProtobuf(filename string, message proto.Message) error {
-	json, err := readFileToString(filename)
-	if err != nil {
-		return errors.Wrap(err, "error reading " + filename)
-	}
-
-	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file " + filename)
-	}
-
-	return nil
-}
-
-func readFileToString(filename string) (string, error) {
-	bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return "", err
-	}
-
-	return string(bytes), nil
 }
 
 func init() {
