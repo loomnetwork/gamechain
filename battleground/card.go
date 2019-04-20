@@ -23,13 +23,14 @@ var (
 )
 
 func validateCardLibrary(cards []*zb.Card, deckCards []*zb.DeckCard) error {
-	cardmap := make(map[string]interface{})
+	cardNameSet := make(map[string]interface{})
 	for _, card := range cards {
-		cardmap[card.Name] = struct{}{}
+		cardNameSet[card.Name] = struct{}{}
 	}
-	for _, collection := range deckCards {
-		if _, ok := cardmap[collection.CardName]; !ok {
-			return fmt.Errorf("card %s not found in card library", collection.CardName)
+
+	for _, deckCard := range deckCards {
+		if _, ok := cardNameSet[deckCard.CardName]; !ok {
+			return fmt.Errorf("card %s not found in card library", deckCard.CardName)
 		}
 	}
 	return nil

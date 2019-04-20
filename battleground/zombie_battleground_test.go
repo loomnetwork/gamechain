@@ -3,14 +3,14 @@ package battleground
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/gogo/protobuf/proto"
 	"testing"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	latypes "github.com/loomnetwork/loomauth/types"
@@ -201,18 +201,8 @@ var updateInitRequest = zb.UpdateInitRequest{
 	InitData: &zb.InitData{
 		Version: "v2",
 		DefaultCollection: []*zb.CardCollectionCard{
-			{CardName: "Banshee", Amount: 4},
-			{CardName: "Breezee", Amount: 3},
-			{CardName: "Buffer", Amount: 5},
-			{CardName: "Soothsayer", Amount: 4},
-			{CardName: "Wheezy", Amount: 3},
-			{CardName: "Whiffer", Amount: 5},
-			{CardName: "Whizpar", Amount: 4},
-			{CardName: "Zhocker", Amount: 3},
-			{CardName: "Bouncer", Amount: 5},
-			{CardName: "Dragger", Amount: 4},
-			{CardName: "Guzt", Amount: 3},
-			{CardName: "Pushhh", Amount: 5},
+			{CardName: "Soothsayer", Amount:15},
+			{CardName: "Azuraz", Amount: 15},
 		},
 		Overlords: []*zb.Overlord{
 			{
@@ -330,18 +320,8 @@ var updateInitRequest = zb.UpdateInitRequest{
 				OverlordId: 2,
 				Name:       "Default",
 				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
+					{CardName: "Soothsayer", Amount:15},
+					{CardName: "Azuraz", Amount: 15},
 				},
 			},
 		},
@@ -352,164 +332,8 @@ var updateInitRequest = zb.UpdateInitRequest{
 					OverlordId: 2,
 					Name:       "AI Decks",
 					Cards: []*zb.DeckCard{
-						{CardName: "Banshee", Amount: 2},
-						{CardName: "Breezee", Amount: 2},
-						{CardName: "Buffer", Amount: 2},
 						{CardName: "Soothsayer", Amount: 2},
-						{CardName: "Wheezy", Amount: 2},
-						{CardName: "Whiffer", Amount: 2},
-						{CardName: "Whizpar", Amount: 1},
-						{CardName: "Zhocker", Amount: 1},
-						{CardName: "Bouncer", Amount: 1},
-						{CardName: "Dragger", Amount: 1},
-						{CardName: "Guzt", Amount: 1},
-						{CardName: "Pushhh", Amount: 1},
-					},
-				},
-				Type: zb.AIType_MIXED_AI,
-			},
-		},
-	},
-}
-
-var updateInitRequestWithoutOverlords = zb.UpdateInitRequest{
-	OldVersion: "v1",
-	InitData: &zb.InitData{
-		Version: "v2",
-		DefaultCollection: []*zb.CardCollectionCard{
-			{CardName: "Banshee", Amount: 4},
-			{CardName: "Breezee", Amount: 3},
-			{CardName: "Buffer", Amount: 5},
-			{CardName: "Soothsayer", Amount: 4},
-			{CardName: "Wheezy", Amount: 3},
-			{CardName: "Whiffer", Amount: 5},
-			{CardName: "Whizpar", Amount: 4},
-			{CardName: "Zhocker", Amount: 3},
-			{CardName: "Bouncer", Amount: 5},
-			{CardName: "Dragger", Amount: 4},
-			{CardName: "Guzt", Amount: 3},
-			{CardName: "Pushhh", Amount: 5},
-		},
-		Cards: []*zb.Card{
-			{
-				MouldId: 1,
-				Faction: zb.Faction_Air,
-				Name:    "Soothsayer",
-				Rank:    zb.CreatureRank_Minion,
-				Type:    zb.CardType_Walker,
-				Damage:  2,
-				Defense: 1,
-				Cost: 2,
-				Abilities: []*zb.AbilityData{
-					{
-						Ability:  zb.AbilityType_DrawCard,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Entry,
-						Faction:  zb.Faction_None,
-					},
-				},
-				PictureTransform: &zb.PictureTransform{
-					Position: &zb.Vector3Float{
-						X: 1.5,
-						Y: 2.5,
-						Z: 3.5,
-					},
-					Scale: &zb.Vector3Float{
-						X: 0.5,
-						Y: 0.5,
-						Z: 0.5,
-					},
-				},
-			},
-			{
-				MouldId:          2,
-				Faction:          zb.Faction_Air,
-				Name:             "Azuraz",
-				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
-				Damage:           1,
-				Defense:          1,
-				Cost:          1,
-				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
-					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
-						},
-						Stat:    zb.Stat_Damage,
-						Faction: zb.Faction_Earth,
-						Value:   1,
-					},
-				},
-			},
-			{
-				MouldId:          3,
-				Faction:          zb.Faction_Air,
-				Name:             "NewCard",
-				Rank:             zb.CreatureRank_Minion,
-				Type:             zb.CardType_Walker,
-				Damage:           1,
-				Defense:          1,
-				Cost:          1,
-				PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-				Abilities: []*zb.AbilityData{
-					{
-						Ability:  zb.AbilityType_ModificatorStats,
-						Activity: zb.AbilityActivity_Passive,
-						Trigger:  zb.AbilityTrigger_Permanent,
-						Targets: []zb.Target_Enum{
-							zb.Target_None,
-						},
-						Stat:    zb.Stat_Damage,
-						Faction: zb.Faction_Water,
-						Value:   1,
-					},
-				},
-			},
-		},
-		DefaultDecks: []*zb.Deck{
-			{
-				Id:         0,
-				OverlordId: 2,
-				Name:       "Default",
-				Cards: []*zb.DeckCard{
-					{CardName: "Banshee", Amount: 2},
-					{CardName: "Breezee", Amount: 2},
-					{CardName: "Buffer", Amount: 2},
-					{CardName: "Soothsayer", Amount: 2},
-					{CardName: "Wheezy", Amount: 2},
-					{CardName: "Whiffer", Amount: 2},
-					{CardName: "Whizpar", Amount: 1},
-					{CardName: "Zhocker", Amount: 1},
-					{CardName: "Bouncer", Amount: 1},
-					{CardName: "Dragger", Amount: 1},
-					{CardName: "Guzt", Amount: 1},
-					{CardName: "Pushhh", Amount: 1},
-				},
-			},
-		},
-		AiDecks: []*zb.AIDeck{
-			{
-				Deck: &zb.Deck{
-					Id:         1,
-					OverlordId: 2,
-					Name:       "AI Decks",
-					Cards: []*zb.DeckCard{
-						{CardName: "Banshee", Amount: 2},
-						{CardName: "Breezee", Amount: 2},
-						{CardName: "Buffer", Amount: 2},
-						{CardName: "Soothsayer", Amount: 2},
-						{CardName: "Wheezy", Amount: 2},
-						{CardName: "Whiffer", Amount: 2},
-						{CardName: "Whizpar", Amount: 1},
-						{CardName: "Zhocker", Amount: 1},
-						{CardName: "Bouncer", Amount: 1},
-						{CardName: "Dragger", Amount: 1},
-						{CardName: "Guzt", Amount: 1},
-						{CardName: "Pushhh", Amount: 1},
+						{CardName: "Azuraz", Amount: 2},
 					},
 				},
 				Type: zb.AIType_MIXED_AI,
@@ -1018,189 +842,13 @@ func TestUpdateInitDataOperations(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
-	t.Run("UpdateInit with old card data", func(t *testing.T) {
-		err := c.UpdateInit(ctx, &updateInitRequestWithoutOverlords)
-
-		assert.Nil(t, err)
-	})
-
-	t.Run("UpdateInit with old card data but without old version (failing)", func(t *testing.T) {
-		updateInitRequestWithoutOverlords.OldVersion = ""
-		err := c.UpdateInit(ctx, &updateInitRequestWithoutOverlords)
+	t.Run("UpdateInit with missing data", func(t *testing.T) {
+		updateInitRequestWithMissingCards := proto.Clone(&updateInitRequest).(*zb.UpdateInitRequest)
+		updateInitRequestWithMissingCards.InitData.Cards = nil
+		err := c.UpdateInit(ctx, updateInitRequestWithMissingCards)
 
 		assert.NotNil(t, err)
-	})
-
-}
-
-func TestUpdateCardListOperations(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	expectedCards := []*zb.Card{
-		{
-			MouldId:          1,
-			Faction:          zb.Faction_Air,
-			Name:             "Banshee",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Feral,
-			Damage:           2,
-			Defense:          1,
-			Cost:          2,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-		},
-		{
-			MouldId:          2,
-			Faction:          zb.Faction_Air,
-			Name:             "Azuraz",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Walker,
-			Damage:           1,
-			Defense:          1,
-			Cost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-		},
-		{
-			MouldId:          3,
-			Faction:          zb.Faction_Air,
-			Name:             "NewCard",
-			Rank:             zb.CreatureRank_Minion,
-			Type:             zb.CardType_Walker,
-			Damage:           1,
-			Defense:          1,
-			Cost:          1,
-			PictureTransform: &zb.PictureTransform{Position: &zb.Vector3Float{X: 1, Y: 1, Z: 1}, Scale: &zb.Vector3Float{X: 1, Y: 1, Z: 1}},
-		},
-	}
-
-	var updateCardListRequest = zb.UpdateCardListRequest{
-		Version: "v2",
-		Cards:   expectedCards,
-	}
-
-	t.Run("UpdateCardList", func(t *testing.T) {
-		err := c.UpdateCardList(ctx, &updateCardListRequest)
-		assert.Nil(t, err)
-	})
-	t.Run("Check card v2", func(t *testing.T) {
-		req := zb.GetCardListRequest{Version: "v2"}
-		resp, err := c.GetCardList(ctx, &req)
-		expected := &zb.GetCardListResponse{
-			Cards: expectedCards,
-		}
-		assert.Nil(t, err)
-		assert.NotNil(t, resp)
-		assert.True(t, proto.Equal(expected, resp))
-	})
-	t.Run("Check not exsiting version v3", func(t *testing.T) {
-		req := zb.GetCardListRequest{Version: "v3"}
-		_, err := c.GetCardList(ctx, &req)
-		assert.NotNil(t, err)
-	})
-	// create deck with new card version
-	setupAccount(c, ctx, &zb.UpsertAccountRequest{
-		UserId:  "user1",
-		Image:   "PathToImage",
-		Version: "v1",
-	}, t)
-	t.Run("Create deck", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
-			UserId: "user1",
-			Deck: &zb.Deck{
-				Name:       "deck1",
-				OverlordId: 1,
-				Cards: []*zb.DeckCard{
-					{
-						Amount:   1,
-						CardName: "Banshee",
-					},
-					{
-						Amount:   3,
-						CardName: "NewCard",
-					},
-				},
-			},
-			Version: "v2",
-		})
-		assert.Nil(t, err)
-	})
-	t.Run("Create deck with wrong card version", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
-			UserId: "user1",
-			Deck: &zb.Deck{
-				Name:       "deck2",
-				OverlordId: 1,
-				Cards: []*zb.DeckCard{
-					{
-						Amount:   1,
-						CardName: "Azuraz",
-					},
-					{
-						Amount:   1,
-						CardName: "Puffer",
-					},
-				},
-			},
-			Version: "v2",
-		})
-		assert.NotNil(t, err)
-	})
-
-}
-
-func TestUpdateOverlordLibraryOperations(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	expectedOverlords := []*zb.Overlord{
-		{
-			OverlordId:       1,
-			Name:             "Hero1v2",
-			ShortDescription: "Hero1v2",
-		},
-		{
-			OverlordId:       2,
-			Name:             "Hero2v2",
-			ShortDescription: "Hero2v2",
-		},
-		{
-			OverlordId:       3,
-			Name:             "Hero3v2",
-			ShortDescription: "Hero2v2",
-		},
-	}
-
-	var updateOverlordLibraryRequest = zb.UpdateOverlordLibraryRequest{
-		Version:   "v2",
-		Overlords: expectedOverlords,
-	}
-
-	t.Run("Update overlord library v2", func(t *testing.T) {
-		_, err := c.UpdateOverlordLibrary(ctx, &updateOverlordLibraryRequest)
-		assert.Nil(t, err)
-	})
-	t.Run("Check overlord library v2", func(t *testing.T) {
-		req := zb.ListOverlordLibraryRequest{Version: "v2"}
-		resp, err := c.ListOverlordLibrary(ctx, &req)
-		expected := &zb.ListOverlordLibraryResponse{
-			Overlords: expectedOverlords,
-		}
-		assert.Nil(t, err)
-		assert.NotNil(t, resp)
-		assert.True(t, proto.Equal(expected, resp))
-	})
-	t.Run("Check not exsiting version v3", func(t *testing.T) {
-		req := zb.ListOverlordLibraryRequest{Version: "v3"}
-		_, err := c.ListOverlordLibrary(ctx, &req)
-		assert.NotNil(t, err)
+		assert.Equal(t, "'cards' key missing", err.Error())
 	})
 }
 
@@ -2947,17 +2595,9 @@ func TestAIDeckOperations(t *testing.T) {
 		},
 	}
 
-	t.Run("Set AI Decks", func(t *testing.T) {
-		req := &zb.SetAIDecksRequest{
-			Decks:   aiDecks,
-			Version: "v1",
-		}
-		err := c.SetAIDecks(ctx, req)
-		assert.Nil(t, err)
-	})
-
 	t.Run("Get AI Decks", func(t *testing.T) {
-		_, err := c.GetAIDecks(ctx, &zb.GetAIDecksRequest{
+		err := saveAIDecks(ctx, "v1", &zb.AIDeckList{Decks: aiDecks})
+		_, err = c.GetAIDecks(ctx, &zb.GetAIDecksRequest{
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -2976,15 +2616,6 @@ func TestAIDeckOperations(t *testing.T) {
 			Type: zb.AIType_MIXED_AI,
 		},
 	}
-
-	t.Run("Set AI Decks should fail", func(t *testing.T) {
-		req := &zb.SetAIDecksRequest{
-			Decks:   aiDecks,
-			Version: "v1",
-		}
-		err := c.SetAIDecks(ctx, req)
-		assert.NotNil(t, err)
-	})
 }
 
 func TestKeepAlive(t *testing.T) {
