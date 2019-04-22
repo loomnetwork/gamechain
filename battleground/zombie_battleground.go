@@ -147,115 +147,94 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
-	// initialize versions
-	contentVersion := &zb.ContentVersion{
-		ContentVersion: req.ContentVersion,
-	}
-	if err := ctx.Set(contentVersionKey, contentVersion); err != nil {
-		return err
-	}
-
-	pvpVersion := &zb.PvpVersion{
-		PvpVersion: req.PvpVersion,
-	}
-	if err := ctx.Set(pvpVersionKey, pvpVersion); err != nil {
-		return err
-	}
-
 	return nil
 }
 
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
 	initData := req.InitData
+
 	var overlordList zb.OverlordList
 	var defaultOverlordList zb.OverlordList
 	var cardList zb.CardList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
+	var aiDeckList zb.AIDeckList
 
-	// initialize card library
+	// validation
+	// card library
 	cardList.Cards = initData.Cards
+	if cardList.Cards == nil {
+		return fmt.Errorf("'cards' key missing")
+	}
+
 	for _, card := range cardList.Cards {
 		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("Card '%s' missing value for PictureTransform field", card.Name)
+			return fmt.Errorf("card '%s' missing value for PictureTransform field", card.Name)
 		}
 	}
 
-	if initData.Cards == nil {
-		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, cardListKey), &cardList); err != nil {
-				return err
-			}
-		} else {
-			return fmt.Errorf("'cards' key missing, old version not specified")
+	// overlords
+	overlordList.Overlords = initData.Overlords
+	defaultOverlordList.Overlords = initData.Overlords
+	if overlordList.Overlords == nil {
+		return fmt.Errorf("'heroes' key missing")
+	}
+
+	// default collection
+	cardCollectionList.Cards = initData.DefaultCollection
+	if cardCollectionList.Cards == nil {
+		// HACK: for some reason, empty message are converted to nil
+		// Allow for empty card collection
+		cardCollectionList.Cards = make([]*zb.CardCollectionCard, 0)
+	}
+	if cardCollectionList.Cards == nil {
+		return fmt.Errorf("'default_collection' key missing")
+	}
+
+	// default decks
+	deckList.Decks = initData.DefaultDecks
+	if deckList.Decks == nil {
+		return fmt.Errorf("'default_decks' key missing")
+	}
+	for _, deck := range deckList.Decks {
+		if err := validateCardLibrary(cardList.Cards, deck.Cards); err != nil {
+			return errors.Wrap(err, "error validating default decks")
 		}
 	}
+
+	// AI decks
+	aiDeckList.Decks = initData.AiDecks
+	if aiDeckList.Decks == nil {
+		return fmt.Errorf("'ai_decks' key missing")
+	}
+
+	for _, deck := range aiDeckList.Decks {
+		if err := validateCardLibrary(cardList.Cards, deck.Deck.Cards); err != nil {
+			return errors.Wrap(err, "error validating AI decks")
+		}
+	}
+
+	// initialize card library
 	if err := ctx.Set(MakeVersionedKey(initData.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
 
 	// initialize overlords
-	overlordList.Overlords = initData.Overlords
-	defaultOverlordList.Overlords = initData.Overlords
-	if initData.Overlords == nil {
-		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, overlordListKey), &overlordList); err != nil {
-				return err
-			}
-		} else {
-			return fmt.Errorf("'heroes' key missing, old version not specified")
-		}
-
-	}
 	if err := ctx.Set(MakeVersionedKey(initData.Version, overlordListKey), &overlordList); err != nil {
 		return err
 	}
 
 	// initialize default collection
-	cardCollectionList.Cards = initData.DefaultCollection
-	if initData.DefaultCollection == nil {
-		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultCollectionKey), &cardCollectionList); err != nil {
-				return err
-			}
-		} else {
-			return fmt.Errorf("'default_collection' key missing, old version not specified")
-		}
-
-	}
 	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultCollectionKey), &cardCollectionList); err != nil {
 		return err
 	}
 
 	// initialize default deck
-	deckList.Decks = initData.DefaultDecks
-	if initData.DefaultDecks == nil {
-		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, defaultDeckKey), &deckList); err != nil {
-				return err
-			}
-		} else {
-			return fmt.Errorf("'default_decks' key missing, old version not specified")
-		}
-	}
 	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultDeckKey), &deckList); err != nil {
 		return err
 	}
 
 	// initialize AI decks
-	aiDeckList := zb.AIDeckList{
-		Decks: initData.AiDecks,
-	}
-	if initData.AiDecks == nil {
-		if req.OldVersion != "" {
-			if err := ctx.Get(MakeVersionedKey(req.OldVersion, aiDecksKey), &deckList); err != nil {
-				return err
-			}
-		} else {
-			return fmt.Errorf("'ai_decks' key missing, old version not specified")
-		}
-	}
-
 	if err := ctx.Set(MakeVersionedKey(initData.Version, aiDecksKey), &aiDeckList); err != nil {
 		return err
 	}
@@ -300,18 +279,6 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 			Version:           req.Version,
 		},
 	}, nil
-}
-
-func (z *ZombieBattleground) UpdateCardList(ctx contract.Context, req *zb.UpdateCardListRequest) error {
-	cardList := zb.CardList{
-		Cards: req.Cards,
-	}
-	for _, card := range cardList.Cards {
-		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("card '%s' missing value for PictureTransform field", card.Name)
-		}
-	}
-	return updateCardLibrary(ctx, req.Version, &cardList)
 }
 
 // FIXME: duplicate of ListCardLibrary
@@ -705,27 +672,6 @@ func (z *ZombieBattleground) GetDeck(ctx contract.Context, req *zb.GetDeckReques
 	return &zb.GetDeckResponse{Deck: deck}, nil
 }
 
-func (z *ZombieBattleground) SetAIDecks(ctx contract.Context, req *zb.SetAIDecksRequest) error {
-	if req.Version == "" {
-		return ErrVersionNotSet
-	}
-
-	// validate version on card library
-	cardLibrary, err := getCardLibrary(ctx, req.Version)
-	if err != nil {
-		return err
-	}
-	for _, deck := range req.Decks {
-		if err := validateCardLibrary(cardLibrary.Cards, deck.Deck.Cards); err != nil {
-			return err
-		}
-	}
-	deckList := zb.AIDeckList{
-		Decks: req.Decks,
-	}
-	return saveAIDecks(ctx, req.Version, &deckList)
-}
-
 func (z *ZombieBattleground) GetAIDecks(ctx contract.Context, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
 	if req.Version == "" {
 		return nil, ErrVersionNotSet
@@ -751,7 +697,7 @@ func (z *ZombieBattleground) GetAIDecks(ctx contract.Context, req *zb.GetAIDecks
 	}
 
 	return &zb.GetAIDecksResponse{
-		Decks: decks,
+		AiDecks: decks,
 	}, nil
 }
 
@@ -804,20 +750,6 @@ func (z *ZombieBattleground) ListOverlordLibrary(ctx contract.StaticContext, req
 		return nil, err
 	}
 	return &zb.ListOverlordLibraryResponse{Overlords: overlordList.Overlords}, nil
-}
-
-func (z *ZombieBattleground) UpdateOverlordLibrary(ctx contract.Context, req *zb.UpdateOverlordLibraryRequest) (*zb.UpdateOverlordLibraryResponse, error) {
-	if req.Version == "" {
-		return nil, ErrVersionNotSet
-	}
-
-	var overlordList = zb.OverlordList{
-		Overlords: req.Overlords,
-	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
-		return nil, err
-	}
-	return &zb.UpdateOverlordLibraryResponse{}, nil
 }
 
 func (z *ZombieBattleground) ListOverlords(ctx contract.StaticContext, req *zb.ListOverlordsRequest) (*zb.ListOverlordsResponse, error) {
@@ -1867,49 +1799,6 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamecha
 		TutorialRewardAmount:    1,
 	}
 	return saveState(ctx, state)
-}
-
-func (z *ZombieBattleground) UpdateVersions(ctx contract.Context, req *zb.UpdateVersionsRequest) error {
-	var err error
-	if req.ContentVersion != "" {
-		err = ctx.Set(contentVersionKey, &zb.ContentVersion{
-			ContentVersion: req.ContentVersion,
-		})
-		if err != nil {
-			return err
-		}
-	}
-
-	if req.PvpVersion != "" {
-		err = ctx.Set(pvpVersionKey, &zb.PvpVersion{
-			PvpVersion: req.PvpVersion,
-		})
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (z *ZombieBattleground) GetVersions(ctx contract.StaticContext, req *zb.GetVersionsRequest) (*zb.GetVersionsResponse, error) {
-	var contentVersion zb.ContentVersion
-	var pvpVersion zb.PvpVersion
-	var err error
-	err = ctx.Get(contentVersionKey, &contentVersion)
-	if err != nil {
-		return nil, err
-	}
-
-	err = ctx.Get(pvpVersionKey, &pvpVersion)
-	if err != nil {
-		return nil, err
-	}
-
-	return &zb.GetVersionsResponse{
-		ContentVersion: contentVersion.ContentVersion,
-		PvpVersion:     pvpVersion.PvpVersion,
-	}, nil
 }
 
 func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb.UpdateOracle) error {

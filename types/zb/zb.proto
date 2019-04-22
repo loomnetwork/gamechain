@@ -282,8 +282,7 @@ message UpdateOracle {
 }
 
 message UpdateInitRequest {
-    reserved 1 to 7, 9 to 10;
-    string oldVersion = 8;
+    reserved 1 to 10;
     InitData initData = 11;
 }
 
@@ -335,11 +334,6 @@ message SetTutorialRewardAmountRequest {
 message SetDefaultPlayerDefenseRequest {
     uint64 defense = 1;
     Address oracle = 2;
-}
-
-message UpdateCardListRequest {
-    repeated Card cards = 1;
-    string version = 2;
 }
 
 message GetCardListRequest {
@@ -438,17 +432,12 @@ message ListDecksResponse {
     repeated Deck decks = 1;
 }
 
-message SetAIDecksRequest {
-    string version = 1;
-    repeated AIDeck decks = 2;
-}
-
 message GetAIDecksRequest {
     string version = 1;
 }
 
 message GetAIDecksResponse {
-    repeated AIDeck decks = 1;
+    repeated AIDeck aiDecks = 1;
 }
 
 message ListCardLibraryRequest {
@@ -465,14 +454,6 @@ message ListOverlordLibraryRequest {
 
 message ListOverlordLibraryResponse {
     repeated Overlord overlords  = 1;
-}
-
-message UpdateOverlordLibraryRequest {
-    string version = 1;
-    repeated Overlord overlords  = 2;
-}
-
-message UpdateOverlordLibraryResponse {
 }
 
 message GetCollectionRequest {
@@ -723,10 +704,6 @@ message GetMatchResponse {
     Match match         = 1;
 }
 
-message SetMatchRequest {
-    Match match         = 1;
-}
-
 message GetGameStateRequest {
     int64 matchId = 1;
 }
@@ -740,10 +717,6 @@ message GetInitialGameStateRequest {
 }
 
 message GetInitialGameStateResponse {
-    GameState gameState = 1;
-}
-
-message SetGameStateRequest {
     GameState gameState = 1;
 }
 
@@ -785,32 +758,11 @@ message CheckGameStatusResponse {
 }
 
 message KeepAliveRequest {
-    int64 matchId   = 1;
-    string userId   = 2;
+    int64 matchId = 1;
+    string userId = 2;
 }
 
 message KeepAliveResponse {
-}
-
-message UpdateVersionsRequest {
-    string contentVersion = 1;
-    string pvpVersion = 2;
-}
-
-message ContentVersion {
-    string contentVersion = 1;
-}
-
-message PvpVersion {
-    string pvpVersion = 1;
-}
-
-message GetVersionsRequest {
-}
-
-message GetVersionsResponse {
-    string contentVersion = 1;
-    string pvpVersion = 2;
 }
 
 message ReplayGameRequest {
@@ -1705,4 +1657,24 @@ message HistoryEndGame {
     int64 matchId   = 1;
     string userId   = 2;
     string winnerId = 3;
+}
+
+message DefaultDecksDataContainer {
+    repeated Deck defaultDecks = 1;
+}
+
+message DefaultCollectionDataContainer {
+    repeated CardCollectionCard defaultCollection = 1;
+}
+
+message CardLibraryDataContainer {
+    repeated Card cards = 1;
+}
+
+message OverlordsDataContainer {
+     repeated Overlord overlords = 1;
+}
+
+message AIDecksDataContainer {
+    repeated AIDeck aiDecks = 1;
 }

@@ -33,7 +33,7 @@ func validateCardLibrary(cards []*zb.Card, deckCards []*zb.DeckCard) error {
 		}
 
 		if _, ok := cardmap[deckCard.MouldId]; !ok {
-			return fmt.Errorf("card %d not found in card library", deckCard.MouldId)
+			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
 		}
 	}
 	return nil

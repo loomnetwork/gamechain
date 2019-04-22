@@ -37,8 +37,6 @@ var (
 	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
-	contentVersionKey           = []byte("content-version")
-	pvpVersionKey               = []byte("pvp-version")
 )
 
 var (
