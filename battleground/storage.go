@@ -37,6 +37,7 @@ var (
 	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
+	overlordExperienceInfoKey   = []byte("overlord-experience")
 )
 
 var (
@@ -460,7 +461,7 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardIn
 		Defense:   cardDetails.Defense,
 		Type:      cardDetails.Type,
 		Faction:   cardDetails.Faction,
-		Cost:   cardDetails.Cost,
+		Cost:      cardDetails.Cost,
 		Abilities: cardDetails.Abilities,
 	}
 }

@@ -250,6 +250,45 @@ message AIDeckList {
     repeated AIDeck decks = 1;
 }
 
+message OverlordExperienceInfo{
+    repeated LevelReward rewards = 1;
+    repeated ExperienceAction experienceActions = 2;
+    int64 fixed = 3;
+    int64 experienceStep = 4;
+    int64 gooRewardStep = 5;
+    int64 maxLevel = 6;
+}
+
+message LevelReward{
+    int64 level = 1;
+    OverlordSkillRewardItem skillReward = 2;
+    UnitRewardItem unitReward = 3;
+}
+
+message OverlordSkillRewardItem{
+    int64 skillIndex = 1;
+}
+
+message UnitRewardItem{
+    string rank = 1;
+    int64 count = 2;
+}
+
+message ExperienceAction{
+    ExperienceActionType action = 1;
+    int64 experience = 2;
+}
+
+message ExperienceActionType {
+    enum Enum {
+        KillOverlord = 0;
+        KillMinion = 1;
+        PlayCard = 2;
+        ActivateRankAbility = 3;
+        UseOverlordAbility = 4;
+    }
+}
+
 // Request and Response
 
 message InitData {
@@ -258,8 +297,9 @@ message InitData {
     repeated Card cards = 3;
     repeated Overlord overlords = 4;
     repeated AIDeck aiDecks = 5;
-    string version = 6;
-    Address oracle = 7;
+    OverlordExperienceInfo overlordExperienceInfo = 6;
+    string version = 7;
+    Address oracle = 8;
 }
 
 message InitRequest {
