@@ -157,6 +157,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
 	var aiDeckList zb.AIDeckList
+	var overlordExperienceInfo zb.OverlordExperienceInfo
 
 	// validation
 	// card library
@@ -212,6 +213,12 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		}
 	}
 
+	// overlord experience info
+	overlordExperienceInfo.Rewards = initData.OverlordExperienceInfo.Rewards
+	if overlordExperienceInfo.Rewards == nil {
+		return fmt.Errorf("'rewards' key missing")
+	}
+
 	// initialize card library
 	if err := ctx.Set(MakeVersionedKey(initData.Version, cardListKey), &cardList); err != nil {
 		return err
@@ -234,6 +241,11 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 
 	// initialize AI decks
 	if err := ctx.Set(MakeVersionedKey(initData.Version, aiDecksKey), &aiDeckList); err != nil {
+		return err
+	}
+
+	// initialize overlord experience
+	if err := ctx.Set(MakeVersionedKey(initData.Version, overlordExperienceInfoKey), &overlordExperienceInfo); err != nil {
 		return err
 	}
 
@@ -270,7 +282,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	return &zb.GetInitResponse{
 		InitData: &zb.InitData{
 			Cards:             cardList.Cards,
-			Overlords:            overlordList.Overlords,
+			Overlords:         overlordList.Overlords,
 			DefaultDecks:      deckList.Decks,
 			DefaultCollection: cardCollectionList.Cards,
 			AiDecks:           aiDeckList.Decks,
