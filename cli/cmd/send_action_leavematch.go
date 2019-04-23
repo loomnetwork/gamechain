@@ -27,7 +27,9 @@ var sendActionLeaveMatchCmd = &cobra.Command{
 				ActionType: zb.PlayerActionType_LeaveMatch,
 				PlayerId:   sendActionLeaveMatchCmdArgs.userID,
 				Action: &zb.PlayerAction_LeaveMatch{
-					LeaveMatch: &zb.PlayerActionLeaveMatch{},
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_PlayerLeave,
+					},
 				},
 			},
 		}
