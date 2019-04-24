@@ -275,7 +275,7 @@ message UnitRewardItem{
 }
 
 message ExperienceAction{
-    ExperienceActionType action = 1;
+    ExperienceActionType.Enum action = 1;
     int64 experience = 2;
 }
 
@@ -297,9 +297,9 @@ message InitData {
     repeated Card cards = 3;
     repeated Overlord overlords = 4;
     repeated AIDeck aiDecks = 5;
-    OverlordExperienceInfo overlordExperienceInfo = 6;
-    string version = 7;
-    Address oracle = 8;
+    string version = 6;
+    Address oracle = 7;
+    OverlordExperienceInfo overlordExperienceInfo = 8;
 }
 
 message InitRequest {
@@ -312,6 +312,7 @@ message InitRequest {
     Address oracle                             = 7;
     string contentVersion                      = 8;
     string pvpVersion                          = 9;
+    OverlordExperienceInfo overlordExperienceInfo = 10;
 }
 
 message UpdateOracle {

@@ -145,11 +145,27 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
+	// initialize overlord experience info
+	ctx.Logger().Info(fmt.Sprintf("======== init ===="))
+	overlordExperienceInfo := zb.OverlordExperienceInfo{
+		Rewards:           req.OverlordExperienceInfo.Rewards,
+		ExperienceActions: req.OverlordExperienceInfo.ExperienceActions,
+		Fixed:             req.OverlordExperienceInfo.Fixed,
+		ExperienceStep:    req.OverlordExperienceInfo.ExperienceStep,
+		GooRewardStep:     req.OverlordExperienceInfo.GooRewardStep,
+		MaxLevel:          req.OverlordExperienceInfo.MaxLevel,
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, overlordExperienceInfoKey), &overlordExperienceInfo); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
 	initData := req.InitData
+
+	ctx.Logger().Info(fmt.Sprintf("Update Init %+v", req.InitData.OverlordExperienceInfo))
 
 	var overlordList zb.OverlordList
 	var defaultOverlordList zb.OverlordList
@@ -216,7 +232,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	// overlord experience info
 	overlordExperienceInfo.Rewards = initData.OverlordExperienceInfo.Rewards
 	if overlordExperienceInfo.Rewards == nil {
-		return fmt.Errorf("'rewards' key missing")
+		return fmt.Errorf("'overlord experience' missing")
 	}
 
 	// initialize card library
@@ -258,6 +274,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
 	var aiDeckList zb.AIDeckList
+	var overlordExperience zb.OverlordExperienceInfo
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return nil, errors.Wrap(err, "error getting cardList")
@@ -279,14 +296,19 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting aiDeckList")
 	}
 
+	if err := ctx.Get(MakeVersionedKey(req.Version, overlordExperienceInfoKey), &overlordExperience); err != nil {
+		return nil, errors.Wrap(err, "error getting overlord Experience info")
+	}
+
 	return &zb.GetInitResponse{
 		InitData: &zb.InitData{
-			Cards:             cardList.Cards,
-			Overlords:         overlordList.Overlords,
-			DefaultDecks:      deckList.Decks,
-			DefaultCollection: cardCollectionList.Cards,
-			AiDecks:           aiDeckList.Decks,
-			Version:           req.Version,
+			Cards:                  cardList.Cards,
+			Overlords:              overlordList.Overlords,
+			DefaultDecks:           deckList.Decks,
+			DefaultCollection:      cardCollectionList.Cards,
+			AiDecks:                aiDeckList.Decks,
+			OverlordExperienceInfo: &overlordExperience,
+			Version:                req.Version,
 		},
 	}, nil
 }
