@@ -146,7 +146,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	// initialize overlord experience info
-	ctx.Logger().Info(fmt.Sprintf("======== init ===="))
 	overlordExperienceInfo := zb.OverlordExperienceInfo{
 		Rewards:           req.OverlordExperienceInfo.Rewards,
 		ExperienceActions: req.OverlordExperienceInfo.ExperienceActions,
@@ -165,15 +164,13 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInitRequest) error {
 	initData := req.InitData
 
-	ctx.Logger().Info(fmt.Sprintf("Update Init %+v", req.InitData.OverlordExperienceInfo))
-
 	var overlordList zb.OverlordList
 	var defaultOverlordList zb.OverlordList
 	var cardList zb.CardList
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
 	var aiDeckList zb.AIDeckList
-	var overlordExperienceInfo zb.OverlordExperienceInfo
+	var overlordExperienceInfo *zb.OverlordExperienceInfo
 
 	// validation
 	// card library
@@ -230,8 +227,8 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	// overlord experience info
-	overlordExperienceInfo.Rewards = initData.OverlordExperienceInfo.Rewards
-	if overlordExperienceInfo.Rewards == nil {
+	overlordExperienceInfo = initData.OverlordExperienceInfo
+	if overlordExperienceInfo == nil {
 		return fmt.Errorf("'overlord experience' missing")
 	}
 
@@ -261,7 +258,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	// initialize overlord experience
-	if err := ctx.Set(MakeVersionedKey(initData.Version, overlordExperienceInfoKey), &overlordExperienceInfo); err != nil {
+	if err := ctx.Set(overlordExperienceInfoKey, overlordExperienceInfo); err != nil {
 		return err
 	}
 
@@ -1370,6 +1367,56 @@ func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req
 	}, nil
 }
 
+// calcualed overlord level
+func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, error) {
+	var level = overlord.Level
+	var experience = overlord.Experience
+
+	overlordExperienceInfo, err := loadOverlordExperienceInfo(ctx)
+	if err != nil {
+		return -1, err
+	}
+
+	requiredExperienceForNewLevel, err := getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level)
+	if err != nil {
+		return -1, err
+	}
+
+	for experience >= requiredExperienceForNewLevel && level < overlordExperienceInfo.MaxLevel {
+		level++
+
+		requiredExperienceForNewLevel, err = getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level)
+		if err != nil {
+			return -1, err
+		}
+	}
+
+	return level, nil
+}
+
+// get required experience
+func getRequiredExperienceForNewLevel(ctx contract.Context, overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) (int64, error) {
+	var fixed = overlordExperienceInfo.Fixed
+	var experienceStep = overlordExperienceInfo.ExperienceStep
+	var requiredExperience = fixed + experienceStep*(level+1)
+	return requiredExperience, nil
+}
+
+// get overlord level
+func (z *ZombieBattleground) GetOverlordLevel(ctx contract.StaticContext, req *zb.GetOverlordLevelRequest) (*zb.GetOverlordLevelResponse, error) {
+	overlordList, err := loadOverlords(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
+	if overlord == nil {
+		return nil, contract.ErrNotFound
+	}
+
+	return &zb.GetOverlordLevelResponse{Experience: overlord.Experience, Level: overlord.Level}, nil
+}
+
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -1379,6 +1426,37 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	match.Status = zb.Match_Ended
 	if err := saveMatch(ctx, match); err != nil {
 		return nil, err
+	}
+
+	// save experience and level for both players
+	for _, playerState := range match.PlayerStates {
+		overlordList, err := loadOverlords(ctx, playerState.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		overlordId := playerState.Deck.OverlordId
+		overlord := getOverlordById(overlordList.Overlords, overlordId)
+		if overlord == nil {
+			return nil, contract.ErrNotFound
+		}
+
+		// get player overlord and add experience and update level
+		if playerState.Id == req.UserId {
+			overlord.Experience += req.PlayerMatchExperience
+		} else {
+			// get opponent overlord and add experience and update level
+			overlord.Experience += req.OpponentMatchExperience
+		}
+
+		overlord.Level, err = calculateOverloadUpdatedLevel(ctx, overlord)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := saveOverlords(ctx, playerState.Id, overlordList); err != nil {
+			return nil, err
+		}
 	}
 
 	// delete user match for both users
