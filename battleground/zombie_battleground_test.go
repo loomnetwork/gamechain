@@ -2380,13 +2380,18 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 		assert.EqualValues(t, 0, response.GameState.CurrentPlayerIndex)
 	})
 
-	// player1 don't sent enturn within TurnTimeout
-	// move time forward to expire the player's turn
-	fc.SetTime(now.Add(TurnTimeout + (time.Second * 10)))
-
-	t.Run("Player2_CheckStatus", func(t *testing.T) {
-		_, err := c.CheckGameStatus(ctx, &zb.CheckGameStatusRequest{
+	t.Run("Player1_Leave", func(t *testing.T) {
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
+				PlayerId:   "player-1",
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_PlayerLeave,
+					},
+				},
+			},
 		})
 		assert.Nil(t, err)
 	})
@@ -2544,8 +2549,17 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	fc.SetTime(now.Add(TurnTimeout + (time.Second * 10)))
 
 	t.Run("Player2_CheckStatus", func(t *testing.T) {
-		_, err := c.CheckGameStatus(ctx, &zb.CheckGameStatusRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
+				PlayerId:   "player-1",
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_PlayerLeave,
+					},
+				},
+			},
 		})
 		assert.Nil(t, err)
 	})

@@ -656,6 +656,7 @@ message PlayerActionEvent {
     Match match = 2;
     History block = 3;
     int64 CurrentActionIndex = 4;
+    bool createdByBackend = 5;
 }
 
 message PlayerProfile {
@@ -794,13 +795,6 @@ message EndMatchRequest {
 
 message EndMatchResponse {
     GameState gameState = 1;
-}
-
-message CheckGameStatusRequest {
-    int64 matchId = 1;
-}
-
-message CheckGameStatusResponse {
 }
 
 message KeepAliveRequest {
@@ -1507,6 +1501,13 @@ message OverlordSkillPrototype {
 
 message PlayerActionLeaveMatch {
     string winner = 1;
+    Reason reason = 2;
+
+    enum Reason {
+        None = 0;
+        PlayerLeave = 1;
+        KeepAliveTimeout = 2;
+    }
 }
 
 message PlayerActionCardPlay {
