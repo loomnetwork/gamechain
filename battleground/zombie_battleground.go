@@ -978,7 +978,8 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.Re
 				ctx.Delete(UserMatchKey(pp.RegistrationData.UserId))
 				// notify player
 				emitMsg := zb.PlayerActionEvent{
-					Match: match,
+					Match:            match,
+					CreatedByBackend: true,
 				}
 				data, err := proto.Marshal(&emitMsg)
 				if err != nil {
@@ -1036,6 +1037,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		// notify player
 		emitMsg := zb.PlayerActionEvent{
 			Match: match,
+			CreatedByBackend: true,
 		}
 		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
@@ -1205,7 +1207,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 	}
 
 	emitMsg := zb.PlayerActionEvent{
-		Match: match,
+		Match:            match,
+		CreatedByBackend: true,
 	}
 
 	if opponentAccepted {
@@ -1257,6 +1260,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		emitMsg = zb.PlayerActionEvent{
 			Match: match,
 			Block: &zb.History{List: gp.history},
+			CreatedByBackend: true,
 		}
 	}
 
@@ -1321,7 +1325,8 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb.Cance
 		}
 		// notify player
 		emitMsg := zb.PlayerActionEvent{
-			Match: match,
+			Match:            match,
+			CreatedByBackend: true,
 		}
 		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
@@ -1434,8 +1439,9 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	// Don't think we need this since endgame should be emitted to match
 	// match.Topics = append(match.Topics, "endgame")
 	emitMsg := zb.PlayerActionEvent{
-		Match: match,
-		Block: &zb.History{List: gp.history},
+		Match:            match,
+		Block:            &zb.History{List: gp.history},
+		CreatedByBackend: true,
 	}
 	data, err := proto.Marshal(&emitMsg)
 	if err != nil {
@@ -1444,70 +1450,6 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	ctx.EmitTopics([]byte(data), match.Topics...)
 
 	return &zb.EndMatchResponse{GameState: gamestate}, nil
-}
-
-func (z *ZombieBattleground) CheckGameStatus(ctx contract.Context, req *zb.CheckGameStatusRequest) (*zb.CheckGameStatusResponse, error) {
-	match, err := loadMatch(ctx, req.MatchId)
-	if err != nil {
-		return nil, err
-	}
-
-	gamestate, err := loadGameState(ctx, match.Id)
-	if err != nil {
-		return nil, err
-	}
-	gp, err := GamePlayFrom(gamestate, match.UseBackendGameLogic, match.PlayerDebugCheats)
-	if err != nil {
-		return nil, err
-	}
-	// Check if the current player is gone for more than timeout.
-	// If there is no action added, we check the gamestate created time.
-	var createdAt time.Time
-	latestAction := gp.current()
-	if latestAction == nil {
-		createdAt = time.Unix(gamestate.CreatedAt, 0)
-	} else {
-		createdAt = time.Unix(latestAction.CreatedAt, 0)
-	}
-	activePlayer := gp.activePlayer()
-	if createdAt.Add(TurnTimeout).Before(ctx.Now()) {
-		// create a leave match request and append to the game state
-		leaveMatchAction := zb.PlayerAction{
-			ActionType: zb.PlayerActionType_LeaveMatch,
-			PlayerId:   activePlayer.Id,
-			Action: &zb.PlayerAction_LeaveMatch{
-				LeaveMatch: &zb.PlayerActionLeaveMatch{},
-			},
-			CreatedAt: ctx.Now().Unix(),
-		}
-		err := gp.AddAction(&leaveMatchAction)
-		// ignore the error in case this method is called mutiple times
-		if err == nil {
-			if err := saveGameState(ctx, gamestate); err != nil {
-				return nil, err
-			}
-		}
-		// update match status
-		match.Status = zb.Match_PlayerLeft
-		if err := saveMatch(ctx, match); err != nil {
-			return nil, err
-		}
-		// update winner
-		leaveMatchReq := leaveMatchAction.GetLeaveMatch()
-		leaveMatchReq.Winner = gp.State.Winner
-		emitMsg := zb.PlayerActionEvent{
-			PlayerAction: &leaveMatchAction,
-			Match:        match,
-			Block:        &zb.History{List: gp.history},
-		}
-		data, err := proto.Marshal(&emitMsg)
-		if err != nil {
-			return nil, err
-		}
-		ctx.EmitTopics([]byte(data), match.Topics...)
-	}
-
-	return &zb.CheckGameStatusResponse{}, nil
 }
 
 func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.PlayerActionRequest) (*zb.PlayerActionResponse, error) {
@@ -1572,6 +1514,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		CurrentActionIndex: gamestate.CurrentActionIndex,
 		Match:              match,
 		Block:              &zb.History{List: gp.history},
+		CreatedByBackend:   true,
 	}
 
 	data, err := proto.Marshal(&emitMsg)
@@ -1733,7 +1676,9 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 				ActionType: zb.PlayerActionType_LeaveMatch,
 				PlayerId:   lastseen.Id,
 				Action: &zb.PlayerAction_LeaveMatch{
-					LeaveMatch: &zb.PlayerActionLeaveMatch{},
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_KeepAliveTimeout,
+					},
 				},
 				CreatedAt: ctx.Now().Unix(),
 			}
@@ -1753,9 +1698,10 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRe
 			leaveMatchReq := leaveMatchAction.GetLeaveMatch()
 			leaveMatchReq.Winner = gp.State.Winner
 			emitMsg := zb.PlayerActionEvent{
-				PlayerAction: &leaveMatchAction,
-				Match:        match,
-				Block:        &zb.History{List: gp.history},
+				PlayerAction:     &leaveMatchAction,
+				Match:            match,
+				Block:            &zb.History{List: gp.history},
+				CreatedByBackend: true,
 			}
 			data, err := proto.Marshal(&emitMsg)
 			if err != nil {
