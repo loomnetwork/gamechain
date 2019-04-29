@@ -183,6 +183,15 @@ func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordLi
 	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
+func loadOverlordExperienceInfo(ctx contract.Context) (*zb.OverlordExperienceInfo, error) {
+	var overlordExperience zb.OverlordExperienceInfo
+	if err := ctx.Get(overlordExperienceInfoKey, &overlordExperience); err != nil {
+		return nil, errors.Wrap(err, "error getting overlord Experience info")
+	}
+
+	return &overlordExperience, nil
+}
+
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
 	emitMsg := struct {
 		Owner  string

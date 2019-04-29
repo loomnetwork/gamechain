@@ -163,6 +163,16 @@ message SetOverlordLevelResponse {
     int64 level = 2;
 }
 
+message GetOverlordLevelRequest {
+    string user_id = 1;
+    int64 overlordId = 2;
+}
+
+message GetOverlordLevelResponse{
+    int64 experience = 1;
+    int64 level = 2;
+}
+
 message GetOverlordRequest {
     string user_id = 1;
     int64 overlordId = 2;
@@ -778,6 +788,8 @@ message EndMatchRequest {
     int64 matchId   = 1;
     string userId   = 2;
     string winnerId = 3;
+    int64 playerMatchExperience = 4;
+    int64 opponentMatchExperience = 5;
 }
 
 message EndMatchResponse {

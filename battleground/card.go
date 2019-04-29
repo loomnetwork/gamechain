@@ -3,10 +3,11 @@ package battleground
 import (
 	"errors"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 )
@@ -81,6 +82,7 @@ func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 
 func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord {
 	for _, overlord := range overlordList {
+		fmt.Sprintf("overlord = %s", overlord.Name)
 		if overlord.OverlordId == overlordId {
 			return overlord
 		}
