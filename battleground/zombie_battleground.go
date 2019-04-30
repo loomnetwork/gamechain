@@ -145,19 +145,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		return err
 	}
 
-	// initialize overlord experience info
-	overlordExperienceInfo := zb.OverlordExperienceInfo{
-		Rewards:           req.OverlordExperienceInfo.Rewards,
-		ExperienceActions: req.OverlordExperienceInfo.ExperienceActions,
-		Fixed:             req.OverlordExperienceInfo.Fixed,
-		ExperienceStep:    req.OverlordExperienceInfo.ExperienceStep,
-		GooRewardStep:     req.OverlordExperienceInfo.GooRewardStep,
-		MaxLevel:          req.OverlordExperienceInfo.MaxLevel,
-	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordExperienceInfoKey), &overlordExperienceInfo); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -1014,7 +1001,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		}
 		// notify player
 		emitMsg := zb.PlayerActionEvent{
-			Match: match,
+			Match:            match,
 			CreatedByBackend: true,
 		}
 		data, err := proto.Marshal(&emitMsg)
@@ -1236,8 +1223,8 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 		match.Status = zb.Match_Started
 
 		emitMsg = zb.PlayerActionEvent{
-			Match: match,
-			Block: &zb.History{List: gp.history},
+			Match:            match,
+			Block:            &zb.History{List: gp.history},
 			CreatedByBackend: true,
 		}
 	}
@@ -1372,41 +1359,6 @@ func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req
 	}, nil
 }
 
-// calcualed overlord level
-func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, error) {
-	var level = overlord.Level
-	var experience = overlord.Experience
-
-	overlordExperienceInfo, err := loadOverlordExperienceInfo(ctx)
-	if err != nil {
-		return -1, err
-	}
-
-	requiredExperienceForNewLevel, err := getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level)
-	if err != nil {
-		return -1, err
-	}
-
-	for experience >= requiredExperienceForNewLevel && level < overlordExperienceInfo.MaxLevel {
-		level++
-
-		requiredExperienceForNewLevel, err = getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level)
-		if err != nil {
-			return -1, err
-		}
-	}
-
-	return level, nil
-}
-
-// get required experience
-func getRequiredExperienceForNewLevel(ctx contract.Context, overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) (int64, error) {
-	var fixed = overlordExperienceInfo.Fixed
-	var experienceStep = overlordExperienceInfo.ExperienceStep
-	var requiredExperience = fixed + experienceStep*(level+1)
-	return requiredExperience, nil
-}
-
 // get overlord level
 func (z *ZombieBattleground) GetOverlordLevel(ctx contract.StaticContext, req *zb.GetOverlordLevelRequest) (*zb.GetOverlordLevelResponse, error) {
 	overlordList, err := loadOverlords(ctx, req.UserId)
@@ -1433,6 +1385,17 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
+	// load game state
+	gameState, err := loadGameState(ctx, req.MatchId)
+	if err != nil {
+		return nil, err
+	}
+
+	looserOverlordIndex := 1
+	if gameState.CurrentPlayerIndex == 1 {
+		looserOverlordIndex = 0
+	}
+
 	// save experience and level for both players
 	for _, playerState := range match.PlayerStates {
 		overlordList, err := loadOverlords(ctx, playerState.Id)
@@ -1446,12 +1409,12 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			return nil, contract.ErrNotFound
 		}
 
-		// get player overlord and add experience and update level
+		// get winner overlord and add experience and update level
 		if playerState.Id == req.UserId {
-			overlord.Experience += req.PlayerMatchExperience
+			overlord.Experience += req.MatchExperiences[gameState.CurrentPlayerIndex]
 		} else {
-			// get opponent overlord and add experience and update level
-			overlord.Experience += req.OpponentMatchExperience
+			// get loser overlord and add experience and update level
+			overlord.Experience += req.MatchExperiences[looserOverlordIndex]
 		}
 
 		overlord.Level, err = calculateOverloadUpdatedLevel(ctx, overlord)
