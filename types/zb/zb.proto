@@ -789,8 +789,7 @@ message EndMatchRequest {
     int64 matchId   = 1;
     string userId   = 2;
     string winnerId = 3;
-    int64 playerMatchExperience = 4;
-    int64 opponentMatchExperience = 5;
+    repeated int64 matchExperiences = 4;
 }
 
 message EndMatchResponse {

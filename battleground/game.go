@@ -1392,3 +1392,28 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 		return nil
 	}
 }
+
+// calcualed overlord level
+func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, error) {
+	var level = overlord.Level
+	var experience = overlord.Experience
+
+	overlordExperienceInfo, err := loadOverlordExperienceInfo(ctx)
+	if err != nil {
+		return -1, err
+	}
+
+	for experience >= getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level) && level < overlordExperienceInfo.MaxLevel {
+		level++
+	}
+
+	return level, nil
+}
+
+// get required experience
+func getRequiredExperienceForNewLevel(ctx contract.Context, overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) int64 {
+	var fixed = overlordExperienceInfo.Fixed
+	var experienceStep = overlordExperienceInfo.ExperienceStep
+	var requiredExperience = fixed + experienceStep*(level+1)
+	return requiredExperience
+}
