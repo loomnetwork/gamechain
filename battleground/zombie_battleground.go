@@ -1417,9 +1417,23 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			overlord.Experience += req.MatchExperiences[looserOverlordIndex]
 		}
 
-		overlord.Level, err = calculateOverloadUpdatedLevel(ctx, overlord)
+		var levelRewards []*zb.LevelReward
+		overlord.Level, levelRewards, err = calculateOverloadUpdatedLevel(ctx, overlord)
 		if err != nil {
 			return nil, err
+		}
+
+		ctx.Logger().Debug(fmt.Sprintf("level Rewards len %s : ", len(levelRewards)))
+		for i := 0; i < len(levelRewards); i++ {
+
+			// skill rewards
+			if levelRewards[i].SkillReward != nil {
+				for j := 0; i < len(overlord.Skills); j++ {
+					if overlord.Skills[j].Id == levelRewards[i].SkillReward.SkillIndex {
+						overlord.Skills[j].Unlocked = true
+					}
+				}
+			}
 		}
 
 		if err := saveOverlords(ctx, playerState.Id, overlordList); err != nil {

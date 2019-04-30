@@ -1394,26 +1394,51 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 }
 
 // calcualed overlord level
-func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, error) {
+func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, []*zb.LevelReward, error) {
 	var level = overlord.Level
 	var experience = overlord.Experience
 
 	overlordExperienceInfo, err := loadOverlordExperienceInfo(ctx)
 	if err != nil {
-		return -1, err
+		return -1, nil, err
 	}
 
-	for experience >= getRequiredExperienceForNewLevel(ctx, overlordExperienceInfo, level) && level < overlordExperienceInfo.MaxLevel {
+	var levelRewards []*zb.LevelReward
+	var index = 0
+	for experience >= getRequiredExperienceForNewLevel(overlordExperienceInfo, level) && level < overlordExperienceInfo.MaxLevel {
 		level++
+
+		// reward
+		levelReward := getLevelReward(overlordExperienceInfo, level)
+		if levelReward == nil {
+			ctx.Logger().Info("level Reward is nil")
+			return -1, nil, err
+		}
+
+		ctx.Logger().Info("level Reward is %s : ", levelReward.Level)
+		ctx.Logger().Info(fmt.Sprintf("level Reward is %s : ", levelReward.Level))
+		levelRewards[index] = levelReward
+		index++
 	}
 
-	return level, nil
+	return level, levelRewards, nil
 }
 
 // get required experience
-func getRequiredExperienceForNewLevel(ctx contract.Context, overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) int64 {
+func getRequiredExperienceForNewLevel(overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) int64 {
 	var fixed = overlordExperienceInfo.Fixed
 	var experienceStep = overlordExperienceInfo.ExperienceStep
 	var requiredExperience = fixed + experienceStep*(level+1)
 	return requiredExperience
+}
+
+// get level rewards
+func getLevelReward(overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) *zb.LevelReward {
+	for i := 0; i < len(overlordExperienceInfo.Rewards); i++ {
+		if overlordExperienceInfo.Rewards[i].Level == level {
+			return overlordExperienceInfo.Rewards[i]
+		}
+	}
+
+	return nil
 }
