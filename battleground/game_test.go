@@ -25,7 +25,7 @@ func TestGameStateFunc(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -177,7 +177,7 @@ func TestInvalidUserTurn(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -208,7 +208,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -275,7 +275,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -616,7 +616,7 @@ func TestCardPlay(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -730,7 +730,7 @@ func TestCheats(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"

@@ -112,7 +112,7 @@ func createSimpleGame(t *testing.T) *Gameplay {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"

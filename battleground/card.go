@@ -22,17 +22,27 @@ var (
 	ErrDeckNameTooLong = fmt.Errorf("deck name is more than %d characters", MaxDeckNameChar)
 )
 
-func validateCardLibrary(cards []*zb.Card, deckCards []*zb.DeckCard) error {
-	cardmap := make(map[int64]interface{})
-	for _, card := range cards {
-		cardmap[card.MouldId] = struct{}{}
+func validateCardLibraryCards(cardLibrary []*zb.Card) error {
+	for _, card := range cardLibrary {
+		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+		}
+	}
+
+	return nil
+}
+
+func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb.DeckCard) error {
+	cardMap := make(map[int64]interface{})
+	for _, card := range cardLibrary {
+		cardMap[card.MouldId] = struct{}{}
 	}
 	for _, deckCard := range deckCards {
-		if deckCard.MouldId == 0 {
+		if deckCard.MouldId <= 0 {
 			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
 		}
 
-		if _, ok := cardmap[deckCard.MouldId]; !ok {
+		if _, ok := cardMap[deckCard.MouldId]; !ok {
 			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
 		}
 	}
