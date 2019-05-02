@@ -40,7 +40,7 @@ loom genkey -k priv
 ./bin/zb-cli update_account -k priv -u loom -v "{\"image\":\"Image2\", \"game_membership_tier\": 2}"
 
 # Get Decks
-./bin/zb-cli get_decks -k priv -u loom
+./bin/zb-cli get_decks -k priv -u loom -v v1
 
 # Get Deck by id
 ./bin/zb-cli get_deck -k priv -u loom --deckId 0
@@ -49,7 +49,7 @@ loom genkey -k priv
 ./bin/zb-cli create_deck -k priv -u loom -v v2 -d "{\"overlordId\":\"1\", \"name\": \"NewDeck\", \"cards\": [ {\"card_name\": \"Banshee\", \"amount\": 2}, {\"card_name\": \"Breezee\", \"amount\": 1} ]}"
 
 # Delete Deck by id
-./bin/zb-cli delete_deck -k priv -u loom --deckId 0
+./bin/zb-cli delete_deck -k priv -u loom --deckId 0 -v v1
 ```
 
 ## Oracle

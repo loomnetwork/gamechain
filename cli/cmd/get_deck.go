@@ -6,7 +6,6 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -14,6 +13,7 @@ import (
 var getDeckCmdArgs struct {
 	userID string
 	deckID int64
+	version string
 }
 
 var getDeckCmd = &cobra.Command{
@@ -21,17 +21,14 @@ var getDeckCmd = &cobra.Command{
 	Short: "gets deck for zombiebattleground by its id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := loom.Address{
-			ChainID: commonTxObjs.rpcClient.GetChainID(),
-			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
-		}
 
 		req := &zb.GetDeckRequest{
 			UserId: getDeckCmdArgs.userID,
 			DeckId: getDeckCmdArgs.deckID,
+			Version: getDeckCmdArgs.version,
 		}
 		var result zb.GetDeckResponse
-		_, err := commonTxObjs.contract.StaticCall("GetDeck", req, callerAddr, &result)
+		_, err := commonTxObjs.contract.Call("GetDeck", req, signer, &result)
 		if err != nil {
 			return err
 		}
@@ -48,7 +45,7 @@ var getDeckCmd = &cobra.Command{
 			fmt.Printf("deck id: %v\n", result.Deck.Id)
 			fmt.Printf("overlord id: %v\n", result.Deck.OverlordId)
 			for _, card := range result.Deck.Cards {
-				fmt.Printf("card_name: %s, amount: %d\n", card.CardName, card.Amount)
+				fmt.Printf("mould id: %d, amount: %d\n", card.MouldId, card.Amount)
 			}
 		}
 		return nil
@@ -60,4 +57,7 @@ func init() {
 
 	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	getDeckCmd.Flags().Int64VarP(&getDeckCmdArgs.deckID, "deckId", "", 0, "DeckId of account")
+	getDeckCmd.Flags().StringVarP(&getDeckCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = getDeckCmd.MarkFlagRequired("version")
 }

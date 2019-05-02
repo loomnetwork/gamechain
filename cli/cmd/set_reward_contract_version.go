@@ -54,4 +54,6 @@ func init() {
 	rootCmd.AddCommand(setRewardContractVersionCmd)
 
 	setRewardContractVersionCmd.Flags().Uint64VarP(&setRewardContractVersionCmdArgs.version, "version", "v", 1, "version")
+
+	_ = setRewardContractVersionCmd.MarkFlagRequired("version")
 }

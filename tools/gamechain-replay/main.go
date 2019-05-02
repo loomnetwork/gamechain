@@ -209,7 +209,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 			Version: game.Version,
 		})
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error editing deck")
 		}
 
 		request := &zb.RegisterPlayerPoolRequest{
@@ -228,7 +228,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 
 		_, err := zbContract.RegisterPlayerPool(ctx, request)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error calling RegisterPlayerPool")
 		}
 	}
 
@@ -236,13 +236,13 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		UserId: game.Players[0].Id,
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error calling FindMatch 1")
 	}
 	findMatchResp, err = zbContract.FindMatch(ctx, &zb.FindMatchRequest{
 		UserId: game.Players[1].Id,
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error calling FindMatch 2")
 	}
 
 	acceptMatchResp, err := zbContract.AcceptMatch(ctx, &zb.AcceptMatchRequest{
@@ -250,14 +250,14 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		MatchId: findMatchResp.Match.Id,
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error calling AcceptMatch 1")
 	}
 	acceptMatchResp, err = zbContract.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 		UserId:  game.Players[1].Id,
 		MatchId: findMatchResp.Match.Id,
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error calling AcceptMatch 2")
 	}
 
 	newMatch = acceptMatchResp.Match
@@ -268,7 +268,7 @@ func initialiseStates(ctx contract.Context, zbContract *battleground.ZombieBattl
 		MatchId: newMatch.Id,
 	})
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error getting game state")
 	}
 	return nil
 }
