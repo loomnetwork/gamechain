@@ -477,7 +477,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 
 	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "unable to load decks")
 	}
 	// check duplicate name
 	if existing := getDeckByName(deckList.Decks, req.Deck.Name); existing != nil {
