@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/hex"
+	"strconv"
 
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
@@ -14,51 +15,51 @@ var initRequest = zb.InitRequest{
 	Version: "v1",
 	DefaultCollection: []*zb.CardCollectionCard{
 		{
-			CardName: "Banshee",
+			MouldId: 90,
 			Amount:   4,
 		},
 		{
-			CardName: "Breezee",
+			MouldId: 91,
 			Amount:   3,
 		},
 		{
-			CardName: "Buffer",
+			MouldId: 96,
 			Amount:   5,
 		},
 		{
-			CardName: "Soothsayer",
+			MouldId: 3,
 			Amount:   4,
 		},
 		{
-			CardName: "Wheezy",
+			MouldId: 2,
 			Amount:   3,
 		},
 		{
-			CardName: "Whiffer",
+			MouldId: 92,
 			Amount:   5,
 		},
 		{
-			CardName: "Whizpar",
+			MouldId: 1,
 			Amount:   4,
 		},
 		{
-			CardName: "Zhocker",
+			MouldId: 93,
 			Amount:   3,
 		},
 		{
-			CardName: "Bouncer",
+			MouldId: 7,
 			Amount:   5,
 		},
 		{
-			CardName: "Dragger",
+			MouldId: 94,
 			Amount:   4,
 		},
 		{
-			CardName: "Guzt",
+			MouldId: 95,
 			Amount:   3,
 		},
 		{
-			CardName: "Pushhh",
+			MouldId: 5,
 			Amount:   5,
 		},
 	},
@@ -154,51 +155,51 @@ var initRequest = zb.InitRequest{
 			Name:       "Default",
 			Cards: []*zb.DeckCard{
 				{
-					CardName: "Banshee",
+					MouldId: 90,
 					Amount:   2,
 				},
 				{
-					CardName: "Breezee",
+					MouldId: 91,
 					Amount:   2,
 				},
 				{
-					CardName: "Buffer",
+					MouldId: 96,
 					Amount:   2,
 				},
 				{
-					CardName: "Soothsayer",
+					MouldId: 3,
 					Amount:   2,
 				},
 				{
-					CardName: "Wheezy",
+					MouldId: 2,
 					Amount:   2,
 				},
 				{
-					CardName: "Whiffer",
+					MouldId: 92,
 					Amount:   2,
 				},
 				{
-					CardName: "Whizpar",
+					MouldId: 1,
 					Amount:   1,
 				},
 				{
-					CardName: "Zhocker",
+					MouldId: 93,
 					Amount:   1,
 				},
 				{
-					CardName: "Bouncer",
+					MouldId: 7,
 					Amount:   1,
 				},
 				{
-					CardName: "Dragger",
+					MouldId: 94,
 					Amount:   1,
 				},
 				{
-					CardName: "Guzt",
+					MouldId: 95,
 					Amount:   1,
 				},
 				{
-					CardName: "Pushhh",
+					MouldId: 5,
 					Amount:   1,
 				},
 			},
@@ -253,7 +254,7 @@ func listItemsForPlayer(playerId int) []string {
 		panic(err)
 	}
 	for _, v := range cardCollection.Cards {
-		res = append(res, v.CardName)
+		res = append(res, "Mould Id " + strconv.FormatInt(v.MouldId, 10))
 	}
 
 	return res
