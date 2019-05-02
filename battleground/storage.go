@@ -25,7 +25,7 @@ var (
 
 	cardListKey                 = []byte("cardlist")
 	overlordListKey             = []byte("herolist")
-	defaultDeckKey              = []byte("default-deck")
+	defaultDecksKey             = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
 	matchCountKey               = []byte("match-count")
 	playersInMatchmakingListKey = []byte("players-matchmaking")
@@ -170,8 +170,8 @@ func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCo
 	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
-func validateAndUpdateCardList(
-	ctx contract.Context,
+func validateAndUpdateGenericCardList(
+	ctx contract.StaticContext,
 	cardList []interface{},
 	version string,
 	validateMouldId bool,
@@ -249,20 +249,20 @@ func validateAndUpdateCardList(
 }
 
 func validateAndUpdateCardCollectionList(
-	ctx contract.Context,
+	ctx contract.StaticContext,
 	version string,
-	collection *zb.CardCollectionList,
+	cardCollectionList *zb.CardCollectionList,
 	validateMouldId bool,
 	saveChangedCollectionFunc func(collection *zb.CardCollectionList) error,
 ) error {
-	var userCollectionCardsInterface = make([]interface{}, len(collection.Cards))
-	for i, d := range collection.Cards {
-		userCollectionCardsInterface[i] = d
+	var collectionCardsInterface = make([]interface{}, len(cardCollectionList.Cards))
+	for i, d := range cardCollectionList.Cards {
+		collectionCardsInterface[i] = d
 	}
-	changed, changedUserCollection, err :=
-		validateAndUpdateCardList(
+	changed, changedCardCollectionList, err :=
+		validateAndUpdateGenericCardList(
 			ctx,
-			userCollectionCardsInterface,
+			collectionCardsInterface,
 			version,
 			validateMouldId,
 			func(card interface{}) int64 {
@@ -283,12 +283,12 @@ func validateAndUpdateCardCollectionList(
 	}
 
 	if changed {
-		collection.Cards = make([]*zb.CardCollectionCard, len(changedUserCollection))
-		for i := range changedUserCollection {
-			collection.Cards[i] = changedUserCollection[i].(*zb.CardCollectionCard)
+		cardCollectionList.Cards = make([]*zb.CardCollectionCard, len(changedCardCollectionList))
+		for i := range changedCardCollectionList {
+			cardCollectionList.Cards[i] = changedCardCollectionList[i].(*zb.CardCollectionCard)
 		}
 
-		err = saveChangedCollectionFunc(collection)
+		err = saveChangedCollectionFunc(cardCollectionList)
 		if err != nil {
 			return err
 		}
@@ -312,7 +312,7 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb.DeckLis
 			deckCardsInterface[i] = d
 		}
 		changed, changedDeckCards, err :=
-			validateAndUpdateCardList(
+			validateAndUpdateGenericCardList(
 				ctx,
 				deckCardsInterface,
 				version,
@@ -376,7 +376,7 @@ func loadAIDecks(ctx contract.Context, version string) (*zb.AIDeckList, error) {
 			deckCardsInterface[i] = d
 		}
 		changed, changedDeckCards, err :=
-			validateAndUpdateCardList(
+			validateAndUpdateGenericCardList(
 				ctx,
 				deckCardsInterface,
 				version,
@@ -916,10 +916,6 @@ func getCardLibrary(ctx contract.StaticContext, version string) (*zb.CardList, e
 	}
 
 	return &cardList, nil
-}
-
-func updateCardLibrary(ctx contract.Context, version string, cardList *zb.CardList) error {
-	return ctx.Set(MakeVersionedKey(version, cardListKey), cardList)
 }
 
 func getCardByName(cardList *zb.CardList, cardName string) (*zb.Card, error) {
