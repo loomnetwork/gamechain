@@ -106,10 +106,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 		Cards: req.Cards,
 	}
 
-	err := validateCardLibraryCards(cardList.Cards)
-	if err != nil {
-		return errors.Wrap(err, "error while validating card library")
-	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
@@ -676,7 +672,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.Context, req *zb.GetDeckReques
 	return &zb.GetDeckResponse{Deck: deck}, nil
 }
 
-func (z *ZombieBattleground) GetAIDecks(ctx contract.Context, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
+func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
 	if req.Version == "" {
 		return nil, ErrVersionNotSet
 	}

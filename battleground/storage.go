@@ -361,59 +361,12 @@ func saveAIDecks(ctx contract.Context, version string, decks *zb.AIDeckList) err
 	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
 }
 
-func loadAIDecks(ctx contract.Context, version string) (*zb.AIDeckList, error) {
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, error) {
 	var deckList zb.AIDeckList
 	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
 	if err != nil {
 		return nil, err
 	}
-
-	deckListChanged := false
-	for _, deck := range deckList.Decks {
-		// Update data
-		var deckCardsInterface = make([]interface{}, len(deck.Deck.Cards))
-		for i, d := range deck.Deck.Cards {
-			deckCardsInterface[i] = d
-		}
-		changed, changedDeckCards, err :=
-			validateAndUpdateGenericCardList(
-				ctx,
-				deckCardsInterface,
-				version,
-				true,
-				func(card interface{}) int64 {
-					return card.(*zb.DeckCard).MouldId
-				},
-				func(card interface{}, mouldId int64) {
-					card.(*zb.DeckCard).MouldId = mouldId
-				},
-				func(card interface{}) string {
-					return card.(*zb.DeckCard).CardNameDeprecated
-				},
-				func(card interface{}) {
-					card.(*zb.DeckCard).CardNameDeprecated = ""
-				},
-			)
-		if err != nil {
-			return nil, err
-		}
-
-		if changed {
-			deckListChanged = true
-			deck.Deck.Cards = make([]*zb.DeckCard, len(changedDeckCards))
-			for i := range changedDeckCards {
-				deck.Deck.Cards[i] = changedDeckCards[i].(*zb.DeckCard)
-			}
-		}
-	}
-
-	if deckListChanged {
-		err = saveAIDecks(ctx, version, &deckList)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	return &deckList, nil
 }
 
