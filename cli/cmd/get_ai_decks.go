@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/go-loom"
+	"os"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
@@ -19,25 +18,25 @@ var getAIDecksCmd = &cobra.Command{
 	Short: "get AI decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
+		callerAddr := loom.Address{
+			ChainID: commonTxObjs.rpcClient.GetChainID(),
+			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+		}
+
 		req := &zb.GetAIDecksRequest{
 			Version: getAIDecksCmdArgs.version,
 		}
 		var result zb.GetAIDecksResponse
-		_, err := commonTxObjs.contract.Call("GetAIDecks", req, signer, &result)
+		_, err := commonTxObjs.contract.StaticCall("GetAIDecks", req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
 
-		jsonMarshaler := jsonpb.Marshaler{
-			OrigName: true,
-			Indent:   "  ",
-		}
-
-		j, err := jsonMarshaler.MarshalToString(&result)
+		err = printProtoMessageAsJSON(os.Stdout, &result)
 		if err != nil {
 			return err
 		}
-		fmt.Println(j)
+
 		return nil
 	},
 }

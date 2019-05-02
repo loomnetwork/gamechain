@@ -23,7 +23,21 @@ var (
 )
 
 func validateCardLibraryCards(cardLibrary []*zb.Card) error {
+	existingCardsSet := make(map[int64]interface{})
 	for _, card := range cardLibrary {
+		_, exists := existingCardsSet[card.MouldId]
+		if !exists {
+			existingCardsSet[card.MouldId] = struct{}{}
+		} else {
+			return fmt.Errorf("more than one card has mould ID %d, this is not allowed", card.MouldId)
+		}
+	}
+
+	for _, card := range cardLibrary {
+		if card.MouldId <= 0 {
+			return fmt.Errorf("mould id not set for card %s", card.Name)
+		}
+
 		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
 			return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
 		}
@@ -33,16 +47,20 @@ func validateCardLibraryCards(cardLibrary []*zb.Card) error {
 }
 
 func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb.DeckCard) error {
-	cardMap := make(map[int64]interface{})
+	existingCardsSet := make(map[int64]interface{})
 	for _, card := range cardLibrary {
-		cardMap[card.MouldId] = struct{}{}
+		existingCardsSet[card.MouldId] = struct{}{}
 	}
 	for _, deckCard := range deckCards {
 		if deckCard.MouldId <= 0 {
 			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
 		}
 
-		if _, ok := cardMap[deckCard.MouldId]; !ok {
+		if deckCard.CardNameDeprecated != "" {
+			return fmt.Errorf("card %d has non-empty name '%s', must be empty", deckCard.MouldId, deckCard.CardNameDeprecated)
+		}
+
+		if _, ok := existingCardsSet[deckCard.MouldId]; !ok {
 			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
 		}
 	}
