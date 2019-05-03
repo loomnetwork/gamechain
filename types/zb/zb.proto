@@ -219,12 +219,14 @@ message OverlordLevelingData {
 
 message LevelReward {
     int32 level = 1;
-    OverlordSkillRewardItem skillReward = 2;
-    UnitRewardItem unitReward = 3;
+    oneof reward {
+        OverlordSkillRewardItem skillReward = 2;
+        UnitRewardItem unitReward = 3;
+    }
 }
 
 message OverlordSkillRewardItem {
-    int64 skillIndex = 1;
+    int32 skillIndex = 1;
 }
 
 message UnitRewardItem {
@@ -245,6 +247,14 @@ message ExperienceActionType {
         ActivateRankAbility = 3;
         UseOverlordAbility = 4;
     }
+}
+
+message GetOverlordLevelingDataRequest {
+    string version = 1;
+}
+
+message GetOverlordLevelingDataResponse {
+    OverlordLevelingData overlordLeveling = 1;
 }
 
 // Request and Response
