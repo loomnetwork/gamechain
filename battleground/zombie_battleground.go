@@ -148,7 +148,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	if overlordLevelingData == nil {
 		overlordLevelingData = &zb.OverlordLevelingData{}
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordLevelingDataKey), overlordLevelingData); err != nil {
+	if err := saveOverlordLevelingData(ctx, req.Version, overlordLevelingData); err != nil {
 		return err
 	}
 
@@ -256,7 +256,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	// initialize overlord experience
-	if err := ctx.Set(overlordLevelingDataKey, overlordLevelingData); err != nil {
+	if err := saveOverlordLevelingData(ctx, initData.Version, overlordLevelingData); err != nil {
 		return err
 	}
 
@@ -269,7 +269,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	var cardCollectionList zb.CardCollectionList
 	var deckList zb.DeckList
 	var aiDeckList zb.AIDeckList
-	var overlordLevelingData zb.OverlordLevelingData
+	var overlordLevelingData *zb.OverlordLevelingData
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return nil, errors.Wrap(err, "error getting cardList")
@@ -291,8 +291,9 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting aiDeckList")
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
-		return nil, errors.Wrap(err, "error getting overlord leveling data")
+	overlordLevelingData, err := loadOverlordLevelingData(ctx, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
 	return &zb.GetInitResponse {
@@ -302,14 +303,14 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 			DefaultDecks:      deckList.Decks,
 			DefaultCollection: cardCollectionList.Cards,
 			AiDecks:           aiDeckList.Decks,
-			OverlordLeveling:  &overlordLevelingData,
+			OverlordLeveling:  overlordLevelingData,
 			Version:           req.Version,
 		},
 	}, nil
 }
 
 // FIXME: duplicate of ListCardLibrary
-func (z *ZombieBattleground) GetCardList(ctx contract.Context, req *zb.GetCardListRequest) (*zb.GetCardListResponse, error) {
+func (z *ZombieBattleground) GetCardList(ctx contract.StaticContext, req *zb.GetCardListRequest) (*zb.GetCardListResponse, error) {
 	if req.Version == "" {
 		return nil, ErrVersionNotSet
 	}
@@ -705,26 +706,12 @@ func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetA
 	}
 
 	deckList, err := loadAIDecks(ctx, req.Version)
-
 	if err != nil {
 		return nil, err
-	}
-	// remove invalid ai deck
-	// this should be removed finally after we make sure setting AI deck works fine
-	cardLibrary, err := getCardLibrary(ctx, req.Version)
-	if err != nil {
-		return nil, err
-	}
-	var decks []*zb.AIDeck
-	for _, deck := range deckList.Decks {
-		err := validateDeckCards(cardLibrary.Cards, deck.Deck.Cards)
-		if err == nil {
-			decks = append(decks, deck)
-		}
 	}
 
 	return &zb.GetAIDecksResponse{
-		AiDecks: decks,
+		AiDecks: deckList.Decks,
 	}, nil
 }
 
@@ -1588,6 +1575,21 @@ func (z *ZombieBattleground) ClearNotifications(ctx contract.Context, req *zb.Cl
 	return &zb.ClearNotificationsResponse{}, nil
 }
 
+func (z *ZombieBattleground) GetOverlordLevelingData(ctx contract.StaticContext, req *zb.GetOverlordLevelingDataRequest) (*zb.GetOverlordLevelingDataResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	overlordLevelingData, err := loadOverlordLevelingData(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.GetOverlordLevelingDataResponse{
+		OverlordLeveling: overlordLevelingData,
+	}, nil
+}
+
 func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRequest) (*zb.KeepAliveResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -2063,10 +2065,12 @@ func applyMatchExperience(
 
 		for i := 0; i < len(levelRewards); i++ {
 			// skill rewards
-			if levelRewards[i].SkillReward != nil {
+			switch levelRewards[i].Reward.(type) {
+			case *zb.LevelReward_SkillReward:
+				skillReward := levelRewards[i].Reward.(*zb.LevelReward_SkillReward).SkillReward
 				found := false
 				for j := 0; j < len(overlord.Skills); j++ {
-					if j == int(levelRewards[i].SkillReward.SkillIndex) {
+					if j == int(skillReward.SkillIndex) {
 						overlord.Skills[j].Unlocked = true
 						found = true
 						break
@@ -2076,9 +2080,9 @@ func applyMatchExperience(
 				if !found {
 					return fmt.Errorf("failed to find skill for reward")
 				}
+			case *zb.LevelReward_UnitReward:
+				// TODO: handle other rewards types
 			}
-
-			// TODO: handle other rewards types
 		}
 	}
 

@@ -37,7 +37,7 @@ var (
 	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
-	overlordLevelingDataKey     = []byte("overlord-experience")
+	overlordLevelingDataKey     = []byte("overlord-leveling")
 )
 
 var (
@@ -404,13 +404,21 @@ func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordLi
 	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
-func loadOverlordLevelingData(ctx contract.Context, version string) (*zb.OverlordLevelingData, error) {
+func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb.OverlordLevelingData, error) {
 	var overlordLevelingData zb.OverlordLevelingData
 	if err := ctx.Get(MakeVersionedKey(version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
 		return nil, errors.Wrap(err, "error getting overlord leveling data")
 	}
 
 	return &overlordLevelingData, nil
+}
+
+func saveOverlordLevelingData(ctx contract.Context, version string, overlordLevelingData *zb.OverlordLevelingData) error {
+	if err := ctx.Set(MakeVersionedKey(version, overlordLevelingDataKey), overlordLevelingData); err != nil {
+		return errors.Wrap(err, "error setting overlord leveling data")
+	}
+
+	return nil
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
