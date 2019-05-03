@@ -15,6 +15,7 @@ var mergeJsonToInitCmdArgs struct {
 	cardLibraryFile string
 	overlordsFile string
 	aiDecksFile string
+	overlordLevelingFile string
 
 	outputFile string
 }
@@ -30,6 +31,7 @@ var mergeJsonToInitCmd = &cobra.Command{
 		var cardLibraryData zb.CardLibraryDataContainer
 		var overlordsData zb.OverlordsDataContainer
 		var aiDecksData zb.AIDecksDataContainer
+		var overlordLevelingData zb.OverlordLevelingDataContainer
 
 		// Read pieces
 		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)
@@ -62,12 +64,18 @@ var mergeJsonToInitCmd = &cobra.Command{
 			return err
 		}
 
+		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.overlordLevelingFile, &overlordLevelingData)
+		if err != nil {
+			return err
+		}
+
 		// Merge
 		initData.DefaultDecks = defaultDecksData.DefaultDecks
 		initData.DefaultCollection = defaultCollectionData.DefaultCollection
 		initData.Cards = cardLibraryData.Cards
 		initData.Overlords = overlordsData.Overlords
 		initData.AiDecks = aiDecksData.AiDecks
+		initData.OverlordLeveling = overlordLevelingData.OverlordLeveling
 
 		// Write merged file
 		mergedFile, err := os.Create(mergeJsonToInitCmdArgs.outputFile)
@@ -100,6 +108,7 @@ func init() {
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.cardLibraryFile, "cardLibrary", "", "card_library.json", "card library JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.overlordsFile, "overlords", "", "overlords.json", "overlords JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.aiDecksFile, "aiDecks", "", "ai_decks.json", "AI decks JSON data file")
+	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.overlordLevelingFile, "overlordLeveling", "", "overlord_leveling.json", "Overlord leveling JSON data file")
 
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.outputFile, "outputFile", "o", "update_init_merged.json", "path to the merged output file")
 }

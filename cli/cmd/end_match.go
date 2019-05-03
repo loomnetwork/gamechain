@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -11,24 +12,26 @@ import (
 )
 
 var endMatchCmdArgs struct {
-	userID                  string
-	matchID                 int64
-	winnerID                string
-	playerMatchExperience   int64
-	opponentMatchExperience int64
+	userID                 string
+	matchID                int64
+	winnerID               string
+	playerMatchExperiences *[]int64
 }
 
 var endMatchCmd = &cobra.Command{
 	Use:   "end_match",
 	Short: "end match for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(*endMatchCmdArgs.playerMatchExperiences) != 2 {
+			return errors.New("'playerMatchExperience' length must be 2")
+		}
+
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		var req = zb.EndMatchRequest{
-			UserId:                  endMatchCmdArgs.userID,
-			MatchId:                 endMatchCmdArgs.matchID,
-			WinnerId:                endMatchCmdArgs.winnerID,
-			PlayerMatchExperience:   endMatchCmdArgs.playerMatchExperience,
-			OpponentMatchExperience: endMatchCmdArgs.opponentMatchExperience,
+			UserId:           endMatchCmdArgs.userID,
+			MatchId:          endMatchCmdArgs.matchID,
+			WinnerId:         endMatchCmdArgs.winnerID,
+			MatchExperiences: *endMatchCmdArgs.playerMatchExperiences,
 		}
 		var resp zb.EndMatchResponse
 
@@ -53,10 +56,11 @@ var endMatchCmd = &cobra.Command{
 }
 
 func init() {
+	endMatchCmdArgs.playerMatchExperiences = &[]int64{0, 0}
+
 	rootCmd.AddCommand(endMatchCmd)
 	endMatchCmd.Flags().StringVarP(&endMatchCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	endMatchCmd.Flags().Int64VarP(&endMatchCmdArgs.matchID, "matchId", "m", 0, "Match ID")
 	endMatchCmd.Flags().StringVar(&endMatchCmdArgs.winnerID, "winnerId", "loom", "Winner ID")
-	endMatchCmd.Flags().Int64VarP(&endMatchCmdArgs.playerMatchExperience, "playerMatchExperience", "p", 0, "Player Match Experience")
-	endMatchCmd.Flags().Int64VarP(&endMatchCmdArgs.opponentMatchExperience, "opponentMatchExperience", "o", 0, "Opponent Match Experience")
+	endMatchCmd.Flags().Int64SliceVarP(endMatchCmdArgs.playerMatchExperiences, "playerMatchExperience", "p", []int64{0, 0},  "Players Match Experiences")
 }
