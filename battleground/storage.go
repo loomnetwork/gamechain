@@ -37,7 +37,7 @@ var (
 	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
-	overlordLevelingDataKey   = []byte("overlord-experience")
+	overlordLevelingDataKey     = []byte("overlord-experience")
 )
 
 var (
@@ -59,6 +59,10 @@ func CardCollectionKey(userID string) []byte {
 
 func OverlordsKey(userID string) []byte {
 	return []byte("user:" + userID + ":heroes")
+}
+
+func UserNotificationsKey(userID string) []byte {
+	return []byte("user:" + userID + ":notifications")
 }
 
 func MatchKey(matchID int64) []byte {
@@ -400,10 +404,10 @@ func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordLi
 	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
-func loadOverlordLevelingData(ctx contract.Context) (*zb.OverlordLevelingData, error) {
+func loadOverlordLevelingData(ctx contract.Context, version string) (*zb.OverlordLevelingData, error) {
 	var overlordLevelingData zb.OverlordLevelingData
-	if err := ctx.Get(overlordLevelingDataKey, &overlordLevelingData); err != nil {
-		return nil, errors.Wrap(err, "error getting overlord Experience info")
+	if err := ctx.Get(MakeVersionedKey(version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
+		return nil, errors.Wrap(err, "error getting overlord leveling data")
 	}
 
 	return &overlordLevelingData, nil
@@ -617,6 +621,26 @@ func loadUserCurrentMatch(ctx contract.StaticContext, userID string) (*zb.Match,
 		return nil, err
 	}
 	return &m, nil
+}
+
+func saveUserNotifications(ctx contract.Context, userID string, notifications *zb.NotificationList) error {
+	if err := ctx.Set(UserNotificationsKey(userID), notifications); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadUserNotifications(ctx contract.StaticContext, userID string) (*zb.NotificationList, error) {
+	var notificationList zb.NotificationList
+	err := ctx.Get(UserNotificationsKey(userID), &notificationList)
+	if err != nil {
+		if err == contract.ErrNotFound {
+			notificationList.Notifications = []*zb.Notification{}
+		} else {
+			return nil, err
+		}
+	}
+	return &notificationList, nil
 }
 
 func addGameModeToList(ctx contract.Context, gameMode *zb.GameMode) error {

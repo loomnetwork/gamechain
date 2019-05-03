@@ -92,6 +92,7 @@ func NewGamePlay(ctx contract.Context,
 	})
 
 	for i, playerData := range playersData {
+		playerData.playerState.Index = int32(i)
 		players[i] = playerData.playerState
 		playersDebugCheats[i] = playerData.playerDebugCheats
 	}
@@ -1393,47 +1394,25 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 	}
 }
 
-// calcualed overlord level
-func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) (int64, []*zb.LevelReward, error) {
-	var level = overlord.Level
-	var experience = overlord.Experience
-
-	overlordLevelingData, err := loadOverlordLevelingData(ctx)
-	if err != nil {
-		return -1, nil, err
-	}
-
-	var levelRewards []*zb.LevelReward
-	var index = 0
-	for experience >= getRequiredExperienceForNewLevel(overlordLevelingData, level) && level < overlordLevelingData.MaxLevel {
+func calculateOverlordLevel(overlordLevelingData *zb.OverlordLevelingData, overlord *zb.Overlord) int32 {
+	var level = int32(overlord.Level)
+	for overlord.Experience >= getRequiredExperienceForNewLevel(overlordLevelingData, level) && level < overlordLevelingData.MaxLevel {
 		level++
-
-		// reward
-		levelReward := getLevelReward(overlordLevelingData, level)
-		if levelReward == nil {
-			ctx.Logger().Info("level Reward is nil")
-			return -1, nil, err
-		}
-
-		ctx.Logger().Info("level Reward is %s : ", levelReward.Level)
-		ctx.Logger().Info(fmt.Sprintf("level Reward is %s : ", levelReward.Level))
-		levelRewards[index] = levelReward
-		index++
 	}
 
-	return level, levelRewards, nil
+	return level
 }
 
 // get required experience
-func getRequiredExperienceForNewLevel(overlordLevelingData *zb.OverlordLevelingData, level int64) int64 {
+func getRequiredExperienceForNewLevel(overlordLevelingData *zb.OverlordLevelingData, level int32) int64 {
 	var fixed = overlordLevelingData.Fixed
 	var experienceStep = overlordLevelingData.ExperienceStep
-	var requiredExperience = fixed + experienceStep*(level+1)
+	var requiredExperience = int64(fixed) + int64(experienceStep)*(int64(level)+1)
 	return requiredExperience
 }
 
 // get level rewards
-func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int64) *zb.LevelReward {
+func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int32) *zb.LevelReward {
 	for i := 0; i < len(overlordLevelingData.Rewards); i++ {
 		if overlordLevelingData.Rewards[i].Level == level {
 			return overlordLevelingData.Rewards[i]

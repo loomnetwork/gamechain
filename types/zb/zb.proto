@@ -132,27 +132,6 @@ message ListOverlordsResponse {
     repeated Overlord overlords  = 1;
 }
 
-message SetOverlordLevelRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 level = 3;
-}
-
-message SetOverlordLevelResponse {
-    int64 overlordId = 1;
-    int64 level = 2;
-}
-
-message GetOverlordLevelRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-}
-
-message GetOverlordLevelResponse{
-    int64 experience = 1;
-    int64 level = 2;
-}
-
 message GetOverlordRequest {
     string user_id = 1;
     int64 overlordId = 2;
@@ -162,25 +141,14 @@ message GetOverlordResponse {
     Overlord overlord = 1;
 }
 
-
-message SetOverlordRequest {
-    string user_id = 1;
+message SetOverlordSkillsRequest {
+    string userId = 1;
     int64 overlordId = 2;
-    Overlord overlord = 3;
+    OverlordSkill.Enum primarySkill = 3;
+    OverlordSkill.Enum secondarySkill = 4;
 }
 
-message SetOverlordResponse {
-    Overlord overlord = 1;
-}
-
-message GetOverlordSkillsRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-}
-
-message GetOverlordSkillsResponse {
-    int64 overlordId = 1;
-    repeated Skill skills = 2;
+message SetOverlordSkillsResponse {
 }
 
 message Skill {
@@ -243,14 +211,14 @@ message AIDeckList {
 message OverlordLevelingData {
     repeated LevelReward rewards = 1;
     repeated ExperienceAction experienceActions = 2;
-    int64 fixed = 3;
-    int64 experienceStep = 4;
-    int64 gooRewardStep = 5;
-    int64 maxLevel = 6;
+    int32 fixed = 3;
+    int32 experienceStep = 4;
+    int32 gooRewardStep = 5;
+    int32 maxLevel = 6;
 }
 
 message LevelReward {
-    int64 level = 1;
+    int32 level = 1;
     OverlordSkillRewardItem skillReward = 2;
     UnitRewardItem unitReward = 3;
 }
@@ -259,14 +227,14 @@ message OverlordSkillRewardItem {
     int64 skillIndex = 1;
 }
 
-message UnitRewardItem{
-    string rank = 1;
-    int64 count = 2;
+message UnitRewardItem {
+    CreatureRank.Enum rank = 1;
+    int32 count = 2;
 }
 
 message ExperienceAction{
     ExperienceActionType.Enum action = 1;
-    int64 experience = 2;
+    int32 experience = 2;
 }
 
 message ExperienceActionType {
@@ -301,6 +269,7 @@ message InitRequest {
     string version = 6;
     Address oracle = 7;
     reserved 8, 9;
+    OverlordLevelingData overlordLeveling = 10;
 }
 
 message UpdateOracle {
@@ -547,6 +516,7 @@ message PlayerState {
     int32 turnNumber = 18;
     InstanceId instanceId = 19;
     repeated CardInstance mulliganCards = 20;
+    int32 index = 21;
 }
 
 message InitialPlayerState {
@@ -1710,4 +1680,42 @@ message AIDecksDataContainer {
 
 message OverlordLevelingDataContainer {
     OverlordLevelingData overlordLeveling = 1;
+}
+
+message NotificationEndMatch {
+    int64 overlordId = 1;
+    int32 oldLevel = 2;
+    int64 oldExperience = 3;
+    int32 newLevel = 4;
+    int64 newExperience = 5;
+}
+
+message Notification {
+    int32 id = 1;
+    int64 createdAt = 2;
+    bool seen = 3;
+    oneof Notification {
+        NotificationEndMatch endMatch = 10;
+    }
+}
+
+message NotificationList {
+    repeated Notification notifications = 1;
+}
+
+message GetNotificationsRequest {
+    string userId = 1;
+}
+
+message GetNotificationsResponse {
+    repeated Notification notifications = 1;
+}
+
+message ClearNotificationsRequest {
+    string userId = 1;
+    repeated int32 notificationIds = 2;
+}
+
+message ClearNotificationsResponse {
+
 }
