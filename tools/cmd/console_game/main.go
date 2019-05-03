@@ -2,13 +2,12 @@ package main
 
 import (
 	"encoding/hex"
-	"strconv"
-
-	loom "github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/plugin"
-	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"fmt"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/plugin"
+	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
 
 var initRequest = zb.InitRequest{
@@ -254,7 +253,7 @@ func listItemsForPlayer(playerId int) []string {
 		panic(err)
 	}
 	for _, v := range cardCollection.Cards {
-		res = append(res, "Mould Id " + strconv.FormatInt(v.MouldId, 10))
+		res = append(res, fmt.Sprintf("Mould Id %d", v.MouldId))
 	}
 
 	return res

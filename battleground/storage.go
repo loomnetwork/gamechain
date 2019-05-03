@@ -103,8 +103,12 @@ func RewardTutorialClaimedKey(userID string) []byte {
 func loadCardCollectionByUserId(ctx contract.Context, userID string, version string) (*zb.CardCollectionList, error) {
 	var userCollection zb.CardCollectionList
 	err := ctx.Get(CardCollectionKey(userID), &userCollection)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	if err != nil {
+		if err == contract.ErrNotFound {
+			userCollection.Cards = []*zb.CardCollectionCard{}
+		} else {
+			return nil, err
+		}
 	}
 
 	// Update data
@@ -138,8 +142,12 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb.Card
 	var userCollection zb.CardCollectionList
 	addr := string(ctx.Message().Sender.Local)
 	err := ctx.Get(CardCollectionKey(addr), &userCollection)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	if err != nil {
+		if err == contract.ErrNotFound {
+			userCollection.Cards = []*zb.CardCollectionCard{}
+		} else {
+			return nil, err
+		}
 	}
 
 	// Update data
@@ -300,8 +308,12 @@ func validateAndUpdateCardCollectionList(
 func loadDecks(ctx contract.Context, userID string, version string) (*zb.DeckList, error) {
 	var deckList zb.DeckList
 	err := ctx.Get(DecksKey(userID), &deckList)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	if err != nil {
+		if err == contract.ErrNotFound {
+			deckList.Decks = []*zb.Deck{}
+		} else {
+			return nil, err
+		}
 	}
 
 	deckListChanged := false
@@ -373,8 +385,12 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, er
 func loadOverlords(ctx contract.StaticContext, userID string) (*zb.OverlordList, error) {
 	var overlords zb.OverlordList
 	err := ctx.Get(OverlordsKey(userID), &overlords)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	if err != nil {
+		if err == contract.ErrNotFound {
+			overlords.Overlords = []*zb.Overlord{}
+		} else {
+			return nil, err
+		}
 	}
 	return &overlords, nil
 }
@@ -474,15 +490,19 @@ func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
 func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb.PlayerPool, error) {
 	var pool zb.PlayerPool
 	err := ctx.Get(poolKey, &pool)
-	if err != nil && err != contract.ErrNotFound {
-		// Try to reset the pool
-		ctx.Logger().Error("error loading pool, clearing", "key", string(taggedPlayerPoolKey), "err", err)
-		pool = zb.PlayerPool{}
-		if err = ctx.Set(taggedPlayerPoolKey, &pool); err != nil {
-			return nil, err
-		}
+	if err != nil {
+		if err == contract.ErrNotFound {
+			pool.PlayerProfiles = []*zb.PlayerProfile{}
+		} else {
+			// Try to reset the pool
+			ctx.Logger().Error("error loading pool, clearing", "key", string(poolKey), "err", err)
+			pool = zb.PlayerPool{}
+			if err = ctx.Set(poolKey, &pool); err != nil {
+				return nil, err
+			}
 
-		return &pool, nil
+			return &pool, nil
+		}
 	}
 	return &pool, nil
 }
@@ -616,8 +636,12 @@ func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error
 func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
 	var list zb.GameModeList
 	err := ctx.Get(gameModeListKey, &list)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
+	if err != nil {
+		if err == contract.ErrNotFound {
+			list.GameModes = []*zb.GameMode{}
+		} else {
+			return nil, err
+		}
 	}
 
 	return &list, nil
