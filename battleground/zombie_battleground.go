@@ -16,7 +16,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
@@ -140,6 +140,15 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+		return err
+	}
+
+	// initialize overlord leveling
+	overlordLevelingData := req.OverlordLeveling
+	if overlordLevelingData == nil {
+		overlordLevelingData = &zb.OverlordLevelingData{}
+	}
+	if err := ctx.Set(MakeVersionedKey(req.Version, overlordLevelingDataKey), overlordLevelingData); err != nil {
 		return err
 	}
 
@@ -283,7 +292,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	}
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
-		return nil, errors.Wrap(err, "error getting overlord experience info")
+		return nil, errors.Wrap(err, "error getting overlord leveling data")
 	}
 
 	return &zb.GetInitResponse {
@@ -790,11 +799,8 @@ func (z *ZombieBattleground) GetOverlord(ctx contract.StaticContext, req *zb.Get
 	return &zb.GetOverlordResponse{Overlord: overlord}, nil
 }
 
-func (z *ZombieBattleground) SetOverlord(ctx contract.Context, req *zb.SetOverlordRequest) (*zb.SetOverlordResponse, error) {
-	if req.Overlord == nil {
-		return nil, fmt.Errorf("overlord is null")
-	}
-
+// for debugging only
+func (z *ZombieBattleground) SetOverlordSkills(ctx contract.Context, req *zb.SetOverlordSkillsRequest) (*zb.SetOverlordSkillsResponse, error) {
 	overlordList, err := loadOverlords(ctx, req.UserId)
 	if err != nil {
 		return nil, err
@@ -802,36 +808,18 @@ func (z *ZombieBattleground) SetOverlord(ctx contract.Context, req *zb.SetOverlo
 
 	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
 	if overlord == nil {
-		return nil, contract.ErrNotFound
+		return nil, errors.Wrap(contract.ErrNotFound, "overlord not found")
 	}
-	overlord = proto.Clone(req.Overlord).(*zb.Overlord)
 
-	// make sure we don't override overlord id
-	overlord.OverlordId = req.OverlordId
+	// TODO: check if skills are unlocked
+	overlord.PrimarySkill = req.PrimarySkill
+	overlord.SecondarySkill = req.SecondarySkill
 
 	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
 		return nil, err
 	}
 
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "setOverlord")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, "zombiebattleground:sethero")
-	}
-
-	return &zb.SetOverlordResponse{Overlord: overlord}, nil
-}
-
-func (z *ZombieBattleground) GetOverlordSkills(ctx contract.StaticContext, req *zb.GetOverlordSkillsRequest) (*zb.GetOverlordSkillsResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
-	if err != nil {
-		return nil, err
-	}
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
-		return nil, contract.ErrNotFound
-	}
-	return &zb.GetOverlordSkillsResponse{OverlordId: overlord.OverlordId, Skills: overlord.Skills}, nil
+	return &zb.SetOverlordSkillsResponse{}, nil
 }
 
 func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.RegisterPlayerPoolRequest) (*zb.RegisterPlayerPoolResponse, error) {
@@ -1159,10 +1147,12 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			&zb.PlayerState{
 				Id:   match.PlayerStates[0].Id,
 				Deck: match.PlayerStates[0].Deck,
+				Index: -1,
 			},
 			&zb.PlayerState{
 				Id:   match.PlayerStates[1].Id,
 				Deck: match.PlayerStates[1].Deck,
+				Index: -1,
 			},
 		}
 
@@ -1322,21 +1312,6 @@ func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req
 	}, nil
 }
 
-// get overlord level
-func (z *ZombieBattleground) GetOverlordLevel(ctx contract.StaticContext, req *zb.GetOverlordLevelRequest) (*zb.GetOverlordLevelResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
-	if err != nil {
-		return nil, err
-	}
-
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
-		return nil, contract.ErrNotFound
-	}
-
-	return &zb.GetOverlordLevelResponse{Experience: overlord.Experience, Level: overlord.Level}, nil
-}
-
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -1354,13 +1329,13 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		return nil, err
 	}
 
-	looserOverlordIndex := 1
-	if gameState.CurrentPlayerIndex == 1 {
-		looserOverlordIndex = 0
+	// save experience and level for both players
+	overlordLevelingData, err := loadOverlordLevelingData(ctx, gameState.Version)
+	if err != nil {
+		return nil, err
 	}
 
-	// save experience and level for both players
-	for _, playerState := range match.PlayerStates {
+	for index, playerState := range match.PlayerStates {
 		overlordList, err := loadOverlords(ctx, playerState.Id)
 		if err != nil {
 			return nil, err
@@ -1369,37 +1344,10 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 		overlordId := playerState.Deck.OverlordId
 		overlord := getOverlordById(overlordList.Overlords, overlordId)
 		if overlord == nil {
-			return nil, contract.ErrNotFound
+			return nil, fmt.Errorf("overlord with id %d not found", overlordId)
 		}
 
-		// get winner overlord and add experience and update level
-		if playerState.Id == req.UserId {
-			overlord.Experience += req.MatchExperiences[gameState.CurrentPlayerIndex]
-		} else {
-			// get loser overlord and add experience and update level
-			overlord.Experience += req.MatchExperiences[looserOverlordIndex]
-		}
-
-		var levelRewards []*zb.LevelReward
-		overlord.Level, levelRewards, err = calculateOverloadUpdatedLevel(ctx, overlord)
-		if err != nil {
-			return nil, err
-		}
-
-		ctx.Logger().Debug(fmt.Sprintf("level Rewards len %s : ", len(levelRewards)))
-		for i := 0; i < len(levelRewards); i++ {
-
-			// skill rewards
-			if levelRewards[i].SkillReward != nil {
-				for j := 0; i < len(overlord.Skills); j++ {
-					if overlord.Skills[j].Id == levelRewards[i].SkillReward.SkillIndex {
-						overlord.Skills[j].Unlocked = true
-					}
-				}
-			}
-		}
-
-		if err := saveOverlords(ctx, playerState.Id, overlordList); err != nil {
+		if err := applyMatchExperience(ctx, playerState.Id, overlordLevelingData, overlordList, overlord, req.MatchExperiences[index]); err != nil {
 			return nil, err
 		}
 	}
@@ -1607,6 +1555,37 @@ func (z *ZombieBattleground) ReplayGame(ctx contract.Context, req *zb.ReplayGame
 		GameState:      initGameState,
 		ActionOutcomes: gp.actionOutcomes,
 	}, nil
+}
+
+func (z *ZombieBattleground) GetNotifications(ctx contract.StaticContext, req *zb.GetNotificationsRequest) (*zb.GetNotificationsResponse, error) {
+	notificationList, err := loadUserNotifications(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+	return &zb.GetNotificationsResponse{
+		Notifications: notificationList.Notifications,
+	}, nil
+}
+
+func (z *ZombieBattleground) ClearNotifications(ctx contract.Context, req *zb.ClearNotificationsRequest) (*zb.ClearNotificationsResponse, error) {
+	notificationList, err := loadUserNotifications(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, id := range req.NotificationIds {
+		notificationList.Notifications, err = removeNotification(notificationList.Notifications, id)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	err = saveUserNotifications(ctx, req.UserId, notificationList)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb.ClearNotificationsResponse{}, nil
 }
 
 func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb.KeepAliveRequest) (*zb.KeepAliveResponse, error) {
@@ -2055,6 +2034,118 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(state.TutorialRewardAmount))},
 		RewardType: RewardTypeTutorialCompleted,
 	}, nil
+}
+
+func applyMatchExperience(
+	ctx contract.Context,
+	userId string,
+	overlordLevelingData *zb.OverlordLevelingData,
+	overlordList *zb.OverlordList,
+	overlord *zb.Overlord,
+	matchExperience int64,
+	) error {
+	oldExperience := overlord.Experience
+	oldLevel := int32(overlord.Level)
+
+	overlord.Experience += matchExperience
+	newLevel := calculateOverlordLevel(overlordLevelingData, overlord)
+	if newLevel > int32(overlord.Level) {
+		overlord.Level = int64(newLevel)
+
+		// Get rewards for all in-between levels
+		levelRewards := make([]*zb.LevelReward, 0)
+		for level := oldLevel; level <= newLevel; level++ {
+			levelReward := getLevelReward(overlordLevelingData, level)
+			if levelReward != nil {
+				levelRewards = append(levelRewards, levelReward)
+			}
+		}
+
+		for i := 0; i < len(levelRewards); i++ {
+			// skill rewards
+			if levelRewards[i].SkillReward != nil {
+				found := false
+				for j := 0; j < len(overlord.Skills); j++ {
+					if j == int(levelRewards[i].SkillReward.SkillIndex) {
+						overlord.Skills[j].Unlocked = true
+						found = true
+						break
+					}
+				}
+
+				if !found {
+					return fmt.Errorf("failed to find skill for reward")
+				}
+			}
+
+			// TODO: handle other rewards types
+		}
+	}
+
+	if err := saveOverlords(ctx, userId, overlordList); err != nil {
+		return err
+	}
+
+	// Set the notification
+	notifications, err := loadUserNotifications(ctx, userId)
+	if err != nil {
+		return err
+	}
+
+	loop:
+	for _, notification := range notifications.Notifications {
+		switch notification.Notification.(type) {
+		case *zb.Notification_EndMatch:
+			notifications.Notifications, err = removeNotification(notifications.Notifications, notification.Id)
+			if err != nil {
+				return err
+			}
+
+			break loop
+		}
+	}
+
+	notification := createBaseNotification(ctx, notifications.Notifications)
+	notification.Notification = &zb.Notification_EndMatch{
+		EndMatch: &zb.NotificationEndMatch{
+			OverlordId: overlord.OverlordId,
+			OldExperience: oldExperience,
+			OldLevel: oldLevel,
+			NewExperience: overlord.Experience,
+			NewLevel: int32(overlord.Level),
+		},
+	}
+
+	notifications.Notifications = append(notifications.Notifications, notification)
+	if err := saveUserNotifications(ctx, userId, notifications); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createBaseNotification(ctx contract.Context, currentNotifications []*zb.Notification) *zb.Notification {
+	var id int32 = 0
+	if len(currentNotifications) > 0 {
+		id = currentNotifications[len(currentNotifications) - 1].Id + 1
+	}
+
+	return &zb.Notification{
+		Id: id,
+		CreatedAt: ctx.Now().Unix(),
+		Seen: false,
+	}
+}
+
+func removeNotification(notifications []*zb.Notification, id int32) ([]*zb.Notification, error) {
+	for index, notification := range notifications {
+		if notification.Id == id {
+			notifications = append(notifications[:index], notifications[index+1:]...)
+			return notifications, nil
+		}
+	}
+
+	return nil, fmt.Errorf("notification with id %d not found", id)
 }
 
 func (z *ZombieBattleground) ConfirmRewardTutorialClaimed(ctx contract.Context, req *zb.ConfirmRewardTutorialClaimedRequest) error {
