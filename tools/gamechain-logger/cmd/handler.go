@@ -42,6 +42,7 @@ func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		Version:         match.Version,
 		RandomSeed:      match.RandomSeed,
 		BlockHeight:     eventData.BlockHeight,
+		BlockTime:       time.Unix(eventData.BlockTime, 0),
 		CreatedAt:       time.Now(),
 	}
 
@@ -225,12 +226,17 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		winnerID = event.Block.List[0].GetEndGame().WinnerId
 	}
 
-	err = db.Model(&models.Match{}).
-		Where(&models.Match{ID: match.Id}).
-		Updates(models.Match{WinnerID: winnerID, Status: match.Status.String()}).
-		Error
-	if err != nil {
-		return err
+	var existingMatch models.Match
+	notfound := db.Where(&models.Match{ID: match.Id}).
+		First(&existingMatch).
+		RecordNotFound()
+
+	if !notfound {
+		existingMatch.WinnerID = winnerID
+		existingMatch.Status = match.Status.String()
+		if err := db.Save(&existingMatch).Error; err != nil {
+			return err
+		}
 	}
 
 	dbReplay := models.Replay{}
@@ -240,6 +246,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 			dbReplay.ReplayJSON = replay
 		}
 		dbReplay.BlockHeight = eventData.BlockHeight
+		dbReplay.BlockTime = time.Unix(eventData.BlockTime, 0)
 		db.Save(&dbReplay)
 	} else if gorm.IsRecordNotFoundError(err) {
 		// insert
@@ -248,6 +255,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 			dbReplay.ReplayJSON = replay
 		}
 		dbReplay.BlockHeight = eventData.BlockHeight
+		dbReplay.BlockTime = time.Unix(eventData.BlockTime, 0)
 		db.Create(&dbReplay)
 	} else {
 		return err
