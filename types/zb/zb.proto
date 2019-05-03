@@ -132,28 +132,6 @@ message ListOverlordsResponse {
     repeated Overlord overlords  = 1;
 }
 
-message AddOverlordExperienceRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 experience = 3;
-}
-
-message AddOverlordExperienceResponse {
-    int64 overlordId = 1;
-    int64 experience = 2;
-}
-
-message SetOverlordExperienceRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 experience = 3;
-}
-
-message SetOverlordExperienceResponse {
-    int64 overlordId = 1;
-    int64 experience = 2;
-}
-
 message SetOverlordLevelRequest {
     string user_id = 1;
     int64 overlordId = 2;
@@ -262,7 +240,7 @@ message AIDeckList {
     repeated AIDeck decks = 1;
 }
 
-message OverlordExperienceInfo{
+message OverlordLevelingData {
     repeated LevelReward rewards = 1;
     repeated ExperienceAction experienceActions = 2;
     int64 fixed = 3;
@@ -271,13 +249,13 @@ message OverlordExperienceInfo{
     int64 maxLevel = 6;
 }
 
-message LevelReward{
+message LevelReward {
     int64 level = 1;
     OverlordSkillRewardItem skillReward = 2;
     UnitRewardItem unitReward = 3;
 }
 
-message OverlordSkillRewardItem{
+message OverlordSkillRewardItem {
     int64 skillIndex = 1;
 }
 
@@ -311,7 +289,7 @@ message InitData {
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
-    OverlordExperienceInfo overlordExperienceInfo = 8;
+    OverlordLevelingData overlordLeveling = 8;
 }
 
 message InitRequest {
@@ -322,9 +300,7 @@ message InitRequest {
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
-    string contentVersion = 8;
-    string pvpVersion = 9;
-    OverlordExperienceInfo overlordExperienceInfo = 10;
+    reserved 8, 9;
 }
 
 message UpdateOracle {
@@ -1730,4 +1706,8 @@ message OverlordsDataContainer {
 
 message AIDecksDataContainer {
     repeated AIDeck aiDecks = 1;
+}
+
+message OverlordLevelingDataContainer {
+    OverlordLevelingData overlordLeveling = 1;
 }

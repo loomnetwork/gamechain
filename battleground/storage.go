@@ -37,7 +37,7 @@ var (
 	stateKey                    = []byte("state")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
-	overlordExperienceInfoKey   = []byte("overlord-experience")
+	overlordLevelingDataKey   = []byte("overlord-experience")
 )
 
 var (
@@ -400,13 +400,13 @@ func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordLi
 	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
-func loadOverlordExperienceInfo(ctx contract.Context) (*zb.OverlordExperienceInfo, error) {
-	var overlordExperience zb.OverlordExperienceInfo
-	if err := ctx.Get(overlordExperienceInfoKey, &overlordExperience); err != nil {
+func loadOverlordLevelingData(ctx contract.Context) (*zb.OverlordLevelingData, error) {
+	var overlordLevelingData zb.OverlordLevelingData
+	if err := ctx.Get(overlordLevelingDataKey, &overlordLevelingData); err != nil {
 		return nil, errors.Wrap(err, "error getting overlord Experience info")
 	}
 
-	return &overlordExperience, nil
+	return &overlordLevelingData, nil
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {

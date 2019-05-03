@@ -1398,18 +1398,18 @@ func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) 
 	var level = overlord.Level
 	var experience = overlord.Experience
 
-	overlordExperienceInfo, err := loadOverlordExperienceInfo(ctx)
+	overlordLevelingData, err := loadOverlordLevelingData(ctx)
 	if err != nil {
 		return -1, nil, err
 	}
 
 	var levelRewards []*zb.LevelReward
 	var index = 0
-	for experience >= getRequiredExperienceForNewLevel(overlordExperienceInfo, level) && level < overlordExperienceInfo.MaxLevel {
+	for experience >= getRequiredExperienceForNewLevel(overlordLevelingData, level) && level < overlordLevelingData.MaxLevel {
 		level++
 
 		// reward
-		levelReward := getLevelReward(overlordExperienceInfo, level)
+		levelReward := getLevelReward(overlordLevelingData, level)
 		if levelReward == nil {
 			ctx.Logger().Info("level Reward is nil")
 			return -1, nil, err
@@ -1425,18 +1425,18 @@ func calculateOverloadUpdatedLevel(ctx contract.Context, overlord *zb.Overlord) 
 }
 
 // get required experience
-func getRequiredExperienceForNewLevel(overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) int64 {
-	var fixed = overlordExperienceInfo.Fixed
-	var experienceStep = overlordExperienceInfo.ExperienceStep
+func getRequiredExperienceForNewLevel(overlordLevelingData *zb.OverlordLevelingData, level int64) int64 {
+	var fixed = overlordLevelingData.Fixed
+	var experienceStep = overlordLevelingData.ExperienceStep
 	var requiredExperience = fixed + experienceStep*(level+1)
 	return requiredExperience
 }
 
 // get level rewards
-func getLevelReward(overlordExperienceInfo *zb.OverlordExperienceInfo, level int64) *zb.LevelReward {
-	for i := 0; i < len(overlordExperienceInfo.Rewards); i++ {
-		if overlordExperienceInfo.Rewards[i].Level == level {
-			return overlordExperienceInfo.Rewards[i]
+func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int64) *zb.LevelReward {
+	for i := 0; i < len(overlordLevelingData.Rewards); i++ {
+		if overlordLevelingData.Rewards[i].Level == level {
+			return overlordLevelingData.Rewards[i]
 		}
 	}
 
