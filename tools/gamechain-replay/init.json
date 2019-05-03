@@ -7341,5 +7341,131 @@
         }
       }
     }
-  ]
+  ],
+  "overlordLeveling":
+  {
+    "rewards": [
+      {
+        "level": 1
+      },
+      {
+        "level": 2,
+        "unitReward": {
+          "rank": "MINION",
+          "count": 1
+        }
+      },
+      {
+        "level": 3
+      },
+      {
+        "level": 4,
+        "skillReward": {
+          "skillIndex": 0
+        }
+      },
+      {
+        "level": 5
+      },
+      {
+        "level": 6,
+        "unitReward": {
+          "rank": "MINION",
+          "count": 2
+        }
+      },
+      {
+        "level": 7
+      },
+      {
+        "level": 8,
+        "skillReward": {
+          "skillIndex": 1
+        }
+      },
+      {
+        "level": 9
+      },
+      {
+        "level": 10,
+        "unitReward": {
+          "rank": "OFFICER",
+          "count": 1
+        }
+      },
+      {
+        "level": 11
+      },
+      {
+        "level": 12,
+        "skillReward": {
+          "skillIndex": 2
+        }
+      },
+      {
+        "level": 13
+      },
+      {
+        "level": 14,
+        "unitReward": {
+          "rank": "OFFICER",
+          "count": 2
+        }
+      },
+      {
+        "level": 15
+      },
+      {
+        "level": 16,
+        "skillReward": {
+          "skillIndex": 3
+        }
+      },
+      {
+        "level": 17
+      },
+      {
+        "level": 18,
+        "unitReward": {
+          "rank": "COMMANDER",
+          "count": 1
+        }
+      },
+      {
+        "level": 19
+      },
+      {
+        "level": 20,
+        "skillReward": {
+          "skillIndex": 4
+        }
+      }
+    ],
+    "experienceActions": [
+      {
+        "action": "KillOverlord",
+        "experience": 100
+      },
+      {
+        "action": "KillMinion",
+        "experience": 7
+      },
+      {
+        "action": "PlayCard",
+        "experience": 7
+      },
+      {
+        "action": "ActivateRankAbility",
+        "experience": 7
+      },
+      {
+        "action": "UseOverlordAbility",
+        "experience": 7
+      }
+    ],
+    "fixed": 100,
+    "experienceStep": 40,
+    "gooRewardStep": 10,
+    "maxLevel": 20
+  }
 }
