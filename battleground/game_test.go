@@ -25,7 +25,7 @@ func TestGameStateFunc(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -177,7 +177,7 @@ func TestInvalidUserTurn(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -208,7 +208,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -275,7 +275,7 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -319,14 +319,18 @@ func TestPopulateDeckCards(t *testing.T) {
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
-	getDeckResp1, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+	getDeckResp1, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 		UserId: "player-1",
 		DeckId: 1,
+		Version: "v1",
 	})
-	getDeckResp2, _ := c.GetDeck(ctx, &zb.GetDeckRequest{
+	assert.Nil(t, err)
+	getDeckResp2, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 		UserId: "player-2",
 		DeckId: 1,
+		Version: "v1",
 	})
+	assert.Nil(t, err)
 	playerStates := []*zb.PlayerState{
 		&zb.PlayerState{
 			Id:   "player-1",
@@ -374,17 +378,17 @@ func TestCardAttack(t *testing.T) {
 		OverlordId: 2,
 		Name:   "Default",
 		Cards: []*zb.DeckCard{
-			{CardName: "Banshee", Amount: 2},
-			{CardName: "Breezee", Amount: 2},
-			{CardName: "Buffer", Amount: 2},
-			{CardName: "Soothsayer", Amount: 2},
-			{CardName: "Wheezy", Amount: 2},
-			{CardName: "Whiffer", Amount: 2},
-			{CardName: "Whizpar", Amount: 1},
-			{CardName: "Zhocker", Amount: 1},
-			{CardName: "Bouncer", Amount: 1},
-			{CardName: "Dragger", Amount: 1},
-			{CardName: "Pushhh", Amount: 1},
+			{MouldId: 90, Amount: 2},
+			{MouldId: 91, Amount: 2},
+			{MouldId: 96, Amount: 2},
+			{MouldId: 3, Amount: 2},
+			{MouldId: 2, Amount: 2},
+			{MouldId: 92, Amount: 2},
+			{MouldId: 1, Amount: 1},
+			{MouldId: 93, Amount: 1},
+			{MouldId: 7, Amount: 1},
+			{MouldId: 94, Amount: 1},
+			{MouldId: 5, Amount: 1},
 		},
 	}
 
@@ -612,7 +616,7 @@ func TestCardPlay(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
@@ -726,7 +730,7 @@ func TestCheats(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	var deckList zb.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDeckKey), &deckList)
+	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"

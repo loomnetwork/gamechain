@@ -92,13 +92,15 @@ message CardList {
 }
 
 message CardCollectionCard {
-    string cardName  = 1;
-    int64 amount      = 2;
+    string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    int64 amount = 2;
+    int64 mouldId = 3;
 }
 
 message DeckCard {
-    string card_name  = 1;
-    int64 amount      = 2;
+    string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    int64 amount = 2;
+    int64 mouldId = 3;
 }
 
 message CardLibrary {
@@ -313,15 +315,15 @@ message InitData {
 }
 
 message InitRequest {
-    repeated Deck defaultDecks                = 1;
+    repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
-    repeated Card cards                        = 3;
-    repeated Overlord overlords                       = 4;
-    repeated AIDeck aiDecks                   = 5;
-    string version                             = 6;
-    Address oracle                             = 7;
-    string contentVersion                      = 8;
-    string pvpVersion                          = 9;
+    repeated Card cards = 3;
+    repeated Overlord overlords = 4;
+    repeated AIDeck aiDecks = 5;
+    string version = 6;
+    Address oracle = 7;
+    string contentVersion = 8;
+    string pvpVersion = 9;
     OverlordExperienceInfo overlordExperienceInfo = 10;
 }
 
@@ -418,6 +420,7 @@ message GetAccountRequest {
 message GetDeckRequest {
     string user_id = 1;
     int64 deck_id = 2;
+    string version = 3;
 }
 
 message GetDeckResponse {
@@ -444,6 +447,7 @@ message CreateDeckEvent {
 message DeleteDeckRequest {
     string user_id = 1;
     int64 deck_id = 2;
+    string version = 3;
 }
 
 message DeleteDeckEvent {
@@ -454,8 +458,8 @@ message DeleteDeckEvent {
 
 message EditDeckRequest {
     string user_id = 1;
-    Deck deck      = 2;
-    string version = 4;
+    Deck deck = 2;
+    string version = 3;
 }
 
 message EditDeckEvent {
@@ -472,6 +476,7 @@ message DecksResponse {
 
 message ListDecksRequest {
     string user_id = 1;
+    string version = 2;
 }
 
 message ListDecksResponse {
@@ -504,6 +509,7 @@ message ListOverlordLibraryResponse {
 
 message GetCollectionRequest {
     string user_id = 1;
+    string version = 2;
 }
 
 message GetCollectionResponse {
@@ -511,6 +517,7 @@ message GetCollectionResponse {
 }
 
 message GetCollectionByAddressRequest {
+    string version = 1;
 }
 
 message GetCollectionByAddressResponse {

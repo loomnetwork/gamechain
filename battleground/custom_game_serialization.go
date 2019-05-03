@@ -144,7 +144,7 @@ func (c *CustomGameMode) updateCardsFromSimpleCards(
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId.Id {
-				cardLibraryCard, err := getCardDetails(gameplay.cardLibrary, simpleCard.mouldName)
+				cardLibraryCard, err := getCardByName(gameplay.cardLibrary, simpleCard.mouldName)
 				if err != nil {
 					return nil, err
 				}
@@ -335,24 +335,26 @@ func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiEleme
 
 type SimpleCardInstance struct {
 	instanceId       int32
+	mouldId          int64
 	mouldName        string
 	defense          int32
 	defenseInherited bool
 	damage           int32
 	damageInherited  bool
-	cost          int32
+	cost             int32
 	gooCostInherited bool
 }
 
 func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
+		mouldId:          card.Prototype.MouldId,
 		mouldName:        card.Prototype.Name,
 		damage:           card.Prototype.Damage,
 		damageInherited:  true,
 		defense:          card.Prototype.Defense,
 		defenseInherited: true,
-		cost:          card.Prototype.Cost,
+		cost:             card.Prototype.Cost,
 		gooCostInherited: true,
 	}
 }

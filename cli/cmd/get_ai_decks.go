@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/go-loom"
+	"os"
 
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -34,16 +32,11 @@ var getAIDecksCmd = &cobra.Command{
 			return err
 		}
 
-		jsonMarshaler := jsonpb.Marshaler{
-			OrigName: true,
-			Indent:   "  ",
-		}
-
-		j, err := jsonMarshaler.MarshalToString(&result)
+		err = printProtoMessageAsJSON(os.Stdout, &result)
 		if err != nil {
 			return err
 		}
-		fmt.Println(j)
+
 		return nil
 	},
 }
@@ -52,4 +45,6 @@ func init() {
 	rootCmd.AddCommand(getAIDecksCmd)
 
 	getAIDecksCmd.Flags().StringVarP(&getAIDecksCmdArgs.version, "version", "v", "v1", "version")
+
+	_ = getAIDecksCmd.MarkFlagRequired("version")
 }

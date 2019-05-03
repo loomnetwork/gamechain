@@ -16,7 +16,7 @@ import (
 const (
 	defaultTurnTime        = 120
 	defaultMulliganCards   = 3
-	defaultOverlordDefense = 20
+	defaultOverlordDefense = 50
 	maxMulliganCards       = 10
 	maxCardsInPlay         = 6
 	maxCardsInHand         = 10

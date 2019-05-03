@@ -78,6 +78,7 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 		Version:         match.Version,
 		RandomSeed:      match.RandomSeed,
 		BlockHeight:     eventData.BlockHeight,
+		BlockTime:       time.Unix(eventData.BlockTime, 0),
 	}
 	if err := db.Omit("created_at").Save(&m).Error; err != nil {
 		return err

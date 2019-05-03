@@ -70,4 +70,6 @@ func init() {
 	rootCmd.AddCommand(updateInitCmd)
 
 	updateInitCmd.Flags().StringVarP(&updateInitCmdArgs.file, "file", "f", "", "File of init data to be updated in serialized json format")
+
+	_ = updateInitCmd.MarkFlagRequired("file")
 }
