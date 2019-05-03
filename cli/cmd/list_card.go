@@ -28,10 +28,10 @@ var listCardCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.ListCardLibraryRequest{}
+		req := zb.ListCardLibraryRequest{
+			Version: listCardCmdArgs.version,
+		}
 		result := zb.ListCardLibraryResponse{}
-
-		req.Version = listCardCmdArgs.version
 
 		_, err := commonTxObjs.contract.StaticCall("ListCardLibrary", &req, callerAddr, &result)
 		if err != nil {
@@ -45,4 +45,6 @@ var listCardCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(listCardCmd)
 	listCardCmd.Flags().StringVarP(&listCardCmdArgs.version, "version", "v", "", "Version")
+
+	_ = listCardCmd.MarkFlagRequired("version")
 }

@@ -64,6 +64,7 @@ var (
 	ErrOracleNotSpecified          = errors.New("oracle not specified")
 	ErrInvalidEventBatch           = errors.New("invalid event batch")
 	ErrInvalidDefaultPlayerDefense = errors.New("default overlord defense must be >= 1")
+	ErrVersionNotSet               = errors.New("data version not set")
 )
 
 type ZombieBattleground struct {
@@ -104,11 +105,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	cardList := zb.CardList{
 		Cards: req.Cards,
 	}
-	for _, card := range cardList.Cards {
-		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("Card '%s' missing value for PictureTransform field", card.Name)
-		}
-	}
+
 	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
 		return err
 	}
@@ -133,7 +130,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	deckList := zb.DeckList{
 		Decks: req.DefaultDecks,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
+	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
 		return err
 	}
 
@@ -141,6 +138,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	aiDeckList := zb.AIDeckList{
 		Decks: req.AiDecks,
 	}
+
 	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
 		return err
 	}
@@ -154,22 +152,16 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	var overlordList zb.OverlordList
 	var defaultOverlordList zb.OverlordList
 	var cardList zb.CardList
-	var cardCollectionList zb.CardCollectionList
-	var deckList zb.DeckList
+	var defaultCardCollectionList zb.CardCollectionList
+	var defaultDecks zb.DeckList
 	var aiDeckList zb.AIDeckList
 	var overlordExperienceInfo *zb.OverlordExperienceInfo
 
-	// validation
+	// load data
 	// card library
 	cardList.Cards = initData.Cards
 	if cardList.Cards == nil {
 		return fmt.Errorf("'cards' key missing")
-	}
-
-	for _, card := range cardList.Cards {
-		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("card '%s' missing value for PictureTransform field", card.Name)
-		}
 	}
 
 	// overlords
@@ -180,25 +172,20 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	}
 
 	// default collection
-	cardCollectionList.Cards = initData.DefaultCollection
-	if cardCollectionList.Cards == nil {
+	defaultCardCollectionList.Cards = initData.DefaultCollection
+	if defaultCardCollectionList.Cards == nil {
 		// HACK: for some reason, empty message are converted to nil
-		// Allow for empty card collection
-		cardCollectionList.Cards = make([]*zb.CardCollectionCard, 0)
+		// Allow empty card collection for now, since it is not used anyway
+		defaultCardCollectionList.Cards = make([]*zb.CardCollectionCard, 0)
 	}
-	if cardCollectionList.Cards == nil {
+	if defaultCardCollectionList.Cards == nil {
 		return fmt.Errorf("'default_collection' key missing")
 	}
 
 	// default decks
-	deckList.Decks = initData.DefaultDecks
-	if deckList.Decks == nil {
+	defaultDecks.Decks = initData.DefaultDecks
+	if defaultDecks.Decks == nil {
 		return fmt.Errorf("'default_decks' key missing")
-	}
-	for _, deck := range deckList.Decks {
-		if err := validateCardLibrary(cardList.Cards, deck.Cards); err != nil {
-			return errors.Wrap(err, "error validating default decks")
-		}
 	}
 
 	// AI decks
@@ -207,41 +194,56 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 		return fmt.Errorf("'ai_decks' key missing")
 	}
 
-	for _, deck := range aiDeckList.Decks {
-		if err := validateCardLibrary(cardList.Cards, deck.Deck.Cards); err != nil {
-			return errors.Wrap(err, "error validating AI decks")
-		}
-	}
-
 	// overlord experience info
 	overlordExperienceInfo = initData.OverlordExperienceInfo
 	if overlordExperienceInfo == nil {
 		return fmt.Errorf("'overlord experience' missing")
 	}
 
+	// validate data
+	// card library
+	err := validateCardLibraryCards(cardList.Cards)
+	if err != nil {
+		return errors.Wrap(err, "error while validating card library")
+	}
+
+	// default decks
+	for _, deck := range defaultDecks.Decks {
+		if err := validateDeckCards(cardList.Cards, deck.Cards); err != nil {
+			return errors.Wrap(err, fmt.Sprintf("error validating default deck with id %d", deck.Id))
+		}
+	}
+
+	// ai decks
+	for index, deck := range aiDeckList.Decks {
+		if err := validateDeckCards(cardList.Cards, deck.Deck.Cards); err != nil {
+			return errors.Wrap(err, fmt.Sprintf("error validating AI deck %d", index))
+		}
+	}
+
 	// initialize card library
 	if err := ctx.Set(MakeVersionedKey(initData.Version, cardListKey), &cardList); err != nil {
-		return err
+		return errors.Wrap(err, "error updating card library")
 	}
 
 	// initialize overlords
 	if err := ctx.Set(MakeVersionedKey(initData.Version, overlordListKey), &overlordList); err != nil {
-		return err
+		return errors.Wrap(err, "error updating overlord list")
 	}
 
 	// initialize default collection
-	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultCollectionKey), &cardCollectionList); err != nil {
-		return err
+	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultCollectionKey), &defaultCardCollectionList); err != nil {
+		return errors.Wrap(err, "error updating default collection")
 	}
 
 	// initialize default deck
-	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultDeckKey), &deckList); err != nil {
-		return err
+	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultDecksKey), &defaultDecks); err != nil {
+		return errors.Wrap(err, "error updating default decks")
 	}
 
 	// initialize AI decks
 	if err := ctx.Set(MakeVersionedKey(initData.Version, aiDecksKey), &aiDeckList); err != nil {
-		return err
+		return errors.Wrap(err, "error updating ai decks")
 	}
 
 	// initialize overlord experience
@@ -272,7 +274,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 		return nil, errors.Wrap(err, "error getting default collectionList")
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
 		return nil, errors.Wrap(err, "error getting default deckList")
 	}
 
@@ -281,7 +283,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	}
 
 	if err := ctx.Get(MakeVersionedKey(req.Version, overlordExperienceInfoKey), &overlordExperience); err != nil {
-		return nil, errors.Wrap(err, "error getting overlord Experience info")
+		return nil, errors.Wrap(err, "error getting overlord experience info")
 	}
 
 	return &zb.GetInitResponse{
@@ -297,12 +299,18 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInit
 	}, nil
 }
 
+// FIXME: duplicate of ListCardLibrary
 func (z *ZombieBattleground) GetCardList(ctx contract.Context, req *zb.GetCardListRequest) (*zb.GetCardListResponse, error) {
-	cardlist, err := loadCardList(ctx, req.Version)
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	cardList, err := getCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
-	return &zb.GetCardListResponse{Cards: cardlist.Cards}, nil
+
+	return &zb.GetCardListResponse{Cards: cardList.Cards}, nil
 }
 
 func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetAccountRequest) (*zb.Account, error) {
@@ -316,7 +324,6 @@ func (z *ZombieBattleground) GetAccount(ctx contract.StaticContext, req *zb.GetA
 func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) (*zb.Account, error) {
 	// Verify whether this privateKey associated with user
 	if !isOwner(ctx, req.UserId) {
-
 		return nil, ErrUserNotVerified
 	}
 
@@ -341,6 +348,10 @@ func (z *ZombieBattleground) UpdateAccount(ctx contract.Context, req *zb.UpsertA
 }
 
 func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertAccountRequest) error {
+	if req.Version == "" {
+		return ErrVersionNotSet
+	}
+
 	// confirm owner doesnt exist already
 	if ctx.Has(AccountKey(req.UserId)) {
 		ctx.Logger().Debug(fmt.Sprintf("user already exists -%s", req.UserId))
@@ -360,15 +371,16 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 
 	// add default collection list
 	var collectionList zb.CardCollectionList
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &collectionList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &collectionList); err != nil && err.Error() != ErrNotfound.Error() {
 		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
+
 	if err := ctx.Set(CardCollectionKey(req.UserId), &collectionList); err != nil {
 		return errors.Wrapf(err, "unable to save card collection for userId: %s", req.UserId)
 	}
 
 	var deckList zb.DeckList
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDeckKey), &deckList); err != nil {
+	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
 	// update default deck with none-zero id
@@ -443,6 +455,9 @@ func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb.UpdateU
 
 // CreateDeck appends the given deck to user's deck list
 func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeckRequest) (*zb.CreateDeckResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
 	if req.Deck == nil {
 		return nil, ErrDeckMustNotNil
 	}
@@ -458,11 +473,11 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 		return nil, err
 	}
 	// validate version on card library
-	cardLibrary, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := getCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
-	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
+	if err := validateDeckCards(cardLibrary.Cards, req.Deck.Cards); err != nil {
 		return nil, err
 	}
 
@@ -478,9 +493,9 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	// 	return nil, err
 	// }
 
-	deckList, err := loadDecks(ctx, req.UserId)
+	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "unable to load decks")
 	}
 	// check duplicate name
 	if existing := getDeckByName(deckList.Decks, req.Deck.Name); existing != nil {
@@ -521,6 +536,9 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 
 // EditDeck edits the deck by id
 func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequest) error {
+	if req.Version == "" {
+		return ErrVersionNotSet
+	}
 	if req.Deck == nil {
 		return fmt.Errorf("deck must not be nil")
 	}
@@ -532,13 +550,14 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	if err := validateDeckOverlord(overlords.Overlords, req.Deck.OverlordId); err != nil {
 		return err
 	}
+
 	// validate version on card library
-	cardLibrary, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := getCardLibrary(ctx, req.Version)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error getting card library")
 	}
-	if err := validateCardLibrary(cardLibrary.Cards, req.Deck.Cards); err != nil {
-		return err
+	if err := validateDeckCards(cardLibrary.Cards, req.Deck.Cards); err != nil {
+		return errors.Wrap(err, "error validating cards")
 	}
 
 	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
@@ -554,14 +573,14 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	// }
 
 	// validate deck
-	deckList, err := loadDecks(ctx, req.UserId)
+	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error loading decks")
 	}
 	// TODO: check if this still valid
 	// The deck name should be validated on the client side, not server
 	if err := validateDeckName(deckList.Decks, req.Deck); err != nil {
-		return err
+		return errors.Wrap(err, "error validating deck name")
 	}
 
 	deckID := req.Deck.Id
@@ -578,7 +597,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 
 	// update decklist
 	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
-		return err
+		return errors.Wrap(err, "error saving decks")
 	}
 
 	senderAddress := ctx.Message().Sender.Local.String()
@@ -600,11 +619,15 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 
 // DeleteDeck deletes a user's deck by id
 func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeckRequest) error {
+	if req.Version == "" {
+		return ErrVersionNotSet
+	}
+
 	if !isOwner(ctx, req.UserId) {
 		return ErrUserNotVerified
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId)
+	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
 		return err
 	}
@@ -636,8 +659,12 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb.DeleteDeck
 }
 
 // ListDecks returns the user's decks
-func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListDecksRequest) (*zb.ListDecksResponse, error) {
-	deckList, err := loadDecks(ctx, req.UserId)
+func (z *ZombieBattleground) ListDecks(ctx contract.Context, req *zb.ListDecksRequest) (*zb.ListDecksResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -647,8 +674,12 @@ func (z *ZombieBattleground) ListDecks(ctx contract.StaticContext, req *zb.ListD
 }
 
 // GetDeck returns the deck by given id
-func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeckRequest) (*zb.GetDeckResponse, error) {
-	deckList, err := loadDecks(ctx, req.UserId)
+func (z *ZombieBattleground) GetDeck(ctx contract.Context, req *zb.GetDeckRequest) (*zb.GetDeckResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	deckList, err := loadDecks(ctx, req.UserId, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -660,39 +691,53 @@ func (z *ZombieBattleground) GetDeck(ctx contract.StaticContext, req *zb.GetDeck
 }
 
 func (z *ZombieBattleground) GetAIDecks(ctx contract.StaticContext, req *zb.GetAIDecksRequest) (*zb.GetAIDecksResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
 	deckList, err := loadAIDecks(ctx, req.Version)
+
 	if err != nil {
 		return nil, err
 	}
 	// remove invalid ai deck
 	// this should be removed finally after we make sure setting AI deck works fine
-	cardLibrary, err := loadCardList(ctx, req.Version)
+	cardLibrary, err := getCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
 	var decks []*zb.AIDeck
 	for _, deck := range deckList.Decks {
-		err := validateCardLibrary(cardLibrary.Cards, deck.Deck.Cards)
+		err := validateDeckCards(cardLibrary.Cards, deck.Deck.Cards)
 		if err == nil {
 			decks = append(decks, deck)
 		}
 	}
+
 	return &zb.GetAIDecksResponse{
 		AiDecks: decks,
 	}, nil
 }
 
 // GetCollection returns the collection of the card own by the user
-func (z *ZombieBattleground) GetCollection(ctx contract.StaticContext, req *zb.GetCollectionRequest) (*zb.GetCollectionResponse, error) {
-	collectionList, err := loadCardCollection(ctx, req.UserId)
+func (z *ZombieBattleground) GetCollection(ctx contract.Context, req *zb.GetCollectionRequest) (*zb.GetCollectionResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	collectionList, err := loadCardCollectionByUserId(ctx, req.UserId, req.Version)
 	if err != nil {
 		return nil, err
 	}
 	return &zb.GetCollectionResponse{Cards: collectionList.Cards}, nil
 }
 
-func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.StaticContext, req *zb.GetCollectionByAddressRequest) (*zb.GetCollectionByAddressResponse, error) {
-	collectionList, err := loadCardCollectionByAddress(ctx)
+func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.Context, req *zb.GetCollectionByAddressRequest) (*zb.GetCollectionByAddressResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	collectionList, err := loadCardCollectionByAddress(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -701,8 +746,12 @@ func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.StaticContext, 
 
 // ListCardLibrary list all the card library data
 func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb.ListCardLibraryRequest) (*zb.ListCardLibraryResponse, error) {
-	var cardList zb.CardList
-	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	cardList, err := getCardLibrary(ctx, req.Version)
+	if err != nil {
 		return nil, err
 	}
 
@@ -710,6 +759,10 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 }
 
 func (z *ZombieBattleground) ListOverlordLibrary(ctx contract.StaticContext, req *zb.ListOverlordLibraryRequest) (*zb.ListOverlordLibraryResponse, error) {
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
 	var overlordList zb.OverlordList
 	if err := ctx.Get(MakeVersionedKey(req.Version, overlordListKey), &overlordList); err != nil {
 		return nil, err
@@ -873,7 +926,7 @@ func (z *ZombieBattleground) GetOverlordSkills(ctx contract.StaticContext, req *
 
 func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.RegisterPlayerPoolRequest) (*zb.RegisterPlayerPoolResponse, error) {
 	// preparing user profile consisting of deck, score, ...
-	_, err := getDeckWithRegistrationData(ctx, req.RegistrationData)
+	_, err := getDeckWithRegistrationData(ctx, req.RegistrationData, req.RegistrationData.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1023,7 +1076,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 		return nil, errors.New("Player not found in player pool")
 	}
 
-	deck, err := getDeckWithRegistrationData(ctx, playerProfile.RegistrationData)
+	deck, err := getDeckWithRegistrationData(ctx, playerProfile.RegistrationData, playerProfile.RegistrationData.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1071,7 +1124,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 	}
 
 	// get matched player deck
-	matchedDeck, err := getDeckWithRegistrationData(ctx, matchedPlayerProfile.RegistrationData)
+	matchedDeck, err := getDeckWithRegistrationData(ctx, matchedPlayerProfile.RegistrationData, matchedPlayerProfile.RegistrationData.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1514,7 +1567,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb.Play
 		return nil, err
 	}
 	// TODO: change me. this is a bit hacky way to set card libarary
-	cardlist, err := loadCardList(ctx, gamestate.Version)
+	cardlist, err := getCardLibrary(ctx, gamestate.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1618,7 +1671,7 @@ func (z *ZombieBattleground) ReplayGame(ctx contract.Context, req *zb.ReplayGame
 		return nil, err
 	}
 	// TODO: change me. this is a bit hacky way to set card libarary
-	cardlist, err := loadCardList(ctx, initGameState.Version)
+	cardlist, err := getCardLibrary(ctx, initGameState.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -2242,11 +2295,11 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	if err := z.validateOracle(ctx, addr); err != nil {
 		return err
 	}
-	cardCollection, err := loadCardCollection(ctx, userID)
+	cardCollection, err := loadCardCollectionByUserId(ctx, userID, version)
 	if err != nil {
 		return err
 	}
-	cardlib, err := loadCardList(ctx, version)
+	cardlib, err := getCardLibrary(ctx, version)
 	if err != nil {
 		return err
 	}
@@ -2256,15 +2309,15 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	// for example cardID 250 = 25 + 0
 	//   or 161 = 16 + 1
 	mouldID := cardID / 10
-	card, ok := findCardByMouldID(cardlib, mouldID)
-	if !ok {
-		return fmt.Errorf("card mould id %d not found in card library", mouldID)
+	card, err := getCardByMouldId(cardlib, mouldID)
+	if err != nil {
+		return err
 	}
 
 	// add to collection
 	found := false
 	for i := range cardCollection.Cards {
-		if cardCollection.Cards[i].CardName == card.Name {
+		if cardCollection.Cards[i].MouldId == card.MouldId {
 			cardCollection.Cards[i].Amount += amount
 			found = true
 			break
@@ -2272,11 +2325,11 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	}
 	if !found {
 		cardCollection.Cards = append(cardCollection.Cards, &zb.CardCollectionCard{
-			CardName: card.Name,
-			Amount:   amount,
+			MouldId: card.MouldId,
+			Amount:  amount,
 		})
 	}
-	return saveCardCollection(ctx, userID, cardCollection)
+	return saveCardCollectionByUserId(ctx, userID, cardCollection)
 }
 
 func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb.SetLastPlasmaBlockNumRequest) error {

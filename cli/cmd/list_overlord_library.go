@@ -54,4 +54,6 @@ func init() {
 	rootCmd.AddCommand(listOverlordsLibraryCmd)
 
 	listOverlordsLibraryCmd.Flags().StringVarP(&listOverlordsLibraryCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = listOverlordsLibraryCmd.MarkFlagRequired("version")
 }

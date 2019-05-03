@@ -23,34 +23,65 @@ var (
 	ErrDeckNameTooLong = fmt.Errorf("deck name is more than %d characters", MaxDeckNameChar)
 )
 
-func validateCardLibrary(cards []*zb.Card, deckCards []*zb.DeckCard) error {
-	cardNameSet := make(map[string]interface{})
-	for _, card := range cards {
-		cardNameSet[card.Name] = struct{}{}
+func validateCardLibraryCards(cardLibrary []*zb.Card) error {
+	existingCardsSet := make(map[int64]interface{})
+	for _, card := range cardLibrary {
+		_, exists := existingCardsSet[card.MouldId]
+		if !exists {
+			existingCardsSet[card.MouldId] = struct{}{}
+		} else {
+			return fmt.Errorf("more than one card has mould ID %d, this is not allowed", card.MouldId)
+		}
 	}
 
+	for _, card := range cardLibrary {
+		if card.MouldId <= 0 {
+			return fmt.Errorf("mould id not set for card %s", card.Name)
+		}
+
+		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+		}
+	}
+
+	return nil
+}
+
+func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb.DeckCard) error {
+	existingCardsSet := make(map[int64]interface{})
+	for _, card := range cardLibrary {
+		existingCardsSet[card.MouldId] = struct{}{}
+	}
 	for _, deckCard := range deckCards {
-		if _, ok := cardNameSet[deckCard.CardName]; !ok {
-			return fmt.Errorf("card %s not found in card library", deckCard.CardName)
+		if deckCard.MouldId <= 0 {
+			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
+		}
+
+		if deckCard.CardNameDeprecated != "" {
+			return fmt.Errorf("card %d has non-empty name '%s', must be empty", deckCard.MouldId, deckCard.CardNameDeprecated)
+		}
+
+		if _, ok := existingCardsSet[deckCard.MouldId]; !ok {
+			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
 		}
 	}
 	return nil
 }
 
 func validateDeckCollections(userCollections []*zb.CardCollectionCard, deckCollections []*zb.CardCollectionCard) error {
-	maxAmountMap := make(map[string]int64)
+	maxAmountMap := make(map[int64]int64)
 	for _, collection := range userCollections {
-		maxAmountMap[collection.CardName] = collection.Amount
+		maxAmountMap[collection.MouldId] = collection.Amount
 	}
 
 	var errorString = ""
 	for _, collection := range deckCollections {
-		cardAmount, ok := maxAmountMap[collection.CardName]
+		cardAmount, ok := maxAmountMap[collection.MouldId]
 		if !ok {
-			return fmt.Errorf("cannot add card %s", collection.CardName)
+			return fmt.Errorf("cannot add card %d", collection.MouldId)
 		}
 		if cardAmount < collection.Amount {
-			errorString += fmt.Sprintf("%s: %d ", collection.CardName, cardAmount)
+			errorString += fmt.Sprintf("%d: %d ", collection.MouldId, cardAmount)
 		}
 	}
 

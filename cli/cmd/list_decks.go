@@ -6,13 +6,13 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
 var listDecksCmdArgs struct {
 	userID string
+	version string
 }
 
 var listDecksCmd = &cobra.Command{
@@ -20,16 +20,13 @@ var listDecksCmd = &cobra.Command{
 	Short: "list decks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := loom.Address{
-			ChainID: commonTxObjs.rpcClient.GetChainID(),
-			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
-		}
 
 		req := &zb.ListDecksRequest{
 			UserId: listDecksCmdArgs.userID,
+			Version: listDecksCmdArgs.version,
 		}
 		var result zb.DeckList
-		_, err := commonTxObjs.contract.StaticCall("ListDecks", req, callerAddr, &result)
+		_, err := commonTxObjs.contract.Call("ListDecks", req, signer, &result)
 		if err != nil {
 			return err
 		}
@@ -47,7 +44,7 @@ var listDecksCmd = &cobra.Command{
 				fmt.Printf("id: %d\n", deck.Id)
 				fmt.Printf("name: %s\n", deck.Name)
 				for _, card := range deck.Cards {
-					fmt.Printf("  card_name: %s, amount: %d\n", card.CardName, card.Amount)
+					fmt.Printf("  mould id: %d, amount: %d\n", card.MouldId, card.Amount)
 				}
 			}
 		}
@@ -60,4 +57,7 @@ func init() {
 	rootCmd.AddCommand(listDecksCmd)
 
 	listDecksCmd.Flags().StringVarP(&listDecksCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	listDecksCmd.Flags().StringVarP(&listDecksCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = listDecksCmd.MarkFlagRequired("version")
 }
