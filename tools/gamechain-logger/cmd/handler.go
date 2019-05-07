@@ -234,6 +234,10 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	if !notfound {
 		existingMatch.WinnerID = winnerID
 		existingMatch.Status = match.Status.String()
+		// since we just add blocktime, hav to check for compatibility
+		if existingMatch.BlockTime.IsZero() {
+			existingMatch.BlockTime = time.Unix(eventData.BlockTime, 0)
+		}
 		if err := db.Save(&existingMatch).Error; err != nil {
 			return err
 		}
