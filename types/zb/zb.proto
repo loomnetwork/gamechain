@@ -121,6 +121,8 @@ message Overlord {
     repeated Skill skills = 9;
 
     reserved 10, 11;
+
+    int32 defense = 12;
 }
 
 message ListOverlordsRequest {
