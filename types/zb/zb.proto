@@ -122,6 +122,8 @@ message Overlord {
 
     OverlordSkill.Enum primarySkill = 10;
     OverlordSkill.Enum secondarySkill = 11;
+
+    int64 defense = 12;
 }
 
 message ListOverlordsRequest {

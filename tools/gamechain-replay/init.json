@@ -1183,7 +1183,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "20"
     },
     {
       "overlordId": 1,
@@ -1227,7 +1228,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "30"
     },
     {
       "overlordId": 2,
@@ -1267,7 +1269,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "30"
     },
     {
       "overlordId": 3,
@@ -1306,7 +1309,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "40"
     },
     {
       "overlordId": 4,
@@ -1349,7 +1353,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "50"
     },
     {
       "overlordId": 5,
@@ -1387,7 +1392,8 @@
         }
       ],
       "primarySkill": 0,
-      "secondarySkill": 1
+      "secondarySkill": 1,
+      "defense" : "60"
     }
   ],
   "cards": [
