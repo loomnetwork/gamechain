@@ -1182,7 +1182,7 @@
           "value": 1
         }
       ],
-      "initialDefense" : "50"
+      "initialDefense" : 50
     },
     {
       "overlordId": 1,
@@ -1225,7 +1225,7 @@
           "value": 1
         }
       ],
-      "initialDefense" : "50"
+      "initialDefense" : 50
     },
     {
       "overlordId": 2,
@@ -1264,7 +1264,7 @@
           "value": 2
         }
       ],
-      "initialDefense" : "50"
+      "initialDefense" : 50
     },
     {
       "overlordId": 3,
@@ -1302,7 +1302,7 @@
           "value": 0
         }
       ],
-      "initialDefense" : "50"
+      "initialDefense" : 50
     },
     {
       "overlordId": 4,
@@ -1381,7 +1381,7 @@
           "value": 2
         }
       ],
-      "initialDefense" : "50"
+      "initialDefense" : 50
     }
   ],
   "cards": [
