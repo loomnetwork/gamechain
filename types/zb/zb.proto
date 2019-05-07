@@ -120,8 +120,7 @@ message Overlord {
     int64 level = 8;
     repeated Skill skills = 9;
 
-    OverlordSkill.Enum primarySkill = 10;
-    OverlordSkill.Enum secondarySkill = 11;
+    reserved 10, 11;
 }
 
 message ListOverlordsRequest {
@@ -139,16 +138,6 @@ message GetOverlordRequest {
 
 message GetOverlordResponse {
     Overlord overlord = 1;
-}
-
-message SetOverlordSkillsRequest {
-    string userId = 1;
-    int64 overlordId = 2;
-    OverlordSkill.Enum primarySkill = 3;
-    OverlordSkill.Enum secondarySkill = 4;
-}
-
-message SetOverlordSkillsResponse {
 }
 
 message Skill {
@@ -1698,6 +1687,7 @@ message NotificationEndMatch {
     int64 oldExperience = 3;
     int32 newLevel = 4;
     int64 newExperience = 5;
+    repeated LevelReward rewards = 6;
 }
 
 message Notification {
