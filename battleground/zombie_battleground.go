@@ -2079,8 +2079,8 @@ func applyMatchExperience(
 
 	loop:
 	for _, notification := range notifications.Notifications {
-		switch notification.Notification.(type) {
-		case *zb.Notification_EndMatch:
+		switch notification.Type {
+		case zb.NotificationType_EndMatch:
 			notifications.Notifications, err = removeNotification(notifications.Notifications, notification.Id)
 			if err != nil {
 				return err
@@ -2090,7 +2090,7 @@ func applyMatchExperience(
 		}
 	}
 
-	notification := createBaseNotification(ctx, notifications.Notifications)
+	notification := createBaseNotification(ctx, notifications.Notifications, zb.NotificationType_EndMatch)
 	notification.Notification = &zb.Notification_EndMatch{
 		EndMatch: &zb.NotificationEndMatch{
 			OverlordId:    overlord.OverlordId,
@@ -2110,7 +2110,7 @@ func applyMatchExperience(
 	return nil
 }
 
-func createBaseNotification(ctx contract.Context, currentNotifications []*zb.Notification) *zb.Notification {
+func createBaseNotification(ctx contract.Context, currentNotifications []*zb.Notification, notificationType zb.NotificationType_Enum) *zb.Notification {
 	var id int32 = 0
 	if len(currentNotifications) > 0 {
 		id = currentNotifications[len(currentNotifications) - 1].Id + 1
@@ -2118,6 +2118,7 @@ func createBaseNotification(ctx contract.Context, currentNotifications []*zb.Not
 
 	return &zb.Notification{
 		Id: id,
+		Type: notificationType,
 		CreatedAt: ctx.Now().Unix(),
 		Seen: false,
 	}

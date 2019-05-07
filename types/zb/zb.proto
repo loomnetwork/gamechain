@@ -122,7 +122,7 @@ message Overlord {
 
     reserved 10, 11;
 
-    int32 defense = 12;
+    int32 initialDefense = 12;
 }
 
 message ListOverlordsRequest {
@@ -1692,10 +1692,18 @@ message NotificationEndMatch {
     repeated LevelReward rewards = 6;
 }
 
+message NotificationType {
+    enum Enum {
+        EndMatch = 0;
+    }
+}
+
 message Notification {
     int32 id = 1;
     int64 createdAt = 2;
     bool seen = 3;
+    NotificationType.Enum type = 4;
+
     oneof Notification {
         NotificationEndMatch endMatch = 10;
     }
