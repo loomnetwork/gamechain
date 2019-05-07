@@ -1286,7 +1286,7 @@ func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb.Add
 		return nil, err
 	}
 
-	if err := applyExperience(ctx, overlordLevelingData, req.UserId, req.OverlordId, req.Experience); err != nil {
+	if err := applyExperience(ctx, overlordLevelingData, req.UserId, req.OverlordId, req.Experience, req.IsWin); err != nil {
 		return nil, err
 	}
 
@@ -1317,7 +1317,14 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	}
 
 	for index, playerState := range match.PlayerStates {
-		if err := applyExperience(ctx, overlordLevelingData, playerState.Id, playerState.Deck.OverlordId, req.MatchExperiences[index]); err != nil {
+		if err := applyExperience(
+			ctx,
+			overlordLevelingData,
+			playerState.Id,
+			playerState.Deck.OverlordId,
+			req.MatchExperiences[index],
+			req.WinnerId == playerState.Id,
+			); err != nil {
 			return nil, err
 		}
 	}
@@ -2027,6 +2034,7 @@ func applyExperience(
 	userId string,
 	overlordId int64,
 	experience int64,
+	isWin bool,
 ) error {
 	overlordList, err := loadOverlords(ctx, userId)
 	if err != nil {
@@ -2038,20 +2046,21 @@ func applyExperience(
 		return fmt.Errorf("overlord with id %d not found", overlordId)
 	}
 
-	if err := applyMatchExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience); err != nil {
+	if err := applyExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience, isWin); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func applyMatchExperienceInternal(
+func applyExperienceInternal(
 	ctx contract.Context,
 	userId string,
 	overlordLevelingData *zb.OverlordLevelingData,
 	overlordList *zb.OverlordList,
 	overlord *zb.Overlord,
 	matchExperience int64,
+	isWin bool,
 	) error {
 	oldExperience := overlord.Experience
 	oldLevel := int32(overlord.Level)
@@ -2129,6 +2138,7 @@ func applyMatchExperienceInternal(
 			NewExperience: overlord.Experience,
 			NewLevel:      int32(overlord.Level),
 			Rewards:       levelRewards,
+			IsWin:         isWin,
 		},
 	}
 
