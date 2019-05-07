@@ -786,29 +786,6 @@ func (z *ZombieBattleground) GetOverlord(ctx contract.StaticContext, req *zb.Get
 	return &zb.GetOverlordResponse{Overlord: overlord}, nil
 }
 
-// for debugging only
-func (z *ZombieBattleground) SetOverlordSkills(ctx contract.Context, req *zb.SetOverlordSkillsRequest) (*zb.SetOverlordSkillsResponse, error) {
-	overlordList, err := loadOverlords(ctx, req.UserId)
-	if err != nil {
-		return nil, err
-	}
-
-	overlord := getOverlordById(overlordList.Overlords, req.OverlordId)
-	if overlord == nil {
-		return nil, errors.Wrap(contract.ErrNotFound, "overlord not found")
-	}
-
-	// TODO: check if skills are unlocked
-	overlord.PrimarySkill = req.PrimarySkill
-	overlord.SecondarySkill = req.SecondarySkill
-
-	if err := saveOverlords(ctx, req.UserId, overlordList); err != nil {
-		return nil, err
-	}
-
-	return &zb.SetOverlordSkillsResponse{}, nil
-}
-
 func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb.RegisterPlayerPoolRequest) (*zb.RegisterPlayerPoolResponse, error) {
 	// preparing user profile consisting of deck, score, ...
 	_, err := getDeckWithRegistrationData(ctx, req.RegistrationData, req.RegistrationData.Version)
@@ -2051,11 +2028,11 @@ func applyMatchExperience(
 
 	overlord.Experience += matchExperience
 	newLevel := calculateOverlordLevel(overlordLevelingData, overlord)
+	levelRewards := make([]*zb.LevelReward, 0)
 	if newLevel > int32(overlord.Level) {
 		overlord.Level = int64(newLevel)
 
 		// Get rewards for all in-between levels
-		levelRewards := make([]*zb.LevelReward, 0)
 		for level := oldLevel; level <= newLevel; level++ {
 			levelReward := getLevelReward(overlordLevelingData, level)
 			if levelReward != nil {
@@ -2080,8 +2057,12 @@ func applyMatchExperience(
 				if !found {
 					return fmt.Errorf("failed to find skill for reward")
 				}
+
+				// Update decks with no skills for players convenience
 			case *zb.LevelReward_UnitReward:
-				// TODO: handle other rewards types
+				unitReward := levelRewards[i].Reward.(*zb.LevelReward_UnitReward).UnitReward
+				fmt.Println(unitReward)
+				// TODO: handle
 			}
 		}
 	}
@@ -2112,11 +2093,12 @@ func applyMatchExperience(
 	notification := createBaseNotification(ctx, notifications.Notifications)
 	notification.Notification = &zb.Notification_EndMatch{
 		EndMatch: &zb.NotificationEndMatch{
-			OverlordId: overlord.OverlordId,
+			OverlordId:    overlord.OverlordId,
 			OldExperience: oldExperience,
-			OldLevel: oldLevel,
+			OldLevel:      oldLevel,
 			NewExperience: overlord.Experience,
-			NewLevel: int32(overlord.Level),
+			NewLevel:      int32(overlord.Level),
+			Rewards:       levelRewards,
 		},
 	}
 
