@@ -750,6 +750,16 @@ message EndMatchResponse {
     GameState gameState = 1;
 }
 
+message AddSoloExperienceRequest {
+    string version = 1;
+    string userId = 2;
+    int64 overlordId = 3;
+    int64 experience = 4;
+}
+
+message AddSoloExperienceResponse {
+}
+
 message KeepAliveRequest {
     int64 matchId = 1;
     string userId = 2;

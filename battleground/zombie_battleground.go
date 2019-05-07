@@ -1276,6 +1276,23 @@ func (z *ZombieBattleground) GetInitialGameState(ctx contract.StaticContext, req
 	}, nil
 }
 
+func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb.AddSoloExperienceRequest) (*zb.AddSoloExperienceResponse, error) {
+	if req.Version == "" {
+		return nil, fmt.Errorf("version not specified")
+	}
+
+	overlordLevelingData, err := loadOverlordLevelingData(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := applyExperience(ctx, overlordLevelingData, req.UserId, req.OverlordId, req.Experience); err != nil {
+		return nil, err
+	}
+
+	return &zb.AddSoloExperienceResponse{}, nil
+}
+
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
@@ -1300,18 +1317,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	}
 
 	for index, playerState := range match.PlayerStates {
-		overlordList, err := loadOverlords(ctx, playerState.Id)
-		if err != nil {
-			return nil, err
-		}
-
-		overlordId := playerState.Deck.OverlordId
-		overlord := getOverlordById(overlordList.Overlords, overlordId)
-		if overlord == nil {
-			return nil, fmt.Errorf("overlord with id %d not found", overlordId)
-		}
-
-		if err := applyMatchExperience(ctx, playerState.Id, overlordLevelingData, overlordList, overlord, req.MatchExperiences[index]); err != nil {
+		if err := applyExperience(ctx, overlordLevelingData, playerState.Id, playerState.Deck.OverlordId, req.MatchExperiences[index]); err != nil {
 			return nil, err
 		}
 	}
@@ -2015,7 +2021,31 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 	}, nil
 }
 
-func applyMatchExperience(
+func applyExperience(
+	ctx contract.Context,
+	overlordLevelingData *zb.OverlordLevelingData,
+	userId string,
+	overlordId int64,
+	experience int64,
+) error {
+	overlordList, err := loadOverlords(ctx, userId)
+	if err != nil {
+		return err
+	}
+
+	overlord := getOverlordById(overlordList.Overlords, overlordId)
+	if overlord == nil {
+		return fmt.Errorf("overlord with id %d not found", overlordId)
+	}
+
+	if err := applyMatchExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func applyMatchExperienceInternal(
 	ctx contract.Context,
 	userId string,
 	overlordLevelingData *zb.OverlordLevelingData,

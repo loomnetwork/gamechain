@@ -61,4 +61,6 @@ func init() {
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.data, "data", "d", "{\"overlord_id\":1, \"name\": \"NewDeck\", \"cards\": [ {\"mouldId\": \"10\", \"amount\": 2}, {\"mouldId\": \"11\", \"amount\": 1} ]}", "Deck data in serialized json format")
 	createDeckCmd.Flags().StringVarP(&createDeckCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = createDeckCmd.MarkFlagRequired("version")
 }
