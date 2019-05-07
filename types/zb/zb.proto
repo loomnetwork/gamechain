@@ -755,6 +755,7 @@ message AddSoloExperienceRequest {
     string userId = 2;
     int64 overlordId = 3;
     int64 experience = 4;
+    bool isWin = 5;
 }
 
 message AddSoloExperienceResponse {
@@ -1700,6 +1701,7 @@ message NotificationEndMatch {
     int32 newLevel = 4;
     int64 newExperience = 5;
     repeated LevelReward rewards = 6;
+    bool isWin = 7;
 }
 
 message NotificationType {
