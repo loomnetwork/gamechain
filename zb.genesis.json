@@ -11144,9 +11144,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           },
           {
             "overlordId": "1",
@@ -11253,9 +11251,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           },
           {
             "overlordId": "2",
@@ -11362,9 +11358,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           },
           {
             "overlordId": "3",
@@ -11471,9 +11465,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           },
           {
             "overlordId": "4",
@@ -11580,9 +11572,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           },
           {
             "overlordId": "5",
@@ -11689,9 +11679,7 @@
                 "unitStatus": "",
                 "singleUse": false
               }
-            ],
-            "primarySkill": "NONE",
-            "secondarySkill": "NONE"
+            ]
           }
         ],
         "aiDecks": [
