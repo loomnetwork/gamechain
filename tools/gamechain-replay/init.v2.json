@@ -1182,8 +1182,6 @@
           "value": 1
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "initialDefense" : "50"
     },
     {
@@ -1227,8 +1225,6 @@
           "value": 1
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "initialDefense" : "50"
     },
     {
@@ -1268,8 +1264,6 @@
           "value": 2
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "initialDefense" : "50"
     },
     {
@@ -1308,8 +1302,6 @@
           "value": 0
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "initialDefense" : "50"
     },
     {
@@ -1352,8 +1344,6 @@
           "damage": 1
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "defense" : "50"
     },
     {
@@ -1391,8 +1381,6 @@
           "value": 2
         }
       ],
-      "primarySkill": 0,
-      "secondarySkill": 1,
       "initialDefense" : "50"
     }
   ],
