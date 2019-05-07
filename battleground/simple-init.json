@@ -2096,9 +2096,6 @@
   "overlordLeveling": {
     "rewards": [
       {
-        "level": 1
-      },
-      {
         "level": 2,
         "unitReward": {
           "rank": "MINION",
@@ -2106,16 +2103,10 @@
         }
       },
       {
-        "level": 3
-      },
-      {
         "level": 4,
         "skillReward": {
           "skillIndex": 0
         }
-      },
-      {
-        "level": 5
       },
       {
         "level": 6,
@@ -2125,16 +2116,10 @@
         }
       },
       {
-        "level": 7
-      },
-      {
         "level": 8,
         "skillReward": {
           "skillIndex": 1
         }
-      },
-      {
-        "level": 9
       },
       {
         "level": 10,
@@ -2144,16 +2129,10 @@
         }
       },
       {
-        "level": 11
-      },
-      {
         "level": 12,
         "skillReward": {
           "skillIndex": 2
         }
-      },
-      {
-        "level": 13
       },
       {
         "level": 14,
@@ -2163,16 +2142,10 @@
         }
       },
       {
-        "level": 15
-      },
-      {
         "level": 16,
         "skillReward": {
           "skillIndex": 3
         }
-      },
-      {
-        "level": 17
       },
       {
         "level": 18,
@@ -2180,9 +2153,6 @@
           "rank": "COMMANDER",
           "count": 1
         }
-      },
-      {
-        "level": 19
       },
       {
         "level": 20,

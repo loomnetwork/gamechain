@@ -582,35 +582,6 @@ func TestOverlordsOperations(t *testing.T) {
 
 		assert.NotNil(t, err)
 	})
-
-	t.Run("SetOverlordSkills", func(t *testing.T) {
-		_, err := c.SetOverlordSkills(ctx, &zb.SetOverlordSkillsRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 0,
-			PrimarySkill: zb.OverlordSkill_Breakout,
-			SecondarySkill: zb.OverlordSkill_Blizzard,
-		})
-
-		assert.Nil(t, err)
-
-		getOverlordResponse, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 0,
-		})
-		assert.Nil(t, err)
-		assert.Equal(t, zb.OverlordSkill_Breakout, getOverlordResponse.Overlord.PrimarySkill)
-		assert.Equal(t, zb.OverlordSkill_Blizzard, getOverlordResponse.Overlord.SecondarySkill)
-	})
-
-	t.Run("SetOverlordSkills (Non existant overlord)", func(t *testing.T) {
-		_, err := c.SetOverlordSkills(ctx, &zb.SetOverlordSkillsRequest{
-			UserId:     "OverlordUser",
-			OverlordId: 100,
-		})
-
-		assert.NotNil(t, err)
-	})
-
 }
 
 func TestUpdateInitDataOperations(t *testing.T) {
@@ -793,32 +764,26 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 
 		assert.Nil(t, err)
-		assert.True(t, proto.Equal(
-			getNotificationsResponse1.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch,
-			&zb.NotificationEndMatch{
-				OverlordId:    1,
-				OldLevel:      1,
-				OldExperience: 0,
-				NewLevel:      1,
-				NewExperience: 123,
-			},
-		))
+		notificationEndMatch1 := getNotificationsResponse1.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch1.OverlordId)
+		assert.Equal(t, int32(1), notificationEndMatch1.OldLevel)
+		assert.Equal(t, int64(0), notificationEndMatch1.OldExperience)
+		assert.Equal(t, int32(1), notificationEndMatch1.NewLevel)
+		assert.Equal(t, int64(123), notificationEndMatch1.NewExperience)
+		assert.Equal(t, false, notificationEndMatch1.IsWin)
 
 		getNotificationsResponse2, err := c.GetNotifications(ctx, &zb.GetNotificationsRequest{
 			UserId: "player-2",
 		})
 
 		assert.Nil(t, err)
-		assert.True(t, proto.Equal(
-			getNotificationsResponse2.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch,
-			&zb.NotificationEndMatch{
-				OverlordId:    1,
-				OldLevel:      1,
-				OldExperience: 0,
-				NewLevel:      6,
-				NewExperience: 350,
-			},
-		))
+		notificationEndMatch2 := getNotificationsResponse2.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch2.OverlordId)
+		assert.Equal(t, int32(1), notificationEndMatch2.OldLevel)
+		assert.Equal(t, int64(0), notificationEndMatch2.OldExperience)
+		assert.Equal(t, int32(6), notificationEndMatch2.NewLevel)
+		assert.Equal(t, int64(350), notificationEndMatch2.NewExperience)
+		assert.Equal(t, true, notificationEndMatch2.IsWin)
 	})
 
 	t.Run("GetMatchAfterLeaving", func(t *testing.T) {
