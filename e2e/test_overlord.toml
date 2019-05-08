@@ -22,20 +22,14 @@
   Expected = ["overlord_id: 1", "experience: 0"]
 
 [[TestCases]]
-  RunCmd = "zb-cli get_overlord_skills -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
-  All = true
+  RunCmd = "zb-cli add_solo_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 --overlordId 1 -e 10"
   Condition = "contains"
-  Expected = ["overlord_id: 1"]
+  Expected = ["added experience successfully"]
 
 [[TestCases]]
-  RunCmd = "zb-cli add_overlord_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -e 10"
+  RunCmd = "zb-cli add_solo_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 --overlordId 1 -e 5"
   Condition = "contains"
-  Expected = ["overlord_id: 1", "experience: 10"]
-
-[[TestCases]]
-  RunCmd = "zb-cli add_overlord_experience -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -e 5"
-  Condition = "contains"
-  Expected = ["overlord_id: 1", "experience: 15"]
+  Expected = ["added experience successfully"]
 
 [[TestCases]]
   RunCmd = "checkapphash"
