@@ -120,8 +120,9 @@ message Overlord {
     int64 level = 8;
     repeated Skill skills = 9;
 
-    OverlordSkill.Enum primarySkill = 10;
-    OverlordSkill.Enum secondarySkill = 11;
+    reserved 10, 11;
+
+    int32 initialDefense = 12;
 }
 
 message ListOverlordsRequest {
@@ -132,39 +133,6 @@ message ListOverlordsResponse {
     repeated Overlord overlords  = 1;
 }
 
-message AddOverlordExperienceRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 experience = 3;
-}
-
-message AddOverlordExperienceResponse {
-    int64 overlordId = 1;
-    int64 experience = 2;
-}
-
-message SetOverlordExperienceRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 experience = 3;
-}
-
-message SetOverlordExperienceResponse {
-    int64 overlordId = 1;
-    int64 experience = 2;
-}
-
-message SetOverlordLevelRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    int64 level = 3;
-}
-
-message SetOverlordLevelResponse {
-    int64 overlordId = 1;
-    int64 level = 2;
-}
-
 message GetOverlordRequest {
     string user_id = 1;
     int64 overlordId = 2;
@@ -172,27 +140,6 @@ message GetOverlordRequest {
 
 message GetOverlordResponse {
     Overlord overlord = 1;
-}
-
-
-message SetOverlordRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-    Overlord overlord = 3;
-}
-
-message SetOverlordResponse {
-    Overlord overlord = 1;
-}
-
-message GetOverlordSkillsRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-}
-
-message GetOverlordSkillsResponse {
-    int64 overlordId = 1;
-    repeated Skill skills = 2;
 }
 
 message Skill {
@@ -252,6 +199,55 @@ message AIDeckList {
     repeated AIDeck decks = 1;
 }
 
+message OverlordLevelingData {
+    repeated LevelReward rewards = 1;
+    repeated ExperienceAction experienceActions = 2;
+    int32 fixed = 3;
+    int32 experienceStep = 4;
+    int32 gooRewardStep = 5;
+    int32 maxLevel = 6;
+}
+
+message LevelReward {
+    int32 level = 1;
+    oneof reward {
+        OverlordSkillRewardItem skillReward = 2;
+        UnitRewardItem unitReward = 3;
+    }
+}
+
+message OverlordSkillRewardItem {
+    int32 skillIndex = 1;
+}
+
+message UnitRewardItem {
+    CreatureRank.Enum rank = 1;
+    int32 count = 2;
+}
+
+message ExperienceAction{
+    ExperienceActionType.Enum action = 1;
+    int32 experience = 2;
+}
+
+message ExperienceActionType {
+    enum Enum {
+        KillOverlord = 0;
+        KillMinion = 1;
+        PlayCard = 2;
+        ActivateRankAbility = 3;
+        UseOverlordAbility = 4;
+    }
+}
+
+message GetOverlordLevelingDataRequest {
+    string version = 1;
+}
+
+message GetOverlordLevelingDataResponse {
+    OverlordLevelingData overlordLeveling = 1;
+}
+
 // Request and Response
 
 message InitData {
@@ -262,6 +258,7 @@ message InitData {
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
+    OverlordLevelingData overlordLeveling = 8;
 }
 
 message InitRequest {
@@ -272,8 +269,8 @@ message InitRequest {
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
-    string contentVersion = 8;
-    string pvpVersion = 9;
+    reserved 8, 9;
+    OverlordLevelingData overlordLeveling = 10;
 }
 
 message UpdateOracle {
@@ -520,6 +517,7 @@ message PlayerState {
     int32 turnNumber = 18;
     InstanceId instanceId = 19;
     repeated CardInstance mulliganCards = 20;
+    int32 index = 21;
 }
 
 message InitialPlayerState {
@@ -745,10 +743,22 @@ message EndMatchRequest {
     int64 matchId   = 1;
     string userId   = 2;
     string winnerId = 3;
+    repeated int64 matchExperiences = 4;
 }
 
 message EndMatchResponse {
     GameState gameState = 1;
+}
+
+message AddSoloExperienceRequest {
+    string version = 1;
+    string userId = 2;
+    int64 overlordId = 3;
+    int64 experience = 4;
+    bool isWin = 5;
+}
+
+message AddSoloExperienceResponse {
 }
 
 message KeepAliveRequest {
@@ -1678,4 +1688,56 @@ message OverlordsDataContainer {
 
 message AIDecksDataContainer {
     repeated AIDeck aiDecks = 1;
+}
+
+message OverlordLevelingDataContainer {
+    OverlordLevelingData overlordLeveling = 1;
+}
+
+message NotificationEndMatch {
+    int64 overlordId = 1;
+    int32 oldLevel = 2;
+    int64 oldExperience = 3;
+    int32 newLevel = 4;
+    int64 newExperience = 5;
+    repeated LevelReward rewards = 6;
+    bool isWin = 7;
+}
+
+message NotificationType {
+    enum Enum {
+        EndMatch = 0;
+    }
+}
+
+message Notification {
+    int32 id = 1;
+    int64 createdAt = 2;
+    bool seen = 3;
+    NotificationType.Enum type = 4;
+
+    oneof Notification {
+        NotificationEndMatch endMatch = 10;
+    }
+}
+
+message NotificationList {
+    repeated Notification notifications = 1;
+}
+
+message GetNotificationsRequest {
+    string userId = 1;
+}
+
+message GetNotificationsResponse {
+    repeated Notification notifications = 1;
+}
+
+message ClearNotificationsRequest {
+    string userId = 1;
+    repeated int32 notificationIds = 2;
+}
+
+message ClearNotificationsResponse {
+
 }

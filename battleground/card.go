@@ -3,10 +3,11 @@ package battleground
 import (
 	"errors"
 	"fmt"
-	"github.com/gogo/protobuf/proto"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/gogo/protobuf/proto"
 
 	"github.com/loomnetwork/gamechain/types/zb"
 )

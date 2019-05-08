@@ -92,6 +92,7 @@ func NewGamePlay(ctx contract.Context,
 	})
 
 	for i, playerData := range playersData {
+		playerData.playerState.Index = int32(i)
 		players[i] = playerData.playerState
 		playersDebugCheats[i] = playerData.playerDebugCheats
 	}
@@ -1391,4 +1392,32 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 	default:
 		return nil
 	}
+}
+
+func calculateOverlordLevel(overlordLevelingData *zb.OverlordLevelingData, overlord *zb.Overlord) int32 {
+	var level = int32(overlord.Level)
+	for overlord.Experience >= getRequiredExperienceForNewLevel(overlordLevelingData, level) && level < overlordLevelingData.MaxLevel {
+		level++
+	}
+
+	return level
+}
+
+// get required experience
+func getRequiredExperienceForNewLevel(overlordLevelingData *zb.OverlordLevelingData, level int32) int64 {
+	var fixed = overlordLevelingData.Fixed
+	var experienceStep = overlordLevelingData.ExperienceStep
+	var requiredExperience = int64(fixed) + int64(experienceStep)*(int64(level)+1)
+	return requiredExperience
+}
+
+// get level rewards
+func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int32) *zb.LevelReward {
+	for i := 0; i < len(overlordLevelingData.Rewards); i++ {
+		if overlordLevelingData.Rewards[i].Level == level {
+			return overlordLevelingData.Rewards[i]
+		}
+	}
+
+	return nil
 }
