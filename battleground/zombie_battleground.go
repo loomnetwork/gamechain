@@ -1294,6 +1294,11 @@ func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb.Add
 }
 
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequest) (*zb.EndMatchResponse, error) {
+	// Only for old clients
+	if len(req.MatchExperiences) != 2 {
+		req.MatchExperiences = []int64{0, 0}
+	}
+
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -2047,7 +2052,7 @@ func applyExperience(
 	}
 
 	if err := applyExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience, isWin); err != nil {
-		return err
+		return errors.Wrap(err, "failed to apply experience")
 	}
 
 	return nil
@@ -2097,7 +2102,7 @@ func applyExperienceInternal(
 					return fmt.Errorf("failed to find skill for reward")
 				}
 
-				// Update decks with no skills for players convenience
+				// TODO: Update decks with no skills for players convenience?
 			case *zb.LevelReward_UnitReward:
 				unitReward := levelRewards[i].Reward.(*zb.LevelReward_UnitReward).UnitReward
 				fmt.Println(unitReward)
@@ -2116,6 +2121,7 @@ func applyExperienceInternal(
 		return err
 	}
 
+	//  There can only be one EndMatch notification at any time
 	loop:
 	for _, notification := range notifications.Notifications {
 		switch notification.Type {
