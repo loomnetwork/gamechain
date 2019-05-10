@@ -1396,22 +1396,24 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 
 func calculateOverlordLevel(overlordLevelingData *zb.OverlordLevelingData, overlord *zb.Overlord) int32 {
 	var level = int32(overlord.Level)
-	for overlord.Experience >= getRequiredExperienceForNewLevel(overlordLevelingData, level) && level < overlordLevelingData.MaxLevel {
+	for overlord.Experience >= getRequiredExperienceForLevel(overlordLevelingData, level + 1) && level < overlordLevelingData.MaxLevel {
 		level++
 	}
 
 	return level
 }
 
-// get required experience
-func getRequiredExperienceForNewLevel(overlordLevelingData *zb.OverlordLevelingData, level int32) int64 {
+func getRequiredExperienceForLevel(overlordLevelingData *zb.OverlordLevelingData, level int32) int64 {
+	if level <= 1 {
+		return 0
+	}
+	
 	var fixed = overlordLevelingData.Fixed
 	var experienceStep = overlordLevelingData.ExperienceStep
-	var requiredExperience = int64(fixed) + int64(experienceStep)*(int64(level)+1)
+	var requiredExperience = int64(fixed) + int64(experienceStep)*(int64(level - 1))
 	return requiredExperience
 }
 
-// get level rewards
 func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int32) *zb.LevelReward {
 	for i := 0; i < len(overlordLevelingData.Rewards); i++ {
 		if overlordLevelingData.Rewards[i].Level == level {
