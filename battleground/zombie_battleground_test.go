@@ -755,7 +755,7 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, int64(350), getOverlordResponse2.Overlord.Experience)
 		assert.Equal(t, true, getOverlordResponse2.Overlord.Skills[0].Unlocked)
-		assert.Equal(t, int64(6), getOverlordResponse2.Overlord.Level)
+		assert.Equal(t, int64(7), getOverlordResponse2.Overlord.Level)
 	})
 
 	t.Run("Check level/experience notifications after match", func(t *testing.T) {
@@ -781,7 +781,7 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, int64(1), notificationEndMatch2.OverlordId)
 		assert.Equal(t, int32(1), notificationEndMatch2.OldLevel)
 		assert.Equal(t, int64(0), notificationEndMatch2.OldExperience)
-		assert.Equal(t, int32(6), notificationEndMatch2.NewLevel)
+		assert.Equal(t, int32(7), notificationEndMatch2.NewLevel)
 		assert.Equal(t, int64(350), notificationEndMatch2.NewExperience)
 		assert.Equal(t, true, notificationEndMatch2.IsWin)
 	})
