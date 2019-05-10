@@ -1286,7 +1286,7 @@ func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb.Add
 		return nil, err
 	}
 
-	if err := applyExperience(ctx, overlordLevelingData, req.UserId, req.OverlordId, req.Experience, req.IsWin); err != nil {
+	if err := applyExperience(ctx, overlordLevelingData, req.UserId, req.OverlordId, req.Experience, req.DeckId, req.IsWin); err != nil {
 		return nil, err
 	}
 
@@ -1328,6 +1328,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 			playerState.Id,
 			playerState.Deck.OverlordId,
 			req.MatchExperiences[index],
+			playerState.Deck.Id,
 			req.WinnerId == playerState.Id,
 			); err != nil {
 			return nil, err
@@ -2039,6 +2040,7 @@ func applyExperience(
 	userId string,
 	overlordId int64,
 	experience int64,
+	deckId int64,
 	isWin bool,
 ) error {
 	overlordList, err := loadOverlords(ctx, userId)
@@ -2051,7 +2053,7 @@ func applyExperience(
 		return fmt.Errorf("overlord with id %d not found", overlordId)
 	}
 
-	if err := applyExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience, isWin); err != nil {
+	if err := applyExperienceInternal(ctx, userId, overlordLevelingData, overlordList, overlord, experience, deckId, isWin); err != nil {
 		return errors.Wrap(err, "failed to apply experience")
 	}
 
@@ -2065,6 +2067,7 @@ func applyExperienceInternal(
 	overlordList *zb.OverlordList,
 	overlord *zb.Overlord,
 	matchExperience int64,
+	deckId int64,
 	isWin bool,
 	) error {
 	oldExperience := overlord.Experience
@@ -2145,6 +2148,7 @@ func applyExperienceInternal(
 			NewLevel:      int32(overlord.Level),
 			Rewards:       levelRewards,
 			IsWin:         isWin,
+			DeckId:        deckId,
 		},
 	}
 
