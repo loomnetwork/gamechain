@@ -756,6 +756,7 @@ message AddSoloExperienceRequest {
     int64 overlordId = 3;
     int64 experience = 4;
     bool isWin = 5;
+    int64 deckId = 6;
 }
 
 message AddSoloExperienceResponse {
@@ -1702,6 +1703,7 @@ message NotificationEndMatch {
     int64 newExperience = 5;
     repeated LevelReward rewards = 6;
     bool isWin = 7;
+    int64 deckId = 8;
 }
 
 message NotificationType {
