@@ -2065,7 +2065,7 @@ func applyExperienceInternal(
 	userId string,
 	overlordLevelingData *zb.OverlordLevelingData,
 	overlordList *zb.OverlordList,
-	overlord *zb.Overlord,
+	overlord *zb.OverlordInstance,
 	matchExperience int64,
 	deckId int64,
 	isWin bool,
