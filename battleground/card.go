@@ -111,7 +111,7 @@ func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 	return nil
 }
 
-func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord {
+func getOverlordById(overlordList []*zb.OverlordData, overlordId int64) *zb.OverlordData {
 	for _, overlord := range overlordList {
 		if overlord.OverlordId == overlordId {
 			return overlord
@@ -120,7 +120,7 @@ func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord
 	return nil
 }
 
-func validateDeckOverlord(overlordList []*zb.Overlord, overlordID int64) error {
+func validateDeckOverlord(overlordList []*zb.OverlordData, overlordID int64) error {
 	// check if the user has overlord
 	if getOverlordById(overlordList, overlordID) != nil {
 		return nil

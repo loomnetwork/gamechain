@@ -32,8 +32,8 @@ message Deck {
     string name = 2;
     int64 overlordId = 3;
     repeated DeckCard cards = 4;
-    OverlordSkill.Enum primarySkill = 5;
-    OverlordSkill.Enum secondarySkill = 6;
+    OverlordSkillType.Enum primarySkill = 5;
+    OverlordSkillType.Enum secondarySkill = 6;
 }
 
 message Card {
@@ -107,8 +107,19 @@ message CardLibrary {
     repeated Card cards = 1;
 }
 
-message Overlord {
-    int64 overlordId = 1;
+
+
+/*
+CharacterPrototype
+CharacterUserData
+CharacterUserInstance (сумма CharacterPrototype и CharacterUserData)
+CharacterMatchInstance (рантайм)
+Character (сумма CharacterUserInstance и MatchInstance)
+*/
+
+// Overlord prototype, shared between all users
+message OverlordPrototype {
+    int64 id = 1;
 
     string icon = 2;
     string name = 3;
@@ -116,13 +127,33 @@ message Overlord {
     string longDescription = 5;
     Faction.Enum faction = 6;
 
-    int64 experience = 7;
-    int64 level = 8;
-    repeated Skill skills = 9;
-
+    reserved 7, 8; // experience, level
     reserved 10, 11;
 
+    repeated OverlordSkillPrototype skills = 9;
     int32 initialDefense = 12;
+}
+
+// Per-user overlord data, stored between matches
+message OverlordUserData {
+    int64 experience = 1;
+    int64 level = 2;
+    repeated int64 unlockedSkillIds = 3;
+}
+
+// Full overlord data, tuple of shared and per-user data
+message OverlordUserInstance {
+    OverlordPrototype prototype = 1;
+    OverlordUserData userData = 2;
+}
+
+// Overlord data only meaningful within a single match
+message OverlordMatchInstance {
+    InstanceId instanceId = 1;
+    reserved 2 to 4;
+    int32 defense = 5;
+    int32 goo = 6;
+    int32 maxGoo = 7;
 }
 
 message ListOverlordsRequest {
@@ -130,7 +161,7 @@ message ListOverlordsRequest {
 }
 
 message ListOverlordsResponse {
-    repeated Overlord overlords  = 1;
+    repeated OverlordPrototype overlords = 1;
 }
 
 message GetOverlordRequest {
@@ -139,12 +170,12 @@ message GetOverlordRequest {
 }
 
 message GetOverlordResponse {
-    Overlord overlord = 1;
+    OverlordPrototype overlord = 1;
 }
 
-message Skill {
+message OverlordSkillPrototype {
     string title = 1;
-    OverlordSkill.Enum skill = 2;
+    OverlordSkillType.Enum skill = 2;
     string iconPath = 3;
     string description = 4;
     repeated SkillTarget.Enum skillTargets = 5;
@@ -159,7 +190,7 @@ message Skill {
     int32 count = 12;
 
     int64 id = 13;
-    bool unlocked = 14;
+    reserved 14; // unlocked
     bool canSelectTarget = 15;
     string unitStatus = 16;
 
@@ -167,7 +198,7 @@ message Skill {
 }
 
 message OverlordList {
-    repeated Overlord overlords = 1;
+    repeated OverlordPrototype overlords = 1;
 }
 
 message CardCollectionList {
@@ -254,7 +285,7 @@ message InitData {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
     repeated Card cards = 3;
-    repeated Overlord overlords = 4;
+    repeated OverlordPrototype overlords = 4;
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
@@ -265,7 +296,7 @@ message InitRequest {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
     repeated Card cards = 3;
-    repeated Overlord overlords = 4;
+    repeated OverlordPrototype overlords = 4;
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
@@ -450,7 +481,7 @@ message ListOverlordLibraryRequest {
 }
 
 message ListOverlordLibraryResponse {
-    repeated Overlord overlords  = 1;
+    repeated OverlordPrototype overlords = 1;
 }
 
 message GetCollectionRequest {
@@ -499,7 +530,7 @@ message RewardTutorialClaimed {
 message PlayerState {
     string id = 1;
     PlayerActionType.Enum currentAction = 2;
-    OverlordInstance overlordInstance = 3;
+    OverlordMatchInstance overlordInstance = 3;
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;
@@ -1423,45 +1454,9 @@ message InstanceId {
     int32 id = 1;
 }
 
-message OverlordInstance {
-    InstanceId instanceId = 1;
-    OverlordPrototype prototype = 2;
-    OverlordSkillInstance firstSkill = 3;
-    OverlordSkillInstance secondSkill = 4;
-    int32 defense = 5;
-    int32 goo = 6;
-    int32 maxGoo = 7;
-}
-
-message OverlordPrototype {
-    int32 overlordId = 1;
-    string icon = 2;
-    string name = 3;
-    string shortDescription = 4;
-    string longDescription = 5;
-    int32 experience = 6;
-    int32 level = 7;
-    Faction.Enum faction = 8;
-    repeated OverlordSkillPrototype skills = 9;
-}
-
-message OverlordSkillInstance {
+message OverlordSkillMatchInstance {
     OverlordSkillPrototype prototype = 1;
     int32 cooldown = 2;
-}
-
-message OverlordSkillPrototype {
-    string title = 1;
-    string skill = 2;
-    string iconPath = 3;
-    string description = 4;
-    int32 cooldown = 5;
-    int32 initialCooldown = 6;
-    int32 parameter = 7;
-    int32 damage = 8;
-    OverlordSkill.Enum overlordSkillKind = 9;
-    repeated SkillTarget.Enum skillTargetTypes = 10;
-    repeated Faction.Enum factionTargetTypes = 11;
 }
 
 message PlayerActionLeaveMatch {
@@ -1502,7 +1497,7 @@ message PlayerActionOverlordSkillUsed {
     repeated Unit targets = 3;
 }
 
-message PlayerActionEndTurn  {
+message PlayerActionEndTurn {
 }
 
 message PlayerActionMulligan {
@@ -1528,7 +1523,7 @@ message Parameter {
     string CardName = 3;
 }
 
-message OverlordSkill {
+message OverlordSkillType {
     enum Enum {
         NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
 
@@ -1683,8 +1678,8 @@ message CardLibraryDataContainer {
     repeated Card cards = 1;
 }
 
-message OverlordsDataContainer {
-     repeated Overlord overlords = 1;
+message OverlordPrototypesDataContainer {
+     repeated OverlordPrototype overlords = 1;
 }
 
 message AIDecksDataContainer {
