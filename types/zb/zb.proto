@@ -136,9 +136,10 @@ message OverlordPrototype {
 
 // Per-user overlord data, stored between matches
 message OverlordUserData {
-    int64 experience = 1;
-    int64 level = 2;
-    repeated int64 unlockedSkillIds = 3;
+    int64 prototypeId = 1;
+    int64 experience = 2;
+    int64 level = 3;
+    repeated int64 unlockedSkillIds = 4;
 }
 
 // Full overlord data, tuple of shared and per-user data
@@ -150,27 +151,28 @@ message OverlordUserInstance {
 // Overlord data only meaningful within a single match
 message OverlordMatchInstance {
     InstanceId instanceId = 1;
-    reserved 2 to 4;
-    int32 defense = 5;
-    int32 goo = 6;
-    int32 maxGoo = 7;
+    int32 defense = 2;
+    int32 goo = 3;
+    int32 maxGoo = 4;
 }
 
-message ListOverlordsRequest {
-    string user_id = 1;
+message ListOverlordUserInstancesRequest {
+    string userId = 1;
+    string version = 2;
 }
 
-message ListOverlordsResponse {
-    repeated OverlordPrototype overlords = 1;
+message ListOverlordUserInstancesResponse {
+    repeated OverlordUserInstance overlords = 1;
 }
 
-message GetOverlordRequest {
+message GetOverlordUserInstanceRequest {
     string user_id = 1;
     int64 overlordId = 2;
+    string version = 3;
 }
 
-message GetOverlordResponse {
-    OverlordPrototype overlord = 1;
+message GetOverlordUserInstanceResponse {
+    OverlordUserInstance overlord = 1;
 }
 
 message OverlordSkillPrototype {
@@ -197,8 +199,12 @@ message OverlordSkillPrototype {
     bool singleUse = 17;
 }
 
-message OverlordList {
+message OverlordPrototypeList {
     repeated OverlordPrototype overlords = 1;
+}
+
+message OverlordUserDataList {
+    repeated OverlordUserData overlordsUserData = 1;
 }
 
 message CardCollectionList {
@@ -330,7 +336,7 @@ message GamechainState {
     uint64 reward_contract_version = 2;
     // the number of card packs reward when players finish tutorial
     uint64 tutorial_reward_amount = 3;
-    uint64 default_player_defense = 4;
+    reserved 4; // default_player_defense
 }
 
 message GetGamechainStateRequest {
@@ -356,11 +362,6 @@ message SetRewardContractVersionRequest {
 
 message SetTutorialRewardAmountRequest {
     uint64 amount = 1;
-    Address oracle = 2;
-}
-
-message SetDefaultPlayerDefenseRequest {
-    uint64 defense = 1;
     Address oracle = 2;
 }
 
@@ -530,7 +531,7 @@ message RewardTutorialClaimed {
 message PlayerState {
     string id = 1;
     PlayerActionType.Enum currentAction = 2;
-    OverlordMatchInstance overlordInstance = 3;
+    reserved 3; // OverlordMatchInstance overlordInstance
     repeated CardInstance cardsInHand = 4;
     repeated CardInstance cardsInPlay = 5;
     repeated CardInstance cardsInDeck = 6;

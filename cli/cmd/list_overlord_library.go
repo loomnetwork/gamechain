@@ -39,7 +39,7 @@ var listOverlordsLibraryCmd = &cobra.Command{
 			return printProtoMessageAsJSONToStdout(&result)
 		default:
 			for _, overlordInfo := range result.Overlords {
-				fmt.Printf("overlord_id: %d\n", overlordInfo.OverlordId)
+				fmt.Printf("overlord_id: %d\n", overlordInfo.Id)
 				for _, skill := range overlordInfo.Skills {
 					fmt.Printf("skill title: %s\n", skill.Title)
 				}

@@ -111,21 +111,22 @@ func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 	return nil
 }
 
-func getOverlordById(overlordList []*zb.OverlordData, overlordId int64) *zb.OverlordData {
-	for _, overlord := range overlordList {
-		if overlord.OverlordId == overlordId {
-			return overlord
+func getOverlordUserDataByPrototypeId(overlordsUserData []*zb.OverlordUserData, overlordPrototypeId int64) (*zb.OverlordUserData, bool){
+	for _, overlordUserData := range overlordsUserData {
+		if overlordUserData.PrototypeId == overlordPrototypeId {
+			return overlordUserData, true
 		}
 	}
-	return nil
+	return nil, false
 }
 
-func validateDeckOverlord(overlordList []*zb.OverlordData, overlordID int64) error {
-	// check if the user has overlord
-	if getOverlordById(overlordList, overlordID) != nil {
-		return nil
+func getOverlordUserInstanceByPrototypeId(overlordsUserInstance []*zb.OverlordUserInstance, overlordPrototypeId int64) (*zb.OverlordUserInstance, bool) {
+	for _, overlordUserInstance := range overlordsUserInstance {
+		if overlordUserInstance.Prototype.Id == overlordPrototypeId {
+			return overlordUserInstance, true
+		}
 	}
-	return fmt.Errorf("overlord: %d cannot be part of deck, since it is not owned by User", overlordID)
+	return nil, false
 }
 
 func shuffleCardInDeck(deck []*zb.CardInstance, seed int64, playerIndex int) []*zb.CardInstance {
