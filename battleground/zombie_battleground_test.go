@@ -556,8 +556,9 @@ func TestOverlordsOperations(t *testing.T) {
 	}, t)
 
 	t.Run("ListOverlordUserInstances", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlordUserInstances(ctx, &zb.ListOverlordsRequest{
-			UserId: "OverlordUser",
+		overlordsResponse, err := c.ListOverlordUserInstances(ctx, &zb.ListOverlordUserInstancesRequest{
+			UserId:  "OverlordUser",
+			Version: "v1",
 		})
 
 		assert.Nil(t, err)
@@ -565,9 +566,10 @@ func TestOverlordsOperations(t *testing.T) {
 	})
 
 	t.Run("GetOverlordUserInstance", func(t *testing.T) {
-		overlordResponse, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
+		overlordResponse, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordUserInstanceRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 1,
+			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
@@ -575,9 +577,10 @@ func TestOverlordsOperations(t *testing.T) {
 	})
 
 	t.Run("GetOverlordUserInstance (Overlord not exists)", func(t *testing.T) {
-		_, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
+		_, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordUserInstanceRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 10,
+			Version:    "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -737,25 +740,27 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Check level and experience after match", func(t *testing.T) {
-		getOverlordResponse1, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
+		getOverlordResponse1, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordUserInstanceRequest{
 			UserId:     "player-1",
 			OverlordId: 1,
+			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, int64(123), getOverlordResponse1.Overlord.Experience)
-		assert.Equal(t, false, getOverlordResponse1.Overlord.Skills[0].Unlocked)
-		assert.Equal(t, int64(1), getOverlordResponse1.Overlord.Level)
+		assert.Equal(t, int64(123), getOverlordResponse1.Overlord.UserData.Experience)
+		assert.True(t, len(getOverlordResponse1.Overlord.UserData.UnlockedSkillIds) == 0)
+		assert.Equal(t, int64(1), getOverlordResponse1.Overlord.UserData.Level)
 
-		getOverlordResponse2, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
+		getOverlordResponse2, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordUserInstanceRequest{
 			UserId:     "player-2",
 			OverlordId: 1,
+			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, int64(350), getOverlordResponse2.Overlord.Experience)
-		assert.Equal(t, true, getOverlordResponse2.Overlord.Skills[0].Unlocked)
-		assert.Equal(t, int64(7), getOverlordResponse2.Overlord.Level)
+		assert.Equal(t, int64(350), getOverlordResponse2.Overlord.UserData.Experience)
+		assert.Equal(t, true, len(getOverlordResponse2.Overlord.UserData.UnlockedSkillIds) > 0)
+		assert.Equal(t, int64(7), getOverlordResponse2.Overlord.UserData.Level)
 	})
 
 	t.Run("Check level/experience notifications after match", func(t *testing.T) {

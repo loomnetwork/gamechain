@@ -11648,32 +11648,28 @@
   ],
   "overlords": [
     {
-      "overlordId": "0",
+      "id": "0",
       "icon": "icon",
       "name": "Brakuus",
       "shortDescription": "The Guardian",
       "longDescription": "",
       "faction": "EARTH",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Harden",
           "skill": "HARDEN",
           "iconPath": "overlordability_earth_harden",
           "description": "Give +2 Def to your Overlord",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 3,
           "initialCooldown": 3,
           "damage": 0,
           "count": 0,
           "id": "0",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -11683,20 +11679,15 @@
           "skill": "STONE_SKIN",
           "iconPath": "overlordability_earth_stone_skin",
           "description": "Give an ally Earth zombie +1 Def",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "EARTH"
-          ],
+          "targetFactions": ["EARTH"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "1",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11706,20 +11697,15 @@
           "skill": "FORTIFY",
           "iconPath": "overlordability_earth_fortify",
           "description": "Give an ally Earth zombie Heavy",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "EARTH"
-          ],
+          "targetFactions": ["EARTH"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "2",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11729,19 +11715,15 @@
           "skill": "PHALANX",
           "iconPath": "overlordability_earth_phalanx",
           "description": "Give all ally Earth zombies +1 Def",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "EARTH"
-          ],
+          "targetFactions": ["EARTH"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "3",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -11751,19 +11733,15 @@
           "skill": "FORTRESS",
           "iconPath": "overlordability_earth_fortress",
           "description": "Give 2 random ally Earth zombies Heavy",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "EARTH"
-          ],
+          "targetFactions": ["EARTH"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 2,
           "id": "4",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -11771,36 +11749,28 @@
       ]
     },
     {
-      "overlordId": "1",
+      "id": "1",
       "icon": "icon",
       "name": "Razu",
       "shortDescription": "The Fire Daemon",
       "longDescription": "",
       "faction": "FIRE",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Fire Bolt",
           "skill": "FIRE_BOLT",
           "iconPath": "overlordability_fire_firebolt",
           "description": "Deal 1 damage to target",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "PLAYER_CARD",
-            "PLAYER",
-            "OPPONENT"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD", "PLAYER", "OPPONENT"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
           "damage": 0,
           "count": 0,
           "id": "5",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11810,20 +11780,15 @@
           "skill": "RABIES",
           "iconPath": "overlordability_fire_rabies",
           "description": "Give an ally Fire zombie Feral",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "FIRE"
-          ],
+          "targetFactions": ["FIRE"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "6",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11833,23 +11798,15 @@
           "skill": "FIREBALL",
           "iconPath": "overlordability_fire_fireball",
           "description": "Deal 2 damage to a target",
-          "skillTargets": [
-            "OPPONENT",
-            "OPPONENT_CARD",
-            "PLAYER_CARD",
-            "PLAYER"
-          ],
+          "skillTargets": ["OPPONENT", "OPPONENT_CARD", "PLAYER_CARD", "PLAYER"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "FIRE"
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "7",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11859,20 +11816,15 @@
           "skill": "MASS_RABIES",
           "iconPath": "overlordability_fire_massrabies",
           "description": "Give 2 random ally Fire zombies Feral",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "FIRE"
-          ],
+          "targetFactions": ["FIRE"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 2,
           "id": "8",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -11882,19 +11834,15 @@
           "skill": "METEOR_SHOWER",
           "iconPath": "overlordability_fire_meteorshower",
           "description": "Deal 2 damage to all zombies",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "FIRE"
-          ],
+          "targetFactions": ["FIRE"],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "9",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -11902,34 +11850,28 @@
       ]
     },
     {
-      "overlordId": "2",
+      "id": "2",
       "icon": "icon",
       "name": "Vash'Kala",
       "shortDescription": "The Ancient One",
       "longDescription": "",
       "faction": "WATER",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Freeze",
           "skill": "FREEZE",
           "iconPath": "overlordability_water_freeze",
           "description": "Freeze a zombie",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
           "damage": 0,
           "count": 0,
           "id": "10",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11939,20 +11881,15 @@
           "skill": "ICE_BOLT",
           "iconPath": "overlordability_water_ice_bolt",
           "description": "Deal 2 damage to a target zombie. If it survives, Freeze it",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "11",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11962,22 +11899,15 @@
           "skill": "ICE_WALL",
           "iconPath": "overlordability_water_icewall",
           "description": "Add 2 Def to target Water zombie or your Overlord",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "PLAYER_CARD",
-            "PLAYER"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD", "PLAYER"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "WATER"
-          ],
+          "targetFactions": ["WATER"],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "12",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -11987,19 +11917,15 @@
           "skill": "SHATTER",
           "iconPath": "overlordability_water_shatter",
           "description": "Destroy a Frozen enemy zombie",
-          "skillTargets": [
-            "OPPONENT_CARD"
-          ],
+          "skillTargets": ["OPPONENT_CARD"],
           "targetUnitSpecialStatus": "FROZEN",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "13",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12009,18 +11935,15 @@
           "skill": "BLIZZARD",
           "iconPath": "overlordability_water_blizzard",
           "description": "Freeze 2 random zombie enemies",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 2,
           "id": "14",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12028,34 +11951,28 @@
       ]
     },
     {
-      "overlordId": "3",
+      "id": "3",
       "icon": "icon",
       "name": "Kalile",
       "shortDescription": "Tempest of Storms",
       "longDescription": "",
       "faction": "AIR",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Push",
           "skill": "PUSH",
           "iconPath": "overlordability_air_push",
           "description": "Spend remaining goo to return a zombie of equal cost, or less, to owner's hand",
-          "skillTargets": [
-            "PLAYER_CARD",
-            "OPPONENT_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD", "OPPONENT_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 0,
           "cooldown": 6,
           "initialCooldown": 5,
           "damage": 0,
           "count": 0,
           "id": "15",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12065,18 +11982,15 @@
           "skill": "DRAW",
           "iconPath": "overlordability_air_draw",
           "description": "Draw a card",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "16",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12086,19 +12000,15 @@
           "skill": "WIND_SHIELD",
           "iconPath": "overlordability_air_windshield",
           "description": "Give a random ally Air zombie Guard",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "AIR"
-          ],
+          "targetFactions": ["AIR"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "17",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12108,18 +12018,15 @@
           "skill": "LEVITATE",
           "iconPath": "overlordability_air_levitate",
           "description": "Reduce the cost of a random card in your hand by 1",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "18",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12129,18 +12036,15 @@
           "skill": "RETREAT",
           "iconPath": "overlordability_air_retreat",
           "description": "Return all zombies to their owner's hand",
-          "skillTargets": [
-          ],
+          "skillTargets": [],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "19",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12148,34 +12052,28 @@
       ]
     },
     {
-      "overlordId": "4",
+      "id": "4",
       "icon": "icon",
       "name": "Mhalik",
       "shortDescription": "Lord of Pestilence",
       "longDescription": "",
       "faction": "TOXIC",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Poison Dart",
           "skill": "POISON_DART",
           "iconPath": "overlordability_toxic_poisondart",
           "description": "Deal 1 damage to an enemy",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "OPPONENT"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "OPPONENT"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 3,
           "initialCooldown": 3,
           "damage": 0,
           "count": 0,
           "id": "20",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12185,20 +12083,15 @@
           "skill": "TOXIC_POWER",
           "iconPath": "overlordability_toxic_toxic_power",
           "description": "Deal 1 damage to an ally Toxic zombie and give it +1 Atk",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "TOXIC"
-          ],
+          "targetFactions": ["TOXIC"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 1,
           "count": 0,
           "id": "21",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12208,20 +12101,15 @@
           "skill": "BREAKOUT",
           "iconPath": "overlordability_toxic_breakout",
           "description": "Deal 1 damage to 5 random enemies",
-          "skillTargets": [
-            "OPPONENT_CARD",
-            "OPPONENT"
-          ],
+          "skillTargets": ["OPPONENT_CARD", "OPPONENT"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 5,
           "id": "22",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12231,20 +12119,15 @@
           "skill": "INFECT",
           "iconPath": "overlordability_toxic_infect",
           "description": "Destroy an ally Toxic zombie, deal its Atk to a random enemy zombie",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "TOXIC"
-          ],
+          "targetFactions": ["TOXIC"],
           "value": 1,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "23",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12254,20 +12137,15 @@
           "skill": "EPIDEMIC",
           "iconPath": "overlordability_toxic_epidemic",
           "description": "Destroy an 2 random Toxic zombies, deal their Atk to 2 enemy zombies",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "TOXIC"
-          ],
+          "targetFactions": ["TOXIC"],
           "value": 0,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 2,
           "id": "24",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12275,33 +12153,28 @@
       ]
     },
     {
-      "overlordId": "5",
+      "id": "5",
       "icon": "icon",
       "name": "Valash",
       "shortDescription": "Nature's Warden",
       "longDescription": "",
       "faction": "LIFE",
-      "experience": "0",
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Healing Touch",
           "skill": "HEALING_TOUCH",
           "iconPath": "overlordability_life_healingtouch",
           "description": "Restore 2 Def to an ally zombie",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 3,
           "initialCooldown": 3,
           "damage": 0,
           "count": 0,
           "id": "25",
-          "unlocked": false,
           "canSelectTarget": true,
           "unitStatus": "",
           "singleUse": false
@@ -12311,19 +12184,15 @@
           "skill": "MEND",
           "iconPath": "overlordability_life_mend",
           "description": "Restore 2 Def to your Overlord",
-          "skillTargets": [
-            "PLAYER"
-          ],
+          "skillTargets": ["PLAYER"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-          ],
+          "targetFactions": [],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "26",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12333,20 +12202,15 @@
           "skill": "RESSURECT",
           "iconPath": "overlordability_life_resurrect",
           "description": "Reanimate a random 3 goo-cost ally Life zombie",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "LIFE"
-          ],
+          "targetFactions": ["LIFE"],
           "value": 3,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 1,
           "id": "27",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12356,21 +12220,15 @@
           "skill": "ENHANCE",
           "iconPath": "overlordability_life_enhance",
           "description": "Restore 2 Def to all ally Life zombies and your Overlord",
-          "skillTargets": [
-            "PLAYER",
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER", "PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "LIFE"
-          ],
+          "targetFactions": ["LIFE"],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 0,
           "id": "28",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
@@ -12380,20 +12238,15 @@
           "skill": "REANIMATE",
           "iconPath": "overlordability_life_reanimate",
           "description": "Reanimate 2 random ally Life zombies",
-          "skillTargets": [
-            "PLAYER_CARD"
-          ],
+          "skillTargets": ["PLAYER_CARD"],
           "targetUnitSpecialStatus": "NONE",
-          "targetFactions": [
-            "LIFE"
-          ],
+          "targetFactions": ["LIFE"],
           "value": 2,
           "cooldown": 4,
           "initialCooldown": 4,
           "damage": 0,
           "count": 2,
           "id": "29",
-          "unlocked": false,
           "canSelectTarget": false,
           "unitStatus": "",
           "singleUse": false
