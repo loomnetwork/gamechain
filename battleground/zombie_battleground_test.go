@@ -555,8 +555,8 @@ func TestOverlordsOperations(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("ListOverlords", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlords(ctx, &zb.ListOverlordsRequest{
+	t.Run("ListOverlordUserInstances", func(t *testing.T) {
+		overlordsResponse, err := c.ListOverlordUserInstances(ctx, &zb.ListOverlordsRequest{
 			UserId: "OverlordUser",
 		})
 
@@ -564,8 +564,8 @@ func TestOverlordsOperations(t *testing.T) {
 		assert.Equal(t, 2, len(overlordsResponse.Overlords))
 	})
 
-	t.Run("GetOverlord", func(t *testing.T) {
-		overlordResponse, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
+	t.Run("GetOverlordUserInstance", func(t *testing.T) {
+		overlordResponse, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 1,
 		})
@@ -574,8 +574,8 @@ func TestOverlordsOperations(t *testing.T) {
 		assert.NotNil(t, overlordResponse.Overlord)
 	})
 
-	t.Run("GetOverlord (Overlord not exists)", func(t *testing.T) {
-		_, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
+	t.Run("GetOverlordUserInstance (Overlord not exists)", func(t *testing.T) {
+		_, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 10,
 		})
@@ -737,7 +737,7 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Check level and experience after match", func(t *testing.T) {
-		getOverlordResponse1, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
+		getOverlordResponse1, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
 			UserId:     "player-1",
 			OverlordId: 1,
 		})
@@ -747,7 +747,7 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, false, getOverlordResponse1.Overlord.Skills[0].Unlocked)
 		assert.Equal(t, int64(1), getOverlordResponse1.Overlord.Level)
 
-		getOverlordResponse2, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
+		getOverlordResponse2, err := c.GetOverlordUserInstance(ctx, &zb.GetOverlordRequest{
 			UserId:     "player-2",
 			OverlordId: 1,
 		})
