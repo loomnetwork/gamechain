@@ -11,7 +11,8 @@ import (
 )
 
 var listOverlordsForUserCmdArgs struct {
-	userID string
+	userID  string
+	version string
 }
 
 var listOverlordsForUserCmd = &cobra.Command{
@@ -25,7 +26,8 @@ var listOverlordsForUserCmd = &cobra.Command{
 		}
 
 		req := zb.ListOverlordUserInstancesRequest{
-			UserId: listOverlordsForUserCmdArgs.userID,
+			UserId:  listOverlordsForUserCmdArgs.userID,
+			Version: listOverlordsForUserCmdArgs.version
 		}
 		result := zb.ListOverlordUserInstancesResponse{}
 
@@ -56,4 +58,7 @@ func init() {
 	rootCmd.AddCommand(listOverlordsForUserCmd)
 
 	listOverlordsForUserCmd.Flags().StringVarP(&listOverlordsForUserCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	listOverlordsForUserCmd.Flags().StringVarP(&listOverlordsForUserCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = listOverlordsForUserCmd.MarkFlagRequired("version")
 }
