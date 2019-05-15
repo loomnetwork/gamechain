@@ -6,7 +6,5 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/gamechain/types/nullable/nullable_pb/nullable.proto";
 
 message TestMessage {
-    Int32Value int32Value = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/battleground_nullable.Int32Value"];
-
-    repeated int32 intArray = 2;
+    Int32Value int32Value = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable.Int32Value"];
 }
