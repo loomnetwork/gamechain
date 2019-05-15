@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
