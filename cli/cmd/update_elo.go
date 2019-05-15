@@ -18,7 +18,7 @@ var updateEloCmd = &cobra.Command{
 	Short: "updates the user's elo score",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var requestData zb.UpdateUserEloRequest
+		var requestData zb_calls.UpdateUserEloRequest
 
 		requestData.UserId = updateEloCmdArgs.userID
 		requestData.EloScore = updateEloCmdArgs.value

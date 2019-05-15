@@ -28,10 +28,10 @@ var getInitCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetInitRequest{
+		req := zb_calls.GetInitRequest{
 			Version: getInitCmdArgs.version,
 		}
-		result := zb.GetInitResponse{}
+		result := zb_calls.GetInitResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetInit", &req, callerAddr, &result)
 		if err != nil {

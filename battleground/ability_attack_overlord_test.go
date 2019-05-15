@@ -1,11 +1,12 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -49,12 +50,12 @@ func TestAbilityAttackOverlord(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_AttackOverlord,
+					Ability: zb_enums.AbilityType_AttackOverlord,
 					Trigger: zb_enums.AbilityTrigger_Entry,
 				},
 			},
@@ -62,7 +63,7 @@ func TestAbilityAttackOverlord(t *testing.T) {
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 100},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
 				&zb_data.CardAbilityInstance{
 					IsActive: true,
@@ -79,11 +80,11 @@ func TestAbilityAttackOverlord(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInHand = append(gp.State.PlayerStates[0].CardsInHand, instance0)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardPlay{
-				CardPlay: &zb.PlayerActionCardPlay{
+			Action: &zb_data.PlayerAction_CardPlay{
+				CardPlay: &zb_data.PlayerActionCardPlay{
 					Card: &zb_data.InstanceId{Id: 100},
 				},
 			},
@@ -94,17 +95,17 @@ func TestAbilityAttackOverlord(t *testing.T) {
 		instance1 := &zb_data.CardInstance{
 			InstanceId:         &zb_data.InstanceId{Id: 101},
 			Instance:           newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:          proto.Clone(card0).(*zb.Card),
+			Prototype:          proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{},
 		}
 
 		gp.State.PlayerStates[0].CardsInHand = append(gp.State.PlayerStates[0].CardsInHand, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardPlay{
-				CardPlay: &zb.PlayerActionCardPlay{
+			Action: &zb_data.PlayerAction_CardPlay{
+				CardPlay: &zb_data.PlayerActionCardPlay{
 					Card: &zb_data.InstanceId{Id: 101},
 				},
 			},

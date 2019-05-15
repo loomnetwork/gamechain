@@ -3,13 +3,12 @@ package battleground
 import (
 	"errors"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/gogo/protobuf/proto"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 const (
@@ -23,7 +22,7 @@ var (
 	ErrDeckNameTooLong = fmt.Errorf("deck name is more than %d characters", MaxDeckNameChar)
 )
 
-func validateCardLibraryCards(cardLibrary []*zb.Card) error {
+func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 	existingCardsSet, err := getMouldIdToCardMap(cardLibrary)
 	if err != nil {
 		return err
@@ -47,7 +46,7 @@ func validateCardLibraryCards(cardLibrary []*zb.Card) error {
 	return nil
 }
 
-func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb_data.DeckCard) error {
+func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCard) error {
 	mouldIdToCard, err := getMouldIdToCardMap(cardLibrary)
 	if err != nil {
 		return err
@@ -112,7 +111,7 @@ func validateDeckName(deckList []*zb_data.Deck, validatedDeck *zb_data.Deck) err
 	return nil
 }
 
-func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord {
+func getOverlordById(overlordList []*zb_data.Overlord, overlordId int64) *zb_data.Overlord {
 	for _, overlord := range overlordList {
 		if overlord.OverlordId == overlordId {
 			return overlord
@@ -121,7 +120,7 @@ func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord
 	return nil
 }
 
-func validateDeckOverlord(overlordList []*zb.Overlord, overlordID int64) error {
+func validateDeckOverlord(overlordList []*zb_data.Overlord, overlordID int64) error {
 	// check if the user has overlord
 	if getOverlordById(overlordList, overlordID) != nil {
 		return nil
@@ -141,7 +140,7 @@ func shuffleCardInDeck(deck []*zb_data.CardInstance, seed int64, playerIndex int
 	return deck
 }
 
-func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
+func drawFromCardList(cardlist []*zb_data.Card, n int) (cards []*zb_data.Card, renaming []*zb_data.Card) {
 	var i int
 	for i = 0; i < n; i++ {
 		if i > len(cardlist)-1 {
@@ -172,8 +171,8 @@ func findCardInCardListByInstanceId(instanceId *zb_data.InstanceId, cards []*zb_
 	return -1, nil, false
 }
 
-func getMouldIdToCardMap(cardLibrary []*zb.Card) (map[int64]*zb.Card, error) {
-	existingCardsSet := make(map[int64]*zb.Card)
+func getMouldIdToCardMap(cardLibrary []*zb_data.Card) (map[int64]*zb_data.Card, error) {
+	existingCardsSet := make(map[int64]*zb_data.Card)
 	for _, card := range cardLibrary {
 		_, exists := existingCardsSet[card.MouldId]
 		if !exists {
@@ -186,7 +185,7 @@ func getMouldIdToCardMap(cardLibrary []*zb.Card) (map[int64]*zb.Card, error) {
 	return existingCardsSet, nil
 }
 
-func applySourceMouldIdAndOverrides(card *zb.Card, mouldIdToCard map[int64]*zb.Card) error {
+func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
 	if card.SourceMouldId <= 0 {
 		return nil
 	}
@@ -273,7 +272,7 @@ func applySourceMouldIdAndOverrides(card *zb.Card, mouldIdToCard map[int64]*zb.C
 	return nil
 }
 
-func validateSourceMouldId(card *zb.Card, mouldIdToCard map[int64]*zb.Card) error {
+func validateSourceMouldId(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
 	if card.SourceMouldId <= 0 {
 		return nil
 	}

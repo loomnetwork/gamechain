@@ -26,15 +26,15 @@ var sendActionCardAttackCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb.PlayerActionRequest{
+		var req = zb_calls.PlayerActionRequest{
 			MatchId: sendActionCardAttackCmdArgs.matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_CardAttack,
+			PlayerAction: &zb_data.PlayerAction{
+				ActionType: zb_enums.PlayerActionType_CardAttack,
 				PlayerId:   sendActionCardAttackCmdArgs.userID,
-				Action: &zb.PlayerAction_CardAttack{
-					CardAttack: &zb.PlayerActionCardAttack{
+				Action: &zb_data.PlayerAction_CardAttack{
+					CardAttack: &zb_data.PlayerActionCardAttack{
 						Attacker: &zb_data.InstanceId{Id: sendActionCardAttackCmdArgs.attackerID},
-						Target: &zb.Unit{
+						Target: &zb_data.Unit{
 							InstanceId: &zb_data.InstanceId{Id: sendActionCardAttackCmdArgs.targetID},
 						},
 					},

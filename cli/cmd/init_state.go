@@ -21,7 +21,7 @@ var initStateCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		req := &zb.InitGamechainStateRequest{
+		req := &zb_calls.InitGamechainStateRequest{
 			Oracle: callerAddr.MarshalPB(),
 		}
 		_, err := commonTxObjs.contract.Call("InitState", req, signer, nil)

@@ -21,8 +21,8 @@ var getPlayerPoolCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb.PlayerPoolRequest{}
-		var resp zb.PlayerPoolResponse
+		var req = zb_calls.PlayerPoolRequest{}
+		var resp zb_calls.PlayerPoolResponse
 
 		if getPlayerPoolCmdArgs.isTaggedPlayerPool {
 			_, err := commonTxObjs.contract.Call("GetTaggedPlayerPool", &req, signer, &resp)

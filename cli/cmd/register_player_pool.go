@@ -26,8 +26,8 @@ var registerPlayerPoolCmd = &cobra.Command{
 	Short: "register player to find_match pool",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.RegisterPlayerPoolRequest{
-			RegistrationData: &zb.PlayerProfileRegistrationData{
+		var req = zb_calls.RegisterPlayerPoolRequest{
+			RegistrationData: &zb_data.PlayerProfileRegistrationData{
 				UserId:              registerPlayerPoolCmdArgs.userID,
 				DeckId:              registerPlayerPoolCmdArgs.deckID,
 				Version:             registerPlayerPoolCmdArgs.version,
@@ -35,7 +35,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 				UseBackendGameLogic: registerPlayerPoolCmdArgs.useBackendGameLogic,
 			},
 		}
-		var resp zb.RegisterPlayerPoolResponse
+		var resp zb_calls.RegisterPlayerPoolResponse
 
 		if registerPlayerPoolCmdArgs.enableDebugCheats {
 			req.RegistrationData.DebugCheats.Enabled = true

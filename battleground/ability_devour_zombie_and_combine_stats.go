@@ -1,7 +1,8 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 )
 
 // devourZombieAndCombineStats ability

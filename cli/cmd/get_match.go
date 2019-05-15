@@ -24,10 +24,10 @@ var getMatchCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		var req = zb.GetMatchRequest{
+		var req = zb_calls.GetMatchRequest{
 			MatchId: getMatchCmdArgs.MatchID,
 		}
-		var resp zb.GetMatchResponse
+		var resp zb_calls.GetMatchResponse
 
 		_, err := commonTxObjs.contract.StaticCall("GetMatch", &req, callerAddr, &resp)
 		if err != nil {

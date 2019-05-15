@@ -28,10 +28,10 @@ var listCardCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.ListCardLibraryRequest{
+		req := zb_calls.ListCardLibraryRequest{
 			Version: listCardCmdArgs.version,
 		}
-		result := zb.ListCardLibraryResponse{}
+		result := zb_calls.ListCardLibraryResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("ListCardLibrary", &req, callerAddr, &result)
 		if err != nil {

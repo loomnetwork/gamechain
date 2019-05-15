@@ -3,11 +3,11 @@ package battleground_nullable
 import (
 	"encoding/json"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 )
 
 type CreatureRankEnumValue struct {
-	Value zb.CreatureRank_Enum
+	Value zb_enums.CreatureRank_Enum
 }
 
 func (value *CreatureRankEnumValue) Size() int {
@@ -19,7 +19,7 @@ func (value CreatureRankEnumValue) Marshal() ([]byte, error) {
 }
 
 func (value *CreatureRankEnumValue) Unmarshal(data []byte) error {
-	protoValue := &zb.CreatureRankEnumValue{}
+	protoValue := &zb_enums.CreatureRankEnumValue{}
 	err := proto.Unmarshal(data, protoValue)
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func (value CreatureRankEnumValue) MarshalJSON() ([]byte, error) {
 }
 
 func (value *CreatureRankEnumValue) UnmarshalJSON(data []byte) error {
-	var raw zb.CreatureRank_Enum
+	var raw zb_enums.CreatureRank_Enum
 	err := json.Unmarshal(data, &raw)
 	if err != nil {
 		return err
@@ -43,8 +43,8 @@ func (value *CreatureRankEnumValue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (value *CreatureRankEnumValue) protoType() *zb.CreatureRankEnumValue {
-	return &zb.CreatureRankEnumValue{
+func (value *CreatureRankEnumValue) protoType() *zb_enums.CreatureRankEnumValue {
+	return &zb_enums.CreatureRankEnumValue{
 		Value: value.Value,
 	}
 }

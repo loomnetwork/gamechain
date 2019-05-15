@@ -23,10 +23,10 @@ var getAIDecksCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetAIDecksRequest{
+		req := &zb_calls.GetAIDecksRequest{
 			Version: getAIDecksCmdArgs.version,
 		}
-		var result zb.GetAIDecksResponse
+		var result zb_calls.GetAIDecksResponse
 		_, err := commonTxObjs.contract.StaticCall("GetAIDecks", req, callerAddr, &result)
 		if err != nil {
 			return err

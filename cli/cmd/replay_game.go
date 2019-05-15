@@ -22,11 +22,11 @@ var replayGameCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb.ReplayGameRequest{
+		var req = zb_calls.ReplayGameRequest{
 			MatchId:           replayGameCmdArgs.matchID,
 			StopAtActionIndex: replayGameCmdArgs.stopAtActionIndex,
 		}
-		var resp zb.ReplayGameResponse
+		var resp zb_calls.ReplayGameResponse
 
 		_, err := commonTxObjs.contract.Call("ReplayGame", &req, signer, &resp)
 		if err != nil {
@@ -51,7 +51,7 @@ var replayGameCmd = &cobra.Command{
 				return b.String()
 			}
 
-			formatAction := func(action *zb.PlayerAction) string {
+			formatAction := func(action *zb_data.PlayerAction) string {
 				return fmt.Sprintf("%s: %s, %+v", action.ActionType, action.PlayerId, action.Action)
 			}
 

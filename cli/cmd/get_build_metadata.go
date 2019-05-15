@@ -18,8 +18,8 @@ var getBuildMetadataCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetContractBuildMetadataRequest{}
-		result := zb.GetContractBuildMetadataResponse{}
+		req := zb_calls.GetContractBuildMetadataRequest{}
+		result := zb_calls.GetContractBuildMetadataResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetContractBuildMetadata", &req, callerAddr, &result)
 		if err != nil {

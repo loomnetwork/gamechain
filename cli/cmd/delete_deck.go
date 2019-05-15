@@ -22,7 +22,7 @@ var deleteDeckCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.DeleteDeckRequest{
+		req := &zb_calls.DeleteDeckRequest{
 			UserId: deleteDeckCmdArgs.userID,
 			DeckId: deleteDeckCmdArgs.deckID,
 			Version: deleteDeckCmdArgs.version,

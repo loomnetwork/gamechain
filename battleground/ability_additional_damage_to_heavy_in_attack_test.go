@@ -4,7 +4,8 @@ import (
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
@@ -49,12 +50,12 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_AdditionalDamageToHeavyInAttack,
+					Ability: zb_enums.AbilityType_AdditionalDamageToHeavyInAttack,
 					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
@@ -62,7 +63,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
 				&zb_data.CardAbilityInstance{
 					IsActive: true,
@@ -77,24 +78,24 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		}
 		instance1 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
+			Prototype:  &zb_data.Card{},
 			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
-				Type:    zb.CardType_Heavy,
+				Type:    zb_enums.CardType_Heavy,
 			},
 		}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
 					Attacker: &zb_data.InstanceId{Id: 1},
-					Target: &zb.Unit{
+					Target: &zb_data.Unit{
 						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},
@@ -113,12 +114,12 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_AdditionalDamageToHeavyInAttack,
+					Ability: zb_enums.AbilityType_AdditionalDamageToHeavyInAttack,
 					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
@@ -126,7 +127,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
 				&zb_data.CardAbilityInstance{
 					IsActive: true,
@@ -141,24 +142,24 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		}
 		instance1 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
+			Prototype:  &zb_data.Card{},
 			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
-				Type:    zb.CardType_Feral,
+				Type:    zb_enums.CardType_Feral,
 			},
 		}
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
 					Attacker: &zb_data.InstanceId{Id: 1},
-					Target: &zb.Unit{
+					Target: &zb_data.Unit{
 						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},

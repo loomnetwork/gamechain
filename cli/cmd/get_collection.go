@@ -25,10 +25,10 @@ var getCollectionCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetCollectionRequest{
+		req := &zb_calls.GetCollectionRequest{
 			UserId: getCollectionCmdArgs.userID,
 		}
-		var result zb.GetCollectionResponse
+		var result zb_calls.GetCollectionResponse
 		_, err := commonTxObjs.contract.StaticCall("GetCollection", req, callerAddr, &result)
 		if err != nil {
 			return err

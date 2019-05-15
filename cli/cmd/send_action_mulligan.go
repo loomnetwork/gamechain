@@ -27,13 +27,13 @@ var sendActionMulliganCmd = &cobra.Command{
 			ids = append(ids, &zb_data.InstanceId{Id: id})
 		}
 
-		var req = zb.PlayerActionRequest{
+		var req = zb_calls.PlayerActionRequest{
 			MatchId: sendActionMulliganCmdArgs.matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
+			PlayerAction: &zb_data.PlayerAction{
+				ActionType: zb_enums.PlayerActionType_Mulligan,
 				PlayerId:   sendActionMulliganCmdArgs.userID,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
+				Action: &zb_data.PlayerAction_Mulligan{
+					Mulligan: &zb_data.PlayerActionMulligan{
 						MulliganedCards: ids,
 					},
 				},

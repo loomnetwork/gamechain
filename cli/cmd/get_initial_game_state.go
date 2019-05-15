@@ -24,10 +24,10 @@ var getInitialGameStateCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		var req = zb.GetInitialGameStateRequest{
+		var req = zb_calls.GetInitialGameStateRequest{
 			MatchId: getInitialGameStateCmdArgs.MatchID,
 		}
-		var resp zb.GetInitialGameStateResponse
+		var resp zb_calls.GetInitialGameStateResponse
 		_, err := commonTxObjs.contract.StaticCall("GetInitialGameState", &req, callerAddr, &resp)
 		if err != nil {
 			return err

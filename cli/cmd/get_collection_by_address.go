@@ -21,8 +21,8 @@ var getCollectionByAddressCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		var req zb.GetCollectionByAddressRequest
-		var result zb.GetCollectionByAddressResponse
+		var req zb_calls.GetCollectionByAddressRequest
+		var result zb_calls.GetCollectionByAddressResponse
 		_, err := commonTxObjs.contract.StaticCall("GetCollectionByAddress", &req, callerAddr, &result)
 		if err != nil {
 			return err

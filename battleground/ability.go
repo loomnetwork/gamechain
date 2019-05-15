@@ -6,7 +6,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 type Ability interface {

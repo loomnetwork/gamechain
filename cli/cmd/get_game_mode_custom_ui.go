@@ -25,8 +25,8 @@ var getGameModeCustomUiCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		var req zb.GetGameModeRequest
-		var gameMode = zb.GameMode{}
+		var req zb_calls.GetGameModeRequest
+		var gameMode = zb_data.GameMode{}
 
 		req.ID = getGameModeCustomUiCmdArgs.ID
 
@@ -35,11 +35,11 @@ var getGameModeCustomUiCmd = &cobra.Command{
 			return err
 		}
 
-		var reqUi zb.GetCustomGameModeCustomUiRequest
+		var reqUi zb_calls.GetCustomGameModeCustomUiRequest
 
 		reqUi.Address = gameMode.Address
 
-		result := zb.GetCustomGameModeCustomUiResponse{}
+		result := zb_calls.GetCustomGameModeCustomUiResponse{}
 		_, err = commonTxObjs.contract.StaticCall("GetGameModeCustomUi", &reqUi, callerAddr, &result)
 		if err != nil {
 			return err

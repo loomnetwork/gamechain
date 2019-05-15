@@ -21,8 +21,8 @@ var listGameModesCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.ListGameModesRequest{}
-		var result zb.GameModeList
+		req := &zb_calls.ListGameModesRequest{}
+		var result zb_data.GameModeList
 		_, err := commonTxObjs.contract.StaticCall("ListGameModes", req, callerAddr, &result)
 		if err != nil {
 			return err

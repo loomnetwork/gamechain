@@ -22,12 +22,12 @@ var getDeckCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.GetDeckRequest{
+		req := &zb_calls.GetDeckRequest{
 			UserId: getDeckCmdArgs.userID,
 			DeckId: getDeckCmdArgs.deckID,
 			Version: getDeckCmdArgs.version,
 		}
-		var result zb.GetDeckResponse
+		var result zb_calls.GetDeckResponse
 		_, err := commonTxObjs.contract.Call("GetDeck", req, signer, &result)
 		if err != nil {
 			return err
