@@ -1,10 +1,10 @@
 package oracle
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"time"
 
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"

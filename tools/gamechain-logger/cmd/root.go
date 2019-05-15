@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -18,7 +19,6 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -228,7 +228,7 @@ func writeReplayFile(topic string, event zb_data.PlayerActionEvent) ([]byte, err
 		return nil, nil
 	}
 
-	var replay zb.GameReplay
+	var replay zb_data.GameReplay
 	if fi, _ := f.Stat(); fi.Size() > 0 {
 		if err := jsonpb.Unmarshal(f, &replay); err != nil {
 			log.Println(err)
