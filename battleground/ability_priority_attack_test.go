@@ -1,11 +1,12 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -49,23 +50,23 @@ func TestAbilityPriorityAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_PriorityAttack,
+					Ability: zb_enums.AbilityType_PriorityAttack,
 				},
 			},
 		}
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 		}
 		instance1 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
+			Prototype:  &zb_data.Card{},
 			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
@@ -75,13 +76,13 @@ func TestAbilityPriorityAttack(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
 					Attacker: &zb_data.InstanceId{Id: 1},
-					Target: &zb.Unit{
+					Target: &zb_data.Unit{
 						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},

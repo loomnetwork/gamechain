@@ -24,10 +24,10 @@ var listOverlordsLibraryCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.ListOverlordLibraryRequest{
+		req := zb_calls.ListOverlordLibraryRequest{
 			Version: listOverlordsLibraryCmdArgs.version,
 		}
-		result := zb.ListOverlordLibraryResponse{}
+		result := zb_calls.ListOverlordLibraryResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("ListOverlordLibrary", &req, callerAddr, &result)
 		if err != nil {

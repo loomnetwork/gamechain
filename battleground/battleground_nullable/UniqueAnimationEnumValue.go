@@ -3,11 +3,11 @@ package battleground_nullable
 import (
 	"encoding/json"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 )
 
 type UniqueAnimationEnumValue struct {
-	Value zb.UniqueAnimation_Enum
+	Value zb_enums.UniqueAnimation_Enum
 }
 
 func (value *UniqueAnimationEnumValue) Size() int {
@@ -19,7 +19,7 @@ func (value UniqueAnimationEnumValue) Marshal() ([]byte, error) {
 }
 
 func (value *UniqueAnimationEnumValue) Unmarshal(data []byte) error {
-	protoValue := &zb.UniqueAnimationEnumValue{}
+	protoValue := &zb_enums.UniqueAnimationEnumValue{}
 	err := proto.Unmarshal(data, protoValue)
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func (value UniqueAnimationEnumValue) MarshalJSON() ([]byte, error) {
 }
 
 func (value *UniqueAnimationEnumValue) UnmarshalJSON(data []byte) error {
-	var raw zb.UniqueAnimation_Enum
+	var raw zb_enums.UniqueAnimation_Enum
 	err := json.Unmarshal(data, &raw)
 	if err != nil {
 		return err
@@ -43,8 +43,8 @@ func (value *UniqueAnimationEnumValue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (value *UniqueAnimationEnumValue) protoType() *zb.UniqueAnimationEnumValue {
-	return &zb.UniqueAnimationEnumValue{
+func (value *UniqueAnimationEnumValue) protoType() *zb_enums.UniqueAnimationEnumValue {
+	return &zb_enums.UniqueAnimationEnumValue{
 		Value: value.Value,
 	}
 }

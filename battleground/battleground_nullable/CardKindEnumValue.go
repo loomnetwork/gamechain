@@ -3,7 +3,7 @@ package battleground_nullable
 import (
 	"encoding/json"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb_enums"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 )
 
 type CardKindEnumValue struct {

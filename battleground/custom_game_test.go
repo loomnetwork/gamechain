@@ -4,6 +4,7 @@ package battleground
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 	"strings"
 	"testing"
@@ -11,7 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 
@@ -159,23 +159,23 @@ func TestCustomGameMode_DeserializeCustomUiElements(t *testing.T) {
 
 	assert.Equal(
 		t,
-		zb.Rect{
-			Position: &zb.Vector2Int{X: 25, Y: 230},
-			Size_:    &zb.Vector2Int{X: 200, Y: 150},
+		zb_data.Rect{
+			Position: &zb_data.Vector2Int{X: 25, Y: 230},
+			Size_:    &zb_data.Vector2Int{X: 200, Y: 150},
 		},
 		*uiElements[0].Rect)
-	label := uiElements[0].UiElement.(*zb.CustomGameModeCustomUiElement_Label)
+	label := uiElements[0].UiElement.(*zb_data.CustomGameModeCustomUiElement_Label)
 	assert.Equal(t, "Some Very Cool text!", label.Label.Text)
 
 	assert.Equal(
 		t,
-		zb.Rect{
-			Position: &zb.Vector2Int{X: 675, Y: 300},
-			Size_:    &zb.Vector2Int{X: 300, Y: 150},
+		zb_data.Rect{
+			Position: &zb_data.Vector2Int{X: 675, Y: 300},
+			Size_:    &zb_data.Vector2Int{X: 300, Y: 150},
 		},
 		*uiElements[1].Rect)
 
-	button := uiElements[1].UiElement.(*zb.CustomGameModeCustomUiElement_Button)
+	button := uiElements[1].UiElement.(*zb_data.CustomGameModeCustomUiElement_Button)
 	assert.Equal(t, "Click Me", button.Button.Title)
 }
 

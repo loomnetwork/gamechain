@@ -25,10 +25,10 @@ var getAccountCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetAccountRequest{
+		req := &zb_calls.GetAccountRequest{
 			UserId: getAccCmdArgs.userID,
 		}
-		var result zb.Account
+		var result zb_data.Account
 
 		_, err := commonTxObjs.contract.StaticCall("GetAccount", req, callerAddr, &result)
 		if err != nil {

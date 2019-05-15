@@ -2,10 +2,11 @@ package battleground
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"math/rand"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 type replaceUnitsWithTypeOnStrongerOnes struct {
@@ -47,8 +48,8 @@ func (c *replaceUnitsWithTypeOnStrongerOnes) Apply(gameplay *Gameplay) error {
 		return nil
 	}
 
-	sameTypeStrongerFn := func(cardLibrary *zb_data.CardList, target *zb_data.CardInstance) []*zb.Card {
-		var sameTypeStrongerCards []*zb.Card
+	sameTypeStrongerFn := func(cardLibrary *zb_data.CardList, target *zb_data.CardInstance) []*zb_data.Card {
+		var sameTypeStrongerCards []*zb_data.Card
 		for _, card := range cardLibrary.Cards {
 			if card.Faction == target.Instance.Faction && card.Cost > target.Instance.Cost {
 				sameTypeStrongerCards = append(sameTypeStrongerCards, card)

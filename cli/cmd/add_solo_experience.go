@@ -22,13 +22,13 @@ var addSoloExperienceCmd = &cobra.Command{
 	Short: "add experience to an overlord (used for Solo mode)",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.AddSoloExperienceRequest{
+		var req = zb_calls.AddSoloExperienceRequest{
 			Version:    addSoloExperienceCmdArgs.version,
 			UserId:     addSoloExperienceCmdArgs.userId,
 			OverlordId: addSoloExperienceCmdArgs.overlordId,
 			Experience: addSoloExperienceCmdArgs.experience,
 		}
-		var resp zb.AddSoloExperienceResponse
+		var resp zb_calls.AddSoloExperienceResponse
 
 		_, err := commonTxObjs.contract.Call("AddSoloExperience", &req, signer, &resp)
 		if err != nil {

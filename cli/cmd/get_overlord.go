@@ -26,11 +26,11 @@ var getOverlordForUserCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetOverlordRequest{
+		req := zb_calls.GetOverlordRequest{
 			UserId: getOverlordForUserCmdArgs.userID,
 			OverlordId: getOverlordForUserCmdArgs.overlordID,
 		}
-		result := zb.GetOverlordResponse{}
+		result := zb_calls.GetOverlordResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetOverlord", &req, callerAddr, &result)
 		if err != nil {

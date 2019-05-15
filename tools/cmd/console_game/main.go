@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
 
-var initRequest = zb.InitRequest{
+/*var initRequest = zb_calls.InitRequest{
 	Version: "v1",
 	DefaultCollection: []*zb_data.CardCollectionCard{
 		{
@@ -62,17 +65,17 @@ var initRequest = zb.InitRequest{
 			Amount:   5,
 		},
 	},
-	Overlords: []*zb.Overlord{
+	Overlords: []*zb_data.Overlord{
 		{
 			OverlordId: 0,
 			Experience: 0,
 			Level:      1,
-			Skills: []*zb.Skill{{
+			Skills: []*zb_data.Skill{{
 				Title: "Attack",
-				Skill: zb.OverlordSkill_IceBolt,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_AllCards,
-					zb.SkillTarget_PlayerCard,
+				Skill: zb_enums.OverlordSkill_IceBolt,
+				SkillTargets: []zb_enums.SkillTarget_Enum{
+					zb_enums.SkillTarget_AllCards,
+					zb_enums.SkillTarget_PlayerCard,
 				},
 				Value: 1,
 			}},
@@ -81,42 +84,42 @@ var initRequest = zb.InitRequest{
 			OverlordId: 1,
 			Experience: 0,
 			Level:      2,
-			Skills: []*zb.Skill{{
+			Skills: []*zb_data.Skill{{
 				Title: "Deffence",
-				Skill: zb.OverlordSkill_Blizzard,
-				SkillTargets: []zb.SkillTarget_Enum{
-					zb.SkillTarget_Player,
-					zb.SkillTarget_OpponentCard,
+				Skill: zb_enums.OverlordSkill_Blizzard,
+				SkillTargets: []zb_enums.SkillTarget_Enum{
+					zb_enums.SkillTarget_Player,
+					zb_enums.SkillTarget_OpponentCard,
 				},
 				Value: 2,
 			}},
 		},
 	},
-	Cards: []*zb.Card{
+	Cards: []*zb_data.Card{
 		{
 			MouldId: 1,
-			Faction: zb.Faction_Air,
+			Faction: zb_enums.Faction_Air,
 			Name:    "Soothsayer",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CardType_Walker,
+			Rank:    zb_enums.CreatureRank_Minion,
+			Type:    zb_enums.CardType_Walker,
 			Damage:  2,
 			Defense: 1,
 			Cost: 2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability:  zb.AbilityType_DrawCard,
-					Activity: zb.AbilityActivity_Passive,
+					Ability:  zb_enums.AbilityType_DrawCard,
+					Activity: zb_enums.AbilityActivity_Passive,
 					Trigger:  zb_enums.AbilityTrigger_Entry,
-					Faction:  zb.Faction_None,
+					Faction:  zb_enums.Faction_None,
 				},
 			},
-			PictureTransform: &zb.PictureTransform{
-				Position: &zb.Vector3Float{
+			PictureTransform: &zb_data.PictureTransform{
+				Position: &zb_data.Vector3Float{
 					X: 1.5,
 					Y: 2.5,
 					Z: 3.5,
 				},
-				Scale: &zb.Vector3Float{
+				Scale: &zb_data.Vector3Float{
 					X: 0.5,
 					Y: 0.5,
 					Z: 0.5,
@@ -125,23 +128,23 @@ var initRequest = zb.InitRequest{
 		},
 		{
 			MouldId: 2,
-			Faction: zb.Faction_Air,
+			Faction: zb_enums.Faction_Air,
 			Name:    "Azuraz",
-			Rank:    zb.CreatureRank_Minion,
-			Type:    zb.CardType_Walker,
+			Rank:    zb_enums.CreatureRank_Minion,
+			Type:    zb_enums.CardType_Walker,
 			Damage:  1,
 			Defense: 1,
 			Cost: 1,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability:  zb.AbilityType_ModificatorStats,
-					Activity: zb.AbilityActivity_Passive,
+					Ability:  zb_enums.AbilityType_ModificatorStats,
+					Activity: zb_enums.AbilityActivity_Passive,
 					Trigger:  zb_enums.AbilityTrigger_Permanent,
 					Targets: []zb.Target_Enum{
 						zb.Target_None,
 					},
-					Stat:    zb.Stat_Damage,
-					Faction: zb.Faction_Earth,
+					Stat:    zb_enums.Stat_Damage,
+					Faction: zb_enums.Faction_Earth,
 					Value:   1,
 				},
 			},
@@ -204,7 +207,7 @@ var initRequest = zb.InitRequest{
 			},
 		},
 	},
-}
+}*/
 
 func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) {
 
@@ -218,13 +221,14 @@ func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Addr
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
-	err := c.Init(*ctx, &initRequest)
+	// FIXME
+	/*err := c.Init(*ctx, &initRequest)
 	if err != nil {
 		panic(err)
-	}
+	}*/
 }
 
-func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest) {
+func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	if err != nil {
 		panic(err)
@@ -236,7 +240,7 @@ func setupZBContract() {
 	var addr loom.Address
 
 	setup(zvContract, pubKeyHexString, &addr, &ctx)
-	setupAccount(zvContract, ctx, &zb.UpsertAccountRequest{
+	setupAccount(zvContract, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "AccountUser",
 		Image:   "PathToImage",
 		Version: "v1",
@@ -246,7 +250,7 @@ func setupZBContract() {
 func listItemsForPlayer(playerId int) []string {
 	res := []string{}
 
-	cardCollection, err := zvContract.GetCollection(ctx, &zb.GetCollectionRequest{
+	cardCollection, err := zvContract.GetCollection(ctx, &zb_calls.GetCollectionRequest{
 		UserId: "AccountUser",
 	})
 	if err != nil {

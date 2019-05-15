@@ -21,7 +21,7 @@ var listDecksCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.ListDecksRequest{
+		req := &zb_calls.ListDecksRequest{
 			UserId: listDecksCmdArgs.userID,
 			Version: listDecksCmdArgs.version,
 		}

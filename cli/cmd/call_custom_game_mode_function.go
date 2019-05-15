@@ -30,8 +30,8 @@ var callGameModeCustomGameModeFunctionCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		var req zb.GetGameModeRequest
-		var gameMode = zb.GameMode{}
+		var req zb_calls.GetGameModeRequest
+		var gameMode = zb_data.GameMode{}
 
 		req.ID = callGameModeCustomGameModeFunctionArgs.ID
 
@@ -40,7 +40,7 @@ var callGameModeCustomGameModeFunctionCmd = &cobra.Command{
 			return err
 		}
 
-		var reqUi zb.CallCustomGameModeFunctionRequest
+		var reqUi zb_calls.CallCustomGameModeFunctionRequest
 
 		reqUi.Address = gameMode.Address
 		reqUi.CallData = abiInputFileContents

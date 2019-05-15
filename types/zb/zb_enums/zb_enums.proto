@@ -348,3 +348,133 @@ message Zone {
         SECRET = 6;
     }
 }
+
+message PlayerActionType {
+    enum Enum {
+        None = 0;
+        EndTurn = 1;
+        Mulligan = 2;
+        CardPlay = 3;
+        CardAttack = 4;
+        CardAbilityUsed = 5;
+        OverlordSkillUsed = 6;
+        LeaveMatch = 7;
+        RankBuff = 8;
+        CheatDestroyCardsOnBoard = 9;
+    }
+}
+
+message OverlordSkill {
+    enum Enum {
+        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+
+        // AIR
+        PUSH = 1 [(gogoproto.enumvalue_customname) = "Push"];
+        DRAW = 2 [(gogoproto.enumvalue_customname) = "Draw"];
+        WIND_SHIELD = 3 [(gogoproto.enumvalue_customname) = "WindShield"];
+        LEVITATE = 4 [(gogoproto.enumvalue_customname) = "WindWall"];
+        RETREAT = 5 [(gogoproto.enumvalue_customname) = "Retreat"];
+
+        // EARTH
+        HARDEN = 6 [(gogoproto.enumvalue_customname) = "Harden"];
+        STONE_SKIN = 7 [(gogoproto.enumvalue_customname) = "StoneSkin"];
+        FORTIFY = 8 [(gogoproto.enumvalue_customname) = "Fortify"];
+        PHALANX = 9 [(gogoproto.enumvalue_customname) = "Phalanx"];
+        FORTRESS = 10 [(gogoproto.enumvalue_customname) = "Fortress"];
+
+        // FIRE
+        FIRE_BOLT = 11 [(gogoproto.enumvalue_customname) = "FireBolt"];
+        RABIES = 12 [(gogoproto.enumvalue_customname) = "Rabies"];
+        FIREBALL = 13 [(gogoproto.enumvalue_customname) = "Fireball"];
+        MASS_RABIES = 14 [(gogoproto.enumvalue_customname) = "MassRabies"];
+        METEOR_SHOWER = 15 [(gogoproto.enumvalue_customname) = "MeteorShower"];
+
+        // LIFE
+        HEALING_TOUCH = 16 [(gogoproto.enumvalue_customname) = "HealingTouch"];
+        MEND = 17 [(gogoproto.enumvalue_customname) = "Mend"];
+        RESSURECT = 18 [(gogoproto.enumvalue_customname) = "Ressurect"];
+        ENHANCE = 19 [(gogoproto.enumvalue_customname) = "Enhance"];
+        REANIMATE = 20 [(gogoproto.enumvalue_customname) = "Reanimate"];
+
+        // TOXIC
+        POISON_DART = 21 [(gogoproto.enumvalue_customname) = "PoisonDart"];
+        TOXIC_POWER = 22 [(gogoproto.enumvalue_customname) = "ToxicPower"];
+        BREAKOUT = 23 [(gogoproto.enumvalue_customname) = "Breakout"];
+        INFECT = 24 [(gogoproto.enumvalue_customname) = "Infect"];
+        EPIDEMIC = 25 [(gogoproto.enumvalue_customname) = "Epidemic"];
+
+        // WATER
+        FREEZE = 26 [(gogoproto.enumvalue_customname) = "Freeze"];
+        ICE_BOLT = 27 [(gogoproto.enumvalue_customname) = "IceBolt"];
+        ICE_WALL = 28 [(gogoproto.enumvalue_customname) = "IceWall"];
+        SHATTER = 29 [(gogoproto.enumvalue_customname) = "Shatter"];
+        BLIZZARD = 30 [(gogoproto.enumvalue_customname) = "Blizzard"];
+    }
+}
+
+enum OverlordSkillSelectionType {
+    Primary = 0;
+    Secondary = 1;
+}
+
+message Stat {
+    enum Enum {
+        option allow_alias = true;
+
+        UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
+        DEFENSE = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        HEALTH = 1 [(gogoproto.enumvalue_customname) = "_XXXHealth"]; // for backwards compatibility
+        DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Damage"];
+    }
+}
+
+message UnitSpecialStatus {
+    enum Enum {
+        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+        FROZEN = 1 [(gogoproto.enumvalue_customname) = "Frozen"];
+    }
+}
+
+message AIType {
+    enum Enum {
+        UNDEFINED = 0;
+        BLITZ_AI = 1;
+        DEFENSE_AI = 2;
+        MIXED_AI = 3;
+        MIXED_BLITZ_AI = 4;
+        TIME_BLITZ_AI = 5;
+        MIXED_DEFENSE_AI = 6;
+    }
+}
+
+message ExperienceActionType {
+    enum Enum {
+        KillOverlord = 0;
+        KillMinion = 1;
+        PlayCard = 2;
+        ActivateRankAbility = 3;
+        UseOverlordAbility = 4;
+    }
+}
+
+// nullable
+
+message CardKindEnumValue {
+    CardKind.Enum value = 1;
+}
+
+message FactionEnumValue {
+    Faction.Enum value = 1;
+}
+
+message CreatureRankEnumValue {
+    CreatureRank.Enum value = 1;
+}
+
+message CardTypeEnumValue {
+    CardType.Enum value = 1;
+}
+
+message UniqueAnimationEnumValue {
+    UniqueAnimation.Enum value = 1;
+}

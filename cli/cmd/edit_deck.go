@@ -27,7 +27,7 @@ var editDeckCmd = &cobra.Command{
 			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())
 		}
 
-		req := &zb.EditDeckRequest{
+		req := &zb_calls.EditDeckRequest{
 			Deck:    &deck,
 			UserId:  editDeckCmdArgs.userID,
 			Version: editDeckCmdArgs.version,

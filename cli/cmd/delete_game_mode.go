@@ -20,7 +20,7 @@ var deleteGameModeCmd = &cobra.Command{
 	Short: "delete game mode by id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req zb.DeleteGameModeRequest
+		var req zb_calls.DeleteGameModeRequest
 
 		req.ID = deleteGameModeCmdArgs.ID
 		req.Oracle = deleteGameModeCmdArgs.oracle

@@ -17,7 +17,7 @@ import (
 type TopicHandler func(eventData *types.EventData, db *gorm.DB) error
 
 func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.PlayerActionEvent
+	var event zb_data.PlayerActionEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 }
 
 func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.PlayerActionEvent
+	var event zb_data.PlayerActionEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func AcceptMatchHandler(eventData *types.EventData, db *gorm.DB) error {
 }
 
 func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.CreateDeckEvent
+	var event zb_calls.CreateDeckEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -127,7 +127,7 @@ func CreateDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 }
 
 func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.EditDeckEvent
+	var event zb_calls.EditDeckEvent
 
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
@@ -163,7 +163,7 @@ func EditDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 }
 
 func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.DeleteDeckEvent
+	var event zb_calls.DeleteDeckEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -182,7 +182,7 @@ func DeleteDeckHandler(eventData *types.EventData, db *gorm.DB) error {
 
 // TODO: seems this is not used anymore at all? can it be removed?
 func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.PlayerActionEvent
+	var event zb_data.PlayerActionEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}
@@ -205,7 +205,7 @@ func EndgameHandler(eventData *types.EventData, db *gorm.DB) error {
 }
 
 func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
-	var event zb.PlayerActionEvent
+	var event zb_data.PlayerActionEvent
 	if err := proto.Unmarshal(eventData.EncodedBody, &event); err != nil {
 		return err
 	}

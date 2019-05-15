@@ -1,11 +1,12 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -49,13 +50,13 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_DealDamageToThisAndAdjacentUnits,
+					Ability: zb_enums.AbilityType_DealDamageToThisAndAdjacentUnits,
 					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
@@ -63,7 +64,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
 				&zb_data.CardAbilityInstance{
 					IsActive: true,
@@ -80,7 +81,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		}
 		instance1 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 3},
-			Prototype: &zb.Card{
+			Prototype: &zb_data.Card{
 				Name: "target1",
 			},
 			Instance: &zb_data.CardInstanceSpecificData{
@@ -92,7 +93,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		}
 		instance2 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 4},
-			Prototype: &zb.Card{
+			Prototype: &zb_data.Card{
 				Name: "target2",
 			},
 			Instance: &zb_data.CardInstanceSpecificData{
@@ -104,7 +105,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		}
 		instance3 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 5},
-			Prototype: &zb.Card{
+			Prototype: &zb_data.Card{
 				Name: "target3",
 			},
 			Instance: &zb_data.CardInstanceSpecificData{
@@ -118,13 +119,13 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = []*zb_data.CardInstance{instance1, instance2, instance3}
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
 					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb.Unit{
+					Target: &zb_data.Unit{
 						InstanceId: &zb_data.InstanceId{Id: 4},
 					},
 				},
@@ -149,13 +150,13 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_DealDamageToThisAndAdjacentUnits,
+					Ability: zb_enums.AbilityType_DealDamageToThisAndAdjacentUnits,
 					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
@@ -163,7 +164,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		instance0 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
 				&zb_data.CardAbilityInstance{
 					IsActive: true,
@@ -180,7 +181,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		}
 		instance1 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 3},
-			Prototype: &zb.Card{
+			Prototype: &zb_data.Card{
 				Name: "target1",
 			},
 			Instance: &zb_data.CardInstanceSpecificData{
@@ -192,7 +193,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		}
 		instance2 := &zb_data.CardInstance{
 			InstanceId: &zb_data.InstanceId{Id: 4},
-			Prototype: &zb.Card{
+			Prototype: &zb_data.Card{
 				Name: "target2",
 			},
 			Instance: &zb_data.CardInstanceSpecificData{
@@ -206,13 +207,13 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = []*zb_data.CardInstance{instance1, instance2}
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
 					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb.Unit{
+					Target: &zb_data.Unit{
 						InstanceId: &zb_data.InstanceId{Id: 4},
 					},
 				},

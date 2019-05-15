@@ -4,36 +4,37 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestSourceIdBasic(t *testing.T) {
-	var cardLibrary = []*zb.Card{
+	var cardLibrary = []*zb_data.Card{
 		{
 			MouldId: 3,
 			Kind: zb_enums.CardKind_Creature,
-			Faction: zb.Faction_Earth,
+			Faction: zb_enums.Faction_Earth,
 			Name: "Zpitter",
 			Description: "Amazing zpit of unfathomeable power.",
 			FlavorText: "Zpittity-zpit",
 			Picture: "zpitter.png",
-			Rank: zb.CreatureRank_Commander,
-			Type: zb.CardType_Feral,
+			Rank: zb_enums.CreatureRank_Commander,
+			Type: zb_enums.CardType_Feral,
 			Frame: "normal-frame.png",
 			Damage: 3,
 			Defense: 4,
 			Cost: 5,
-			PictureTransform: &zb.PictureTransform{
-				Position: &zb.Vector3Float{
+			PictureTransform: &zb_data.PictureTransform{
+				Position: &zb_data.Vector3Float{
 					X: 0.1,
 					Y: 0.2,
 					Z: 0.3,
 				},
 			},
-			Abilities: []*zb.AbilityData{}, // FIXME
-			UniqueAnimation: zb.UniqueAnimation_ChernoBillArrival,
+			Abilities: []*zb_data.AbilityData{}, // FIXME
+			UniqueAnimation: zb_enums.UniqueAnimation_ChernoBillArrival,
 			Hidden: true,
 			SourceMouldId: 0,
 			Overrides: nil,

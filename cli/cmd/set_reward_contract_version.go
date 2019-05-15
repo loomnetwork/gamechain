@@ -25,7 +25,7 @@ var setRewardContractVersionCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.SetRewardContractVersionRequest{
+		req := zb_calls.SetRewardContractVersionRequest{
 			Version: setRewardContractVersionCmdArgs.version,
 			Oracle:  callerAddr.MarshalPB(),
 		}

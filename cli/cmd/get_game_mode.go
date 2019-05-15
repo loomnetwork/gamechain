@@ -25,8 +25,8 @@ var getGameModeCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		var req zb.GetGameModeRequest
-		var gameMode = zb.GameMode{}
+		var req zb_calls.GetGameModeRequest
+		var gameMode = zb_data.GameMode{}
 
 		req.ID = getGameModeCmdArgs.ID
 

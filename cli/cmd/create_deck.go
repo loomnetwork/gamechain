@@ -27,13 +27,13 @@ var createDeckCmd = &cobra.Command{
 			return err
 		}
 
-		req := &zb.CreateDeckRequest{
+		req := &zb_calls.CreateDeckRequest{
 			Deck:    &deck,
 			UserId:  createDeckCmdArgs.userID,
 			Version: createDeckCmdArgs.version,
 		}
 
-		var result zb.CreateDeckResponse
+		var result zb_calls.CreateDeckResponse
 		_, err := commonTxObjs.contract.Call("CreateDeck", req, signer, &result)
 		if err != nil {
 			return err

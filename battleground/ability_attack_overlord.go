@@ -1,6 +1,8 @@
 package battleground
 
-import "github.com/loomnetwork/gamechain/types/zb"
+import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+)
 
 // attackOverlord ability
 // description:

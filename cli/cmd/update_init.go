@@ -22,7 +22,7 @@ var updateInitCmd = &cobra.Command{
 	Short: "updates the init data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var initData zb.InitData
+		var initData zb_data.InitData
 
 		if updateInitCmdArgs.file == "" {
 			return fmt.Errorf("file name not provided")
@@ -42,7 +42,7 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("version not specified")
 		}
 
-		updateInitData := zb.UpdateInitRequest{
+		updateInitData := zb_calls.UpdateInitRequest{
 			InitData: &initData,
 		}
 

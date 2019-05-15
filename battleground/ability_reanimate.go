@@ -2,9 +2,10 @@ package battleground
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 // reanimate ability

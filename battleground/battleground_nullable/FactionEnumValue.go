@@ -3,11 +3,11 @@ package battleground_nullable
 import (
 	"encoding/json"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 )
 
 type FactionEnumValue struct {
-	Value zb.Faction_Enum
+	Value zb_enums.Faction_Enum
 }
 
 func (value *FactionEnumValue) Size() int {
@@ -19,7 +19,7 @@ func (value FactionEnumValue) Marshal() ([]byte, error) {
 }
 
 func (value *FactionEnumValue) Unmarshal(data []byte) error {
-	protoValue := &zb.FactionEnumValue{}
+	protoValue := &zb_enums.FactionEnumValue{}
 	err := proto.Unmarshal(data, protoValue)
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func (value FactionEnumValue) MarshalJSON() ([]byte, error) {
 }
 
 func (value *FactionEnumValue) UnmarshalJSON(data []byte) error {
-	var raw zb.Faction_Enum
+	var raw zb_enums.Faction_Enum
 	err := json.Unmarshal(data, &raw)
 	if err != nil {
 		return err
@@ -43,8 +43,8 @@ func (value *FactionEnumValue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (value *FactionEnumValue) protoType() *zb.FactionEnumValue {
-	return &zb.FactionEnumValue{
+func (value *FactionEnumValue) protoType() *zb_enums.FactionEnumValue {
+	return &zb_enums.FactionEnumValue{
 		Value: value.Value,
 	}
 }

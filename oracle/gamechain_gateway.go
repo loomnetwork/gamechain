@@ -44,8 +44,8 @@ func ConnectToGamechainGateway(
 }
 
 func (gw *GamechainGateway) LastPlasmaBlockNumber() (uint64, error) {
-	var req zb.GetGamechainStateRequest
-	var resp zb.GetGamechainStateResponse
+	var req zb_calls.GetGamechainStateRequest
+	var resp zb_calls.GetGamechainStateResponse
 	if _, err := gw.contract.StaticCall("GetState", &req, gw.Address, &resp); err != nil {
 		return 0, err
 	}

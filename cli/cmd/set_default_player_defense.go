@@ -25,7 +25,7 @@ var setDefaultPlayerDefenseCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.SetDefaultPlayerDefenseRequest{
+		req := zb_calls.SetDefaultPlayerDefenseRequest{
 			Defense: setDefaultPlayerDefenseCmdArgs.defense,
 			Oracle:  callerAddr.MarshalPB(),
 		}

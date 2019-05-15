@@ -21,7 +21,7 @@ var createAccountCmd = &cobra.Command{
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var accountData zb.UpsertAccountRequest
+		var accountData zb_calls.UpsertAccountRequest
 
 		if createAccCmdArgs.version == "" {
 			return fmt.Errorf("version not specified")

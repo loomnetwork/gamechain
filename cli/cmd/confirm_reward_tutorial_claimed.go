@@ -15,7 +15,7 @@ var confirmRewardTutorialClaimedCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.ConfirmRewardTutorialClaimedRequest{}
+		req := &zb_calls.ConfirmRewardTutorialClaimedRequest{}
 
 		_, err := commonTxObjs.contract.Call("ConfirmRewardTutorialClaimed", req, signer, nil)
 		if err != nil {

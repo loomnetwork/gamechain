@@ -205,7 +205,7 @@ func connectDb(dbURL string) (*gorm.DB, error) {
 	return db, nil
 }
 
-func writeReplayFile(topic string, event zb.PlayerActionEvent) ([]byte, error) {
+func writeReplayFile(topic string, event zb_data.PlayerActionEvent) ([]byte, error) {
 	dir := viper.GetString("replay-dir")
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		if e := os.MkdirAll(dir, os.ModePerm); e != nil {

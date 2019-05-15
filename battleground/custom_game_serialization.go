@@ -3,11 +3,11 @@ package battleground
 import (
 	"encoding/binary"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 
 	"github.com/gogo/protobuf/proto"
 	battleground "github.com/loomnetwork/gamechain/types/common"
-	"github.com/loomnetwork/gamechain/types/zb"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
@@ -106,7 +106,7 @@ func (c *CustomGameMode) deserializeSimpleCardInstanceArray(reader io.Reader) (c
 	return cards, nil
 }
 
-func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb_data.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb.Card) (*zb_data.CardInstance, error) {
+func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb_data.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb_data.Card) (*zb_data.CardInstance, error) {
 	newCard := newCardInstanceFromCardDetails(
 		cardLibraryCard,
 		card.InstanceId,
@@ -114,7 +114,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		card.OwnerIndex,
 	)
 
-	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.Card)
+	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb_data.Card)
 
 	if !simpleCard.defenseInherited {
 		newCard.Prototype.Defense = simpleCard.defense
@@ -287,9 +287,9 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 	return gameplay.validateGameState()
 }
 
-func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
+func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb_data.CustomGameModeCustomUiElement, err error) {
 	if len(serializedCustomUi) == 0 {
-		return make([]*zb.CustomGameModeCustomUiElement, 0), nil
+		return make([]*zb_data.CustomGameModeCustomUiElement, 0), nil
 	}
 
 	rb := newPanicReaderWriterProxy(NewReverseBuffer(serializedCustomUi))
@@ -302,25 +302,25 @@ func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiEleme
 		case battleground.CustomUiElement_None:
 			mustBreak = true
 		case battleground.CustomUiElement_Label:
-			var element zb.CustomGameModeCustomUiElement
-			var label zb.CustomGameModeCustomUiLabel
+			var element zb_data.CustomGameModeCustomUiElement
+			var label zb_data.CustomGameModeCustomUiLabel
 
 			rect, _ := deserializeRect(rb)
 			element.Rect = &rect
 			label.Text, _ = deserializeString(rb)
-			element.UiElement = &zb.CustomGameModeCustomUiElement_Label{Label: &label}
+			element.UiElement = &zb_data.CustomGameModeCustomUiElement_Label{Label: &label}
 
 			uiElements = append(uiElements, &element)
 		case battleground.CustomUiElement_Button:
-			var element zb.CustomGameModeCustomUiElement
-			var button zb.CustomGameModeCustomUiButton
+			var element zb_data.CustomGameModeCustomUiElement
+			var button zb_data.CustomGameModeCustomUiButton
 
 			rect, _ := deserializeRect(rb)
 			element.Rect = &rect
 			button.Title, _ = deserializeString(rb)
 			callDataStr, _ := deserializeString(rb)
 			button.CallData = []byte(callDataStr)
-			element.UiElement = &zb.CustomGameModeCustomUiElement_Button{Button: &button}
+			element.UiElement = &zb_data.CustomGameModeCustomUiElement_Button{Button: &button}
 
 			uiElements = append(uiElements, &element)
 		default:

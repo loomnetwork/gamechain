@@ -25,7 +25,7 @@ var setLastPlasmaBlockNumCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.SetLastPlasmaBlockNumRequest{
+		req := zb_calls.SetLastPlasmaBlockNumRequest{
 			LastBlockNum: setLastPlasmaBlockNumCmdArgs.blockNum,
 			Oracle:       callerAddr.MarshalPB(),
 		}

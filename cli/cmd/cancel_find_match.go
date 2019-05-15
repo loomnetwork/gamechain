@@ -21,7 +21,7 @@ var cancelFindMatchCmd = &cobra.Command{
 	Short: "cancel find match for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.CancelFindMatchRequest{
+		var req = zb_calls.CancelFindMatchRequest{
 			UserId:  cancelFindMatchCmdArgs.userID,
 			MatchId: cancelFindMatchCmdArgs.matchID,
 			Tags:    cancelFindMatchCmdArgs.tags,

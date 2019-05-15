@@ -1,9 +1,9 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"testing"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 

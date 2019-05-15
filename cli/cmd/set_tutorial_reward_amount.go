@@ -25,7 +25,7 @@ var setTutorialRewardAmountCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.SetTutorialRewardAmountRequest{
+		req := zb_calls.SetTutorialRewardAmountRequest{
 			Amount: setTutorialRewardAmountCmdArgs.amount,
 			Oracle: callerAddr.MarshalPB(),
 		}

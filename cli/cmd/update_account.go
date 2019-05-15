@@ -20,8 +20,8 @@ var updateAccountCmd = &cobra.Command{
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var result zb.Account
-		var accountData zb.UpsertAccountRequest
+		var result zb_data.Account
+		var accountData zb_calls.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(updateAccCmdArgs.value), &accountData); err != nil {
 			return fmt.Errorf("invalid JSON passed in value field. Error: %s", err.Error())

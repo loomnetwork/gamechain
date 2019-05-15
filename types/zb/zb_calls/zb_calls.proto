@@ -6,17 +6,6 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 import "github.com/loomnetwork/gamechain/types/zb/zb_data/zb_data.proto";
 
-message InitData {
-    repeated Deck defaultDecks = 1;
-    repeated CardCollectionCard defaultCollection = 2;
-    repeated Card cards = 3;
-    repeated Overlord overlords = 4;
-    repeated AIDeck aiDecks = 5;
-    string version = 6;
-    Address oracle = 7;
-    OverlordLevelingData overlordLeveling = 8;
-}
-
 message InitRequest {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
@@ -29,7 +18,7 @@ message InitRequest {
     OverlordLevelingData overlordLeveling = 10;
 }
 
-message UpdateOracle {
+message UpdateOracleRequest {
     Address new_oracle = 1;
     Address old_oracle = 2;
 }
