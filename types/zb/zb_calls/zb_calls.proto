@@ -10,7 +10,7 @@ message InitRequest {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
     repeated Card cards = 3;
-    repeated Overlord overlords = 4;
+    repeated OverlordPrototype overlords = 4;
     repeated AIDeck aiDecks = 5;
     string version = 6;
     Address oracle = 7;
@@ -72,11 +72,6 @@ message SetTutorialRewardAmountRequest {
     Address oracle = 2;
 }
 
-message SetDefaultPlayerDefenseRequest {
-    uint64 defense = 1;
-    Address oracle = 2;
-}
-
 message GetCardListRequest {
     string version = 1;
 }
@@ -91,23 +86,6 @@ message GetOverlordLevelingDataRequest {
 
 message GetOverlordLevelingDataResponse {
     OverlordLevelingData overlordLeveling = 1;
-}
-
-message ListOverlordsRequest {
-    string user_id = 1;
-}
-
-message ListOverlordsResponse {
-    repeated Overlord overlords  = 1;
-}
-
-message GetOverlordRequest {
-    string user_id = 1;
-    int64 overlordId = 2;
-}
-
-message GetOverlordResponse {
-    Overlord overlord = 1;
 }
 
 message UpsertAccountRequest {
@@ -219,7 +197,26 @@ message ListOverlordLibraryRequest {
 }
 
 message ListOverlordLibraryResponse {
-    repeated Overlord overlords  = 1;
+    repeated OverlordPrototype overlords  = 1;
+}
+
+message ListOverlordUserInstancesRequest {
+    string userId = 1;
+    string version = 2;
+}
+
+message ListOverlordUserInstancesResponse {
+    repeated OverlordUserInstance overlords = 1;
+}
+
+message GetOverlordUserInstanceRequest {
+    string user_id = 1;
+    int64 overlordId = 2;
+    string version = 3;
+}
+
+message GetOverlordUserInstanceResponse {
+    OverlordUserInstance overlord = 1;
 }
 
 message GetCollectionRequest {

@@ -26,7 +26,7 @@ var (
 	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
-	overlordListKey             = []byte("herolist")
+	overlordPrototypeListKey    = []byte("overlord-prototype-list")
 	defaultDecksKey             = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
 	matchCountKey               = []byte("match-count")
@@ -59,8 +59,8 @@ func CardCollectionKey(userID string) []byte {
 	return []byte("user:" + userID + ":collection")
 }
 
-func OverlordsKey(userID string) []byte {
-	return []byte("user:" + userID + ":heroes")
+func OverlordsUserDataKey(userID string) []byte {
+	return []byte("user:" + userID + ":overlordsuserdata")
 }
 
 func UserNotificationsKey(userID string) []byte {
@@ -389,22 +389,96 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb_data.AIDeckLis
 	return &deckList, nil
 }
 
-func loadOverlords(ctx contract.StaticContext, userID string) (*zb_data.OverlordList, error) {
-	var overlords zb_data.OverlordList
-	err := ctx.Get(OverlordsKey(userID), &overlords)
+func loadOverlordPrototypes(ctx contract.StaticContext, version string) (*zb_data.OverlordPrototypeList, error) {
+	var overlordPrototypes zb_data.OverlordPrototypeList
+	err := ctx.Get(MakeVersionedKey(version, overlordPrototypeListKey), &overlordPrototypes)
 	if err != nil {
-		if err == contract.ErrNotFound {
-			overlords.Overlords = []*zb_data.Overlord{}
-		} else {
-			return nil, err
-		}
+		return nil, errors.Wrap(err, "error loading overlord prototypes")
 	}
-	return &overlords, nil
+	return &overlordPrototypes, nil
 }
 
-func saveOverlords(ctx contract.Context, userID string, overlords *zb_data.OverlordList) error {
-	return ctx.Set(OverlordsKey(userID), overlords)
+func saveOverlordPrototypes(ctx contract.Context, version string, overlordPrototypes *zb_data.OverlordPrototypeList) error {
+	return ctx.Set(MakeVersionedKey(version, overlordPrototypeListKey), overlordPrototypes)
 }
+
+func loadOverlordsUserData(ctx contract.StaticContext, userID string) (*zb_data.OverlordUserDataList, error) {
+	var overlordsUserData zb_data.OverlordUserDataList
+	err := ctx.Get(OverlordsUserDataKey(userID), &overlordsUserData)
+	if err != nil {
+		if err == contract.ErrNotFound {
+			overlordsUserData.OverlordsUserData = []*zb_data.OverlordUserData{}
+		} else {
+			return nil, errors.Wrap(err, "error loading overlords user data")
+		}
+	}
+	return &overlordsUserData, nil
+}
+
+func saveOverlordsUserData(ctx contract.Context, userID string, overlordsUserData *zb_data.OverlordUserDataList) error {
+	return ctx.Set(OverlordsUserDataKey(userID), overlordsUserData)
+}
+
+func loadOverlordUserInstances(ctx contract.StaticContext, version string, userID string) ([]*zb_data.OverlordUserInstance, error) {
+	prototypeList, err := loadOverlordPrototypes(ctx, version)
+	if err != nil {
+		return nil, errors.Wrap(err, "error loading overlordUserData user instances")
+	}
+
+	userDataList, err := loadOverlordsUserData(ctx, userID)
+	if err != nil {
+		return nil, errors.Wrap(err, "error loading overlord user instances")
+	}
+
+	idToUserData := make(map[int64]*zb_data.OverlordUserData)
+	for _, overlordUserData := range userDataList.OverlordsUserData {
+		idToUserData[overlordUserData.PrototypeId] = overlordUserData
+	}
+
+	var userInstances []*zb_data.OverlordUserInstance
+	for _, overlord := range prototypeList.Overlords {
+		overlordUserData, exists := idToUserData[overlord.Id]
+		if !exists {
+			overlordUserData = &zb_data.OverlordUserData{
+				PrototypeId: overlord.Id,
+				Level: 1,
+			}
+		}
+
+		userInstances = append(userInstances, &zb_data.OverlordUserInstance{
+			Prototype: overlord,
+			UserData: overlordUserData,
+		})
+	}
+	return userInstances, nil
+}
+
+func getOverlordsUserDataFromOverlordUserInstances(overlordUserInstances []*zb_data.OverlordUserInstance) []*zb_data.OverlordUserData {
+	overlordsUserData := make([]*zb_data.OverlordUserData, len(overlordUserInstances), len(overlordUserInstances))
+	for index := range overlordUserInstances {
+		overlordsUserData[index] = overlordUserInstances[index].UserData
+	}
+
+	return overlordsUserData
+}
+
+/*
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
+	if err := ctx.Set(stateKey, state); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
+	err := ctx.Get(stateKey, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+ */
 
 func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb_data.OverlordLevelingData, error) {
 	var overlordLevelingData zb_data.OverlordLevelingData

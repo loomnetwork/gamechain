@@ -364,7 +364,7 @@ message PlayerActionType {
     }
 }
 
-message OverlordSkill {
+message OverlordSkillType {
     enum Enum {
         NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
 

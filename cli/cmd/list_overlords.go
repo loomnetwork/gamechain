@@ -11,7 +11,8 @@ import (
 )
 
 var listOverlordsForUserCmdArgs struct {
-	userID string
+	userID  string
+	version string
 }
 
 var listOverlordsForUserCmd = &cobra.Command{
@@ -24,12 +25,13 @@ var listOverlordsForUserCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb_calls.ListOverlordsRequest{
-			UserId: listOverlordsForUserCmdArgs.userID,
+		req := zb_calls.ListOverlordUserInstancesRequest{
+			UserId:  listOverlordsForUserCmdArgs.userID,
+			Version: listOverlordsForUserCmdArgs.version,
 		}
-		result := zb_calls.ListOverlordsResponse{}
+		result := zb_calls.ListOverlordUserInstancesResponse{}
 
-		_, err := commonTxObjs.contract.StaticCall("ListOverlords", &req, callerAddr, &result)
+		_, err := commonTxObjs.contract.StaticCall("ListOverlordUserInstances", &req, callerAddr, &result)
 		if err != nil {
 			return err
 		}
@@ -39,10 +41,10 @@ var listOverlordsForUserCmd = &cobra.Command{
 			return printProtoMessageAsJSONToStdout(&result)
 		default:
 			for _, overlordInfo := range result.Overlords {
-				fmt.Printf("overlord_id: %d\n", overlordInfo.OverlordId)
-				fmt.Printf("experience: %d\n", overlordInfo.Experience)
-				fmt.Printf("level: %d\n", overlordInfo.Level)
-				for _, skill := range overlordInfo.Skills {
+				fmt.Printf("overlord_id: %d\n", overlordInfo.Prototype.Id)
+				fmt.Printf("experience: %d\n", overlordInfo.UserData.Experience)
+				fmt.Printf("level: %d\n", overlordInfo.UserData.Level)
+				for _, skill := range overlordInfo.Prototype.Skills {
 					fmt.Printf("skill title: %s\n", skill.Title)
 				}
 			}
@@ -56,4 +58,7 @@ func init() {
 	rootCmd.AddCommand(listOverlordsForUserCmd)
 
 	listOverlordsForUserCmd.Flags().StringVarP(&listOverlordsForUserCmdArgs.userID, "userId", "u", "loom", "UserId of account")
+	listOverlordsForUserCmd.Flags().StringVarP(&listOverlordsForUserCmdArgs.version, "version", "v", "v1", "Version")
+
+	_ = listOverlordsForUserCmd.MarkFlagRequired("version")
 }

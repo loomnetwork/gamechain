@@ -3,210 +3,55 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
+	"github.com/pkg/errors"
+	"io/ioutil"
 )
 
-/*var initRequest = zb_calls.InitRequest{
-	Version: "v1",
-	DefaultCollection: []*zb_data.CardCollectionCard{
-		{
-			MouldId: 90,
-			Amount:   4,
-		},
-		{
-			MouldId: 91,
-			Amount:   3,
-		},
-		{
-			MouldId: 96,
-			Amount:   5,
-		},
-		{
-			MouldId: 3,
-			Amount:   4,
-		},
-		{
-			MouldId: 2,
-			Amount:   3,
-		},
-		{
-			MouldId: 92,
-			Amount:   5,
-		},
-		{
-			MouldId: 1,
-			Amount:   4,
-		},
-		{
-			MouldId: 93,
-			Amount:   3,
-		},
-		{
-			MouldId: 7,
-			Amount:   5,
-		},
-		{
-			MouldId: 94,
-			Amount:   4,
-		},
-		{
-			MouldId: 95,
-			Amount:   3,
-		},
-		{
-			MouldId: 5,
-			Amount:   5,
-		},
-	},
-	Overlords: []*zb_data.Overlord{
-		{
-			OverlordId: 0,
-			Experience: 0,
-			Level:      1,
-			Skills: []*zb_data.Skill{{
-				Title: "Attack",
-				Skill: zb_enums.OverlordSkill_IceBolt,
-				SkillTargets: []zb_enums.SkillTarget_Enum{
-					zb_enums.SkillTarget_AllCards,
-					zb_enums.SkillTarget_PlayerCard,
-				},
-				Value: 1,
-			}},
-		},
-		{
-			OverlordId: 1,
-			Experience: 0,
-			Level:      2,
-			Skills: []*zb_data.Skill{{
-				Title: "Deffence",
-				Skill: zb_enums.OverlordSkill_Blizzard,
-				SkillTargets: []zb_enums.SkillTarget_Enum{
-					zb_enums.SkillTarget_Player,
-					zb_enums.SkillTarget_OpponentCard,
-				},
-				Value: 2,
-			}},
-		},
-	},
-	Cards: []*zb_data.Card{
-		{
-			MouldId: 1,
-			Faction: zb_enums.Faction_Air,
-			Name:    "Soothsayer",
-			Rank:    zb_enums.CreatureRank_Minion,
-			Type:    zb_enums.CardType_Walker,
-			Damage:  2,
-			Defense: 1,
-			Cost: 2,
-			Abilities: []*zb_data.AbilityData{
-				{
-					Ability:  zb_enums.AbilityType_DrawCard,
-					Activity: zb_enums.AbilityActivity_Passive,
-					Trigger:  zb_enums.AbilityTrigger_Entry,
-					Faction:  zb_enums.Faction_None,
-				},
-			},
-			PictureTransform: &zb_data.PictureTransform{
-				Position: &zb_data.Vector3Float{
-					X: 1.5,
-					Y: 2.5,
-					Z: 3.5,
-				},
-				Scale: &zb_data.Vector3Float{
-					X: 0.5,
-					Y: 0.5,
-					Z: 0.5,
-				},
-			},
-		},
-		{
-			MouldId: 2,
-			Faction: zb_enums.Faction_Air,
-			Name:    "Azuraz",
-			Rank:    zb_enums.CreatureRank_Minion,
-			Type:    zb_enums.CardType_Walker,
-			Damage:  1,
-			Defense: 1,
-			Cost: 1,
-			Abilities: []*zb_data.AbilityData{
-				{
-					Ability:  zb_enums.AbilityType_ModificatorStats,
-					Activity: zb_enums.AbilityActivity_Passive,
-					Trigger:  zb_enums.AbilityTrigger_Permanent,
-					Targets: []zb.Target_Enum{
-						zb.Target_None,
-					},
-					Stat:    zb_enums.Stat_Damage,
-					Faction: zb_enums.Faction_Earth,
-					Value:   1,
-				},
-			},
-		},
-	},
-	DefaultDecks: []*zb_data.Deck{
-		{
-			Id:         0,
-			OverlordId: 2,
-			Name:       "Default",
-			Cards: []*zb_data.DeckCard{
-				{
-					MouldId: 90,
-					Amount:   2,
-				},
-				{
-					MouldId: 91,
-					Amount:   2,
-				},
-				{
-					MouldId: 96,
-					Amount:   2,
-				},
-				{
-					MouldId: 3,
-					Amount:   2,
-				},
-				{
-					MouldId: 2,
-					Amount:   2,
-				},
-				{
-					MouldId: 92,
-					Amount:   2,
-				},
-				{
-					MouldId: 1,
-					Amount:   1,
-				},
-				{
-					MouldId: 93,
-					Amount:   1,
-				},
-				{
-					MouldId: 7,
-					Amount:   1,
-				},
-				{
-					MouldId: 94,
-					Amount:   1,
-				},
-				{
-					MouldId: 95,
-					Amount:   1,
-				},
-				{
-					MouldId: 5,
-					Amount:   1,
-				},
-			},
-		},
-	},
-}*/
+var initRequest = zb_calls.InitRequest {
+}
 
-func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) {
+var updateInitRequest = zb_calls.UpdateInitRequest {
+}
+
+func readJsonFileToProtobuf(filename string, message proto.Message) error {
+	bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	json := string(bytes)
+	if err := jsonpb.UnmarshalString(json, message); err != nil {
+		return errors.Wrap(err, "error parsing JSON file " + filename)
+	}
+
+	return nil
+}
+
+func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
+	updateInitRequest.InitData = &zb_data.InitData{}
+	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
+	if err != nil {
+		return err
+	}
+
+	initRequest = zb_calls.InitRequest{
+		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
+		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
+		Cards:                updateInitRequest.InitData.Cards,
+		Overlords:            updateInitRequest.InitData.Overlords,
+		AiDecks:              updateInitRequest.InitData.AiDecks,
+		Version:              updateInitRequest.InitData.Version,
+		Oracle:               updateInitRequest.InitData.Oracle,
+		OverlordLeveling:     updateInitRequest.InitData.OverlordLeveling,
+	}
 
 	pubKey, _ := hex.DecodeString(pubKeyHex)
 
@@ -218,11 +63,12 @@ func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Addr
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
-	// FIXME
-	/*err := c.Init(*ctx, &initRequest)
+	err = c.Init(*ctx, &initRequest)
 	if err != nil {
-		panic(err)
-	}*/
+		return err
+	}
+
+	return nil
 }
 
 func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest) {
