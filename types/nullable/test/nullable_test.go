@@ -1,4 +1,4 @@
-package test
+package nullable_test
 
 import (
 	"fmt"
