@@ -21,11 +21,11 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:     0,
 		OverlordId: 2,
 		Name:   "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 53, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -41,7 +41,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	}
 
 	t.Run("DevourZombieAndCombineStat is active when enter the field, devouring a target", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -55,19 +55,19 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.AbilityTrigger_Entry,
+					Trigger: zb_enums.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					Trigger: card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_DevourZombieAndCombineStats{
-						DevourZombieAndCombineStats: &zb.CardAbilityDevourZombieAndCombineStats{
+					AbilityType: &zb_data.CardAbilityInstance_DevourZombieAndCombineStats{
+						DevourZombieAndCombineStats: &zb_data.CardAbilityDevourZombieAndCombineStats{
 							Faction: card0.Faction,
 						},
 					},
@@ -75,18 +75,18 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
 		}
-		instance2 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 3},
+		instance2 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 3},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
@@ -101,10 +101,10 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAbilityUsed{
 				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-					Card: &zb.InstanceId{Id: 1},
+					Card: &zb_data.InstanceId{Id: 1},
 					Targets: []*zb.Unit{
 						&zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId: &zb_data.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -122,10 +122,10 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAbilityUsed{
 				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-					Card: &zb.InstanceId{Id: 1},
+					Card: &zb_data.InstanceId{Id: 1},
 					Targets: []*zb.Unit{
 						&zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId: &zb_data.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -138,7 +138,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	})
 
 	t.Run("DevourZombieAndCombineStat is active when enter the field, devouring all ally zombies", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -152,36 +152,36 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb.AbilityTrigger_Entry,
+					Trigger: zb_enums.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					Trigger: card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_DevourZombieAndCombineStats{
-						DevourZombieAndCombineStats: &zb.CardAbilityDevourZombieAndCombineStats{},
+					AbilityType: &zb_data.CardAbilityInstance_DevourZombieAndCombineStats{
+						DevourZombieAndCombineStats: &zb_data.CardAbilityDevourZombieAndCombineStats{},
 					},
 					IsActive: true,
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
 		}
-		instance2 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 3},
+		instance2 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 3},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
@@ -196,13 +196,13 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAbilityUsed{
 				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-					Card: &zb.InstanceId{Id: 1},
+					Card: &zb_data.InstanceId{Id: 1},
 					Targets: []*zb.Unit{
 						&zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId: &zb_data.InstanceId{Id: 2},
 						},
 						&zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 3},
+							InstanceId: &zb_data.InstanceId{Id: 3},
 						},
 					},
 				},

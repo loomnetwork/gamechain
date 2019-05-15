@@ -182,10 +182,10 @@ func TestDeckOperations(t *testing.T) {
 		var err error
 		createDeckResponse, err = c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -213,10 +213,10 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("CreateDeck (Invalid Requested Amount)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   200,
 						MouldId: 43,
@@ -236,10 +236,10 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("CreateDeck (Invalid Requested CardName)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   2,
 						MouldId: -100,
@@ -259,10 +259,10 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("CreateDeck (Same name not allowed)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Name:       "Default",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -282,10 +282,10 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("CreateDeck (Same name with different case not allowed)", func(t *testing.T) {
 		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Name:       "nEWdECK",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -305,11 +305,11 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("EditDeck", func(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -338,11 +338,11 @@ func TestDeckOperations(t *testing.T) {
 		t.Skip("Edit deck skips checking the number of cards")
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:  100,
 						MouldId: 43,
@@ -361,11 +361,11 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("EditDeck (same name while editing is allowed)", func(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -385,11 +385,11 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("EditDeck (attempt to set duplicate name with different case)", func(t *testing.T) {
 		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         2,
 				Name:       "dEFAULT",
 				OverlordId: 1,
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -471,12 +471,12 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 
 	t.Run("Should upgrade data to use mould ID", func(t *testing.T) {
 		// Create deck with card names
-		deckList := &zb.DeckList{
-			Decks: []*zb.Deck{
+		deckList := &zb_data.DeckList{
+			Decks: []*zb_data.Deck{
 				{
 					Name:       "NewDeck",
 					OverlordId: 1,
-					Cards: []*zb.DeckCard{
+					Cards: []*zb_data.DeckCard{
 						{
 							Amount:             1,
 							CardNameDeprecated: "Whizpar",
@@ -507,12 +507,12 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 	})
 
 	t.Run("Should remove unknown cards from decks", func(t *testing.T) {
-		deckList := &zb.DeckList{
-			Decks: []*zb.Deck{
+		deckList := &zb_data.DeckList{
+			Decks: []*zb_data.Deck{
 				{
 					Name:       "NewDeck",
 					OverlordId: 1,
-					Cards: []*zb.DeckCard{
+					Cards: []*zb_data.DeckCard{
 						{
 							Amount:  1,
 							MouldId: -1,
@@ -1680,7 +1680,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.InstanceId{Id: 8},
+						Card: &zb_data.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -1696,10 +1696,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.InstanceId{Id: 1},
+						Card: &zb_data.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId: &zb_data.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1719,7 +1719,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId: &zb_data.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -1736,10 +1736,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_RankBuff{
 					RankBuff: &zb.PlayerActionRankBuff{
-						Card: &zb.InstanceId{Id: 1},
+						Card: &zb_data.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId: &zb_data.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1771,7 +1771,7 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.InstanceId{Id: 13},
+						Card: &zb_data.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -1787,9 +1787,9 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardAttack{
 					CardAttack: &zb.PlayerActionCardAttack{
-						Attacker: &zb.InstanceId{Id: 13},
+						Attacker: &zb_data.InstanceId{Id: 13},
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 8},
+							InstanceId: &zb_data.InstanceId{Id: 8},
 						},
 					},
 				},
@@ -1806,10 +1806,10 @@ func TestGameStateOperations(t *testing.T) {
 				PlayerId:   "player-2",
 				Action: &zb.PlayerAction_CardAbilityUsed{
 					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
-						Card: &zb.InstanceId{Id: 1},
+						Card: &zb_data.InstanceId{Id: 1},
 						Targets: []*zb.Unit{
 							&zb.Unit{
-								InstanceId: &zb.InstanceId{Id: 2},
+								InstanceId: &zb_data.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1829,7 +1829,7 @@ func TestGameStateOperations(t *testing.T) {
 					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
 						Target: &zb.Unit{
-							InstanceId: &zb.InstanceId{Id: 2},
+							InstanceId: &zb_data.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -2037,7 +2037,7 @@ func TestCardPlayOperations(t *testing.T) {
 				PlayerId:   "player-1",
 				Action: &zb.PlayerAction_CardPlay{
 					CardPlay: &zb.PlayerActionCardPlay{
-						Card: &zb.InstanceId{Id: 8},
+						Card: &zb_data.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -2083,7 +2083,7 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2099,7 +2099,7 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2268,7 +2268,7 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2284,7 +2284,7 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2398,11 +2398,11 @@ func TestAIDeckOperations(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	aiDecks := []*zb.AIDeck{
 		{
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         1,
 				OverlordId: 2,
 				Name:       "AI Decks",
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{MouldId: 1, Amount: 2},
 					{MouldId: 2, Amount: 2},
 					{MouldId: 3, Amount: 2},
@@ -2431,11 +2431,11 @@ func TestAIDeckOperations(t *testing.T) {
 
 	aiDecks = []*zb.AIDeck{
 		{
-			Deck: &zb.Deck{
+			Deck: &zb_data.Deck{
 				Id:         1,
 				OverlordId: 2,
 				Name:       "AI Decks",
-				Cards: []*zb.DeckCard{
+				Cards: []*zb_data.DeckCard{
 					{MouldId: -1, Amount: 2},
 				},
 			},
@@ -2480,7 +2480,7 @@ func TestKeepAlive(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2496,7 +2496,7 @@ func TestKeepAlive(t *testing.T) {
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb.DebugCheatsConfiguration{
+				DebugCheats: zb_data.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,

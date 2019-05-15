@@ -21,11 +21,11 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -41,7 +41,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 	}
 
 	t.Run("AdditionalDamageToHeavyInAttack ability does trigger when target is heavy", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -55,30 +55,30 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_AdditionalDamageToHeavyInAttack,
-					Trigger: zb.AbilityTrigger_Attack,
+					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
-						AdditionalDamageToHeavyInAttack: &zb.CardAbilityAdditionalDamageToHeavyInAttack{
+					AbilityType: &zb_data.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
+						AdditionalDamageToHeavyInAttack: &zb_data.CardAbilityAdditionalDamageToHeavyInAttack{
 							AddedDamage: 2,
 						},
 					},
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
 				Type:    zb.CardType_Heavy,
@@ -93,9 +93,9 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb_data.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},
 			},
@@ -105,7 +105,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 	})
 
 	t.Run("AdditionalDamageToHeavyInAttack ability does NOT trigger when target is NOT heavy", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -119,30 +119,30 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_AdditionalDamageToHeavyInAttack,
-					Trigger: zb.AbilityTrigger_Attack,
+					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
-						AdditionalDamageToHeavyInAttack: &zb.CardAbilityAdditionalDamageToHeavyInAttack{
+					AbilityType: &zb_data.CardAbilityInstance_AdditionalDamageToHeavyInAttack{
+						AdditionalDamageToHeavyInAttack: &zb_data.CardAbilityAdditionalDamageToHeavyInAttack{
 							AddedDamage: 2,
 						},
 					},
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
 				Type:    zb.CardType_Feral,
@@ -157,9 +157,9 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
+					Attacker: &zb_data.InstanceId{Id: 1},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},
 			},

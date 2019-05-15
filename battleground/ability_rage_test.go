@@ -21,11 +21,11 @@ func TestAbilityRage(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -41,7 +41,7 @@ func TestAbilityRage(t *testing.T) {
 	}
 
 	t.Run("Rage ability works", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -49,12 +49,12 @@ func TestAbilityRage(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Prototype: &zb.Card{
 				Name: "attacker",
 			},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
 			},
@@ -66,21 +66,21 @@ func TestAbilityRage(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_Rage,
-					Trigger: zb.AbilityTrigger_GotDamage,
+					Trigger: zb_enums.AbilityTrigger_GotDamage,
 					Value:   2,
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 3},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 3},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card1),
 			Prototype:  proto.Clone(card1).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card1.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_Rage{
-						Rage: &zb.CardAbilityRage{
+					AbilityType: &zb_data.CardAbilityInstance_Rage{
+						Rage: &zb_data.CardAbilityRage{
 							AddedDamage: card1.Abilities[0].Value,
 						},
 					},
@@ -96,9 +96,9 @@ func TestAbilityRage(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardAttack{
 				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 2},
+					Attacker: &zb_data.InstanceId{Id: 2},
 					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 3},
+						InstanceId: &zb_data.InstanceId{Id: 3},
 					},
 				},
 			},

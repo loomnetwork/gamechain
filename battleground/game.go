@@ -3,6 +3,8 @@ package battleground
 import (
 	"bytes"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"math/rand"
 	"sort"
 
@@ -37,16 +39,16 @@ var (
 )
 
 type Gameplay struct {
-	State               *zb.GameState
+	State               *zb_data.GameState
 	stateFn             stateFn
-	cardLibrary         *zb.CardList
+	cardLibrary         *zb_data.CardList
 	err                 error
 	customGameMode      *CustomGameMode
-	history             []*zb.HistoryData
+	history             []*zb_data.HistoryData
 	ctx                 *contract.Context
 	useBackendGameLogic bool // when false, disables all checks to ensure the client can work before server is fully implemented
-	actionOutcomes      []*zb.PlayerActionOutcome
-	playersDebugCheats  []*zb.DebugCheatsConfiguration
+	actionOutcomes      []*zb_data.PlayerActionOutcome
+	playersDebugCheats  []*zb_data.DebugCheatsConfiguration
 	logger              *loom.Logger // optional logger
 }
 
@@ -56,11 +58,11 @@ type stateFn func(*Gameplay) stateFn
 func NewGamePlay(ctx contract.Context,
 	id int64,
 	version string,
-	players []*zb.PlayerState,
+	players []*zb_data.PlayerState,
 	seed int64,
 	customGameAddress *loom.Address,
 	useBackendGameLogic bool,
-	playersDebugCheats []*zb.DebugCheatsConfiguration,
+	playersDebugCheats []*zb_data.DebugCheatsConfiguration,
 ) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
@@ -70,14 +72,14 @@ func NewGamePlay(ctx contract.Context,
 
 	// So we won't have to do nil checks everywhere along the way
 	if playersDebugCheats == nil {
-		playersDebugCheats = []*zb.DebugCheatsConfiguration{{}, {}}
+		playersDebugCheats = []*zb_data.DebugCheatsConfiguration{{}, {}}
 	}
 
 	// Ensure that same random seed will result in the same player order,
 	// no matter which player joined the pool earlier
 	type playerDataTuple struct {
-		playerState       *zb.PlayerState
-		playerDebugCheats *zb.DebugCheatsConfiguration
+		playerState       *zb_data.PlayerState
+		playerDebugCheats *zb_data.DebugCheatsConfiguration
 	}
 
 	playersData := make([]*playerDataTuple, len(players), len(players))
@@ -97,7 +99,7 @@ func NewGamePlay(ctx contract.Context,
 		playersDebugCheats[i] = playerData.playerDebugCheats
 	}
 
-	state := &zb.GameState{
+	state := &zb_data.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
@@ -141,7 +143,7 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool, playersDebugCheats []*zb.DebugCheatsConfiguration) (*Gameplay, error) {
+func GamePlayFrom(state *zb_data.GameState, useBackendGameLogic bool, playersDebugCheats []*zb_data.DebugCheatsConfiguration) (*Gameplay, error) {
 	g := &Gameplay{
 		State:               state,
 		useBackendGameLogic: useBackendGameLogic,
@@ -213,10 +215,10 @@ loop:
 			playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
 			playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
 			for i := 0; i < len(playerState.CardsInHand); i++ {
-				playerState.CardsInHand[i].Zone = zb.Zone_HAND
+				playerState.CardsInHand[i].Zone = zb_enums.Zone_HAND
 			}
 			for i := 0; i < len(playerState.CardsInDeck); i++ {
-				playerState.CardsInDeck[i].Zone = zb.Zone_DECK
+				playerState.CardsInDeck[i].Zone = zb_enums.Zone_DECK
 			}
 		}
 	}
@@ -226,36 +228,36 @@ loop:
 	// ID 0 is the overlord of the player that has the first turn
 	// ID 1 is the overlord of the other player that has the first turn
 	// Card ID's start with the player that has the first turn
-	assignInstanceIds := func(playerState *zb.PlayerState, currentInstanceId *int32) {
+	assignInstanceIds := func(playerState *zb_data.PlayerState, currentInstanceId *int32) {
 		for _, card := range playerState.CardsInPlay {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInHand {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInDeck {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInGraveyard {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 	}
 	var instanceId int32 = 2
 	if g.State.CurrentPlayerIndex == 0 {
-		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 0}
-		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 1}
+		g.State.PlayerStates[0].InstanceId = &zb_data.InstanceId{Id: 0}
+		g.State.PlayerStates[1].InstanceId = &zb_data.InstanceId{Id: 1}
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 	} else {
-		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 1}
-		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 0}
+		g.State.PlayerStates[0].InstanceId = &zb_data.InstanceId{Id: 1}
+		g.State.PlayerStates[1].InstanceId = &zb_data.InstanceId{Id: 0}
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 	}
@@ -288,8 +290,8 @@ loop:
 		}
 	}
 	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_CreateGame{
+	g.history = append(g.history, &zb_data.HistoryData{
+		Data: &zb_data.HistoryData_CreateGame{
 			CreateGame: &zb.HistoryCreateGame{
 				GameId:     g.State.Id,
 				Players:    ps,
@@ -410,15 +412,15 @@ func (g *Gameplay) current() *zb.PlayerAction {
 	return action
 }
 
-func (g *Gameplay) activePlayer() *zb.PlayerState {
+func (g *Gameplay) activePlayer() *zb_data.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
 }
 
-func (g *Gameplay) activePlayerDebugCheats() *zb.DebugCheatsConfiguration {
+func (g *Gameplay) activePlayerDebugCheats() *zb_data.DebugCheatsConfiguration {
 	return g.playersDebugCheats[g.State.CurrentPlayerIndex]
 }
 
-func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
+func (g *Gameplay) activePlayerOpponent() *zb_data.PlayerState {
 	for i, p := range g.State.PlayerStates {
 		if int32(i) != g.State.CurrentPlayerIndex {
 			return p
@@ -433,7 +435,7 @@ func (g *Gameplay) changePlayerTurn() {
 }
 
 // gives the player a new goo vial and fills up all their vials
-func addGooVialAndFillAll(playerState *zb.PlayerState) {
+func addGooVialAndFillAll(playerState *zb_data.PlayerState) {
 	if playerState.GooVials < playerState.MaxGooVials {
 		playerState.GooVials++
 	}
@@ -585,7 +587,7 @@ func (g *Gameplay) DebugState() {
 	fmt.Fprintf(buf, "Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
 	fmt.Fprintf(buf, "Current Player Index: %v\n", state.CurrentPlayerIndex)
 
-	formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+	formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 		b := new(bytes.Buffer)
 		for _, a := range abilities {
 			b.WriteString(fmt.Sprintf("[%v, active=%v]\n", a.AbilityType, a.IsActive))
@@ -703,7 +705,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		if mulligan == nil {
 			return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
 		}
-		var player *zb.PlayerState
+		var player *zb_data.PlayerState
 		var playerIndex int
 		for i := 0; i < len(g.State.PlayerStates); i++ {
 			if g.State.PlayerStates[i].Id == current.PlayerId {
@@ -723,7 +725,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
 			return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
 		}
-		mulliganCards := make([]*zb.CardInstance, 0)
+		mulliganCards := make([]*zb_data.CardInstance, 0)
 		for _, card := range mulligan.MulliganedCards {
 			handCards := player.CardsInHand[:player.InitialCardsInHandCount]
 			_, mulliganCard, found := findCardInCardListByInstanceId(card, handCards)
@@ -779,7 +781,7 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 }
 
-func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
+func (g *Gameplay) drawCard(player *zb_data.PlayerState, count int) error {
 	if g.useBackendGameLogic {
 		// check if player has already drawn a card after starting new turn
 		if player.HasDrawnCard {
@@ -801,7 +803,7 @@ func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
 
 			card := player.CardsInDeck[0]
 			cardInstance := NewCardInstance(card, g)
-			cardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
+			cardInstance.MoveZone(zb_enums.Zone_DECK, zb_enums.Zone_HAND)
 		}
 	} else {
 		// do nothing, client currently doesn't care about this at all
@@ -872,8 +874,8 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// record history data
-		g.history = append(g.history, &zb.HistoryData{
-			Data: &zb.HistoryData_FullInstance{
+		g.history = append(g.history, &zb_data.HistoryData{
+			Data: &zb_data.HistoryData_FullInstance{
 				FullInstance: &zb.HistoryFullInstance{
 					InstanceId: card,
 					Damage:     cardInstance.Instance.Damage,
@@ -937,7 +939,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(errors.New("No card attack speficied"))
 		}
 
-		var attacker *zb.CardInstance
+		var attacker *zb_data.CardInstance
 		for _, card := range g.activePlayer().CardsInPlay {
 			if proto.Equal(card.InstanceId, cardAttack.Attacker) {
 				attacker = card
@@ -963,7 +965,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
 
 			}
-			var target *zb.CardInstance
+			var target *zb_data.CardInstance
 			for _, card := range g.activePlayerOpponent().CardsInPlay {
 				if proto.Equal(card.InstanceId, current.GetCardAttack().Target.InstanceId) {
 					target = card
@@ -992,10 +994,10 @@ func actionCardAttack(g *Gameplay) stateFn {
 	}
 
 	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_ChangeInstance{
+	g.history = append(g.history, &zb_data.HistoryData{
+		Data: &zb_data.HistoryData_ChangeInstance{
 			ChangeInstance: &zb.HistoryInstance{
-				InstanceId: &zb.InstanceId{Id: 1}, // TODO change to the actual card id
+				InstanceId: &zb_data.InstanceId{Id: 1}, // TODO change to the actual card id
 				Value:      2,
 			},
 		},

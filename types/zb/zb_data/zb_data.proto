@@ -1,0 +1,996 @@
+syntax = "proto3";
+
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/loomnetwork/go-loom/types/types.proto";
+import "github.com/loomnetwork/gamechain/types/nullable/nullable_pb/nullable.proto";
+import "github.com/loomnetwork/gamechain/types/zb/zb_enums/zb_enums.proto";
+
+message Account {
+    string user_id             = 1;
+    bool phone_number_verified = 2;
+    bool reward_redeemed       = 3;
+    bool is_kickstarter        = 4;
+    string image               = 5;
+    bool email_notification    = 6;
+    int64 elo_score            = 7;
+    int32 current_tier         = 8;
+    int32 game_membership_tier = 9;
+    bytes owner                = 10;
+}
+
+message Deck {
+    int64 id = 1;
+    string name = 2;
+    int64 overlordId = 3;
+    repeated DeckCard cards = 4;
+    OverlordSkill.Enum primarySkill = 5;
+    OverlordSkill.Enum secondarySkill = 6;
+}
+
+message Card {
+    int64 mouldId = 1;
+    CardKind.Enum kind = 2;
+    Faction.Enum faction = 3;
+    string name = 4;
+    string description = 5;
+    string flavorText = 6;
+    string picture = 7;
+    CreatureRank.Enum rank = 8;
+    CardType.Enum type = 9;
+    string frame = 11;
+    int32 damage = 12;
+    int32 defense = 13;
+    int32 cost = 14;
+    PictureTransform pictureTransform = 16;
+    repeated AbilityData abilities = 17;
+    UniqueAnimation.Enum uniqueAnimation = 18;
+    reserved 19;
+    bool hidden = 20;
+    int64 sourceMouldId = 21;
+    CardOverrides overrides = 22;
+}
+
+message CardOverrides {
+    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardKindEnumValue"];
+    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.FactionEnumValue"];
+    StringValue name = 3 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.StringValue"];
+    StringValue description = 4 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.StringValue"];
+    StringValue flavorText = 5 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.StringValue"];
+    StringValue picture = 6 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.StringValue"];
+    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CreatureRankEnumValue"];
+    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardTypeEnumValue"];
+    StringValue frame = 9 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.StringValue"];
+    Int32Value damage = 10 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.Int32Value"];
+    Int32Value defense = 11 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.Int32Value"];
+    Int32Value cost = 12 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.Int32Value"];
+    PictureTransform pictureTransform = 13;
+    repeated AbilityData abilities = 14;
+    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.UniqueAnimationEnumValue"];
+    BoolValue hidden = 16 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.BoolValue"];
+}
+
+message CardInstanceSpecificData {
+    int32 damage = 1;
+    int32 defense = 2;
+    CardType.Enum type = 3;
+    Faction.Enum faction = 4;
+    int32 cost = 5;
+    repeated AbilityData abilities = 6;
+}
+
+message PictureTransform {
+    Vector3Float position   = 1;
+    Vector3Float scale      = 2;
+}
+
+message Vector3Float {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message Vector2Int {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Rect {
+    Vector2Int position = 1;
+    Vector2Int size = 2;
+}
+
+message CardList {
+    repeated Card cards = 1;
+}
+
+message CardCollectionCard {
+    string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    int64 amount = 2;
+    int64 mouldId = 3;
+}
+
+message DeckCard {
+    string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    int64 amount = 2;
+    int64 mouldId = 3;
+}
+
+message CardLibrary {
+    repeated Card cards = 1;
+}
+
+message Overlord {
+    int64 overlordId = 1;
+
+    string icon = 2;
+    string name = 3;
+    string shortDescription = 4;
+    string longDescription = 5;
+    Faction.Enum faction = 6;
+
+    int64 experience = 7;
+    int64 level = 8;
+    repeated Skill skills = 9;
+
+    reserved 10, 11;
+
+    int32 initialDefense = 12;
+}
+
+
+
+message Skill {
+    string title = 1;
+    OverlordSkill.Enum skill = 2;
+    string iconPath = 3;
+    string description = 4;
+    repeated SkillTarget.Enum skillTargets = 5;
+    UnitSpecialStatus.Enum targetUnitSpecialStatus = 6;
+    repeated Faction.Enum targetFactions = 7;
+    int32 value = 8;
+
+    int32 cooldown = 9;
+    int32 initialCooldown = 10;
+
+    int32 damage = 11;
+    int32 count = 12;
+
+    int64 id = 13;
+    bool unlocked = 14;
+    bool canSelectTarget = 15;
+    string unitStatus = 16;
+
+    bool singleUse = 17;
+}
+
+message OverlordList {
+    repeated Overlord overlords = 1;
+}
+
+message CardCollectionList {
+    repeated CardCollectionCard cards = 1;
+}
+
+message DeckList {
+    repeated Deck decks = 1;
+}
+
+message AIType {
+    enum Enum {
+        UNDEFINED = 0;
+        BLITZ_AI = 1;
+        DEFENSE_AI = 2;
+        MIXED_AI = 3;
+        MIXED_BLITZ_AI = 4;
+        TIME_BLITZ_AI = 5;
+        MIXED_DEFENSE_AI = 6;
+    }
+}
+
+message AIDeck {
+    Deck deck = 1;
+    AIType.Enum type = 2;
+}
+
+message AIDeckList {
+    repeated AIDeck decks = 1;
+}
+
+message OverlordLevelingData {
+    repeated LevelReward rewards = 1;
+    repeated ExperienceAction experienceActions = 2;
+    int32 fixed = 3;
+    int32 experienceStep = 4;
+    int32 gooRewardStep = 5;
+    int32 maxLevel = 6;
+}
+
+message LevelReward {
+    int32 level = 1;
+    oneof reward {
+        OverlordSkillRewardItem skillReward = 2;
+        UnitRewardItem unitReward = 3;
+    }
+}
+
+message OverlordSkillRewardItem {
+    int32 skillIndex = 1;
+}
+
+message UnitRewardItem {
+    CreatureRank.Enum rank = 1;
+    int32 count = 2;
+}
+
+message ExperienceAction{
+    ExperienceActionType.Enum action = 1;
+    int32 experience = 2;
+}
+
+message ExperienceActionType {
+    enum Enum {
+        KillOverlord = 0;
+        KillMinion = 1;
+        PlayCard = 2;
+        ActivateRankAbility = 3;
+        UseOverlordAbility = 4;
+    }
+}
+
+message GamechainState {
+    // The last plasmachain block number pulling by oracle
+    uint64 last_plasmachain_block_num = 1;
+    // the plasmachain reward contract version 
+    uint64 reward_contract_version = 2;
+    // the number of card packs reward when players finish tutorial
+    uint64 tutorial_reward_amount = 3;
+    uint64 default_player_defense = 4;
+}
+
+
+
+message RewardTutorialClaimed {
+    uint64 nonce = 1;
+}
+
+//////////// Match Making /////////////
+
+message PlayerState {
+    string id = 1;
+    PlayerActionType.Enum currentAction = 2;
+    OverlordInstance overlordInstance = 3;
+    repeated CardInstance cardsInHand = 4;
+    repeated CardInstance cardsInPlay = 5;
+    repeated CardInstance cardsInDeck = 6;
+    Deck deck = 7;
+    int32 defense = 8;
+    int32 currentGoo = 9;
+    int32 gooVials = 10;
+    bool hasDrawnCard = 11;
+    repeated CardInstance cardsInGraveyard = 12;
+    int32 initialCardsInHandCount = 13;
+    int32 maxCardsInPlay = 14;
+    int32 maxCardsInHand = 15;
+    int32 maxGooVials = 16;
+    int32 turnTime = 17;
+    int32 turnNumber = 18;
+    InstanceId instanceId = 19;
+    repeated CardInstance mulliganCards = 20;
+    int32 index = 21;
+}
+
+message InitialPlayerState {
+    string id = 1;
+    bool matchAccepted = 2;
+    Deck deck  = 3;
+}
+
+message PlayerTimestamp {
+    string id = 1;
+    int64 updatedAt = 2;
+}
+
+message Match {
+    int64 id = 1;
+    repeated string topics = 2;
+
+    // TODO: this data is not used by the client, but is still sent.
+    // Perhaps we can split Match into MatchMetadata and MatchInitialPlayerState
+    repeated InitialPlayerState playerStates = 3;
+    enum Status {
+        Created      = 0;
+        Matching     = 1;
+        Started      = 2;
+        Playing      = 3;
+        PlayerLeft   = 4;
+        Ended        = 5;
+        Timedout     = 6;
+        Canceled     = 7;
+    }
+    Status status = 4;
+    string version = 5;
+    int64 randomSeed = 6;
+    Address customGameAddr = 7;
+    int64 createdAt = 8;
+    bool useBackendGameLogic = 9;
+    repeated PlayerTimestamp playerLastSeens = 10;
+    repeated DebugCheatsConfiguration playerDebugCheats = 11;
+}
+
+message MatchMakingInfoList {
+    repeated MatchMakingInfo infos = 1;
+}
+
+message MatchMakingInfo {
+    string userId = 1;
+    Deck deck = 2;
+}
+
+message PlayerActionType {
+    enum Enum {
+        None = 0;
+        EndTurn = 1;
+        Mulligan = 2;
+        CardPlay = 3;
+        CardAttack = 4;
+        CardAbilityUsed = 5;
+        OverlordSkillUsed = 6;
+        LeaveMatch = 7;
+        RankBuff = 8;
+        CheatDestroyCardsOnBoard = 9;
+    }
+}
+
+message PlayerAction {
+    PlayerActionType.Enum actionType = 1; // not sure we really need this
+    string playerId = 2;
+    oneof action {
+        PlayerActionEndTurn endTurn = 3;
+        PlayerActionMulligan mulligan = 4;
+        PlayerActionCardPlay cardPlay = 5;
+        PlayerActionCardAttack cardAttack = 6;
+        PlayerActionCardAbilityUsed cardAbilityUsed = 7;
+        PlayerActionOverlordSkillUsed overlordSkillUsed = 8;
+        PlayerActionLeaveMatch leaveMatch = 9;
+        PlayerActionRankBuff rankBuff = 10;
+        PlayerActionCheatDestroyCardsOnBoard cheatDestroyCardsOnBoard = 11;
+    };
+    repeated PlayerActionOutcome actionOutcomes = 14;
+    int64 createdAt = 15; // timestamp
+
+    // To be removed later. Only useful for client-logic games.
+    // After constructing the "meat" of the action, the client fills this structure with his local game state.
+    // The other client can then compare the game with his own and panic if de-sync is detected.
+    GameState controlGameState = 16;
+}
+
+message PlayerActionEvent {
+    PlayerAction playerAction = 1;
+    Match match = 2;
+    History block = 3;
+    int64 CurrentActionIndex = 4;
+    bool createdByBackend = 5;
+}
+
+message PlayerProfile {
+    PlayerProfileRegistrationData registrationData = 1;
+    int64 updatedAt = 2;
+}
+
+message PlayerProfileRegistrationData {
+    string userId = 1;
+    int64 deckId  = 2;
+    string version = 3;
+    Address customGame = 4;
+    repeated string tags = 5;
+    bool useBackendGameLogic = 6;
+    DebugCheatsConfiguration debugCheats = 7 [(gogoproto.nullable) = false];
+}
+
+message PlayerPool {
+    repeated PlayerProfile playerProfiles = 1;
+}
+
+message MatchCount {
+    int64 currentId = 1;
+}
+
+message DebugCheatsConfiguration {
+    bool enabled = 1;
+
+    bool useCustomDeck = 2;
+    Deck customDeck = 3;
+
+    bool useCustomRandomSeed = 4;
+    int64 customRandomSeed = 5;
+
+    bool disableDeckShuffle = 6;
+
+    string forceFirstTurnUserId = 7;
+    bool ignoreGooRequirements = 8;
+
+    bool skipMulligan = 9;
+}
+
+
+
+
+// Game Modes
+
+message GameMode {
+    string ID = 1;
+    string name = 2;
+    string description = 3;
+    string version = 4;
+    GameModeType game_mode_type = 5;
+    Address address = 6;
+    Address Owner = 7;
+}
+
+message GameModeList {
+    repeated GameMode game_modes = 1;
+}
+
+enum GameModeType {
+    Community = 0;
+    Loom = 1;
+}
+
+
+
+message CustomGameModeCustomUiLabel {
+    string text = 1;
+}
+
+message CustomGameModeCustomUiButton {
+    string title = 1;
+    bytes callData = 2;
+}
+
+message CustomGameModeCustomUiElement {
+    Rect rect = 1;
+    oneof uiElement {
+        CustomGameModeCustomUiLabel label = 2;
+        CustomGameModeCustomUiButton button = 3;
+    }
+}
+
+//////////////// GAME PLAY //////////////////
+
+// C# interfaces converted
+
+message GameState {
+    int64 id                            = 1;
+    bool isEnded                        = 2;
+    int32 currentPlayerIndex            = 3;
+    repeated PlayerState playerStates   = 4;
+    int64 currentActionIndex            = 5;
+    repeated PlayerAction playerActions = 6;
+    int64 randomSeed                    = 7;
+    string winner                       = 8;
+    string version                      = 9;
+    int64 createdAt                     = 10;
+    int32 nextInstanceId = 11;
+}
+
+message CardChoosableAbility {
+    string description = 1;
+    AbilityData abilityData = 2;
+    string attribute = 3;
+}
+
+message AbilityData {
+    AbilityType.Enum ability = 1;
+    AbilityActivity.Enum activity = 2;
+    AbilityTrigger.Enum trigger = 3;
+    repeated Target.Enum targets = 4;
+    Stat.Enum stat = 5;
+    Faction.Enum faction = 6;
+    AbilityEffect.Enum effect = 7;
+    AttackRestriction.Enum attackRestriction = 8;
+    CardType.Enum targetCardType = 9;
+    UnitSpecialStatus.Enum targetUnitSpecialStatus = 10;
+    CardType.Enum targetUnitType = 11;
+    int32 value = 12;
+    int32 damage = 13;
+    int32 defense = 14;
+    string name = 15;
+    int32 turns = 16;
+    int32 count = 17;
+    int32 delay = 18;
+    repeated VisualEffectInfo visualEffectsToPlay = 19;
+    GameMechanicDescription.Enum gameMechanicDescription = 20;
+    Faction.Enum targetFaction = 21;
+    AbilitySubTrigger.Enum subTrigger = 22;
+    repeated CardChoosableAbility choosableAbilities = 23;
+    int32 defense2 = 24;
+    int32 cost = 25;
+    CardKind.Enum targetCardKind = 26;
+    repeated GameMechanicDescription.Enum targetGameMechanicDescriptionTypes = 27;
+
+    message VisualEffectInfo {
+        enum VisualEffectType {
+            Undefined = 0;
+            Impact = 1;
+            Moving = 2;
+            Impact_Heavy = 3;
+            Impact_Feral = 4;
+        }
+
+        VisualEffectType Type = 1;
+        string Path = 2;
+    }
+}
+
+message CardAbilityRage {
+    int32 addedDamage = 1; // TODO: Remove me
+    bool wasApplied = 2;
+}
+
+message CardAbilityAdditionalDamageToHeavyInAttack {
+    int32 addedDamage = 1;
+}
+
+message CardAbilityChangeStat {
+    int32 statAdjustment = 1;
+    Stat.Enum stat = 2;
+}
+
+message CardAbilityPriorityAttack {
+    int32 attackerOldDefense = 1;
+    int32 targetOldDefense = 2;
+}
+
+message CardAbilityReanimate {
+    int32 defaultDamage = 1;
+    int32 defaultDefense = 2;
+    CardInstance newInstance = 3;
+}
+
+message CardAbilityAttackOverlord {
+    int32 damage = 1;
+    bool wasApplied = 2;
+}
+
+message CardAbilityReplaceUnitsWithTypeOnStrongerOnes {
+    Faction.Enum faction = 1;
+}
+
+message CardAbilityDealDamageToThisAndAdjacentUnits {
+    int32 adjacentDamage = 1;
+}
+
+message CardAbilityDevourZombieAndCombineStats {
+    Faction.Enum faction = 1;
+}
+
+message PlayerActionOutcome {
+    oneof Outcome {
+        CardAbilityRageOutcome rage = 1;
+        CardAbilityPriorityAttackOutcome priorityAttack = 2;
+        CardAbilityAdditionalDamageToHeavyInAttackOutcome additionalDamageToHeavyInAttack = 3;
+        CardAbilityChangeStatOutcome changeStat = 5;
+        CardAbilityReanimateOutcome reanimate = 4;
+        CardAbilityAttackOverlordOutcome attackOverlord = 6;
+        CardAttackOutcome cardAttack = 7;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome replaceUnitsWithTypeOnStrongerOnes = 8;
+        CardAbilityDealDamageToThisAndAdjacentUnitsOutcome dealDamageToThisAndAdjacentUnits = 9;
+        CardAbilityDevourZombieAndCombineStatsOutcome devourZombieAndCombineStats = 10;
+    }
+
+    message CardAbilityRageOutcome {
+        InstanceId instanceId = 1;
+        int32 newDamage = 2;
+    }
+
+    message CardAbilityPriorityAttackOutcome {
+        InstanceId instanceId = 1;
+        int32 newDefense = 2;
+    }
+
+    message CardAbilityReanimateOutcome {
+        CardInstance newCardInstance = 1;
+    }
+
+    message CardAbilityAdditionalDamageToHeavyInAttackOutcome {
+        InstanceId instanceId = 1;
+        int32 addedDamage = 2;
+    }
+
+    message CardAbilityChangeStatOutcome {
+        InstanceId instanceId = 1;
+        int32 newDamage = 2;
+        int32 newDefense = 3;
+        Stat.Enum stat = 4;
+        InstanceId targetInstanceId = 5;
+    }
+
+    message CardAbilityAttackOverlordOutcome {
+        InstanceId instanceId = 1;
+        int32 newDefense = 2;
+        int32 damage = 3;
+    }
+
+    message CardAttackOutcome {
+        InstanceId attackerInstanceId = 1;
+        InstanceId targetInstanceId = 2;
+        int32 attackerNewDefense = 3;
+        int32 targetNewDefense = 4;
+    }
+
+    message CardAbilityReplaceUnitsWithTypeOnStrongerOnesOutcome {
+        repeated NewCardInstance newCardInstances = 1;
+        repeated InstanceId oldInstanceIds = 2;
+        // info about new card and it position
+        message NewCardInstance {
+            CardInstance cardInstance = 1;
+            int32 position = 2;
+        }
+    }
+
+    message CardAbilityDealDamageToThisAndAdjacentUnitsOutcome {
+        // TBD
+    }
+
+    message CardAbilityDevourZombieAndCombineStatsOutcome {
+        repeated InstanceId targetInstanceIds = 1;
+    }
+}
+
+message CardAbilityInstance {
+    oneof AbilityType {
+        CardAbilityRage rage = 1;
+        CardAbilityPriorityAttack priorityAttack = 2;
+        CardAbilityReanimate reanimate = 5;
+        CardAbilityAdditionalDamageToHeavyInAttack additionalDamageToHeavyInAttack = 6;
+        CardAbilityChangeStat changeStat = 7;
+        CardAbilityAttackOverlord attackOverlord = 8;
+        CardAbilityReplaceUnitsWithTypeOnStrongerOnes replaceUnitsWithTypeOnStrongerOnes = 9;
+        CardAbilityDealDamageToThisAndAdjacentUnits dealDamageToThisAndAdjacentUnits = 10;
+        CardAbilityDevourZombieAndCombineStats devourZombieAndCombineStats = 11;
+    }
+    bool isActive = 3;
+    AbilityTrigger.Enum trigger = 4;
+}
+
+message CardInstance {
+    Card prototype = 1;
+    InstanceId instanceId = 2;
+    CardInstanceSpecificData instance = 3;
+    string owner = 4;
+
+    // FIXME: this really shouldn't be in Protobuf
+    bool abilitiesInstancesInitialized = 5;
+    repeated CardAbilityInstance abilitiesInstances = 6;
+    Zone.type zone = 7;
+    int32 ownerIndex = 8;
+}
+
+message DataIdOwner {
+    int32 dataId = 1;
+}
+
+// (interface IDeck)
+message CardDeck {
+    repeated Card cards = 1;
+}
+
+message InstanceId {
+    int32 id = 1;
+}
+
+message OverlordInstance {
+    InstanceId instanceId = 1;
+    OverlordPrototype prototype = 2;
+    OverlordSkillInstance firstSkill = 3;
+    OverlordSkillInstance secondSkill = 4;
+    int32 defense = 5;
+    int32 goo = 6;
+    int32 maxGoo = 7;
+}
+
+message OverlordPrototype {
+    int32 overlordId = 1;
+    string icon = 2;
+    string name = 3;
+    string shortDescription = 4;
+    string longDescription = 5;
+    int32 experience = 6;
+    int32 level = 7;
+    Faction.Enum faction = 8;
+    repeated OverlordSkillPrototype skills = 9;
+}
+
+message OverlordSkillInstance {
+    OverlordSkillPrototype prototype = 1;
+    int32 cooldown = 2;
+}
+
+message OverlordSkillPrototype {
+    string title = 1;
+    string skill = 2;
+    string iconPath = 3;
+    string description = 4;
+    int32 cooldown = 5;
+    int32 initialCooldown = 6;
+    int32 parameter = 7;
+    int32 damage = 8;
+    OverlordSkill.Enum overlordSkillKind = 9;
+    repeated SkillTarget.Enum skillTargetTypes = 10;
+    repeated Faction.Enum factionTargetTypes = 11;
+}
+
+message PlayerActionLeaveMatch {
+    string winner = 1;
+    Reason reason = 2;
+
+    enum Reason {
+        None = 0;
+        PlayerLeave = 1;
+        KeepAliveTimeout = 2;
+    }
+}
+
+message PlayerActionCardPlay {
+    InstanceId card = 1;
+    int32 position = 2;
+}
+
+message PlayerActionRankBuff {
+    InstanceId card = 1;
+    repeated Unit targets = 2;
+}
+
+message PlayerActionCardAttack {
+    InstanceId attacker = 1;
+    Unit target = 2;
+}
+
+message PlayerActionCardAbilityUsed {
+    InstanceId card = 1;
+    repeated Unit targets = 3;
+    AbilityType.Enum AbilityType = 4;
+}
+
+message PlayerActionOverlordSkillUsed {
+    int64 SkillId = 1;
+    Unit target = 2;
+    repeated Unit targets = 3;
+}
+
+message PlayerActionEndTurn  {
+}
+
+message PlayerActionMulligan {
+    repeated InstanceId mulliganedCards = 1;
+}
+
+message PlayerActionCheatDestroyCardsOnBoard {
+    repeated InstanceId destroyedCards = 1;
+}
+
+message StartGameAction {
+    repeated PlayerState playerStates = 1;
+}
+
+message Unit {
+    InstanceId instanceId = 1;
+    Parameter Parameter = 3;
+}
+
+message Parameter {
+    int32 Damage  = 1;
+    int32 Defense = 2;
+    string CardName = 3;
+}
+
+message OverlordSkill {
+    enum Enum {
+        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+
+        // AIR
+        PUSH = 1 [(gogoproto.enumvalue_customname) = "Push"];
+        DRAW = 2 [(gogoproto.enumvalue_customname) = "Draw"];
+        WIND_SHIELD = 3 [(gogoproto.enumvalue_customname) = "WindShield"];
+        LEVITATE = 4 [(gogoproto.enumvalue_customname) = "WindWall"];
+        RETREAT = 5 [(gogoproto.enumvalue_customname) = "Retreat"];
+
+        // EARTH
+        HARDEN = 6 [(gogoproto.enumvalue_customname) = "Harden"];
+        STONE_SKIN = 7 [(gogoproto.enumvalue_customname) = "StoneSkin"];
+        FORTIFY = 8 [(gogoproto.enumvalue_customname) = "Fortify"];
+        PHALANX = 9 [(gogoproto.enumvalue_customname) = "Phalanx"];
+        FORTRESS = 10 [(gogoproto.enumvalue_customname) = "Fortress"];
+
+        // FIRE
+        FIRE_BOLT = 11 [(gogoproto.enumvalue_customname) = "FireBolt"];
+        RABIES = 12 [(gogoproto.enumvalue_customname) = "Rabies"];
+        FIREBALL = 13 [(gogoproto.enumvalue_customname) = "Fireball"];
+        MASS_RABIES = 14 [(gogoproto.enumvalue_customname) = "MassRabies"];
+        METEOR_SHOWER = 15 [(gogoproto.enumvalue_customname) = "MeteorShower"];
+
+        // LIFE
+        HEALING_TOUCH = 16 [(gogoproto.enumvalue_customname) = "HealingTouch"];
+        MEND = 17 [(gogoproto.enumvalue_customname) = "Mend"];
+        RESSURECT = 18 [(gogoproto.enumvalue_customname) = "Ressurect"];
+        ENHANCE = 19 [(gogoproto.enumvalue_customname) = "Enhance"];
+        REANIMATE = 20 [(gogoproto.enumvalue_customname) = "Reanimate"];
+
+        // TOXIC
+        POISON_DART = 21 [(gogoproto.enumvalue_customname) = "PoisonDart"];
+        TOXIC_POWER = 22 [(gogoproto.enumvalue_customname) = "ToxicPower"];
+        BREAKOUT = 23 [(gogoproto.enumvalue_customname) = "Breakout"];
+        INFECT = 24 [(gogoproto.enumvalue_customname) = "Infect"];
+        EPIDEMIC = 25 [(gogoproto.enumvalue_customname) = "Epidemic"];
+
+        // WATER
+        FREEZE = 26 [(gogoproto.enumvalue_customname) = "Freeze"];
+        ICE_BOLT = 27 [(gogoproto.enumvalue_customname) = "IceBolt"];
+        ICE_WALL = 28 [(gogoproto.enumvalue_customname) = "IceWall"];
+        SHATTER = 29 [(gogoproto.enumvalue_customname) = "Shatter"];
+        BLIZZARD = 30 [(gogoproto.enumvalue_customname) = "Blizzard"];
+    }
+}
+
+enum OverlordSkillSelectionType {
+    Primary = 0;
+    Secondary = 1;
+}
+
+message Stat {
+    enum Enum {
+        option allow_alias = true;
+
+        UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
+        DEFENSE = 1 [(gogoproto.enumvalue_customname) = "Defense"];
+        HEALTH = 1 [(gogoproto.enumvalue_customname) = "_XXXHealth"]; // for backwards compatibility
+        DAMAGE = 2 [(gogoproto.enumvalue_customname) = "Damage"];
+    }
+}
+
+message UnitSpecialStatus {
+    enum Enum {
+        NONE = 0 [(gogoproto.enumvalue_customname) = "None"];
+        FROZEN = 1 [(gogoproto.enumvalue_customname) = "Frozen"];
+    }
+}
+
+// Replay
+
+message GameReplay {
+    repeated PlayerAction actions = 5;
+    repeated HistoryData blocks   = 6;
+}
+
+message Player {
+    string id = 1;
+    Deck deck = 2; // TODO Change to card instance
+}
+
+message History {
+    repeated HistoryData list = 1;
+}
+
+message HistoryData {
+    oneof data {
+        HistoryCreateGame createGame = 1;
+        HistoryFullInstance fullInstance = 2;
+        HistoryInstance showInstance = 3;
+        HistoryHide hideInstance = 4;
+        HistoryInstance changeInstance = 5;
+        HistoryEndGame endGame = 6;
+    }
+}
+
+message HistoryCreateGame {
+    int64 gameId = 1;
+    repeated Player players = 2;
+    int64 randomSeed = 3;
+    string version = 4;
+}
+
+message HistoryFullInstance {
+    InstanceId instanceId = 1;
+    int32 damage = 2;
+    int32 defense = 3;
+}
+
+message HistoryInstance {
+    InstanceId instanceId = 1;
+    int32 value = 2;
+    enum change {
+        Damage = 0;
+        Defense = 1;
+    }
+}
+
+message HistoryHide {
+    InstanceId instanceId = 1;
+    Zone zone = 2;
+}
+
+message HistoryEndGame {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
+}
+
+message DefaultDecksDataContainer {
+    repeated Deck defaultDecks = 1;
+}
+
+message DefaultCollectionDataContainer {
+    repeated CardCollectionCard defaultCollection = 1;
+}
+
+message CardLibraryDataContainer {
+    repeated Card cards = 1;
+}
+
+message OverlordsDataContainer {
+     repeated Overlord overlords = 1;
+}
+
+message AIDecksDataContainer {
+    repeated AIDeck aiDecks = 1;
+}
+
+message OverlordLevelingDataContainer {
+    OverlordLevelingData overlordLeveling = 1;
+}
+
+message NotificationEndMatch {
+    int64 overlordId = 1;
+    int32 oldLevel = 2;
+    int64 oldExperience = 3;
+    int32 newLevel = 4;
+    int64 newExperience = 5;
+    repeated LevelReward rewards = 6;
+    bool isWin = 7;
+    int64 deckId = 8;
+}
+
+message NotificationType {
+    enum Enum {
+        EndMatch = 0;
+    }
+}
+
+message Notification {
+    int32 id = 1;
+    int64 createdAt = 2;
+    bool seen = 3;
+    NotificationType.Enum type = 4;
+
+    oneof Notification {
+        NotificationEndMatch endMatch = 10;
+    }
+}
+
+message NotificationList {
+    repeated Notification notifications = 1;
+}
+
+// battleground_nullable
+
+message CardKindEnumValue {
+    CardKind.Enum value = 1;
+}
+
+message FactionEnumValue {
+    Faction.Enum value = 1;
+}
+
+message CreatureRankEnumValue {
+    CreatureRank.Enum value = 1;
+}
+
+message CardTypeEnumValue {
+    CardType.Enum value = 1;
+}
+
+message UniqueAnimationEnumValue {
+    UniqueAnimation.Enum value = 1;
+}

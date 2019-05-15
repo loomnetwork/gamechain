@@ -9,12 +9,12 @@ import (
 //     when being attacked, if not dies, increase card damage
 type rage struct {
 	*CardInstance
-	cardAbility *zb.CardAbilityRage
+	cardAbility *zb_data.CardAbilityRage
 }
 
 var _ Ability = &rage{}
 
-func NewRage(card *CardInstance, cardAbility *zb.CardAbilityRage) *rage {
+func NewRage(card *CardInstance, cardAbility *zb_data.CardAbilityRage) *rage {
 	return &rage{
 		CardInstance: card,
 		cardAbility:  cardAbility,
@@ -29,9 +29,9 @@ func (c *rage) Apply(gameplay *Gameplay) error {
 			rage.WasApplied = true
 			c.Instance.Damage += rage.AddedDamage
 			// generate outcome
-			gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-				Outcome: &zb.PlayerActionOutcome_Rage{
-					Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+			gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb_data.PlayerActionOutcome{
+				Outcome: &zb_data.PlayerActionOutcome_Rage{
+					Rage: &zb_data.PlayerActionOutcome_CardAbilityRageOutcome{
 						InstanceId: c.InstanceId,
 						NewDamage:  c.Instance.Damage,
 					},
@@ -41,9 +41,9 @@ func (c *rage) Apply(gameplay *Gameplay) error {
 	} else if c.Instance.Defense >= c.Prototype.Defense {
 		rage.WasApplied = false
 		c.Instance.Damage -= rage.AddedDamage
-		gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb.PlayerActionOutcome{
-			Outcome: &zb.PlayerActionOutcome_Rage{
-				Rage: &zb.PlayerActionOutcome_CardAbilityRageOutcome{
+		gameplay.actionOutcomes = append(gameplay.actionOutcomes, &zb_data.PlayerActionOutcome{
+			Outcome: &zb_data.PlayerActionOutcome_Rage{
+				Rage: &zb_data.PlayerActionOutcome_CardAbilityRageOutcome{
 					InstanceId: c.InstanceId,
 					NewDamage:  c.Instance.Damage,
 				},

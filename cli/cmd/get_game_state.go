@@ -44,7 +44,7 @@ var getGameStateCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+			formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 				b := new(bytes.Buffer)
 				for _, a := range abilities {
 					b.WriteString(fmt.Sprintf("Abilities: [%+v trigger=%v active=%v]\n", a.AbilityType, a.Trigger, a.IsActive))

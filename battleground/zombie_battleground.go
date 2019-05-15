@@ -91,7 +91,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	// init state
-	state := zb.GamechainState{
+	state := zb_data.GamechainState{
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
 		TutorialRewardAmount:    1,
@@ -102,7 +102,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	// initialize card library
-	cardList := zb.CardList{
+	cardList := zb_data.CardList{
 		Cards: req.Cards,
 	}
 
@@ -119,7 +119,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	// initialize card collection
-	cardCollectionList := zb.CardCollectionList{
+	cardCollectionList := zb_data.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
@@ -127,7 +127,7 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb.InitRequest) err
 	}
 
 	// initialize default deck
-	deckList := zb.DeckList{
+	deckList := zb_data.DeckList{
 		Decks: req.DefaultDecks,
 	}
 	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
@@ -160,9 +160,9 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 
 	var overlordList zb.OverlordList
 	var defaultOverlordList zb.OverlordList
-	var cardList zb.CardList
-	var defaultCardCollectionList zb.CardCollectionList
-	var defaultDecks zb.DeckList
+	var cardList zb_data.CardList
+	var defaultCardCollectionList zb_data.CardCollectionList
+	var defaultDecks zb_data.DeckList
 	var aiDeckList zb.AIDeckList
 	var overlordLevelingData *zb.OverlordLevelingData
 
@@ -185,7 +185,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 	if defaultCardCollectionList.Cards == nil {
 		// HACK: for some reason, empty message are converted to nil
 		// Allow empty card collection for now, since it is not used anyway
-		defaultCardCollectionList.Cards = make([]*zb.CardCollectionCard, 0)
+		defaultCardCollectionList.Cards = make([]*zb_data.CardCollectionCard, 0)
 	}
 	if defaultCardCollectionList.Cards == nil {
 		return fmt.Errorf("'default_collection' key missing")
@@ -264,10 +264,10 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb.UpdateInit
 }
 
 func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb.GetInitRequest) (*zb.GetInitResponse, error) {
-	var cardList zb.CardList
+	var cardList zb_data.CardList
 	var overlordList zb.OverlordList
-	var cardCollectionList zb.CardCollectionList
-	var deckList zb.DeckList
+	var cardCollectionList zb_data.CardCollectionList
+	var deckList zb_data.DeckList
 	var aiDeckList zb.AIDeckList
 	var overlordLevelingData *zb.OverlordLevelingData
 
@@ -380,7 +380,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 	ctx.GrantPermission([]byte(req.UserId), []string{OwnerRole})
 
 	// add default collection list
-	var collectionList zb.CardCollectionList
+	var collectionList zb_data.CardCollectionList
 	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &collectionList); err != nil && err.Error() != ErrNotfound.Error() {
 		return errors.Wrapf(err, "unable to get default collectionlist")
 	}
@@ -389,7 +389,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb.UpsertA
 		return errors.Wrapf(err, "unable to save card collection for userId: %s", req.UserId)
 	}
 
-	var deckList zb.DeckList
+	var deckList zb_data.DeckList
 	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
 		return errors.Wrapf(err, "unable to get default decks")
 	}
@@ -494,7 +494,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb.CreateDeck
 	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
 	// TODO: Turn on the check when the server side knows user's collection
 	// validating against default card collection
-	// var defaultCollection zb.CardCollectionList
+	// var defaultCollection zb_data.CardCollectionList
 	// if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
 	// 	return nil, errors.Wrapf(err, "unable to get default collectionlist")
 	// }
@@ -573,7 +573,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb.EditDeckRequ
 	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
 	// TODO: Turn on the check when the server side knows user's collection
 	// validating against default card collection
-	// var defaultCollection zb.CardCollectionList
+	// var defaultCollection zb_data.CardCollectionList
 	// if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
 	// 	return nil, errors.Wrapf(err, "unable to get default collectionlist")
 	// }
@@ -1017,7 +1017,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb.FindMatchRe
 				UpdatedAt: ctx.Now().Unix(),
 			},
 		},
-		PlayerDebugCheats: []*zb.DebugCheatsConfiguration{
+		PlayerDebugCheats: []*zb_data.DebugCheatsConfiguration{
 			&playerProfile.RegistrationData.DebugCheats,
 			&matchedPlayerProfile.RegistrationData.DebugCheats,
 		},
@@ -1107,13 +1107,13 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb.AcceptMat
 			customModeAddr2 = &customModeAddr
 		}
 
-		playerStates := []*zb.PlayerState{
-			&zb.PlayerState{
+		playerStates := []*zb_data.PlayerState{
+			&zb_data.PlayerState{
 				Id:   match.PlayerStates[0].Id,
 				Deck: match.PlayerStates[0].Deck,
 				Index: -1,
 			},
-			&zb.PlayerState{
+			&zb_data.PlayerState{
 				Id:   match.PlayerStates[1].Id,
 				Deck: match.PlayerStates[1].Deck,
 				Index: -1,
@@ -1357,8 +1357,8 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb.EndMatchRequ
 	}
 
 	//TODO obviously this will need to change drastically once the logic is on the server
-	gp.history = append(gp.history, &zb.HistoryData{
-		Data: &zb.HistoryData_EndGame{
+	gp.history = append(gp.history, &zb_data.HistoryData{
+		Data: &zb_data.HistoryData_EndGame{
 			EndGame: &zb.HistoryEndGame{
 				UserId:   req.GetUserId(),
 				MatchId:  req.MatchId,
@@ -1715,7 +1715,7 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb.InitGamecha
 	if err := z.validateOracle(ctx, req.Oracle); err != nil {
 		return err
 	}
-	state = &zb.GamechainState{
+	state = &zb_data.GamechainState{
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
 		TutorialRewardAmount:    1,
@@ -2362,7 +2362,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 		}
 	}
 	if !found {
-		cardCollection.Cards = append(cardCollection.Cards, &zb.CardCollectionCard{
+		cardCollection.Cards = append(cardCollection.Cards, &zb_data.CardCollectionCard{
 			MouldId: card.MouldId,
 			Amount:  amount,
 		})
