@@ -21,27 +21,27 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 133, Amount: 5},
 			{MouldId: 136, Amount: 10},
 		},
 	}
 
-	deck1 := &zb.Deck{
+	deck1 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 11, Amount: 15},
 		},
 	}
 
 	t.Run("Play vortex should replace all water zombie with stronger ones", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck1},
 		}
@@ -58,32 +58,32 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			Abilities: []*zb.AbilityData{
 				{
 					Ability: zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
-					Trigger: zb.AbilityTrigger_Entry,
+					Trigger: zb_enums.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
-						ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+					AbilityType: &zb_data.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+						ReplaceUnitsWithTypeOnStrongerOnes: &zb_data.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
 							Faction: card0.Faction,
 						},
 					},
 				},
 			},
-			Zone:  zb.Zone_HAND,
+			Zone:  zb_enums.Zone_HAND,
 			Owner: player1,
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 3},
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 3},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  4,
 				Cost: 3,
@@ -91,10 +91,10 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			},
 			Owner: player1,
 		}
-		instance2 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 4},
+		instance2 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 4},
 			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  4,
 				Cost: 3,
@@ -111,7 +111,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb.PlayerAction_CardPlay{
 				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 2},
+					Card: &zb_data.InstanceId{Id: 2},
 				},
 			},
 		})

@@ -21,7 +21,7 @@ var editDeckCmd = &cobra.Command{
 	Short: "edit deck in zombie battleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var deck zb.Deck
+		var deck zb_data.Deck
 
 		if err := json.Unmarshal([]byte(editDeckCmdArgs.data), &deck); err != nil {
 			return fmt.Errorf("invalid JSON passed in data field. Error: %s", err.Error())

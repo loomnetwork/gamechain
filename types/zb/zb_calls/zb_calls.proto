@@ -1,0 +1,463 @@
+syntax = "proto3";
+
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/loomnetwork/go-loom/types/types.proto";
+import "github.com/loomnetwork/gamechain/types/zb/zb_data/zb_data.proto";
+
+message InitData {
+    repeated Deck defaultDecks = 1;
+    repeated CardCollectionCard defaultCollection = 2;
+    repeated Card cards = 3;
+    repeated Overlord overlords = 4;
+    repeated AIDeck aiDecks = 5;
+    string version = 6;
+    Address oracle = 7;
+    OverlordLevelingData overlordLeveling = 8;
+}
+
+message InitRequest {
+    repeated Deck defaultDecks = 1;
+    repeated CardCollectionCard defaultCollection = 2;
+    repeated Card cards = 3;
+    repeated Overlord overlords = 4;
+    repeated AIDeck aiDecks = 5;
+    string version = 6;
+    Address oracle = 7;
+    reserved 8, 9;
+    OverlordLevelingData overlordLeveling = 10;
+}
+
+message UpdateOracle {
+    Address new_oracle = 1;
+    Address old_oracle = 2;
+}
+
+message UpdateInitRequest {
+    reserved 1 to 10;
+    InitData initData = 11;
+}
+
+message GetInitRequest {
+    string version = 1;
+}
+
+message GetInitResponse {
+    reserved 1 to 8;
+    InitData initData = 9;
+}
+
+message GetContractBuildMetadataRequest {
+}
+
+message GetContractBuildMetadataResponse {
+    string date = 1;
+    string gitSha = 2;
+    string build = 3;
+}
+
+message GetGamechainStateRequest {
+}
+
+message GetGamechainStateResponse {
+    GamechainState state = 1;
+}
+
+message InitGamechainStateRequest {
+    Address oracle = 1;
+}
+
+message SetLastPlasmaBlockNumRequest {
+    uint64 last_block_num = 1;
+    Address oracle = 2;
+}
+
+message SetRewardContractVersionRequest {
+    uint64 version = 1;
+    Address oracle = 2;
+}
+
+message SetTutorialRewardAmountRequest {
+    uint64 amount = 1;
+    Address oracle = 2;
+}
+
+message SetDefaultPlayerDefenseRequest {
+    uint64 defense = 1;
+    Address oracle = 2;
+}
+
+message GetCardListRequest {
+    string version = 1;
+}
+
+message GetCardListResponse {
+    repeated Card cards = 1;
+}
+
+message GetOverlordLevelingDataRequest {
+    string version = 1;
+}
+
+message GetOverlordLevelingDataResponse {
+    OverlordLevelingData overlordLeveling = 1;
+}
+
+message ListOverlordsRequest {
+    string user_id = 1;
+}
+
+message ListOverlordsResponse {
+    repeated Overlord overlords  = 1;
+}
+
+message GetOverlordRequest {
+    string user_id = 1;
+    int64 overlordId = 2;
+}
+
+message GetOverlordResponse {
+    Overlord overlord = 1;
+}
+
+message UpsertAccountRequest {
+    string user_id             = 1;
+    bool phone_number_verified = 2;
+    bool reward_redeemed       = 3;
+    bool is_kickstarter        = 4;
+    string image               = 5;
+    bool email_notification    = 6;
+    int64 elo_score            = 7;
+    int32 current_tier         = 8;
+    int32 game_membership_tier = 9;
+    string version = 10;
+}
+
+message UpdateUserEloRequest {
+    string user_id = 1;
+    int64 elo_score = 2;
+}
+
+message GetAccountRequest {
+    string user_id = 1;
+}
+
+message GetDeckRequest {
+    string user_id = 1;
+    int64 deck_id = 2;
+    string version = 3;
+}
+
+message GetDeckResponse {
+    Deck deck = 2;
+}
+
+message CreateDeckRequest {
+    string user_id = 1;
+    Deck deck = 2;
+    string version = 4;
+}
+
+message CreateDeckResponse {
+    int64 deck_id = 1;
+}
+
+message CreateDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    Deck deck = 3;
+    string version = 4;
+}
+
+message DeleteDeckRequest {
+    string user_id = 1;
+    int64 deck_id = 2;
+    string version = 3;
+}
+
+message DeleteDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    int64 deck_id = 3;
+}
+
+message EditDeckRequest {
+    string user_id = 1;
+    Deck deck = 2;
+    string version = 3;
+}
+
+message EditDeckEvent {
+    string user_id = 1;
+    string sender_address = 2;
+    Deck deck = 3;
+    string version = 4;
+}
+
+message DecksResponse {
+    string user_id = 1;
+    repeated Deck decks = 2;
+}
+
+message ListDecksRequest {
+    string user_id = 1;
+    string version = 2;
+}
+
+message ListDecksResponse {
+    repeated Deck decks = 1;
+}
+
+message GetAIDecksRequest {
+    string version = 1;
+}
+
+message GetAIDecksResponse {
+    repeated AIDeck aiDecks = 1;
+}
+
+message ListCardLibraryRequest {
+    string version = 1;
+}
+
+message ListCardLibraryResponse {
+    repeated Card cards = 1;
+}
+
+message ListOverlordLibraryRequest {
+    string version = 1;
+}
+
+message ListOverlordLibraryResponse {
+    repeated Overlord overlords  = 1;
+}
+
+message GetCollectionRequest {
+    string user_id = 1;
+    string version = 2;
+}
+
+message GetCollectionResponse {
+    repeated CardCollectionCard cards = 1;
+}
+
+message GetCollectionByAddressRequest {
+    string version = 1;
+}
+
+message GetCollectionByAddressResponse {
+    repeated CardCollectionCard cards = 1;
+}
+
+message RewardTutorialCompletedRequest {
+}
+
+message RewardTutorialCompletedResponse {
+    // string user_id = 1;
+    string reward_type = 2;
+    string hash = 3;
+    string r = 4;
+    string s = 5;
+    uint64 v = 6;
+    // int64 nonce = 7;
+    // uint64 minion_pack = 8;
+    // uint64 user_id_uint = 9;
+    // BigUInt user_id = 10;
+    BigUInt amount = 11;
+}
+
+message ConfirmRewardTutorialClaimedRequest {
+}
+
+message RegisterPlayerPoolRequest {
+    PlayerProfileRegistrationData registrationData = 1;
+}
+
+message RegisterPlayerPoolResponse {
+}
+
+// TODO: remove this
+message PlayerPoolRequest {}
+
+message PlayerPoolResponse {
+    PlayerPool pool = 1;
+}
+
+message FindMatchRequest {
+    string userId = 1;
+    repeated string tags = 2;
+}
+
+message FindMatchResponse {
+    Match match = 1;
+    bool matchFound = 2;
+}
+
+message AcceptMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+}
+
+message AcceptMatchResponse {
+    Match match = 1;
+    History block = 2;
+}
+
+message CancelFindMatchRequest {
+    string userId = 1;
+    int64 matchId = 2;
+    repeated string tags = 3;
+}
+
+message CancelFindMatchResponse {
+}
+
+message GetMatchRequest {
+    int64 matchId = 1;
+}
+
+message GetMatchResponse {
+    Match match         = 1;
+}
+
+message GetGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetGameStateResponse {
+    GameState gameState = 1;
+}
+
+message GetInitialGameStateRequest {
+    int64 matchId = 1;
+}
+
+message GetInitialGameStateResponse {
+    GameState gameState = 1;
+}
+
+message PlayerActionRequest {
+    int64 matchId = 1;
+    PlayerAction playerAction = 2;
+}
+
+message PlayerActionResponse {
+    Match match = 1;
+}
+
+message BundlePlayerActionRequest {
+    int64 matchId = 1;
+    repeated PlayerAction playerActions = 2;
+}
+
+message BundlePlayerActionResponse {
+    GameState gameState = 1;
+    Match match = 2;
+    repeated HistoryData history = 3;
+}
+
+message EndMatchRequest {
+    int64 matchId   = 1;
+    string userId   = 2;
+    string winnerId = 3;
+    repeated int64 matchExperiences = 4;
+}
+
+message EndMatchResponse {
+    GameState gameState = 1;
+}
+
+message AddSoloExperienceRequest {
+    string version = 1;
+    string userId = 2;
+    int64 overlordId = 3;
+    int64 experience = 4;
+    bool isWin = 5;
+    int64 deckId = 6;
+}
+
+message AddSoloExperienceResponse {
+}
+
+message KeepAliveRequest {
+    int64 matchId = 1;
+    string userId = 2;
+}
+
+message KeepAliveResponse {
+}
+
+message ReplayGameRequest {
+    int64 matchId = 1;
+    int32 stopAtActionIndex = 2;
+}
+
+message ReplayGameResponse {
+    GameState gameState = 1;
+    repeated PlayerActionOutcome actionOutcomes = 2;
+}
+
+message GetNotificationsRequest {
+    string userId = 1;
+}
+
+message GetNotificationsResponse {
+    repeated Notification notifications = 1;
+}
+
+message ClearNotificationsRequest {
+    string userId = 1;
+    repeated int32 notificationIds = 2;
+}
+
+message ClearNotificationsResponse {
+}
+
+message GameModeRequest {
+    string name = 1;
+    string description = 2;
+    string version = 3;
+    string address = 4;
+    GameModeType game_mode_type = 5;
+    string oracle = 6;
+}
+
+message UpdateGameModeRequest {
+    string ID = 1;
+    string name = 2;
+    string description = 3;
+    string version = 4;
+    string address = 5;
+    GameModeType game_mode_type = 6;
+    string oracle = 7;
+}
+
+message DeleteGameModeRequest {
+    string ID = 1;
+    string oracle = 2;
+}
+
+message GetGameModeRequest {
+    string ID = 1;
+}
+
+message ListGameModesRequest {
+}
+
+message GetCustomGameModeCustomUiRequest {
+    Address address = 1;
+}
+
+message GetCustomGameModeCustomUiResponse {
+    repeated CustomGameModeCustomUiElement uiElements = 1;
+}
+
+message CallCustomGameModeFunctionRequest {
+    Address address = 1;
+    bytes callData = 2;
+}
+
+message StaticCallCustomGameModeFunctionResponse {
+    bytes output = 1;
+}

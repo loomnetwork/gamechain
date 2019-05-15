@@ -12,7 +12,7 @@ import (
 
 var initRequest = zb.InitRequest{
 	Version: "v1",
-	DefaultCollection: []*zb.CardCollectionCard{
+	DefaultCollection: []*zb_data.CardCollectionCard{
 		{
 			MouldId: 90,
 			Amount:   4,
@@ -106,7 +106,7 @@ var initRequest = zb.InitRequest{
 				{
 					Ability:  zb.AbilityType_DrawCard,
 					Activity: zb.AbilityActivity_Passive,
-					Trigger:  zb.AbilityTrigger_Entry,
+					Trigger:  zb_enums.AbilityTrigger_Entry,
 					Faction:  zb.Faction_None,
 				},
 			},
@@ -136,7 +136,7 @@ var initRequest = zb.InitRequest{
 				{
 					Ability:  zb.AbilityType_ModificatorStats,
 					Activity: zb.AbilityActivity_Passive,
-					Trigger:  zb.AbilityTrigger_Permanent,
+					Trigger:  zb_enums.AbilityTrigger_Permanent,
 					Targets: []zb.Target_Enum{
 						zb.Target_None,
 					},
@@ -147,12 +147,12 @@ var initRequest = zb.InitRequest{
 			},
 		},
 	},
-	DefaultDecks: []*zb.Deck{
+	DefaultDecks: []*zb_data.Deck{
 		{
 			Id:         0,
 			OverlordId: 2,
 			Name:       "Default",
-			Cards: []*zb.DeckCard{
+			Cards: []*zb_data.DeckCard{
 				{
 					MouldId: 90,
 					Amount:   2,

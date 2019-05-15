@@ -25,7 +25,7 @@ var listDecksCmd = &cobra.Command{
 			UserId: listDecksCmdArgs.userID,
 			Version: listDecksCmdArgs.version,
 		}
-		var result zb.DeckList
+		var result zb_data.DeckList
 		_, err := commonTxObjs.contract.Call("ListDecks", req, signer, &result)
 		if err != nil {
 			return err

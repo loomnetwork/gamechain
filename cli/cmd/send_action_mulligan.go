@@ -22,9 +22,9 @@ var sendActionMulliganCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var ids []*zb.InstanceId
+		var ids []*zb_data.InstanceId
 		for _, id := range sendActionMulliganCmdArgs.mulliganedCards {
-			ids = append(ids, &zb.InstanceId{Id: id})
+			ids = append(ids, &zb_data.InstanceId{Id: id})
 		}
 
 		var req = zb.PlayerActionRequest{

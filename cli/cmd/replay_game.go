@@ -43,7 +43,7 @@ var replayGameCmd = &cobra.Command{
 		default:
 			state := resp.GameState
 			actionOutcomes := resp.ActionOutcomes
-			formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+			formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 				b := new(bytes.Buffer)
 				for _, a := range abilities {
 					b.WriteString(fmt.Sprintf("Abilities: [%+v trigger=%v active=%v]\n", a.AbilityType, a.Trigger, a.IsActive))

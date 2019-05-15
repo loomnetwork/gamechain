@@ -7,13 +7,13 @@ import "github.com/loomnetwork/gamechain/types/zb"
 //     If the card is heavy, add addtional damage to defense
 type additionalDamgeToHeavyInAttack struct {
 	*CardInstance
-	cardAbility *zb.CardAbilityAdditionalDamageToHeavyInAttack
+	cardAbility *zb_data.CardAbilityAdditionalDamageToHeavyInAttack
 	target      *CardInstance
 }
 
 var _ Ability = &additionalDamgeToHeavyInAttack{}
 
-func NewAdditionalDamgeToHeavyInAttack(card *CardInstance, cardAbility *zb.CardAbilityAdditionalDamageToHeavyInAttack, target *CardInstance) *additionalDamgeToHeavyInAttack {
+func NewAdditionalDamgeToHeavyInAttack(card *CardInstance, cardAbility *zb_data.CardAbilityAdditionalDamageToHeavyInAttack, target *CardInstance) *additionalDamgeToHeavyInAttack {
 	return &additionalDamgeToHeavyInAttack{
 		CardInstance: card,
 		cardAbility:  cardAbility,

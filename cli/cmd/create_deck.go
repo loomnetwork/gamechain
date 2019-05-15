@@ -21,7 +21,7 @@ var createDeckCmd = &cobra.Command{
 	Short: "create a deck",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var deck zb.Deck
+		var deck zb_data.Deck
 
 		if err := json.Unmarshal([]byte(createDeckCmdArgs.data), &deck); err != nil {
 			return err

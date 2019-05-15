@@ -12,7 +12,7 @@ import (
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
 
-func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, err error) {
+func (c *CustomGameMode) serializeGameState(state *zb_data.GameState) (bytes []byte, err error) {
 	rb := newPanicReaderWriterProxy(NewReverseBuffer(make([]byte, 8192)))
 	binary.Write(rb, binary.BigEndian, int64(state.Id))
 	binary.Write(rb, binary.BigEndian, byte(state.CurrentPlayerIndex))
@@ -39,7 +39,7 @@ func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, 
 	return rb.readWriter.(*ReverseBuffer).GetFilledSlice(), nil
 }
 
-func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) []*SimpleCardInstance {
+func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb_data.CardInstance) []*SimpleCardInstance {
 	simpleCards := make([]*SimpleCardInstance, len(cards))
 	for i, card := range cards {
 		simpleCards[i] = newSimpleCardInstanceFromCardInstance(card)
@@ -48,7 +48,7 @@ func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) [
 	return simpleCards
 }
 
-func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb.Deck) (err error) {
+func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb_data.Deck) (err error) {
 	binary.Write(writer, binary.BigEndian, int64(deck.Id))
 	serializeString(writer, deck.Name)
 	binary.Write(writer, binary.BigEndian, int64(deck.OverlordId))
@@ -106,7 +106,7 @@ func (c *CustomGameMode) deserializeSimpleCardInstanceArray(reader io.Reader) (c
 	return cards, nil
 }
 
-func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb.Card) (*zb.CardInstance, error) {
+func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb_data.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb.Card) (*zb_data.CardInstance, error) {
 	newCard := newCardInstanceFromCardDetails(
 		cardLibraryCard,
 		card.InstanceId,
@@ -136,11 +136,11 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 func (c *CustomGameMode) updateCardsFromSimpleCards(
 	ctx contract.Context,
 	gameplay *Gameplay,
-	cards []*zb.CardInstance,
+	cards []*zb_data.CardInstance,
 	simpleCards []*SimpleCardInstance,
-) (newCards []*zb.CardInstance, err error) {
+) (newCards []*zb_data.CardInstance, err error) {
 	for _, simpleCard := range simpleCards {
-		var newCard *zb.CardInstance
+		var newCard *zb_data.CardInstance
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId.Id {
@@ -345,7 +345,7 @@ type SimpleCardInstance struct {
 	gooCostInherited bool
 }
 
-func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
+func newSimpleCardInstanceFromCardInstance(card *zb_data.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
 		mouldId:          card.Prototype.MouldId,
