@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"os"
@@ -26,10 +26,10 @@ var mergeJsonToInitCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var err error
 		var initData zb_data.InitData
-		var defaultDecksData zb.DefaultDecksDataContainer
-		var defaultCollectionData zb.DefaultCollectionDataContainer
+		var defaultDecksData zb_data.DefaultDecksDataContainer
+		var defaultCollectionData zb_data.DefaultCollectionDataContainer
 		var cardLibraryData zb_data.CardLibraryDataContainer
-		var overlordsData zb.OverlordsDataContainer
+		var overlordsData zb_data.OverlordsDataContainer
 		var aiDecksData zb_data.AIDecksDataContainer
 		var overlordLevelingData zb_data.OverlordLevelingDataContainer
 
