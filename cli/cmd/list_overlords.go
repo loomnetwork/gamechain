@@ -27,7 +27,7 @@ var listOverlordsForUserCmd = &cobra.Command{
 
 		req := zb.ListOverlordUserInstancesRequest{
 			UserId:  listOverlordsForUserCmdArgs.userID,
-			Version: listOverlordsForUserCmdArgs.version
+			Version: listOverlordsForUserCmdArgs.version,
 		}
 		result := zb.ListOverlordUserInstancesResponse{}
 
