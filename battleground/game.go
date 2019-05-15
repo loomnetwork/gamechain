@@ -155,19 +155,13 @@ func GamePlayFrom(state *zb_data.GameState, useBackendGameLogic bool, playersDeb
 }
 
 func (g *Gameplay) createGame(ctx contract.Context) error {
-	gamechainState, err := loadState(ctx)
+	overlordPrototypes, err := loadOverlordPrototypes(ctx, g.State.Version)
 	if err != nil {
 		return err
 	}
 
-	defaultDefense := defaultOverlordDefense
-	if gamechainState.DefaultPlayerDefense > 0 {
-		defaultDefense = int(gamechainState.DefaultPlayerDefense)
-	}
-
 	// init players
 	for i := 0; i < len(g.State.PlayerStates); i++ {
-		g.State.PlayerStates[i].Defense = int32(defaultDefense)
 		g.State.PlayerStates[i].CurrentGoo = 0
 		g.State.PlayerStates[i].GooVials = 0
 		g.State.PlayerStates[i].TurnTime = defaultTurnTime
@@ -175,6 +169,19 @@ func (g *Gameplay) createGame(ctx contract.Context) error {
 		g.State.PlayerStates[i].MaxCardsInPlay = maxCardsInPlay
 		g.State.PlayerStates[i].MaxCardsInHand = maxCardsInHand
 		g.State.PlayerStates[i].MaxGooVials = maxGooVials
+
+		overlordFound := false
+		for _, overlordPrototype := range overlordPrototypes.Overlords {
+			if overlordPrototype.Id == g.State.PlayerStates[i].Deck.OverlordId {
+				overlordFound = true
+				g.State.PlayerStates[i].Defense = overlordPrototype.InitialDefense
+				break
+			}
+		}
+
+		if !overlordFound {
+			return fmt.Errorf("overlord with id %d not found", g.State.PlayerStates[i].Deck.OverlordId)
+		}
 	}
 	// coin toss for the first player
 	r := rand.New(rand.NewSource(g.State.RandomSeed))
@@ -225,7 +232,7 @@ loop:
 	// init instance IDs
 	// 0 and 1 are reserved for overlords
 	// ID 0 is the overlord of the player that has the first turn
-	// ID 1 is the overlord of the other player that has the first turn
+	// ID 1 is the overlord of the other player
 	// Card ID's start with the player that has the first turn
 	assignInstanceIds := func(playerState *zb_data.PlayerState, currentInstanceId *int32) {
 		for _, card := range playerState.CardsInPlay {
@@ -1395,9 +1402,9 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 	}
 }
 
-func calculateOverlordLevel(overlordLevelingData *zb_data.OverlordLevelingData, overlord *zb_data.Overlord) int32 {
-	var level = int32(overlord.Level)
-	for overlord.Experience >= getRequiredExperienceForLevel(overlordLevelingData, level + 1) && level < overlordLevelingData.MaxLevel {
+func calculateOverlordLevel(overlordLevelingData *zb_data.OverlordLevelingData, overlordUserData *zb_data.OverlordUserData) int32 {
+	var level = int32(overlordUserData.Level)
+	for overlordUserData.Experience >= getRequiredExperienceForLevel(overlordLevelingData, level + 1) && level < overlordLevelingData.MaxLevel {
 		level++
 	}
 

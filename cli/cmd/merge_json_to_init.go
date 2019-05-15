@@ -29,7 +29,7 @@ var mergeJsonToInitCmd = &cobra.Command{
 		var defaultDecksData zb_data.DefaultDecksDataContainer
 		var defaultCollectionData zb_data.DefaultCollectionDataContainer
 		var cardLibraryData zb_data.CardLibraryDataContainer
-		var overlordsData zb_data.OverlordsDataContainer
+		var overlordsPrototypesData zb_data.OverlordPrototypesDataContainer
 		var aiDecksData zb_data.AIDecksDataContainer
 		var overlordLevelingData zb_data.OverlordLevelingDataContainer
 
@@ -54,7 +54,7 @@ var mergeJsonToInitCmd = &cobra.Command{
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.overlordsFile, &overlordsData)
+		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.overlordsFile, &overlordsPrototypesData)
 		if err != nil {
 			return err
 		}
@@ -73,7 +73,7 @@ var mergeJsonToInitCmd = &cobra.Command{
 		initData.DefaultDecks = defaultDecksData.DefaultDecks
 		initData.DefaultCollection = defaultCollectionData.DefaultCollection
 		initData.Cards = cardLibraryData.Cards
-		initData.Overlords = overlordsData.Overlords
+		initData.Overlords = overlordsPrototypesData.Overlords
 		initData.AiDecks = aiDecksData.AiDecks
 		initData.OverlordLeveling = overlordLevelingData.OverlordLeveling
 
@@ -106,7 +106,7 @@ func init() {
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.defaultDecksFile, "defaultDecks", "", "default_decks.json", "default decks JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.defaultCollectionFile, "defaultCollection", "", "default_collection.json", "default collection JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.cardLibraryFile, "cardLibrary", "", "card_library.json", "card library JSON data file")
-	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.overlordsFile, "overlords", "", "overlords.json", "overlords JSON data file")
+	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.overlordsFile, "overlords", "", "overlords.json", "overlord prototypes JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.aiDecksFile, "aiDecks", "", "ai_decks.json", "AI decks JSON data file")
 	mergeJsonToInitCmd.Flags().StringVarP(&mergeJsonToInitCmdArgs.overlordLevelingFile, "overlordLeveling", "", "overlord_leveling.json", "Overlord leveling JSON data file")
 

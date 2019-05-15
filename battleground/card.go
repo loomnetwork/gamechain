@@ -1,9 +1,9 @@
 package battleground
 
 import (
-	"errors"
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/pkg/errors"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
@@ -70,6 +70,31 @@ func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCar
 	return nil
 }
 
+func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, deck *zb_data.Deck, deckList []*zb_data.Deck, overlords []*zb_data.OverlordUserInstance) error {
+	// validate version on card library
+	if err := validateDeckCards(cardLibrary.Cards, deck.Cards); err != nil {
+		return errors.Wrap(err, "error validating deck cards")
+	}
+
+	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
+	// TODO: Turn on the check when the server side knows user's collection
+	// validating against default card collection
+	// var defaultCollection zb.CardCollectionList
+	// if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
+	// 	return nil, errors.Wrapf(err, "unable to get default collectionlist")
+	// }
+	// // make sure the given cards and amount must be a subset of user's cards
+	// if err := validateDeckCollections(defaultCollection.Cards, req.Deck.Cards); err != nil {
+	// 	return nil, err
+	// }
+
+	if err := validateDeckName(deckList, deck); err != nil {
+		return errors.Wrap(err, "error validating deck name")
+	}
+
+	return nil
+}
+
 func validateDeckCollections(userCollections []*zb_data.CardCollectionCard, deckCollections []*zb_data.CardCollectionCard) error {
 	maxAmountMap := make(map[int64]int64)
 	for _, collection := range userCollections {
@@ -113,21 +138,22 @@ func validateDeckName(deckList []*zb_data.Deck, validatedDeck *zb_data.Deck) err
 	return nil
 }
 
-func getOverlordById(overlordList []*zb_data.Overlord, overlordId int64) *zb_data.Overlord {
-	for _, overlord := range overlordList {
-		if overlord.OverlordId == overlordId {
-			return overlord
+func getOverlordUserDataByPrototypeId(overlordsUserData []*zb_data.OverlordUserData, overlordPrototypeId int64) (*zb_data.OverlordUserData, bool){
+	for _, overlordUserData := range overlordsUserData {
+		if overlordUserData.PrototypeId == overlordPrototypeId {
+			return overlordUserData, true
 		}
 	}
-	return nil
+	return nil, false
 }
 
-func validateDeckOverlord(overlordList []*zb_data.Overlord, overlordID int64) error {
-	// check if the user has overlord
-	if getOverlordById(overlordList, overlordID) != nil {
-		return nil
+func getOverlordUserInstanceByPrototypeId(overlordsUserInstance []*zb_data.OverlordUserInstance, overlordPrototypeId int64) (*zb_data.OverlordUserInstance, bool) {
+	for _, overlordUserInstance := range overlordsUserInstance {
+		if overlordUserInstance.Prototype.Id == overlordPrototypeId {
+			return overlordUserInstance, true
+		}
 	}
-	return fmt.Errorf("overlord: %d cannot be part of deck, since it is not owned by User", overlordID)
+	return nil, false
 }
 
 func shuffleCardInDeck(deck []*zb_data.CardInstance, seed int64, playerIndex int) []*zb_data.CardInstance {
