@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"

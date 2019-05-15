@@ -33,8 +33,10 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 			return fmt.Errorf("mould id not set for card %s", card.Name)
 		}
 
-		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+		if card.SourceMouldId <= 0 {
+			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+				return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+			}
 		}
 
 		err = validateSourceMouldId(card, existingCardsSet)
@@ -192,6 +194,7 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]
 
 	sourceMouldId := card.SourceMouldId
 	overrides := card.Overrides
+	mouldId := card.MouldId
 	sourceCard, exists := mouldIdToCard[sourceMouldId]
 	if !exists {
 		return fmt.Errorf("source card with mould id %d not found", sourceMouldId)
@@ -199,6 +202,8 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]
 
 	card.Reset()
 	proto.Merge(card, sourceCard)
+	card.MouldId = mouldId
+	card.SourceMouldId = sourceMouldId
 
 	if overrides == nil {
 		return nil
