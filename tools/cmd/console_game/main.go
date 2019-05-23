@@ -6,7 +6,8 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/battleground"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -14,10 +15,10 @@ import (
 	"io/ioutil"
 )
 
-var initRequest = zb.InitRequest {
+var initRequest = zb_calls.InitRequest {
 }
 
-var updateInitRequest = zb.UpdateInitRequest {
+var updateInitRequest = zb_calls.UpdateInitRequest {
 }
 
 func readJsonFileToProtobuf(filename string, message proto.Message) error {
@@ -35,13 +36,13 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 }
 
 func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
-	updateInitRequest.InitData = &zb.InitData{}
+	updateInitRequest.InitData = &zb_data.InitData{}
 	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
 	if err != nil {
 		return err
 	}
 
-	initRequest = zb.InitRequest{
+	initRequest = zb_calls.InitRequest{
 		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
 		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
 		Cards:                updateInitRequest.InitData.Cards,
@@ -70,7 +71,7 @@ func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Addr
 	return nil
 }
 
-func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest) {
+func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	if err != nil {
 		panic(err)
@@ -82,7 +83,7 @@ func setupZBContract() {
 	var addr loom.Address
 
 	setup(zvContract, pubKeyHexString, &addr, &ctx)
-	setupAccount(zvContract, ctx, &zb.UpsertAccountRequest{
+	setupAccount(zvContract, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "AccountUser",
 		Image:   "PathToImage",
 		Version: "v1",
@@ -92,7 +93,7 @@ func setupZBContract() {
 func listItemsForPlayer(playerId int) []string {
 	res := []string{}
 
-	cardCollection, err := zvContract.GetCollection(ctx, &zb.GetCollectionRequest{
+	cardCollection, err := zvContract.GetCollection(ctx, &zb_calls.GetCollectionRequest{
 		UserId: "AccountUser",
 	})
 	if err != nil {

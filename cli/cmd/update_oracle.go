@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/cli"
@@ -35,7 +35,7 @@ var updateOracleCmd = &cobra.Command{
 				return errors.Wrap(err, "resolve old oracle address arg")
 			}
 		}
-		_, err = commonTxObjs.contract.Call("UpdateOracle", &zb.UpdateOracle{
+		_, err = commonTxObjs.contract.Call("UpdateOracle", &zb_calls.UpdateOracleRequest{
 			NewOracle: newOracle.MarshalPB(),
 			OldOracle: oldOracle.MarshalPB(),
 		}, signer, nil)

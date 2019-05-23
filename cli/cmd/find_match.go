@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -20,11 +20,11 @@ var findMatchCmd = &cobra.Command{
 	Short: "find match for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.FindMatchRequest{
+		var req = zb_calls.FindMatchRequest{
 			UserId: findMatchCmdArgs.userID,
 			Tags:   findMatchCmdArgs.tags,
 		}
-		var resp zb.FindMatchResponse
+		var resp zb_calls.FindMatchResponse
 
 		req.UserId = findMatchCmdArgs.userID
 

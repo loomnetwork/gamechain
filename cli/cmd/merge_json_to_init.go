@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"os"
@@ -25,13 +25,13 @@ var mergeJsonToInitCmd = &cobra.Command{
 	Short: "merges init data from separate JSON files into a single one",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var err error
-		var initData zb.InitData
-		var defaultDecksData zb.DefaultDecksDataContainer
-		var defaultCollectionData zb.DefaultCollectionDataContainer
-		var cardLibraryData zb.CardLibraryDataContainer
-		var overlordsPrototypesData zb.OverlordPrototypesDataContainer
-		var aiDecksData zb.AIDecksDataContainer
-		var overlordLevelingData zb.OverlordLevelingDataContainer
+		var initData zb_data.InitData
+		var defaultDecksData zb_data.DefaultDecksDataContainer
+		var defaultCollectionData zb_data.DefaultCollectionDataContainer
+		var cardLibraryData zb_data.CardLibraryDataContainer
+		var overlordsPrototypesData zb_data.OverlordPrototypesDataContainer
+		var aiDecksData zb_data.AIDecksDataContainer
+		var overlordLevelingData zb_data.OverlordLevelingDataContainer
 
 		// Read pieces
 		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)

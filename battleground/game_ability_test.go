@@ -2,11 +2,11 @@ package battleground
 
 import (
 	"encoding/hex"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"os"
 	"testing"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -32,7 +32,7 @@ func setupInitFromFile(c *ZombieBattleground, pubKeyHex string, addr *loom.Addre
 	}
 	defer f.Close()
 
-	var updateInitData zb.InitRequest
+	var updateInitData zb_calls.InitRequest
 
 	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &updateInitData); err != nil {
 		panic(err)
