@@ -10,13 +10,13 @@
   Expected = ["loom"]
 
 [[TestCases]]
-  RunCmd = "zb-cli list_overlords -k {{index $.AccountPrivKeyPathList 0}} -u loom"
+  RunCmd = "zb-cli list_overlords -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
   All = true
   Condition = "contains"
   Expected = ["overlord_id: 0", "overlord_id: 1", "overlord_id: 2", "overlord_id: 3", "overlord_id: 4", "overlord_id: 5"]
 
 [[TestCases]]
-  RunCmd = "zb-cli get_overlord -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
+  RunCmd = "zb-cli get_overlord_user_instance -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -v v1"
   All = true
   Condition = "contains"
   Expected = ["overlord_id: 1", "experience: 0"]
@@ -35,7 +35,7 @@
   RunCmd = "checkapphash"
 
 [[TestCases]]
-  RunCmd = "zb-cli get_overlord -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1"
+  RunCmd = "zb-cli get_overlord_user_instance -k {{index $.AccountPrivKeyPathList 0}} -u loom --overlordId 1 -v v1"
   All = true
   Condition = "contains"
   Expected = ["overlord_id: 1", "experience: 15"]

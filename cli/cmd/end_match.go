@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -27,13 +27,13 @@ var endMatchCmd = &cobra.Command{
 		}
 
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.EndMatchRequest{
+		var req = zb_calls.EndMatchRequest{
 			UserId:           endMatchCmdArgs.userID,
 			MatchId:          endMatchCmdArgs.matchID,
 			WinnerId:         endMatchCmdArgs.winnerID,
 			MatchExperiences: *endMatchCmdArgs.playerMatchExperiences,
 		}
-		var resp zb.EndMatchResponse
+		var resp zb_calls.EndMatchResponse
 
 		_, err := commonTxObjs.contract.Call("EndMatch", &req, signer, &resp)
 		if err != nil {

@@ -2,9 +2,9 @@ package battleground
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 // dealDamageToThisAndAdjacentUnits ability
@@ -12,13 +12,13 @@ import (
 //     Deals damage to any zombies to the left and right of the target.
 type dealDamageToThisAndAdjacentUnits struct {
 	*CardInstance
-	cardAbility *zb.CardAbilityDealDamageToThisAndAdjacentUnits
+	cardAbility *zb_data.CardAbilityDealDamageToThisAndAdjacentUnits
 	target      *CardInstance
 }
 
 var _ Ability = &dealDamageToThisAndAdjacentUnits{}
 
-func NewDealDamageToThisAndAdjacentUnits(card *CardInstance, cardAbility *zb.CardAbilityDealDamageToThisAndAdjacentUnits, target *CardInstance) *dealDamageToThisAndAdjacentUnits {
+func NewDealDamageToThisAndAdjacentUnits(card *CardInstance, cardAbility *zb_data.CardAbilityDealDamageToThisAndAdjacentUnits, target *CardInstance) *dealDamageToThisAndAdjacentUnits {
 	return &dealDamageToThisAndAdjacentUnits{
 		CardInstance: card,
 		cardAbility:  cardAbility,
@@ -50,7 +50,7 @@ func (c *dealDamageToThisAndAdjacentUnits) Apply(gameplay *Gameplay) error {
 		return fmt.Errorf("card not found in play %d", c.InstanceId)
 	}
 
-	var left, right *zb.CardInstance
+	var left, right *zb_data.CardInstance
 	if index > 0 {
 		left = owner.CardsInPlay[index-1]
 	}

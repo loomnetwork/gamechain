@@ -3,9 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -21,13 +23,13 @@ var sendActionEndturnCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb.PlayerActionRequest{
+		var req = zb_calls.PlayerActionRequest{
 			MatchId: sendActionEndturnCmdArgs.matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_EndTurn,
+			PlayerAction: &zb_data.PlayerAction{
+				ActionType: zb_enums.PlayerActionType_EndTurn,
 				PlayerId:   sendActionEndturnCmdArgs.userID,
-				Action: &zb.PlayerAction_EndTurn{
-					EndTurn: &zb.PlayerActionEndTurn{},
+				Action: &zb_data.PlayerAction_EndTurn{
+					EndTurn: &zb_data.PlayerActionEndTurn{},
 				},
 			},
 		}

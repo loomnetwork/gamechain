@@ -3,9 +3,10 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -24,16 +25,16 @@ var addGameModeCmd = &cobra.Command{
 	Short: "add a game mode for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req zb.GameModeRequest
+		var req zb_calls.GameModeRequest
 
 		req.Name = addGameModeCmdArgs.name
 		req.Description = addGameModeCmdArgs.description
 		req.Version = addGameModeCmdArgs.version
 		req.Address = addGameModeCmdArgs.address
-		req.GameModeType = zb.GameModeType(addGameModeCmdArgs.gameModeType)
+		req.GameModeType = zb_data.GameModeType(addGameModeCmdArgs.gameModeType)
 		req.Oracle = addGameModeCmdArgs.oracle
 
-		result := zb.GameMode{}
+		result := zb_data.GameMode{}
 
 		_, err := commonTxObjs.contract.Call("AddGameMode", &req, signer, &result)
 		if err != nil {

@@ -3,8 +3,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -18,8 +18,8 @@ var tutorialCompletedCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.RewardTutorialCompletedRequest{}
-		var resp zb.RewardTutorialCompletedResponse
+		req := &zb_calls.RewardTutorialCompletedRequest{}
+		var resp zb_calls.RewardTutorialCompletedResponse
 		_, err := commonTxObjs.contract.Call("RewardTutorialCompleted", req, signer, &resp)
 		if err != nil {
 			return err
