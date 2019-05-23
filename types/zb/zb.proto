@@ -107,16 +107,6 @@ message CardLibrary {
     repeated Card cards = 1;
 }
 
-
-
-/*
-CharacterPrototype
-CharacterUserData
-CharacterUserInstance (сумма CharacterPrototype и CharacterUserData)
-CharacterMatchInstance (рантайм)
-Character (сумма CharacterUserInstance и MatchInstance)
-*/
-
 // Overlord prototype, shared between all users
 message OverlordPrototype {
     int64 id = 1;
@@ -148,7 +138,7 @@ message OverlordUserInstance {
     OverlordUserData userData = 2;
 }
 
-// Overlord data only meaningful within a single match
+// Overlord data that only has meaning within a single match
 message OverlordMatchInstance {
     InstanceId instanceId = 1;
     int32 defense = 2;
