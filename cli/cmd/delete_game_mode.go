@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -20,7 +20,7 @@ var deleteGameModeCmd = &cobra.Command{
 	Short: "delete game mode by id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req zb.DeleteGameModeRequest
+		var req zb_calls.DeleteGameModeRequest
 
 		req.ID = deleteGameModeCmdArgs.ID
 		req.Oracle = deleteGameModeCmdArgs.oracle

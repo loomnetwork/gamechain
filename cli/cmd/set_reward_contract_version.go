@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -25,7 +25,7 @@ var setRewardContractVersionCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.SetRewardContractVersionRequest{
+		req := zb_calls.SetRewardContractVersionRequest{
 			Version: setRewardContractVersionCmdArgs.version,
 			Oracle:  callerAddr.MarshalPB(),
 		}

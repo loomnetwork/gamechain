@@ -1,10 +1,11 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
@@ -21,11 +22,11 @@ func TestAbilityChangeStat(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -41,7 +42,7 @@ func TestAbilityChangeStat(t *testing.T) {
 	}
 
 	t.Run("ChangeStat is activated when attacking a card", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -49,47 +50,47 @@ func TestAbilityChangeStat(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_ChangeStat,
-					Trigger: zb.AbilityTrigger_Attack,
+					Ability: zb_enums.AbilityType_ChangeStat,
+					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 1},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_ChangeStat{
-						ChangeStat: &zb.CardAbilityChangeStat{
+					AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb_data.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Damage,
+							Stat:           zb_enums.Stat_Damage,
 						},
 					},
 				},
-				&zb.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_ChangeStat{
-						ChangeStat: &zb.CardAbilityChangeStat{
+					AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb_data.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Defense,
+							Stat:           zb_enums.Stat_Defense,
 						},
 					},
 				},
 			},
 		}
-		instance1 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
-			Prototype:  &zb.Card{},
-			Instance: &zb.CardInstanceSpecificData{
+		instance1 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
+			Prototype:  &zb_data.Card{},
+			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
 			},
@@ -98,14 +99,14 @@ func TestAbilityChangeStat(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 1},
-					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 2},
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
+					Attacker: &zb_data.InstanceId{Id: 1},
+					Target: &zb_data.Unit{
+						InstanceId: &zb_data.InstanceId{Id: 2},
 					},
 				},
 			},
@@ -118,7 +119,7 @@ func TestAbilityChangeStat(t *testing.T) {
 	})
 
 	t.Run("ChangeStat is activated when attacking overlord", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -126,38 +127,38 @@ func TestAbilityChangeStat(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 2,
 			Damage:  3,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_ChangeStat,
-					Trigger: zb.AbilityTrigger_Attack,
+					Ability: zb_enums.AbilityType_ChangeStat,
+					Trigger: zb_enums.AbilityTrigger_Attack,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 2},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_ChangeStat{
-						ChangeStat: &zb.CardAbilityChangeStat{
+					AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb_data.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Damage,
+							Stat:           zb_enums.Stat_Damage,
 						},
 					},
 				},
-				&zb.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_ChangeStat{
-						ChangeStat: &zb.CardAbilityChangeStat{
+					AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
+						ChangeStat: &zb_data.CardAbilityChangeStat{
 							StatAdjustment: -1,
-							Stat:           zb.Stat_Defense,
+							Stat:           zb_enums.Stat_Defense,
 						},
 					},
 				},
@@ -166,14 +167,14 @@ func TestAbilityChangeStat(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardAttack{
-				CardAttack: &zb.PlayerActionCardAttack{
-					Attacker: &zb.InstanceId{Id: 2},
-					Target: &zb.Unit{
-						InstanceId: &zb.InstanceId{Id: 1},
+			Action: &zb_data.PlayerAction_CardAttack{
+				CardAttack: &zb_data.PlayerActionCardAttack{
+					Attacker: &zb_data.InstanceId{Id: 2},
+					Target: &zb_data.Unit{
+						InstanceId: &zb_data.InstanceId{Id: 1},
 					},
 				},
 			},
