@@ -148,6 +148,8 @@ clean:
 	go clean
 	rm -f \
 		protoc-gen-gogo \
+		types/zb/zb.pb.go \
+		types/zb/Zb.cs \
 		types/zb/zb_data/zb_data.pb.go \
 		types/zb/zb_enums/zb_enums.pb.go \
 		types/zb/zb_calls/zb_calls.pb.go \
