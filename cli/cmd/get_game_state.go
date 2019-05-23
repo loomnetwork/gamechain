@@ -3,10 +3,11 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -25,10 +26,10 @@ var getGameStateCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		var req = zb.GetGameStateRequest{
+		var req = zb_calls.GetGameStateRequest{
 			MatchId: getGameStateCmdArgs.MatchID,
 		}
-		var resp zb.GetGameStateResponse
+		var resp zb_calls.GetGameStateResponse
 		_, err := commonTxObjs.contract.StaticCall("GetGameState", &req, callerAddr, &resp)
 		if err != nil {
 			return err
@@ -44,7 +45,7 @@ var getGameStateCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+			formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 				b := new(bytes.Buffer)
 				for _, a := range abilities {
 					b.WriteString(fmt.Sprintf("Abilities: [%+v trigger=%v active=%v]\n", a.AbilityType, a.Trigger, a.IsActive))

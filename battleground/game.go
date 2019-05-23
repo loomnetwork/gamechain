@@ -3,12 +3,13 @@ package battleground
 import (
 	"bytes"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"math/rand"
 	"sort"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
 )
@@ -37,16 +38,16 @@ var (
 )
 
 type Gameplay struct {
-	State               *zb.GameState
+	State               *zb_data.GameState
 	stateFn             stateFn
-	cardLibrary         *zb.CardList
+	cardLibrary         *zb_data.CardList
 	err                 error
 	customGameMode      *CustomGameMode
-	history             []*zb.HistoryData
+	history             []*zb_data.HistoryData
 	ctx                 *contract.Context
 	useBackendGameLogic bool // when false, disables all checks to ensure the client can work before server is fully implemented
-	actionOutcomes      []*zb.PlayerActionOutcome
-	playersDebugCheats  []*zb.DebugCheatsConfiguration
+	actionOutcomes      []*zb_data.PlayerActionOutcome
+	playersDebugCheats  []*zb_data.DebugCheatsConfiguration
 	logger              *loom.Logger // optional logger
 }
 
@@ -56,11 +57,11 @@ type stateFn func(*Gameplay) stateFn
 func NewGamePlay(ctx contract.Context,
 	id int64,
 	version string,
-	players []*zb.PlayerState,
+	players []*zb_data.PlayerState,
 	seed int64,
 	customGameAddress *loom.Address,
 	useBackendGameLogic bool,
-	playersDebugCheats []*zb.DebugCheatsConfiguration,
+	playersDebugCheats []*zb_data.DebugCheatsConfiguration,
 ) (*Gameplay, error) {
 	var customGameMode *CustomGameMode
 	if customGameAddress != nil {
@@ -70,14 +71,14 @@ func NewGamePlay(ctx contract.Context,
 
 	// So we won't have to do nil checks everywhere along the way
 	if playersDebugCheats == nil {
-		playersDebugCheats = []*zb.DebugCheatsConfiguration{{}, {}}
+		playersDebugCheats = []*zb_data.DebugCheatsConfiguration{{}, {}}
 	}
 
 	// Ensure that same random seed will result in the same player order,
 	// no matter which player joined the pool earlier
 	type playerDataTuple struct {
-		playerState       *zb.PlayerState
-		playerDebugCheats *zb.DebugCheatsConfiguration
+		playerState       *zb_data.PlayerState
+		playerDebugCheats *zb_data.DebugCheatsConfiguration
 	}
 
 	playersData := make([]*playerDataTuple, len(players), len(players))
@@ -97,7 +98,7 @@ func NewGamePlay(ctx contract.Context,
 		playersDebugCheats[i] = playerData.playerDebugCheats
 	}
 
-	state := &zb.GameState{
+	state := &zb_data.GameState{
 		Id:                 id,
 		CurrentActionIndex: -1, // use -1 to avoid confict with default value
 		PlayerStates:       players,
@@ -141,7 +142,7 @@ func NewGamePlay(ctx contract.Context,
 }
 
 // GamePlayFrom initializes and run game to the latest state
-func GamePlayFrom(state *zb.GameState, useBackendGameLogic bool, playersDebugCheats []*zb.DebugCheatsConfiguration) (*Gameplay, error) {
+func GamePlayFrom(state *zb_data.GameState, useBackendGameLogic bool, playersDebugCheats []*zb_data.DebugCheatsConfiguration) (*Gameplay, error) {
 	g := &Gameplay{
 		State:               state,
 		useBackendGameLogic: useBackendGameLogic,
@@ -220,10 +221,10 @@ loop:
 			playerState.CardsInHand = playerState.CardsInDeck[:playerState.InitialCardsInHandCount]
 			playerState.CardsInDeck = playerState.CardsInDeck[playerState.InitialCardsInHandCount:]
 			for i := 0; i < len(playerState.CardsInHand); i++ {
-				playerState.CardsInHand[i].Zone = zb.Zone_HAND
+				playerState.CardsInHand[i].Zone = zb_enums.Zone_HAND
 			}
 			for i := 0; i < len(playerState.CardsInDeck); i++ {
-				playerState.CardsInDeck[i].Zone = zb.Zone_DECK
+				playerState.CardsInDeck[i].Zone = zb_enums.Zone_DECK
 			}
 		}
 	}
@@ -233,36 +234,36 @@ loop:
 	// ID 0 is the overlord of the player that has the first turn
 	// ID 1 is the overlord of the other player
 	// Card ID's start with the player that has the first turn
-	assignInstanceIds := func(playerState *zb.PlayerState, currentInstanceId *int32) {
+	assignInstanceIds := func(playerState *zb_data.PlayerState, currentInstanceId *int32) {
 		for _, card := range playerState.CardsInPlay {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInHand {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInDeck {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 
 		for _, card := range playerState.CardsInGraveyard {
-			card.InstanceId = &zb.InstanceId{Id: *currentInstanceId}
+			card.InstanceId = &zb_data.InstanceId{Id: *currentInstanceId}
 			*currentInstanceId++
 		}
 	}
 	var instanceId int32 = 2
 	if g.State.CurrentPlayerIndex == 0 {
-		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 0}
-		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 1}
+		g.State.PlayerStates[0].InstanceId = &zb_data.InstanceId{Id: 0}
+		g.State.PlayerStates[1].InstanceId = &zb_data.InstanceId{Id: 1}
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 	} else {
-		g.State.PlayerStates[0].InstanceId = &zb.InstanceId{Id: 1}
-		g.State.PlayerStates[1].InstanceId = &zb.InstanceId{Id: 0}
+		g.State.PlayerStates[0].InstanceId = &zb_data.InstanceId{Id: 1}
+		g.State.PlayerStates[1].InstanceId = &zb_data.InstanceId{Id: 0}
 		assignInstanceIds(g.State.PlayerStates[1], &instanceId)
 		assignInstanceIds(g.State.PlayerStates[0], &instanceId)
 	}
@@ -287,17 +288,17 @@ loop:
 	//addGooVialAndFillAll(g.activePlayerOpponent())
 
 	// add history data
-	ps := make([]*zb.Player, len(g.State.PlayerStates))
+	ps := make([]*zb_data.Player, len(g.State.PlayerStates))
 	for i := range g.State.PlayerStates {
-		ps[i] = &zb.Player{
+		ps[i] = &zb_data.Player{
 			Id:   g.State.PlayerStates[i].Id,
 			Deck: g.State.PlayerStates[i].Deck,
 		}
 	}
 	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_CreateGame{
-			CreateGame: &zb.HistoryCreateGame{
+	g.history = append(g.history, &zb_data.HistoryData{
+		Data: &zb_data.HistoryData_CreateGame{
+			CreateGame: &zb_data.HistoryCreateGame{
 				GameId:     g.State.Id,
 				Players:    ps,
 				RandomSeed: g.State.RandomSeed,
@@ -309,7 +310,7 @@ loop:
 }
 
 // AddAction adds the given action and reruns the game state
-func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
+func (g *Gameplay) AddAction(action *zb_data.PlayerAction) error {
 	if err := g.checkCurrentPlayer(action); err != nil {
 		return err
 	}
@@ -318,7 +319,7 @@ func (g *Gameplay) AddAction(action *zb.PlayerAction) error {
 	return g.resume()
 }
 
-func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
+func (g *Gameplay) AddBundleAction(actions ...*zb_data.PlayerAction) error {
 	for _, action := range actions {
 		g.State.PlayerActions = append(g.State.PlayerActions, action)
 	}
@@ -326,11 +327,11 @@ func (g *Gameplay) AddBundleAction(actions ...*zb.PlayerAction) error {
 	return g.resume()
 }
 
-func (g *Gameplay) checkCurrentPlayer(action *zb.PlayerAction) error {
+func (g *Gameplay) checkCurrentPlayer(action *zb_data.PlayerAction) error {
 	// skip checking for allowed actions
-	if action.ActionType == zb.PlayerActionType_Mulligan ||
-		action.ActionType == zb.PlayerActionType_LeaveMatch ||
-		action.ActionType == zb.PlayerActionType_CheatDestroyCardsOnBoard {
+	if action.ActionType == zb_enums.PlayerActionType_Mulligan ||
+		action.ActionType == zb_enums.PlayerActionType_LeaveMatch ||
+		action.ActionType == zb_enums.PlayerActionType_CheatDestroyCardsOnBoard {
 		return nil
 	}
 	activePlayer := g.activePlayer()
@@ -356,23 +357,23 @@ func (g *Gameplay) resume() error {
 	}
 	var state stateFn
 	switch next.ActionType {
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		state = actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		state = actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		state = actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		state = actionOverloadSkillUsed
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		state = actionEndTurn
-	case zb.PlayerActionType_Mulligan:
+	case zb_enums.PlayerActionType_Mulligan:
 		state = actionMulligan
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		state = actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		state = actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		state = actionCheatDestroyCardsOnBoard
 	default:
 		return errInvalidAction
@@ -386,7 +387,7 @@ func (g *Gameplay) resume() error {
 	return g.err
 }
 
-func (g *Gameplay) next() *zb.PlayerAction {
+func (g *Gameplay) next() *zb_data.PlayerAction {
 	if g.State.CurrentActionIndex+1 > int64(len(g.State.PlayerActions)-1) {
 		return nil
 	}
@@ -395,7 +396,7 @@ func (g *Gameplay) next() *zb.PlayerAction {
 	return action
 }
 
-func (g *Gameplay) peek() *zb.PlayerAction {
+func (g *Gameplay) peek() *zb_data.PlayerAction {
 	if g.State.CurrentActionIndex < 0 {
 		return nil
 	}
@@ -406,7 +407,7 @@ func (g *Gameplay) peek() *zb.PlayerAction {
 	return action
 }
 
-func (g *Gameplay) current() *zb.PlayerAction {
+func (g *Gameplay) current() *zb_data.PlayerAction {
 	if g.State.CurrentActionIndex < 0 {
 		return nil
 	}
@@ -417,15 +418,15 @@ func (g *Gameplay) current() *zb.PlayerAction {
 	return action
 }
 
-func (g *Gameplay) activePlayer() *zb.PlayerState {
+func (g *Gameplay) activePlayer() *zb_data.PlayerState {
 	return g.State.PlayerStates[g.State.CurrentPlayerIndex]
 }
 
-func (g *Gameplay) activePlayerDebugCheats() *zb.DebugCheatsConfiguration {
+func (g *Gameplay) activePlayerDebugCheats() *zb_data.DebugCheatsConfiguration {
 	return g.playersDebugCheats[g.State.CurrentPlayerIndex]
 }
 
-func (g *Gameplay) activePlayerOpponent() *zb.PlayerState {
+func (g *Gameplay) activePlayerOpponent() *zb_data.PlayerState {
 	for i, p := range g.State.PlayerStates {
 		if int32(i) != g.State.CurrentPlayerIndex {
 			return p
@@ -440,7 +441,7 @@ func (g *Gameplay) changePlayerTurn() {
 }
 
 // gives the player a new goo vial and fills up all their vials
-func addGooVialAndFillAll(playerState *zb.PlayerState) {
+func addGooVialAndFillAll(playerState *zb_data.PlayerState) {
 	if playerState.GooVials < playerState.MaxGooVials {
 		playerState.GooVials++
 	}
@@ -592,7 +593,7 @@ func (g *Gameplay) DebugState() {
 	fmt.Fprintf(buf, "Is ended: %v, Winner: %s\n", state.IsEnded, state.Winner)
 	fmt.Fprintf(buf, "Current Player Index: %v\n", state.CurrentPlayerIndex)
 
-	formatAbility := func(abilities []*zb.CardAbilityInstance) string {
+	formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 		b := new(bytes.Buffer)
 		for _, a := range abilities {
 			b.WriteString(fmt.Sprintf("[%v, active=%v]\n", a.AbilityType, a.IsActive))
@@ -672,23 +673,23 @@ func gameStart(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_Mulligan:
+	case zb_enums.PlayerActionType_Mulligan:
 		return actionMulligan
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -696,7 +697,7 @@ func gameStart(g *Gameplay) stateFn {
 }
 
 func actionMulligan(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_Mulligan)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_Mulligan)
 	if g.isEnded() {
 		return nil
 	}
@@ -710,7 +711,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		if mulligan == nil {
 			return g.captureErrorAndStop(fmt.Errorf("expect mulligan action"))
 		}
-		var player *zb.PlayerState
+		var player *zb_data.PlayerState
 		var playerIndex int
 		for i := 0; i < len(g.State.PlayerStates); i++ {
 			if g.State.PlayerStates[i].Id == current.PlayerId {
@@ -730,7 +731,7 @@ func actionMulligan(g *Gameplay) stateFn {
 		if len(mulligan.MulliganedCards) > int(player.InitialCardsInHandCount) {
 			return g.captureErrorAndStop(fmt.Errorf("number of mulligan card is exceed the maximum: %d", player.InitialCardsInHandCount))
 		}
-		mulliganCards := make([]*zb.CardInstance, 0)
+		mulliganCards := make([]*zb_data.CardInstance, 0)
 		for _, card := range mulligan.MulliganedCards {
 			handCards := player.CardsInHand[:player.InitialCardsInHandCount]
 			_, mulliganCard, found := findCardInCardListByInstanceId(card, handCards)
@@ -763,30 +764,30 @@ func actionMulligan(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_Mulligan:
+	case zb_enums.PlayerActionType_Mulligan:
 		return actionMulligan
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
 }
 
-func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
+func (g *Gameplay) drawCard(player *zb_data.PlayerState, count int) error {
 	if g.useBackendGameLogic {
 		// check if player has already drawn a card after starting new turn
 		if player.HasDrawnCard {
@@ -808,7 +809,7 @@ func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
 
 			card := player.CardsInDeck[0]
 			cardInstance := NewCardInstance(card, g)
-			cardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
+			cardInstance.MoveZone(zb_enums.Zone_DECK, zb_enums.Zone_HAND)
 		}
 	} else {
 		// do nothing, client currently doesn't care about this at all
@@ -821,7 +822,7 @@ func (g *Gameplay) drawCard(player *zb.PlayerState, count int) error {
 }
 
 func actionCardPlay(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_CardPlay)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_CardPlay)
 	if g.isEnded() {
 		return nil
 	}
@@ -879,9 +880,9 @@ func actionCardPlay(g *Gameplay) stateFn {
 		}
 
 		// record history data
-		g.history = append(g.history, &zb.HistoryData{
-			Data: &zb.HistoryData_FullInstance{
-				FullInstance: &zb.HistoryFullInstance{
+		g.history = append(g.history, &zb_data.HistoryData{
+			Data: &zb_data.HistoryData_FullInstance{
+				FullInstance: &zb_data.HistoryFullInstance{
 					InstanceId: card,
 					Damage:     cardInstance.Instance.Damage,
 					Defense:    cardInstance.Instance.Defense,
@@ -898,21 +899,21 @@ func actionCardPlay(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -920,7 +921,7 @@ func actionCardPlay(g *Gameplay) stateFn {
 }
 
 func actionCardAttack(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_CardAttack)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_CardAttack)
 	if g.isEnded() {
 		return nil
 	}
@@ -944,7 +945,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 			return g.captureErrorAndStop(errors.New("No card attack speficied"))
 		}
 
-		var attacker *zb.CardInstance
+		var attacker *zb_data.CardInstance
 		for _, card := range g.activePlayer().CardsInPlay {
 			if proto.Equal(card.InstanceId, cardAttack.Attacker) {
 				attacker = card
@@ -970,7 +971,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 				return g.captureErrorAndStop(errors.New("No cards on board to attack"))
 
 			}
-			var target *zb.CardInstance
+			var target *zb_data.CardInstance
 			for _, card := range g.activePlayerOpponent().CardsInPlay {
 				if proto.Equal(card.InstanceId, current.GetCardAttack().Target.InstanceId) {
 					target = card
@@ -999,10 +1000,10 @@ func actionCardAttack(g *Gameplay) stateFn {
 	}
 
 	// record history data
-	g.history = append(g.history, &zb.HistoryData{
-		Data: &zb.HistoryData_ChangeInstance{
-			ChangeInstance: &zb.HistoryInstance{
-				InstanceId: &zb.InstanceId{Id: 1}, // TODO change to the actual card id
+	g.history = append(g.history, &zb_data.HistoryData{
+		Data: &zb_data.HistoryData_ChangeInstance{
+			ChangeInstance: &zb_data.HistoryInstance{
+				InstanceId: &zb_data.InstanceId{Id: 1}, // TODO change to the actual card id
 				Value:      2,
 			},
 		},
@@ -1016,21 +1017,21 @@ func actionCardAttack(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1038,7 +1039,7 @@ func actionCardAttack(g *Gameplay) stateFn {
 }
 
 func actionCardAbilityUsed(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_CardAbilityUsed)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_CardAbilityUsed)
 	if g.isEnded() {
 		return nil
 	}
@@ -1116,21 +1117,21 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1138,7 +1139,7 @@ func actionCardAbilityUsed(g *Gameplay) stateFn {
 }
 
 func actionOverloadSkillUsed(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_OverlordSkillUsed)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_OverlordSkillUsed)
 	if g.isEnded() {
 		return nil
 	}
@@ -1163,21 +1164,21 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1185,7 +1186,7 @@ func actionOverloadSkillUsed(g *Gameplay) stateFn {
 }
 
 func actionEndTurn(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_EndTurn)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_EndTurn)
 	if g.isEnded() {
 		return nil
 	}
@@ -1232,21 +1233,21 @@ func actionEndTurn(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_LeaveMatch:
+	case zb_enums.PlayerActionType_LeaveMatch:
 		return actionLeaveMatch
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1254,7 +1255,7 @@ func actionEndTurn(g *Gameplay) stateFn {
 }
 
 func actionLeaveMatch(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_LeaveMatch)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_LeaveMatch)
 	if g.isEnded() {
 		return nil
 	}
@@ -1282,19 +1283,19 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1302,7 +1303,7 @@ func actionLeaveMatch(g *Gameplay) stateFn {
 }
 
 func actionRankBuff(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_RankBuff)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_RankBuff)
 	if g.isEnded() {
 		return nil
 	}
@@ -1320,19 +1321,19 @@ func actionRankBuff(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
@@ -1340,7 +1341,7 @@ func actionRankBuff(g *Gameplay) stateFn {
 }
 
 func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
-	g.debugf("state: %v\n", zb.PlayerActionType_CheatDestroyCardsOnBoard)
+	g.debugf("state: %v\n", zb_enums.PlayerActionType_CheatDestroyCardsOnBoard)
 	if g.isEnded() {
 		return nil
 	}
@@ -1382,26 +1383,26 @@ func actionCheatDestroyCardsOnBoard(g *Gameplay) stateFn {
 	}
 
 	switch next.ActionType {
-	case zb.PlayerActionType_EndTurn:
+	case zb_enums.PlayerActionType_EndTurn:
 		return actionEndTurn
-	case zb.PlayerActionType_CardPlay:
+	case zb_enums.PlayerActionType_CardPlay:
 		return actionCardPlay
-	case zb.PlayerActionType_CardAttack:
+	case zb_enums.PlayerActionType_CardAttack:
 		return actionCardAttack
-	case zb.PlayerActionType_CardAbilityUsed:
+	case zb_enums.PlayerActionType_CardAbilityUsed:
 		return actionCardAbilityUsed
-	case zb.PlayerActionType_OverlordSkillUsed:
+	case zb_enums.PlayerActionType_OverlordSkillUsed:
 		return actionOverloadSkillUsed
-	case zb.PlayerActionType_RankBuff:
+	case zb_enums.PlayerActionType_RankBuff:
 		return actionRankBuff
-	case zb.PlayerActionType_CheatDestroyCardsOnBoard:
+	case zb_enums.PlayerActionType_CheatDestroyCardsOnBoard:
 		return actionCheatDestroyCardsOnBoard
 	default:
 		return nil
 	}
 }
 
-func calculateOverlordLevel(overlordLevelingData *zb.OverlordLevelingData, overlordUserData *zb.OverlordUserData) int32 {
+func calculateOverlordLevel(overlordLevelingData *zb_data.OverlordLevelingData, overlordUserData *zb_data.OverlordUserData) int32 {
 	var level = int32(overlordUserData.Level)
 	for overlordUserData.Experience >= getRequiredExperienceForLevel(overlordLevelingData, level + 1) && level < overlordLevelingData.MaxLevel {
 		level++
@@ -1410,7 +1411,7 @@ func calculateOverlordLevel(overlordLevelingData *zb.OverlordLevelingData, overl
 	return level
 }
 
-func getRequiredExperienceForLevel(overlordLevelingData *zb.OverlordLevelingData, level int32) int64 {
+func getRequiredExperienceForLevel(overlordLevelingData *zb_data.OverlordLevelingData, level int32) int64 {
 	if level <= 1 {
 		return 0
 	}
@@ -1421,7 +1422,7 @@ func getRequiredExperienceForLevel(overlordLevelingData *zb.OverlordLevelingData
 	return requiredExperience
 }
 
-func getLevelReward(overlordLevelingData *zb.OverlordLevelingData, level int32) *zb.LevelReward {
+func getLevelReward(overlordLevelingData *zb_data.OverlordLevelingData, level int32) *zb_data.LevelReward {
 	for i := 0; i < len(overlordLevelingData.Rewards); i++ {
 		if overlordLevelingData.Rewards[i].Level == level {
 			return overlordLevelingData.Rewards[i]

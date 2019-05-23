@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/go-loom"
 	"os"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -23,10 +23,10 @@ var getAIDecksCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := &zb.GetAIDecksRequest{
+		req := &zb_calls.GetAIDecksRequest{
 			Version: getAIDecksCmdArgs.version,
 		}
-		var result zb.GetAIDecksResponse
+		var result zb_calls.GetAIDecksResponse
 		_, err := commonTxObjs.contract.StaticCall("GetAIDecks", req, callerAddr, &result)
 		if err != nil {
 			return err

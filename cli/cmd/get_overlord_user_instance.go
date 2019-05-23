@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -27,12 +27,12 @@ var getOverlordForUserCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb.GetOverlordUserInstanceRequest{
+		req := zb_calls.GetOverlordUserInstanceRequest{
 			UserId: getOverlordForUserCmdArgs.userID,
 			OverlordId: getOverlordForUserCmdArgs.overlordID,
 			Version: getOverlordForUserCmdArgs.version,
 		}
-		result := zb.GetOverlordUserInstanceResponse{}
+		result := zb_calls.GetOverlordUserInstanceResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetOverlordUserInstance", &req, callerAddr, &result)
 		if err != nil {
