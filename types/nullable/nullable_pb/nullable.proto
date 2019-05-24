@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
 option go_package = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb";
 
 message Int32Value {
