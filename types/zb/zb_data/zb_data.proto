@@ -132,6 +132,15 @@ message CardLibrary {
     repeated Card cards = 1;
 }
 
+
+/*
+CharacterPrototype
+CharacterUserData
+CharacterUserInstance (сумма CharacterPrototype и CharacterUserData)
+CharacterMatchInstance (рантайм)
+Character (сумма CharacterUserInstance и MatchInstance)
+*/
+
 // Overlord prototype, shared between all users
 message OverlordPrototype {
     int64 id = 1;
