@@ -81,7 +81,6 @@ proto: types/zb/zb_data/zb_data.pb.go \
     types/zb/zb_calls/zb_calls.cs \
     types/oracle/oracle.pb.go \
     types/nullable/nullable_pb/nullable.pb.go \
-    types/nullable/nullable_pb/nullable.cs \
     types/nullable/nullable_test_pb/nullable_test.pb.go
 
 $(PLUGIN_DIR):
@@ -149,8 +148,6 @@ clean:
 	go clean
 	rm -f \
 		protoc-gen-gogo \
-		types/zb/zb.pb.go \
-		types/zb/Zb.cs \
 		types/zb/zb_data/zb_data.pb.go \
 		types/zb/zb_enums/zb_enums.pb.go \
 		types/zb/zb_calls/zb_calls.pb.go \
@@ -159,7 +156,6 @@ clean:
 		types/zb/zb_enums/ZbEnums.cs \
 		types/oracle/oracle.pb.go \
 		types/nullable/nullable_pb/nullable.pb.go \
-		types/nullable/nullable_pb/Nullable.cs \
 		types/nullable/nullable_test_pb/nullable_test.pb.go \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
