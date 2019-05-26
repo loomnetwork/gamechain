@@ -1,9 +1,10 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"sort"
 	"time"
+
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 const (
@@ -16,10 +17,10 @@ const (
 )
 
 // MatchMakingFunc calculates the score based on the given profile target and candidate
-type MatchMakingFunc func(target *zb_data.PlayerProfile, candidate *zb_data.PlayerProfile) float64
+type MatchMakingFunc func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64
 
 // mmf is the gobal match making function that calculates the match making score
-var mmf MatchMakingFunc = func(target *zb_data.PlayerProfile, candidate *zb_data.PlayerProfile) float64 {
+var mmf MatchMakingFunc = func(target *zb.PlayerProfile, candidate *zb.PlayerProfile) float64 {
 	targetData := target.RegistrationData
 	candidateData := candidate.RegistrationData
 	// map tag to the same tag group
@@ -83,7 +84,7 @@ func sortByPlayerScore(ps []*PlayerScore) []*PlayerScore {
 	return ps
 }
 
-func findPlayerProfileByID(pool *zb_data.PlayerPool, id string) *zb_data.PlayerProfile {
+func findPlayerProfileByID(pool *zb.PlayerPool, id string) *zb.PlayerProfile {
 	for _, pp := range pool.PlayerProfiles {
 		if pp.RegistrationData.UserId == id {
 			return pp
@@ -92,8 +93,8 @@ func findPlayerProfileByID(pool *zb_data.PlayerPool, id string) *zb_data.PlayerP
 	return nil
 }
 
-func removePlayerFromPool(pool *zb_data.PlayerPool, id string) *zb_data.PlayerPool {
-	var newpool zb_data.PlayerPool
+func removePlayerFromPool(pool *zb.PlayerPool, id string) *zb.PlayerPool {
+	var newpool zb.PlayerPool
 	for _, pp := range pool.PlayerProfiles {
 		if pp.RegistrationData.UserId != id {
 			newpool.PlayerProfiles = append(newpool.PlayerProfiles, pp)

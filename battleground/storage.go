@@ -3,13 +3,11 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"strings"
 
 	"github.com/gogo/protobuf/proto"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
 	"github.com/pkg/errors"
@@ -26,7 +24,7 @@ var (
 	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
-	overlordPrototypeListKey    = []byte("overlord-prototype-list")
+	overlordListKey             = []byte("herolist")
 	defaultDecksKey             = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
 	matchCountKey               = []byte("match-count")
@@ -59,8 +57,8 @@ func CardCollectionKey(userID string) []byte {
 	return []byte("user:" + userID + ":collection")
 }
 
-func OverlordsUserDataKey(userID string) []byte {
-	return []byte("user:" + userID + ":overlordsuserdata")
+func OverlordsKey(userID string) []byte {
+	return []byte("user:" + userID + ":heroes")
 }
 
 func UserNotificationsKey(userID string) []byte {
@@ -87,15 +85,15 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-func saveState(ctx contract.Context, state *zb_data.GamechainState) error {
+func saveState(ctx contract.Context, state *zb.GamechainState) error {
 	if err := ctx.Set(stateKey, state); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadState(ctx contract.StaticContext) (*zb_data.GamechainState, error) {
-	var m zb_data.GamechainState
+func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
+	var m zb.GamechainState
 	err := ctx.Get(stateKey, &m)
 	if err != nil {
 		return nil, err
@@ -107,12 +105,12 @@ func RewardTutorialClaimedKey(userID string) []byte {
 	return []byte("user:" + userID + ":rewardTutorialClaimed")
 }
 
-func loadCardCollectionByUserId(ctx contract.Context, userID string, version string) (*zb_data.CardCollectionList, error) {
-	var userCollection zb_data.CardCollectionList
+func loadCardCollectionByUserId(ctx contract.Context, userID string, version string) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
 	err := ctx.Get(CardCollectionKey(userID), &userCollection)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			userCollection.Cards = []*zb_data.CardCollectionCard{}
+			userCollection.Cards = []*zb.CardCollectionCard{}
 		} else {
 			return nil, err
 		}
@@ -124,7 +122,7 @@ func loadCardCollectionByUserId(ctx contract.Context, userID string, version str
 		version,
 		&userCollection,
 		false,
-		func(collection *zb_data.CardCollectionList) error {
+		func(collection *zb.CardCollectionList) error {
 			err := saveCardCollectionByUserId(ctx, userID, collection)
 			if err != nil {
 				return err
@@ -140,18 +138,18 @@ func loadCardCollectionByUserId(ctx contract.Context, userID string, version str
 	return &userCollection, nil
 }
 
-func saveCardCollectionByUserId(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
+func saveCardCollectionByUserId(ctx contract.Context, userID string, cardCollection *zb.CardCollectionList) error {
 	return ctx.Set(CardCollectionKey(userID), cardCollection)
 }
 
 // loadCardCollectionFromAddress loads address mapping to card collection
-func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data.CardCollectionList, error) {
-	var userCollection zb_data.CardCollectionList
+func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb.CardCollectionList, error) {
+	var userCollection zb.CardCollectionList
 	addr := string(ctx.Message().Sender.Local)
 	err := ctx.Get(CardCollectionKey(addr), &userCollection)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			userCollection.Cards = []*zb_data.CardCollectionCard{}
+			userCollection.Cards = []*zb.CardCollectionCard{}
 		} else {
 			return nil, err
 		}
@@ -163,7 +161,7 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data
 		version,
 		&userCollection,
 		false,
-		func(collection *zb_data.CardCollectionList) error {
+		func(collection *zb.CardCollectionList) error {
 			err :=  saveCardCollectionByAddress(ctx, collection)
 			if err != nil {
 				return err
@@ -180,7 +178,7 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data
 }
 
 // saveCardCollectionByAddress save card collection using address as a key
-func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.CardCollectionList) error {
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb.CardCollectionList) error {
 	addr := string(ctx.Message().Sender.Local)
 	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
@@ -198,7 +196,7 @@ func validateAndUpdateGenericCardList(
 	changed = false
 	err = nil
 
-	var cardLibrary *zb_data.CardList = nil
+	var cardLibrary *zb.CardList = nil
 	if validateMouldId {
 		cardLibrary, err = getCardLibrary(ctx, version)
 		if err != nil {
@@ -266,9 +264,9 @@ func validateAndUpdateGenericCardList(
 func validateAndUpdateCardCollectionList(
 	ctx contract.StaticContext,
 	version string,
-	cardCollectionList *zb_data.CardCollectionList,
+	cardCollectionList *zb.CardCollectionList,
 	validateMouldId bool,
-	saveChangedCollectionFunc func(collection *zb_data.CardCollectionList) error,
+	saveChangedCollectionFunc func(collection *zb.CardCollectionList) error,
 ) error {
 	var collectionCardsInterface = make([]interface{}, len(cardCollectionList.Cards))
 	for i, d := range cardCollectionList.Cards {
@@ -281,16 +279,16 @@ func validateAndUpdateCardCollectionList(
 			version,
 			validateMouldId,
 			func(card interface{}) int64 {
-				return card.(*zb_data.CardCollectionCard).MouldId
+				return card.(*zb.CardCollectionCard).MouldId
 			},
 			func(card interface{}, mouldId int64) {
-				card.(*zb_data.CardCollectionCard).MouldId = mouldId
+				card.(*zb.CardCollectionCard).MouldId = mouldId
 			},
 			func(card interface{}) string {
-				return card.(*zb_data.CardCollectionCard).CardNameDeprecated
+				return card.(*zb.CardCollectionCard).CardNameDeprecated
 			},
 			func(card interface{}) {
-				card.(*zb_data.CardCollectionCard).CardNameDeprecated = ""
+				card.(*zb.CardCollectionCard).CardNameDeprecated = ""
 			},
 		)
 	if err != nil {
@@ -298,9 +296,9 @@ func validateAndUpdateCardCollectionList(
 	}
 
 	if changed {
-		cardCollectionList.Cards = make([]*zb_data.CardCollectionCard, len(changedCardCollectionList))
+		cardCollectionList.Cards = make([]*zb.CardCollectionCard, len(changedCardCollectionList))
 		for i := range changedCardCollectionList {
-			cardCollectionList.Cards[i] = changedCardCollectionList[i].(*zb_data.CardCollectionCard)
+			cardCollectionList.Cards[i] = changedCardCollectionList[i].(*zb.CardCollectionCard)
 		}
 
 		err = saveChangedCollectionFunc(cardCollectionList)
@@ -312,12 +310,12 @@ func validateAndUpdateCardCollectionList(
 	return nil
 }
 
-func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
-	var deckList zb_data.DeckList
+func loadDecks(ctx contract.Context, userID string, version string) (*zb.DeckList, error) {
+	var deckList zb.DeckList
 	err := ctx.Get(DecksKey(userID), &deckList)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			deckList.Decks = []*zb_data.Deck{}
+			deckList.Decks = []*zb.Deck{}
 		} else {
 			return nil, err
 		}
@@ -337,16 +335,16 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 				version,
 				true,
 				func(card interface{}) int64 {
-					return card.(*zb_data.DeckCard).MouldId
+					return card.(*zb.DeckCard).MouldId
 				},
 				func(card interface{}, mouldId int64) {
-					card.(*zb_data.DeckCard).MouldId = mouldId
+					card.(*zb.DeckCard).MouldId = mouldId
 				},
 				func(card interface{}) string {
-					return card.(*zb_data.DeckCard).CardNameDeprecated
+					return card.(*zb.DeckCard).CardNameDeprecated
 				},
 				func(card interface{}) {
-					card.(*zb_data.DeckCard).CardNameDeprecated = ""
+					card.(*zb.DeckCard).CardNameDeprecated = ""
 				},
 			)
 		if err != nil {
@@ -355,9 +353,9 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 
 		if changed {
 			deckListChanged = true
-			deck.Cards = make([]*zb_data.DeckCard, len(changedDeckCards))
+			deck.Cards = make([]*zb.DeckCard, len(changedDeckCards))
 			for i := range changedDeckCards {
-				deck.Cards[i] = changedDeckCards[i].(*zb_data.DeckCard)
+				deck.Cards[i] = changedDeckCards[i].(*zb.DeckCard)
 			}
 		}
 	}
@@ -372,16 +370,16 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 	return &deckList, nil
 }
 
-func saveDecks(ctx contract.Context, userID string, decks *zb_data.DeckList) error {
+func saveDecks(ctx contract.Context, userID string, decks *zb.DeckList) error {
 	return ctx.Set(DecksKey(userID), decks)
 }
 
-func saveAIDecks(ctx contract.Context, version string, decks *zb_data.AIDeckList) error {
+func saveAIDecks(ctx contract.Context, version string, decks *zb.AIDeckList) error {
 	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
 }
 
-func loadAIDecks(ctx contract.StaticContext, version string) (*zb_data.AIDeckList, error) {
-	var deckList zb_data.AIDeckList
+func loadAIDecks(ctx contract.StaticContext, version string) (*zb.AIDeckList, error) {
+	var deckList zb.AIDeckList
 	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
 	if err != nil {
 		return nil, err
@@ -389,99 +387,25 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb_data.AIDeckLis
 	return &deckList, nil
 }
 
-func loadOverlordPrototypes(ctx contract.StaticContext, version string) (*zb_data.OverlordPrototypeList, error) {
-	var overlordPrototypes zb_data.OverlordPrototypeList
-	err := ctx.Get(MakeVersionedKey(version, overlordPrototypeListKey), &overlordPrototypes)
-	if err != nil {
-		return nil, errors.Wrap(err, "error loading overlord prototypes")
-	}
-	return &overlordPrototypes, nil
-}
-
-func saveOverlordPrototypes(ctx contract.Context, version string, overlordPrototypes *zb_data.OverlordPrototypeList) error {
-	return ctx.Set(MakeVersionedKey(version, overlordPrototypeListKey), overlordPrototypes)
-}
-
-func loadOverlordsUserData(ctx contract.StaticContext, userID string) (*zb_data.OverlordUserDataList, error) {
-	var overlordsUserData zb_data.OverlordUserDataList
-	err := ctx.Get(OverlordsUserDataKey(userID), &overlordsUserData)
+func loadOverlords(ctx contract.StaticContext, userID string) (*zb.OverlordList, error) {
+	var overlords zb.OverlordList
+	err := ctx.Get(OverlordsKey(userID), &overlords)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			overlordsUserData.OverlordsUserData = []*zb_data.OverlordUserData{}
+			overlords.Overlords = []*zb.Overlord{}
 		} else {
-			return nil, errors.Wrap(err, "error loading overlords user data")
+			return nil, err
 		}
 	}
-	return &overlordsUserData, nil
+	return &overlords, nil
 }
 
-func saveOverlordsUserData(ctx contract.Context, userID string, overlordsUserData *zb_data.OverlordUserDataList) error {
-	return ctx.Set(OverlordsUserDataKey(userID), overlordsUserData)
+func saveOverlords(ctx contract.Context, userID string, overlords *zb.OverlordList) error {
+	return ctx.Set(OverlordsKey(userID), overlords)
 }
 
-func loadOverlordUserInstances(ctx contract.StaticContext, version string, userID string) ([]*zb_data.OverlordUserInstance, error) {
-	prototypeList, err := loadOverlordPrototypes(ctx, version)
-	if err != nil {
-		return nil, errors.Wrap(err, "error loading overlordUserData user instances")
-	}
-
-	userDataList, err := loadOverlordsUserData(ctx, userID)
-	if err != nil {
-		return nil, errors.Wrap(err, "error loading overlord user instances")
-	}
-
-	idToUserData := make(map[int64]*zb_data.OverlordUserData)
-	for _, overlordUserData := range userDataList.OverlordsUserData {
-		idToUserData[overlordUserData.PrototypeId] = overlordUserData
-	}
-
-	var userInstances []*zb_data.OverlordUserInstance
-	for _, overlord := range prototypeList.Overlords {
-		overlordUserData, exists := idToUserData[overlord.Id]
-		if !exists {
-			overlordUserData = &zb_data.OverlordUserData{
-				PrototypeId: overlord.Id,
-				Level: 1,
-			}
-		}
-
-		userInstances = append(userInstances, &zb_data.OverlordUserInstance{
-			Prototype: overlord,
-			UserData: overlordUserData,
-		})
-	}
-	return userInstances, nil
-}
-
-func getOverlordsUserDataFromOverlordUserInstances(overlordUserInstances []*zb_data.OverlordUserInstance) []*zb_data.OverlordUserData {
-	overlordsUserData := make([]*zb_data.OverlordUserData, len(overlordUserInstances), len(overlordUserInstances))
-	for index := range overlordUserInstances {
-		overlordsUserData[index] = overlordUserInstances[index].UserData
-	}
-
-	return overlordsUserData
-}
-
-/*
-func saveState(ctx contract.Context, state *zb.GamechainState) error {
-	if err := ctx.Set(stateKey, state); err != nil {
-		return err
-	}
-	return nil
-}
-
-func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
-	var m zb.GamechainState
-	err := ctx.Get(stateKey, &m)
-	if err != nil {
-		return nil, err
-	}
-	return &m, nil
-}
- */
-
-func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb_data.OverlordLevelingData, error) {
-	var overlordLevelingData zb_data.OverlordLevelingData
+func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb.OverlordLevelingData, error) {
+	var overlordLevelingData zb.OverlordLevelingData
 	if err := ctx.Get(MakeVersionedKey(version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
 		return nil, errors.Wrap(err, "error getting overlord leveling data")
 	}
@@ -489,7 +413,7 @@ func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb_d
 	return &overlordLevelingData, nil
 }
 
-func saveOverlordLevelingData(ctx contract.Context, version string, overlordLevelingData *zb_data.OverlordLevelingData) error {
+func saveOverlordLevelingData(ctx contract.Context, version string, overlordLevelingData *zb.OverlordLevelingData) error {
 	if err := ctx.Set(MakeVersionedKey(version, overlordLevelingDataKey), overlordLevelingData); err != nil {
 		return errors.Wrap(err, "error setting overlord leveling data")
 	}
@@ -512,8 +436,8 @@ func isOwner(ctx contract.Context, userID string) bool {
 	return ok
 }
 
-func deleteDeckByID(deckList []*zb_data.Deck, id int64) ([]*zb_data.Deck, bool) {
-	newList := make([]*zb_data.Deck, 0)
+func deleteDeckByID(deckList []*zb.Deck, id int64) ([]*zb.Deck, bool) {
+	newList := make([]*zb.Deck, 0)
 	for _, deck := range deckList {
 		if deck.Id != id {
 			newList = append(newList, deck)
@@ -522,7 +446,7 @@ func deleteDeckByID(deckList []*zb_data.Deck, id int64) ([]*zb_data.Deck, bool) 
 	return newList, len(newList) != len(deckList)
 }
 
-func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb_data.PlayerProfileRegistrationData, version string) (*zb_data.Deck, error) {
+func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb.PlayerProfileRegistrationData, version string) (*zb.Deck, error) {
 	if registrationData.DebugCheats.Enabled && registrationData.DebugCheats.UseCustomDeck {
 		return registrationData.DebugCheats.CustomDeck, nil
 	}
@@ -540,7 +464,7 @@ func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb_data
 	return matchedDeck, nil
 }
 
-func getDeckByID(deckList []*zb_data.Deck, id int64) *zb_data.Deck {
+func getDeckByID(deckList []*zb.Deck, id int64) *zb.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
 			return deck
@@ -549,7 +473,7 @@ func getDeckByID(deckList []*zb_data.Deck, id int64) *zb_data.Deck {
 	return nil
 }
 
-func getDeckByName(deckList []*zb_data.Deck, name string) *zb_data.Deck {
+func getDeckByName(deckList []*zb.Deck, name string) *zb.Deck {
 	for _, deck := range deckList {
 		if strings.EqualFold(deck.Name, name) {
 			return deck
@@ -558,7 +482,7 @@ func getDeckByName(deckList []*zb_data.Deck, name string) *zb_data.Deck {
 	return nil
 }
 
-func copyAccountInfo(account *zb_data.Account, req *zb_calls.UpsertAccountRequest) {
+func copyAccountInfo(account *zb.Account, req *zb.UpsertAccountRequest) {
 	account.PhoneNumberVerified = req.PhoneNumberVerified
 	account.RewardRedeemed = req.RewardRedeemed
 	account.IsKickstarter = req.IsKickstarter
@@ -569,32 +493,32 @@ func copyAccountInfo(account *zb_data.Account, req *zb_calls.UpsertAccountReques
 	account.GameMembershipTier = req.GameMembershipTier
 }
 
-func savePlayerPool(ctx contract.Context, pool *zb_data.PlayerPool) error {
+func savePlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(playerPoolKey, pool)
 }
 
-func loadPlayerPool(ctx contract.Context) (*zb_data.PlayerPool, error) {
+func loadPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
 	return loadPlayerPoolInternal(ctx, playerPoolKey)
 }
 
-func saveTaggedPlayerPool(ctx contract.Context, pool *zb_data.PlayerPool) error {
+func saveTaggedPlayerPool(ctx contract.Context, pool *zb.PlayerPool) error {
 	return ctx.Set(taggedPlayerPoolKey, pool)
 }
 
-func loadTaggedPlayerPool(ctx contract.Context) (*zb_data.PlayerPool, error) {
+func loadTaggedPlayerPool(ctx contract.Context) (*zb.PlayerPool, error) {
 	return loadPlayerPoolInternal(ctx, taggedPlayerPoolKey)
 }
 
-func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb_data.PlayerPool, error) {
-	var pool zb_data.PlayerPool
+func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb.PlayerPool, error) {
+	var pool zb.PlayerPool
 	err := ctx.Get(poolKey, &pool)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			pool.PlayerProfiles = []*zb_data.PlayerProfile{}
+			pool.PlayerProfiles = []*zb.PlayerProfile{}
 		} else {
 			// Try to reset the pool
 			ctx.Logger().Error("error loading pool, clearing", "key", string(poolKey), "err", err)
-			pool = zb_data.PlayerPool{}
+			pool = zb.PlayerPool{}
 			if err = ctx.Set(poolKey, &pool); err != nil {
 				return nil, err
 			}
@@ -605,14 +529,14 @@ func loadPlayerPoolInternal(ctx contract.Context, poolKey []byte) (*zb_data.Play
 	return &pool, nil
 }
 
-func saveMatch(ctx contract.Context, match *zb_data.Match) error {
+func saveMatch(ctx contract.Context, match *zb.Match) error {
 	if err := ctx.Set(MatchKey(match.Id), match); err != nil {
 		return err
 	}
 	return nil
 }
 
-func createMatch(ctx contract.Context, match *zb_data.Match, useBackendGameLogic bool) error {
+func createMatch(ctx contract.Context, match *zb.Match, useBackendGameLogic bool) error {
 	nextID, err := nextMatchID(ctx)
 	if err != nil {
 		return err
@@ -624,8 +548,8 @@ func createMatch(ctx contract.Context, match *zb_data.Match, useBackendGameLogic
 	return saveMatch(ctx, match)
 }
 
-func loadMatch(ctx contract.StaticContext, matchID int64) (*zb_data.Match, error) {
-	var m zb_data.Match
+func loadMatch(ctx contract.StaticContext, matchID int64) (*zb.Match, error) {
+	var m zb.Match
 	err := ctx.Get(MatchKey(matchID), &m)
 	if err != nil {
 		return nil, err
@@ -634,24 +558,24 @@ func loadMatch(ctx contract.StaticContext, matchID int64) (*zb_data.Match, error
 }
 
 func nextMatchID(ctx contract.Context) (int64, error) {
-	var count zb_data.MatchCount
+	var count zb.MatchCount
 	err := ctx.Get(matchCountKey, &count)
 	if err != nil && err != contract.ErrNotFound {
 		return 0, err
 	}
 	count.CurrentId++
-	if err := ctx.Set(matchCountKey, &zb_data.MatchCount{CurrentId: count.CurrentId}); err != nil {
+	if err := ctx.Set(matchCountKey, &zb.MatchCount{CurrentId: count.CurrentId}); err != nil {
 		return 0, err
 	}
 	return count.CurrentId, nil
 }
 
-func setRewardTutorialClaimed(ctx contract.Context, userID string, claim *zb_data.RewardTutorialClaimed) error {
+func setRewardTutorialClaimed(ctx contract.Context, userID string, claim *zb.RewardTutorialClaimed) error {
 	return ctx.Set(RewardTutorialClaimedKey(userID), claim)
 }
 
-func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb_data.RewardTutorialClaimed, error) {
-	var rewardClaimed zb_data.RewardTutorialClaimed
+func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb.RewardTutorialClaimed, error) {
+	var rewardClaimed zb.RewardTutorialClaimed
 	err := ctx.Get(RewardTutorialClaimedKey(userID), &rewardClaimed)
 	if err != nil && err != contract.ErrNotFound {
 		return nil, err
@@ -659,15 +583,15 @@ func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb_data.Rew
 	return &rewardClaimed, nil
 }
 
-func saveGameState(ctx contract.Context, gs *zb_data.GameState) error {
+func saveGameState(ctx contract.Context, gs *zb.GameState) error {
 	if err := ctx.Set(GameStateKey(gs.Id), gs); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadGameState(ctx contract.StaticContext, id int64) (*zb_data.GameState, error) {
-	var state zb_data.GameState
+func loadGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) {
+	var state zb.GameState
 	err := ctx.Get(GameStateKey(id), &state)
 	if err != nil {
 		return nil, err
@@ -675,15 +599,15 @@ func loadGameState(ctx contract.StaticContext, id int64) (*zb_data.GameState, er
 	return &state, nil
 }
 
-func saveInitialGameState(ctx contract.Context, gs *zb_data.GameState) error {
+func saveInitialGameState(ctx contract.Context, gs *zb.GameState) error {
 	if err := ctx.Set(InitialGameStateKey(gs.Id), gs); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadInitialGameState(ctx contract.StaticContext, id int64) (*zb_data.GameState, error) {
-	var state zb_data.GameState
+func loadInitialGameState(ctx contract.StaticContext, id int64) (*zb.GameState, error) {
+	var state zb.GameState
 	err := ctx.Get(InitialGameStateKey(id), &state)
 	if err != nil {
 		return nil, err
@@ -691,15 +615,15 @@ func loadInitialGameState(ctx contract.StaticContext, id int64) (*zb_data.GameSt
 	return &state, nil
 }
 
-func saveUserCurrentMatch(ctx contract.Context, userID string, match *zb_data.Match) error {
+func saveUserCurrentMatch(ctx contract.Context, userID string, match *zb.Match) error {
 	if err := ctx.Set(UserMatchKey(userID), match); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadUserCurrentMatch(ctx contract.StaticContext, userID string) (*zb_data.Match, error) {
-	var m zb_data.Match
+func loadUserCurrentMatch(ctx contract.StaticContext, userID string) (*zb.Match, error) {
+	var m zb.Match
 	err := ctx.Get(UserMatchKey(userID), &m)
 	if err != nil {
 		return nil, err
@@ -707,19 +631,19 @@ func loadUserCurrentMatch(ctx contract.StaticContext, userID string) (*zb_data.M
 	return &m, nil
 }
 
-func saveUserNotifications(ctx contract.Context, userID string, notifications *zb_data.NotificationList) error {
+func saveUserNotifications(ctx contract.Context, userID string, notifications *zb.NotificationList) error {
 	if err := ctx.Set(UserNotificationsKey(userID), notifications); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadUserNotifications(ctx contract.StaticContext, userID string) (*zb_data.NotificationList, error) {
-	var notificationList zb_data.NotificationList
+func loadUserNotifications(ctx contract.StaticContext, userID string) (*zb.NotificationList, error) {
+	var notificationList zb.NotificationList
 	err := ctx.Get(UserNotificationsKey(userID), &notificationList)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			notificationList.Notifications = []*zb_data.Notification{}
+			notificationList.Notifications = []*zb.Notification{}
 		} else {
 			return nil, err
 		}
@@ -727,10 +651,10 @@ func loadUserNotifications(ctx contract.StaticContext, userID string) (*zb_data.
 	return &notificationList, nil
 }
 
-func addGameModeToList(ctx contract.Context, gameMode *zb_data.GameMode) error {
+func addGameModeToList(ctx contract.Context, gameMode *zb.GameMode) error {
 	gameModeList, err := loadGameModeList(ctx)
 	if gameModeList == nil {
-		gameModeList = &zb_data.GameModeList{GameModes: []*zb_data.GameMode{}}
+		gameModeList = &zb.GameModeList{GameModes: []*zb.GameMode{}}
 	} else if err != nil {
 		return err
 	}
@@ -743,7 +667,7 @@ func addGameModeToList(ctx contract.Context, gameMode *zb_data.GameMode) error {
 	return nil
 }
 
-func saveGameModeList(ctx contract.Context, gameModeList *zb_data.GameModeList) error {
+func saveGameModeList(ctx contract.Context, gameModeList *zb.GameModeList) error {
 	if err := ctx.Set(gameModeListKey, gameModeList); err != nil {
 		return err
 	}
@@ -751,12 +675,12 @@ func saveGameModeList(ctx contract.Context, gameModeList *zb_data.GameModeList) 
 	return nil
 }
 
-func loadGameModeList(ctx contract.StaticContext) (*zb_data.GameModeList, error) {
-	var list zb_data.GameModeList
+func loadGameModeList(ctx contract.StaticContext) (*zb.GameModeList, error) {
+	var list zb.GameModeList
 	err := ctx.Get(gameModeListKey, &list)
 	if err != nil {
 		if err == contract.ErrNotFound {
-			list.GameModes = []*zb_data.GameMode{}
+			list.GameModes = []*zb.GameMode{}
 		} else {
 			return nil, err
 		}
@@ -765,7 +689,7 @@ func loadGameModeList(ctx contract.StaticContext) (*zb_data.GameModeList, error)
 	return &list, nil
 }
 
-func getGameModeFromList(gameModeList *zb_data.GameModeList, ID string) *zb_data.GameMode {
+func getGameModeFromList(gameModeList *zb.GameModeList, ID string) *zb.GameMode {
 	for _, gameMode := range gameModeList.GameModes {
 		if gameMode.ID == ID {
 			return gameMode
@@ -775,7 +699,7 @@ func getGameModeFromList(gameModeList *zb_data.GameModeList, ID string) *zb_data
 	return nil
 }
 
-func getGameModeFromListByName(gameModeList *zb_data.GameModeList, name string) *zb_data.GameMode {
+func getGameModeFromListByName(gameModeList *zb.GameModeList, name string) *zb.GameMode {
 	for _, gameMode := range gameModeList.GameModes {
 		if gameMode.Name == name {
 			return gameMode
@@ -785,20 +709,20 @@ func getGameModeFromListByName(gameModeList *zb_data.GameModeList, name string) 
 	return nil
 }
 
-func deleteGameMode(gameModeList *zb_data.GameModeList, ID string) (*zb_data.GameModeList, bool) {
-	newList := make([]*zb_data.GameMode, 0)
+func deleteGameMode(gameModeList *zb.GameModeList, ID string) (*zb.GameModeList, bool) {
+	newList := make([]*zb.GameMode, 0)
 	for _, gameMode := range gameModeList.GameModes {
 		if gameMode.ID != ID {
 			newList = append(newList, gameMode)
 		}
 	}
 
-	return &zb_data.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
+	return &zb.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb_data.Card) *zb_data.CardInstanceSpecificData {
-	cardDetails = proto.Clone(cardDetails).(*zb_data.Card)
-	return &zb_data.CardInstanceSpecificData{
+func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb.Card) *zb.CardInstanceSpecificData {
+	cardDetails = proto.Clone(cardDetails).(*zb.Card)
+	return &zb.CardInstanceSpecificData{
 		Damage:    cardDetails.Damage,
 		Defense:   cardDetails.Defense,
 		Type:      cardDetails.Type,
@@ -808,77 +732,77 @@ func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb_data.Card) *zb_d
 	}
 }
 
-func newCardInstanceFromCardDetails(cardDetails *zb_data.Card, instanceID *zb_data.InstanceId, owner string, ownerIndex int32) *zb_data.CardInstance {
+func newCardInstanceFromCardDetails(cardDetails *zb.Card, instanceID *zb.InstanceId, owner string, ownerIndex int32) *zb.CardInstance {
 	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
-	var abilities []*zb_data.CardAbilityInstance
+	var abilities []*zb.CardAbilityInstance
 	for _, raw := range cardDetails.Abilities {
 		switch raw.Ability {
-		case zb_enums.AbilityType_Rage:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_Rage:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_Rage{
-					Rage: &zb_data.CardAbilityRage{
+				AbilityType: &zb.CardAbilityInstance_Rage{
+					Rage: &zb.CardAbilityRage{
 						AddedDamage: raw.Value,
 					},
 				},
 			})
-		case zb_enums.AbilityType_PriorityAttack:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_PriorityAttack:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_PriorityAttack{
-					PriorityAttack: &zb_data.CardAbilityPriorityAttack{},
+				AbilityType: &zb.CardAbilityInstance_PriorityAttack{
+					PriorityAttack: &zb.CardAbilityPriorityAttack{},
 				},
 			})
-		case zb_enums.AbilityType_ReanimateUnit:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_ReanimateUnit:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_Reanimate{
-					Reanimate: &zb_data.CardAbilityReanimate{
+				AbilityType: &zb.CardAbilityInstance_Reanimate{
+					Reanimate: &zb.CardAbilityReanimate{
 						DefaultDamage:  cardDetails.Damage,
 						DefaultDefense: cardDetails.Defense,
 					},
 				},
 			})
-		case zb_enums.AbilityType_ChangeStat:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_ChangeStat:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
-					ChangeStat: &zb_data.CardAbilityChangeStat{
+				AbilityType: &zb.CardAbilityInstance_ChangeStat{
+					ChangeStat: &zb.CardAbilityChangeStat{
 						StatAdjustment: raw.Value,
 						Stat:           raw.Stat,
 					},
 				},
 			})
-		case zb_enums.AbilityType_AttackOverlord:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_AttackOverlord:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_AttackOverlord{
-					AttackOverlord: &zb_data.CardAbilityAttackOverlord{
+				AbilityType: &zb.CardAbilityInstance_AttackOverlord{
+					AttackOverlord: &zb.CardAbilityAttackOverlord{
 						Damage: raw.Value,
 					},
 				},
 			})
-		case zb_enums.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
-					ReplaceUnitsWithTypeOnStrongerOnes: &zb_data.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+				AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+					ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
 						Faction: cardDetails.Faction,
 					},
 				},
 			})
-		case zb_enums.AbilityType_DealDamageToThisAndAdjacentUnits:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
+		case zb.AbilityType_DealDamageToThisAndAdjacentUnits:
+			abilities = append(abilities, &zb.CardAbilityInstance{
 				IsActive: true,
 				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
-					DealDamageToThisAndAdjacentUnits: &zb_data.CardAbilityDealDamageToThisAndAdjacentUnits{
+				AbilityType: &zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
+					DealDamageToThisAndAdjacentUnits: &zb.CardAbilityDealDamageToThisAndAdjacentUnits{
 						AdjacentDamage: cardDetails.Damage,
 					},
 				},
@@ -886,19 +810,19 @@ func newCardInstanceFromCardDetails(cardDetails *zb_data.Card, instanceID *zb_da
 		}
 
 	}
-	return &zb_data.CardInstance{
-		InstanceId:         proto.Clone(instanceID).(*zb_data.InstanceId),
+	return &zb.CardInstance{
+		InstanceId:         proto.Clone(instanceID).(*zb.InstanceId),
 		Owner:              owner,
-		Prototype:          proto.Clone(cardDetails).(*zb_data.Card),
+		Prototype:          proto.Clone(cardDetails).(*zb.Card),
 		Instance:           instance,
 		AbilitiesInstances: abilities,
-		Zone:               zb_enums.Zone_DECK, // default to deck
+		Zone:               zb.Zone_DECK, // default to deck
 		OwnerIndex:         ownerIndex,
 	}
 }
 
-func getInstanceIdsFromCardInstances(cards []*zb_data.CardInstance) []*zb_data.InstanceId {
-	var instanceIds = make([]*zb_data.InstanceId, len(cards), len(cards))
+func getInstanceIdsFromCardInstances(cards []*zb.CardInstance) []*zb.InstanceId {
+	var instanceIds = make([]*zb.InstanceId, len(cards), len(cards))
 	for i := range cards {
 		instanceIds[i] = cards[i].InstanceId
 	}
@@ -906,7 +830,7 @@ func getInstanceIdsFromCardInstances(cards []*zb_data.CardInstance) []*zb_data.I
 	return instanceIds
 }
 
-func populateDeckCards(cardLibrary *zb_data.CardList, playerStates []*zb_data.PlayerState, useBackendGameLogic bool) error {
+func populateDeckCards(cardLibrary *zb.CardList, playerStates []*zb.PlayerState, useBackendGameLogic bool) error {
 	for playerIndex, playerState := range playerStates {
 		deck := playerState.Deck
 		if deck == nil {
@@ -935,68 +859,68 @@ func populateDeckCards(cardLibrary *zb_data.CardList, playerStates []*zb_data.Pl
 	return nil
 }
 
-func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb_data.PlayerState) {
+func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb.PlayerState) {
 	if !useBackendGameLogic {
 		return
 	}
 
 	for _, playerState := range playerStates {
-		filteredCards := make([]*zb_data.CardInstance, 0, 0)
+		filteredCards := make([]*zb.CardInstance, 0, 0)
 
 		for _, card := range playerState.CardsInDeck {
-			filteredAbilities := make([]*zb_data.AbilityData, 0, 0)
+			filteredAbilities := make([]*zb.AbilityData, 0, 0)
 			for _, ability := range card.Prototype.Abilities {
 				switch ability.Ability {
-				case zb_enums.AbilityType_Rage:
+				case zb.AbilityType_Rage:
 					fallthrough
-				case zb_enums.AbilityType_PriorityAttack:
+				case zb.AbilityType_PriorityAttack:
 					fallthrough
-				case zb_enums.AbilityType_ReanimateUnit:
+				case zb.AbilityType_ReanimateUnit:
 					fallthrough
-				case zb_enums.AbilityType_ChangeStat:
+				case zb.AbilityType_ChangeStat:
 					fallthrough
-				case zb_enums.AbilityType_AttackOverlord:
+				case zb.AbilityType_AttackOverlord:
 					fallthrough
-				case zb_enums.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
+				case zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
 					filteredAbilities = append(filteredAbilities, ability)
 				default:
-					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb_enums.AbilityType_Enum_name[int32(ability.Ability)], card.Prototype.Name)
+					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb.AbilityType_Enum_name[int32(ability.Ability)], card.Prototype.Name)
 				}
 			}
 
 			card.Prototype.Abilities = filteredAbilities
 
 			switch card.Prototype.Type {
-			case zb_enums.CardType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb_enums.CardType_Heavy:
-				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb_enums.CardType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
-				card.Prototype.Type = zb_enums.CardType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
+				card.Prototype.Type = zb.CardType_Walker
 			}
 
 			switch card.Instance.Type {
-			case zb_enums.CardType_Feral:
+			case zb.CardType_Feral:
 				fallthrough
-			case zb_enums.CardType_Heavy:
-				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb_enums.CardType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
-				card.Instance.Type = zb_enums.CardType_Walker
+			case zb.CardType_Heavy:
+				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb.CardType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
+				card.Instance.Type = zb.CardType_Walker
 			}
 
 			switch card.Prototype.Kind {
-			case zb_enums.CardKind_Creature:
+			case zb.CardKind_Creature:
 				filteredCards = append(filteredCards, card)
 			default:
-				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb_enums.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
+				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
 			}
 
 			switch card.Prototype.Rank {
-			case zb_enums.CreatureRank_Officer:
+			case zb.CreatureRank_Officer:
 				fallthrough
-			case zb_enums.CreatureRank_Commander:
+			case zb.CreatureRank_Commander:
 				fallthrough
-			case zb_enums.CreatureRank_General:
-				fmt.Printf("Unsupported CreatureRank value %s, fallback to MINION (card %s)\n", zb_enums.CreatureRank_Enum_name[int32(card.Prototype.Rank)], card.Prototype.Name)
-				card.Prototype.Rank = zb_enums.CreatureRank_Minion
+			case zb.CreatureRank_General:
+				fmt.Printf("Unsupported CreatureRank value %s, fallback to MINION (card %s)\n", zb.CreatureRank_Enum_name[int32(card.Prototype.Rank)], card.Prototype.Name)
+				card.Prototype.Rank = zb.CreatureRank_Minion
 			}
 		}
 
@@ -1004,28 +928,16 @@ func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb_
 	}
 }
 
-func getCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardList, error) {
-	var cardList zb_data.CardList
+func getCardLibrary(ctx contract.StaticContext, version string) (*zb.CardList, error) {
+	var cardList zb.CardList
 	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
 		return nil, fmt.Errorf("error getting card library: %s", err)
-	}
-
-	mouldIdToCard, err := getMouldIdToCardMap(cardList.Cards)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, card := range cardList.Cards {
-		err = applySourceMouldIdAndOverrides(card, mouldIdToCard)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	return &cardList, nil
 }
 
-func getCardByName(cardList *zb_data.CardList, cardName string) (*zb_data.Card, error) {
+func getCardByName(cardList *zb.CardList, cardName string) (*zb.Card, error) {
 	for _, card := range cardList.Cards {
 		if card.Name == cardName {
 			return card, nil
@@ -1034,7 +946,7 @@ func getCardByName(cardList *zb_data.CardList, cardName string) (*zb_data.Card, 
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }
 
-func getCardByMouldId(cardList *zb_data.CardList, mouldId int64) (*zb_data.Card, error) {
+func getCardByMouldId(cardList *zb.CardList, mouldId int64) (*zb.Card, error) {
 	for _, card := range cardList.Cards {
 		if card.MouldId == mouldId {
 			return card, nil

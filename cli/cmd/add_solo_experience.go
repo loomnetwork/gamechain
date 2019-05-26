@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -22,13 +22,13 @@ var addSoloExperienceCmd = &cobra.Command{
 	Short: "add experience to an overlord (used for Solo mode)",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb_calls.AddSoloExperienceRequest{
+		var req = zb.AddSoloExperienceRequest{
 			Version:    addSoloExperienceCmdArgs.version,
 			UserId:     addSoloExperienceCmdArgs.userId,
 			OverlordId: addSoloExperienceCmdArgs.overlordId,
 			Experience: addSoloExperienceCmdArgs.experience,
 		}
-		var resp zb_calls.AddSoloExperienceResponse
+		var resp zb.AddSoloExperienceResponse
 
 		_, err := commonTxObjs.contract.Call("AddSoloExperience", &req, signer, &resp)
 		if err != nil {

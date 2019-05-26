@@ -3,11 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -28,16 +26,16 @@ var sendActionCardAttackCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb_calls.PlayerActionRequest{
+		var req = zb.PlayerActionRequest{
 			MatchId: sendActionCardAttackCmdArgs.matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardAttack,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardAttack,
 				PlayerId:   sendActionCardAttackCmdArgs.userID,
-				Action: &zb_data.PlayerAction_CardAttack{
-					CardAttack: &zb_data.PlayerActionCardAttack{
-						Attacker: &zb_data.InstanceId{Id: sendActionCardAttackCmdArgs.attackerID},
-						Target: &zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: sendActionCardAttackCmdArgs.targetID},
+				Action: &zb.PlayerAction_CardAttack{
+					CardAttack: &zb.PlayerActionCardAttack{
+						Attacker: &zb.InstanceId{Id: sendActionCardAttackCmdArgs.attackerID},
+						Target: &zb.Unit{
+							InstanceId: &zb.InstanceId{Id: sendActionCardAttackCmdArgs.targetID},
 						},
 					},
 				},

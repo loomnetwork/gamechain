@@ -2,8 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -31,8 +30,8 @@ var callGameModeCustomGameModeFunctionCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		var req zb_calls.GetGameModeRequest
-		var gameMode = zb_data.GameMode{}
+		var req zb.GetGameModeRequest
+		var gameMode = zb.GameMode{}
 
 		req.ID = callGameModeCustomGameModeFunctionArgs.ID
 
@@ -41,7 +40,7 @@ var callGameModeCustomGameModeFunctionCmd = &cobra.Command{
 			return err
 		}
 
-		var reqUi zb_calls.CallCustomGameModeFunctionRequest
+		var reqUi zb.CallCustomGameModeFunctionRequest
 
 		reqUi.Address = gameMode.Address
 		reqUi.CallData = abiInputFileContents

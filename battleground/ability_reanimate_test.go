@@ -1,11 +1,10 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
@@ -22,11 +21,11 @@ func TestAbilityReanimate(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb_data.Deck{
+	deck0 := &zb.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb_data.DeckCard{
+		Cards: []*zb.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -42,7 +41,7 @@ func TestAbilityReanimate(t *testing.T) {
 	}
 
 	t.Run("Reanimate ability get activated when attacker death", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -50,54 +49,54 @@ func TestAbilityReanimate(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb_data.Card{
+		card0 := &zb.Card{
 			Name:    "WiZp",
 			Defense: 3,
 			Damage:  2,
-			Abilities: []*zb_data.AbilityData{
+			Abilities: []*zb.AbilityData{
 				{
-					Ability: zb_enums.AbilityType_ReanimateUnit,
-					Trigger: zb_enums.AbilityTrigger_Death,
+					Ability: zb.AbilityType_ReanimateUnit,
+					Trigger: zb.AbilityTrigger_Death,
 				},
 				{
-					Ability: zb_enums.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
-					Trigger: zb_enums.AbilityTrigger_Entry,
+					Ability: zb.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
+		instance0 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb_data.Card),
-			AbilitiesInstances: []*zb_data.CardAbilityInstance{
-				&zb_data.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb.Card),
+			AbilitiesInstances: []*zb.CardAbilityInstance{
+				&zb.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb_data.CardAbilityInstance_Reanimate{
-						Reanimate: &zb_data.CardAbilityReanimate{
+					AbilityType: &zb.CardAbilityInstance_Reanimate{
+						Reanimate: &zb.CardAbilityReanimate{
 							DefaultDamage:  card0.Damage,
 							DefaultDefense: card0.Defense,
 						},
 					},
 				},
-				&zb_data.CardAbilityInstance{
+				&zb.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[1].Trigger,
-					AbilityType: &zb_data.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
-						ReplaceUnitsWithTypeOnStrongerOnes: &zb_data.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-							Faction: zb_enums.Faction_Water,
+					AbilityType: &zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
+						ReplaceUnitsWithTypeOnStrongerOnes: &zb.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
+							Faction: zb.Faction_Water,
 						},
 					},
 				},
 			},
 			Owner: player1,
 		}
-		instance1 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 3},
-			Prototype: &zb_data.Card{
+		instance1 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
+			Prototype: &zb.Card{
 				Name: "target",
 			},
-			Instance: &zb_data.CardInstanceSpecificData{
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  4,
 			},
@@ -106,14 +105,14 @@ func TestAbilityReanimate(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 3},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 2},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 3},
 					},
 				},
 			},
