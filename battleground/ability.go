@@ -2,10 +2,9 @@ package battleground
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 
 	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 type Ability interface {
@@ -13,11 +12,11 @@ type Ability interface {
 }
 
 type CardInstance struct {
-	*zb_data.CardInstance
+	*zb.CardInstance
 	Gameplay *Gameplay
 }
 
-func NewCardInstance(instance *zb_data.CardInstance, gameplay *Gameplay) *CardInstance {
+func NewCardInstance(instance *zb.CardInstance, gameplay *Gameplay) *CardInstance {
 	return &CardInstance{
 		CardInstance: instance,
 		Gameplay:     gameplay,
@@ -35,9 +34,9 @@ func (c *CardInstance) UseAbility(targets []*CardInstance) error {
 func (c *CardInstance) OnAbilityUsed(targets []*CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_Entry {
+		if ai.Trigger == zb.AbilityTrigger_Entry {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_DevourZombieAndCombineStats:
+			case *zb.CardAbilityInstance_DevourZombieAndCombineStats:
 				if ai.IsActive {
 					devourZombieAndCombineStats := abilityInstance.DevourZombieAndCombineStats
 					ability = NewDevourZombieAndCombineStats(c, devourZombieAndCombineStats, targets)
@@ -81,15 +80,15 @@ func (c *CardInstance) Attack(target *CardInstance) error {
 func (c *CardInstance) OnAttack(target *CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
+			case *zb.CardAbilityInstance_AdditionalDamageToHeavyInAttack:
 				additionalDamageToHeavyInAttack := abilityInstance.AdditionalDamageToHeavyInAttack
 				ab := NewAdditionalDamgeToHeavyInAttack(c, additionalDamageToHeavyInAttack, target)
 				if err := ab.Apply(c.Gameplay); err != nil {
 					return err
 				}
-			case *zb_data.CardAbilityInstance_DealDamageToThisAndAdjacentUnits:
+			case *zb.CardAbilityInstance_DealDamageToThisAndAdjacentUnits:
 				dealDamageToThisAndAdjacentUnits := abilityInstance.DealDamageToThisAndAdjacentUnits
 				ability = NewDealDamageToThisAndAdjacentUnits(c, dealDamageToThisAndAdjacentUnits, target)
 				if err := ability.Apply(c.Gameplay); err != nil {
@@ -101,11 +100,11 @@ func (c *CardInstance) OnAttack(target *CardInstance) error {
 	return nil
 }
 
-func (c *CardInstance) AfterAttacking(target *zb_data.InstanceId) error {
+func (c *CardInstance) AfterAttacking(target *zb.InstanceId) error {
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch ability := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_ChangeStat:
+			case *zb.CardAbilityInstance_ChangeStat:
 				changeStat := ability.ChangeStat
 				ab := NewChangeState(c, changeStat, target)
 				if err := ab.Apply(c.Gameplay); err != nil {
@@ -121,9 +120,9 @@ func (c *CardInstance) AfterAttacking(target *zb_data.InstanceId) error {
 func (c *CardInstance) OnBeingAttacked(attacker *CardInstance) error {
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_GotDamage {
+		if ai.Trigger == zb.AbilityTrigger_GotDamage {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_Rage:
+			case *zb.CardAbilityInstance_Rage:
 				rage := abilityInstance.Rage
 				ability = NewRage(c, rage)
 				if err := ability.Apply(c.Gameplay); err != nil {
@@ -149,9 +148,9 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 		if !ai.IsActive {
 			continue
 		}
-		if ai.Trigger == zb_enums.AbilityTrigger_Death {
+		if ai.Trigger == zb.AbilityTrigger_Death {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_Reanimate:
+			case *zb.CardAbilityInstance_Reanimate:
 				reanimate := abilityInstance.Reanimate
 				ability = NewReanimate(c, reanimate)
 				if err := ability.Apply(c.Gameplay); err != nil {
@@ -164,9 +163,9 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 
 	// trigger attacker ability
 	for _, ai := range attacker.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_Attack {
+		if ai.Trigger == zb.AbilityTrigger_Attack {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_PriorityAttack:
+			case *zb.CardAbilityInstance_PriorityAttack:
 				priorityAttack := abilityInstance.PriorityAttack
 				ability = NewPriorityAttack(attacker, priorityAttack)
 				if err := ability.Apply(c.Gameplay); err != nil {
@@ -177,8 +176,8 @@ func (c *CardInstance) OnDeath(attacker *CardInstance) error {
 	}
 
 	// after apply ability, update zone if the card instance is really dead and not moved to graveyard
-	if c.Instance.Defense <= 0 && c.Zone != zb_enums.Zone_GRAVEYARD {
-		if err := c.MoveZone(zb_enums.Zone_PLAY, zb_enums.Zone_GRAVEYARD); err != nil {
+	if c.Instance.Defense <= 0 && c.Zone != zb.Zone_GRAVEYARD {
+		if err := c.MoveZone(zb.Zone_PLAY, zb.Zone_GRAVEYARD); err != nil {
 			return err
 		}
 	}
@@ -190,15 +189,15 @@ func (c *CardInstance) OnPlay() error {
 	// trigger card ability on play
 	var ability Ability
 	for _, ai := range c.AbilitiesInstances {
-		if ai.Trigger == zb_enums.AbilityTrigger_Entry {
+		if ai.Trigger == zb.AbilityTrigger_Entry {
 			switch abilityInstance := ai.AbilityType.(type) {
-			case *zb_data.CardAbilityInstance_AttackOverlord:
+			case *zb.CardAbilityInstance_AttackOverlord:
 				attackOverlord := abilityInstance.AttackOverlord
 				ability = NewAttackOverlord(c, attackOverlord)
 				if err := ability.Apply(c.Gameplay); err != nil {
 					return err
 				}
-			case *zb_data.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes:
+			case *zb.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes:
 				replaceUnitsWithTypeOnStrongerOnes := abilityInstance.ReplaceUnitsWithTypeOnStrongerOnes
 				ability = NewReplaceUnitsWithTypeOnStrongerOnes(c, replaceUnitsWithTypeOnStrongerOnes, c.Gameplay.cardLibrary)
 				if err := ability.Apply(c.Gameplay); err != nil {
@@ -210,10 +209,10 @@ func (c *CardInstance) OnPlay() error {
 		}
 	}
 
-	return c.MoveZone(zb_enums.Zone_HAND, zb_enums.Zone_PLAY)
+	return c.MoveZone(zb.Zone_HAND, zb.Zone_PLAY)
 }
 
-func (c *CardInstance) MoveZone(from, to zb_enums.ZoneType) error {
+func (c *CardInstance) MoveZone(from, to zb.ZoneType) error {
 	if int(c.OwnerIndex) > len(c.Gameplay.State.PlayerStates)-1 {
 		return fmt.Errorf("Invalid owner index: %d", c.OwnerIndex)
 	}
@@ -222,16 +221,16 @@ func (c *CardInstance) MoveZone(from, to zb_enums.ZoneType) error {
 	var err error
 
 	switch {
-	case from == zb_enums.Zone_PLAY && to == zb_enums.Zone_GRAVEYARD:
-		owner.CardsInPlay, owner.CardsInGraveyard, err = moveCard(c, owner.CardsInPlay, owner.CardsInGraveyard, zb_enums.Zone_GRAVEYARD)
-	case from == zb_enums.Zone_GRAVEYARD && to == zb_enums.Zone_PLAY:
-		owner.CardsInGraveyard, owner.CardsInPlay, err = moveCard(c, owner.CardsInGraveyard, owner.CardsInPlay, zb_enums.Zone_PLAY)
-	case from == zb_enums.Zone_HAND && to == zb_enums.Zone_PLAY:
-		owner.CardsInHand, owner.CardsInPlay, err = moveCard(c, owner.CardsInHand, owner.CardsInPlay, zb_enums.Zone_PLAY)
-	case from == zb_enums.Zone_HAND && to == zb_enums.Zone_DECK:
-		owner.CardsInHand, owner.CardsInDeck, err = moveCard(c, owner.CardsInHand, owner.CardsInDeck, zb_enums.Zone_DECK)
-	case from == zb_enums.Zone_DECK && to == zb_enums.Zone_HAND:
-		owner.CardsInDeck, owner.CardsInHand, err = moveCard(c, owner.CardsInDeck, owner.CardsInHand, zb_enums.Zone_HAND)
+	case from == zb.Zone_PLAY && to == zb.Zone_GRAVEYARD:
+		owner.CardsInPlay, owner.CardsInGraveyard, err = moveCard(c, owner.CardsInPlay, owner.CardsInGraveyard, zb.Zone_GRAVEYARD)
+	case from == zb.Zone_GRAVEYARD && to == zb.Zone_PLAY:
+		owner.CardsInGraveyard, owner.CardsInPlay, err = moveCard(c, owner.CardsInGraveyard, owner.CardsInPlay, zb.Zone_PLAY)
+	case from == zb.Zone_HAND && to == zb.Zone_PLAY:
+		owner.CardsInHand, owner.CardsInPlay, err = moveCard(c, owner.CardsInHand, owner.CardsInPlay, zb.Zone_PLAY)
+	case from == zb.Zone_HAND && to == zb.Zone_DECK:
+		owner.CardsInHand, owner.CardsInDeck, err = moveCard(c, owner.CardsInHand, owner.CardsInDeck, zb.Zone_DECK)
+	case from == zb.Zone_DECK && to == zb.Zone_HAND:
+		owner.CardsInDeck, owner.CardsInHand, err = moveCard(c, owner.CardsInDeck, owner.CardsInHand, zb.Zone_HAND)
 	default:
 		return fmt.Errorf("invalid moing from %v to %v", from, to)
 	}
@@ -239,8 +238,8 @@ func (c *CardInstance) MoveZone(from, to zb_enums.ZoneType) error {
 	return err
 }
 
-func moveCard(c *CardInstance, from, to []*zb_data.CardInstance, zone zb_enums.ZoneType) ([]*zb_data.CardInstance, []*zb_data.CardInstance, error) {
-	var cardInstance *zb_data.CardInstance
+func moveCard(c *CardInstance, from, to []*zb.CardInstance, zone zb.ZoneType) ([]*zb.CardInstance, []*zb.CardInstance, error) {
+	var cardInstance *zb.CardInstance
 	var cardIndex int
 	for i, card := range from {
 		if proto.Equal(card.InstanceId, c.InstanceId) {
@@ -263,7 +262,7 @@ func moveCard(c *CardInstance, from, to []*zb_data.CardInstance, zone zb_enums.Z
 	return from, to, nil
 }
 
-func (c *CardInstance) AttackOverlord(target *zb_data.PlayerState, attacker *zb_data.PlayerState) error {
+func (c *CardInstance) AttackOverlord(target *zb.PlayerState, attacker *zb.PlayerState) error {
 	target.Defense -= c.Instance.Damage
 
 	if target.Defense <= 0 {
@@ -284,7 +283,7 @@ func (c *CardInstance) Mulligan() error {
 		return fmt.Errorf("no card in deck to be drawn")
 	}
 
-	if err := c.MoveZone(zb_enums.Zone_HAND, zb_enums.Zone_DECK); err != nil {
+	if err := c.MoveZone(zb.Zone_HAND, zb.Zone_DECK); err != nil {
 		return err
 	}
 
@@ -292,10 +291,10 @@ func (c *CardInstance) Mulligan() error {
 
 	newcard := owner.CardsInDeck[0]
 	newCardInstance := NewCardInstance(newcard, c.Gameplay)
-	return newCardInstance.MoveZone(zb_enums.Zone_DECK, zb_enums.Zone_HAND)
+	return newCardInstance.MoveZone(zb.Zone_DECK, zb.Zone_HAND)
 }
 
-func (c *CardInstance) Player() *zb_data.PlayerState {
+func (c *CardInstance) Player() *zb.PlayerState {
 	if int(c.OwnerIndex) > len(c.Gameplay.State.PlayerStates)-1 {
 		return nil
 	}

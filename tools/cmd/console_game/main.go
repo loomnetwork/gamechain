@@ -3,55 +3,210 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/battleground"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/pkg/errors"
-	"io/ioutil"
 )
 
-var initRequest = zb_calls.InitRequest {
+var initRequest = zb.InitRequest{
+	Version: "v1",
+	DefaultCollection: []*zb.CardCollectionCard{
+		{
+			MouldId: 90,
+			Amount:   4,
+		},
+		{
+			MouldId: 91,
+			Amount:   3,
+		},
+		{
+			MouldId: 96,
+			Amount:   5,
+		},
+		{
+			MouldId: 3,
+			Amount:   4,
+		},
+		{
+			MouldId: 2,
+			Amount:   3,
+		},
+		{
+			MouldId: 92,
+			Amount:   5,
+		},
+		{
+			MouldId: 1,
+			Amount:   4,
+		},
+		{
+			MouldId: 93,
+			Amount:   3,
+		},
+		{
+			MouldId: 7,
+			Amount:   5,
+		},
+		{
+			MouldId: 94,
+			Amount:   4,
+		},
+		{
+			MouldId: 95,
+			Amount:   3,
+		},
+		{
+			MouldId: 5,
+			Amount:   5,
+		},
+	},
+	Overlords: []*zb.Overlord{
+		{
+			OverlordId: 0,
+			Experience: 0,
+			Level:      1,
+			Skills: []*zb.Skill{{
+				Title: "Attack",
+				Skill: zb.OverlordSkill_IceBolt,
+				SkillTargets: []zb.SkillTarget_Enum{
+					zb.SkillTarget_AllCards,
+					zb.SkillTarget_PlayerCard,
+				},
+				Value: 1,
+			}},
+		},
+		{
+			OverlordId: 1,
+			Experience: 0,
+			Level:      2,
+			Skills: []*zb.Skill{{
+				Title: "Deffence",
+				Skill: zb.OverlordSkill_Blizzard,
+				SkillTargets: []zb.SkillTarget_Enum{
+					zb.SkillTarget_Player,
+					zb.SkillTarget_OpponentCard,
+				},
+				Value: 2,
+			}},
+		},
+	},
+	Cards: []*zb.Card{
+		{
+			MouldId: 1,
+			Faction: zb.Faction_Air,
+			Name:    "Soothsayer",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CardType_Walker,
+			Damage:  2,
+			Defense: 1,
+			Cost: 2,
+			Abilities: []*zb.AbilityData{
+				{
+					Ability:  zb.AbilityType_DrawCard,
+					Activity: zb.AbilityActivity_Passive,
+					Trigger:  zb.AbilityTrigger_Entry,
+					Faction:  zb.Faction_None,
+				},
+			},
+			PictureTransform: &zb.PictureTransform{
+				Position: &zb.Vector3Float{
+					X: 1.5,
+					Y: 2.5,
+					Z: 3.5,
+				},
+				Scale: &zb.Vector3Float{
+					X: 0.5,
+					Y: 0.5,
+					Z: 0.5,
+				},
+			},
+		},
+		{
+			MouldId: 2,
+			Faction: zb.Faction_Air,
+			Name:    "Azuraz",
+			Rank:    zb.CreatureRank_Minion,
+			Type:    zb.CardType_Walker,
+			Damage:  1,
+			Defense: 1,
+			Cost: 1,
+			Abilities: []*zb.AbilityData{
+				{
+					Ability:  zb.AbilityType_ModificatorStats,
+					Activity: zb.AbilityActivity_Passive,
+					Trigger:  zb.AbilityTrigger_Permanent,
+					Targets: []zb.Target_Enum{
+						zb.Target_None,
+					},
+					Stat:    zb.Stat_Damage,
+					Faction: zb.Faction_Earth,
+					Value:   1,
+				},
+			},
+		},
+	},
+	DefaultDecks: []*zb.Deck{
+		{
+			Id:         0,
+			OverlordId: 2,
+			Name:       "Default",
+			Cards: []*zb.DeckCard{
+				{
+					MouldId: 90,
+					Amount:   2,
+				},
+				{
+					MouldId: 91,
+					Amount:   2,
+				},
+				{
+					MouldId: 96,
+					Amount:   2,
+				},
+				{
+					MouldId: 3,
+					Amount:   2,
+				},
+				{
+					MouldId: 2,
+					Amount:   2,
+				},
+				{
+					MouldId: 92,
+					Amount:   2,
+				},
+				{
+					MouldId: 1,
+					Amount:   1,
+				},
+				{
+					MouldId: 93,
+					Amount:   1,
+				},
+				{
+					MouldId: 7,
+					Amount:   1,
+				},
+				{
+					MouldId: 94,
+					Amount:   1,
+				},
+				{
+					MouldId: 95,
+					Amount:   1,
+				},
+				{
+					MouldId: 5,
+					Amount:   1,
+				},
+			},
+		},
+	},
 }
 
-var updateInitRequest = zb_calls.UpdateInitRequest {
-}
-
-func readJsonFileToProtobuf(filename string, message proto.Message) error {
-	bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
-	}
-
-	json := string(bytes)
-	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file " + filename)
-	}
-
-	return nil
-}
-
-func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
-	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
-	if err != nil {
-		return err
-	}
-
-	initRequest = zb_calls.InitRequest{
-		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
-		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
-		Cards:                updateInitRequest.InitData.Cards,
-		Overlords:            updateInitRequest.InitData.Overlords,
-		AiDecks:              updateInitRequest.InitData.AiDecks,
-		Version:              updateInitRequest.InitData.Version,
-		Oracle:               updateInitRequest.InitData.Oracle,
-		OverlordLeveling:     updateInitRequest.InitData.OverlordLeveling,
-	}
+func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) {
 
 	pubKey, _ := hex.DecodeString(pubKeyHex)
 
@@ -63,15 +218,13 @@ func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Addr
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
-	err = c.Init(*ctx, &initRequest)
+	err := c.Init(*ctx, &initRequest)
 	if err != nil {
-		return err
+		panic(err)
 	}
-
-	return nil
 }
 
-func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest) {
+func setupAccount(c *battleground.ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	if err != nil {
 		panic(err)
@@ -83,7 +236,7 @@ func setupZBContract() {
 	var addr loom.Address
 
 	setup(zvContract, pubKeyHexString, &addr, &ctx)
-	setupAccount(zvContract, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(zvContract, ctx, &zb.UpsertAccountRequest{
 		UserId:  "AccountUser",
 		Image:   "PathToImage",
 		Version: "v1",
@@ -93,7 +246,7 @@ func setupZBContract() {
 func listItemsForPlayer(playerId int) []string {
 	res := []string{}
 
-	cardCollection, err := zvContract.GetCollection(ctx, &zb_calls.GetCollectionRequest{
+	cardCollection, err := zvContract.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "AccountUser",
 	})
 	if err != nil {

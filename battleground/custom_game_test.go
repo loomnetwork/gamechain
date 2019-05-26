@@ -4,7 +4,6 @@ package battleground
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 	"strings"
 	"testing"
@@ -12,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 
@@ -111,12 +111,12 @@ func createSimpleGame(t *testing.T) *Gameplay {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
-	players := []*zb_data.PlayerState{
+	players := []*zb.PlayerState{
 		{Id: player1, Deck: deckList.Decks[0]},
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
@@ -159,23 +159,23 @@ func TestCustomGameMode_DeserializeCustomUiElements(t *testing.T) {
 
 	assert.Equal(
 		t,
-		zb_data.Rect{
-			Position: &zb_data.Vector2Int{X: 25, Y: 230},
-			Size_:    &zb_data.Vector2Int{X: 200, Y: 150},
+		zb.Rect{
+			Position: &zb.Vector2Int{X: 25, Y: 230},
+			Size_:    &zb.Vector2Int{X: 200, Y: 150},
 		},
 		*uiElements[0].Rect)
-	label := uiElements[0].UiElement.(*zb_data.CustomGameModeCustomUiElement_Label)
+	label := uiElements[0].UiElement.(*zb.CustomGameModeCustomUiElement_Label)
 	assert.Equal(t, "Some Very Cool text!", label.Label.Text)
 
 	assert.Equal(
 		t,
-		zb_data.Rect{
-			Position: &zb_data.Vector2Int{X: 675, Y: 300},
-			Size_:    &zb_data.Vector2Int{X: 300, Y: 150},
+		zb.Rect{
+			Position: &zb.Vector2Int{X: 675, Y: 300},
+			Size_:    &zb.Vector2Int{X: 300, Y: 150},
 		},
 		*uiElements[1].Rect)
 
-	button := uiElements[1].UiElement.(*zb_data.CustomGameModeCustomUiElement_Button)
+	button := uiElements[1].UiElement.(*zb.CustomGameModeCustomUiElement_Button)
 	assert.Equal(t, "Click Me", button.Button.Title)
 }
 

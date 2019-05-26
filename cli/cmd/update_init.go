@@ -3,12 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"os"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -23,7 +22,7 @@ var updateInitCmd = &cobra.Command{
 	Short: "updates the init data for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var initData zb_data.InitData
+		var initData zb.InitData
 
 		if updateInitCmdArgs.file == "" {
 			return fmt.Errorf("file name not provided")
@@ -43,7 +42,7 @@ var updateInitCmd = &cobra.Command{
 			return fmt.Errorf("version not specified")
 		}
 
-		updateInitData := zb_calls.UpdateInitRequest{
+		updateInitData := zb.UpdateInitRequest{
 			InitData: &initData,
 		}
 

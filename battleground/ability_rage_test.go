@@ -1,12 +1,11 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/gamechain/types/zb"
+	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,11 +21,11 @@ func TestAbilityRage(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb_data.Deck{
+	deck0 := &zb.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb_data.DeckCard{
+		Cards: []*zb.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -42,7 +41,7 @@ func TestAbilityRage(t *testing.T) {
 	}
 
 	t.Run("Rage ability works", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -50,38 +49,38 @@ func TestAbilityRage(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		instance0 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype: &zb_data.Card{
+		instance0 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype: &zb.Card{
 				Name: "attacker",
 			},
-			Instance: &zb_data.CardInstanceSpecificData{
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 5,
 				Damage:  1,
 			},
 		}
 
-		card1 := &zb_data.Card{
+		card1 := &zb.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb_data.AbilityData{
+			Abilities: []*zb.AbilityData{
 				{
-					Ability: zb_enums.AbilityType_Rage,
-					Trigger: zb_enums.AbilityTrigger_GotDamage,
+					Ability: zb.AbilityType_Rage,
+					Trigger: zb.AbilityTrigger_GotDamage,
 					Value:   2,
 				},
 			},
 		}
-		instance1 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 3},
+		instance1 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card1),
-			Prototype:  proto.Clone(card1).(*zb_data.Card),
-			AbilitiesInstances: []*zb_data.CardAbilityInstance{
-				&zb_data.CardAbilityInstance{
+			Prototype:  proto.Clone(card1).(*zb.Card),
+			AbilitiesInstances: []*zb.CardAbilityInstance{
+				&zb.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card1.Abilities[0].Trigger,
-					AbilityType: &zb_data.CardAbilityInstance_Rage{
-						Rage: &zb_data.CardAbilityRage{
+					AbilityType: &zb.CardAbilityInstance_Rage{
+						Rage: &zb.CardAbilityRage{
 							AddedDamage: card1.Abilities[0].Value,
 						},
 					},
@@ -92,14 +91,14 @@ func TestAbilityRage(t *testing.T) {
 		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, instance0)
 		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, instance1)
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 3},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 2},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 3},
 					},
 				},
 			},
