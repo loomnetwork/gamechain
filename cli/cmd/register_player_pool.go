@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -27,8 +26,8 @@ var registerPlayerPoolCmd = &cobra.Command{
 	Short: "register player to find_match pool",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		var req = zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				UserId:              registerPlayerPoolCmdArgs.userID,
 				DeckId:              registerPlayerPoolCmdArgs.deckID,
 				Version:             registerPlayerPoolCmdArgs.version,
@@ -36,7 +35,7 @@ var registerPlayerPoolCmd = &cobra.Command{
 				UseBackendGameLogic: registerPlayerPoolCmdArgs.useBackendGameLogic,
 			},
 		}
-		var resp zb_calls.RegisterPlayerPoolResponse
+		var resp zb.RegisterPlayerPoolResponse
 
 		if registerPlayerPoolCmdArgs.enableDebugCheats {
 			req.RegistrationData.DebugCheats.Enabled = true

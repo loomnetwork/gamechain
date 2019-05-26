@@ -3,11 +3,10 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -23,11 +22,11 @@ var replayGameCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb_calls.ReplayGameRequest{
+		var req = zb.ReplayGameRequest{
 			MatchId:           replayGameCmdArgs.matchID,
 			StopAtActionIndex: replayGameCmdArgs.stopAtActionIndex,
 		}
-		var resp zb_calls.ReplayGameResponse
+		var resp zb.ReplayGameResponse
 
 		_, err := commonTxObjs.contract.Call("ReplayGame", &req, signer, &resp)
 		if err != nil {
@@ -44,7 +43,7 @@ var replayGameCmd = &cobra.Command{
 		default:
 			state := resp.GameState
 			actionOutcomes := resp.ActionOutcomes
-			formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
+			formatAbility := func(abilities []*zb.CardAbilityInstance) string {
 				b := new(bytes.Buffer)
 				for _, a := range abilities {
 					b.WriteString(fmt.Sprintf("Abilities: [%+v trigger=%v active=%v]\n", a.AbilityType, a.Trigger, a.IsActive))
@@ -52,7 +51,7 @@ var replayGameCmd = &cobra.Command{
 				return b.String()
 			}
 
-			formatAction := func(action *zb_data.PlayerAction) string {
+			formatAction := func(action *zb.PlayerAction) string {
 				return fmt.Sprintf("%s: %s, %+v", action.ActionType, action.PlayerId, action.Action)
 			}
 

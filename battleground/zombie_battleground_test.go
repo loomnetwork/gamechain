@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"testing"
@@ -15,6 +12,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
@@ -22,10 +20,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var initRequest = zb_calls.InitRequest {
+var initRequest = zb.InitRequest {
 }
 
-var updateInitRequest = zb_calls.UpdateInitRequest {
+var updateInitRequest = zb.UpdateInitRequest {
 }
 
 func readJsonFileToProtobuf(filename string, message proto.Message) error {
@@ -43,11 +41,11 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 }
 
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
-	updateInitRequest.InitData = &zb_data.InitData{}
+	updateInitRequest.InitData = &zb.InitData{}
 	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
 	assert.Nil(t, err)
 
-	initRequest = zb_calls.InitRequest{
+	initRequest = zb.InitRequest{
 		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
 		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
 		Cards:                updateInitRequest.InitData.Cards,
@@ -73,7 +71,7 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 	assert.Nil(t, err)
 }
 
-func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest, t *testing.T) {
+func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb.UpsertAccountRequest, t *testing.T) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	assert.Nil(t, err)
 }
@@ -85,14 +83,14 @@ func TestAccountOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "AccountUser",
 		Image:   "PathToImage",
 		Version: "v1",
 	}, t)
 
 	t.Run("UpdateAccount", func(t *testing.T) {
-		account, err := c.UpdateAccount(ctx, &zb_calls.UpsertAccountRequest{
+		account, err := c.UpdateAccount(ctx, &zb.UpsertAccountRequest{
 			UserId:      "AccountUser",
 			Image:       "PathToImage2",
 			CurrentTier: 5,
@@ -103,7 +101,7 @@ func TestAccountOperations(t *testing.T) {
 	})
 
 	t.Run("GetAccount", func(t *testing.T) {
-		account, err := c.GetAccount(ctx, &zb_calls.GetAccountRequest{
+		account, err := c.GetAccount(ctx, &zb.GetAccountRequest{
 			UserId: "AccountUser",
 		})
 		assert.Nil(t, err)
@@ -119,13 +117,13 @@ func TestCardCollectionCardOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "CardUser",
 		Image:   "PathToImage",
 		Version: "v1",
 	}, t)
 
-	CardCollectionCard, err := c.GetCollection(ctx, &zb_calls.GetCollectionRequest{
+	CardCollectionCard, err := c.GetCollection(ctx, &zb.GetCollectionRequest{
 		UserId: "CardUser",
 		Version: "v1",
 	})
@@ -141,14 +139,14 @@ func TestDeckOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "DeckUser",
 		Image:   "PathToImage",
 		Version: "v1",
 	}, t)
 
 	t.Run("ListDecks", func(t *testing.T) {
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
 			Version: "v1",
 		})
@@ -159,17 +157,17 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
-		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
+		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
 			Version: "v1",
 		})
-		assert.Equal(t, (*zb_calls.GetDeckResponse)(nil), deckResponse)
+		assert.Equal(t, (*zb.GetDeckResponse)(nil), deckResponse)
 		assert.Equal(t, contract.ErrNotFound, err)
 	})
 
 	t.Run("GetDeck", func(t *testing.T) {
-		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
+		deckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 1,
 			Version: "v1",
@@ -179,15 +177,15 @@ func TestDeckOperations(t *testing.T) {
 		assert.Equal(t, "Default", deckResponse.Deck.Name)
 	})
 
-	var createDeckResponse *zb_calls.CreateDeckResponse
+	var createDeckResponse *zb.CreateDeckResponse
 	t.Run("CreateDeck", func(t *testing.T) {
 		var err error
-		createDeckResponse, err = c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+		createDeckResponse, err = c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -203,7 +201,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, createDeckResponse)
 
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
 			Version: "v1",
 		})
@@ -213,12 +211,12 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("CreateDeck (Invalid Requested Amount)", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   200,
 						MouldId: 43,
@@ -236,12 +234,12 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("CreateDeck (Invalid Requested CardName)", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Name:       "NewDeck",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   2,
 						MouldId: -100,
@@ -259,12 +257,12 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("CreateDeck (Same name not allowed)", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Name:       "Default",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -282,12 +280,12 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("CreateDeck (Same name with different case not allowed)", func(t *testing.T) {
-		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+		_, err := c.CreateDeck(ctx, &zb.CreateDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Name:       "nEWdECK",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -305,13 +303,13 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("EditDeck", func(t *testing.T) {
-		err := c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -326,7 +324,7 @@ func TestDeckOperations(t *testing.T) {
 		})
 		assert.Nil(t, err)
 
-		getDeckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
+		getDeckResponse, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 2,
 			Version: "v1",
@@ -338,13 +336,13 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("EditDeck (attempt to set more number of cards)", func(t *testing.T) {
 		t.Skip("Edit deck skips checking the number of cards")
-		err := c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:  100,
 						MouldId: 43,
@@ -361,13 +359,13 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("EditDeck (same name while editing is allowed)", func(t *testing.T) {
-		err := c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         2,
 				Name:       "Edited",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -385,13 +383,13 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("EditDeck (attempt to set duplicate name with different case)", func(t *testing.T) {
-		err := c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+		err := c.EditDeck(ctx, &zb.EditDeckRequest{
 			UserId: "DeckUser",
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         2,
 				Name:       "dEFAULT",
 				OverlordId: 1,
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{
 						Amount:   1,
 						MouldId: 43,
@@ -410,7 +408,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck", func(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
-		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
+		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId: "DeckUser",
 			DeckId: createDeckResponse.DeckId,
 			Version: "v1",
@@ -420,7 +418,7 @@ func TestDeckOperations(t *testing.T) {
 	})
 
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
-		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
+		err := c.DeleteDeck(ctx, &zb.DeleteDeckRequest{
 			UserId: "DeckUser",
 			DeckId: 0xDEADBEEF,
 			Version: "v1",
@@ -439,7 +437,7 @@ func TestCardOperations(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
 	t.Run("ListCardLibrary", func(t *testing.T) {
-		cardResponse, err := c.ListCardLibrary(ctx, &zb_calls.ListCardLibraryRequest{
+		cardResponse, err := c.ListCardLibrary(ctx, &zb.ListCardLibraryRequest{
 			Version: "v1",
 		})
 
@@ -449,7 +447,7 @@ func TestCardOperations(t *testing.T) {
 	})
 
 	t.Run("ListOverlordLibrary", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlordLibrary(ctx, &zb_calls.ListOverlordLibraryRequest{
+		overlordsResponse, err := c.ListOverlordLibrary(ctx, &zb.ListOverlordLibraryRequest{
 			Version: "v1",
 		})
 
@@ -465,7 +463,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "DeckUser",
 		Image:   "PathToImage",
 		Version: "v1",
@@ -473,12 +471,12 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 
 	t.Run("Should upgrade data to use mould ID", func(t *testing.T) {
 		// Create deck with card names
-		deckList := &zb_data.DeckList{
-			Decks: []*zb_data.Deck{
+		deckList := &zb.DeckList{
+			Decks: []*zb.Deck{
 				{
 					Name:       "NewDeck",
 					OverlordId: 1,
-					Cards: []*zb_data.DeckCard{
+					Cards: []*zb.DeckCard{
 						{
 							Amount:             1,
 							CardNameDeprecated: "Whizpar",
@@ -495,7 +493,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		err := saveDecks(ctx, "DeckUser", deckList)
 		assert.Nil(t, err)
 
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
 			Version: "v1",
 		})
@@ -509,12 +507,12 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 	})
 
 	t.Run("Should remove unknown cards from decks", func(t *testing.T) {
-		deckList := &zb_data.DeckList{
-			Decks: []*zb_data.Deck{
+		deckList := &zb.DeckList{
+			Decks: []*zb.Deck{
 				{
 					Name:       "NewDeck",
 					OverlordId: 1,
-					Cards: []*zb_data.DeckCard{
+					Cards: []*zb.DeckCard{
 						{
 							Amount:  1,
 							MouldId: -1,
@@ -531,7 +529,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		err := saveDecks(ctx, "DeckUser", deckList)
 		assert.Nil(t, err)
 
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "DeckUser",
 			Version: "v1",
 		})
@@ -551,38 +549,35 @@ func TestOverlordsOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "OverlordUser",
 		Image:   "PathToImage",
 		Version: "v1",
 	}, t)
 
-	t.Run("ListOverlordUserInstances", func(t *testing.T) {
-		overlordsResponse, err := c.ListOverlordUserInstances(ctx, &zb_calls.ListOverlordUserInstancesRequest{
-			UserId:  "OverlordUser",
-			Version: "v1",
+	t.Run("ListOverlords", func(t *testing.T) {
+		overlordsResponse, err := c.ListOverlords(ctx, &zb.ListOverlordsRequest{
+			UserId: "OverlordUser",
 		})
 
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(overlordsResponse.Overlords))
 	})
 
-	t.Run("GetOverlordUserInstance", func(t *testing.T) {
-		overlordResponse, err := c.GetOverlordUserInstance(ctx, &zb_calls.GetOverlordUserInstanceRequest{
+	t.Run("GetOverlord", func(t *testing.T) {
+		overlordResponse, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 1,
-			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
 		assert.NotNil(t, overlordResponse.Overlord)
 	})
 
-	t.Run("GetOverlordUserInstance (Overlord not exists)", func(t *testing.T) {
-		_, err := c.GetOverlordUserInstance(ctx, &zb_calls.GetOverlordUserInstanceRequest{
+	t.Run("GetOverlord (Overlord not exists)", func(t *testing.T) {
+		_, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
 			UserId:     "OverlordUser",
 			OverlordId: 10,
-			Version:    "v1",
 		})
 
 		assert.NotNil(t, err)
@@ -604,7 +599,7 @@ func TestUpdateInitDataOperations(t *testing.T) {
 	})
 
 	t.Run("UpdateInit with missing data", func(t *testing.T) {
-		updateInitRequestWithMissingCards := proto.Clone(&updateInitRequest).(*zb_calls.UpdateInitRequest)
+		updateInitRequestWithMissingCards := proto.Clone(&updateInitRequest).(*zb.UpdateInitRequest)
 		updateInitRequestWithMissingCards.InitData.Cards = nil
 		err := c.UpdateInit(ctx, updateInitRequestWithMissingCards)
 
@@ -620,18 +615,18 @@ func TestFindMatchOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
 
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-1",
 			Version: "v1",
 		})
@@ -641,7 +636,7 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-2",
 			Version: "v1",
 		})
@@ -654,8 +649,8 @@ func TestFindMatchOperations(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -665,8 +660,8 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -676,63 +671,63 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "two players should be matching")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
-		_, err := c.EndMatch(ctx, &zb_calls.EndMatchRequest{
+		_, err := c.EndMatch(ctx, &zb.EndMatchRequest{
 			MatchId:          matchID,
 			UserId:           "player-1",
 			WinnerId:         "player-2",
@@ -742,36 +737,34 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Check level and experience after match", func(t *testing.T) {
-		getOverlordResponse1, err := c.GetOverlordUserInstance(ctx, &zb_calls.GetOverlordUserInstanceRequest{
+		getOverlordResponse1, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
 			UserId:     "player-1",
 			OverlordId: 1,
-			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, int64(123), getOverlordResponse1.Overlord.UserData.Experience)
-		assert.True(t, len(getOverlordResponse1.Overlord.UserData.UnlockedSkillIds) == 0)
-		assert.Equal(t, int64(1), getOverlordResponse1.Overlord.UserData.Level)
+		assert.Equal(t, int64(123), getOverlordResponse1.Overlord.Experience)
+		assert.Equal(t, false, getOverlordResponse1.Overlord.Skills[0].Unlocked)
+		assert.Equal(t, int64(1), getOverlordResponse1.Overlord.Level)
 
-		getOverlordResponse2, err := c.GetOverlordUserInstance(ctx, &zb_calls.GetOverlordUserInstanceRequest{
+		getOverlordResponse2, err := c.GetOverlord(ctx, &zb.GetOverlordRequest{
 			UserId:     "player-2",
 			OverlordId: 1,
-			Version:    "v1",
 		})
 
 		assert.Nil(t, err)
-		assert.Equal(t, int64(350), getOverlordResponse2.Overlord.UserData.Experience)
-		assert.Equal(t, true, len(getOverlordResponse2.Overlord.UserData.UnlockedSkillIds) > 0)
-		assert.Equal(t, int64(7), getOverlordResponse2.Overlord.UserData.Level)
+		assert.Equal(t, int64(350), getOverlordResponse2.Overlord.Experience)
+		assert.Equal(t, true, getOverlordResponse2.Overlord.Skills[0].Unlocked)
+		assert.Equal(t, int64(7), getOverlordResponse2.Overlord.Level)
 	})
 
 	t.Run("Check level/experience notifications after match", func(t *testing.T) {
-		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{
+		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb.GetNotificationsRequest{
 			UserId: "player-1",
 		})
 
 		assert.Nil(t, err)
-		notificationEndMatch1 := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		notificationEndMatch1 := getNotificationsResponse1.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch
 		assert.Equal(t, int64(1), notificationEndMatch1.OverlordId)
 		assert.Equal(t, int32(1), notificationEndMatch1.OldLevel)
 		assert.Equal(t, int64(0), notificationEndMatch1.OldExperience)
@@ -779,12 +772,12 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.Equal(t, int64(123), notificationEndMatch1.NewExperience)
 		assert.Equal(t, false, notificationEndMatch1.IsWin)
 
-		getNotificationsResponse2, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{
+		getNotificationsResponse2, err := c.GetNotifications(ctx, &zb.GetNotificationsRequest{
 			UserId: "player-2",
 		})
 
 		assert.Nil(t, err)
-		notificationEndMatch2 := getNotificationsResponse2.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		notificationEndMatch2 := getNotificationsResponse2.Notifications[0].Notification.(*zb.Notification_EndMatch).EndMatch
 		assert.Equal(t, int64(1), notificationEndMatch2.OverlordId)
 		assert.Equal(t, int32(1), notificationEndMatch2.OldLevel)
 		assert.Equal(t, int64(0), notificationEndMatch2.OldExperience)
@@ -794,13 +787,13 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatchAfterLeaving", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Ended, response.Match.Status, "match status should be 'ended'")
+		assert.Equal(t, zb.Match_Ended, response.Match.Status, "match status should be 'ended'")
 	})
 }
 
@@ -811,11 +804,11 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -823,8 +816,8 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -834,8 +827,8 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -845,17 +838,17 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("CancelFindmatch", func(t *testing.T) {
-		_, err := c.CancelFindMatch(ctx, &zb_calls.CancelFindMatchRequest{
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
@@ -863,11 +856,11 @@ func TestCancelFindMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, zb_data.Match_Canceled, response.Match.Status)
+		assert.Equal(t, zb.Match_Canceled, response.Match.Status)
 	})
 }
 
@@ -878,11 +871,11 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -890,8 +883,8 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -901,8 +894,8 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -912,41 +905,41 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("EndMatch", func(t *testing.T) {
-		response, err := c.EndMatch(ctx, &zb_calls.EndMatchRequest{
+		response, err := c.EndMatch(ctx, &zb.EndMatchRequest{
 			UserId:   "player-2",
 			MatchId:  matchID,
 			WinnerId: "player-2",
@@ -957,15 +950,15 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, zb_data.Match_Ended, response.Match.Status)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
 	})
 
 	t.Run("CancelFindmatch", func(t *testing.T) {
-		_, err := c.CancelFindMatch(ctx, &zb_calls.CancelFindMatchRequest{
+		_, err := c.CancelFindMatch(ctx, &zb.CancelFindMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
@@ -973,11 +966,11 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, zb_data.Match_Ended, response.Match.Status)
+		assert.Equal(t, zb.Match_Ended, response.Match.Status)
 	})
 }
 
@@ -988,27 +981,27 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-3",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-3-tag",
 		Version: "v1",
 	}, t)
@@ -1016,8 +1009,8 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	var matchID, matchIDTag int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -1027,8 +1020,8 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -1038,56 +1031,56 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	tags := []string{"tag1"}
 
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1-tag",
 				Version: "v1",
@@ -1098,8 +1091,8 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2-tag",
 				Version: "v1",
@@ -1110,63 +1103,63 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1-tag",
 			Tags:   tags,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchIDTag = response.Match.Id
 	})
 
 	t.Run("FindmatchTag", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2-tag",
 			Tags:   tags,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchIDTag, response.Match.Id)
 	})
 
 	t.Run("AcceptMatchTag", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1-tag",
 			MatchId: matchIDTag,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchIDTag, response.Match.Id)
 		assert.NotEqual(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatchTag", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2-tag",
 			MatchId: matchIDTag,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchIDTag, response.Match.Id)
 		assert.NotEqual(t, matchID, response.Match.Id)
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
@@ -1174,8 +1167,8 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	tags = []string{"tag3"}
 
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-3",
 				Version: "v1",
@@ -1186,8 +1179,8 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPoolTag", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-3-tag",
 				Version: "v1",
@@ -1198,14 +1191,14 @@ func TestFindMatchWithTagOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-3",
 		})
 		assert.NotNil(t, err)
 	})
 
 	t.Run("FindmatchTag", func(t *testing.T) {
-		_, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		_, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-3-tag",
 		})
 		assert.NotNil(t, err)
@@ -1219,27 +1212,27 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-3-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-4-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-5-tag",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-6-tag",
 		Version: "v1",
 	}, t)
@@ -1249,8 +1242,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	tags3 := []string{"tags3", "othertag"}
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1-tag",
 				Version: "v1",
@@ -1261,8 +1254,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-3-tag",
 				Version: "v1",
@@ -1273,8 +1266,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-5-tag",
 				Version: "v1",
@@ -1285,7 +1278,7 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1-tag",
 			Tags:   tags1,
 		})
@@ -1294,7 +1287,7 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-3-tag",
 			Tags:   tags2,
 		})
@@ -1303,7 +1296,7 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-5-tag",
 			Tags:   tags3,
 		})
@@ -1312,8 +1305,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-6-tag",
 				Version: "v1",
@@ -1324,8 +1317,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2-tag",
 				Version: "v1",
@@ -1336,8 +1329,8 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-4-tag",
 				Version: "v1",
@@ -1348,40 +1341,40 @@ func TestFindMatchWithTagGroupOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1-tag",
 			Tags:   tags1,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, "player-1-tag", response.Match.PlayerStates[0].Id, "Player should be player-1-tag")
 		assert.Equal(t, "player-2-tag", response.Match.PlayerStates[1].Id, "Player should be player-2-tag")
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-3-tag",
 			Tags:   tags2,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, "player-3-tag", response.Match.PlayerStates[0].Id, "Player should be player-3-tag")
 		assert.Equal(t, "player-4-tag", response.Match.PlayerStates[1].Id, "Player should be player-4-tag")
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-5-tag",
 			Tags:   tags3,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, "player-5-tag", response.Match.PlayerStates[0].Id, "Player should be player-5-tag")
 		assert.Equal(t, "player-6-tag", response.Match.PlayerStates[1].Id, "Player should be player-6-tag")
 	})
@@ -1396,15 +1389,15 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 	numPlayers := 10
 	for i := 0; i < numPlayers; i++ {
-		setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		setupAccount(c, ctx, &zb.UpsertAccountRequest{
 			UserId:  fmt.Sprintf("player-%d", i+1),
 			Version: "v1",
 		}, t)
 	}
 
 	for i := 0; i < numPlayers; i++ {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  fmt.Sprintf("player-%d", i+1),
 				Version: "v1",
@@ -1415,7 +1408,7 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 
 	for i := 0; i < numPlayers; i++ {
 		func(i int) {
-			response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+			response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 				UserId: fmt.Sprintf("player-%d", i+1),
 			})
 			assert.Nil(t, err)
@@ -1443,22 +1436,22 @@ func TestMatchMakingTimeout(t *testing.T) {
 	err := c.Init(ctx, &initRequest)
 	assert.Nil(t, err)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-3",
 		Version: "v1",
 	}, t)
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -1468,8 +1461,8 @@ func TestMatchMakingTimeout(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -1479,8 +1472,8 @@ func TestMatchMakingTimeout(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-3",
 				Version: "v1",
@@ -1491,12 +1484,12 @@ func TestMatchMakingTimeout(t *testing.T) {
 
 	var matchID int64
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
@@ -1504,19 +1497,19 @@ func TestMatchMakingTimeout(t *testing.T) {
 	fc.SetTime(now.Add(2 * MMTimeout))
 
 	t.Run("FindMatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, zb_data.Match_Timedout, response.Match.Status)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, zb_data.Match_Timedout, response.Match.Status)
+		assert.Equal(t, zb.Match_Timedout, response.Match.Status)
 	})
 }
 
@@ -1527,18 +1520,18 @@ func TestGameStateOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
 
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-1",
 			Version: "v1",
 		})
@@ -1548,7 +1541,7 @@ func TestGameStateOperations(t *testing.T) {
 		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+		deckResponse, err := c.ListDecks(ctx, &zb.ListDecksRequest{
 			UserId: "player-2",
 			Version: "v1",
 		})
@@ -1561,8 +1554,8 @@ func TestGameStateOperations(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -1572,8 +1565,8 @@ func TestGameStateOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -1583,67 +1576,67 @@ func TestGameStateOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetMatch", func(t *testing.T) {
-		response, err := c.GetMatch(ctx, &zb_calls.GetMatchRequest{
+		response, err := c.GetMatch(ctx, &zb.GetMatchRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 	})
 
 	// Note: since the toss coin seed is always 0 for testing, we always get 0 as the first player
 	t.Run("SendEndturnPlayer2_Failed", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-2",
 			},
 		})
@@ -1652,10 +1645,10 @@ func TestGameStateOperations(t *testing.T) {
 	})
 
 	t.Run("SendEndturnPlayer1_Success", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-1",
 			},
 		})
@@ -1666,10 +1659,10 @@ func TestGameStateOperations(t *testing.T) {
 		assert.EqualValues(t, 1, gameState.CurrentPlayerIndex, "player-2 should be active")
 	})
 	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-2",
 			},
 		})
@@ -1680,14 +1673,14 @@ func TestGameStateOperations(t *testing.T) {
 		assert.EqualValues(t, 0, gameState.CurrentPlayerIndex, "player-1 should be active")
 	})
 	t.Run("SendCardPlayPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardPlay,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardPlay,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_CardPlay{
-					CardPlay: &zb_data.PlayerActionCardPlay{
-						Card: &zb_data.InstanceId{Id: 8},
+				Action: &zb.PlayerAction_CardPlay{
+					CardPlay: &zb.PlayerActionCardPlay{
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -1696,17 +1689,17 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendCardAbilityPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardAbilityUsed,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_CardAbilityUsed{
-					CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-						Card: &zb_data.InstanceId{Id: 1},
-						Targets: []*zb_data.Unit{
-							&zb_data.Unit{
-								InstanceId: &zb_data.InstanceId{Id: 2},
+				Action: &zb.PlayerAction_CardAbilityUsed{
+					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+						Card: &zb.InstanceId{Id: 1},
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1717,16 +1710,16 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendOverlordSkillUsedPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_OverlordSkillUsed,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_OverlordSkillUsed,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_OverlordSkillUsed{
-					OverlordSkillUsed: &zb_data.PlayerActionOverlordSkillUsed{
+				Action: &zb.PlayerAction_OverlordSkillUsed{
+					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
-						Target: &zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+						Target: &zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -1736,17 +1729,17 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendRankBuff", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_RankBuff,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_RankBuff,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_RankBuff{
-					RankBuff: &zb_data.PlayerActionRankBuff{
-						Card: &zb_data.InstanceId{Id: 1},
-						Targets: []*zb_data.Unit{
-							&zb_data.Unit{
-								InstanceId: &zb_data.InstanceId{Id: 2},
+				Action: &zb.PlayerAction_RankBuff{
+					RankBuff: &zb.PlayerActionRankBuff{
+						Card: &zb.InstanceId{Id: 1},
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1757,10 +1750,10 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendEndturnPlayer1_Success2", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-1",
 			},
 		})
@@ -1771,14 +1764,14 @@ func TestGameStateOperations(t *testing.T) {
 		assert.EqualValues(t, 1, gameState.CurrentPlayerIndex, "player-2 should be active")
 	})
 	t.Run("SendCardPlayPlayer2", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardPlay,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardPlay,
 				PlayerId:   "player-2",
-				Action: &zb_data.PlayerAction_CardPlay{
-					CardPlay: &zb_data.PlayerActionCardPlay{
-						Card: &zb_data.InstanceId{Id: 13},
+				Action: &zb.PlayerAction_CardPlay{
+					CardPlay: &zb.PlayerActionCardPlay{
+						Card: &zb.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -1787,16 +1780,16 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendCardAttackPlayer2", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardAttack,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardAttack,
 				PlayerId:   "player-2",
-				Action: &zb_data.PlayerAction_CardAttack{
-					CardAttack: &zb_data.PlayerActionCardAttack{
-						Attacker: &zb_data.InstanceId{Id: 13},
-						Target: &zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 8},
+				Action: &zb.PlayerAction_CardAttack{
+					CardAttack: &zb.PlayerActionCardAttack{
+						Attacker: &zb.InstanceId{Id: 13},
+						Target: &zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 8},
 						},
 					},
 				},
@@ -1806,17 +1799,17 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendCardAbilityPlayer2", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardAbilityUsed,
 				PlayerId:   "player-2",
-				Action: &zb_data.PlayerAction_CardAbilityUsed{
-					CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-						Card: &zb_data.InstanceId{Id: 1},
-						Targets: []*zb_data.Unit{
-							&zb_data.Unit{
-								InstanceId: &zb_data.InstanceId{Id: 2},
+				Action: &zb.PlayerAction_CardAbilityUsed{
+					CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+						Card: &zb.InstanceId{Id: 1},
+						Targets: []*zb.Unit{
+							&zb.Unit{
+								InstanceId: &zb.InstanceId{Id: 2},
 							},
 						},
 					},
@@ -1827,16 +1820,16 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("SendOverlordSkillUsedPlayer2", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_OverlordSkillUsed,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_OverlordSkillUsed,
 				PlayerId:   "player-2",
-				Action: &zb_data.PlayerAction_OverlordSkillUsed{
-					OverlordSkillUsed: &zb_data.PlayerActionOverlordSkillUsed{
+				Action: &zb.PlayerAction_OverlordSkillUsed{
+					OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 						SkillId: 1,
-						Target: &zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+						Target: &zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -1846,13 +1839,13 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("LeaveMatch", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_LeaveMatch,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
 				PlayerId:   "player-2",
-				Action: &zb_data.PlayerAction_LeaveMatch{
-					LeaveMatch: &zb_data.PlayerActionLeaveMatch{},
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{},
 				},
 			},
 		})
@@ -1860,7 +1853,7 @@ func TestGameStateOperations(t *testing.T) {
 		assert.NotNil(t, response)
 	})
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
@@ -1876,7 +1869,7 @@ func TestGameModeOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
@@ -1884,7 +1877,7 @@ func TestGameModeOperations(t *testing.T) {
 	var ID string
 
 	t.Run("Add Game Mode", func(t *testing.T) {
-		gameMode, err := c.AddGameMode(ctx, &zb_calls.GameModeRequest{
+		gameMode, err := c.AddGameMode(ctx, &zb.GameModeRequest{
 			Name:        "Test game mode",
 			Description: "Just a test",
 			Version:     "0.1",
@@ -1895,22 +1888,22 @@ func TestGameModeOperations(t *testing.T) {
 		assert.Equal(t, "Test game mode", gameMode.Name)
 		assert.Equal(t, "Just a test", gameMode.Description)
 		assert.Equal(t, "0.1", gameMode.Version)
-		assert.Equal(t, zb_data.GameModeType_Community, gameMode.GameModeType)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
 	})
 
 	t.Run("Get Game Mode", func(t *testing.T) {
-		gameMode, err := c.GetGameMode(ctx, &zb_calls.GetGameModeRequest{
+		gameMode, err := c.GetGameMode(ctx, &zb.GetGameModeRequest{
 			ID: ID,
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, "Test game mode", gameMode.Name)
 		assert.Equal(t, "Just a test", gameMode.Description)
 		assert.Equal(t, "0.1", gameMode.Version)
-		assert.Equal(t, zb_data.GameModeType_Community, gameMode.GameModeType)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
 	})
 
 	t.Run("Add another Game Mode", func(t *testing.T) {
-		gameMode, err := c.AddGameMode(ctx, &zb_calls.GameModeRequest{
+		gameMode, err := c.AddGameMode(ctx, &zb.GameModeRequest{
 			Name:        "Test game mode 2",
 			Description: "Just another test",
 			Version:     "0.1",
@@ -1920,11 +1913,11 @@ func TestGameModeOperations(t *testing.T) {
 		assert.Equal(t, "Test game mode 2", gameMode.Name)
 		assert.Equal(t, "Just another test", gameMode.Description)
 		assert.Equal(t, "0.1", gameMode.Version)
-		assert.Equal(t, zb_data.GameModeType_Community, gameMode.GameModeType)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
 	})
 
 	t.Run("Update a Game Mode", func(t *testing.T) {
-		gameMode, err := c.UpdateGameMode(ctx, &zb_calls.UpdateGameModeRequest{
+		gameMode, err := c.UpdateGameMode(ctx, &zb.UpdateGameModeRequest{
 			ID:          ID,
 			Name:        "Test game mode",
 			Description: "Changed description",
@@ -1934,11 +1927,11 @@ func TestGameModeOperations(t *testing.T) {
 		assert.Equal(t, "Test game mode", gameMode.Name)
 		assert.Equal(t, "Changed description", gameMode.Description)
 		assert.Equal(t, "0.2", gameMode.Version)
-		assert.Equal(t, zb_data.GameModeType_Community, gameMode.GameModeType)
+		assert.Equal(t, zb.GameModeType_Community, gameMode.GameModeType)
 	})
 
 	t.Run("List Game Modes", func(t *testing.T) {
-		gameModeList, err := c.ListGameModes(ctx, &zb_calls.ListGameModesRequest{})
+		gameModeList, err := c.ListGameModes(ctx, &zb.ListGameModesRequest{})
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(gameModeList.GameModes))
 		assert.Equal(t, ID, gameModeList.GameModes[0].ID)
@@ -1947,14 +1940,14 @@ func TestGameModeOperations(t *testing.T) {
 	})
 
 	t.Run("Delete Game Mode", func(t *testing.T) {
-		err := c.DeleteGameMode(ctx, &zb_calls.DeleteGameModeRequest{
+		err := c.DeleteGameMode(ctx, &zb.DeleteGameModeRequest{
 			ID: ID,
 		})
 		assert.Nil(t, err)
 	})
 
 	t.Run("GameModeList should not contain deleted GameMode", func(t *testing.T) {
-		gameModeList, err := c.ListGameModes(ctx, &zb_calls.ListGameModesRequest{})
+		gameModeList, err := c.ListGameModes(ctx, &zb.ListGameModesRequest{})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(gameModeList.GameModes))
 		assert.NotEqual(t, ID, gameModeList.GameModes[0].ID)
@@ -1969,11 +1962,11 @@ func TestCardPlayOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -1981,8 +1974,8 @@ func TestCardPlayOperations(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
@@ -1992,8 +1985,8 @@ func TestCardPlayOperations(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
@@ -2003,48 +1996,48 @@ func TestCardPlayOperations(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Acceptmatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'Matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'Matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("Acceptmatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("SendCardPlayPlayer1", func(t *testing.T) {
-		response, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		response, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: matchID,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardPlay,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardPlay,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_CardPlay{
-					CardPlay: &zb_data.PlayerActionCardPlay{
-						Card: &zb_data.InstanceId{Id: 8},
+				Action: &zb.PlayerAction_CardPlay{
+					CardPlay: &zb.PlayerActionCardPlay{
+						Card: &zb.InstanceId{Id: 8},
 					},
 				},
 			},
@@ -2073,11 +2066,11 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	err := c.Init(ctx, &initRequest)
 	assert.Nil(t, err)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -2085,12 +2078,12 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2101,12 +2094,12 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2117,53 +2110,53 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2171,20 +2164,20 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("SendEndturnPlayer1_Success", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-1",
 			},
 		})
 		assert.Nil(t, err)
 	})
 	t.Run("SendEndturnPlayer2_Success", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-2",
 			},
 		})
@@ -2192,7 +2185,7 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2200,14 +2193,14 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("Player1_Leave", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_LeaveMatch,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_LeaveMatch{
-					LeaveMatch: &zb_data.PlayerActionLeaveMatch{
-						Reason: zb_data.PlayerActionLeaveMatch_PlayerLeave,
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_PlayerLeave,
 					},
 				},
 			},
@@ -2216,22 +2209,22 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
 		latestAction := response.GameState.PlayerActions[len(response.GameState.PlayerActions)-1]
-		assert.Equal(t, zb_enums.PlayerActionType_LeaveMatch, latestAction.ActionType)
+		assert.Equal(t, zb.PlayerActionType_LeaveMatch, latestAction.ActionType)
 		assert.Equal(t, "player-2", response.GameState.Winner)
 	})
 
 	t.Run("SendAnyActionShould_Failed", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-2",
 			},
 		})
@@ -2258,11 +2251,11 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	err := c.Init(ctx, &initRequest)
 	assert.Nil(t, err)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -2270,12 +2263,12 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2286,12 +2279,12 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2302,53 +2295,53 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2356,7 +2349,7 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2368,14 +2361,14 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	fc.SetTime(now.Add(TurnTimeout + (time.Second * 10)))
 
 	t.Run("Player2_CheckStatus", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_LeaveMatch,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_LeaveMatch,
 				PlayerId:   "player-1",
-				Action: &zb_data.PlayerAction_LeaveMatch{
-					LeaveMatch: &zb_data.PlayerActionLeaveMatch{
-						Reason: zb_data.PlayerActionLeaveMatch_PlayerLeave,
+				Action: &zb.PlayerAction_LeaveMatch{
+					LeaveMatch: &zb.PlayerActionLeaveMatch{
+						Reason: zb.PlayerActionLeaveMatch_PlayerLeave,
 					},
 				},
 			},
@@ -2384,14 +2377,14 @@ func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
 		latestAction := response.GameState.PlayerActions[len(response.GameState.PlayerActions)-1]
-		assert.Equal(t, zb_enums.PlayerActionType_LeaveMatch, latestAction.ActionType)
+		assert.Equal(t, zb.PlayerActionType_LeaveMatch, latestAction.ActionType)
 		assert.Equal(t, "player-2", response.GameState.Winner)
 	})
 }
@@ -2403,13 +2396,13 @@ func TestAIDeckOperations(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	aiDecks := []*zb_data.AIDeck{
+	aiDecks := []*zb.AIDeck{
 		{
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         1,
 				OverlordId: 2,
 				Name:       "AI Decks",
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{MouldId: 1, Amount: 2},
 					{MouldId: 2, Amount: 2},
 					{MouldId: 3, Amount: 2},
@@ -2424,29 +2417,29 @@ func TestAIDeckOperations(t *testing.T) {
 					{MouldId: 12, Amount: 1},
 				},
 			},
-			Type: zb_enums.AIType_MIXED_AI,
+			Type: zb.AIType_MIXED_AI,
 		},
 	}
 
 	t.Run("Get AI Decks", func(t *testing.T) {
-		err := saveAIDecks(ctx, "v1", &zb_data.AIDeckList{Decks: aiDecks})
-		_, err = c.GetAIDecks(ctx, &zb_calls.GetAIDecksRequest{
+		err := saveAIDecks(ctx, "v1", &zb.AIDeckList{Decks: aiDecks})
+		_, err = c.GetAIDecks(ctx, &zb.GetAIDecksRequest{
 			Version: "v1",
 		})
 		assert.Nil(t, err)
 	})
 
-	aiDecks = []*zb_data.AIDeck{
+	aiDecks = []*zb.AIDeck{
 		{
-			Deck: &zb_data.Deck{
+			Deck: &zb.Deck{
 				Id:         1,
 				OverlordId: 2,
 				Name:       "AI Decks",
-				Cards: []*zb_data.DeckCard{
+				Cards: []*zb.DeckCard{
 					{MouldId: -1, Amount: 2},
 				},
 			},
-			Type: zb_enums.AIType_MIXED_AI,
+			Type: zb.AIType_MIXED_AI,
 		},
 	}
 }
@@ -2470,11 +2463,11 @@ func TestKeepAlive(t *testing.T) {
 	err := c.Init(ctx, &initRequest)
 	assert.Nil(t, err)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
@@ -2482,12 +2475,12 @@ func TestKeepAlive(t *testing.T) {
 	var matchID int64
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-1",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2498,12 +2491,12 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("RegisterPlayerPool", func(t *testing.T) {
-		_, err := c.RegisterPlayerPool(ctx, &zb_calls.RegisterPlayerPoolRequest{
-			RegistrationData: &zb_data.PlayerProfileRegistrationData{
+		_, err := c.RegisterPlayerPool(ctx, &zb.RegisterPlayerPoolRequest{
+			RegistrationData: &zb.PlayerProfileRegistrationData{
 				DeckId:  1,
 				UserId:  "player-2",
 				Version: "v1",
-				DebugCheats: zb_data.DebugCheatsConfiguration{
+				DebugCheats: zb.DebugCheatsConfiguration{
 					Enabled:             true,
 					UseCustomRandomSeed: true,
 					CustomRandomSeed:    2,
@@ -2514,53 +2507,53 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-1",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		matchID = response.Match.Id
 	})
 
 	t.Run("Findmatch", func(t *testing.T) {
-		response, err := c.FindMatch(ctx, &zb_calls.FindMatchRequest{
+		response, err := c.FindMatch(ctx, &zb.FindMatchRequest{
 			UserId: "player-2",
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-1",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Matching, response.Match.Status, "match status should be 'matching'")
+		assert.Equal(t, zb.Match_Matching, response.Match.Status, "match status should be 'matching'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("AcceptMatch", func(t *testing.T) {
-		response, err := c.AcceptMatch(ctx, &zb_calls.AcceptMatchRequest{
+		response, err := c.AcceptMatch(ctx, &zb.AcceptMatchRequest{
 			UserId:  "player-2",
 			MatchId: matchID,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the player should see 2 player states")
-		assert.Equal(t, zb_data.Match_Started, response.Match.Status, "match status should be 'started'")
+		assert.Equal(t, zb.Match_Started, response.Match.Status, "match status should be 'started'")
 		assert.Equal(t, matchID, response.Match.Id)
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2568,7 +2561,7 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("KeepAlivePlayer1_Success", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-1",
 		})
@@ -2576,7 +2569,7 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("KeepAlivePlayer2_Success", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-2",
 		})
@@ -2584,7 +2577,7 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
@@ -2594,7 +2587,7 @@ func TestKeepAlive(t *testing.T) {
 	// keep player2 alive
 	fc.SetTime(now.Add(time.Second * 5))
 	t.Run("KeepAlivePlayer2_Success", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-2",
 		})
@@ -2606,7 +2599,7 @@ func TestKeepAlive(t *testing.T) {
 	fc.SetTime(now.Add(KeepAliveTimeout + time.Second*5))
 
 	t.Run("KeepAlivePlayer2_Winner", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-2",
 		})
@@ -2614,19 +2607,19 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("GetGameState", func(t *testing.T) {
-		response, err := c.GetGameState(ctx, &zb_calls.GetGameStateRequest{
+		response, err := c.GetGameState(ctx, &zb.GetGameStateRequest{
 			MatchId: 1,
 		})
 		assert.Nil(t, err)
 		assert.NotNil(t, response)
 		assert.True(t, response.GameState.IsEnded, "game state should be ended after use leaves the match")
 		latestAction := response.GameState.PlayerActions[len(response.GameState.PlayerActions)-1]
-		assert.Equal(t, zb_enums.PlayerActionType_LeaveMatch, latestAction.ActionType)
+		assert.Equal(t, zb.PlayerActionType_LeaveMatch, latestAction.ActionType)
 		assert.Equal(t, "player-2", response.GameState.Winner)
 	})
 
 	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-1",
 		})
@@ -2634,7 +2627,7 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("KeepAliveAfterGameEndedShouldNot_Fail", func(t *testing.T) {
-		_, err := c.KeepAlive(ctx, &zb_calls.KeepAliveRequest{
+		_, err := c.KeepAlive(ctx, &zb.KeepAliveRequest{
 			MatchId: 1,
 			UserId:  "player-2",
 		})
@@ -2642,10 +2635,10 @@ func TestKeepAlive(t *testing.T) {
 	})
 
 	t.Run("SendAnyActionShould_Fail", func(t *testing.T) {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId: 1,
-			PlayerAction: &zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_EndTurn,
+			PlayerAction: &zb.PlayerAction{
+				ActionType: zb.PlayerActionType_EndTurn,
 				PlayerId:   "player-2",
 			},
 		})
@@ -2661,7 +2654,7 @@ func TestRewardTutorialCompleted(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "loom1",
 		Version: "v1",
 	}, t)
@@ -2669,16 +2662,16 @@ func TestRewardTutorialCompleted(t *testing.T) {
 	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
 
 	// make sure we have the correct reward_contract_version and tutorial_reward_amount
-	resp, err := c.GetState(ctx, &zb_calls.GetGamechainStateRequest{})
+	resp, err := c.GetState(ctx, &zb.GetGamechainStateRequest{})
 	assert.Nil(t, err)
 	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
 	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
-	var rewardTutorialCompletedResp *zb_calls.RewardTutorialCompletedResponse
+	var rewardTutorialCompletedResp *zb.RewardTutorialCompletedResponse
 
 	// get reward on completing tutorial
 	t.Run("RewardTutorialCompleted", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.Nil(t, err)
 		assert.NotNil(t, rewardTutorialCompletedResp)
 		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
@@ -2689,14 +2682,14 @@ func TestRewardTutorialCompleted(t *testing.T) {
 
 	// send the correct request
 	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardTutorialClaimed(ctx, &zb_calls.ConfirmRewardTutorialClaimedRequest{})
+		err := c.ConfirmRewardTutorialClaimed(ctx, &zb.ConfirmRewardTutorialClaimedRequest{})
 		assert.Nil(t, err)
 	})
 
 	// attempt to claim reward again should fail
 	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
 		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
+		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, rewardTutorialCompletedResp)
@@ -2704,7 +2697,7 @@ func TestRewardTutorialCompleted(t *testing.T) {
 
 	// attempt to get reward again should fail
 	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
+		resp, err := c.RewardTutorialCompleted(ctx, &zb.RewardTutorialCompletedRequest{})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "reward already claimed")
 		assert.Nil(t, resp)

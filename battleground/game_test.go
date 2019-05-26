@@ -2,20 +2,18 @@ package battleground
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"os"
 	"testing"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	firstPlayerHasFirstTurnCheats = []*zb_data.DebugCheatsConfiguration{{Enabled: true, ForceFirstTurnUserId: "player-1"}, {Enabled: true}}
+	firstPlayerHasFirstTurnCheats = []*zb.DebugCheatsConfiguration{{Enabled: true, ForceFirstTurnUserId: "player-1"}, {Enabled: true}}
 )
 
 func TestGameStateFunc(t *testing.T) {
@@ -26,12 +24,12 @@ func TestGameStateFunc(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
-	players := []*zb_data.PlayerState{
+	players := []*zb.PlayerState{
 		{Id: player1, Deck: deckList.Decks[0]},
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
@@ -49,21 +47,21 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
 	// add more action
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardPlay,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_CardPlay{
-			CardPlay: &zb_data.PlayerActionCardPlay{
-				Card: &zb_data.InstanceId{Id: 2},
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.InstanceId{Id: 2},
 			},
 		},
 	})
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardPlay,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_CardPlay{
-			CardPlay: &zb_data.PlayerActionCardPlay{
-				Card: &zb_data.InstanceId{Id: 3},
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.InstanceId{Id: 3},
 			},
 		},
 	})
@@ -78,45 +76,45 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
-	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player1})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardPlay,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardPlay,
 		PlayerId:   player2,
-		Action: &zb_data.PlayerAction_CardPlay{
-			CardPlay: &zb_data.PlayerActionCardPlay{
-				Card: &zb_data.InstanceId{Id: 13},
+		Action: &zb.PlayerAction_CardPlay{
+			CardPlay: &zb.PlayerActionCardPlay{
+				Card: &zb.InstanceId{Id: 13},
 			},
 		},
 	})
 	assert.Nil(t, err)
-	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player2})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Nil(t, err)
 
 	// card attack
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardAttack,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardAttack,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_CardAttack{
-			CardAttack: &zb_data.PlayerActionCardAttack{
-				Attacker: &zb_data.InstanceId{Id: 2},
-				Target: &zb_data.Unit{
-					InstanceId: &zb_data.InstanceId{Id: 13},
+		Action: &zb.PlayerAction_CardAttack{
+			CardAttack: &zb.PlayerActionCardAttack{
+				Attacker: &zb.InstanceId{Id: 2},
+				Target: &zb.Unit{
+					InstanceId: &zb.InstanceId{Id: 13},
 				},
 			},
 		},
 	})
 	assert.Nil(t, err)
 	// card ability used
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_CardAbilityUsed,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_CardAbilityUsed{
-			CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-				Card: &zb_data.InstanceId{Id: 3},
-				Targets: []*zb_data.Unit{
-					&zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 13},
+		Action: &zb.PlayerAction_CardAbilityUsed{
+			CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+				Card: &zb.InstanceId{Id: 3},
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 13},
 					},
 				},
 			},
@@ -124,14 +122,14 @@ func TestGameStateFunc(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	// overlord skill used
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_OverlordSkillUsed,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_OverlordSkillUsed,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_OverlordSkillUsed{
-			OverlordSkillUsed: &zb_data.PlayerActionOverlordSkillUsed{
+		Action: &zb.PlayerAction_OverlordSkillUsed{
+			OverlordSkillUsed: &zb.PlayerActionOverlordSkillUsed{
 				SkillId: 1,
-				Target: &zb_data.Unit{
-					InstanceId: &zb_data.InstanceId{Id: 2},
+				Target: &zb.Unit{
+					InstanceId: &zb.InstanceId{Id: 2},
 				},
 			},
 		},
@@ -139,15 +137,15 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 
 	// rankbuff
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_RankBuff,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_RankBuff,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_RankBuff{
-			RankBuff: &zb_data.PlayerActionRankBuff{
-				Card: &zb_data.InstanceId{Id: 1},
-				Targets: []*zb_data.Unit{
-					&zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 2},
+		Action: &zb.PlayerAction_RankBuff{
+			RankBuff: &zb.PlayerActionRankBuff{
+				Card: &zb.InstanceId{Id: 1},
+				Targets: []*zb.Unit{
+					&zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 2},
 					},
 				},
 			},
@@ -156,11 +154,11 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 
 	// leave match
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_LeaveMatch,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_LeaveMatch,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_LeaveMatch{
-			LeaveMatch: &zb_data.PlayerActionLeaveMatch{},
+		Action: &zb.PlayerAction_LeaveMatch{
+			LeaveMatch: &zb.PlayerActionLeaveMatch{},
 		},
 	})
 	assert.Nil(t, err)
@@ -178,12 +176,12 @@ func TestInvalidUserTurn(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
-	players := []*zb_data.PlayerState{
+	players := []*zb.PlayerState{
 		{Id: player1, Deck: deckList.Decks[0]},
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
@@ -191,12 +189,12 @@ func TestInvalidUserTurn(t *testing.T) {
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 	assert.Nil(t, err)
 	// add more action
-	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player2})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Equal(t, err, errInvalidPlayer)
 	cardID := gp.State.PlayerStates[0].CardsInHand[0].InstanceId
-	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb_data.PlayerAction_CardPlay{CardPlay: &zb_data.PlayerActionCardPlay{Card: cardID}}})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_CardPlay, PlayerId: player1, Action: &zb.PlayerAction_CardPlay{CardPlay: &zb.PlayerActionCardPlay{Card: cardID}}})
 	assert.Nil(t, err)
-	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player1})
+	err = gp.AddAction(&zb.PlayerAction{ActionType: zb.PlayerActionType_EndTurn, PlayerId: player1})
 	assert.Nil(t, err)
 	gp.PrintState()
 }
@@ -209,12 +207,12 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
-	players := []*zb_data.PlayerState{
+	players := []*zb.PlayerState{
 		{Id: player1, Deck: deckList.Decks[0]},
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
@@ -223,16 +221,16 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	assert.Nil(t, err)
 
 	// mulligan all the cards
-	player1Mulligan := []*zb_data.CardInstance{}
+	player1Mulligan := []*zb.CardInstance{}
 	for _, mulliganCard := range gp.State.PlayerStates[0].CardsInHand[:3] {
 		player1Mulligan = append(player1Mulligan, mulliganCard)
 	}
 
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_Mulligan,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_Mulligan{
-			Mulligan: &zb_data.PlayerActionMulligan{
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
 				MulliganedCards: getInstanceIdsFromCardInstances(player1Mulligan),
 			},
 		},
@@ -245,16 +243,16 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	assert.True(t, len(gp.State.PlayerStates[0].CardsInHand) >= 3, "cards in hand should still be >= 3")
 
 	// mulligan 2 of the card
-	player2Mulligan := []*zb_data.CardInstance{}
+	player2Mulligan := []*zb.CardInstance{}
 	for _, mulliganCard := range gp.State.PlayerStates[1].CardsInHand[:2] {
 		player2Mulligan = append(player2Mulligan, mulliganCard)
 	}
 
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_Mulligan,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player2,
-		Action: &zb_data.PlayerAction_Mulligan{
-			Mulligan: &zb_data.PlayerActionMulligan{
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
 				MulliganedCards: getInstanceIdsFromCardInstances(player2Mulligan),
 			},
 		},
@@ -276,12 +274,12 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
-	players := []*zb_data.PlayerState{
+	players := []*zb.PlayerState{
 		{Id: player1, Deck: deckList.Decks[0]},
 		{Id: player2, Deck: deckList.Decks[0]},
 	}
@@ -290,12 +288,12 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 	assert.Nil(t, err)
 
 	// mulligan keep only 2 of the card
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_Mulligan,
+	err = gp.AddAction(&zb.PlayerAction{
+		ActionType: zb.PlayerActionType_Mulligan,
 		PlayerId:   player2,
-		Action: &zb_data.PlayerAction_Mulligan{
-			Mulligan: &zb_data.PlayerActionMulligan{
-				MulliganedCards: []*zb_data.InstanceId{
+		Action: &zb.PlayerAction_Mulligan{
+			Mulligan: &zb.PlayerActionMulligan{
+				MulliganedCards: []*zb.InstanceId{
 					{Id: -1},
 					{Id: -2},
 					{Id: -3},
@@ -313,32 +311,32 @@ func TestPopulateDeckCards(t *testing.T) {
 	var addr loom.Address
 	var ctx contract.Context
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "player-2",
 		Version: "v1",
 	}, t)
-	getDeckResp1, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
+	getDeckResp1, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 		UserId: "player-1",
 		DeckId: 1,
 		Version: "v1",
 	})
 	assert.Nil(t, err)
-	getDeckResp2, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
+	getDeckResp2, err := c.GetDeck(ctx, &zb.GetDeckRequest{
 		UserId: "player-2",
 		DeckId: 1,
 		Version: "v1",
 	})
 	assert.Nil(t, err)
-	playerStates := []*zb_data.PlayerState{
-		&zb_data.PlayerState{
+	playerStates := []*zb.PlayerState{
+		&zb.PlayerState{
 			Id:   "player-1",
 			Deck: getDeckResp1.Deck,
 		},
-		&zb_data.PlayerState{
+		&zb.PlayerState{
 			Id:   "player-2",
 			Deck: getDeckResp2.Deck,
 		},
@@ -375,11 +373,11 @@ func TestCardAttack(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb_data.Deck{
+	deck0 := &zb.Deck{
 		Id:     0,
 		OverlordId: 2,
 		Name:   "Default",
-		Cards: []*zb_data.DeckCard{
+		Cards: []*zb.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -396,7 +394,7 @@ func TestCardAttack(t *testing.T) {
 
 	t.Run("Both cards are damaged and survive",
 		func(t *testing.T) {
-			players := []*zb_data.PlayerState{
+			players := []*zb.PlayerState{
 				{Id: player1, Deck: deck0},
 				{Id: player2, Deck: deck0},
 			}
@@ -404,33 +402,33 @@ func TestCardAttack(t *testing.T) {
 			gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 			assert.Nil(t, err)
 
-			gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb_data.CardInstance{
-				InstanceId: &zb_data.InstanceId{Id: 1},
-				Prototype:  &zb_data.Card{},
-				Instance: &zb_data.CardInstanceSpecificData{
+			gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+				InstanceId: &zb.InstanceId{Id: 1},
+				Prototype:  &zb.Card{},
+				Instance: &zb.CardInstanceSpecificData{
 					Defense: 3,
 					Damage:  2,
 				},
 				OwnerIndex: 0,
 			})
-			gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb_data.CardInstance{
-				InstanceId: &zb_data.InstanceId{Id: 2},
-				Prototype:  &zb_data.Card{},
-				Instance: &zb_data.CardInstanceSpecificData{
+			gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+				InstanceId: &zb.InstanceId{Id: 2},
+				Prototype:  &zb.Card{},
+				Instance: &zb.CardInstanceSpecificData{
 					Defense: 5,
 					Damage:  1,
 				},
 				OwnerIndex: 1,
 			})
 
-			err = gp.AddAction(&zb_data.PlayerAction{
-				ActionType: zb_enums.PlayerActionType_CardAttack,
+			err = gp.AddAction(&zb.PlayerAction{
+				ActionType: zb.PlayerActionType_CardAttack,
 				PlayerId:   player1,
-				Action: &zb_data.PlayerAction_CardAttack{
-					CardAttack: &zb_data.PlayerActionCardAttack{
-						Attacker: &zb_data.InstanceId{Id: 1},
-						Target: &zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+				Action: &zb.PlayerAction_CardAttack{
+					CardAttack: &zb.PlayerActionCardAttack{
+						Attacker: &zb.InstanceId{Id: 1},
+						Target: &zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -441,7 +439,7 @@ func TestCardAttack(t *testing.T) {
 		})
 
 	t.Run("Target is killed", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -449,33 +447,33 @@ func TestCardAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 1},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 1},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Damage:  2,
 			},
 			OwnerIndex: 0,
 		})
-		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
 				Damage:  1,
 			},
 			OwnerIndex: 1,
 		})
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 1},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 1},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 2},
 					},
 				},
 			},
@@ -488,7 +486,7 @@ func TestCardAttack(t *testing.T) {
 	})
 
 	t.Run("Attacker and target are killed", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -496,33 +494,33 @@ func TestCardAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 1},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 1},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
 				Damage:  1,
 			},
 			OwnerIndex: 0,
 		})
-		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[1].CardsInPlay = append(gp.State.PlayerStates[1].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 1,
 				Damage:  1,
 			},
 			OwnerIndex: 1,
 		})
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 1},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 1},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 2},
 					},
 				},
 			},
@@ -537,7 +535,7 @@ func TestCardAttack(t *testing.T) {
 	})
 
 	t.Run("Opponent overlord is attacked", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -545,9 +543,9 @@ func TestCardAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Damage:  2,
 			},
@@ -555,14 +553,14 @@ func TestCardAttack(t *testing.T) {
 		})
 		gp.State.PlayerStates[1].Defense = 3
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 1},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 2},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -572,7 +570,7 @@ func TestCardAttack(t *testing.T) {
 	})
 
 	t.Run("Opponent overlord is attacked and defeated", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -580,9 +578,9 @@ func TestCardAttack(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, firstPlayerHasFirstTurnCheats)
 		assert.Nil(t, err)
 
-		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Instance: &zb_data.CardInstanceSpecificData{
+		gp.State.PlayerStates[0].CardsInPlay = append(gp.State.PlayerStates[0].CardsInPlay, &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 3,
 				Damage:  2,
 			},
@@ -590,14 +588,14 @@ func TestCardAttack(t *testing.T) {
 		})
 		gp.State.PlayerStates[1].Defense = 1
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAttack,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAttack,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAttack{
-				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 2},
-					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 1},
+			Action: &zb.PlayerAction_CardAttack{
+				CardAttack: &zb.PlayerActionCardAttack{
+					Attacker: &zb.InstanceId{Id: 2},
+					Target: &zb.Unit{
+						InstanceId: &zb.InstanceId{Id: 1},
 					},
 				},
 			},
@@ -617,44 +615,44 @@ func TestCardPlay(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	t.Run("Normal Card Play", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 3},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 3},
 				},
 			},
 		})
 		assert.Nil(t, err)
 	})
 	t.Run("Card not found in hand", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: -1},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: -1},
 				},
 			},
 		})
@@ -663,59 +661,59 @@ func TestCardPlay(t *testing.T) {
 		assert.Contains(t, err.Error(), "not found in hand")
 	})
 	t.Run("CardPlay from empty hand", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 2},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 3},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 3},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 4},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 4},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 5},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 5},
 				},
 			},
 		})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 6},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 6},
 				},
 			},
 		})
@@ -731,47 +729,47 @@ func TestCheats(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
+	var deckList zb.DeckList
 	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	t.Run("CheatDestroyCardsOnBoard", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deckList.Decks[0]},
 			{Id: player2, Deck: deckList.Decks[0]},
 		}
 		seed := int64(0)
-		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, []*zb_data.DebugCheatsConfiguration{{Enabled: true}, {Enabled: true}})
+		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, []*zb.DebugCheatsConfiguration{{Enabled: true}, {Enabled: true}})
 		assert.Nil(t, err)
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardPlay{
-				CardPlay: &zb_data.PlayerActionCardPlay{
-					Card: &zb_data.InstanceId{Id: 3},
+			Action: &zb.PlayerAction_CardPlay{
+				CardPlay: &zb.PlayerActionCardPlay{
+					Card: &zb.InstanceId{Id: 3},
 				},
 			},
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 1, len(gp.activePlayer().CardsInPlay))
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CheatDestroyCardsOnBoard,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CheatDestroyCardsOnBoard{
-				CheatDestroyCardsOnBoard: &zb_data.PlayerActionCheatDestroyCardsOnBoard{
-					DestroyedCards: []*zb_data.InstanceId{{Id: 3}},
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 3}},
 				},
 			},
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, 0, len(gp.activePlayer().CardsInPlay))
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CheatDestroyCardsOnBoard,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CheatDestroyCardsOnBoard,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CheatDestroyCardsOnBoard{
-				CheatDestroyCardsOnBoard: &zb_data.PlayerActionCheatDestroyCardsOnBoard{
-					DestroyedCards: []*zb_data.InstanceId{{Id: 500}},
+			Action: &zb.PlayerAction_CheatDestroyCardsOnBoard{
+				CheatDestroyCardsOnBoard: &zb.PlayerActionCheatDestroyCardsOnBoard{
+					DestroyedCards: []*zb.InstanceId{{Id: 500}},
 				},
 			},
 		})
@@ -788,11 +786,11 @@ func TestGameReplayState(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "ZombieSlayer_17765869228194024927116692302141924240301573798750730796590384853844410321577",
 		Version: "v1",
 	}, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+	setupAccount(c, ctx, &zb.UpsertAccountRequest{
 		UserId:  "ZombieSlayer_8551218729826748508527518552469681437189485015566002759474151402174095726156",
 		Version: "v1",
 	}, t)
@@ -802,7 +800,7 @@ func TestGameReplayState(t *testing.T) {
 
 	gameState := getGameStateFromFile(c, &ctx)
 	for i := 0; i < len(gameState.PlayerActions); i++ {
-		_, err := c.SendPlayerAction(ctx, &zb_calls.PlayerActionRequest{
+		_, err := c.SendPlayerAction(ctx, &zb.PlayerActionRequest{
 			MatchId:      gameState.Id,
 			PlayerAction: gameState.PlayerActions[i],
 		})
@@ -834,7 +832,7 @@ func setupGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) {
 	}
 	defer f.Close()
 
-	var gameStateData zb_data.GameState
+	var gameStateData zb.GameState
 
 	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameStateData); err != nil {
 		panic(err)
@@ -854,7 +852,7 @@ func setupMatchFromFile(c *ZombieBattleground, ctx *contract.Context) {
 	}
 	defer f.Close()
 
-	var match zb_data.Match
+	var match zb.Match
 
 	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &match); err != nil {
 		panic(err)
@@ -865,14 +863,14 @@ func setupMatchFromFile(c *ZombieBattleground, ctx *contract.Context) {
 	}
 }
 
-func getGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb_data.GameState {
+func getGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb.GameState {
 	f, err := os.Open("./test_data/game_state.json")
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 
-	var gameState zb_data.GameState
+	var gameState zb.GameState
 
 	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameState); err != nil {
 		panic(err)
@@ -882,14 +880,14 @@ func getGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb_data.
 
 }
 
-func getClientGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb_data.GameState {
+func getClientGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb.GameState {
 	f, err := os.Open("./test_data/client_state.json")
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 
-	var gameState zb_data.GameState
+	var gameState zb.GameState
 
 	if err := new(jsonpb.Unmarshaler).Unmarshal(f, &gameState); err != nil {
 		panic(err)
@@ -899,9 +897,9 @@ func getClientGameStateFromFile(c *ZombieBattleground, ctx *contract.Context) zb
 
 }
 
-func stateCompare(serverState zb_data.GameState, clientState zb_data.GameState, t *testing.T) error {
-	serverPlayerStates := map[string]*zb_data.PlayerState{}
-	clientPlayerStates := map[string]*zb_data.PlayerState{}
+func stateCompare(serverState zb.GameState, clientState zb.GameState, t *testing.T) error {
+	serverPlayerStates := map[string]*zb.PlayerState{}
+	clientPlayerStates := map[string]*zb.PlayerState{}
 
 	for i := 0; i < len(clientState.PlayerStates); i++ {
 		clientPlayerStates[clientState.PlayerStates[i].Id] = clientState.PlayerStates[i]
@@ -939,7 +937,7 @@ func stateCompare(serverState zb_data.GameState, clientState zb_data.GameState, 
 	return nil
 }
 
-func compareDecks(d1 []*zb_data.CardInstance, d2 []*zb_data.CardInstance, t *testing.T) error {
+func compareDecks(d1 []*zb.CardInstance, d2 []*zb.CardInstance, t *testing.T) error {
 	if len(d1) != len(d2) {
 		return fmt.Errorf("Number of cards are not equal %d, %d", len(d1), len(d2))
 	}
@@ -952,7 +950,7 @@ func compareDecks(d1 []*zb_data.CardInstance, d2 []*zb_data.CardInstance, t *tes
 	return nil
 }
 
-func compareCards(c1 *zb_data.CardInstance, c2 *zb_data.CardInstance) error {
+func compareCards(c1 *zb.CardInstance, c2 *zb.CardInstance) error {
 	if c1.Instance.Defense != c2.Instance.Defense {
 		return fmt.Errorf("defenses are not equal %d, %d\n", c1.Instance.Defense, c2.Instance.Defense)
 	}

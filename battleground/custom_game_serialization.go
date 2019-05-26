@@ -3,16 +3,16 @@ package battleground
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 
 	"github.com/gogo/protobuf/proto"
 	battleground "github.com/loomnetwork/gamechain/types/common"
+	"github.com/loomnetwork/gamechain/types/zb"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 )
 
-func (c *CustomGameMode) serializeGameState(state *zb_data.GameState) (bytes []byte, err error) {
+func (c *CustomGameMode) serializeGameState(state *zb.GameState) (bytes []byte, err error) {
 	rb := newPanicReaderWriterProxy(NewReverseBuffer(make([]byte, 8192)))
 	binary.Write(rb, binary.BigEndian, int64(state.Id))
 	binary.Write(rb, binary.BigEndian, byte(state.CurrentPlayerIndex))
@@ -39,7 +39,7 @@ func (c *CustomGameMode) serializeGameState(state *zb_data.GameState) (bytes []b
 	return rb.readWriter.(*ReverseBuffer).GetFilledSlice(), nil
 }
 
-func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb_data.CardInstance) []*SimpleCardInstance {
+func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb.CardInstance) []*SimpleCardInstance {
 	simpleCards := make([]*SimpleCardInstance, len(cards))
 	for i, card := range cards {
 		simpleCards[i] = newSimpleCardInstanceFromCardInstance(card)
@@ -48,7 +48,7 @@ func newSimpleCardInstanceArrayFromCardInstanceArray(cards []*zb_data.CardInstan
 	return simpleCards
 }
 
-func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb_data.Deck) (err error) {
+func (c *CustomGameMode) serializeDeck(writer io.Writer, deck *zb.Deck) (err error) {
 	binary.Write(writer, binary.BigEndian, int64(deck.Id))
 	serializeString(writer, deck.Name)
 	binary.Write(writer, binary.BigEndian, int64(deck.OverlordId))
@@ -106,7 +106,7 @@ func (c *CustomGameMode) deserializeSimpleCardInstanceArray(reader io.Reader) (c
 	return cards, nil
 }
 
-func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb_data.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb_data.Card) (*zb_data.CardInstance, error) {
+func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb.CardInstance, simpleCard *SimpleCardInstance, cardLibraryCard *zb.Card) (*zb.CardInstance, error) {
 	newCard := newCardInstanceFromCardDetails(
 		cardLibraryCard,
 		card.InstanceId,
@@ -114,7 +114,7 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 		card.OwnerIndex,
 	)
 
-	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb_data.Card)
+	newCard.Prototype = proto.Clone(newCard.Prototype).(*zb.Card)
 
 	if !simpleCard.defenseInherited {
 		newCard.Prototype.Defense = simpleCard.defense
@@ -136,11 +136,11 @@ func (c *CustomGameMode) updateCardFromSimpleCard(ctx contract.Context, card *zb
 func (c *CustomGameMode) updateCardsFromSimpleCards(
 	ctx contract.Context,
 	gameplay *Gameplay,
-	cards []*zb_data.CardInstance,
+	cards []*zb.CardInstance,
 	simpleCards []*SimpleCardInstance,
-) (newCards []*zb_data.CardInstance, err error) {
+) (newCards []*zb.CardInstance, err error) {
 	for _, simpleCard := range simpleCards {
-		var newCard *zb_data.CardInstance
+		var newCard *zb.CardInstance
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId.Id {
@@ -287,9 +287,9 @@ func (c *CustomGameMode) deserializeAndApplyGameStateChangeActions(ctx contract.
 	return gameplay.validateGameState()
 }
 
-func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb_data.CustomGameModeCustomUiElement, err error) {
+func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiElements []*zb.CustomGameModeCustomUiElement, err error) {
 	if len(serializedCustomUi) == 0 {
-		return make([]*zb_data.CustomGameModeCustomUiElement, 0), nil
+		return make([]*zb.CustomGameModeCustomUiElement, 0), nil
 	}
 
 	rb := newPanicReaderWriterProxy(NewReverseBuffer(serializedCustomUi))
@@ -302,25 +302,25 @@ func (c *CustomGameMode) deserializeCustomUi(serializedCustomUi []byte) (uiEleme
 		case battleground.CustomUiElement_None:
 			mustBreak = true
 		case battleground.CustomUiElement_Label:
-			var element zb_data.CustomGameModeCustomUiElement
-			var label zb_data.CustomGameModeCustomUiLabel
+			var element zb.CustomGameModeCustomUiElement
+			var label zb.CustomGameModeCustomUiLabel
 
 			rect, _ := deserializeRect(rb)
 			element.Rect = &rect
 			label.Text, _ = deserializeString(rb)
-			element.UiElement = &zb_data.CustomGameModeCustomUiElement_Label{Label: &label}
+			element.UiElement = &zb.CustomGameModeCustomUiElement_Label{Label: &label}
 
 			uiElements = append(uiElements, &element)
 		case battleground.CustomUiElement_Button:
-			var element zb_data.CustomGameModeCustomUiElement
-			var button zb_data.CustomGameModeCustomUiButton
+			var element zb.CustomGameModeCustomUiElement
+			var button zb.CustomGameModeCustomUiButton
 
 			rect, _ := deserializeRect(rb)
 			element.Rect = &rect
 			button.Title, _ = deserializeString(rb)
 			callDataStr, _ := deserializeString(rb)
 			button.CallData = []byte(callDataStr)
-			element.UiElement = &zb_data.CustomGameModeCustomUiElement_Button{Button: &button}
+			element.UiElement = &zb.CustomGameModeCustomUiElement_Button{Button: &button}
 
 			uiElements = append(uiElements, &element)
 		default:
@@ -345,7 +345,7 @@ type SimpleCardInstance struct {
 	gooCostInherited bool
 }
 
-func newSimpleCardInstanceFromCardInstance(card *zb_data.CardInstance) *SimpleCardInstance {
+func newSimpleCardInstanceFromCardInstance(card *zb.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
 		mouldId:          card.Prototype.MouldId,

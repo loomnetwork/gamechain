@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -24,10 +24,10 @@ var getInitialGameStateCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		var req = zb_calls.GetInitialGameStateRequest{
+		var req = zb.GetInitialGameStateRequest{
 			MatchId: getInitialGameStateCmdArgs.MatchID,
 		}
-		var resp zb_calls.GetInitialGameStateResponse
+		var resp zb.GetInitialGameStateResponse
 		_, err := commonTxObjs.contract.StaticCall("GetInitialGameState", &req, callerAddr, &resp)
 		if err != nil {
 			return err

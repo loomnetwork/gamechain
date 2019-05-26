@@ -3,10 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -21,8 +20,8 @@ var updateAccountCmd = &cobra.Command{
 	Short: "creates an account for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var result zb_data.Account
-		var accountData zb_calls.UpsertAccountRequest
+		var result zb.Account
+		var accountData zb.UpsertAccountRequest
 
 		if err := json.Unmarshal([]byte(updateAccCmdArgs.value), &accountData); err != nil {
 			return fmt.Errorf("invalid JSON passed in value field. Error: %s", err.Error())

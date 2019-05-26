@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,7 @@ var cancelFindMatchCmd = &cobra.Command{
 	Short: "cancel find match for zombiebattleground",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb_calls.CancelFindMatchRequest{
+		var req = zb.CancelFindMatchRequest{
 			UserId:  cancelFindMatchCmdArgs.userID,
 			MatchId: cancelFindMatchCmdArgs.matchID,
 			Tags:    cancelFindMatchCmdArgs.tags,
