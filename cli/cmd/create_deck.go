@@ -3,10 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -22,19 +21,19 @@ var createDeckCmd = &cobra.Command{
 	Short: "create a deck",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var deck zb_data.Deck
+		var deck zb.Deck
 
 		if err := json.Unmarshal([]byte(createDeckCmdArgs.data), &deck); err != nil {
 			return err
 		}
 
-		req := &zb_calls.CreateDeckRequest{
+		req := &zb.CreateDeckRequest{
 			Deck:    &deck,
 			UserId:  createDeckCmdArgs.userID,
 			Version: createDeckCmdArgs.version,
 		}
 
-		var result zb_calls.CreateDeckResponse
+		var result zb.CreateDeckResponse
 		_, err := commonTxObjs.contract.Call("CreateDeck", req, signer, &result)
 		if err != nil {
 			return err

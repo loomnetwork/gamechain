@@ -1,14 +1,14 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"testing"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestValidateDeckCollection(t *testing.T) {
-	userHas := []*zb_data.CardCollectionCard{
+	userHas := []*zb.CardCollectionCard{
 		{MouldId: 90, Amount: 4},
 		{MouldId: 91, Amount: 3},
 		{MouldId: 96, Amount: 5},
@@ -16,7 +16,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	}
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb.CardCollectionCard{
 			{MouldId: 90, Amount: 4},
 			{MouldId: 91, Amount: 3},
 			{MouldId: 96, Amount: 5},
@@ -26,7 +26,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb.CardCollectionCard{
 			{MouldId: 90, Amount: 0},
 			{MouldId: 91, Amount: 0},
 			{MouldId: 96, Amount: 0},
@@ -36,12 +36,12 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{}
-		assert.Nil(t, validateDeckCollections([]*zb_data.CardCollectionCard{}, newCollection))
+		newCollection := []*zb.CardCollectionCard{}
+		assert.Nil(t, validateDeckCollections([]*zb.CardCollectionCard{}, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb.CardCollectionCard{
 			{MouldId: 90, Amount: 8},
 			{MouldId: 91, Amount: 10},
 		}
@@ -49,7 +49,7 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb.CardCollectionCard{
 			{MouldId: -2, Amount: 0},
 			{MouldId: -3, Amount: 0},
 		}
@@ -57,11 +57,11 @@ func TestValidateDeckCollection(t *testing.T) {
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb.CardCollectionCard{
 			{MouldId: 90, Amount: 8},
 			{MouldId: 91, Amount: 10},
 		}
-		assert.NotNil(t, validateDeckCollections([]*zb_data.CardCollectionCard{}, newCollection))
+		assert.NotNil(t, validateDeckCollections([]*zb.CardCollectionCard{}, newCollection))
 	})
 }
 
@@ -83,11 +83,11 @@ func TestValidateDeckName(t *testing.T) {
 		{name: "DECK1", id: 2, werr: ErrDeckNameExists},
 	}
 
-	existingDecks := []*zb_data.Deck{
+	existingDecks := []*zb.Deck{
 		{Id: 1, Name: "deck1"},
 	}
 	for _, test := range tests {
-		err := validateDeckName(existingDecks, &zb_data.Deck{Name: test.name, Id: test.id})
+		err := validateDeckName(existingDecks, &zb.Deck{Name: test.name, Id: test.id})
 		assert.Equal(t, test.werr, err)
 	}
 }

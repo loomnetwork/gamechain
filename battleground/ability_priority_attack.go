@@ -1,7 +1,7 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 // priority attack ability
@@ -9,12 +9,12 @@ import (
 //     reset the card's defense to the value before the attack, only if the opponent card dies
 type priorityAttack struct {
 	*CardInstance
-	cardAbility *zb_data.CardAbilityPriorityAttack
+	cardAbility *zb.CardAbilityPriorityAttack
 }
 
 var _ Ability = &priorityAttack{}
 
-func NewPriorityAttack(card *CardInstance, cardAbility *zb_data.CardAbilityPriorityAttack) *priorityAttack {
+func NewPriorityAttack(card *CardInstance, cardAbility *zb.CardAbilityPriorityAttack) *priorityAttack {
 	return &priorityAttack{
 		CardInstance: card,
 		cardAbility:  cardAbility,

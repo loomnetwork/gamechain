@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -22,12 +22,12 @@ var getDeckCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb_calls.GetDeckRequest{
+		req := &zb.GetDeckRequest{
 			UserId: getDeckCmdArgs.userID,
 			DeckId: getDeckCmdArgs.deckID,
 			Version: getDeckCmdArgs.version,
 		}
-		var result zb_calls.GetDeckResponse
+		var result zb.GetDeckResponse
 		_, err := commonTxObjs.contract.Call("GetDeck", req, signer, &result)
 		if err != nil {
 			return err

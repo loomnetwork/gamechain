@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -18,8 +18,8 @@ var getBuildMetadataCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb_calls.GetContractBuildMetadataRequest{}
-		result := zb_calls.GetContractBuildMetadataResponse{}
+		req := zb.GetContractBuildMetadataRequest{}
+		result := zb.GetContractBuildMetadataResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("GetContractBuildMetadata", &req, callerAddr, &result)
 		if err != nil {

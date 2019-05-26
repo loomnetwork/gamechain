@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
+	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
@@ -24,10 +24,10 @@ var listOverlordsLibraryCmd = &cobra.Command{
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
 
-		req := zb_calls.ListOverlordLibraryRequest{
+		req := zb.ListOverlordLibraryRequest{
 			Version: listOverlordsLibraryCmdArgs.version,
 		}
-		result := zb_calls.ListOverlordLibraryResponse{}
+		result := zb.ListOverlordLibraryResponse{}
 
 		_, err := commonTxObjs.contract.StaticCall("ListOverlordLibrary", &req, callerAddr, &result)
 		if err != nil {
@@ -39,7 +39,7 @@ var listOverlordsLibraryCmd = &cobra.Command{
 			return printProtoMessageAsJSONToStdout(&result)
 		default:
 			for _, overlordInfo := range result.Overlords {
-				fmt.Printf("overlord_id: %d\n", overlordInfo.Id)
+				fmt.Printf("overlord_id: %d\n", overlordInfo.OverlordId)
 				for _, skill := range overlordInfo.Skills {
 					fmt.Printf("skill title: %s\n", skill.Title)
 				}

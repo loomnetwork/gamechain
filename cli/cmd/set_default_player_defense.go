@@ -8,25 +8,31 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-var initStateCmd = &cobra.Command{
-	Use:   "init_state",
-	Short: "initialize gamechain state",
+var setDefaultPlayerDefenseCmdArgs struct {
+	defense uint64
+}
+
+var setDefaultPlayerDefenseCmd = &cobra.Command{
+	Use:   "set_default_player_defense",
+	Short: "set default player defense",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := loom.Address{
+		callerAddr := &loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		req := &zb.InitGamechainStateRequest{
-			Oracle: callerAddr.MarshalPB(),
+
+		req := zb.SetDefaultPlayerDefenseRequest{
+			Defense: setDefaultPlayerDefenseCmdArgs.defense,
+			Oracle:  callerAddr.MarshalPB(),
 		}
-		_, err := commonTxObjs.contract.Call("InitState", req, signer, nil)
+
+		_, err := commonTxObjs.contract.Call("SetDefaultPlayerDefense", &req, signer, nil)
 		if err != nil {
-			return errors.Wrap(err, "call contract")
+			return err
 		}
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
@@ -37,7 +43,7 @@ var initStateCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Println("state initialized")
+			fmt.Println("success")
 		}
 
 		return nil
@@ -45,5 +51,7 @@ var initStateCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(initStateCmd)
+	rootCmd.AddCommand(setDefaultPlayerDefenseCmd)
+
+	setDefaultPlayerDefenseCmd.Flags().Uint64VarP(&setDefaultPlayerDefenseCmdArgs.defense, "defense", "d", 20, "default defense")
 }

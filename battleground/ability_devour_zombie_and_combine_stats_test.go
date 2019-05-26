@@ -1,11 +1,10 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
@@ -22,11 +21,11 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb_data.Deck{
+	deck0 := &zb.Deck{
 		Id:     0,
 		OverlordId: 2,
 		Name:   "Default",
-		Cards: []*zb_data.DeckCard{
+		Cards: []*zb.DeckCard{
 			{MouldId: 53, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -42,7 +41,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	}
 
 	t.Run("DevourZombieAndCombineStat is active when enter the field, devouring a target", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -50,25 +49,25 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb_data.Card{
+		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb_data.AbilityData{
+			Abilities: []*zb.AbilityData{
 				{
-					Ability: zb_enums.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb_enums.AbilityTrigger_Entry,
+					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 1},
+		instance0 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb_data.Card),
-			AbilitiesInstances: []*zb_data.CardAbilityInstance{
-				&zb_data.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb.Card),
+			AbilitiesInstances: []*zb.CardAbilityInstance{
+				&zb.CardAbilityInstance{
 					Trigger: card0.Abilities[0].Trigger,
-					AbilityType: &zb_data.CardAbilityInstance_DevourZombieAndCombineStats{
-						DevourZombieAndCombineStats: &zb_data.CardAbilityDevourZombieAndCombineStats{
+					AbilityType: &zb.CardAbilityInstance_DevourZombieAndCombineStats{
+						DevourZombieAndCombineStats: &zb.CardAbilityDevourZombieAndCombineStats{
 							Faction: card0.Faction,
 						},
 					},
@@ -76,18 +75,18 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 				},
 			},
 		}
-		instance1 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		instance1 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
 		}
-		instance2 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 3},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		instance2 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
@@ -97,15 +96,15 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 		assert.Equal(t, int(3), len(gp.State.PlayerStates[0].CardsInPlay))
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAbilityUsed,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAbilityUsed{
-				CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-					Card: &zb_data.InstanceId{Id: 1},
-					Targets: []*zb_data.Unit{
-						&zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardAbilityUsed{
+				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+					Card: &zb.InstanceId{Id: 1},
+					Targets: []*zb.Unit{
+						&zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -118,15 +117,15 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		assert.Equal(t, int32(3), gp.State.PlayerStates[0].CardsInPlay[0].Instance.Damage)
 
 		// Try to use the ability again but this time it should not work
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAbilityUsed,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAbilityUsed{
-				CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-					Card: &zb_data.InstanceId{Id: 1},
-					Targets: []*zb_data.Unit{
-						&zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardAbilityUsed{
+				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+					Card: &zb.InstanceId{Id: 1},
+					Targets: []*zb.Unit{
+						&zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
 					},
 				},
@@ -139,7 +138,7 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 	})
 
 	t.Run("DevourZombieAndCombineStat is active when enter the field, devouring all ally zombies", func(t *testing.T) {
-		players := []*zb_data.PlayerState{
+		players := []*zb.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -147,42 +146,42 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb_data.Card{
+		card0 := &zb.Card{
 			Defense: 4,
 			Damage:  2,
-			Abilities: []*zb_data.AbilityData{
+			Abilities: []*zb.AbilityData{
 				{
-					Ability: zb_enums.AbilityType_DevourZombiesAndCombineStats,
-					Trigger: zb_enums.AbilityTrigger_Entry,
+					Ability: zb.AbilityType_DevourZombiesAndCombineStats,
+					Trigger: zb.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 1},
+		instance0 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 1},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb_data.Card),
-			AbilitiesInstances: []*zb_data.CardAbilityInstance{
-				&zb_data.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb.Card),
+			AbilitiesInstances: []*zb.CardAbilityInstance{
+				&zb.CardAbilityInstance{
 					Trigger: card0.Abilities[0].Trigger,
-					AbilityType: &zb_data.CardAbilityInstance_DevourZombieAndCombineStats{
-						DevourZombieAndCombineStats: &zb_data.CardAbilityDevourZombieAndCombineStats{},
+					AbilityType: &zb.CardAbilityInstance_DevourZombieAndCombineStats{
+						DevourZombieAndCombineStats: &zb.CardAbilityDevourZombieAndCombineStats{},
 					},
 					IsActive: true,
 				},
 			},
 		}
-		instance1 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		instance1 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 2},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
 		}
-		instance2 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 3},
-			Prototype:  &zb_data.Card{},
-			Instance: &zb_data.CardInstanceSpecificData{
+		instance2 := &zb.CardInstance{
+			InstanceId: &zb.InstanceId{Id: 3},
+			Prototype:  &zb.Card{},
+			Instance: &zb.CardInstanceSpecificData{
 				Defense: 2,
 				Damage:  1,
 			},
@@ -192,18 +191,18 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 		assert.Equal(t, int(3), len(gp.State.PlayerStates[0].CardsInPlay))
 
-		err = gp.AddAction(&zb_data.PlayerAction{
-			ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
+		err = gp.AddAction(&zb.PlayerAction{
+			ActionType: zb.PlayerActionType_CardAbilityUsed,
 			PlayerId:   player1,
-			Action: &zb_data.PlayerAction_CardAbilityUsed{
-				CardAbilityUsed: &zb_data.PlayerActionCardAbilityUsed{
-					Card: &zb_data.InstanceId{Id: 1},
-					Targets: []*zb_data.Unit{
-						&zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 2},
+			Action: &zb.PlayerAction_CardAbilityUsed{
+				CardAbilityUsed: &zb.PlayerActionCardAbilityUsed{
+					Card: &zb.InstanceId{Id: 1},
+					Targets: []*zb.Unit{
+						&zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 2},
 						},
-						&zb_data.Unit{
-							InstanceId: &zb_data.InstanceId{Id: 3},
+						&zb.Unit{
+							InstanceId: &zb.InstanceId{Id: 3},
 						},
 					},
 				},

@@ -68,20 +68,11 @@ protoc-gen-gogo:
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	cp $< $<-cs.bak
 	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
-	$(PROTOC) --csharp_out=./$(dir $<) $(PKG)/$<-cs
+	$(PROTOC) --csharp_out=./types/zb $(PKG)/$<-cs
 	rm $<-cs
-	find ./$(dir $<)*.cs -type f -exec sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' {} \;
-	find ./$(dir $<)*.cs.bak -type f -exec rm {} \;
+	sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' ./types/zb/Zb.cs && rm ./types/zb/Zb.cs.bak
 
-proto: types/zb/zb_data/zb_data.pb.go \
-    types/zb/zb_enums/zb_enums.pb.go \
-    types/zb/zb_calls/zb_calls.pb.go \
-    types/zb/zb_data/zb_data.cs \
-    types/zb/zb_enums/zb_enums.cs \
-    types/zb/zb_calls/zb_calls.cs \
-    types/oracle/oracle.pb.go \
-    types/nullable/nullable_pb/nullable.pb.go \
-    types/nullable/nullable_test_pb/nullable_test.pb.go
+proto: types/zb/zb.pb.go types/zb/zb.cs types/oracle/oracle.pb.go
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -148,15 +139,9 @@ clean:
 	go clean
 	rm -f \
 		protoc-gen-gogo \
-		types/zb/zb_data/zb_data.pb.go \
-		types/zb/zb_enums/zb_enums.pb.go \
-		types/zb/zb_calls/zb_calls.pb.go \
-		types/zb/zb_data/ZbData.cs \
-		types/zb/zb_calls/ZbCalls.cs \
-		types/zb/zb_enums/ZbEnums.cs \
+		types/zb/zb.pb.go \
 		types/oracle/oracle.pb.go \
-		types/nullable/nullable_pb/nullable.pb.go \
-		types/nullable/nullable_test_pb/nullable_test.pb.go \
+		types/zb/Zb.cs \
 		contracts/zombiebattleground.so.1.0.0 \
 		contracts/zombiebattleground.1.0.0 \
 		bin/zb-cli \
