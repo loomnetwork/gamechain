@@ -29,6 +29,7 @@
 /types/zb/zb_enums/ZbEnums.cs
 /types/zb/zb_enums/zb_enums.pb.go
 /types/nullable/nullable_pb/nullable.pb.go
+/types/nullable/nullable_pb/Nullable.cs
 /types/nullable/nullable_test_pb/nullable_test.pb.go
 /types/oracle/oracle.pb.go
 
