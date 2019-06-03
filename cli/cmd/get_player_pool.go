@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -21,8 +21,8 @@ var getPlayerPoolCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var req = zb.PlayerPoolRequest{}
-		var resp zb.PlayerPoolResponse
+		var req = zb_calls.PlayerPoolRequest{}
+		var resp zb_calls.PlayerPoolResponse
 
 		if getPlayerPoolCmdArgs.isTaggedPlayerPool {
 			_, err := commonTxObjs.contract.Call("GetTaggedPlayerPool", &req, signer, &resp)
