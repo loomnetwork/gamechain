@@ -1,7 +1,8 @@
+[[TestCases]]
+  RunCmd = "sleep 7"
+
 ############ Create accounts and Match making ############
 # Noted: No server side logic checking
-[[TestCases]]
-  RunCmd = "sleep 10"
 
 [[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -v v1"

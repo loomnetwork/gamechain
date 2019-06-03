@@ -1,4 +1,7 @@
 [[TestCases]]
+  RunCmd = "sleep 7"
+
+[[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
   Condition = "contains"
   Expected = ["created successfully"]
