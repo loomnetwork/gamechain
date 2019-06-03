@@ -2004,7 +2004,7 @@
   ],
   "overlords": [
     {
-      "level": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Attack",
@@ -2018,8 +2018,8 @@
       ]
     },
     {
-      "overlordId": "1",
-      "level": "1",
+      "id": "1",
+      "initialDefense": 50,
       "skills": [
         {
           "title": "Deffence",

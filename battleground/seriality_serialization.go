@@ -3,12 +3,12 @@ package battleground
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/loomnetwork/gamechain/types/zb"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 	"math/big"
 )
 
-func deserializeRect(r io.Reader) (rect zb.Rect, err error) {
+func deserializeRect(r io.Reader) (rect zb_data.Rect, err error) {
 	position, err := deserializeVector2Int(r)
 	if err != nil {
 		return
@@ -24,7 +24,7 @@ func deserializeRect(r io.Reader) (rect zb.Rect, err error) {
 	return rect, nil
 }
 
-func deserializeVector2Int(r io.Reader) (v zb.Vector2Int, err error) {
+func deserializeVector2Int(r io.Reader) (v zb_data.Vector2Int, err error) {
 	if err = binary.Read(r, binary.BigEndian, &v.X); err != nil {
 		return
 	}
