@@ -64,7 +64,7 @@ func rune2e(t *testing.T, name string, testFile string, validators int, accounts
 	}
 
 	// pause before running the next test
-	time.Sleep(8000 * time.Millisecond)
+	time.Sleep(3000 * time.Millisecond)
 
 	// clean up test data if successful
 	os.RemoveAll(config.BaseDir)
