@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -21,11 +22,11 @@ var listDecksCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		req := &zb.ListDecksRequest{
+		req := &zb_calls.ListDecksRequest{
 			UserId: listDecksCmdArgs.userID,
 			Version: listDecksCmdArgs.version,
 		}
-		var result zb.DeckList
+		var result zb_data.DeckList
 		_, err := commonTxObjs.contract.Call("ListDecks", req, signer, &result)
 		if err != nil {
 			return err

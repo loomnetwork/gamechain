@@ -1,15 +1,14 @@
 package battleground
 
 import (
-	"errors"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/pkg/errors"
 	"math/rand"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/gogo/protobuf/proto"
-
-	"github.com/loomnetwork/gamechain/types/zb"
 )
 
 const (
@@ -23,15 +22,10 @@ var (
 	ErrDeckNameTooLong = fmt.Errorf("deck name is more than %d characters", MaxDeckNameChar)
 )
 
-func validateCardLibraryCards(cardLibrary []*zb.Card) error {
-	existingCardsSet := make(map[int64]interface{})
-	for _, card := range cardLibrary {
-		_, exists := existingCardsSet[card.MouldId]
-		if !exists {
-			existingCardsSet[card.MouldId] = struct{}{}
-		} else {
-			return fmt.Errorf("more than one card has mould ID %d, this is not allowed", card.MouldId)
-		}
+func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
+	existingCardsSet, err := getMouldIdToCardMap(cardLibrary)
+	if err != nil {
+		return err
 	}
 
 	for _, card := range cardLibrary {
@@ -39,19 +33,27 @@ func validateCardLibraryCards(cardLibrary []*zb.Card) error {
 			return fmt.Errorf("mould id not set for card %s", card.Name)
 		}
 
-		if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-			return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+		if card.SourceMouldId <= 0 {
+			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+				return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+			}
+		}
+
+		err = validateSourceMouldId(card, existingCardsSet)
+		if err != nil {
+			return err
 		}
 	}
 
 	return nil
 }
 
-func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb.DeckCard) error {
-	existingCardsSet := make(map[int64]interface{})
-	for _, card := range cardLibrary {
-		existingCardsSet[card.MouldId] = struct{}{}
+func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCard) error {
+	mouldIdToCard, err := getMouldIdToCardMap(cardLibrary)
+	if err != nil {
+		return err
 	}
+
 	for _, deckCard := range deckCards {
 		if deckCard.MouldId <= 0 {
 			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
@@ -61,14 +63,39 @@ func validateDeckCards(cardLibrary []*zb.Card, deckCards []*zb.DeckCard) error {
 			return fmt.Errorf("card %d has non-empty name '%s', must be empty", deckCard.MouldId, deckCard.CardNameDeprecated)
 		}
 
-		if _, ok := existingCardsSet[deckCard.MouldId]; !ok {
+		if _, ok := mouldIdToCard[deckCard.MouldId]; !ok {
 			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
 		}
 	}
 	return nil
 }
 
-func validateDeckCollections(userCollections []*zb.CardCollectionCard, deckCollections []*zb.CardCollectionCard) error {
+func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, deck *zb_data.Deck, deckList []*zb_data.Deck, overlords []*zb_data.OverlordUserInstance) error {
+	// validate version on card library
+	if err := validateDeckCards(cardLibrary.Cards, deck.Cards); err != nil {
+		return errors.Wrap(err, "error validating deck cards")
+	}
+
+	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
+	// TODO: Turn on the check when the server side knows user's collection
+	// validating against default card collection
+	// var defaultCollection zb.CardCollectionList
+	// if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
+	// 	return nil, errors.Wrapf(err, "unable to get default collectionlist")
+	// }
+	// // make sure the given cards and amount must be a subset of user's cards
+	// if err := validateDeckCollections(defaultCollection.Cards, req.Deck.Cards); err != nil {
+	// 	return nil, err
+	// }
+
+	if err := validateDeckName(deckList, deck); err != nil {
+		return errors.Wrap(err, "error validating deck name")
+	}
+
+	return nil
+}
+
+func validateDeckCollections(userCollections []*zb_data.CardCollectionCard, deckCollections []*zb_data.CardCollectionCard) error {
 	maxAmountMap := make(map[int64]int64)
 	for _, collection := range userCollections {
 		maxAmountMap[collection.MouldId] = collection.Amount
@@ -91,7 +118,7 @@ func validateDeckCollections(userCollections []*zb.CardCollectionCard, deckColle
 	return nil
 }
 
-func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
+func validateDeckName(deckList []*zb_data.Deck, validatedDeck *zb_data.Deck) error {
 	validatedDeck.Name = strings.TrimSpace(validatedDeck.Name)
 	if len(validatedDeck.Name) == 0 {
 		return ErrDeckNameEmpty
@@ -111,24 +138,25 @@ func validateDeckName(deckList []*zb.Deck, validatedDeck *zb.Deck) error {
 	return nil
 }
 
-func getOverlordById(overlordList []*zb.Overlord, overlordId int64) *zb.Overlord {
-	for _, overlord := range overlordList {
-		if overlord.OverlordId == overlordId {
-			return overlord
+func getOverlordUserDataByPrototypeId(overlordsUserData []*zb_data.OverlordUserData, overlordPrototypeId int64) (*zb_data.OverlordUserData, bool){
+	for _, overlordUserData := range overlordsUserData {
+		if overlordUserData.PrototypeId == overlordPrototypeId {
+			return overlordUserData, true
 		}
 	}
-	return nil
+	return nil, false
 }
 
-func validateDeckOverlord(overlordList []*zb.Overlord, overlordID int64) error {
-	// check if the user has overlord
-	if getOverlordById(overlordList, overlordID) != nil {
-		return nil
+func getOverlordUserInstanceByPrototypeId(overlordsUserInstance []*zb_data.OverlordUserInstance, overlordPrototypeId int64) (*zb_data.OverlordUserInstance, bool) {
+	for _, overlordUserInstance := range overlordsUserInstance {
+		if overlordUserInstance.Prototype.Id == overlordPrototypeId {
+			return overlordUserInstance, true
+		}
 	}
-	return fmt.Errorf("overlord: %d cannot be part of deck, since it is not owned by User", overlordID)
+	return nil, false
 }
 
-func shuffleCardInDeck(deck []*zb.CardInstance, seed int64, playerIndex int) []*zb.CardInstance {
+func shuffleCardInDeck(deck []*zb_data.CardInstance, seed int64, playerIndex int) []*zb_data.CardInstance {
 	r := rand.New(rand.NewSource(seed + int64(playerIndex)))
 	for i := 0; i < len(deck); i++ {
 		n := r.Intn(i + 1)
@@ -140,7 +168,7 @@ func shuffleCardInDeck(deck []*zb.CardInstance, seed int64, playerIndex int) []*
 	return deck
 }
 
-func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []*zb.Card) {
+func drawFromCardList(cardlist []*zb_data.Card, n int) (cards []*zb_data.Card, renaming []*zb_data.Card) {
 	var i int
 	for i = 0; i < n; i++ {
 		if i > len(cardlist)-1 {
@@ -153,7 +181,7 @@ func drawFromCardList(cardlist []*zb.Card, n int) (cards []*zb.Card, renaming []
 	return
 }
 
-func findCardInCardListByName(card *zb.CardInstance, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+func findCardInCardListByName(card *zb_data.CardInstance, cards []*zb_data.CardInstance) (int, *zb_data.CardInstance, bool) {
 	for i, c := range cards {
 		if card.Prototype.Name == c.Prototype.Name {
 			return i, c, true
@@ -162,11 +190,145 @@ func findCardInCardListByName(card *zb.CardInstance, cards []*zb.CardInstance) (
 	return -1, nil, false
 }
 
-func findCardInCardListByInstanceId(instanceId *zb.InstanceId, cards []*zb.CardInstance) (int, *zb.CardInstance, bool) {
+func findCardInCardListByInstanceId(instanceId *zb_data.InstanceId, cards []*zb_data.CardInstance) (int, *zb_data.CardInstance, bool) {
 	for i, c := range cards {
 		if proto.Equal(instanceId, c.InstanceId) {
 			return i, c, true
 		}
 	}
 	return -1, nil, false
+}
+
+func getMouldIdToCardMap(cardLibrary []*zb_data.Card) (map[int64]*zb_data.Card, error) {
+	existingCardsSet := make(map[int64]*zb_data.Card)
+	for _, card := range cardLibrary {
+		_, exists := existingCardsSet[card.MouldId]
+		if !exists {
+			existingCardsSet[card.MouldId] = card
+		} else {
+			return nil, fmt.Errorf("more than one card has mould ID %d, this is not allowed", card.MouldId)
+		}
+	}
+
+	return existingCardsSet, nil
+}
+
+func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
+	if card.SourceMouldId <= 0 {
+		return nil
+	}
+
+	sourceMouldId := card.SourceMouldId
+	overrides := card.Overrides
+	mouldId := card.MouldId
+	sourceCard, exists := mouldIdToCard[sourceMouldId]
+	if !exists {
+		return fmt.Errorf("source card with mould id %d not found", sourceMouldId)
+	}
+
+	card.Reset()
+	proto.Merge(card, sourceCard)
+	card.MouldId = mouldId
+	card.SourceMouldId = sourceMouldId
+
+	if overrides == nil {
+		return nil
+	}
+
+	// per-field merge
+	if overrides.Kind != nil {
+		card.Kind = overrides.Kind.Value
+	}
+
+	if overrides.Faction != nil {
+		card.Faction = overrides.Faction.Value
+	}
+
+	if overrides.Name != nil {
+		card.Name = overrides.Name.Value
+	}
+
+	if overrides.Description != nil {
+		card.Description = overrides.Description.Value
+	}
+
+	if overrides.FlavorText != nil {
+		card.FlavorText = overrides.FlavorText.Value
+	}
+
+	if overrides.Picture != nil {
+		card.Picture = overrides.Picture.Value
+	}
+
+	if overrides.Rank != nil {
+		card.Rank = overrides.Rank.Value
+	}
+
+	if overrides.Type != nil {
+		card.Type = overrides.Type.Value
+	}
+
+	if overrides.Frame != nil {
+		card.Frame = overrides.Frame.Value
+	}
+
+	if overrides.Damage != nil {
+		card.Damage = overrides.Damage.Value
+	}
+
+	if overrides.Defense != nil {
+		card.Defense = overrides.Defense.Value
+	}
+
+	if overrides.Cost != nil {
+		card.Cost = overrides.Cost.Value
+	}
+
+	if overrides.PictureTransform != nil {
+		card.PictureTransform = overrides.PictureTransform
+	}
+
+	if len(overrides.Abilities) > 0 {
+		card.Abilities = overrides.Abilities
+	}
+
+	if overrides.UniqueAnimation != nil {
+		card.UniqueAnimation = overrides.UniqueAnimation.Value
+	}
+
+	if overrides.Hidden != nil {
+		card.Hidden = overrides.Hidden.Value
+	}
+
+	return nil
+}
+
+func validateSourceMouldId(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
+	if card.SourceMouldId <= 0 {
+		return nil
+	}
+
+	if card.SourceMouldId == card.MouldId {
+		return fmt.Errorf(
+			"card '%s' (mould id %d) has sourceMouldId equal to mouldId",
+			card.Name,
+			card.MouldId,
+		)
+	}
+
+	sourceCard, exists := mouldIdToCard[card.SourceMouldId]
+	if !exists {
+		return fmt.Errorf(
+			"card '%s' (mould id %d) has sourceMouldId %d, but such mould id is not found",
+			card.Name,
+			card.MouldId,
+			card.SourceMouldId,
+		)
+	}
+
+	if sourceCard.SourceMouldId > 0 {
+		return fmt.Errorf("source card %d can't have sourceMouldId set itself", sourceCard.SourceMouldId)
+	}
+
+	return nil
 }

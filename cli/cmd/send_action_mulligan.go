@@ -3,9 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -22,18 +24,18 @@ var sendActionMulliganCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 
-		var ids []*zb.InstanceId
+		var ids []*zb_data.InstanceId
 		for _, id := range sendActionMulliganCmdArgs.mulliganedCards {
-			ids = append(ids, &zb.InstanceId{Id: id})
+			ids = append(ids, &zb_data.InstanceId{Id: id})
 		}
 
-		var req = zb.PlayerActionRequest{
+		var req = zb_calls.PlayerActionRequest{
 			MatchId: sendActionMulliganCmdArgs.matchID,
-			PlayerAction: &zb.PlayerAction{
-				ActionType: zb.PlayerActionType_Mulligan,
+			PlayerAction: &zb_data.PlayerAction{
+				ActionType: zb_enums.PlayerActionType_Mulligan,
 				PlayerId:   sendActionMulliganCmdArgs.userID,
-				Action: &zb.PlayerAction_Mulligan{
-					Mulligan: &zb.PlayerActionMulligan{
+				Action: &zb_data.PlayerAction_Mulligan{
+					Mulligan: &zb_data.PlayerActionMulligan{
 						MulliganedCards: ids,
 					},
 				},

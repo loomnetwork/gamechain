@@ -3,9 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/pkg/errors"
@@ -21,7 +21,7 @@ var initStateCmd = &cobra.Command{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		req := &zb.InitGamechainStateRequest{
+		req := &zb_calls.InitGamechainStateRequest{
 			Oracle: callerAddr.MarshalPB(),
 		}
 		_, err := commonTxObjs.contract.Call("InitState", req, signer, nil)

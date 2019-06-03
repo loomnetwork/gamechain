@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 
-	"github.com/loomnetwork/gamechain/types/zb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -18,11 +18,11 @@ var acceptMatchCmd = &cobra.Command{
 	Short: "accept match",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		var req = zb.AcceptMatchRequest{
+		var req = zb_calls.AcceptMatchRequest{
 			UserId:  acceptMatchCmdArgs.userID,
 			MatchId: acceptMatchCmdArgs.matchID,
 		}
-		var resp zb.AcceptMatchResponse
+		var resp zb_calls.AcceptMatchResponse
 
 		_, err := commonTxObjs.contract.Call("AcceptMatch", &req, signer, &resp)
 		if err != nil {
