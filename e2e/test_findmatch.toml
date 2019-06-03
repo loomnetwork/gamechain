@@ -1,5 +1,6 @@
 [[TestCases]]
-  RunCmd = "sleep 7"
+  RunCmd = "echo "
+  Delay = 10000
 
 ############ Create 1st match ############
 [[TestCases]]
