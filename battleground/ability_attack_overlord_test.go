@@ -1,11 +1,12 @@
 package battleground
 
 import (
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/loomnetwork/gamechain/types/zb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,11 +22,11 @@ func TestAbilityAttackOverlord(t *testing.T) {
 	player1 := "player-1"
 	player2 := "player-2"
 
-	deck0 := &zb.Deck{
+	deck0 := &zb_data.Deck{
 		Id:         0,
 		OverlordId: 2,
 		Name:       "Default",
-		Cards: []*zb.DeckCard{
+		Cards: []*zb_data.DeckCard{
 			{MouldId: 90, Amount: 2},
 			{MouldId: 91, Amount: 2},
 			{MouldId: 96, Amount: 2},
@@ -41,7 +42,7 @@ func TestAbilityAttackOverlord(t *testing.T) {
 	}
 
 	t.Run("Player overlord is damaged when the card is played", func(t *testing.T) {
-		players := []*zb.PlayerState{
+		players := []*zb_data.PlayerState{
 			{Id: player1, Deck: deck0},
 			{Id: player2, Deck: deck0},
 		}
@@ -49,26 +50,26 @@ func TestAbilityAttackOverlord(t *testing.T) {
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
 
-		card0 := &zb.Card{
+		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,
-			Abilities: []*zb.AbilityData{
+			Abilities: []*zb_data.AbilityData{
 				{
-					Ability: zb.AbilityType_AttackOverlord,
-					Trigger: zb.AbilityTrigger_Entry,
+					Ability: zb_enums.AbilityType_AttackOverlord,
+					Trigger: zb_enums.AbilityTrigger_Entry,
 				},
 			},
 		}
-		instance0 := &zb.CardInstance{
-			InstanceId: &zb.InstanceId{Id: 100},
+		instance0 := &zb_data.CardInstance{
+			InstanceId: &zb_data.InstanceId{Id: 100},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:  proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{
-				&zb.CardAbilityInstance{
+			Prototype:  proto.Clone(card0).(*zb_data.Card),
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{
+				&zb_data.CardAbilityInstance{
 					IsActive: true,
 					Trigger:  card0.Abilities[0].Trigger,
-					AbilityType: &zb.CardAbilityInstance_AttackOverlord{
-						AttackOverlord: &zb.CardAbilityAttackOverlord{
+					AbilityType: &zb_data.CardAbilityInstance_AttackOverlord{
+						AttackOverlord: &zb_data.CardAbilityAttackOverlord{
 							Damage:     2,
 							WasApplied: false,
 						},
@@ -79,33 +80,33 @@ func TestAbilityAttackOverlord(t *testing.T) {
 
 		gp.State.PlayerStates[0].CardsInHand = append(gp.State.PlayerStates[0].CardsInHand, instance0)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardPlay{
-				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 100},
+			Action: &zb_data.PlayerAction_CardPlay{
+				CardPlay: &zb_data.PlayerActionCardPlay{
+					Card: &zb_data.InstanceId{Id: 100},
 				},
 			},
 		})
 		assert.Nil(t, err)
 		assert.Equal(t, int32(48), gp.State.PlayerStates[0].Defense)
 
-		instance1 := &zb.CardInstance{
-			InstanceId:         &zb.InstanceId{Id: 101},
+		instance1 := &zb_data.CardInstance{
+			InstanceId:         &zb_data.InstanceId{Id: 101},
 			Instance:           newCardInstanceSpecificDataFromCardDetails(card0),
-			Prototype:          proto.Clone(card0).(*zb.Card),
-			AbilitiesInstances: []*zb.CardAbilityInstance{},
+			Prototype:          proto.Clone(card0).(*zb_data.Card),
+			AbilitiesInstances: []*zb_data.CardAbilityInstance{},
 		}
 
 		gp.State.PlayerStates[0].CardsInHand = append(gp.State.PlayerStates[0].CardsInHand, instance1)
 
-		err = gp.AddAction(&zb.PlayerAction{
-			ActionType: zb.PlayerActionType_CardPlay,
+		err = gp.AddAction(&zb_data.PlayerAction{
+			ActionType: zb_enums.PlayerActionType_CardPlay,
 			PlayerId:   player1,
-			Action: &zb.PlayerAction_CardPlay{
-				CardPlay: &zb.PlayerActionCardPlay{
-					Card: &zb.InstanceId{Id: 101},
+			Action: &zb_data.PlayerAction_CardPlay{
+				CardPlay: &zb_data.PlayerActionCardPlay{
+					Card: &zb_data.InstanceId{Id: 101},
 				},
 			},
 		})
