@@ -1,5 +1,6 @@
 [[TestCases]]
-  RunCmd = "sleep 7"
+  RunCmd = "echo "
+  Delay = 10000
 
 [[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
