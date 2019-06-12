@@ -58,6 +58,7 @@ contracts/zombiebattleground.1.0.0: proto
 	go build $(GOFLAGS) -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
+	git --git-dir $(GOPATH)/src/github.com/gogo/protobuf/.git --work-tree $(GOPATH)/src/github.com/gogo/protobuf/ checkout master --force
 	go build github.com/gogo/protobuf/protoc-gen-gogo
 
 %.pb.go: %.proto protoc-gen-gogo
@@ -67,7 +68,7 @@ protoc-gen-gogo:
 %.cs: %.proto protoc-gen-gogo
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	cp $< $<-cs.bak
-	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
+	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g;s/option (gogoproto\.[a-z_]*) = false;//g' > $<-cs && rm $<-cs.bak
 	$(PROTOC) --csharp_out=./$(dir $<) $(PKG)/$<-cs
 	rm $<-cs
 	find ./$(dir $<)*.cs -type f -exec sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' {} \;

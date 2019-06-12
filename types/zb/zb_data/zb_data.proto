@@ -42,8 +42,8 @@ message Deck {
 
 message CardKey {
     option (gogoproto.goproto_unrecognized) = false;
-    //option (gogoproto.goproto_unkeyed) = false;
-    //option (gogoproto.goproto_sizecache) = false;
+    option (gogoproto.goproto_unkeyed) = false;
+    option (gogoproto.goproto_sizecache) = false;
 
     int64 mouldId = 1;
     CardEdition.Enum edition = 2;
