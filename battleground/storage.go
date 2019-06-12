@@ -6,6 +6,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
+	loom "github.com/loomnetwork/go-loom"
 	"strings"
 
 	"github.com/gogo/protobuf/proto"
@@ -16,14 +17,14 @@ import (
 )
 
 var (
-	cardPrefix           = []byte("card")
-	userPrefix           = []byte("user")
-	overlordsPrefix      = []byte("heroes")
-	collectionPrefix     = []byte("collection")
-	decksPrefix          = []byte("decks")
-	matchesPrefix        = []byte("matches")
-	pendingMatchesPrefix = []byte("pending-matches")
-	matchMakingPrefix    = []byte("matchmaking")
+	cardPrefix                = []byte("card")
+	userPrefix                = []byte("user")
+	overlordsPrefix           = []byte("heroes")
+	collectionPrefix          = []byte("collection")
+	decksPrefix               = []byte("decks")
+	matchesPrefix             = []byte("matches")
+	pendingMatchesPrefix      = []byte("pending-matches")
+	matchMakingPrefix         = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
 	overlordPrototypeListKey    = []byte("overlord-prototype-list")
@@ -87,6 +88,31 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
+func MakeAddressToUserIdKey(address loom.Address) []byte {
+	return []byte("address-to-userid:" + string(address.Local.Hex()))
+}
+
+func getUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
+	var userId zb_data.UserIdContainer
+
+	err := ctx.Get(MakeAddressToUserIdKey(address), &userId)
+	if err != nil {
+		return "", err
+	}
+
+	return userId.UserId, nil
+}
+
+func setUserIdAddress(ctx contract.Context, userId string, address loom.Address) error {
+	userIdContainer := zb_data.UserIdContainer{UserId: userId}
+	err := ctx.Set(MakeAddressToUserIdKey(address), &userIdContainer)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func saveState(ctx contract.Context, state *zb_data.GamechainState) error {
 	if err := ctx.Set(stateKey, state); err != nil {
 		return err
@@ -118,21 +144,6 @@ func loadCardCollectionByUserId(ctx contract.Context, userID string, version str
 		}
 	}
 
-	// Update data
-	err = validateAndUpdateCardCollectionList(
-		ctx,
-		version,
-		&userCollection,
-		false,
-		func(collection *zb_data.CardCollectionList) error {
-			err := saveCardCollectionByUserId(ctx, userID, collection)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
 	if err != nil {
 		return nil, err
 	}
@@ -157,21 +168,6 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data
 		}
 	}
 
-	// Update data
-	err = validateAndUpdateCardCollectionList(
-		ctx,
-		version,
-		&userCollection,
-		false,
-		func(collection *zb_data.CardCollectionList) error {
-			err :=  saveCardCollectionByAddress(ctx, collection)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
 	if err != nil {
 		return nil, err
 	}
@@ -185,133 +181,6 @@ func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.C
 	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
-func validateAndUpdateGenericCardList(
-	ctx contract.StaticContext,
-	cardList []interface{},
-	version string,
-	validateMouldId bool,
-	getMouldIdFunc func(card interface{}) int64,
-	setMouldIdFunc func(card interface{}, mouldId int64),
-	getCardNameFunc func(card interface{}) string,
-	setEmptyCardNameFunc func(card interface{}),
-	) (changed bool, changedList []interface{}, err error) {
-	changed = false
-	err = nil
-
-	var cardLibrary *zb_data.CardList = nil
-	if validateMouldId {
-		cardLibrary, err = getCardLibrary(ctx, version)
-		if err != nil {
-			return false, nil, err
-		}
-	}
-
-	newCardList := make([]interface{}, 0)
-	for _, card := range cardList {
-		if getMouldIdFunc(card) != 0 {
-			if validateMouldId {
-				// Check if mould ID exists in card library
-				mouldIdMatchFound := false
-				for _, libraryCard := range cardLibrary.Cards {
-					if libraryCard.MouldId == getMouldIdFunc(card) {
-						mouldIdMatchFound = true
-						break
-					}
-				}
-
-				if mouldIdMatchFound {
-					newCardList = append(newCardList, card)
-				} else {
-					// If a match is not found, remove the card from list
-					ctx.Logger().Warn(fmt.Sprintf("card with mould id %d not found in card library, removing", getMouldIdFunc(card)))
-					changed = true
-				}
-			} else {
-				newCardList = append(newCardList, card)
-			}
-
-			continue
-		}
-
-		if !validateMouldId && cardLibrary == nil {
-			cardLibrary, err = getCardLibrary(ctx, version)
-			if err != nil {
-				return false, nil, err
-			}
-		}
-
-		// Convert card name to mould ID
-		nameMatchFound := false
-		for _, libraryCard := range cardLibrary.Cards {
-			if strings.EqualFold(libraryCard.Name, getCardNameFunc(card)) {
-				nameMatchFound = true
-				setMouldIdFunc(card, libraryCard.MouldId)
-				setEmptyCardNameFunc(card)
-				break
-			}
-		}
-
-		if !nameMatchFound {
-			ctx.Logger().Warn(fmt.Sprintf("card with name %s not found in card library, removing", getCardNameFunc(card)))
-			continue
-		}
-
-		changed = true
-		newCardList = append(newCardList, card)
-	}
-
-	return changed, newCardList, nil
-}
-
-func validateAndUpdateCardCollectionList(
-	ctx contract.StaticContext,
-	version string,
-	cardCollectionList *zb_data.CardCollectionList,
-	validateMouldId bool,
-	saveChangedCollectionFunc func(collection *zb_data.CardCollectionList) error,
-) error {
-	var collectionCardsInterface = make([]interface{}, len(cardCollectionList.Cards))
-	for i, d := range cardCollectionList.Cards {
-		collectionCardsInterface[i] = d
-	}
-	changed, changedCardCollectionList, err :=
-		validateAndUpdateGenericCardList(
-			ctx,
-			collectionCardsInterface,
-			version,
-			validateMouldId,
-			func(card interface{}) int64 {
-				return card.(*zb_data.CardCollectionCard).MouldId
-			},
-			func(card interface{}, mouldId int64) {
-				card.(*zb_data.CardCollectionCard).MouldId = mouldId
-			},
-			func(card interface{}) string {
-				return card.(*zb_data.CardCollectionCard).CardNameDeprecated
-			},
-			func(card interface{}) {
-				card.(*zb_data.CardCollectionCard).CardNameDeprecated = ""
-			},
-		)
-	if err != nil {
-		return err
-	}
-
-	if changed {
-		cardCollectionList.Cards = make([]*zb_data.CardCollectionCard, len(changedCardCollectionList))
-		for i := range changedCardCollectionList {
-			cardCollectionList.Cards[i] = changedCardCollectionList[i].(*zb_data.CardCollectionCard)
-		}
-
-		err = saveChangedCollectionFunc(cardCollectionList)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
 	var deckList zb_data.DeckList
 	err := ctx.Get(DecksKey(userID), &deckList)
@@ -319,52 +188,6 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 		if err == contract.ErrNotFound {
 			deckList.Decks = []*zb_data.Deck{}
 		} else {
-			return nil, err
-		}
-	}
-
-	deckListChanged := false
-	for _, deck := range deckList.Decks {
-		// Update data
-		var deckCardsInterface = make([]interface{}, len(deck.Cards))
-		for i, d := range deck.Cards {
-			deckCardsInterface[i] = d
-		}
-		changed, changedDeckCards, err :=
-			validateAndUpdateGenericCardList(
-				ctx,
-				deckCardsInterface,
-				version,
-				true,
-				func(card interface{}) int64 {
-					return card.(*zb_data.DeckCard).MouldId
-				},
-				func(card interface{}, mouldId int64) {
-					card.(*zb_data.DeckCard).MouldId = mouldId
-				},
-				func(card interface{}) string {
-					return card.(*zb_data.DeckCard).CardNameDeprecated
-				},
-				func(card interface{}) {
-					card.(*zb_data.DeckCard).CardNameDeprecated = ""
-				},
-			)
-		if err != nil {
-			return nil, err
-		}
-
-		if changed {
-			deckListChanged = true
-			deck.Cards = make([]*zb_data.DeckCard, len(changedDeckCards))
-			for i := range changedDeckCards {
-				deck.Cards[i] = changedDeckCards[i].(*zb_data.DeckCard)
-			}
-		}
-	}
-
-	if deckListChanged {
-		err = saveDecks(ctx, userID, &deckList)
-		if err != nil {
 			return nil, err
 		}
 	}
@@ -796,6 +619,13 @@ func deleteGameMode(gameModeList *zb_data.GameModeList, ID string) (*zb_data.Gam
 	return &zb_data.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
+func cardKeyFromCardTokenId(cardTokenId int64) zb_data.CardKey {
+	return zb_data.CardKey{
+		MouldId: cardTokenId / 10,
+		Edition: zb_enums.CardEdition_Enum(cardTokenId % 10),
+	}
+}
+
 func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb_data.Card) *zb_data.CardInstanceSpecificData {
 	cardDetails = proto.Clone(cardDetails).(*zb_data.Card)
 	return &zb_data.CardInstanceSpecificData{
@@ -914,9 +744,9 @@ func populateDeckCards(cardLibrary *zb_data.CardList, playerStates []*zb_data.Pl
 		}
 		for _, cardAmounts := range deck.Cards {
 			for i := int64(0); i < cardAmounts.Amount; i++ {
-				cardDetails, err := getCardByMouldId(cardLibrary, cardAmounts.MouldId)
+				cardDetails, err := getCardByCardKey(cardLibrary, cardAmounts.CardKey)
 				if err != nil {
-					return fmt.Errorf("unable to get card %d from card library: %s", cardAmounts.MouldId, err.Error())
+					return fmt.Errorf("unable to get card [%s] from card library: %s", cardAmounts.CardKey.String(), err.Error())
 				}
 
 				cardInstance := newCardInstanceFromCardDetails(
@@ -1010,7 +840,7 @@ func getCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardLi
 		return nil, fmt.Errorf("error getting card library: %s", err)
 	}
 
-	mouldIdToCard, err := getMouldIdToCardMap(cardList.Cards)
+	mouldIdToCard, err := getCardKeyToCardMap(cardList.Cards)
 	if err != nil {
 		return nil, err
 	}
@@ -1034,11 +864,11 @@ func getCardByName(cardList *zb_data.CardList, cardName string) (*zb_data.Card, 
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }
 
-func getCardByMouldId(cardList *zb_data.CardList, mouldId int64) (*zb_data.Card, error) {
+func getCardByCardKey(cardList *zb_data.CardList, cardKey zb_data.CardKey) (*zb_data.Card, error) {
 	for _, card := range cardList.Cards {
-		if card.MouldId == mouldId {
+		if card.CardKey == cardKey {
 			return card, nil
 		}
 	}
-	return nil, fmt.Errorf("card with mould id %d not found in card library", mouldId)
+	return nil, fmt.Errorf("card with card key [%s] not found in card library", cardKey.String())
 }

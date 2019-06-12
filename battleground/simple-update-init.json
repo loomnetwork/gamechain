@@ -7,11 +7,15 @@
         "cards": [
           {
             "amount": "15",
-            "mouldId": "1"
+            "cardKey": {
+              "mouldId": "1"
+            }
           },
           {
             "amount": "15",
-            "mouldId": "2"
+            "cardKey": {
+              "mouldId": "2"
+            }
           }
         ]
       }
@@ -19,16 +23,22 @@
     "defaultCollection": [
       {
         "amount": "15",
-        "mouldId": "1"
+        "cardKey": {
+          "mouldId": "1"
+        }
       },
       {
         "amount": "15",
-        "mouldId": "2"
+        "cardKey": {
+          "mouldId": "2"
+        }
       }
     ],
     "cards": [
       {
-        "mouldId": "1",
+        "cardKey": {
+          "mouldId": "1"
+        },
         "faction": "AIR",
         "name": "Soothsayer",
         "rank": "MINION",
@@ -57,7 +67,9 @@
         ]
       },
       {
-        "mouldId": "2",
+        "cardKey": {
+          "mouldId": "2"
+        },
         "faction": "AIR",
         "name": "Azuraz",
         "rank": "MINION",
@@ -92,7 +104,9 @@
         ]
       },
       {
-        "mouldId": "3",
+        "cardKey": {
+          "mouldId": "3"
+        },
         "faction": "AIR",
         "name": "NewCard",
         "rank": "MINION",
@@ -167,11 +181,15 @@
           "cards": [
             {
               "amount": "15",
-              "mouldId": "1"
+              "cardKey": {
+                "mouldId": "1"
+              }
             },
             {
               "amount": "15",
-              "mouldId": "2"
+              "cardKey": {
+                "mouldId": "2"
+              }
             }
           ]
         },

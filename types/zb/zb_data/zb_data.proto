@@ -40,8 +40,18 @@ message Deck {
     OverlordSkillType.Enum secondarySkill = 6;
 }
 
-message Card {
+message CardKey {
+    option (gogoproto.goproto_unrecognized) = false;
+    //option (gogoproto.goproto_unkeyed) = false;
+    //option (gogoproto.goproto_sizecache) = false;
+
     int64 mouldId = 1;
+    CardEdition.Enum edition = 2;
+}
+
+message Card {
+    reserved 1; // int64 mouldId
+    CardKey cardKey = 23 [(gogoproto.nullable) = false];
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
@@ -59,7 +69,7 @@ message Card {
     UniqueAnimation.Enum uniqueAnimation = 18;
     reserved 19;
     bool hidden = 20;
-    int64 sourceMouldId = 21;
+    reserved 21; // int64 sourceMouldId = 21;
     CardOverrides overrides = 22;
 }
 
@@ -117,15 +127,17 @@ message CardList {
 }
 
 message CardCollectionCard {
-    string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    reserved 1; //string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
-    int64 mouldId = 3;
+    reserved 3; // int64 mouldId = 3;
+    CardKey cardKey = 4 [(gogoproto.nullable) = false];
 }
 
 message DeckCard {
     string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
-    int64 mouldId = 3;
+    reserved 3; // int64 mouldId = 3;
+    CardKey cardKey = 4 [(gogoproto.nullable) = false];
 }
 
 message CardLibrary {
@@ -857,4 +869,8 @@ message Notification {
 
 message NotificationList {
     repeated Notification notifications = 1;
+}
+
+message UserIdContainer {
+    string userId = 1;
 }

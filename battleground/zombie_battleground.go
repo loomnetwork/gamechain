@@ -425,6 +425,15 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	return nil
 }
 
+func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) error {
+	err := setUserIdAddress(ctx, req.UserId, ctx.Message().Sender)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb_calls.UpdateUserEloRequest) error {
 	// Verify whether this privateKey associated with user
 	if !isOwner(ctx, req.UserId) {
@@ -2311,7 +2320,7 @@ func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
 	return nil
 }
 
-func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardID int64, amount int64, version string) error {
+func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardTokenId int64, amount int64, version string) error {
 	// check the oracle
 	addr := ctx.Message().Sender.MarshalPB()
 	if err := z.validateOracle(ctx, addr); err != nil {
@@ -2321,25 +2330,20 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	if err != nil {
 		return err
 	}
-	cardlib, err := getCardLibrary(ctx, version)
-	if err != nil {
-		return err
-	}
 
-	// Map from cardID to mouldID
-	// the formular is cardID = mouldID + x
-	// for example cardID 250 = 25 + 0
+	// Map from cardTokenId to mouldID
+	// the formular is cardTokenId = mouldID + x
+	// for example cardTokenId 250 = 25 + 0
 	//   or 161 = 16 + 1
-	mouldID := cardID / 10
-	card, err := getCardByMouldId(cardlib, mouldID)
-	if err != nil {
-		return err
-	}
+	cardKey := cardKeyFromCardTokenId(cardTokenId)
+
+	// We are allowing unknown cards to be added.
+	// This is to handle the case user buying a card not existing on gamechain yet.
 
 	// add to collection
 	found := false
 	for i := range cardCollection.Cards {
-		if cardCollection.Cards[i].MouldId == card.MouldId {
+		if cardCollection.Cards[i].CardKey == cardKey {
 			cardCollection.Cards[i].Amount += amount
 			found = true
 			break
@@ -2347,7 +2351,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	}
 	if !found {
 		cardCollection.Cards = append(cardCollection.Cards, &zb_data.CardCollectionCard{
-			MouldId: card.MouldId,
+			CardKey: cardKey,
 			Amount:  amount,
 		})
 	}

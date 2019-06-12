@@ -27,8 +27,8 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		OverlordId: 2,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
-			{MouldId: 133, Amount: 5},
-			{MouldId: 136, Amount: 10},
+			{CardKey: zb_data.CardKey{MouldId: 133}, Amount: 5},
+			{CardKey: zb_data.CardKey{MouldId: 136}, Amount: 10},
 		},
 	}
 
@@ -37,7 +37,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		OverlordId: 2,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
-			{MouldId: 11, Amount: 15},
+			{CardKey: zb_data.CardKey{MouldId: 11}, Amount: 15},
 		},
 	}
 
