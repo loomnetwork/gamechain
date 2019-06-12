@@ -115,8 +115,6 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotNil(t, gp)
 
-		return
-
 		card0 := &zb_data.Card{
 			Defense: 5,
 			Damage:  2,

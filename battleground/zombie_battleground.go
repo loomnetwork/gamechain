@@ -508,7 +508,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 	newDeckID++
 	req.Deck.Id = newDeckID
 	deckList.Decks = append(deckList.Decks, req.Deck)
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return nil, err
 	}
 
@@ -575,7 +575,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return errors.Wrap(err, "error saving decks")
 	}
 
@@ -617,7 +617,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb_calls.Dele
 		return fmt.Errorf("deck not found")
 	}
 
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return err
 	}
 

@@ -192,10 +192,27 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 		}
 	}
 
+	deckListChanged, err := fixDeckListCardEditions(ctx, &deckList, version)
+	if err != nil {
+		return nil, err
+	}
+
+	if deckListChanged {
+		err = saveDecks(ctx, version, userID, &deckList)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return &deckList, nil
 }
 
-func saveDecks(ctx contract.Context, userID string, decks *zb_data.DeckList) error {
+func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
+	_, err := fixDeckListCardEditions(ctx, decks, version)
+	if err != nil {
+		return err
+	}
+
 	return ctx.Set(DecksKey(userID), decks)
 }
 
@@ -871,4 +888,76 @@ func getCardByCardKey(cardList *zb_data.CardList, cardKey zb_data.CardKey) (*zb_
 		}
 	}
 	return nil, fmt.Errorf("card with card key [%s] not found in card library", cardKey.String())
+}
+
+func fixDeckListCardEditions(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
+	cardLibrary, err := getCardLibrary(ctx, version)
+	if err != nil {
+		return false, err
+	}
+
+	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
+	if err != nil {
+		return false, err
+	}
+
+	changed = false
+	for _, deck := range deckList.Decks {
+		if fixDeckCardEditions(deck, cardKeyToCardMap) {
+			changed = true
+		}
+	}
+
+	return changed, nil
+}
+
+func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[zb_data.CardKey]*zb_data.Card) (changed bool) {
+	var newDeckCards = make([]*zb_data.DeckCard, 0)
+	var cardKeyToDeckCard = make(map[zb_data.CardKey]*zb_data.DeckCard)
+	for _, deckCard := range deck.Cards {
+		cardKeyToDeckCard[deckCard.CardKey] = deckCard
+	}
+
+	for _, deckCard := range deck.Cards {
+		// Check if this specific edition of a card exists in card library
+		_, editionExists := cardKeyToCardMap[deckCard.CardKey]
+		if !editionExists {
+			// If this edition is not in card library, try to fallback to Normal edition
+			normalEditionCardKey := zb_data.CardKey{
+				MouldId: deckCard.CardKey.MouldId,
+				Edition: zb_enums.CardEdition_Normal,
+			}
+
+			_, normalEditionExists := cardKeyToCardMap[normalEditionCardKey]
+
+			// If normal edition doesn't exist in card library too, just remove card from the deck completely
+			if !normalEditionExists {
+				changed = true
+			} else {
+				normalEditionDeckCard, normalEditionDeckCardExists := cardKeyToDeckCard[normalEditionCardKey]
+				// If normal edition exists in card library AND in the deck,
+				// add the amount of the special edition to normal edition
+				if normalEditionDeckCardExists {
+					normalEditionDeckCard.Amount += deckCard.Amount
+					changed = true
+				} else {
+					// If normal edition exists in card library, but NOT in the deck,
+					// create a normal edition deck card and add special edition amount to it
+					normalEditionDeckCard = &zb_data.DeckCard{
+						CardKey: normalEditionCardKey,
+						Amount: deckCard.Amount,
+					}
+
+					newDeckCards = append(newDeckCards, normalEditionDeckCard)
+					cardKeyToDeckCard[normalEditionCardKey] = normalEditionDeckCard
+					changed = true
+				}
+			}
+		} else {
+			newDeckCards = append(newDeckCards, deckCard)
+		}
+	}
+
+	deck.Cards = newDeckCards
+	return changed
 }
