@@ -491,7 +491,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 			},
 		}
 
-		err := saveDecks(ctx, "DeckUser", deckList)
+		err := saveDecks(ctx, "v1", "DeckUser", deckList)
 		assert.Nil(t, err)
 
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{

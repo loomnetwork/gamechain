@@ -51,7 +51,7 @@ var testCard = zb_data.Card{
 
 func TestValidateDeckCollection(t *testing.T) {
 	userHas := []*zb_data.CardCollectionCard{
-		{CardKey: zb_data.CardKey{MouldId: 9}, Amount: 4},
+		{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 4},
 		{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 3},
 		{CardKey: zb_data.CardKey{MouldId: 96}, Amount: 5},
 		{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 4},
@@ -210,6 +210,133 @@ func TestSourceIdOverride(t *testing.T) {
 	assert.Equal(t, "legendary-frame.png", targetCard.Frame)
 	assert.Equal(t, false, targetCard.Hidden)
 
-	json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibrary})
-	fmt.Println(json)
+	//json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibrary})
+	//fmt.Println(json)
+}
+
+func TestValidateDeckCardEditions(t *testing.T) {
+	cardLibrary := &zb_data.CardLibrary{
+		Cards: []*zb_data.Card{
+			{
+				CardKey: zb_data.CardKey{
+					MouldId: 5,
+					Edition: zb_enums.CardEdition_Normal,
+				},
+			},
+			{
+				CardKey: zb_data.CardKey{
+					MouldId: 5,
+					Edition: zb_enums.CardEdition_Limited,
+				},
+			},
+			{
+				CardKey: zb_data.CardKey{
+					MouldId: 6,
+					Edition: zb_enums.CardEdition_Normal,
+				},
+			},
+		},
+	}
+
+	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
+	assert.Nil(t, err)
+
+	t.Run("Both Normal and Limited exist in card library", func(t *testing.T) {
+		deck := &zb_data.Deck{
+			Cards: []*zb_data.DeckCard{
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 5,
+						Edition: zb_enums.CardEdition_Normal,
+					},
+					Amount: 3,
+				},
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 5,
+						Edition: zb_enums.CardEdition_Limited,
+					},
+					Amount: 4,
+				},
+			},
+		}
+
+		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		assert.False(t, changed)
+		assert.Equal(t, 2, len(deck.Cards))
+		assert.Equal(t, int64(3), deck.Cards[0].Amount)
+		assert.Equal(t, int64(4), deck.Cards[1].Amount)
+	})
+
+	t.Run("Only Normal exists in card library, but both Normal and Limited is in deck", func(t *testing.T) {
+		deck := &zb_data.Deck{
+			Cards: []*zb_data.DeckCard{
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 6,
+						Edition: zb_enums.CardEdition_Normal,
+					},
+					Amount: 3,
+				},
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 6,
+						Edition: zb_enums.CardEdition_Limited,
+					},
+					Amount: 4,
+				},
+			},
+		}
+
+		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		assert.True(t, changed)
+		assert.Equal(t, 1, len(deck.Cards))
+		assert.Equal(t, int64(7), deck.Cards[0].Amount)
+		assert.Equal(t, zb_enums.CardEdition_Normal, deck.Cards[0].CardKey.Edition)
+	})
+
+	t.Run("Only Normal exists in card library, but only Limited is in deck", func(t *testing.T) {
+		deck := &zb_data.Deck{
+			Cards: []*zb_data.DeckCard{
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 6,
+						Edition: zb_enums.CardEdition_Limited,
+					},
+					Amount: 4,
+				},
+			},
+		}
+
+		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		assert.True(t, changed)
+		assert.Equal(t, 1, len(deck.Cards))
+		assert.Equal(t, int64(4), deck.Cards[0].Amount)
+		assert.Equal(t, zb_enums.CardEdition_Normal, deck.Cards[0].CardKey.Edition)
+	})
+
+	t.Run("Normal doesn't exist in card library, but Limited is in deck", func(t *testing.T) {
+		deck := &zb_data.Deck{
+			Cards: []*zb_data.DeckCard{
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 7,
+						Edition: zb_enums.CardEdition_Normal,
+					},
+					Amount: 3,
+				},
+				{
+					CardKey: zb_data.CardKey{
+						MouldId: 7,
+						Edition: zb_enums.CardEdition_Limited,
+					},
+					Amount: 4,
+				},
+			},
+		}
+
+		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		assert.True(t, changed)
+		assert.Equal(t, 0, len(deck.Cards))
+	})
 }
