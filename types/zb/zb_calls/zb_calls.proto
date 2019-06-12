@@ -110,6 +110,10 @@ message GetAccountRequest {
     string user_id = 1;
 }
 
+message LoginRequest {
+    string userId = 1;
+}
+
 message GetDeckRequest {
     string user_id = 1;
     int64 deck_id = 2;

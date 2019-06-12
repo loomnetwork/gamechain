@@ -348,7 +348,7 @@ type SimpleCardInstance struct {
 func newSimpleCardInstanceFromCardInstance(card *zb_data.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
-		mouldId:          card.Prototype.MouldId,
+		mouldId:          card.Prototype.CardKey.MouldId,
 		mouldName:        card.Prototype.Name,
 		damage:           card.Prototype.Damage,
 		damageInherited:  true,

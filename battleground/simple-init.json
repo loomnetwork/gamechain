@@ -6,31 +6,45 @@
       "cards": [
         {
           "amount": "2",
-          "mouldId": "43"
+          "cardKey": {
+            "mouldId": "43"
+          }
         },
         {
           "amount": "2",
-          "mouldId": "48"
+          "cardKey": {
+            "mouldId": "48"
+          }
         },
         {
           "amount": "2",
-          "mouldId": "3"
+          "cardKey": {
+            "mouldId": "3"
+          }
         },
         {
           "amount": "2",
-          "mouldId": "2"
+          "cardKey": {
+            "mouldId": "2"
+          }
         },
         {
           "amount": "1",
-          "mouldId": "1"
+          "cardKey": {
+            "mouldId": "1"
+          }
         },
         {
           "amount": "1",
-          "mouldId": "7"
+          "cardKey": {
+            "mouldId": "7"
+          }
         },
         {
           "amount": "1",
-          "mouldId": "5"
+          "cardKey": {
+            "mouldId": "5"
+          }
         }
       ]
     }
@@ -38,56 +52,82 @@
   "defaultCollection": [
     {
       "amount": "4",
-      "mouldId": "90"
+      "cardKey": {
+        "mouldId": "90"
+      }
     },
     {
       "amount": "3",
-      "mouldId": "91"
+      "cardKey": {
+        "mouldId": "91"
+      }
     },
     {
       "amount": "5",
-      "mouldId": "96"
+      "cardKey": {
+        "mouldId": "96"
+      }
     },
     {
       "amount": "4",
-      "mouldId": "3"
+      "cardKey": {
+        "mouldId": "3"
+      }
     },
     {
       "amount": "3",
-      "mouldId": "2"
+      "cardKey": {
+        "mouldId": "2"
+      }
     },
     {
       "amount": "5",
-      "mouldId": "92"
+      "cardKey": {
+        "mouldId": "92"
+      }
     },
     {
       "amount": "4",
-      "mouldId": "1"
+      "cardKey": {
+        "mouldId": "1"
+      }
     },
     {
       "amount": "3",
-      "mouldId": "93"
+      "cardKey": {
+        "mouldId": "93"
+      }
     },
     {
       "amount": "5",
-      "mouldId": "7"
+      "cardKey": {
+        "mouldId": "7"
+      }
     },
     {
       "amount": "4",
-      "mouldId": "94"
+      "cardKey": {
+        "mouldId": "94"
+      }
     },
     {
       "amount": "3",
-      "mouldId": "95"
+      "cardKey": {
+        "mouldId": "95"
+      }
     },
     {
       "amount": "5",
-      "mouldId": "5"
+      "cardKey": {
+        "mouldId": "5"
+      }
     }
   ],
   "cards": [
     {
-      "mouldId": "1",
+      "cardKey": {
+        "mouldId": "1"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Whizpar",
@@ -107,7 +147,9 @@
       }
     },
     {
-      "mouldId": "2",
+      "cardKey": {
+        "mouldId": "2"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Wheezy",
@@ -127,7 +169,9 @@
       }
     },
     {
-      "mouldId": "3",
+      "cardKey": {
+        "mouldId": "3"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Soothsayer",
@@ -147,7 +191,9 @@
       }
     },
     {
-      "mouldId": "4",
+      "cardKey": {
+        "mouldId": "4"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Fumez",
@@ -167,7 +213,9 @@
       }
     },
     {
-      "mouldId": "5",
+      "cardKey": {
+        "mouldId": "5"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Pushhh",
@@ -187,7 +235,9 @@
       }
     },
     {
-      "mouldId": "6",
+      "cardKey": {
+        "mouldId": "6"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Ztormmcaller",
@@ -207,7 +257,9 @@
       }
     },
     {
-      "mouldId": "7",
+      "cardKey": {
+        "mouldId": "7"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Bouncer",
@@ -227,7 +279,9 @@
       }
     },
     {
-      "mouldId": "8",
+      "cardKey": {
+        "mouldId": "8"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Gaz",
@@ -247,7 +301,9 @@
       }
     },
     {
-      "mouldId": "9",
+      "cardKey": {
+        "mouldId": "9"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Draft",
@@ -267,7 +323,9 @@
       }
     },
     {
-      "mouldId": "10",
+      "cardKey": {
+        "mouldId": "10"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "MonZoon",
@@ -287,7 +345,9 @@
       }
     },
     {
-      "mouldId": "11",
+      "cardKey": {
+        "mouldId": "11"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Zeuz",
@@ -307,7 +367,9 @@
       }
     },
     {
-      "mouldId": "12",
+      "cardKey": {
+        "mouldId": "12"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Ztorm Shield",
@@ -327,7 +389,9 @@
       }
     },
     {
-      "mouldId": "13",
+      "cardKey": {
+        "mouldId": "13"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Rockky",
@@ -347,7 +411,9 @@
       }
     },
     {
-      "mouldId": "14",
+      "cardKey": {
+        "mouldId": "14"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Bolderr",
@@ -367,7 +433,9 @@
       }
     },
     {
-      "mouldId": "15",
+      "cardKey": {
+        "mouldId": "15"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Blocker",
@@ -386,7 +454,9 @@
       }
     },
     {
-      "mouldId": "16",
+      "cardKey": {
+        "mouldId": "16"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Slab",
@@ -406,7 +476,9 @@
       }
     },
     {
-      "mouldId": "17",
+      "cardKey": {
+        "mouldId": "17"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Pit",
@@ -425,7 +497,9 @@
       }
     },
     {
-      "mouldId": "18",
+      "cardKey": {
+        "mouldId": "18"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Golem",
@@ -445,7 +519,9 @@
       }
     },
     {
-      "mouldId": "19",
+      "cardKey": {
+        "mouldId": "19"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Walley",
@@ -465,7 +541,9 @@
       }
     },
     {
-      "mouldId": "20",
+      "cardKey": {
+        "mouldId": "20"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Tiny",
@@ -484,7 +562,9 @@
       }
     },
     {
-      "mouldId": "21",
+      "cardKey": {
+        "mouldId": "21"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Spiker",
@@ -504,7 +584,9 @@
       }
     },
     {
-      "mouldId": "212",
+      "cardKey": {
+        "mouldId": "212"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Crater",
@@ -524,7 +606,9 @@
       }
     },
     {
-      "mouldId": "22",
+      "cardKey": {
+        "mouldId": "22"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Earthshaker",
@@ -544,7 +628,9 @@
       }
     },
     {
-      "mouldId": "23",
+      "cardKey": {
+        "mouldId": "23"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "IgneouZ",
@@ -564,7 +650,9 @@
       }
     },
     {
-      "mouldId": "24",
+      "cardKey": {
+        "mouldId": "24"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Pyrite",
@@ -583,7 +671,9 @@
       }
     },
     {
-      "mouldId": "25",
+      "cardKey": {
+        "mouldId": "25"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Mountain",
@@ -603,7 +693,9 @@
       }
     },
     {
-      "mouldId": "26",
+      "cardKey": {
+        "mouldId": "26"
+      },
       "kind": "CREATURE",
       "faction": "EARTH",
       "name": "Gaea",
@@ -623,7 +715,9 @@
       }
     },
     {
-      "mouldId": "27",
+      "cardKey": {
+        "mouldId": "27"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Pyromaz",
@@ -643,7 +737,9 @@
       }
     },
     {
-      "mouldId": "28",
+      "cardKey": {
+        "mouldId": "28"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Quazi",
@@ -662,7 +758,9 @@
       }
     },
     {
-      "mouldId": "29",
+      "cardKey": {
+        "mouldId": "29"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Burrrnn",
@@ -682,7 +780,9 @@
       }
     },
     {
-      "mouldId": "30",
+      "cardKey": {
+        "mouldId": "30"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Cynderman",
@@ -702,7 +802,9 @@
       }
     },
     {
-      "mouldId": "31",
+      "cardKey": {
+        "mouldId": "31"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Werezomb",
@@ -722,7 +824,9 @@
       }
     },
     {
-      "mouldId": "32",
+      "cardKey": {
+        "mouldId": "32"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Modo",
@@ -742,7 +846,9 @@
       }
     },
     {
-      "mouldId": "33",
+      "cardKey": {
+        "mouldId": "33"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Fire-Maw",
@@ -762,7 +868,9 @@
       }
     },
     {
-      "mouldId": "34",
+      "cardKey": {
+        "mouldId": "34"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Zhampion",
@@ -782,7 +890,9 @@
       }
     },
     {
-      "mouldId": "35",
+      "cardKey": {
+        "mouldId": "35"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Gargantua",
@@ -802,7 +912,9 @@
       }
     },
     {
-      "mouldId": "36",
+      "cardKey": {
+        "mouldId": "36"
+      },
       "kind": "CREATURE",
       "faction": "FIRE",
       "name": "Cerberus",
@@ -822,7 +934,9 @@
       }
     },
     {
-      "mouldId": "37",
+      "cardKey": {
+        "mouldId": "37"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Chainsaw",
@@ -840,7 +954,9 @@
       }
     },
     {
-      "mouldId": "38",
+      "cardKey": {
+        "mouldId": "38"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Goo Beaker",
@@ -858,7 +974,9 @@
       }
     },
     {
-      "mouldId": "39",
+      "cardKey": {
+        "mouldId": "39"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Stapler",
@@ -876,7 +994,9 @@
       }
     },
     {
-      "mouldId": "40",
+      "cardKey": {
+        "mouldId": "40"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Nail Bomb",
@@ -894,7 +1014,9 @@
       }
     },
     {
-      "mouldId": "41",
+      "cardKey": {
+        "mouldId": "41"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Goo Bottles",
@@ -912,7 +1034,9 @@
       }
     },
     {
-      "mouldId": "42",
+      "cardKey": {
+        "mouldId": "42"
+      },
       "kind": "SPELL",
       "faction": "ITEM",
       "name": "Fresh Meat",
@@ -930,7 +1054,9 @@
       }
     },
     {
-      "mouldId": "43",
+      "cardKey": {
+        "mouldId": "43"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Azuraz",
@@ -950,7 +1076,9 @@
       }
     },
     {
-      "mouldId": "44",
+      "cardKey": {
+        "mouldId": "44"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Bloomer",
@@ -970,7 +1098,9 @@
       }
     },
     {
-      "mouldId": "45",
+      "cardKey": {
+        "mouldId": "45"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Zap",
@@ -990,7 +1120,9 @@
       }
     },
     {
-      "mouldId": "46",
+      "cardKey": {
+        "mouldId": "46"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Shroom",
@@ -1010,7 +1142,9 @@
       }
     },
     {
-      "mouldId": "47",
+      "cardKey": {
+        "mouldId": "47"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Vindrom",
@@ -1030,7 +1164,9 @@
       }
     },
     {
-      "mouldId": "48",
+      "cardKey": {
+        "mouldId": "48"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Puffer",
@@ -1050,7 +1186,9 @@
       }
     },
     {
-      "mouldId": "49",
+      "cardKey": {
+        "mouldId": "49"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Sapper",
@@ -1070,7 +1208,9 @@
       }
     },
     {
-      "mouldId": "50",
+      "cardKey": {
+        "mouldId": "50"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Keeper",
@@ -1090,7 +1230,9 @@
       }
     },
     {
-      "mouldId": "51",
+      "cardKey": {
+        "mouldId": "51"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Cactuz",
@@ -1110,7 +1252,9 @@
       }
     },
     {
-      "mouldId": "52",
+      "cardKey": {
+        "mouldId": "52"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Shammann",
@@ -1130,7 +1274,9 @@
       }
     },
     {
-      "mouldId": "53",
+      "cardKey": {
+        "mouldId": "53"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Z-Virus",
@@ -1148,7 +1294,9 @@
       }
     },
     {
-      "mouldId": "54",
+      "cardKey": {
+        "mouldId": "54"
+      },
       "kind": "CREATURE",
       "faction": "LIFE",
       "name": "Yggdrazil",
@@ -1168,7 +1316,9 @@
       }
     },
     {
-      "mouldId": "55",
+      "cardKey": {
+        "mouldId": "55"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Zombie 1/1",
@@ -1188,7 +1338,9 @@
       }
     },
     {
-      "mouldId": "56",
+      "cardKey": {
+        "mouldId": "56"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Zombie 2/2",
@@ -1208,7 +1360,9 @@
       }
     },
     {
-      "mouldId": "57",
+      "cardKey": {
+        "mouldId": "57"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Zombie Feral",
@@ -1228,7 +1382,9 @@
       }
     },
     {
-      "mouldId": "58",
+      "cardKey": {
+        "mouldId": "58"
+      },
       "kind": "SPELL",
       "faction": "OTHERS",
       "name": "Tainted Goo",
@@ -1246,7 +1402,9 @@
       }
     },
     {
-      "mouldId": "59",
+      "cardKey": {
+        "mouldId": "59"
+      },
       "kind": "SPELL",
       "faction": "OTHERS",
       "name": "Corrupted Goo",
@@ -1264,7 +1422,9 @@
       }
     },
     {
-      "mouldId": "60",
+      "cardKey": {
+        "mouldId": "60"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Rainz",
@@ -1284,7 +1444,9 @@
       }
     },
     {
-      "mouldId": "61",
+      "cardKey": {
+        "mouldId": "61"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Blight",
@@ -1304,7 +1466,9 @@
       }
     },
     {
-      "mouldId": "62",
+      "cardKey": {
+        "mouldId": "62"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Zteroid",
@@ -1324,7 +1488,9 @@
       }
     },
     {
-      "mouldId": "63",
+      "cardKey": {
+        "mouldId": "63"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "BurZt",
@@ -1344,7 +1510,9 @@
       }
     },
     {
-      "mouldId": "64",
+      "cardKey": {
+        "mouldId": "64"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Vortex",
@@ -1364,7 +1532,9 @@
       }
     },
     {
-      "mouldId": "65",
+      "cardKey": {
+        "mouldId": "65"
+      },
       "kind": "CREATURE",
       "faction": "OTHERS",
       "name": "Defender",
@@ -1384,7 +1554,9 @@
       }
     },
     {
-      "mouldId": "66",
+      "cardKey": {
+        "mouldId": "66"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Poizom",
@@ -1404,7 +1576,9 @@
       }
     },
     {
-      "mouldId": "67",
+      "cardKey": {
+        "mouldId": "67"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Hazmaz",
@@ -1424,7 +1598,9 @@
       }
     },
     {
-      "mouldId": "68",
+      "cardKey": {
+        "mouldId": "68"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Zpitter",
@@ -1444,7 +1620,9 @@
       }
     },
     {
-      "mouldId": "69",
+      "cardKey": {
+        "mouldId": "69"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Zeptic",
@@ -1464,7 +1642,9 @@
       }
     },
     {
-      "mouldId": "70",
+      "cardKey": {
+        "mouldId": "70"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Ghoul",
@@ -1484,7 +1664,9 @@
       }
     },
     {
-      "mouldId": "71",
+      "cardKey": {
+        "mouldId": "71"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Zeeter",
@@ -1504,7 +1686,9 @@
       }
     },
     {
-      "mouldId": "72",
+      "cardKey": {
+        "mouldId": "72"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Hazzard",
@@ -1524,7 +1708,9 @@
       }
     },
     {
-      "mouldId": "73",
+      "cardKey": {
+        "mouldId": "73"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Zludge",
@@ -1544,7 +1730,9 @@
       }
     },
     {
-      "mouldId": "74",
+      "cardKey": {
+        "mouldId": "74"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Ectoplasm",
@@ -1564,7 +1752,9 @@
       }
     },
     {
-      "mouldId": "75",
+      "cardKey": {
+        "mouldId": "75"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Cherno-bill",
@@ -1584,7 +1774,9 @@
       }
     },
     {
-      "mouldId": "76",
+      "cardKey": {
+        "mouldId": "76"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "GooZilla",
@@ -1604,7 +1796,9 @@
       }
     },
     {
-      "mouldId": "77",
+      "cardKey": {
+        "mouldId": "77"
+      },
       "kind": "CREATURE",
       "faction": "TOXIC",
       "name": "Zlopper",
@@ -1624,7 +1818,9 @@
       }
     },
     {
-      "mouldId": "78",
+      "cardKey": {
+        "mouldId": "78"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Izze",
@@ -1644,7 +1840,9 @@
       }
     },
     {
-      "mouldId": "79",
+      "cardKey": {
+        "mouldId": "79"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Znowman",
@@ -1663,7 +1861,9 @@
       }
     },
     {
-      "mouldId": "80",
+      "cardKey": {
+        "mouldId": "80"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Ozmoziz",
@@ -1683,7 +1883,9 @@
       }
     },
     {
-      "mouldId": "81",
+      "cardKey": {
+        "mouldId": "81"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Jetter",
@@ -1703,7 +1905,9 @@
       }
     },
     {
-      "mouldId": "82",
+      "cardKey": {
+        "mouldId": "82"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Freezzee",
@@ -1723,7 +1927,9 @@
       }
     },
     {
-      "mouldId": "83",
+      "cardKey": {
+        "mouldId": "83"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Geyzer",
@@ -1743,7 +1949,9 @@
       }
     },
     {
-      "mouldId": "84",
+      "cardKey": {
+        "mouldId": "84"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Blizzard",
@@ -1763,7 +1971,9 @@
       }
     },
     {
-      "mouldId": "85",
+      "cardKey": {
+        "mouldId": "85"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Froztbite",
@@ -1782,7 +1992,9 @@
       }
     },
     {
-      "mouldId": "86",
+      "cardKey": {
+        "mouldId": "86"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Zhatterer",
@@ -1802,7 +2014,9 @@
       }
     },
     {
-      "mouldId": "87",
+      "cardKey": {
+        "mouldId": "87"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Maelstrom",
@@ -1822,7 +2036,9 @@
       }
     },
     {
-      "mouldId": "88",
+      "cardKey": {
+        "mouldId": "88"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Tzunamy",
@@ -1842,7 +2058,9 @@
       }
     },
     {
-      "mouldId": "89",
+      "cardKey": {
+        "mouldId": "89"
+      },
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Germs",
@@ -1862,7 +2080,9 @@
       }
     },
     {
-      "mouldId": "90",
+      "cardKey": {
+        "mouldId": "90"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Banshee",
@@ -1882,7 +2102,9 @@
       }
     },
     {
-      "mouldId": "91",
+      "cardKey": {
+        "mouldId": "91"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Breezee",
@@ -1902,7 +2124,9 @@
       }
     },
     {
-      "mouldId": "92",
+      "cardKey": {
+        "mouldId": "92"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Whiffer",
@@ -1922,7 +2146,9 @@
       }
     },
     {
-      "mouldId": "93",
+      "cardKey": {
+        "mouldId": "93"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Zhocker",
@@ -1942,7 +2168,9 @@
       }
     },
     {
-      "mouldId": "94",
+      "cardKey": {
+        "mouldId": "94"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Dragger",
@@ -1962,7 +2190,9 @@
       }
     },
     {
-      "mouldId": "95",
+      "cardKey": {
+        "mouldId": "95"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Gust",
@@ -1982,7 +2212,9 @@
       }
     },
     {
-      "mouldId": "96",
+      "cardKey": {
+        "mouldId": "96"
+      },
       "kind": "CREATURE",
       "faction": "AIR",
       "name": "Buffer",
@@ -2042,51 +2274,75 @@
         "cards": [
           {
             "amount": "2",
-            "mouldId": "90"
+            "cardKey": {
+              "mouldId": "90"
+            }
           },
           {
             "amount": "2",
-            "mouldId": "91"
+            "cardKey": {
+              "mouldId": "91"
+            }
           },
           {
             "amount": "2",
-            "mouldId": "96"
+            "cardKey": {
+              "mouldId": "96"
+            }
           },
           {
             "amount": "2",
-            "mouldId": "3"
+            "cardKey": {
+              "mouldId": "3"
+            }
           },
           {
             "amount": "2",
-            "mouldId": "2"
+            "cardKey": {
+              "mouldId": "2"
+            }
           },
           {
             "amount": "2",
-            "mouldId": "92"
+            "cardKey": {
+              "mouldId": "92"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "1"
+            "cardKey": {
+              "mouldId": "1"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "93"
+            "cardKey": {
+              "mouldId": "93"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "7"
+            "cardKey": {
+              "mouldId": "7"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "94"
+            "cardKey": {
+              "mouldId": "94"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "95"
+            "cardKey": {
+              "mouldId": "95"
+            }
           },
           {
             "amount": "1",
-            "mouldId": "5"
+            "cardKey": {
+              "mouldId": "5"
+            }
           }
         ]
       },

@@ -3,6 +3,7 @@ package battleground
 import (
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/pkg/errors"
 	"math/rand"
 	"strings"
@@ -23,23 +24,23 @@ var (
 )
 
 func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
-	existingCardsSet, err := getMouldIdToCardMap(cardLibrary)
+	existingCardsSet, err := getCardKeyToCardMap(cardLibrary)
 	if err != nil {
 		return err
 	}
 
 	for _, card := range cardLibrary {
-		if card.MouldId <= 0 {
+		if card.CardKey.MouldId <= 0 {
 			return fmt.Errorf("mould id not set for card %s", card.Name)
 		}
 
-		if card.SourceMouldId <= 0 {
+		if card.CardKey.Edition == zb_enums.CardEdition_Normal {
 			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-				return fmt.Errorf("card '%s' (mould id %d) missing value for PictureTransform field", card.Name, card.MouldId)
+				return fmt.Errorf("card '%s' (card key %d) missing value for PictureTransform field", card.Name, card.CardKey.MouldId)
 			}
 		}
 
-		err = validateSourceMouldId(card, existingCardsSet)
+		err = validateCardEdition(card, existingCardsSet)
 		if err != nil {
 			return err
 		}
@@ -49,22 +50,22 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 }
 
 func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCard) error {
-	mouldIdToCard, err := getMouldIdToCardMap(cardLibrary)
+	cardKeyToCard, err := getCardKeyToCardMap(cardLibrary)
 	if err != nil {
 		return err
 	}
 
 	for _, deckCard := range deckCards {
-		if deckCard.MouldId <= 0 {
+		if deckCard.CardKey.MouldId <= 0 {
 			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
 		}
 
 		if deckCard.CardNameDeprecated != "" {
-			return fmt.Errorf("card %d has non-empty name '%s', must be empty", deckCard.MouldId, deckCard.CardNameDeprecated)
+			return fmt.Errorf("card [%s] has non-empty name '%s', must be empty", deckCard.CardKey.String(), deckCard.CardNameDeprecated)
 		}
 
-		if _, ok := mouldIdToCard[deckCard.MouldId]; !ok {
-			return fmt.Errorf("card with mould id %d not found in card library", deckCard.MouldId)
+		if _, ok := cardKeyToCard[deckCard.CardKey]; !ok {
+			return fmt.Errorf("card with cardKey [%s] not found in card library", deckCard.CardKey.String())
 		}
 	}
 	return nil
@@ -96,19 +97,19 @@ func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, deck *zb_data.
 }
 
 func validateDeckCollections(userCollections []*zb_data.CardCollectionCard, deckCollections []*zb_data.CardCollectionCard) error {
-	maxAmountMap := make(map[int64]int64)
+	maxAmountMap := make(map[zb_data.CardKey]int64)
 	for _, collection := range userCollections {
-		maxAmountMap[collection.MouldId] = collection.Amount
+		maxAmountMap[collection.CardKey] = collection.Amount
 	}
 
 	var errorString = ""
 	for _, collection := range deckCollections {
-		cardAmount, ok := maxAmountMap[collection.MouldId]
+		cardAmount, ok := maxAmountMap[collection.CardKey]
 		if !ok {
-			return fmt.Errorf("cannot add card %d", collection.MouldId)
+			return fmt.Errorf("cannot add card [%s]", collection.CardKey.String())
 		}
 		if cardAmount < collection.Amount {
-			errorString += fmt.Sprintf("%d: %d ", collection.MouldId, cardAmount)
+			errorString += fmt.Sprintf("[%s]: %d ", collection.CardKey.String(), cardAmount)
 		}
 	}
 
@@ -199,37 +200,40 @@ func findCardInCardListByInstanceId(instanceId *zb_data.InstanceId, cards []*zb_
 	return -1, nil, false
 }
 
-func getMouldIdToCardMap(cardLibrary []*zb_data.Card) (map[int64]*zb_data.Card, error) {
-	existingCardsSet := make(map[int64]*zb_data.Card)
+func getCardKeyToCardMap(cardLibrary []*zb_data.Card) (map[zb_data.CardKey]*zb_data.Card, error) {
+	existingCardsSet := make(map[zb_data.CardKey]*zb_data.Card)
 	for _, card := range cardLibrary {
-		_, exists := existingCardsSet[card.MouldId]
+		_, exists := existingCardsSet[card.CardKey]
 		if !exists {
-			existingCardsSet[card.MouldId] = card
+			existingCardsSet[card.CardKey] = card
 		} else {
-			return nil, fmt.Errorf("more than one card has mould ID %d, this is not allowed", card.MouldId)
+			return nil, fmt.Errorf("more than one card has cardKey [%s], this is not allowed", card.CardKey.String())
 		}
 	}
 
 	return existingCardsSet, nil
 }
 
-func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
-	if card.SourceMouldId <= 0 {
+func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[zb_data.CardKey]*zb_data.Card) error {
+	if card.CardKey.Edition == zb_enums.CardEdition_Normal {
 		return nil
 	}
 
-	sourceMouldId := card.SourceMouldId
+	cardKey := card.CardKey
+	sourceCardKey := zb_data.CardKey{
+		MouldId: card.CardKey.MouldId,
+		Edition: zb_enums.CardEdition_Normal,
+	}
+
 	overrides := card.Overrides
-	mouldId := card.MouldId
-	sourceCard, exists := mouldIdToCard[sourceMouldId]
+	sourceCard, exists := cardKeyToCard[sourceCardKey]
 	if !exists {
-		return fmt.Errorf("source card with mould id %d not found", sourceMouldId)
+		return fmt.Errorf("source card with cardKey [%s] not found", sourceCardKey.String())
 	}
 
 	card.Reset()
 	proto.Merge(card, sourceCard)
-	card.MouldId = mouldId
-	card.SourceMouldId = sourceMouldId
+	card.CardKey = cardKey
 
 	if overrides == nil {
 		return nil
@@ -303,31 +307,24 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, mouldIdToCard map[int64]
 	return nil
 }
 
-func validateSourceMouldId(card *zb_data.Card, mouldIdToCard map[int64]*zb_data.Card) error {
-	if card.SourceMouldId <= 0 {
+func validateCardEdition(card *zb_data.Card, cardKeyToCard map[zb_data.CardKey]*zb_data.Card) error {
+	if card.CardKey.Edition == zb_enums.CardEdition_Normal {
 		return nil
 	}
 
-	if card.SourceMouldId == card.MouldId {
-		return fmt.Errorf(
-			"card '%s' (mould id %d) has sourceMouldId equal to mouldId",
-			card.Name,
-			card.MouldId,
-		)
+	sourceCardKey := zb_data.CardKey{
+		MouldId: card.CardKey.MouldId,
+		Edition: zb_enums.CardEdition_Normal,
 	}
 
-	sourceCard, exists := mouldIdToCard[card.SourceMouldId]
+	_, exists := cardKeyToCard[sourceCardKey]
 	if !exists {
 		return fmt.Errorf(
-			"card '%s' (mould id %d) has sourceMouldId %d, but such mould id is not found",
+			"card '%s' (cardKey [%s]) has edition %s, but Normal edition is not found for such mouldId",
 			card.Name,
-			card.MouldId,
-			card.SourceMouldId,
+			card.CardKey.String(),
+			zb_enums.CardEdition_Enum_name[int32(card.CardKey.Edition)],
 		)
-	}
-
-	if sourceCard.SourceMouldId > 0 {
-		return fmt.Errorf("source card %d can't have sourceMouldId set itself", sourceCard.SourceMouldId)
 	}
 
 	return nil

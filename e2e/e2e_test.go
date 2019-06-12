@@ -132,7 +132,7 @@ func TestE2EGameplay(t *testing.T) {
 		genFile    string
 	}{
 		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "e2e.genesis.json"},
+		//{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "e2e.genesis.json"},
 	}
 
 	// required to have loom binary

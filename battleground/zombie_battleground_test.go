@@ -190,11 +190,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -221,11 +221,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   200,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   100,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -244,11 +244,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   2,
-						MouldId: -100,
+						CardKey: zb_data.CardKey{MouldId: -100},
 					},
 					{
 						Amount:   1,
-						MouldId: -101,
+						CardKey: zb_data.CardKey{MouldId: -101},
 					},
 				},
 			},
@@ -267,11 +267,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -290,11 +290,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -314,11 +314,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -347,11 +347,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:  100,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:  1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -370,11 +370,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -394,11 +394,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						MouldId: 43,
+						CardKey: zb_data.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						MouldId: 48,
+						CardKey: zb_data.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -471,43 +471,6 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Should upgrade data to use mould ID", func(t *testing.T) {
-		// Create deck with card names
-		deckList := &zb_data.DeckList{
-			Decks: []*zb_data.Deck{
-				{
-					Name:       "NewDeck",
-					OverlordId: 1,
-					Cards: []*zb_data.DeckCard{
-						{
-							Amount:             1,
-							CardNameDeprecated: "Whizpar",
-						},
-						{
-							Amount:             2,
-							CardNameDeprecated: "Wheezy",
-						},
-					},
-				},
-			},
-		}
-
-		err := saveDecks(ctx, "DeckUser", deckList)
-		assert.Nil(t, err)
-
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
-			Version: "v1",
-		})
-
-		assert.Equal(t, nil, err)
-		assert.Equal(t, 1, len(deckResponse.Decks))
-		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
-		assert.Equal(t, int64(2), deckResponse.Decks[0].Cards[1].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[1].CardNameDeprecated)
-	})
-
 	t.Run("Should remove unknown cards from decks", func(t *testing.T) {
 		deckList := &zb_data.DeckList{
 			Decks: []*zb_data.Deck{
@@ -517,11 +480,11 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 					Cards: []*zb_data.DeckCard{
 						{
 							Amount:  1,
-							MouldId: -1,
+							CardKey: zb_data.CardKey{MouldId: -1},
 						},
 						{
 							Amount:  2,
-							MouldId: 1,
+							CardKey: zb_data.CardKey{MouldId: 1},
 						},
 					},
 				},
@@ -539,8 +502,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		assert.Equal(t, nil, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
 		assert.Equal(t, 1, len(deckResponse.Decks[0].Cards))
-		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].CardKey.MouldId)
 	})
 }
 
@@ -2410,18 +2372,18 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{MouldId: 1, Amount: 2},
-					{MouldId: 2, Amount: 2},
-					{MouldId: 3, Amount: 2},
-					{MouldId: 4, Amount: 2},
-					{MouldId: 5, Amount: 2},
-					{MouldId: 6, Amount: 2},
-					{MouldId: 7, Amount: 1},
-					{MouldId: 8, Amount: 1},
-					{MouldId: 9, Amount: 1},
-					{MouldId: 10, Amount: 1},
-					{MouldId: 11, Amount: 1},
-					{MouldId: 12, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 1}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 2}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 4}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 5}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 6}, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: 7}, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 8}, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 9}, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 10}, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 11}, Amount: 1},
+					{CardKey: zb_data.CardKey{MouldId: 12}, Amount: 1},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,
@@ -2443,7 +2405,7 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{MouldId: -1, Amount: 2},
+					{CardKey: zb_data.CardKey{MouldId: -1}, Amount: 2},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,
