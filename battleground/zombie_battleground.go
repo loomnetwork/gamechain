@@ -426,10 +426,16 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 }
 
 func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) error {
+	if req.Version == "" {
+		return ErrVersionNotSet
+	}
+
 	err := setUserIdAddress(ctx, req.UserId, ctx.Message().Sender)
 	if err != nil {
 		return err
 	}
+
+	// TODO: check if any pending cards await by address
 
 	return nil
 }

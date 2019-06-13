@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
@@ -27,8 +28,8 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		OverlordId: 2,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
-			{CardKey: zb_data.CardKey{MouldId: 133}, Amount: 5},
-			{CardKey: zb_data.CardKey{MouldId: 136}, Amount: 10},
+			{CardKey: battleground_proto.CardKey{MouldId: 133}, Amount: 5},
+			{CardKey: battleground_proto.CardKey{MouldId: 136}, Amount: 10},
 		},
 	}
 
@@ -37,7 +38,7 @@ func TestAbilityReplaceUnitsWithTypeOnStrongerOnes(t *testing.T) {
 		OverlordId: 2,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
-			{CardKey: zb_data.CardKey{MouldId: 11}, Amount: 15},
+			{CardKey: battleground_proto.CardKey{MouldId: 11}, Amount: 15},
 		},
 	}
 

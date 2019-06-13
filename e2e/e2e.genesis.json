@@ -715,7 +715,7 @@
         "cards": [
           {
             "cardKey": {
-              "mouldId": "1"
+              "mouldId": 1
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -775,7 +775,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "2"
+              "mouldId": 2
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -835,7 +835,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "3"
+              "mouldId": 3
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -932,7 +932,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "4"
+              "mouldId": 4
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -997,7 +997,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "5"
+              "mouldId": 5
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -1057,7 +1057,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "6"
+              "mouldId": 6
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -1089,7 +1089,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "8"
+              "mouldId": 8
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -1154,7 +1154,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "9"
+              "mouldId": 9
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -1214,7 +1214,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "10"
+              "mouldId": 10
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -1274,7 +1274,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "11"
+              "mouldId": 11
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -1306,7 +1306,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "12"
+              "mouldId": 12
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -1375,7 +1375,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "13"
+              "mouldId": 13
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -1435,7 +1435,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "14"
+              "mouldId": 14
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -1495,7 +1495,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "15"
+              "mouldId": 15
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -1560,7 +1560,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "16"
+              "mouldId": 16
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -1625,7 +1625,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "17"
+              "mouldId": 17
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -1690,7 +1690,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "18"
+              "mouldId": 18
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -1763,7 +1763,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "19"
+              "mouldId": 19
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -1823,7 +1823,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "20"
+              "mouldId": 20
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -1892,7 +1892,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "21"
+              "mouldId": 21
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -1952,7 +1952,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "22"
+              "mouldId": 22
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -2012,7 +2012,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "23"
+              "mouldId": 23
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -2072,7 +2072,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "24"
+              "mouldId": 24
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -2132,7 +2132,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "25"
+              "mouldId": 25
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -2219,7 +2219,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "26"
+              "mouldId": 26
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -2251,7 +2251,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "27"
+              "mouldId": 27
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -2311,7 +2311,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "28"
+              "mouldId": 28
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -2371,7 +2371,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "29"
+              "mouldId": 29
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -2440,7 +2440,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "30"
+              "mouldId": 30
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -2505,7 +2505,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "31"
+              "mouldId": 31
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -2570,7 +2570,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "32"
+              "mouldId": 32
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -2602,7 +2602,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "34"
+              "mouldId": 34
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -2662,7 +2662,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "35"
+              "mouldId": 35
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -2694,7 +2694,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "36"
+              "mouldId": 36
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -2759,7 +2759,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "37"
+              "mouldId": 37
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -2819,7 +2819,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "38"
+              "mouldId": 38
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -2879,7 +2879,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "42"
+              "mouldId": 42
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -2944,7 +2944,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "43"
+              "mouldId": 43
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -3004,7 +3004,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "44"
+              "mouldId": 44
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -3069,7 +3069,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "45"
+              "mouldId": 45
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -3129,7 +3129,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "46"
+              "mouldId": 46
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -3198,7 +3198,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "47"
+              "mouldId": 47
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -3258,7 +3258,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "48"
+              "mouldId": 48
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -3327,7 +3327,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "49"
+              "mouldId": 49
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -3387,7 +3387,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "50"
+              "mouldId": 50
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -3447,7 +3447,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "59"
+              "mouldId": 59
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -3479,7 +3479,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "61"
+              "mouldId": 61
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -3539,7 +3539,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "67"
+              "mouldId": 67
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -3599,7 +3599,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "70"
+              "mouldId": 70
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -3668,7 +3668,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "75"
+              "mouldId": 75
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -3728,7 +3728,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "85"
+              "mouldId": 85
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -3793,7 +3793,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "90"
+              "mouldId": 90
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -3858,7 +3858,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "94"
+              "mouldId": 94
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -3945,7 +3945,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "96"
+              "mouldId": 96
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -4005,7 +4005,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "97"
+              "mouldId": 97
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -4065,7 +4065,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "98"
+              "mouldId": 98
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4097,7 +4097,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "101"
+              "mouldId": 101
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4129,7 +4129,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "103"
+              "mouldId": 103
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4189,7 +4189,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "104"
+              "mouldId": 104
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4249,7 +4249,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "117"
+              "mouldId": 117
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -4314,7 +4314,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "127"
+              "mouldId": 127
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -4374,7 +4374,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "132"
+              "mouldId": 132
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -4434,7 +4434,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "141"
+              "mouldId": 141
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -4494,7 +4494,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "142"
+              "mouldId": 142
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -4554,7 +4554,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "143"
+              "mouldId": 143
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -4641,7 +4641,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "144"
+              "mouldId": 144
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4701,7 +4701,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "145"
+              "mouldId": 145
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -4761,7 +4761,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "146"
+              "mouldId": 146
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -4826,7 +4826,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "147"
+              "mouldId": 147
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -4923,7 +4923,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "148"
+              "mouldId": 148
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -4983,7 +4983,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "149"
+              "mouldId": 149
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -5070,7 +5070,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "150"
+              "mouldId": 150
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -5167,7 +5167,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "151"
+              "mouldId": 151
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -5264,7 +5264,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "152"
+              "mouldId": 152
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -5329,7 +5329,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "153"
+              "mouldId": 153
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -5458,7 +5458,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "155"
+              "mouldId": 155
             },
             "kind": "SPELL",
             "faction": "OTHERS",
@@ -5545,7 +5545,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "156"
+              "mouldId": 156
             },
             "kind": "SPELL",
             "faction": "OTHERS",
@@ -5632,7 +5632,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "157"
+              "mouldId": 157
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
@@ -5664,7 +5664,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "158"
+              "mouldId": 158
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
@@ -5696,7 +5696,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "159"
+              "mouldId": 159
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
@@ -5728,7 +5728,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "160"
+              "mouldId": 160
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
@@ -5760,7 +5760,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "68"
+              "mouldId": 68
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -5820,7 +5820,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "133"
+              "mouldId": 133
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -5852,7 +5852,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "128"
+              "mouldId": 128
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -5912,7 +5912,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "134"
+              "mouldId": 134
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -5972,7 +5972,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "136"
+              "mouldId": 136
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -6004,7 +6004,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "139"
+              "mouldId": 139
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -6064,7 +6064,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "122"
+              "mouldId": 122
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -6124,7 +6124,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "123"
+              "mouldId": 123
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -6156,7 +6156,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "126"
+              "mouldId": 126
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -6216,7 +6216,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "106"
+              "mouldId": 106
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -6248,7 +6248,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "107"
+              "mouldId": 107
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -6280,7 +6280,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "108"
+              "mouldId": 108
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -6340,7 +6340,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "113"
+              "mouldId": 113
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -6405,7 +6405,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "114"
+              "mouldId": 114
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -6470,7 +6470,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "115"
+              "mouldId": 115
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -6591,7 +6591,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "99"
+              "mouldId": 99
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -6623,7 +6623,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "100"
+              "mouldId": 100
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -6655,7 +6655,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "91"
+              "mouldId": 91
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -6687,7 +6687,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "92"
+              "mouldId": 92
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -6719,7 +6719,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "93"
+              "mouldId": 93
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -6779,7 +6779,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "7"
+              "mouldId": 7
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -6848,7 +6848,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "79"
+              "mouldId": 79
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -6908,7 +6908,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "82"
+              "mouldId": 82
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -6995,7 +6995,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "74"
+              "mouldId": 74
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -7060,7 +7060,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "54"
+              "mouldId": 54
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7120,7 +7120,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "62"
+              "mouldId": 62
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -7180,7 +7180,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "65"
+              "mouldId": 65
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -7240,7 +7240,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "33"
+              "mouldId": 33
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7300,7 +7300,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "39"
+              "mouldId": 39
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -7365,7 +7365,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "40"
+              "mouldId": 40
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -7430,7 +7430,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "41"
+              "mouldId": 41
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -7495,7 +7495,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "51"
+              "mouldId": 51
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7555,7 +7555,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "52"
+              "mouldId": 52
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7615,7 +7615,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "53"
+              "mouldId": 53
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7675,7 +7675,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "55"
+              "mouldId": 55
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -7735,7 +7735,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "56"
+              "mouldId": 56
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -7795,7 +7795,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "57"
+              "mouldId": 57
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -7855,7 +7855,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "58"
+              "mouldId": 58
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -7915,7 +7915,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "60"
+              "mouldId": 60
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -7975,7 +7975,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "63"
+              "mouldId": 63
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -8035,7 +8035,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "64"
+              "mouldId": 64
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -8095,7 +8095,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "66"
+              "mouldId": 66
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -8127,7 +8127,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "69"
+              "mouldId": 69
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -8187,7 +8187,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "71"
+              "mouldId": 71
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -8247,7 +8247,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "72"
+              "mouldId": 72
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -8312,7 +8312,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "73"
+              "mouldId": 73
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -8372,7 +8372,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "76"
+              "mouldId": 76
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -8432,7 +8432,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "77"
+              "mouldId": 77
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -8492,7 +8492,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "78"
+              "mouldId": 78
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -8552,7 +8552,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "80"
+              "mouldId": 80
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -8612,7 +8612,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "81"
+              "mouldId": 81
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -8672,7 +8672,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "83"
+              "mouldId": 83
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -8732,7 +8732,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "84"
+              "mouldId": 84
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -8792,7 +8792,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "86"
+              "mouldId": 86
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -8852,7 +8852,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "87"
+              "mouldId": 87
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -8912,7 +8912,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "88"
+              "mouldId": 88
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -8972,7 +8972,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "89"
+              "mouldId": 89
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -9032,7 +9032,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "95"
+              "mouldId": 95
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -9092,7 +9092,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "102"
+              "mouldId": 102
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -9152,7 +9152,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "105"
+              "mouldId": 105
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -9212,7 +9212,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "109"
+              "mouldId": 109
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -9272,7 +9272,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "110"
+              "mouldId": 110
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -9332,7 +9332,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "111"
+              "mouldId": 111
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -9419,7 +9419,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "112"
+              "mouldId": 112
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -9484,7 +9484,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "116"
+              "mouldId": 116
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -9549,7 +9549,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "118"
+              "mouldId": 118
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -9622,7 +9622,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "119"
+              "mouldId": 119
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -9687,7 +9687,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "120"
+              "mouldId": 120
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -9752,7 +9752,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "121"
+              "mouldId": 121
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -9812,7 +9812,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "124"
+              "mouldId": 124
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -9872,7 +9872,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "125"
+              "mouldId": 125
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -9932,7 +9932,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "129"
+              "mouldId": 129
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -9992,7 +9992,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "130"
+              "mouldId": 130
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -10052,7 +10052,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "131"
+              "mouldId": 131
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -10112,7 +10112,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "135"
+              "mouldId": 135
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -10172,7 +10172,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "137"
+              "mouldId": 137
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -10232,7 +10232,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "138"
+              "mouldId": 138
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -10292,7 +10292,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "140"
+              "mouldId": 140
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -10352,7 +10352,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "154"
+              "mouldId": 154
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -10417,7 +10417,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "259"
+              "mouldId": 259
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
@@ -10449,7 +10449,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "199"
+              "mouldId": 199
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -10509,7 +10509,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "163"
+              "mouldId": 163
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -10541,7 +10541,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "174"
+              "mouldId": 174
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -10601,7 +10601,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "239"
+              "mouldId": 239
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -10633,7 +10633,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "240"
+              "mouldId": 240
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -10693,7 +10693,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "241"
+              "mouldId": 241
             },
             "kind": "CREATURE",
             "faction": "AIR",
@@ -10725,7 +10725,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "242"
+              "mouldId": 242
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -10757,7 +10757,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "243"
+              "mouldId": 243
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -10789,7 +10789,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "246"
+              "mouldId": 246
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -10849,7 +10849,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "250"
+              "mouldId": 250
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -10909,7 +10909,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "251"
+              "mouldId": 251
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -10941,7 +10941,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "252"
+              "mouldId": 252
             },
             "kind": "CREATURE",
             "faction": "LIFE",
@@ -10973,7 +10973,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "253"
+              "mouldId": 253
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -11005,7 +11005,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "254"
+              "mouldId": 254
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -11065,7 +11065,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "255"
+              "mouldId": 255
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
@@ -11125,7 +11125,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "256"
+              "mouldId": 256
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -11157,7 +11157,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "244"
+              "mouldId": 244
             },
             "kind": "CREATURE",
             "faction": "EARTH",
@@ -11189,7 +11189,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "264"
+              "mouldId": 264
             },
             "kind": "CREATURE",
             "faction": "FIRE",
@@ -11221,7 +11221,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "257"
+              "mouldId": 257
             },
             "kind": "CREATURE",
             "faction": "WATER",
@@ -11253,7 +11253,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "248"
+              "mouldId": 248
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -11313,7 +11313,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "249"
+              "mouldId": 249
             },
             "kind": "SPELL",
             "faction": "ITEM",
@@ -11373,7 +11373,7 @@
           },
           {
             "cardKey": {
-              "mouldId": "247"
+              "mouldId": 247
             },
             "kind": "CREATURE",
             "faction": "FIRE",

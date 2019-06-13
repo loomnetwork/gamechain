@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/pkg/errors"
@@ -34,7 +35,7 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 			return fmt.Errorf("mould id not set for card %s", card.Name)
 		}
 
-		if card.CardKey.Edition == zb_enums.CardEdition_Normal {
+		if card.CardKey.Variant == zb_enums.CardVariant_Standard {
 			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
 				return fmt.Errorf("card '%s' (card key %d) missing value for PictureTransform field", card.Name, card.CardKey.MouldId)
 			}
@@ -57,11 +58,7 @@ func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCar
 
 	for _, deckCard := range deckCards {
 		if deckCard.CardKey.MouldId <= 0 {
-			return fmt.Errorf("mould id not set for card %s", deckCard.CardNameDeprecated)
-		}
-
-		if deckCard.CardNameDeprecated != "" {
-			return fmt.Errorf("card [%s] has non-empty name '%s', must be empty", deckCard.CardKey.String(), deckCard.CardNameDeprecated)
+			return fmt.Errorf("mould id not set for card [%v]", deckCard.CardKey)
 		}
 
 		if _, ok := cardKeyToCard[deckCard.CardKey]; !ok {
@@ -97,7 +94,7 @@ func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, deck *zb_data.
 }
 
 func validateDeckCollections(userCollections []*zb_data.CardCollectionCard, deckCollections []*zb_data.CardCollectionCard) error {
-	maxAmountMap := make(map[zb_data.CardKey]int64)
+	maxAmountMap := make(map[battleground_proto.CardKey]int64)
 	for _, collection := range userCollections {
 		maxAmountMap[collection.CardKey] = collection.Amount
 	}
@@ -128,7 +125,7 @@ func validateDeckName(deckList []*zb_data.Deck, validatedDeck *zb_data.Deck) err
 		return ErrDeckNameTooLong
 	}
 	for _, deck := range deckList {
-		// Skip name validation for same deck id - support renaming deck
+		// Skip same-name validation for same deck id - support renaming deck
 		if deck.Id == validatedDeck.Id {
 			continue
 		}
@@ -200,8 +197,8 @@ func findCardInCardListByInstanceId(instanceId *zb_data.InstanceId, cards []*zb_
 	return -1, nil, false
 }
 
-func getCardKeyToCardMap(cardLibrary []*zb_data.Card) (map[zb_data.CardKey]*zb_data.Card, error) {
-	existingCardsSet := make(map[zb_data.CardKey]*zb_data.Card)
+func getCardKeyToCardMap(cardLibrary []*zb_data.Card) (map[battleground_proto.CardKey]*zb_data.Card, error) {
+	existingCardsSet := make(map[battleground_proto.CardKey]*zb_data.Card)
 	for _, card := range cardLibrary {
 		_, exists := existingCardsSet[card.CardKey]
 		if !exists {
@@ -214,15 +211,15 @@ func getCardKeyToCardMap(cardLibrary []*zb_data.Card) (map[zb_data.CardKey]*zb_d
 	return existingCardsSet, nil
 }
 
-func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[zb_data.CardKey]*zb_data.Card) error {
-	if card.CardKey.Edition == zb_enums.CardEdition_Normal {
+func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[battleground_proto.CardKey]*zb_data.Card) error {
+	if card.CardKey.Variant == zb_enums.CardVariant_Standard {
 		return nil
 	}
 
 	cardKey := card.CardKey
-	sourceCardKey := zb_data.CardKey{
+	sourceCardKey := battleground_proto.CardKey{
 		MouldId: card.CardKey.MouldId,
-		Edition: zb_enums.CardEdition_Normal,
+		Variant: zb_enums.CardVariant_Standard,
 	}
 
 	overrides := card.Overrides
@@ -307,14 +304,14 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[zb_dat
 	return nil
 }
 
-func validateCardEdition(card *zb_data.Card, cardKeyToCard map[zb_data.CardKey]*zb_data.Card) error {
-	if card.CardKey.Edition == zb_enums.CardEdition_Normal {
+func validateCardEdition(card *zb_data.Card, cardKeyToCard map[battleground_proto.CardKey]*zb_data.Card) error {
+	if card.CardKey.Variant == zb_enums.CardVariant_Standard {
 		return nil
 	}
 
-	sourceCardKey := zb_data.CardKey{
+	sourceCardKey := battleground_proto.CardKey{
 		MouldId: card.CardKey.MouldId,
-		Edition: zb_enums.CardEdition_Normal,
+		Variant: zb_enums.CardVariant_Standard,
 	}
 
 	_, exists := cardKeyToCard[sourceCardKey]
@@ -323,7 +320,7 @@ func validateCardEdition(card *zb_data.Card, cardKeyToCard map[zb_data.CardKey]*
 			"card '%s' (cardKey [%s]) has edition %s, but Normal edition is not found for such mouldId",
 			card.Name,
 			card.CardKey.String(),
-			zb_enums.CardEdition_Enum_name[int32(card.CardKey.Edition)],
+			zb_enums.CardVariant_Enum_name[int32(card.CardKey.Variant)],
 		)
 	}
 
