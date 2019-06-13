@@ -1,8 +1,8 @@
 package battleground
 
 import (
-	"fmt"
-	"github.com/loomnetwork/gamechain/battleground/battleground_nullable"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
+	"github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable"
 	"github.com/loomnetwork/gamechain/types/nullable/nullable_pb"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -12,7 +12,7 @@ import (
 )
 
 var testCard = zb_data.Card{
-	CardKey:     zb_data.CardKey{MouldId: 3},
+	CardKey:     battleground_proto.CardKey{MouldId: 3},
 	Kind:        zb_enums.CardKind_Creature,
 	Faction:     zb_enums.Faction_Earth,
 	Name:        "Zpitter",
@@ -51,28 +51,28 @@ var testCard = zb_data.Card{
 
 func TestValidateDeckCollection(t *testing.T) {
 	userHas := []*zb_data.CardCollectionCard{
-		{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 4},
-		{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 3},
-		{CardKey: zb_data.CardKey{MouldId: 96}, Amount: 5},
-		{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 4},
+		{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 4},
+		{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 3},
+		{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 5},
+		{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 4},
 	}
 
 	t.Run("Successful validation", func(t *testing.T) {
 		newCollection := []*zb_data.CardCollectionCard{
-			{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 4},
-			{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 3},
-			{CardKey: zb_data.CardKey{MouldId: 96}, Amount: 5},
-			{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 4},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 4},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 3},
+			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 5},
+			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 4},
 		}
 		assert.Nil(t, validateDeckCollections(userHas, newCollection))
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
 		newCollection := []*zb_data.CardCollectionCard{
-			{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 0},
-			{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 0},
-			{CardKey: zb_data.CardKey{MouldId: 96}, Amount: 0},
-			{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 0},
 		}
 		assert.Nil(t, validateDeckCollections(userHas, newCollection))
 	})
@@ -84,24 +84,24 @@ func TestValidateDeckCollection(t *testing.T) {
 
 	t.Run("Failed validation", func(t *testing.T) {
 		newCollection := []*zb_data.CardCollectionCard{
-			{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 8},
-			{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 10},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 8},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 10},
 		}
 		assert.NotNil(t, validateDeckCollections(userHas, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
 		newCollection := []*zb_data.CardCollectionCard{
-			{CardKey: zb_data.CardKey{MouldId: -2}, Amount: 0},
-			{CardKey: zb_data.CardKey{MouldId: -3}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: -2}, Amount: 0},
+			{CardKey: battleground_proto.CardKey{MouldId: -3}, Amount: 0},
 		}
 		assert.NotNil(t, validateDeckCollections(userHas, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
 		newCollection := []*zb_data.CardCollectionCard{
-			{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 8},
-			{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 10},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 8},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 10},
 		}
 		assert.NotNil(t, validateDeckCollections([]*zb_data.CardCollectionCard{}, newCollection))
 	})
@@ -136,9 +136,9 @@ func TestValidateDeckName(t *testing.T) {
 
 func TestSourceIdBasic(t *testing.T) {
 	targetCard := zb_data.Card{
-		CardKey: zb_data.CardKey{
+		CardKey: battleground_proto.CardKey{
 			MouldId: 3,
-			Edition: zb_enums.CardEdition_Limited,
+			Variant: zb_enums.CardVariant_Limited,
 		},
 	}
 	var cardLibrary = []*zb_data.Card{
@@ -159,19 +159,19 @@ func TestSourceIdBasic(t *testing.T) {
 
 	assert.Equal(t, 3, int(targetCard.CardKey.MouldId))
 	assert.Equal(t, testCard.CardKey.MouldId, targetCard.CardKey.MouldId)
-	assert.Equal(t, zb_enums.CardEdition_Limited, targetCard.CardKey.Edition)
+	assert.Equal(t, zb_enums.CardVariant_Limited, targetCard.CardKey.Variant)
 	assert.Equal(t, "Zpitter", targetCard.Name)
 
-	json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibrary})
-	fmt.Println(json)
+	//json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibrary})
+	//fmt.Println(json)
 	//assert.Nil(t, json)
 }
 
 func TestSourceIdOverride(t *testing.T) {
 	targetCard := zb_data.Card{
-		CardKey: zb_data.CardKey{
+		CardKey: battleground_proto.CardKey{
 			MouldId: 3,
-			Edition: zb_enums.CardEdition_Limited,
+			Variant: zb_enums.CardVariant_Limited,
 		},
 		Overrides: &zb_data.CardOverrides{
 			Name:       &nullable_pb.StringValue{Value: "Legendary Zpitter"},
@@ -201,7 +201,7 @@ func TestSourceIdOverride(t *testing.T) {
 
 	assert.Equal(t, 3, int(targetCard.CardKey.MouldId))
 	assert.Equal(t, testCard.CardKey.MouldId, targetCard.CardKey.MouldId)
-	assert.Equal(t, zb_enums.CardEdition_Limited, targetCard.CardKey.Edition)
+	assert.Equal(t, zb_enums.CardVariant_Limited, targetCard.CardKey.Variant)
 	assert.Equal(t, "Legendary Zpitter", targetCard.Name)
 	assert.Equal(t, "Zpittity-zpit, now with more zpit", targetCard.FlavorText)
 	assert.Equal(t, "zpitter_legendary.png", targetCard.Picture)
@@ -218,21 +218,21 @@ func TestValidateDeckCardEditions(t *testing.T) {
 	cardLibrary := &zb_data.CardLibrary{
 		Cards: []*zb_data.Card{
 			{
-				CardKey: zb_data.CardKey{
+				CardKey: battleground_proto.CardKey{
 					MouldId: 5,
-					Edition: zb_enums.CardEdition_Normal,
+					Variant: zb_enums.CardVariant_Standard,
 				},
 			},
 			{
-				CardKey: zb_data.CardKey{
+				CardKey: battleground_proto.CardKey{
 					MouldId: 5,
-					Edition: zb_enums.CardEdition_Limited,
+					Variant: zb_enums.CardVariant_Limited,
 				},
 			},
 			{
-				CardKey: zb_data.CardKey{
+				CardKey: battleground_proto.CardKey{
 					MouldId: 6,
-					Edition: zb_enums.CardEdition_Normal,
+					Variant: zb_enums.CardVariant_Standard,
 				},
 			},
 		},
@@ -245,16 +245,16 @@ func TestValidateDeckCardEditions(t *testing.T) {
 		deck := &zb_data.Deck{
 			Cards: []*zb_data.DeckCard{
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 5,
-						Edition: zb_enums.CardEdition_Normal,
+						Variant: zb_enums.CardVariant_Standard,
 					},
 					Amount: 3,
 				},
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 5,
-						Edition: zb_enums.CardEdition_Limited,
+						Variant: zb_enums.CardVariant_Limited,
 					},
 					Amount: 4,
 				},
@@ -272,16 +272,16 @@ func TestValidateDeckCardEditions(t *testing.T) {
 		deck := &zb_data.Deck{
 			Cards: []*zb_data.DeckCard{
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 6,
-						Edition: zb_enums.CardEdition_Normal,
+						Variant: zb_enums.CardVariant_Standard,
 					},
 					Amount: 3,
 				},
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 6,
-						Edition: zb_enums.CardEdition_Limited,
+						Variant: zb_enums.CardVariant_Limited,
 					},
 					Amount: 4,
 				},
@@ -292,16 +292,16 @@ func TestValidateDeckCardEditions(t *testing.T) {
 		assert.True(t, changed)
 		assert.Equal(t, 1, len(deck.Cards))
 		assert.Equal(t, int64(7), deck.Cards[0].Amount)
-		assert.Equal(t, zb_enums.CardEdition_Normal, deck.Cards[0].CardKey.Edition)
+		assert.Equal(t, zb_enums.CardVariant_Standard, deck.Cards[0].CardKey.Variant)
 	})
 
 	t.Run("Only Normal exists in card library, but only Limited is in deck", func(t *testing.T) {
 		deck := &zb_data.Deck{
 			Cards: []*zb_data.DeckCard{
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 6,
-						Edition: zb_enums.CardEdition_Limited,
+						Variant: zb_enums.CardVariant_Limited,
 					},
 					Amount: 4,
 				},
@@ -312,23 +312,48 @@ func TestValidateDeckCardEditions(t *testing.T) {
 		assert.True(t, changed)
 		assert.Equal(t, 1, len(deck.Cards))
 		assert.Equal(t, int64(4), deck.Cards[0].Amount)
-		assert.Equal(t, zb_enums.CardEdition_Normal, deck.Cards[0].CardKey.Edition)
+		assert.Equal(t, zb_enums.CardVariant_Standard, deck.Cards[0].CardKey.Variant)
 	})
 
 	t.Run("Normal doesn't exist in card library, but Limited is in deck", func(t *testing.T) {
 		deck := &zb_data.Deck{
 			Cards: []*zb_data.DeckCard{
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 7,
-						Edition: zb_enums.CardEdition_Normal,
+						Variant: zb_enums.CardVariant_Standard,
 					},
 					Amount: 3,
 				},
 				{
-					CardKey: zb_data.CardKey{
+					CardKey: battleground_proto.CardKey{
 						MouldId: 7,
-						Edition: zb_enums.CardEdition_Limited,
+						Variant: zb_enums.CardVariant_Limited,
+					},
+					Amount: 4,
+				},
+			},
+		}
+
+		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		assert.True(t, changed)
+		assert.Equal(t, 0, len(deck.Cards))
+	})
+
+	t.Run("No editions exists in card library, but card is in deck", func(t *testing.T) {
+		deck := &zb_data.Deck{
+			Cards: []*zb_data.DeckCard{
+				{
+					CardKey: battleground_proto.CardKey{
+						MouldId: 10,
+						Variant: zb_enums.CardVariant_Standard,
+					},
+					Amount: 3,
+				},
+				{
+					CardKey: battleground_proto.CardKey{
+						MouldId: 11,
+						Variant: zb_enums.CardVariant_Limited,
 					},
 					Amount: 4,
 				},

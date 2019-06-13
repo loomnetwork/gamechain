@@ -28,6 +28,8 @@
 /types/zb/zb_data/zb_data.pb.go
 /types/zb/zb_enums/ZbEnums.cs
 /types/zb/zb_enums/zb_enums.pb.go
+/types/zb/zb_custombase/ZbCustombase.cs
+/types/zb/zb_custombase/zb_custombase.pb.go
 /types/nullable/nullable_pb/nullable.pb.go
 /types/nullable/nullable_pb/Nullable.cs
 /types/nullable/nullable_test_pb/nullable_test.pb.go
@@ -35,8 +37,11 @@
 
 # App specific
 /app.db
+/evm.db
+/receipts_db
 /chaindata
 /contracts
+
 /bin
 protoc-gen-gogo
 genesis.json

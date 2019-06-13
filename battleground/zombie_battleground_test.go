@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -190,11 +191,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -221,11 +222,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   200,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   100,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -244,11 +245,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   2,
-						CardKey: zb_data.CardKey{MouldId: -100},
+						CardKey: battleground_proto.CardKey{MouldId: -100},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: -101},
+						CardKey: battleground_proto.CardKey{MouldId: -101},
 					},
 				},
 			},
@@ -267,11 +268,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -290,11 +291,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -314,11 +315,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -347,11 +348,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:  100,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:  1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -370,11 +371,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -394,11 +395,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 43},
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:   1,
-						CardKey: zb_data.CardKey{MouldId: 48},
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -480,11 +481,11 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 					Cards: []*zb_data.DeckCard{
 						{
 							Amount:  1,
-							CardKey: zb_data.CardKey{MouldId: -1},
+							CardKey: battleground_proto.CardKey{MouldId: -1},
 						},
 						{
 							Amount:  2,
-							CardKey: zb_data.CardKey{MouldId: 1},
+							CardKey: battleground_proto.CardKey{MouldId: 1},
 						},
 					},
 				},
@@ -2372,18 +2373,18 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{CardKey: zb_data.CardKey{MouldId: 1}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 2}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 4}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 5}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 6}, Amount: 2},
-					{CardKey: zb_data.CardKey{MouldId: 7}, Amount: 1},
-					{CardKey: zb_data.CardKey{MouldId: 8}, Amount: 1},
-					{CardKey: zb_data.CardKey{MouldId: 9}, Amount: 1},
-					{CardKey: zb_data.CardKey{MouldId: 10}, Amount: 1},
-					{CardKey: zb_data.CardKey{MouldId: 11}, Amount: 1},
-					{CardKey: zb_data.CardKey{MouldId: 12}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 2}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 4}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 5}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 6}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 7}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 8}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 9}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 10}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 11}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 12}, Amount: 1},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,
@@ -2405,7 +2406,7 @@ func TestAIDeckOperations(t *testing.T) {
 				OverlordId: 2,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{CardKey: zb_data.CardKey{MouldId: -1}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: -1}, Amount: 2},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,

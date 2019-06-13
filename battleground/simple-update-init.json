@@ -8,13 +8,13 @@
           {
             "amount": "15",
             "cardKey": {
-              "mouldId": "1"
+              "mouldId": 1
             }
           },
           {
             "amount": "15",
             "cardKey": {
-              "mouldId": "2"
+              "mouldId": 2
             }
           }
         ]
@@ -24,20 +24,20 @@
       {
         "amount": "15",
         "cardKey": {
-          "mouldId": "1"
+          "mouldId": 1
         }
       },
       {
         "amount": "15",
         "cardKey": {
-          "mouldId": "2"
+          "mouldId": 2
         }
       }
     ],
     "cards": [
       {
         "cardKey": {
-          "mouldId": "1"
+          "mouldId": 1
         },
         "faction": "AIR",
         "name": "Soothsayer",
@@ -68,7 +68,7 @@
       },
       {
         "cardKey": {
-          "mouldId": "2"
+          "mouldId": 2
         },
         "faction": "AIR",
         "name": "Azuraz",
@@ -105,7 +105,7 @@
       },
       {
         "cardKey": {
-          "mouldId": "3"
+          "mouldId": 3
         },
         "faction": "AIR",
         "name": "NewCard",
@@ -182,13 +182,13 @@
             {
               "amount": "15",
               "cardKey": {
-                "mouldId": "1"
+                "mouldId": 1
               }
             },
             {
               "amount": "15",
               "cardKey": {
-                "mouldId": "2"
+                "mouldId": 2
               }
             }
           ]

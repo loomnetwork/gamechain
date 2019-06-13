@@ -44,7 +44,7 @@ var getCollectionCmd = &cobra.Command{
 		default:
 			fmt.Printf("collection:\n")
 			for _, card := range result.Cards {
-				fmt.Printf("mould id: %d, amount: %d\n", card.MouldId, card.Amount)
+				fmt.Printf("card key: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
 			}
 		}
 		return nil

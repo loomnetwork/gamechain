@@ -2,6 +2,7 @@ package battleground
 
 import (
 	"fmt"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -380,17 +381,17 @@ func TestCardAttack(t *testing.T) {
 		OverlordId: 2,
 		Name:   "Default",
 		Cards: []*zb_data.DeckCard{
-			{CardKey: zb_data.CardKey{MouldId: 90}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 91}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 96}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 3}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 2}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 92}, Amount: 2},
-			{CardKey: zb_data.CardKey{MouldId: 1}, Amount: 1},
-			{CardKey: zb_data.CardKey{MouldId: 93}, Amount: 1},
-			{CardKey: zb_data.CardKey{MouldId: 7}, Amount: 1},
-			{CardKey: zb_data.CardKey{MouldId: 94}, Amount: 1},
-			{CardKey: zb_data.CardKey{MouldId: 5}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 2}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 92}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 93}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 7}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 94}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 5}, Amount: 1},
 		},
 	}
 

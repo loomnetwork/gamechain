@@ -3,6 +3,7 @@ package battleground
 import (
 	"encoding/json"
 	"fmt"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -636,10 +637,10 @@ func deleteGameMode(gameModeList *zb_data.GameModeList, ID string) (*zb_data.Gam
 	return &zb_data.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func cardKeyFromCardTokenId(cardTokenId int64) zb_data.CardKey {
-	return zb_data.CardKey{
+func cardKeyFromCardTokenId(cardTokenId int64) battleground_proto.CardKey {
+	return battleground_proto.CardKey{
 		MouldId: cardTokenId / 10,
-		Edition: zb_enums.CardEdition_Enum(cardTokenId % 10),
+		Variant: zb_enums.CardVariant_Enum(cardTokenId % 10),
 	}
 }
 
@@ -881,7 +882,7 @@ func getCardByName(cardList *zb_data.CardList, cardName string) (*zb_data.Card, 
 	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }
 
-func getCardByCardKey(cardList *zb_data.CardList, cardKey zb_data.CardKey) (*zb_data.Card, error) {
+func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.CardKey) (*zb_data.Card, error) {
 	for _, card := range cardList.Cards {
 		if card.CardKey == cardKey {
 			return card, nil
@@ -911,9 +912,9 @@ func fixDeckListCardEditions(ctx contract.Context, deckList *zb_data.DeckList, v
 	return changed, nil
 }
 
-func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[zb_data.CardKey]*zb_data.Card) (changed bool) {
+func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[battleground_proto.CardKey]*zb_data.Card) (changed bool) {
 	var newDeckCards = make([]*zb_data.DeckCard, 0)
-	var cardKeyToDeckCard = make(map[zb_data.CardKey]*zb_data.DeckCard)
+	var cardKeyToDeckCard = make(map[battleground_proto.CardKey]*zb_data.DeckCard)
 	for _, deckCard := range deck.Cards {
 		cardKeyToDeckCard[deckCard.CardKey] = deckCard
 	}
@@ -923,9 +924,9 @@ func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[zb_data.CardKe
 		_, editionExists := cardKeyToCardMap[deckCard.CardKey]
 		if !editionExists {
 			// If this edition is not in card library, try to fallback to Normal edition
-			normalEditionCardKey := zb_data.CardKey{
+			normalEditionCardKey := battleground_proto.CardKey{
 				MouldId: deckCard.CardKey.MouldId,
-				Edition: zb_enums.CardEdition_Normal,
+				Variant: zb_enums.CardVariant_Standard,
 			}
 
 			_, normalEditionExists := cardKeyToCardMap[normalEditionCardKey]

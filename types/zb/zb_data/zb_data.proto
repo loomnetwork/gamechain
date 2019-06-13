@@ -6,6 +6,7 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 import "github.com/loomnetwork/gamechain/types/nullable/nullable_pb/nullable.proto";
 import "github.com/loomnetwork/gamechain/types/zb/zb_enums/zb_enums.proto";
+import "github.com/loomnetwork/gamechain/types/zb/zb_custombase/zb_custombase.proto";
 
 message InitData {
     repeated Deck defaultDecks = 1;
@@ -40,18 +41,9 @@ message Deck {
     OverlordSkillType.Enum secondarySkill = 6;
 }
 
-message CardKey {
-    option (gogoproto.goproto_unrecognized) = false;
-    option (gogoproto.goproto_unkeyed) = false;
-    option (gogoproto.goproto_sizecache) = false;
-
-    int64 mouldId = 1;
-    CardEdition.Enum edition = 2;
-}
-
 message Card {
     reserved 1; // int64 mouldId
-    CardKey cardKey = 23 [(gogoproto.nullable) = false];
+    CardKey cardKey = 23 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
@@ -74,21 +66,21 @@ message Card {
 }
 
 message CardOverrides {
-    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardKindEnumValue"];
-    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.FactionEnumValue"];
+    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardKindEnumValue"];
+    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.FactionEnumValue"];
     StringValue name = 3 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue description = 4 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue flavorText = 5 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue picture = 6 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CreatureRankEnumValue"];
-    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardTypeEnumValue"];
+    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CreatureRankEnumValue"];
+    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardTypeEnumValue"];
     StringValue frame = 9 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     Int32Value damage = 10 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     Int32Value defense = 11 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     Int32Value cost = 12 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     PictureTransform pictureTransform = 13;
     repeated AbilityData abilities = 14;
-    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.UniqueAnimationEnumValue"];
+    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.UniqueAnimationEnumValue"];
     BoolValue hidden = 16 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.BoolValue"];
 }
 
@@ -130,14 +122,14 @@ message CardCollectionCard {
     reserved 1; //string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
     reserved 3; // int64 mouldId = 3;
-    CardKey cardKey = 4 [(gogoproto.nullable) = false];
+    CardKey cardKey = 4 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
 }
 
 message DeckCard {
-    string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    reserved 1; // string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
     reserved 3; // int64 mouldId = 3;
-    CardKey cardKey = 4 [(gogoproto.nullable) = false];
+    CardKey cardKey = 4 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
 }
 
 message CardLibrary {

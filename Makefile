@@ -58,7 +58,6 @@ contracts/zombiebattleground.1.0.0: proto
 	go build $(GOFLAGS) -o $@ $(PKG)/plugin
 
 protoc-gen-gogo:
-	git --git-dir $(GOPATH)/src/github.com/gogo/protobuf/.git --work-tree $(GOPATH)/src/github.com/gogo/protobuf/ checkout master --force
 	go build github.com/gogo/protobuf/protoc-gen-gogo
 
 %.pb.go: %.proto protoc-gen-gogo
@@ -77,9 +76,11 @@ protoc-gen-gogo:
 proto: types/zb/zb_data/zb_data.pb.go \
     types/zb/zb_enums/zb_enums.pb.go \
     types/zb/zb_calls/zb_calls.pb.go \
+    types/zb/zb_custombase/zb_custombase.pb.go \
     types/zb/zb_data/zb_data.cs \
     types/zb/zb_enums/zb_enums.cs \
     types/zb/zb_calls/zb_calls.cs \
+    types/zb/zb_custombase/zb_custombase.cs \
     types/oracle/oracle.pb.go \
     types/nullable/nullable_pb/nullable.pb.go \
     types/nullable/nullable_pb/nullable.cs \
@@ -155,9 +156,11 @@ clean:
 		types/zb/zb_data/zb_data.pb.go \
 		types/zb/zb_enums/zb_enums.pb.go \
 		types/zb/zb_calls/zb_calls.pb.go \
+		types/zb/zb_custombase/zb_custombase.pb.go \
 		types/zb/zb_data/ZbData.cs \
 		types/zb/zb_calls/ZbCalls.cs \
 		types/zb/zb_enums/ZbEnums.cs \
+		types/zb/zb_custombase/ZbCustombase.cs \
 		types/oracle/oracle.pb.go \
 		types/nullable/nullable_pb/nullable.pb.go \
 		types/nullable/nullable_pb/Nullable.cs \
