@@ -487,19 +487,6 @@ func nextMatchID(ctx contract.Context) (int64, error) {
 	return count.CurrentId, nil
 }
 
-func setRewardTutorialClaimed(ctx contract.Context, userID string, claim *zb_data.RewardTutorialClaimed) error {
-	return ctx.Set(RewardTutorialClaimedKey(userID), claim)
-}
-
-func getRewardTutorialClaimed(ctx contract.Context, userID string) (*zb_data.RewardTutorialClaimed, error) {
-	var rewardClaimed zb_data.RewardTutorialClaimed
-	err := ctx.Get(RewardTutorialClaimedKey(userID), &rewardClaimed)
-	if err != nil && err != contract.ErrNotFound {
-		return nil, err
-	}
-	return &rewardClaimed, nil
-}
-
 func saveGameState(ctx contract.Context, gs *zb_data.GameState) error {
 	if err := ctx.Set(GameStateKey(gs.Id), gs); err != nil {
 		return err

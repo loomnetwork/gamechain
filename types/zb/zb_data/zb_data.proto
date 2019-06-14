@@ -261,12 +261,8 @@ message GamechainState {
     // the plasmachain reward contract version 
     uint64 reward_contract_version = 2;
     // the number of card packs reward when players finish tutorial
-    uint64 tutorial_reward_amount = 3;
+    reserved 3; // uint64 tutorial_reward_amount = 3;
     reserved 4; // default_player_defense
-}
-
-message RewardTutorialClaimed {
-    uint64 nonce = 1;
 }
 
 //////////// Match Making /////////////
