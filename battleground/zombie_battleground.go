@@ -1,7 +1,6 @@
 package battleground
 
 import (
-	"crypto/ecdsa"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -12,7 +11,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"os"
 	"sort"
-	"strconv"
 	"time"
 	"unicode/utf8"
 
@@ -23,8 +21,6 @@ import (
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
-	ltypes "github.com/loomnetwork/go-loom/types"
-	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
 
@@ -59,12 +55,10 @@ const (
 var (
 	// secret
 	secret string
-	// privateKey to sign reward
-	privateKeyStr = os.Getenv("CZ_KEY")
 	// privateKey to verify JWT Token from loomauth
-	jwtSecret                       = os.Getenv("JWT_SECRET")
-	_, debugEnabled                 = os.LookupEnv("RL_DEBUG")
-	rlIapGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
+	jwtSecret                          = os.Getenv("JWT_SECRET")
+	_, debugEnabled                    = os.LookupEnv("RL_DEBUG")
+	purchaseGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
 	ErrInvalidEventBatch  = errors.New("invalid event batch")
@@ -99,7 +93,6 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb_calls.InitReques
 	state := zb_data.GamechainState{
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
-		TutorialRewardAmount:    1,
 	}
 	if err := saveState(ctx, &state); err != nil {
 		return err
@@ -1706,7 +1699,6 @@ func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb_calls.InitG
 	state = &zb_data.GamechainState{
 		LastPlasmachainBlockNum: 1,
 		RewardContractVersion:   1,
-		TutorialRewardAmount:    1,
 	}
 	return saveState(ctx, state)
 }
@@ -1974,54 +1966,6 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.
 	return nil
 }
 
-func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb_calls.RewardTutorialCompletedRequest) (*zb_calls.RewardTutorialCompletedResponse, error) {
-	address := ctx.Message().Sender.String()
-	rewardTutorialClaimed, err := getRewardTutorialClaimed(ctx, address)
-	if err != nil {
-		return nil, err
-	}
-
-	if rewardTutorialClaimed.Nonce > 0 {
-		return nil, fmt.Errorf("reward already claimed")
-	}
-
-	privateKey, err := crypto.HexToECDSA(privateKeyStr)
-	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error reading private key"))
-	}
-
-	state, err := loadState(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	verifySignResult, err := generateVerifyHash(state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(verifySignResult.Signature) != 132 {
-		return nil, fmt.Errorf("signature length invalid")
-	}
-
-	r := verifySignResult.Signature[0:66]
-	s := "0x" + verifySignResult.Signature[66:130]
-	vStr := verifySignResult.Signature[130:132]
-	v, err := strconv.ParseUint(vStr, 16, 8)
-	if err != nil {
-		return nil, err
-	}
-
-	return &zb_calls.RewardTutorialCompletedResponse{
-		R:          r,
-		S:          s,
-		V:          v,
-		Hash:       verifySignResult.Hash,
-		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(state.TutorialRewardAmount))},
-		RewardType: RewardTypeTutorialCompleted,
-	}, nil
-}
-
 func applyExperience(
 	ctx contract.Context,
 	version string,
@@ -2188,65 +2132,6 @@ func removeNotification(notifications []*zb_data.Notification, id int32) ([]*zb_
 	return nil, fmt.Errorf("notification with id %d not found", id)
 }
 
-func (z *ZombieBattleground) ConfirmRewardTutorialClaimed(ctx contract.Context, req *zb_calls.ConfirmRewardTutorialClaimedRequest) error {
-	address := ctx.Message().Sender.String()
-	rewardClaimed, err := getRewardTutorialClaimed(ctx, address)
-	if err != nil {
-		return err
-	}
-	rewardClaimed.Nonce++
-	err = setRewardTutorialClaimed(ctx, address, rewardClaimed)
-	return err
-}
-
-type verifySignResult struct {
-	Hash      string
-	Signature string
-}
-
-func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
-	sig, err := crypto.Sign(data, privKey)
-	if err != nil {
-		return nil, err
-	}
-
-	v := sig[len(sig)-1]
-	sig[len(sig)-1] = v + 27
-	return sig, nil
-}
-
-func generateVerifyHash(amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
-	hash, err := createHash(amount, tutorialRewardContractVersion)
-
-	if err != nil {
-		return nil, err
-	}
-
-	sig, err := soliditySign(hash, privKey)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &verifySignResult{
-		Hash:      "0x" + hex.EncodeToString(hash),
-		Signature: "0x" + hex.EncodeToString(sig),
-	}, nil
-}
-
-func createHash(amount uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
-	hash := solsha3.SoliditySHA3(
-		solsha3.Uint256(strconv.FormatUint(amount, 10)),
-		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
-	)
-
-	if len(hash) == 0 {
-		return nil, errors.New("Failed to generate hash")
-	}
-
-	return hash, nil
-}
-
 func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
 	state, err := loadState(ctx)
 	if err != nil {
@@ -2398,21 +2283,6 @@ func (z *ZombieBattleground) SetRewardContractVersion(ctx contract.Context, req 
 	return saveState(ctx, state)
 }
 
-func (z *ZombieBattleground) SetTutorialRewardAmount(ctx contract.Context, req *zb_calls.SetTutorialRewardAmountRequest) error {
-	state, err := loadState(ctx)
-	if err != nil {
-		return err
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.TutorialRewardAmount = req.Amount
-	return saveState(ctx, state)
-}
-
 func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb_calls.GetContractBuildMetadataRequest) (*zb_calls.GetContractBuildMetadataResponse, error) {
 	return &zb_calls.GetContractBuildMetadataResponse{
 		Date:   BuildDate,
@@ -2426,7 +2296,7 @@ func (z *ZombieBattleground) DebugCreateBoosterPackReceipt(ctx contract.StaticCo
 		return nil, ErrDebugNotEnabled
 	}
 
-	gatewayPrivateKey, err := crypto.HexToECDSA(rlIapGatewayPrivateKeyHexString)
+	gatewayPrivateKey, err := crypto.HexToECDSA(purchaseGatewayPrivateKeyHexString)
 	if err != nil {
 		err = errors.Wrap(err, "error getting private key")
 		return nil, err

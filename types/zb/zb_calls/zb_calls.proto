@@ -62,16 +62,6 @@ message SetLastPlasmaBlockNumRequest {
     Address oracle = 2;
 }
 
-message SetRewardContractVersionRequest {
-    uint64 version = 1;
-    Address oracle = 2;
-}
-
-message SetTutorialRewardAmountRequest {
-    uint64 amount = 1;
-    Address oracle = 2;
-}
-
 message GetCardListRequest {
     string version = 1;
 }
@@ -239,26 +229,6 @@ message GetCollectionByAddressRequest {
 
 message GetCollectionByAddressResponse {
     repeated CardCollectionCard cards = 1;
-}
-
-message RewardTutorialCompletedRequest {
-}
-
-message RewardTutorialCompletedResponse {
-    // string user_id = 1;
-    string reward_type = 2;
-    string hash = 3;
-    string r = 4;
-    string s = 5;
-    uint64 v = 6;
-    // int64 nonce = 7;
-    // uint64 minion_pack = 8;
-    // uint64 user_id_uint = 9;
-    // BigUInt user_id = 10;
-    BigUInt amount = 11;
-}
-
-message ConfirmRewardTutorialClaimedRequest {
 }
 
 message RegisterPlayerPoolRequest {
@@ -463,4 +433,9 @@ message DebugCreateBoosterPackReceiptRequest {
 
 message DebugCreateBoosterPackReceiptResponse {
     string transactionResponseJson = 1;
+}
+
+message SetRewardContractVersionRequest {
+    uint64 version = 1;
+    Address oracle = 2;
 }
