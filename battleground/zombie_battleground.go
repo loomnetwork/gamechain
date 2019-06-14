@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
@@ -61,11 +62,14 @@ var (
 	// privateKey to sign reward
 	privateKeyStr = os.Getenv("CZ_KEY")
 	// privateKey to verify JWT Token from loomauth
-	jwtSecret = os.Getenv("JWT_SECRET")
+	jwtSecret                       = os.Getenv("JWT_SECRET")
+	_, debugEnabled                 = os.LookupEnv("RL_DEBUG")
+	rlIapGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
 	// Error list
-	ErrOracleNotSpecified          = errors.New("oracle not specified")
-	ErrInvalidEventBatch           = errors.New("invalid event batch")
-	ErrVersionNotSet               = errors.New("data version not set")
+	ErrOracleNotSpecified = errors.New("oracle not specified")
+	ErrInvalidEventBatch  = errors.New("invalid event batch")
+	ErrVersionNotSet      = errors.New("data version not set")
+	ErrDebugNotEnabled    = errors.New("debug mode not enabled")
 )
 
 type ZombieBattleground struct {
@@ -1983,7 +1987,7 @@ func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *
 
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	if err != nil {
-		return nil, fmt.Errorf("error reading private key")
+		return nil, errors.Wrap(err, fmt.Sprintf("error reading private key"))
 	}
 
 	state, err := loadState(ctx)
@@ -2200,6 +2204,17 @@ type verifySignResult struct {
 	Signature string
 }
 
+func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
+	sig, err := crypto.Sign(data, privKey)
+	if err != nil {
+		return nil, err
+	}
+
+	v := sig[len(sig)-1]
+	sig[len(sig)-1] = v + 27
+	return sig, nil
+}
+
 func generateVerifyHash(amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
 	hash, err := createHash(amount, tutorialRewardContractVersion)
 
@@ -2230,17 +2245,6 @@ func createHash(amount uint64, tutorialRewardContractVersion uint64) ([]byte, er
 	}
 
 	return hash, nil
-}
-
-func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
-	sig, err := crypto.Sign(data, privKey)
-	if err != nil {
-		return nil, err
-	}
-
-	v := sig[len(sig)-1]
-	sig[len(sig)-1] = v + 27
-	return sig, nil
 }
 
 func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
@@ -2414,6 +2418,31 @@ func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext
 		Date:   BuildDate,
 		GitSha: BuildGitSha,
 		Build:  BuildNumber,
+	}, nil
+}
+
+func (z *ZombieBattleground) DebugCreateBoosterPackReceipt(ctx contract.StaticContext, req *zb_calls.DebugCreateBoosterPackReceiptRequest) (*zb_calls.DebugCreateBoosterPackReceiptResponse, error) {
+	if !debugEnabled {
+		return nil, ErrDebugNotEnabled
+	}
+
+	gatewayPrivateKey, err := crypto.HexToECDSA(rlIapGatewayPrivateKeyHexString)
+	if err != nil {
+		err = errors.Wrap(err, "error getting private key")
+		return nil, err
+	}
+
+	generator, err := NewReceiptGenerator(gatewayPrivateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	txId := generator.CalculateAbsoluteTxId(req.RelativeTxId.Value.Int)
+	response, err := generator.CreateBoosterReceipt(req.UserId.Value.Int, uint(req.BoosterAmount), txId)
+
+	responseJson, _ := json.Marshal(response)
+	return &zb_calls.DebugCreateBoosterPackReceiptResponse{
+		TransactionResponseJson: string(responseJson),
 	}, nil
 }
 

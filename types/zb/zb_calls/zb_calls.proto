@@ -452,3 +452,15 @@ message CallCustomGameModeFunctionRequest {
 message StaticCallCustomGameModeFunctionResponse {
     bytes output = 1;
 }
+
+//
+
+message DebugCreateBoosterPackReceiptRequest {
+    BigUInt userId = 1;
+    int32 boosterAmount = 2;
+    BigUInt relativeTxId = 3;
+}
+
+message DebugCreateBoosterPackReceiptResponse {
+    string transactionResponseJson = 1;
+}
