@@ -6,7 +6,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -16,21 +15,15 @@ var setLastPlasmaBlockNumCmdArgs struct {
 }
 
 var setLastPlasmaBlockNumCmd = &cobra.Command{
-	Use:   "set_last_plasma_block_num",
-	Short: "set last plasma block num",
+	Use:   "set_last_plasma_block_number",
+	Short: "set last plasma block number",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
-		callerAddr := &loom.Address{
-			ChainID: commonTxObjs.rpcClient.GetChainID(),
-			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
+		req := zb_calls.SetLastPlasmaBlockNumberRequest{
+			LastPlasmachainBlockNumber: setLastPlasmaBlockNumCmdArgs.blockNum,
 		}
 
-		req := zb_calls.SetLastPlasmaBlockNumRequest{
-			LastBlockNum: setLastPlasmaBlockNumCmdArgs.blockNum,
-			Oracle:       callerAddr.MarshalPB(),
-		}
-
-		_, err := commonTxObjs.contract.Call("SetLastPlasmaBlockNum", &req, signer, nil)
+		_, err := commonTxObjs.contract.Call("SetLastPlasmaBlockNumber", &req, signer, nil)
 		if err != nil {
 			return err
 		}

@@ -179,9 +179,9 @@ func drawFromCardList(cardlist []*zb_data.Card, n int) (cards []*zb_data.Card, r
 	return
 }
 
-func findCardInCardListByName(card *zb_data.CardInstance, cards []*zb_data.CardInstance) (int, *zb_data.CardInstance, bool) {
+func findCardInCardListByCardKey(card *zb_data.CardInstance, cards []*zb_data.CardInstance) (int, *zb_data.CardInstance, bool) {
 	for i, c := range cards {
-		if card.Prototype.Name == c.Prototype.Name {
+		if card.Prototype.CardKey == c.Prototype.CardKey {
 			return i, c, true
 		}
 	}

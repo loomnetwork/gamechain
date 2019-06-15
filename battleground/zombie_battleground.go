@@ -9,6 +9,8 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
+	"github.com/loomnetwork/go-loom/common"
+	"math/big"
 	"os"
 	"sort"
 	"time"
@@ -61,6 +63,7 @@ var (
 	purchaseGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
 	// Error list
 	ErrOracleNotSpecified = errors.New("oracle not specified")
+	ErrOracleNotVerified  = errors.New("oracle not verified")
 	ErrInvalidEventBatch  = errors.New("invalid event batch")
 	ErrVersionNotSet      = errors.New("data version not set")
 	ErrDebugNotEnabled    = errors.New("debug mode not enabled")
@@ -85,17 +88,8 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb_calls.InitReques
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), OracleRole)
 		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
-			return errors.Wrap(err, "Error setting oracle")
+			return errors.Wrap(err, "error setting oracle")
 		}
-	}
-
-	// init state
-	state := zb_data.GamechainState{
-		LastPlasmachainBlockNum: 1,
-		RewardContractVersion:   1,
-	}
-	if err := saveState(ctx, &state); err != nil {
-		return err
 	}
 
 	// initialize card library
@@ -1671,62 +1665,140 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb_calls.KeepA
 	return &zb_calls.KeepAliveResponse{}, nil
 }
 
-func (z *ZombieBattleground) GetState(ctx contract.StaticContext, req *zb_calls.GetGamechainStateRequest) (*zb_calls.GetGamechainStateResponse, error) {
-	state, err := loadState(ctx)
+func (z *ZombieBattleground) GetContractState(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractStateResponse, error) {
+	state, err := loadContractState(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &zb_calls.GetGamechainStateResponse{
+
+	return &zb_calls.GetContractStateResponse{
 		State: state,
 	}, nil
 }
 
-func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb_calls.InitGamechainStateRequest) error {
-	state, err := loadState(ctx)
-	if err != nil && err != contract.ErrNotFound {
-		return err
-	}
-	if state != nil {
-		return fmt.Errorf("state already inilialized")
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
+func (z *ZombieBattleground) GetContractConfiguration(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractConfigurationResponse, error) {
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state = &zb_data.GamechainState{
-		LastPlasmachainBlockNum: 1,
-		RewardContractVersion:   1,
-	}
-	return saveState(ctx, state)
+	return &zb_calls.GetContractConfigurationResponse{
+		Configuration: configuration,
+	}, nil
 }
 
-func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb_calls.UpdateOracleRequest) error {
-	if ctx.Has(oracleKey) {
-		if params.OldOracle.String() == params.NewOracle.String() {
-			return errors.New("Cannot set new oracle to same address as old oracle")
-		}
-		if err := z.validateOracle(ctx, params.OldOracle); err != nil {
-			return errors.Wrap(err, "validating oracle")
-		}
-		ctx.GrantPermission([]byte(params.OldOracle.String()), []string{"old-oracle"})
+func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, req *zb_calls.UpdateContractConfigurationRequest) error {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return err
 	}
-	ctx.GrantPermission([]byte(params.NewOracle.String()), []string{OracleRole})
 
-	if err := ctx.Set(oracleKey, params.NewOracle); err != nil {
-		return errors.Wrap(err, "setting new oracle")
+	isStateChanged := false
+	isConfigurationChanged := false
+
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		if errors.Cause(err).Error() == ErrNotfound.Error() {
+			isConfigurationChanged = true
+			configuration = &zb_data.ContractConfiguration{
+				InitialFiatPurchaseTxId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				FiatPurchaseContractVersion: 0,
+			}
+		} else {
+			return err
+		}
+	}
+
+	state, err := loadContractState(ctx)
+	if err != nil {
+		if errors.Cause(err).Error() == ErrNotfound.Error() {
+			isStateChanged = true
+			state = &zb_data.ContractState{
+				LastPlasmachainBlockNumber: 0,
+				CurrentFiatPurchaseTxId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+			}
+		} else {
+			return err
+		}
+	}
+
+	if req.SetFiatPurchaseContractVersion {
+		isConfigurationChanged = true
+		configuration.FiatPurchaseContractVersion = req.FiatPurchaseContractVersion
+	}
+
+	if req.SetInitialFiatPurchaseTxId {
+		if req.InitialFiatPurchaseTxId == nil {
+			return fmt.Errorf("InitialFiatPurchaseTxId == nil")
+		}
+
+		if req.InitialFiatPurchaseTxId.Value.Int.Cmp(configuration.InitialFiatPurchaseTxId.Value.Int) != 0 {
+			isStateChanged = true
+			isConfigurationChanged = true
+			configuration.InitialFiatPurchaseTxId = req.InitialFiatPurchaseTxId
+			state.CurrentFiatPurchaseTxId = req.InitialFiatPurchaseTxId
+
+			ctx.Logger().Info("txId reset", "configuration.InitialFiatPurchaseTxId", configuration.InitialFiatPurchaseTxId, "state.CurrentFiatPurchaseTxId", state.CurrentFiatPurchaseTxId)
+		}
+	}
+
+	if isStateChanged {
+		err = saveContractState(ctx, state)
+		if err != nil {
+			return err
+		}
+	}
+
+	if isConfigurationChanged {
+		err = saveContractConfiguration(ctx, configuration)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, req *zb_calls.UpdateOracleRequest) error {
+	var oldOraclePB types.Address
+	err := ctx.Get(oracleKey, &oldOraclePB)
+	if err != nil {
+		return nil
+	}
+
+	oldOracle := loom.UnmarshalAddressPB(&oldOraclePB)
+	newOraclePB := req.NewOracle
+	newOracle := loom.UnmarshalAddressPB(newOraclePB)
+	if ctx.Has(oracleKey) {
+		if oldOracle.String() == newOracle.String() {
+			return errors.New("cannot set new oracle to same address as old oracle")
+		}
+		if err := z.validateOracle(ctx); err != nil {
+			return errors.Wrap(err, "sender is not the current oracle")
+		}
+
+		ctx.GrantPermissionTo(oldOracle, []byte(oldOraclePB.String()), "old-oracle")
+	}
+	ctx.GrantPermissionTo(newOracle, []byte(newOraclePB.String()), OracleRole)
+
+	if err := ctx.Set(oracleKey, newOraclePB); err != nil {
+		return errors.Wrap(err, "failed to set new oracle")
 	}
 	return nil
 }
 
-func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Address) error {
-	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{OracleRole}); !ok {
-		return errors.New("Oracle unverified")
+func (z *ZombieBattleground) validateOracle(ctx contract.StaticContext) error {
+	var oldOraclePB types.Address
+	err := ctx.Get(oracleKey, &oldOraclePB)
+	if err != nil && err.Error() == ErrNotfound.Error() {
+		return nil
 	}
 
-	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"old-oracle"}); ok {
+	if ok, _ := ctx.HasPermissionFor(ctx.Message().Sender, []byte(ctx.Message().Sender.MarshalPB().String()), []string{OracleRole}); !ok {
+		return ErrOracleNotVerified
+	}
+
+	if ok, _ := ctx.HasPermissionFor(ctx.Message().Sender, []byte(ctx.Message().Sender.MarshalPB().String()), []string{"old-oracle"}); ok {
 		return errors.New("This oracle is expired. Please use latest oracle")
 	}
 	return nil
@@ -1834,21 +1906,15 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb_calls.Gam
 		return nil, err
 	}
 
-	gameModeType := zb_data.GameModeType_Community
 	owner := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: ctx.Message().Sender.Local}
+	gameModeType := zb_data.GameModeType_Community
+
 	// if request was made with a valid oracle, set type and owner to Loom
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return nil, err
-		}
+	var oldOraclePB types.Address
+	err = ctx.Get(oracleKey, &oldOraclePB)
+	oracleNotSet := err != nil && err.Error() == ErrNotfound.Error()
 
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return nil, err
-		}
-
+	if err := z.validateOracle(ctx); !oracleNotSet && err == nil {
 		gameModeType = zb_data.GameModeType_Loom
 		owner = loom.RootAddress(ctx.ContractAddress().ChainID).MarshalPB()
 	}
@@ -1873,20 +1939,12 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb_calls.Gam
 }
 
 func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb_calls.UpdateGameModeRequest) (*zb_data.GameMode, error) {
-	// Require either oracle or owner permission to update a game mode
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return nil, err
+	// Require either oracle or owner permission to delete a game mode
+	err := z.validateOracle(ctx)
+	if err == ErrOracleNotVerified {
+		if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+			return nil, ErrUserNotVerified
 		}
-
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return nil, err
-		}
-	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
-		return nil, ErrUserNotVerified
 	}
 
 	gameModeList, err := loadGameModeList(ctx)
@@ -1933,19 +1991,11 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb_calls.
 
 func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.DeleteGameModeRequest) error {
 	// Require either oracle or owner permission to delete a game mode
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return err
+	err := z.validateOracle(ctx)
+	if err == ErrOracleNotVerified {
+		if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+			return ErrUserNotVerified
 		}
-
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return err
-		}
-	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
-		return ErrUserNotVerified
 	}
 
 	gameModeList, err := loadGameModeList(ctx)
@@ -2133,7 +2183,7 @@ func removeNotification(notifications []*zb_data.Notification, id int32) ([]*zb_
 }
 
 func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
-	state, err := loadState(ctx)
+	state, err := loadContractState(ctx)
 	if err != nil {
 		return err
 	}
@@ -2153,7 +2203,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		// Multiple validators might submit batches with overlapping block ranges because the
 		// Gateway oracles will fetch events from Plasmachian at different times, with different
 		// latencies, etc. Simply skip blocks that have already been processed.
-		if ev.EthBlock <= state.LastPlasmachainBlockNum {
+		if ev.EthBlock <= state.LastPlasmachainBlockNumber {
 			continue
 		}
 
@@ -2191,9 +2241,8 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		return fmt.Errorf("no new events found in the batch")
 	}
 
-	state.LastPlasmachainBlockNum = lastEthBlock
-
-	return saveState(ctx, state)
+	state.LastPlasmachainBlockNumber = lastEthBlock
+	return saveContractState(ctx, state)
 }
 
 func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
@@ -2216,11 +2265,10 @@ func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
 }
 
 func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardTokenId int64, amount int64, version string) error {
-	// check the oracle
-	addr := ctx.Message().Sender.MarshalPB()
-	if err := z.validateOracle(ctx, addr); err != nil {
+	if err := z.validateOracle(ctx); err != nil {
 		return err
 	}
+
 	cardCollection, err := loadCardCollectionByUserId(ctx, userID, version)
 	if err != nil {
 		return err
@@ -2253,34 +2301,18 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 	return saveCardCollectionByUserId(ctx, userID, cardCollection)
 }
 
-func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb_calls.SetLastPlasmaBlockNumRequest) error {
-	state, err := loadState(ctx)
+func (z *ZombieBattleground) SetLastPlasmaBlockNumber(ctx contract.Context, req *zb_calls.SetLastPlasmaBlockNumberRequest) error {
+	err := z.validateOracle(ctx)
 	if err != nil {
 		return err
 	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.LastPlasmachainBlockNum = req.LastBlockNum
-	return saveState(ctx, state)
-}
 
-func (z *ZombieBattleground) SetRewardContractVersion(ctx contract.Context, req *zb_calls.SetRewardContractVersionRequest) error {
-	state, err := loadState(ctx)
+	state, err := loadContractState(ctx)
 	if err != nil {
 		return err
 	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.RewardContractVersion = req.Version
-	return saveState(ctx, state)
+	state.LastPlasmachainBlockNumber = req.LastPlasmachainBlockNumber
+	return saveContractState(ctx, state)
 }
 
 func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb_calls.GetContractBuildMetadataRequest) (*zb_calls.GetContractBuildMetadataResponse, error) {
@@ -2291,7 +2323,7 @@ func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext
 	}, nil
 }
 
-func (z *ZombieBattleground) DebugCreateBoosterPackReceipt(ctx contract.StaticContext, req *zb_calls.DebugCreateBoosterPackReceiptRequest) (*zb_calls.DebugCreateBoosterPackReceiptResponse, error) {
+func (z *ZombieBattleground) DebugCreateBoosterPackReceipt(ctx contract.Context, req *zb_calls.DebugCreateBoosterPackReceiptRequest) (*zb_calls.DebugCreateBoosterPackReceiptResponse, error) {
 	if !debugEnabled {
 		return nil, ErrDebugNotEnabled
 	}
@@ -2302,15 +2334,38 @@ func (z *ZombieBattleground) DebugCreateBoosterPackReceipt(ctx contract.StaticCo
 		return nil, err
 	}
 
-	generator, err := NewReceiptGenerator(gatewayPrivateKey)
+	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	txId := generator.CalculateAbsoluteTxId(req.RelativeTxId.Value.Int)
-	response, err := generator.CreateBoosterReceipt(req.UserId.Value.Int, uint(req.BoosterAmount), txId)
+	generator, err := NewReceiptGenerator(gatewayPrivateKey, uint(configuration.FiatPurchaseContractVersion))
+	if err != nil {
+		return nil, err
+	}
 
-	responseJson, _ := json.Marshal(response)
+	state, err := loadContractState(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	txId := state.CurrentFiatPurchaseTxId.Value.Int
+	response, err := generator.CreateBoosterReceipt(req.UserId.Value.Int, uint(req.BoosterAmount), txId)
+	if err != nil {
+		return nil, err
+	}
+
+	responseJson, err := json.Marshal(response)
+	if err != nil {
+		return nil, err
+	}
+
+	state.CurrentFiatPurchaseTxId.Value.Int.Add(state.CurrentFiatPurchaseTxId.Value.Int, big.NewInt(1))
+	err = saveContractState(ctx, state)
+	if err != nil {
+		return nil, err
+	}
+
 	return &zb_calls.DebugCreateBoosterPackReceiptResponse{
 		TransactionResponseJson: string(responseJson),
 	}, nil

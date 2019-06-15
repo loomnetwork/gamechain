@@ -5,41 +5,38 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
 
-var getStateCmdArgs struct {
-	MatchID int64
+var getContractStateCmdArgs struct {
 }
 
-var getStateCmd = &cobra.Command{
-	Use:   "get_state",
-	Short: "get state",
+var getContractStateCmd = &cobra.Command{
+	Use:   "get_contract_state",
+	Short: "get contract state",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		var req zb_calls.GetGamechainStateRequest
-		var resp zb_calls.GetGamechainStateResponse
-		_, err := commonTxObjs.contract.StaticCall("GetState", &req, callerAddr, &resp)
+
+		var resp zb_calls.GetContractStateResponse
+		_, err := commonTxObjs.contract.StaticCall("GetContractState", &zb_calls.EmptyRequest{}, callerAddr, &resp)
 		if err != nil {
 			return err
 		}
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(resp.State)
+			err := printProtoMessageAsJSONToStdout(resp.State)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
-			fmt.Printf("%+v", resp.State)
+			fmt.Printf("%+v\n", resp.State)
 		}
 
 		return nil
@@ -47,5 +44,5 @@ var getStateCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getStateCmd)
+	rootCmd.AddCommand(getContractStateCmd)
 }

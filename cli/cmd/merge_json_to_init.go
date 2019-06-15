@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -93,6 +94,8 @@ var mergeJsonToInitCmd = &cobra.Command{
 		if err != nil {
 			return errors.Wrap(err, "error writing output file")
 		}
+
+		fmt.Printf("merged file written to %s\n", mergeJsonToInitCmdArgs.outputFile)
 
 		return nil
 	},

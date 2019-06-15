@@ -7,7 +7,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -36,11 +35,10 @@ var replayGameCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(resp.GameState)
+			err := printProtoMessageAsJSONToStdout(resp.GameState)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			state := resp.GameState
 			actionOutcomes := resp.ActionOutcomes

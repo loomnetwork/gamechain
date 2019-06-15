@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -19,7 +18,7 @@ var rootCmd = &cobra.Command{
 	Short:        "Gamechain Oracle",
 	Long:         `The oracle that connect plasmachain and gamechain`,
 	Example:      `  gcoracle`,
-	SilenceUsage: true,
+	SilenceUsage: false,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return run()
 	},
@@ -29,6 +28,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	// plasmchain
 	rootCmd.PersistentFlags().String("plasmachain-private-key", "", "Plasmachain Private Key")
+	_ = rootCmd.MarkPersistentFlagRequired("plasmachain-private-key")
 	rootCmd.PersistentFlags().String("plasmachain-chain-id", "default", "Plasmachain Chain ID")
 	rootCmd.PersistentFlags().String("plasmachain-read-uri", "http://localhost:46658/query", "Plasmachain Read URI")
 	rootCmd.PersistentFlags().String("plasmachain-write-uri", "http://localhost:46658/rpc", "Plasmachain Write URI")
@@ -37,6 +37,7 @@ func init() {
 	rootCmd.PersistentFlags().Int("plasmachain-poll-interval", 10, "Plasmachain Pool Interval in seconds")
 	// gamechain
 	rootCmd.PersistentFlags().String("gamechain-private-key", "", "Gamechain Private Key")
+	_ = rootCmd.MarkPersistentFlagRequired("gamechain-private-key")
 	rootCmd.PersistentFlags().String("gamechain-chain-id", "default", "Gamechain Chain ID")
 	rootCmd.PersistentFlags().String("gamechain-read-uri", "http://localhost:46658/query", "Gamechain Read URI")
 	rootCmd.PersistentFlags().String("gamechain-write-uri", "http://localhost:46658/rpc", "Gamechain Write URI")
@@ -105,13 +106,6 @@ func run() error {
 		OracleLogDestination:          viper.GetString("oracle-log-destination"),
 		OracleReconnectInterval:       int32(viper.GetInt("oracle-reconnect-interval")),
 		OracleStartupDelay:            int32(viper.GetInt("oracle-startup-delay")),
-	}
-
-	if cfg.PlasmachainPrivateKey == "" {
-		return errors.New("PlasmachainPrivateKey [--plasmachain-private-key] is required")
-	}
-	if cfg.GamechainPrivateKey == "" {
-		return errors.New("GamechainPrivateKey [--gamechain-private-key] is required")
 	}
 
 	orc, err := oracle.CreateOracle(cfg, "gcoracle")

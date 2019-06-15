@@ -11,10 +11,9 @@ import (
 	"strconv"
 )
 
-const contractVersion = 3
-
 type ReceiptGenerator struct {
 	gatewayPrivateKey *ecdsa.PrivateKey
+	contractVersion uint
 }
 
 type VerifySignResult struct {
@@ -39,24 +38,19 @@ type TransactionResponse struct {
 	TxID       *big.Int
 }
 
-func NewReceiptGenerator(gatewayPrivateKey *ecdsa.PrivateKey) (ReceiptGenerator, error) {
+func NewReceiptGenerator(gatewayPrivateKey *ecdsa.PrivateKey, contractVersion uint) (ReceiptGenerator, error) {
 	if gatewayPrivateKey == nil {
 		return ReceiptGenerator{}, fmt.Errorf("private key is nil")
 	}
 
 	return ReceiptGenerator{
 		gatewayPrivateKey: gatewayPrivateKey,
+		contractVersion: contractVersion,
 	}, nil
 }
 
-func (generator *ReceiptGenerator) CalculateAbsoluteTxId(relativeTxId *big.Int) *big.Int {
-	txId := big.NewInt(1)
-	txId = txId.Lsh(txId, 127)
-	return txId.Add(txId, relativeTxId)
-}
-
 func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, boosterAmount uint, txId *big.Int) (*TransactionResponse, error) {
-	verifyHash, err := generator.generateVerifyEosHash(
+	verifyHash, err := generator.generateEosVerifySignResult(
 		userId,
 		generator.gatewayPrivateKey,
 		boosterAmount,
@@ -71,7 +65,7 @@ func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, booster
 		0,
 		0,
 		txId,
-		contractVersion)
+		generator.contractVersion)
 
 	if err != nil {
 		err = errors.Wrap(err, "error generating reward hash")
@@ -97,7 +91,7 @@ func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, booster
 	return &response, nil
 }
 
-func (generator *ReceiptGenerator) generateVerifyEosHash(
+func (generator *ReceiptGenerator) generateEosVerifySignResult(
 	userId *big.Int,
 	privateKey *ecdsa.PrivateKey,
 	booster uint,

@@ -8,7 +8,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 var testCard = zb_data.Card{

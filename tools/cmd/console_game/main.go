@@ -37,7 +37,7 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 
 func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
+	err := readJsonFileToProtobuf("../../../test_data/simple-init.json", updateInitRequest.InitData)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ func listItemsForPlayer(playerId int) []string {
 		panic(err)
 	}
 	for _, v := range cardCollection.Cards {
-		res = append(res, fmt.Sprintf("Mould Id %d", v.MouldId))
+		res = append(res, fmt.Sprintf("Card Key [%s]", v.CardKey.String()))
 	}
 
 	return res

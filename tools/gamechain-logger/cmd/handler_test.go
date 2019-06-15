@@ -11,7 +11,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/loomnetwork/loomauth/models"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 const event1 = `{
