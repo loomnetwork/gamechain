@@ -17,7 +17,6 @@ var updateGameModeCmdArgs struct {
 	description  string
 	version      string
 	gameModeType int
-	oracle       string
 }
 
 var updateGameModeCmd = &cobra.Command{
@@ -32,7 +31,6 @@ var updateGameModeCmd = &cobra.Command{
 		req.Description = updateGameModeCmdArgs.description
 		req.Version = updateGameModeCmdArgs.version
 		req.GameModeType = zb_data.GameModeType(updateGameModeCmdArgs.gameModeType)
-		req.Oracle = updateGameModeCmdArgs.oracle
 
 		_, err := commonTxObjs.contract.Call("UpdateGameMode", &req, signer, nil)
 		if err != nil {
@@ -47,7 +45,7 @@ var updateGameModeCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("updated game mode")
+			fmt.Println("updated game mode")
 		}
 
 		return nil
@@ -61,7 +59,6 @@ func init() {
 	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.description, "description", "d", "", "description")
 	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.version, "version", "v", "", "version number like “0.10.0”")
 	updateGameModeCmd.Flags().IntVarP(&updateGameModeCmdArgs.gameModeType, "gameModeType", "t", 0, "type of game mode")
-	updateGameModeCmd.Flags().StringVarP(&updateGameModeCmdArgs.oracle, "oracle", "o", "", "oracle address")
 
 	_ = updateGameModeCmd.MarkFlagRequired("version")
 }

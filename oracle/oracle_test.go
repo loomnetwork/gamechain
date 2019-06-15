@@ -20,32 +20,32 @@ func TestRecentHashPool(t *testing.T) {
 	require.True(t, recentHashPool.addHash([]byte{1, 2, 3}), "after timeout, hash should be allowed")
 }
 
-func TestTransferGatewayOracleMainnetEventSort(t *testing.T) {
+func TestTransferGatewayOraclePlasmachainEventSort(t *testing.T) {
 	events := []*plasmachainEventInfo{
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 0},
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 4},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 3},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 7},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 8, TxIdx: 4},
-		&plasmachainEventInfo{BlockNum: 8, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 9, TxIdx: 0},
-		&plasmachainEventInfo{BlockNum: 10, TxIdx: 5},
-		&plasmachainEventInfo{BlockNum: 1, TxIdx: 2},
+		{BlockNum: 5, TxIdx: 0},
+		{BlockNum: 5, TxIdx: 1},
+		{BlockNum: 5, TxIdx: 4},
+		{BlockNum: 3, TxIdx: 3},
+		{BlockNum: 3, TxIdx: 7},
+		{BlockNum: 3, TxIdx: 1},
+		{BlockNum: 8, TxIdx: 4},
+		{BlockNum: 8, TxIdx: 1},
+		{BlockNum: 9, TxIdx: 0},
+		{BlockNum: 10, TxIdx: 5},
+		{BlockNum: 1, TxIdx: 2},
 	}
 	sortedEvents := []*plasmachainEventInfo{
-		&plasmachainEventInfo{BlockNum: 1, TxIdx: 2},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 3},
-		&plasmachainEventInfo{BlockNum: 3, TxIdx: 7},
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 0},
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 5, TxIdx: 4},
-		&plasmachainEventInfo{BlockNum: 8, TxIdx: 1},
-		&plasmachainEventInfo{BlockNum: 8, TxIdx: 4},
-		&plasmachainEventInfo{BlockNum: 9, TxIdx: 0},
-		&plasmachainEventInfo{BlockNum: 10, TxIdx: 5},
+		{BlockNum: 1, TxIdx: 2},
+		{BlockNum: 3, TxIdx: 1},
+		{BlockNum: 3, TxIdx: 3},
+		{BlockNum: 3, TxIdx: 7},
+		{BlockNum: 5, TxIdx: 0},
+		{BlockNum: 5, TxIdx: 1},
+		{BlockNum: 5, TxIdx: 4},
+		{BlockNum: 8, TxIdx: 1},
+		{BlockNum: 8, TxIdx: 4},
+		{BlockNum: 9, TxIdx: 0},
+		{BlockNum: 10, TxIdx: 5},
 	}
 	sortPlasmachainEvents(events)
 	require.EqualValues(t, sortedEvents, events, "wrong sort order")

@@ -250,19 +250,24 @@ message UnitRewardItem {
     int32 count = 2;
 }
 
-message ExperienceAction{
+message ExperienceAction {
     ExperienceActionType.Enum action = 1;
     int32 experience = 2;
 }
 
-message GamechainState {
-    // The last plasmachain block number pulling by oracle
-    uint64 last_plasmachain_block_num = 1;
-    // the plasmachain reward contract version 
-    uint64 reward_contract_version = 2;
-    // the number of card packs reward when players finish tutorial
+message ContractState {
+    // Last Plasmachain block succesfully processed by oracle
+    uint64 lastPlasmachainBlockNumber = 1;
+    reserved 2; //uint64 reward_contract_version = 2;
     reserved 3; // uint64 tutorial_reward_amount = 3;
     reserved 4; // default_player_defense
+    BigUInt currentFiatPurchaseTxId = 5;
+}
+
+message ContractConfiguration {
+    // Plasmachain FiatPurchase contract version
+    uint64 fiatPurchaseContractVersion = 1;
+    BigUInt initialFiatPurchaseTxId = 2;
 }
 
 //////////// Match Making /////////////
@@ -408,9 +413,6 @@ message DebugCheatsConfiguration {
 
     bool skipMulligan = 9;
 }
-
-
-
 
 // Game Modes
 

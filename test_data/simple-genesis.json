@@ -1,0 +1,2668 @@
+{
+  "contracts": [
+    {
+      "vm": "plugin",
+      "format": "plugin",
+      "name": "ZombieBattleground",
+      "location": "zombiebattleground:1.0.0",
+      "init": {
+        "defaultDecks": [
+          {
+            "name": "Default",
+            "overlordId": "1",
+            "cards": [
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 4
+                }
+              },
+              {
+                "amount": "2",
+                "cardKey": {
+                  "mouldId": 43
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 48
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 3
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 2
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 1
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 7
+                }
+              },
+              {
+                "amount": "4",
+                "cardKey": {
+                  "mouldId": 5
+                }
+              }
+            ]
+          }
+        ],
+        "defaultCollection": [
+          {
+            "amount": "4",
+            "cardKey": {
+              "mouldId": 90
+            }
+          },
+          {
+            "amount": "3",
+            "cardKey": {
+              "mouldId": 91
+            }
+          },
+          {
+            "amount": "5",
+            "cardKey": {
+              "mouldId": 96
+            }
+          },
+          {
+            "amount": "4",
+            "cardKey": {
+              "mouldId": 3
+            }
+          },
+          {
+            "amount": "3",
+            "cardKey": {
+              "mouldId": 2
+            }
+          },
+          {
+            "amount": "5",
+            "cardKey": {
+              "mouldId": 92
+            }
+          },
+          {
+            "amount": "4",
+            "cardKey": {
+              "mouldId": 1
+            }
+          },
+          {
+            "amount": "3",
+            "cardKey": {
+              "mouldId": 93
+            }
+          },
+          {
+            "amount": "5",
+            "cardKey": {
+              "mouldId": 7
+            }
+          },
+          {
+            "amount": "4",
+            "cardKey": {
+              "mouldId": 94
+            }
+          },
+          {
+            "amount": "3",
+            "cardKey": {
+              "mouldId": 95
+            }
+          },
+          {
+            "amount": "5",
+            "cardKey": {
+              "mouldId": 5
+            }
+          }
+        ],
+        "cards": [
+          {
+            "cardKey": {
+              "mouldId": 1
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Whizpar",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 2
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Wheezy",
+            "damage": 1,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 3
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Soothsayer",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 4
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Fumez",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 5
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Pushhh",
+            "damage": 3,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 6
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Ztormmcaller",
+            "damage": 3,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 7
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Bouncer",
+            "damage": 2,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 8
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Gaz",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 9
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Draft",
+            "damage": 4,
+            "defense": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 10
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "MonZoon",
+            "damage": 6,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 11
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Zeuz",
+            "damage": 5,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 12
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Ztorm Shield",
+            "damage": 4,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 13
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Rockky",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 14
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Bolderr",
+            "damage": 1,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 15
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Blocker",
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 16
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Slab",
+            "damage": 3,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 17
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Pit",
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 18
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Golem",
+            "damage": 2,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 19
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Walley",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 20
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Tiny",
+            "defense": 7,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 21
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Spiker",
+            "damage": 2,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 212
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Crater",
+            "damage": 1,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 22
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Earthshaker",
+            "damage": 4,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 23
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "IgneouZ",
+            "damage": 3,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 24
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Pyrite",
+            "defense": 8,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 25
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Mountain",
+            "damage": 6,
+            "defense": 8,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 26
+            },
+            "kind": "CREATURE",
+            "faction": "EARTH",
+            "name": "Gaea",
+            "damage": 4,
+            "defense": 7,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 27
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Pyromaz",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 28
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Quazi",
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 29
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Burrrnn",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 30
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Cynderman",
+            "damage": 2,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 31
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Werezomb",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 32
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Modo",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 33
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Fire-Maw",
+            "damage": 3,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 34
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Zhampion",
+            "damage": 5,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 35
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Gargantua",
+            "damage": 6,
+            "defense": 8,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 36
+            },
+            "kind": "CREATURE",
+            "faction": "FIRE",
+            "name": "Cerberus",
+            "damage": 7,
+            "defense": 8,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 37
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Chainsaw",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 38
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Goo Beaker",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 39
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Stapler",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 40
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Nail Bomb",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 41
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Goo Bottles",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 42
+            },
+            "kind": "SPELL",
+            "faction": "ITEM",
+            "name": "Fresh Meat",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 43
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Azuraz",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 44
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Bloomer",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 45
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Zap",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 46
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Shroom",
+            "damage": 4,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 47
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Vindrom",
+            "damage": 2,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 48
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Puffer",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 49
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Sapper",
+            "damage": 2,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 50
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Keeper",
+            "damage": 1,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 51
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Cactuz",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 52
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Shammann",
+            "damage": 5,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 53
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Z-Virus",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 54
+            },
+            "kind": "CREATURE",
+            "faction": "LIFE",
+            "name": "Yggdrazil",
+            "damage": 4,
+            "defense": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 55
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Zombie 1/1",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 56
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Zombie 2/2",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 57
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Zombie Feral",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 58
+            },
+            "kind": "SPELL",
+            "faction": "OTHERS",
+            "name": "Tainted Goo",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 59
+            },
+            "kind": "SPELL",
+            "faction": "OTHERS",
+            "name": "Corrupted Goo",
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 60
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Rainz",
+            "damage": 3,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 61
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Blight",
+            "damage": 5,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 62
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Zteroid",
+            "damage": 5,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 63
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "BurZt",
+            "damage": 4,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 64
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Vortex",
+            "damage": 6,
+            "defense": 7,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 65
+            },
+            "kind": "CREATURE",
+            "faction": "OTHERS",
+            "name": "Defender",
+            "damage": 4,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 66
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Poizom",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 67
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Hazmaz",
+            "damage": 1,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 68
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Zpitter",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 69
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Zeptic",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 70
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Ghoul",
+            "damage": 3,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 71
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Zeeter",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 72
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Hazzard",
+            "damage": 4,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 73
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Zludge",
+            "damage": 4,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 74
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Ectoplasm",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 75
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Cherno-bill",
+            "damage": 7,
+            "defense": 9,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 76
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "GooZilla",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 77
+            },
+            "kind": "CREATURE",
+            "faction": "TOXIC",
+            "name": "Zlopper",
+            "damage": 3,
+            "defense": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 78
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Izze",
+            "damage": 1,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 79
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Znowman",
+            "defense": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 80
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Ozmoziz",
+            "damage": 1,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 81
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Jetter",
+            "damage": 3,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 82
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Freezzee",
+            "damage": 2,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 83
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Geyzer",
+            "damage": 2,
+            "defense": 3,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 84
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Blizzard",
+            "damage": 3,
+            "defense": 4,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 85
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Froztbite",
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 86
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Zhatterer",
+            "damage": 1,
+            "defense": 2,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 87
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Maelstrom",
+            "damage": 5,
+            "defense": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 88
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Tzunamy",
+            "damage": 6,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 89
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Germs",
+            "damage": 6,
+            "defense": 6,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 90
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Banshee",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 91
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Breezee",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 92
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Whiffer",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 93
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Zhocker",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 94
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Dragger",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 95
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Gust",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 96
+            },
+            "kind": "CREATURE",
+            "faction": "AIR",
+            "name": "Buffer",
+            "damage": 2,
+            "defense": 1,
+            "pictureTransform": {
+              "position": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          },
+          {
+            "cardKey": {
+              "mouldId": 135
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Vortex",
+            "description": "<b>Entry:</b> Put 2 ally Frozens into play if you have less Def than the enemy.",
+            "flavorText": "ERR, never really be satisfied...",
+            "picture": "135",
+            "rank": "GENERAL",
+            "type": "WALKER",
+            "frame": "",
+            "damage": 8,
+            "defense": 8,
+            "cost": 8,
+            "pictureTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "scale": {
+                "x": 0.6,
+                "y": 0.6,
+                "z": 0.6
+              }
+            },
+            "abilities": [
+              {
+                "ability": "SUMMON",
+                "activity": "PASSIVE",
+                "trigger": "ENTRY",
+                "targets": [
+                  "PLAYER"
+                ],
+                "stat": "UNDEFINED",
+                "faction": "NONE",
+                "effect": "NONE",
+                "attackRestriction": "ANY",
+                "targetCardType": "Undefined",
+                "targetUnitSpecialStatus": "NONE",
+                "targetUnitType": "Undefined",
+                "value": 0,
+                "damage": 0,
+                "defense": 0,
+                "name": "Frozen",
+                "turns": 0,
+                "count": 2,
+                "delay": 0,
+                "visualEffectsToPlay": [
+                ],
+                "gameMechanicDescription": "ENTRY",
+                "targetFaction": "NONE",
+                "subTrigger": "LessDefThanInOpponent",
+                "choosableAbilities": [
+                ],
+                "defense2": 0,
+                "cost": 0,
+                "targetCardKind": "UNDEFINED",
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
+              }
+            ],
+            "uniqueAnimation": "None",
+            "hidden": false
+          },
+          {
+            "cardKey": {
+              "mouldId": 136
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Igloo",
+            "description": "<b>Entry:</b> Give an ally zombie +3/+2.",
+            "flavorText": "The cold never bothered him anyway",
+            "picture": "136",
+            "rank": "OFFICER",
+            "type": "WALKER",
+            "frame": "",
+            "damage": 5,
+            "defense": 5,
+            "cost": 5,
+            "pictureTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "scale": {
+                "x": 0.6,
+                "y": 0.6,
+                "z": 0.6
+              }
+            },
+            "abilities": [
+              {
+                "ability": "CHANGE_STAT",
+                "activity": "ACTIVE",
+                "trigger": "ENTRY",
+                "targets": [
+                  "PLAYER_CARD"
+                ],
+                "stat": "UNDEFINED",
+                "faction": "NONE",
+                "effect": "NONE",
+                "attackRestriction": "ANY",
+                "targetCardType": "Undefined",
+                "targetUnitSpecialStatus": "NONE",
+                "targetUnitType": "Undefined",
+                "value": 0,
+                "damage": 3,
+                "defense": 2,
+                "name": "",
+                "turns": 0,
+                "count": 0,
+                "delay": 0,
+                "visualEffectsToPlay": [
+                ],
+                "gameMechanicDescription": "ENTRY",
+                "targetFaction": "NONE",
+                "subTrigger": "None",
+                "choosableAbilities": [
+                ],
+                "defense2": 0,
+                "cost": 0,
+                "targetCardKind": "UNDEFINED",
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
+              }
+            ],
+            "uniqueAnimation": "None",
+            "hidden": false
+          },
+          {
+            "cardKey": {
+              "mouldId": 133
+            },
+            "kind": "CREATURE",
+            "faction": "WATER",
+            "name": "Znowy",
+            "description": "<b>Entry:</b> Give an ally zombie +1/+2.",
+            "flavorText": "eeeehhehehehe",
+            "picture": "133",
+            "rank": "MINION",
+            "type": "WALKER",
+            "frame": "",
+            "damage": 1,
+            "defense": 1,
+            "cost": 1,
+            "pictureTransform": {
+              "position": {
+                "x": -0.5,
+                "y": 0,
+                "z": 0
+              },
+              "scale": {
+                "x": 0.6,
+                "y": 0.6,
+                "z": 0.6
+              }
+            },
+            "abilities": [
+              {
+                "ability": "CHANGE_STAT",
+                "activity": "ACTIVE",
+                "trigger": "ENTRY",
+                "targets": [
+                  "PLAYER_CARD"
+                ],
+                "stat": "UNDEFINED",
+                "faction": "NONE",
+                "effect": "NONE",
+                "attackRestriction": "ANY",
+                "targetCardType": "Undefined",
+                "targetUnitSpecialStatus": "NONE",
+                "targetUnitType": "Undefined",
+                "value": 0,
+                "damage": 1,
+                "defense": 2,
+                "name": "",
+                "turns": 0,
+                "count": 0,
+                "delay": 0,
+                "visualEffectsToPlay": [
+                ],
+                "gameMechanicDescription": "ENTRY",
+                "targetFaction": "NONE",
+                "subTrigger": "None",
+                "choosableAbilities": [
+                ],
+                "defense2": 0,
+                "cost": 0,
+                "targetCardKind": "UNDEFINED",
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
+              }
+            ],
+            "uniqueAnimation": "None",
+            "hidden": false
+          }
+        ],
+        "overlords": [
+          {
+            "initialDefense": 50,
+            "skills": [
+              {
+                "title": "Attack",
+                "skill": "ICE_BOLT",
+                "skillTargets": [
+                  "ALL_CARDS",
+                  "PLAYER_CARD"
+                ],
+                "value": 1
+              }
+            ]
+          },
+          {
+            "id": "1",
+            "initialDefense": 50,
+            "skills": [
+              {
+                "title": "Deffence",
+                "skill": "BLIZZARD",
+                "skillTargets": [
+                  "PLAYER",
+                  "OPPONENT_CARD"
+                ],
+                "value": 2
+              }
+            ]
+          }
+        ],
+        "aiDecks": [
+          {
+            "deck": {
+              "id": "1",
+              "name": "AI Decks",
+              "overlordId": "1",
+              "cards": [
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 90
+                  }
+                },
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 91
+                  }
+                },
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 96
+                  }
+                },
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 3
+                  }
+                },
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 2
+                  }
+                },
+                {
+                  "amount": "2",
+                  "cardKey": {
+                    "mouldId": 92
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 1
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 93
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 7
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 94
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 95
+                  }
+                },
+                {
+                  "amount": "1",
+                  "cardKey": {
+                    "mouldId": 5
+                  }
+                }
+              ]
+            },
+            "type": "MIXED_AI"
+          }
+        ],
+        "overlordLeveling": {
+          "rewards": [
+            {
+              "level": 2,
+              "unitReward": {
+                "rank": "MINION",
+                "count": 1
+              }
+            },
+            {
+              "level": 4,
+              "skillReward": {
+                "skillIndex": 0
+              }
+            },
+            {
+              "level": 6,
+              "unitReward": {
+                "rank": "MINION",
+                "count": 2
+              }
+            },
+            {
+              "level": 8,
+              "skillReward": {
+                "skillIndex": 1
+              }
+            },
+            {
+              "level": 10,
+              "unitReward": {
+                "rank": "OFFICER",
+                "count": 1
+              }
+            },
+            {
+              "level": 12,
+              "skillReward": {
+                "skillIndex": 2
+              }
+            },
+            {
+              "level": 14,
+              "unitReward": {
+                "rank": "OFFICER",
+                "count": 2
+              }
+            },
+            {
+              "level": 16,
+              "skillReward": {
+                "skillIndex": 3
+              }
+            },
+            {
+              "level": 18,
+              "unitReward": {
+                "rank": "COMMANDER",
+                "count": 1
+              }
+            },
+            {
+              "level": 20,
+              "skillReward": {
+                "skillIndex": 4
+              }
+            }
+          ],
+          "experienceActions": [
+            {
+              "action": "KillOverlord",
+              "experience": 100
+            },
+            {
+              "action": "KillMinion",
+              "experience": 7
+            },
+            {
+              "action": "PlayCard",
+              "experience": 7
+            },
+            {
+              "action": "ActivateRankAbility",
+              "experience": 7
+            },
+            {
+              "action": "UseOverlordAbility",
+              "experience": 7
+            }
+          ],
+          "fixed": 100,
+          "experienceStep": 40,
+          "gooRewardStep": 10,
+          "maxLevel": 20
+        },
+        "version": "v1"
+      }
+    }
+  ]
+}

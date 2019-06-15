@@ -6,6 +6,12 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 import "github.com/loomnetwork/gamechain/types/zb/zb_data/zb_data.proto";
 
+message EmptyRequest {
+}
+
+message EmptyResponse {
+}
+
 message InitRequest {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
@@ -19,8 +25,7 @@ message InitRequest {
 }
 
 message UpdateOracleRequest {
-    Address new_oracle = 1;
-    Address old_oracle = 2;
+    Address newOracle = 1;
 }
 
 message UpdateInitRequest {
@@ -46,20 +51,23 @@ message GetContractBuildMetadataResponse {
     string build = 3;
 }
 
-message GetGamechainStateRequest {
+message GetContractConfigurationResponse {
+    ContractConfiguration configuration = 1;
 }
 
-message GetGamechainStateResponse {
-    GamechainState state = 1;
+message GetContractStateResponse {
+    ContractState state = 1;
 }
 
-message InitGamechainStateRequest {
-    Address oracle = 1;
+message UpdateContractConfigurationRequest {
+    bool setFiatPurchaseContractVersion = 1;
+    uint64 fiatPurchaseContractVersion = 2;
+    bool setInitialFiatPurchaseTxId = 3;
+    BigUInt initialFiatPurchaseTxId = 4;
 }
 
-message SetLastPlasmaBlockNumRequest {
-    uint64 last_block_num = 1;
-    Address oracle = 2;
+message SetLastPlasmaBlockNumberRequest {
+    uint64 lastPlasmachainBlockNumber = 1;
 }
 
 message GetCardListRequest {
@@ -381,7 +389,6 @@ message GameModeRequest {
     string version = 3;
     string address = 4;
     GameModeType game_mode_type = 5;
-    string oracle = 6;
 }
 
 message UpdateGameModeRequest {
@@ -391,12 +398,10 @@ message UpdateGameModeRequest {
     string version = 4;
     string address = 5;
     GameModeType game_mode_type = 6;
-    string oracle = 7;
 }
 
 message DeleteGameModeRequest {
     string ID = 1;
-    string oracle = 2;
 }
 
 message GetGameModeRequest {
@@ -428,14 +433,8 @@ message StaticCallCustomGameModeFunctionResponse {
 message DebugCreateBoosterPackReceiptRequest {
     BigUInt userId = 1;
     int32 boosterAmount = 2;
-    BigUInt relativeTxId = 3;
 }
 
 message DebugCreateBoosterPackReceiptResponse {
     string transactionResponseJson = 1;
-}
-
-message SetRewardContractVersionRequest {
-    uint64 version = 1;
-    Address oracle = 2;
 }

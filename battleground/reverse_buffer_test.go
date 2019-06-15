@@ -2,7 +2,7 @@ package battleground
 
 import (
 	"encoding/binary"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 	"io"
 	"testing"
 )

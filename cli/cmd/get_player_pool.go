@@ -5,7 +5,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -40,11 +39,10 @@ var getPlayerPoolCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(pool)
+			err := printProtoMessageAsJSONToStdout(pool)
 			if err != nil {
 				return err
 			}
-			fmt.Println(output)
 		default:
 			fmt.Printf("Pool: %+v\n", pool)
 			fmt.Printf("Players:\n")

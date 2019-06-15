@@ -9,7 +9,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
@@ -25,7 +25,7 @@ func TestAbilityDealDamageToThisAndAdjacentUnits(t *testing.T) {
 
 	deck0 := &zb_data.Deck{
 		Id:         0,
-		OverlordId: 2,
+		OverlordId: 1,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 2},

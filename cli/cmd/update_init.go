@@ -60,7 +60,7 @@ var updateInitCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("Data updated successfully\n")
+			fmt.Println("success")
 		}
 
 		return nil

@@ -9,18 +9,19 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
+	"github.com/loomnetwork/go-loom/common"
+	"github.com/loomnetwork/go-loom/types"
 	"github.com/pkg/errors"
 	"io/ioutil"
+	"math/big"
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	latypes "github.com/loomnetwork/loomauth/types"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 var initRequest = zb_calls.InitRequest {
@@ -45,7 +46,7 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
+	err := readJsonFileToProtobuf("../test_data/simple-init.json", updateInitRequest.InitData)
 	assert.Nil(t, err)
 
 	initRequest = zb_calls.InitRequest{
@@ -77,6 +78,51 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest, t *testing.T) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	assert.Nil(t, err)
+}
+
+func TestContractConfigurationAndState(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	t.Run("GetContractState not set yet and should fail", func(t *testing.T) {
+		_, err := c.GetContractState(ctx, &zb_calls.EmptyRequest{})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("GetContractConfiguration not set yet and should fail", func(t *testing.T) {
+		_, err := c.GetContractConfiguration(ctx, &zb_calls.EmptyRequest{})
+		assert.NotNil(t, err)
+	})
+
+	t.Run("UpdateContractConfiguration should succeed", func(t *testing.T) {
+		request := zb_calls.UpdateContractConfigurationRequest{
+			SetFiatPurchaseContractVersion: true,
+			FiatPurchaseContractVersion:    373,
+			SetInitialFiatPurchaseTxId:     true,
+			InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+		}
+
+		err := c.UpdateContractConfiguration(ctx, &request)
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetContractState should succeed", func(t *testing.T) {
+		response, err := c.GetContractState(ctx, &zb_calls.EmptyRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, int64(100), response.State.CurrentFiatPurchaseTxId.Value.Int.Int64())
+		assert.Equal(t, uint64(0), response.State.LastPlasmachainBlockNumber)
+	})
+
+	t.Run("GetContractConfiguration should succeed", func(t *testing.T) {
+		response, err := c.GetContractConfiguration(ctx, &zb_calls.EmptyRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, int64(100), response.Configuration.InitialFiatPurchaseTxId.Value.Int.Int64())
+		assert.Equal(t, uint64(373), response.Configuration.FiatPurchaseContractVersion)
+	})
 }
 
 func TestAccountOperations(t *testing.T) {
@@ -2370,7 +2416,7 @@ func TestAIDeckOperations(t *testing.T) {
 		{
 			Deck: &zb_data.Deck{
 				Id:         1,
-				OverlordId: 2,
+				OverlordId: 1,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
 					{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 2},
@@ -2403,7 +2449,7 @@ func TestAIDeckOperations(t *testing.T) {
 		{
 			Deck: &zb_data.Deck{
 				Id:         1,
-				OverlordId: 2,
+				OverlordId: 1,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
 					{CardKey: battleground_proto.CardKey{MouldId: -1}, Amount: 2},
@@ -2616,83 +2662,31 @@ func TestKeepAlive(t *testing.T) {
 	})
 }
 
-func TestRewardTutorialCompleted(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
-		UserId:  "loom1",
-		Version: "v1",
-	}, t)
-
-	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
-
-	// make sure we have the correct reward_contract_version and tutorial_reward_amount
-	resp, err := c.GetState(ctx, &zb_calls.GetGamechainStateRequest{})
-	assert.Nil(t, err)
-	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
-	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
-	var rewardTutorialCompletedResp *zb_calls.RewardTutorialCompletedResponse
-
-	// get reward on completing tutorial
-	t.Run("RewardTutorialCompleted", func(t *testing.T) {
-		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.Nil(t, err)
-		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x25d667d7a5afa5fc9cfacf67aeaf35bff6b3d54bf40e8b3b5a90fe86ce596732", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x02a59d7fd35f07738ac2931193b92e8f31941c15a123d07f0990c28a1fef2760", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
-	})
-
-	// send the correct request
-	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardTutorialClaimed(ctx, &zb_calls.ConfirmRewardTutorialClaimedRequest{})
-		assert.Nil(t, err)
-	})
-
-	// attempt to claim reward again should fail
-	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
-		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "reward already claimed")
-		assert.Nil(t, rewardTutorialCompletedResp)
-	})
-
-	// attempt to get reward again should fail
-	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "reward already claimed")
-		assert.Nil(t, resp)
-	})
-}
-
 func TestHashSignature(t *testing.T) {
-	privateKeyStr = "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
+	privateKeyStr := "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	verifySignResult, err := generateVerifyHash(5, 1, privateKey)
+	generator, err := NewReceiptGenerator(privateKey, 1)
 	assert.Nil(t, err)
-	assert.Equal(t, "0xe2689cd4a84e23ad2f564004f1c9013e9589d260bde6380aba3ca7e09e4df40c", verifySignResult.Hash)
-	assert.Equal(t, "0x0e729720a48e6164451792e657bd4c68c25c67884e8852790d0cf2fbe999f2bb2833d41711917583d70dacbb5c80206edafa3bc4bca079ceafbb2fc50af1c8fc1b", verifySignResult.Signature)
-}
+	verifySignResult, err := generator.generateEosVerifySignResult(
+		big.NewInt(5),
+		generator.gatewayPrivateKey,
+		3,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		big.NewInt(373),
+		generator.contractVersion)
 
-// createJwtToken creates a jwt token from a User model
-func createJwtToken(userID uint, secret string) (string, error) {
-	// create the token
-	claims := latypes.UserClaims{
-		UserID: userID,
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// sign and get the complete encoded token as string
-	return token.SignedString([]byte(secret))
+	assert.Nil(t, err)
+	assert.Equal(t, "0x4cc40300d439c52ca6bb577ac42d883fff58df81309c8a41d7a9f54a1641c110", verifySignResult.Hash)
+	assert.Equal(t, "0x6f27beb227b13842d994360d549f16242cfe474a147da9a391b80460cb3ec291047ee645a1a5c634287368b2d582a8f935ac3f0348840a71d9a015e8e6e7a1d11c", verifySignResult.Signature)
 }

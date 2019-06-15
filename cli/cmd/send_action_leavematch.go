@@ -49,7 +49,7 @@ var sendActionLeaveMatchCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("sent action leavematch successfully")
+			fmt.Println("sent action leavematch successfully")
 		}
 
 		return nil

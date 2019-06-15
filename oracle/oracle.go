@@ -10,7 +10,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
 	ltypes "github.com/loomnetwork/go-loom/types"
@@ -212,11 +212,15 @@ func (orc *Oracle) Run() {
 }
 
 func (orc *Oracle) pollPlasmaChain() error {
-	orc.logger.Info("polling Plasmachain")
+	orc.logger.Info("Start polling Plasmachain")
 	lastPlasmachainBlockNum, err := orc.gcGateway.LastPlasmaBlockNumber()
 	if err != nil {
+		orc.logger.Error("failed to obtain last Plasmachain block number from Gamechain", "err", err)
 		return err
 	}
+
+	orc.logger.Debug("got last Plasmachain block number from Gamechain", "lastPlasmachainBlockNum", lastPlasmachainBlockNum)
+
 	startBlock := lastPlasmachainBlockNum + 1
 	if orc.startBlock > startBlock {
 		startBlock = orc.startBlock
@@ -225,16 +229,18 @@ func (orc *Oracle) pollPlasmaChain() error {
 	// TODO: limit max block range per batch
 	latestBlock, err := orc.getLatestEthBlockNumber()
 	if err != nil {
-		orc.logger.Error("failed to obtain latest Plasmachain block number from Gamechain", "err", err)
+		orc.logger.Error("failed to obtain latest Plasmachain block number", "err", err)
 		return err
 	}
+
+	orc.logger.Debug("latest Plasmachain block number", "latestBlock", latestBlock)
 
 	if latestBlock < startBlock {
 		// Wait for Plasmachain to produce a new block...
 		return nil
 	}
 
-	orc.logger.Info("fetching blocks", "latestBlock", startBlock, "latestBlock", latestBlock)
+	orc.logger.Info("fetching blocks", "startBlock", startBlock, "latestBlock", latestBlock)
 	events, err := orc.fetchEvents(startBlock, latestBlock)
 	if err != nil {
 		orc.logger.Error("failed to fetch events from Plasmachain", "err", err)
@@ -242,6 +248,7 @@ func (orc *Oracle) pollPlasmaChain() error {
 	}
 
 	if len(events) > 0 {
+		orc.logger.Debug("fetched events", "len(events)", len(events))
 		orc.numPlasmachainEventsFetched = orc.numPlasmachainEventsFetched + uint64(len(events))
 		orc.updateStatus()
 

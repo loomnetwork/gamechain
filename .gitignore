@@ -42,8 +42,10 @@
 /chaindata
 /contracts
 
+*.log
 /bin
 protoc-gen-gogo
+abigen
 genesis.json
 loom
 replays/*

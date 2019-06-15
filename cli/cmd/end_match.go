@@ -48,7 +48,7 @@ var endMatchCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("end match %v successfully", req.MatchId)
+			fmt.Printf("end match %v successfully\n", req.MatchId)
 		}
 
 		return nil

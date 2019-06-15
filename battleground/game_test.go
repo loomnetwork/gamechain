@@ -12,7 +12,7 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 var (
@@ -41,12 +41,12 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 4, len(gp.State.PlayerStates[0].CardsInHand))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInPlay))
-	assert.Equal(t, 7, len(gp.State.PlayerStates[0].CardsInDeck))
+	assert.Equal(t, 26, len(gp.State.PlayerStates[0].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInGraveyard))
 
 	assert.Equal(t, 3, len(gp.State.PlayerStates[1].CardsInHand))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInPlay))
-	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
+	assert.Equal(t, 27, len(gp.State.PlayerStates[1].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
 	// add more action
@@ -71,12 +71,12 @@ func TestGameStateFunc(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 2, len(gp.State.PlayerStates[0].CardsInHand))
 	assert.Equal(t, 2, len(gp.State.PlayerStates[0].CardsInPlay))
-	assert.Equal(t, 7, len(gp.State.PlayerStates[0].CardsInDeck))
+	assert.Equal(t, 26, len(gp.State.PlayerStates[0].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[0].CardsInGraveyard))
 
 	assert.Equal(t, 3, len(gp.State.PlayerStates[1].CardsInHand))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInPlay))
-	assert.Equal(t, 8, len(gp.State.PlayerStates[1].CardsInDeck))
+	assert.Equal(t, 27, len(gp.State.PlayerStates[1].CardsInDeck))
 	assert.Equal(t, 0, len(gp.State.PlayerStates[1].CardsInGraveyard))
 
 	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player1})
@@ -86,7 +86,7 @@ func TestGameStateFunc(t *testing.T) {
 		PlayerId:   player2,
 		Action: &zb_data.PlayerAction_CardPlay{
 			CardPlay: &zb_data.PlayerActionCardPlay{
-				Card: &zb_data.InstanceId{Id: 13},
+				Card: &zb_data.InstanceId{Id: 32},
 			},
 		},
 	})
@@ -94,20 +94,6 @@ func TestGameStateFunc(t *testing.T) {
 	err = gp.AddAction(&zb_data.PlayerAction{ActionType: zb_enums.PlayerActionType_EndTurn, PlayerId: player2})
 	assert.Nil(t, err)
 
-	// card attack
-	err = gp.AddAction(&zb_data.PlayerAction{
-		ActionType: zb_enums.PlayerActionType_CardAttack,
-		PlayerId:   player1,
-		Action: &zb_data.PlayerAction_CardAttack{
-			CardAttack: &zb_data.PlayerActionCardAttack{
-				Attacker: &zb_data.InstanceId{Id: 2},
-				Target: &zb_data.Unit{
-					InstanceId: &zb_data.InstanceId{Id: 13},
-				},
-			},
-		},
-	})
-	assert.Nil(t, err)
 	// card ability used
 	err = gp.AddAction(&zb_data.PlayerAction{
 		ActionType: zb_enums.PlayerActionType_CardAbilityUsed,
@@ -117,8 +103,22 @@ func TestGameStateFunc(t *testing.T) {
 				Card: &zb_data.InstanceId{Id: 3},
 				Targets: []*zb_data.Unit{
 					&zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 13},
+						InstanceId: &zb_data.InstanceId{Id: 32},
 					},
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+	// card attack
+	err = gp.AddAction(&zb_data.PlayerAction{
+		ActionType: zb_enums.PlayerActionType_CardAttack,
+		PlayerId:   player1,
+		Action: &zb_data.PlayerAction_CardAttack{
+			CardAttack: &zb_data.PlayerActionCardAttack{
+				Attacker: &zb_data.InstanceId{Id: 2},
+				Target: &zb_data.Unit{
+					InstanceId: &zb_data.InstanceId{Id: 32},
 				},
 			},
 		},
@@ -238,9 +238,10 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 			},
 		},
 	})
+
 	assert.Nil(t, err)
 	for _, card := range player1Mulligan {
-		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[0].CardsInHand)
+		_, _, found := findCardInCardListByInstanceId(card.InstanceId, gp.State.PlayerStates[0].CardsInHand)
 		assert.False(t, found, "mulliganed card should not be in player hand")
 	}
 	assert.True(t, len(gp.State.PlayerStates[0].CardsInHand) >= 3, "cards in hand should still be >= 3")
@@ -262,7 +263,7 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	for _, card := range player2Mulligan {
-		_, _, found := findCardInCardListByName(card, gp.State.PlayerStates[1].CardsInHand)
+		_, _, found := findCardInCardListByInstanceId(card.InstanceId, gp.State.PlayerStates[1].CardsInHand)
 		assert.False(t, found, "mulliganed card should not be in player hand")
 	}
 	assert.True(t, len(gp.State.PlayerStates[1].CardsInHand) >= 3, "cards in hand should still be >= 3")
@@ -378,7 +379,7 @@ func TestCardAttack(t *testing.T) {
 
 	deck0 := &zb_data.Deck{
 		Id:     0,
-		OverlordId: 2,
+		OverlordId: 1,
 		Name:   "Default",
 		Cards: []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 2},

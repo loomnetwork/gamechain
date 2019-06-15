@@ -2502,7 +2502,9 @@
         "name": "custom deck",
         "cards": [
           {
-            "cardName": "Ghoul",
+            "cardKey": {
+              "mouldId": 70
+            },
             "amount": "30"
           }
         ]
@@ -4209,7 +4211,9 @@
         "name": "custom deck",
         "cards": [
           {
-            "cardName": "Poizom",
+            "cardKey": {
+              "mouldId": 66
+            },
             "amount": "30"
           }
         ]

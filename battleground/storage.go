@@ -18,14 +18,14 @@ import (
 )
 
 var (
-	cardPrefix                = []byte("card")
-	userPrefix                = []byte("user")
-	overlordsPrefix           = []byte("heroes")
-	collectionPrefix          = []byte("collection")
-	decksPrefix               = []byte("decks")
-	matchesPrefix             = []byte("matches")
-	pendingMatchesPrefix      = []byte("pending-matches")
-	matchMakingPrefix         = []byte("matchmaking")
+	cardPrefix           = []byte("card")
+	userPrefix           = []byte("user")
+	overlordsPrefix      = []byte("heroes")
+	collectionPrefix     = []byte("collection")
+	decksPrefix          = []byte("decks")
+	matchesPrefix        = []byte("matches")
+	pendingMatchesPrefix = []byte("pending-matches")
+	matchMakingPrefix    = []byte("matchmaking")
 
 	cardListKey                 = []byte("cardlist")
 	overlordPrototypeListKey    = []byte("overlord-prototype-list")
@@ -38,7 +38,8 @@ var (
 	taggedPlayerPoolKey         = []byte("tagged-playerpool")
 	oracleKey                   = []byte("oracle-key")
 	aiDecksKey                  = []byte("ai-decks")
-	stateKey                    = []byte("state")
+	contractStateKey            = []byte("contract-state")
+	contractConfigurationKey    = []byte("contract-configuration")
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
 	overlordLevelingDataKey     = []byte("overlord-leveling")
@@ -114,19 +115,36 @@ func setUserIdAddress(ctx contract.Context, userId string, address loom.Address)
 	return nil
 }
 
-func saveState(ctx contract.Context, state *zb_data.GamechainState) error {
-	if err := ctx.Set(stateKey, state); err != nil {
+func saveContractState(ctx contract.Context, state *zb_data.ContractState) error {
+	if err := ctx.Set(contractStateKey, state); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadState(ctx contract.StaticContext) (*zb_data.GamechainState, error) {
-	var m zb_data.GamechainState
-	err := ctx.Get(stateKey, &m)
+func loadContractState(ctx contract.StaticContext) (*zb_data.ContractState, error) {
+	var m zb_data.ContractState
+	err := ctx.Get(contractStateKey, &m)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get contract state")
 	}
+	return &m, nil
+}
+
+func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConfiguration) error {
+	if err := ctx.Set(contractConfigurationKey, state); err != nil {
+		return err
+	}
+	return nil
+}
+
+func loadContractConfiguration(ctx contract.StaticContext) (*zb_data.ContractConfiguration, error) {
+	var m zb_data.ContractConfiguration
+	err := ctx.Get(contractConfigurationKey, &m)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get contract configuration")
+	}
+
 	return &m, nil
 }
 
@@ -304,16 +322,16 @@ func getOverlordsUserDataFromOverlordUserInstances(overlordUserInstances []*zb_d
 }
 
 /*
-func saveState(ctx contract.Context, state *zb.GamechainState) error {
-	if err := ctx.Set(stateKey, state); err != nil {
+func saveContractState(ctx contract.Context, state *zb.ContractState) error {
+	if err := ctx.Set(contractStateKey, state); err != nil {
 		return err
 	}
 	return nil
 }
 
-func loadState(ctx contract.StaticContext) (*zb.GamechainState, error) {
-	var m zb.GamechainState
-	err := ctx.Get(stateKey, &m)
+func loadContractState(ctx contract.StaticContext) (*zb.ContractState, error) {
+	var m zb.ContractState
+	err := ctx.Get(contractStateKey, &m)
 	if err != nil {
 		return nil, err
 	}
@@ -858,15 +876,6 @@ func getCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardLi
 	}
 
 	return &cardList, nil
-}
-
-func getCardByName(cardList *zb_data.CardList, cardName string) (*zb_data.Card, error) {
-	for _, card := range cardList.Cards {
-		if card.Name == cardName {
-			return card, nil
-		}
-	}
-	return nil, fmt.Errorf("card with name %s not found in card library", cardName)
 }
 
 func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.CardKey) (*zb_data.Card, error) {

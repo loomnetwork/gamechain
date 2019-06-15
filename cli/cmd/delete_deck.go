@@ -41,7 +41,7 @@ var deleteDeckCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("deck deleted successfully")
+			fmt.Println("deck deleted successfully")
 		}
 
 		return nil
