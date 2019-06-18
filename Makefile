@@ -22,6 +22,8 @@ build-ext: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
+oracle: bin/gcoracle
+
 tools: bin/zb-enum-gen bin/zb-console-game
 
 gamechain-logger: proto bin/gamechain-logger
@@ -141,7 +143,7 @@ abigen:
 
 oracle-abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
-	./abigen --abi oracle/abi/card_faucet.abi --pkg ethcontract --type CardFaucet --out oracle/ethcontract/card_faucet.go
+	./abigen --abi oracle/abi/ZBGCardABI.json --pkg ethcontract --type ZBGCard --out oracle/ethcontract/zbgcard.go
 
 test:
 	#TODO fix go vet in tests

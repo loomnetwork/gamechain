@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -2182,14 +2183,50 @@ func removeNotification(notifications []*zb_data.Notification, id int32) ([]*zb_
 	return nil, fmt.Errorf("notification with id %d not found", id)
 }
 
+func (z *ZombieBattleground) handleCardAmountChange(
+	addressToCardAmountsChangeMap map[string]map[battleground_proto.CardKey]int,
+	from common.LocalAddress,
+	to common.LocalAddress,
+	cardKey battleground_proto.CardKey,
+	amount uint,
+	) error {
+	fromHex := hex.EncodeToString(from)
+	toHex := hex.EncodeToString(to)
+
+	fromCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[fromHex]
+	if !exists {
+		fromCardAmountsChangeMap = map[battleground_proto.CardKey]int{}
+		addressToCardAmountsChangeMap[fromHex] = fromCardAmountsChangeMap
+	}
+
+	toCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[toHex]
+	if !exists {
+		toCardAmountsChangeMap = map[battleground_proto.CardKey]int{}
+		addressToCardAmountsChangeMap[toHex] = toCardAmountsChangeMap
+	}
+
+	fromAmountValue, _ := fromCardAmountsChangeMap[cardKey]
+	toAmountValue, _ := toCardAmountsChangeMap[cardKey]
+
+	fromAmountValue = fromAmountValue - int(amount)
+	toAmountValue = toAmountValue + int(amount)
+
+	fromCardAmountsChangeMap[cardKey] = fromAmountValue
+	toCardAmountsChangeMap[cardKey] = toAmountValue
+
+	return nil
+}
+
 func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
 	state, err := loadContractState(ctx)
 	if err != nil {
 		return err
 	}
 
-	blockCount := 0           // number of blocks that were actually processed in this batch
+	eventCount := 0           // number of blocks that were actually processed in this batch
 	lastEthBlock := uint64(0) // the last block processed in this batch
+
+	addressToCardAmountsChangeMap := map[string]map[battleground_proto.CardKey]int{}
 
 	for _, ev := range req.Events {
 		// Events in the batch are expected to be ordered by block, so a batch should contain
@@ -2208,7 +2245,57 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		}
 
 		switch payload := ev.Payload.(type) {
-		case *orctype.PlasmachainEvent_Card:
+		case *orctype.PlasmachainEvent_Transfer:
+			ctx.Logger().Info("got Transfer event")
+			err := z.handleCardAmountChange(
+				addressToCardAmountsChangeMap,
+				payload.Transfer.From.Local,
+				payload.Transfer.To.Local,
+				cardKeyFromCardTokenId(payload.Transfer.TokenId.Value.Int64()),
+				1,
+			)
+
+			if err != nil {
+				err = errors.Wrap(err, "error handling Transfer event")
+				ctx.Logger().Error(err.Error())
+				return err
+			}
+		case *orctype.PlasmachainEvent_TransferWithQuantity:
+			ctx.Logger().Debug("got TransferWithQuantity event")
+			err := z.handleCardAmountChange(
+				addressToCardAmountsChangeMap,
+				payload.TransferWithQuantity.From.Local,
+				payload.TransferWithQuantity.To.Local,
+				cardKeyFromCardTokenId(payload.TransferWithQuantity.TokenId.Value.Int64()),
+				uint(payload.TransferWithQuantity.Amount.Value.Uint64()),
+			)
+
+			if err != nil {
+				err = errors.Wrap(err, "error handling TransferWithQuantity event")
+				ctx.Logger().Error(err.Error())
+				return err
+			}
+		case *orctype.PlasmachainEvent_BatchTransfer:
+			ctx.Logger().Info("got TransferWithQuantity event")
+
+			for index, cardTokenId := range payload.BatchTransfer.TokenIds {
+				amount := payload.BatchTransfer.Amounts[index]
+				err := z.handleCardAmountChange(
+					addressToCardAmountsChangeMap,
+					payload.BatchTransfer.From.Local,
+					payload.BatchTransfer.To.Local,
+					cardKeyFromCardTokenId(cardTokenId.Value.Int64()),
+					uint(amount.Value.Uint64()),
+				)
+
+				if err != nil {
+					err = errors.Wrap(err, "error handling TransferWithQuantity event")
+					ctx.Logger().Error(err.Error())
+					return err
+				}
+			}
+
+		/*case *orctype.PlasmachainEvent_Card:
 			if err := validateGeneratedCard(payload.Card); err != nil {
 				return err
 			}
@@ -2220,6 +2307,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 				ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
 				return err
 			}
+			*/
 		case nil:
 			ctx.Logger().Error("Oracle missing event payload")
 			continue
@@ -2230,22 +2318,34 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		}
 
 		if ev.EthBlock > lastEthBlock {
-			blockCount++
 			lastEthBlock = ev.EthBlock
+		}
+
+		eventCount++
+	}
+
+	if debugEnabled {
+		for address, cardAmountsChangeMap := range addressToCardAmountsChangeMap {
+			fmt.Printf("Address %s card amount changes:\n", address)
+			for cardKey, amountChange := range cardAmountsChangeMap {
+				fmt.Printf("   (%s) = %d\n", cardKey.String(), amountChange)
+			}
 		}
 	}
 
 	// If there are no new events in this batch return an error so that the batch tx isn't
 	// propagated to the other nodes.
-	if blockCount == 0 {
+	if eventCount == 0 {
 		return fmt.Errorf("no new events found in the batch")
 	}
 
-	state.LastPlasmachainBlockNumber = lastEthBlock
+	ctx.Logger().Debug("setting last Plasmachain block", "LastPlasmachainBlockNumber", req.LastPlasmachainBlockNumber)
+
+	state.LastPlasmachainBlockNumber = req.LastPlasmachainBlockNumber
 	return saveContractState(ctx, state)
 }
 
-func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
+/*func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
 	if card == nil {
 		return errors.New("card is nil")
 	}
@@ -2262,7 +2362,7 @@ func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
 		return errors.New("card contract is nil")
 	}
 	return nil
-}
+}*/
 
 func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardTokenId int64, amount int64, version string) error {
 	if err := z.validateOracle(ctx); err != nil {
@@ -2311,6 +2411,8 @@ func (z *ZombieBattleground) SetLastPlasmaBlockNumber(ctx contract.Context, req 
 	if err != nil {
 		return err
 	}
+
+	ctx.Logger().Debug("setting last Plasmachain block", "LastPlasmachainBlockNumber", req.LastPlasmachainBlockNumber)
 	state.LastPlasmachainBlockNumber = req.LastPlasmachainBlockNumber
 	return saveContractState(ctx, state)
 }
