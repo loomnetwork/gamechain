@@ -214,7 +214,7 @@ func TestSourceIdOverride(t *testing.T) {
 	//fmt.Println(json)
 }
 
-func TestValidateDeckCardEditions(t *testing.T) {
+func TestValidateDeckCardVariants(t *testing.T) {
 	cardLibrary := &zb_data.CardLibrary{
 		Cards: []*zb_data.Card{
 			{
@@ -261,7 +261,7 @@ func TestValidateDeckCardEditions(t *testing.T) {
 			},
 		}
 
-		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		changed := fixDeckCardVariants(deck, cardKeyToCardMap)
 		assert.False(t, changed)
 		assert.Equal(t, 2, len(deck.Cards))
 		assert.Equal(t, int64(3), deck.Cards[0].Amount)
@@ -288,7 +288,7 @@ func TestValidateDeckCardEditions(t *testing.T) {
 			},
 		}
 
-		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		changed := fixDeckCardVariants(deck, cardKeyToCardMap)
 		assert.True(t, changed)
 		assert.Equal(t, 1, len(deck.Cards))
 		assert.Equal(t, int64(7), deck.Cards[0].Amount)
@@ -308,7 +308,7 @@ func TestValidateDeckCardEditions(t *testing.T) {
 			},
 		}
 
-		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		changed := fixDeckCardVariants(deck, cardKeyToCardMap)
 		assert.True(t, changed)
 		assert.Equal(t, 1, len(deck.Cards))
 		assert.Equal(t, int64(4), deck.Cards[0].Amount)
@@ -335,12 +335,12 @@ func TestValidateDeckCardEditions(t *testing.T) {
 			},
 		}
 
-		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		changed := fixDeckCardVariants(deck, cardKeyToCardMap)
 		assert.True(t, changed)
 		assert.Equal(t, 0, len(deck.Cards))
 	})
 
-	t.Run("No editions exists in card library, but card is in deck", func(t *testing.T) {
+	t.Run("No variants exists in card library, but card is in deck", func(t *testing.T) {
 		deck := &zb_data.Deck{
 			Cards: []*zb_data.DeckCard{
 				{
@@ -360,7 +360,7 @@ func TestValidateDeckCardEditions(t *testing.T) {
 			},
 		}
 
-		changed := fixDeckCardEditions(deck, cardKeyToCardMap)
+		changed := fixDeckCardVariants(deck, cardKeyToCardMap)
 		assert.True(t, changed)
 		assert.Equal(t, 0, len(deck.Cards))
 	})

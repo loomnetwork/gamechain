@@ -4,16 +4,20 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
+	"github.com/loomnetwork/go-loom/common"
+	"github.com/loomnetwork/go-loom/types"
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 	"math/big"
 	"strconv"
 )
 
-type ReceiptGenerator struct {
+type MintingReceiptGenerator struct {
 	gatewayPrivateKey *ecdsa.PrivateKey
-	contractVersion uint
+	contractVersion   uint
 }
 
 type VerifySignResult struct {
@@ -21,7 +25,7 @@ type VerifySignResult struct {
 	Signature string `json:"signature"`
 }
 
-type TransactionResponse struct {
+type MintingReceipt struct {
 	VerifyHash *VerifySignResult
 	UserId     *big.Int
 	Booster    uint
@@ -38,18 +42,18 @@ type TransactionResponse struct {
 	TxID       *big.Int
 }
 
-func NewReceiptGenerator(gatewayPrivateKey *ecdsa.PrivateKey, contractVersion uint) (ReceiptGenerator, error) {
+func NewMintingReceiptGenerator(gatewayPrivateKey *ecdsa.PrivateKey, contractVersion uint) (MintingReceiptGenerator, error) {
 	if gatewayPrivateKey == nil {
-		return ReceiptGenerator{}, fmt.Errorf("private key is nil")
+		return MintingReceiptGenerator{}, fmt.Errorf("private key is nil")
 	}
 
-	return ReceiptGenerator{
+	return MintingReceiptGenerator{
 		gatewayPrivateKey: gatewayPrivateKey,
-		contractVersion: contractVersion,
+		contractVersion:   contractVersion,
 	}, nil
 }
 
-func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, boosterAmount uint, txId *big.Int) (*TransactionResponse, error) {
+func (generator *MintingReceiptGenerator) CreateBoosterReceipt(userId *big.Int, boosterAmount uint, txId *big.Int) (*MintingReceipt, error) {
 	verifyHash, err := generator.generateEosVerifySignResult(
 		userId,
 		generator.gatewayPrivateKey,
@@ -72,7 +76,7 @@ func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, booster
 		return nil, err
 	}
 
-	response := TransactionResponse{
+	response := MintingReceipt{
 		VerifyHash: verifyHash,
 		UserId:     userId,
 		Booster:    boosterAmount,
@@ -91,7 +95,7 @@ func (generator *ReceiptGenerator) CreateBoosterReceipt(userId *big.Int, booster
 	return &response, nil
 }
 
-func (generator *ReceiptGenerator) generateEosVerifySignResult(
+func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
 	userId *big.Int,
 	privateKey *ecdsa.PrivateKey,
 	booster uint,
@@ -126,8 +130,8 @@ func (generator *ReceiptGenerator) generateEosVerifySignResult(
 	}, nil
 }
 
-func (generator *ReceiptGenerator) createEosHash(
-	UserID *big.Int,
+func (generator *MintingReceiptGenerator) createEosHash(
+	userID *big.Int,
 	booster uint,
 	air uint,
 	earth uint,
@@ -143,7 +147,7 @@ func (generator *ReceiptGenerator) createEosHash(
 	contractVersion uint) ([]byte, error) {
 
 	hash := solsha3.SoliditySHA3(
-		solsha3.Uint256(UserID.String()),
+		solsha3.Uint256(userID.String()),
 		solsha3.Uint256(strconv.FormatUint(uint64(booster), 10)),
 		solsha3.Uint256(strconv.FormatUint(uint64(super), 10)),
 		solsha3.Uint256(strconv.FormatUint(uint64(air), 10)),
@@ -166,7 +170,7 @@ func (generator *ReceiptGenerator) createEosHash(
 	return hash, nil
 }
 
-func (generator *ReceiptGenerator) soliditySign(data []byte, privateKey *ecdsa.PrivateKey) ([]byte, error) {
+func (generator *MintingReceiptGenerator) soliditySign(data []byte, privateKey *ecdsa.PrivateKey) ([]byte, error) {
 	sig, err := crypto.Sign(data, privateKey)
 	if err != nil {
 		return nil, err
@@ -175,4 +179,26 @@ func (generator *ReceiptGenerator) soliditySign(data []byte, privateKey *ecdsa.P
 	v := sig[len(sig)-1]
 	sig[len(sig)-1] = v + 27
 	return sig, nil
+}
+
+func (t *MintingReceipt) MarshalPB() *zb_data.MintingTransactionReceipt {
+	return &zb_data.MintingTransactionReceipt{
+		VerifyHash: &zb_data.MintingTransactionReceipt_VerifySignResult{
+			Hash:      hexutil.MustDecode(t.VerifyHash.Hash),
+			Signature: hexutil.MustDecode(t.VerifyHash.Signature),
+		},
+		UserId:  &types.BigUInt{Value: common.BigUInt{Int: t.UserId}},
+		Booster: uint64(t.Booster),
+		Air:     uint64(t.Air),
+		Earth:   uint64(t.Earth),
+		Fire:    uint64(t.Fire),
+		Life:    uint64(t.Life),
+		Toxic:   uint64(t.Toxic),
+		Water:   uint64(t.Water),
+		Super:   uint64(t.Super),
+		Small:   uint64(t.Small),
+		Minion:  uint64(t.Minion),
+		Binance: uint64(t.Binance),
+		TxId:    &types.BigUInt{Value: common.BigUInt{Int: t.TxID}},
+	}
 }

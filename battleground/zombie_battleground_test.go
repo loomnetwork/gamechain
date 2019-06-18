@@ -73,6 +73,16 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 
 	err = c.Init(*ctx, &initRequest)
 	assert.Nil(t, err)
+
+	request := zb_calls.UpdateContractConfigurationRequest{
+		SetFiatPurchaseContractVersion: true,
+		FiatPurchaseContractVersion:    3,
+		SetInitialFiatPurchaseTxId:     true,
+		InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+	}
+
+	err = c.UpdateContractConfiguration(*ctx, &request)
+	assert.Nil(t, err)
 }
 
 func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest, t *testing.T) {
@@ -88,15 +98,20 @@ func TestContractConfigurationAndState(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	t.Run("GetContractState not set yet and should fail", func(t *testing.T) {
-		_, err := c.GetContractState(ctx, &zb_calls.EmptyRequest{})
+	/*t.Run("GetContractState not set yet and should fail", func(t *testing.T) {
+		err := saveContractState(ctx, nil)
+		assert.Nil(t, err)
+		err = saveContractConfiguration(ctx, nil)
+		assert.Nil(t, err)
+
+		_, err = c.GetContractState(ctx, &zb_calls.EmptyRequest{})
 		assert.NotNil(t, err)
 	})
 
 	t.Run("GetContractConfiguration not set yet and should fail", func(t *testing.T) {
 		_, err := c.GetContractConfiguration(ctx, &zb_calls.EmptyRequest{})
 		assert.NotNil(t, err)
-	})
+	})*/
 
 	t.Run("UpdateContractConfiguration should succeed", func(t *testing.T) {
 		request := zb_calls.UpdateContractConfigurationRequest{
@@ -793,6 +808,7 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 
 		assert.Nil(t, err)
+		assert.Equal(t, int(1), len(getNotificationsResponse2.Notifications))
 		notificationEndMatch2 := getNotificationsResponse2.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
 		assert.Equal(t, int64(1), notificationEndMatch2.OverlordId)
 		assert.Equal(t, int32(1), notificationEndMatch2.OldLevel)
@@ -2667,7 +2683,7 @@ func TestHashSignature(t *testing.T) {
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	generator, err := NewReceiptGenerator(privateKey, 1)
+	generator, err := NewMintingReceiptGenerator(privateKey, 1)
 	assert.Nil(t, err)
 	verifySignResult, err := generator.generateEosVerifySignResult(
 		big.NewInt(5),

@@ -2570,9 +2570,8 @@
           "rewards": [
             {
               "level": 2,
-              "unitReward": {
-                "rank": "MINION",
-                "count": 1
+              "boosterPackReward": {
+                "amount": 1
               }
             },
             {
@@ -2583,9 +2582,8 @@
             },
             {
               "level": 6,
-              "unitReward": {
-                "rank": "MINION",
-                "count": 2
+              "boosterPackReward": {
+                "amount": 1
               }
             },
             {
@@ -2596,9 +2594,8 @@
             },
             {
               "level": 10,
-              "unitReward": {
-                "rank": "OFFICER",
-                "count": 1
+              "boosterPackReward": {
+                "amount": 1
               }
             },
             {
@@ -2609,9 +2606,8 @@
             },
             {
               "level": 14,
-              "unitReward": {
-                "rank": "OFFICER",
-                "count": 2
+              "boosterPackReward": {
+                "amount": 1
               }
             },
             {
@@ -2622,9 +2618,8 @@
             },
             {
               "level": 18,
-              "unitReward": {
-                "rank": "COMMANDER",
-                "count": 1
+              "boosterPackReward": {
+                "amount": 1
               }
             },
             {

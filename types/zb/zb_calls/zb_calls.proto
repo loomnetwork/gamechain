@@ -430,11 +430,37 @@ message StaticCallCustomGameModeFunctionResponse {
 
 //
 
-message DebugCreateBoosterPackReceiptRequest {
+message GetPendingMintingTransactionReceiptsRequest {
+    string userId = 1;
+}
+
+message GetPendingMintingTransactionReceiptsResponse {
+    MintingTransactionReceiptCollection receiptCollection = 1;
+}
+
+message ConfirmPendingMintingTransactionReceiptRequest {
+    string userId = 1;
+    BigUInt txId = 2;
+}
+
+message DebugMintBoosterPackReceiptRequest {
     BigUInt userId = 1;
     int32 boosterAmount = 2;
 }
 
-message DebugCreateBoosterPackReceiptResponse {
-    string transactionResponseJson = 1;
+message DebugMintBoosterPackReceiptResponse {
+    string receiptJson = 1;
+    MintingTransactionReceipt receipt = 2;
+}
+
+message DebugGetUserIdByAddressRequest {
+    Address address = 1;
+}
+
+message DebugGetPendingCardAmountChangeItemsRequest {
+    Address address = 1;
+}
+
+message DebugGetPendingCardAmountChangeItemsResponse {
+    CardAmountChangeItemsContainer container = 1;
 }
