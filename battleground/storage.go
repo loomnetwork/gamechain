@@ -1,17 +1,16 @@
 package battleground
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
+	"math/big"
+	"strconv"
 	"strings"
-
-	"github.com/gogo/protobuf/proto"
 
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/util"
@@ -47,9 +46,14 @@ var (
 )
 
 var (
-	ErrNotfound        = errors.New("not found")
+	ErrNotFound        = errors.New("not found")
 	ErrUserNotVerified = errors.New("user is not verified")
 )
+
+type cardAmountsChangeMap map[battleground_proto.CardKey]int64
+type addressToCardAmountsChangeMap map[string]map[battleground_proto.CardKey]int64
+
+const defaultUserIdPrefix = "ZombieSlayer_"
 
 func AccountKey(userID string) []byte {
 	return []byte("user:" + userID)
@@ -57,6 +61,14 @@ func AccountKey(userID string) []byte {
 
 func DecksKey(userID string) []byte {
 	return []byte("user:" + userID + ":decks")
+}
+
+func PendingMintingTransactionReceiptCollectionKey(userID string) []byte {
+	return []byte("address:" + userID + ":pending-minting-transaction-receipts")
+}
+
+func AddressToPendingCardAmountChangeItemsKey(address loom.Address) []byte {
+	return []byte("user:" + string(address.Local) + ":address-to-pending-card-amount-change-items")
 }
 
 func CardCollectionKey(userID string) []byte {
@@ -92,10 +104,36 @@ func MakeVersionedKey(version string, key []byte) []byte {
 }
 
 func MakeAddressToUserIdKey(address loom.Address) []byte {
-	return []byte("address-to-userid:" + hex.EncodeToString(address.Local))
+	return []byte("address-to-userid:" + string(address.Local))
 }
 
-func getUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
+func loadPendingCardAmountChangeItemsContainerByAddress(ctx contract.StaticContext, address loom.Address) (*zb_data.CardAmountChangeItemsContainer, error) {
+	var container zb_data.CardAmountChangeItemsContainer
+
+	err := ctx.Get(AddressToPendingCardAmountChangeItemsKey(address), &container)
+	if err != nil {
+		if err == contract.ErrNotFound {
+			container = zb_data.CardAmountChangeItemsContainer{
+				CardAmountChange: []*zb_data.CardAmountChangeItem{},
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return &container, nil
+}
+
+func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, address loom.Address, container *zb_data.CardAmountChangeItemsContainer,) error {
+	err := ctx.Set(AddressToPendingCardAmountChangeItemsKey(address), container)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
 	var userId zb_data.UserIdContainer
 
 	err := ctx.Get(MakeAddressToUserIdKey(address), &userId)
@@ -106,7 +144,7 @@ func getUserIdByAddress(ctx contract.StaticContext, address loom.Address) (strin
 	return userId.UserId, nil
 }
 
-func setUserIdAddress(ctx contract.Context, userId string, address loom.Address) error {
+func saveUserIdAddress(ctx contract.Context, userId string, address loom.Address) error {
 	userIdContainer := zb_data.UserIdContainer{UserId: userId}
 	err := ctx.Set(MakeAddressToUserIdKey(address), &userIdContainer)
 	if err != nil {
@@ -134,7 +172,7 @@ func loadContractState(ctx contract.StaticContext) (*zb_data.ContractState, erro
 
 func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConfiguration) error {
 	if err := ctx.Set(contractConfigurationKey, state); err != nil {
-		return err
+		return errors.Wrap(err, "failed to save contract configuration")
 	}
 	return nil
 }
@@ -143,14 +181,10 @@ func loadContractConfiguration(ctx contract.StaticContext) (*zb_data.ContractCon
 	var m zb_data.ContractConfiguration
 	err := ctx.Get(contractConfigurationKey, &m)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get contract configuration")
+		return nil, errors.Wrap(err, "failed to load contract configuration")
 	}
 
 	return &m, nil
-}
-
-func RewardTutorialClaimedKey(userID string) []byte {
-	return []byte("user:" + userID + ":rewardTutorialClaimed")
 }
 
 func loadCardCollectionByUserId(ctx contract.Context, userID string, version string) (*zb_data.CardCollectionList, error) {
@@ -188,10 +222,6 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data
 		}
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
 	return &userCollection, nil
 }
 
@@ -199,6 +229,38 @@ func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data
 func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.CardCollectionList) error {
 	addr := string(ctx.Message().Sender.Local)
 	return ctx.Set(CardCollectionKey(addr), cardCollection)
+}
+
+func loadPendingMintingTransactionReceipts(ctx contract.StaticContext, userID string) (*zb_data.MintingTransactionReceiptCollection, error) {
+	var receiptCollection zb_data.MintingTransactionReceiptCollection
+	err := ctx.Get(PendingMintingTransactionReceiptCollectionKey(userID), &receiptCollection)
+	if err != nil {
+		if err == contract.ErrNotFound {
+			receiptCollection.Receipts = []*zb_data.MintingTransactionReceipt{}
+		} else {
+			return nil, errors.Wrap(err, "failed to load minting transaction receipts")
+		}
+	}
+
+	return &receiptCollection, nil
+}
+
+func savePendingMintingTransactionReceipts(ctx contract.Context, userID string, receiptCollection *zb_data.MintingTransactionReceiptCollection) error {
+	err := ctx.Set(PendingMintingTransactionReceiptCollectionKey(userID), receiptCollection)
+	if err != nil {
+		err = errors.Wrap(err, "failed to save minting transaction receipts")
+	}
+
+	return err
+}
+
+func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
+	_, err := fixDeckListCardVariants(ctx, decks, version)
+	if err != nil {
+		return err
+	}
+
+	return ctx.Set(DecksKey(userID), decks)
 }
 
 func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
@@ -212,7 +274,7 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 		}
 	}
 
-	deckListChanged, err := fixDeckListCardEditions(ctx, &deckList, version)
+	deckListChanged, err := fixDeckListCardVariants(ctx, &deckList, version)
 	if err != nil {
 		return nil, err
 	}
@@ -225,15 +287,6 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 	}
 
 	return &deckList, nil
-}
-
-func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
-	_, err := fixDeckListCardEditions(ctx, decks, version)
-	if err != nil {
-		return err
-	}
-
-	return ctx.Set(DecksKey(userID), decks)
 }
 
 func saveAIDecks(ctx contract.Context, version string, decks *zb_data.AIDeckList) error {
@@ -367,8 +420,8 @@ func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
 	return json.Marshal(emitMsg)
 }
 
-func isOwner(ctx contract.Context, userID string) bool {
-	ok, _ := ctx.HasPermission([]byte(userID), []string{OwnerRole})
+func isOwner(ctx contract.StaticContext, userID string) bool {
+	ok, _ := ctx.HasPermissionFor(ctx.Message().Sender, []byte(userID), []string{OwnerRole})
 	return ok
 }
 
@@ -643,221 +696,6 @@ func deleteGameMode(gameModeList *zb_data.GameModeList, ID string) (*zb_data.Gam
 	return &zb_data.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func cardKeyFromCardTokenId(cardTokenId int64) battleground_proto.CardKey {
-	return battleground_proto.CardKey{
-		MouldId: cardTokenId / 10,
-		Variant: zb_enums.CardVariant_Enum(cardTokenId % 10),
-	}
-}
-
-func newCardInstanceSpecificDataFromCardDetails(cardDetails *zb_data.Card) *zb_data.CardInstanceSpecificData {
-	cardDetails = proto.Clone(cardDetails).(*zb_data.Card)
-	return &zb_data.CardInstanceSpecificData{
-		Damage:    cardDetails.Damage,
-		Defense:   cardDetails.Defense,
-		Type:      cardDetails.Type,
-		Faction:   cardDetails.Faction,
-		Cost:      cardDetails.Cost,
-		Abilities: cardDetails.Abilities,
-	}
-}
-
-func newCardInstanceFromCardDetails(cardDetails *zb_data.Card, instanceID *zb_data.InstanceId, owner string, ownerIndex int32) *zb_data.CardInstance {
-	instance := newCardInstanceSpecificDataFromCardDetails(cardDetails)
-	var abilities []*zb_data.CardAbilityInstance
-	for _, raw := range cardDetails.Abilities {
-		switch raw.Ability {
-		case zb_enums.AbilityType_Rage:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_Rage{
-					Rage: &zb_data.CardAbilityRage{
-						AddedDamage: raw.Value,
-					},
-				},
-			})
-		case zb_enums.AbilityType_PriorityAttack:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_PriorityAttack{
-					PriorityAttack: &zb_data.CardAbilityPriorityAttack{},
-				},
-			})
-		case zb_enums.AbilityType_ReanimateUnit:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_Reanimate{
-					Reanimate: &zb_data.CardAbilityReanimate{
-						DefaultDamage:  cardDetails.Damage,
-						DefaultDefense: cardDetails.Defense,
-					},
-				},
-			})
-		case zb_enums.AbilityType_ChangeStat:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_ChangeStat{
-					ChangeStat: &zb_data.CardAbilityChangeStat{
-						StatAdjustment: raw.Value,
-						Stat:           raw.Stat,
-					},
-				},
-			})
-		case zb_enums.AbilityType_AttackOverlord:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_AttackOverlord{
-					AttackOverlord: &zb_data.CardAbilityAttackOverlord{
-						Damage: raw.Value,
-					},
-				},
-			})
-		case zb_enums.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_ReplaceUnitsWithTypeOnStrongerOnes{
-					ReplaceUnitsWithTypeOnStrongerOnes: &zb_data.CardAbilityReplaceUnitsWithTypeOnStrongerOnes{
-						Faction: cardDetails.Faction,
-					},
-				},
-			})
-		case zb_enums.AbilityType_DealDamageToThisAndAdjacentUnits:
-			abilities = append(abilities, &zb_data.CardAbilityInstance{
-				IsActive: true,
-				Trigger:  raw.Trigger,
-				AbilityType: &zb_data.CardAbilityInstance_DealDamageToThisAndAdjacentUnits{
-					DealDamageToThisAndAdjacentUnits: &zb_data.CardAbilityDealDamageToThisAndAdjacentUnits{
-						AdjacentDamage: cardDetails.Damage,
-					},
-				},
-			})
-		}
-
-	}
-	return &zb_data.CardInstance{
-		InstanceId:         proto.Clone(instanceID).(*zb_data.InstanceId),
-		Owner:              owner,
-		Prototype:          proto.Clone(cardDetails).(*zb_data.Card),
-		Instance:           instance,
-		AbilitiesInstances: abilities,
-		Zone:               zb_enums.Zone_DECK, // default to deck
-		OwnerIndex:         ownerIndex,
-	}
-}
-
-func getInstanceIdsFromCardInstances(cards []*zb_data.CardInstance) []*zb_data.InstanceId {
-	var instanceIds = make([]*zb_data.InstanceId, len(cards), len(cards))
-	for i := range cards {
-		instanceIds[i] = cards[i].InstanceId
-	}
-
-	return instanceIds
-}
-
-func populateDeckCards(cardLibrary *zb_data.CardList, playerStates []*zb_data.PlayerState, useBackendGameLogic bool) error {
-	for playerIndex, playerState := range playerStates {
-		deck := playerState.Deck
-		if deck == nil {
-			return fmt.Errorf("no card deck fro player %s", playerState.Id)
-		}
-		for _, cardAmounts := range deck.Cards {
-			for i := int64(0); i < cardAmounts.Amount; i++ {
-				cardDetails, err := getCardByCardKey(cardLibrary, cardAmounts.CardKey)
-				if err != nil {
-					return fmt.Errorf("unable to get card [%s] from card library: %s", cardAmounts.CardKey.String(), err.Error())
-				}
-
-				cardInstance := newCardInstanceFromCardDetails(
-					cardDetails,
-					nil,
-					playerState.Id,
-					int32(playerIndex),
-				)
-				playerState.CardsInDeck = append(playerState.CardsInDeck, cardInstance)
-			}
-		}
-	}
-
-	removeUnsupportedCardFeatures(useBackendGameLogic, playerStates)
-
-	return nil
-}
-
-func removeUnsupportedCardFeatures(useBackendGameLogic bool, playerStates []*zb_data.PlayerState) {
-	if !useBackendGameLogic {
-		return
-	}
-
-	for _, playerState := range playerStates {
-		filteredCards := make([]*zb_data.CardInstance, 0, 0)
-
-		for _, card := range playerState.CardsInDeck {
-			filteredAbilities := make([]*zb_data.AbilityData, 0, 0)
-			for _, ability := range card.Prototype.Abilities {
-				switch ability.Ability {
-				case zb_enums.AbilityType_Rage:
-					fallthrough
-				case zb_enums.AbilityType_PriorityAttack:
-					fallthrough
-				case zb_enums.AbilityType_ReanimateUnit:
-					fallthrough
-				case zb_enums.AbilityType_ChangeStat:
-					fallthrough
-				case zb_enums.AbilityType_AttackOverlord:
-					fallthrough
-				case zb_enums.AbilityType_ReplaceUnitsWithTypeOnStrongerOnes:
-					filteredAbilities = append(filteredAbilities, ability)
-				default:
-					fmt.Printf("Unsupported AbilityType value %s, removed (card '%s')\n", zb_enums.AbilityType_Enum_name[int32(ability.Ability)], card.Prototype.Name)
-				}
-			}
-
-			card.Prototype.Abilities = filteredAbilities
-
-			switch card.Prototype.Type {
-			case zb_enums.CardType_Feral:
-				fallthrough
-			case zb_enums.CardType_Heavy:
-				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb_enums.CardType_Enum_name[int32(card.Prototype.Type)], card.Prototype.Name)
-				card.Prototype.Type = zb_enums.CardType_Walker
-			}
-
-			switch card.Instance.Type {
-			case zb_enums.CardType_Feral:
-				fallthrough
-			case zb_enums.CardType_Heavy:
-				fmt.Printf("Unsupported CardType value %s, fallback to WALKER (card %s)\n", zb_enums.CardType_Enum_name[int32(card.Instance.Type)], card.Prototype.Name)
-				card.Instance.Type = zb_enums.CardType_Walker
-			}
-
-			switch card.Prototype.Kind {
-			case zb_enums.CardKind_Creature:
-				filteredCards = append(filteredCards, card)
-			default:
-				fmt.Printf("Unsupported CardKind value %s, removed (card '%s')\n", zb_enums.CardKind_Enum_name[int32(card.Prototype.Kind)], card.Prototype.Name)
-			}
-
-			switch card.Prototype.Rank {
-			case zb_enums.CreatureRank_Officer:
-				fallthrough
-			case zb_enums.CreatureRank_Commander:
-				fallthrough
-			case zb_enums.CreatureRank_General:
-				fmt.Printf("Unsupported CreatureRank value %s, fallback to MINION (card %s)\n", zb_enums.CreatureRank_Enum_name[int32(card.Prototype.Rank)], card.Prototype.Name)
-				card.Prototype.Rank = zb_enums.CreatureRank_Minion
-			}
-		}
-
-		playerState.CardsInDeck = filteredCards
-	}
-}
-
 func getCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardList, error) {
 	var cardList zb_data.CardList
 	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
@@ -888,7 +726,7 @@ func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.Car
 	return nil, fmt.Errorf("card with card key [%s] not found in card library", cardKey.String())
 }
 
-func fixDeckListCardEditions(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
+func fixDeckListCardVariants(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
 	cardLibrary, err := getCardLibrary(ctx, version)
 	if err != nil {
 		return false, err
@@ -901,7 +739,7 @@ func fixDeckListCardEditions(ctx contract.Context, deckList *zb_data.DeckList, v
 
 	changed = false
 	for _, deck := range deckList.Decks {
-		if fixDeckCardEditions(deck, cardKeyToCardMap) {
+		if fixDeckCardVariants(deck, cardKeyToCardMap) {
 			changed = true
 		}
 	}
@@ -909,7 +747,7 @@ func fixDeckListCardEditions(ctx contract.Context, deckList *zb_data.DeckList, v
 	return changed, nil
 }
 
-func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[battleground_proto.CardKey]*zb_data.Card) (changed bool) {
+func fixDeckCardVariants(deck *zb_data.Deck, cardKeyToCardMap map[battleground_proto.CardKey]*zb_data.Card) (changed bool) {
 	var newDeckCards = make([]*zb_data.DeckCard, 0)
 	var cardKeyToDeckCard = make(map[battleground_proto.CardKey]*zb_data.DeckCard)
 	for _, deckCard := range deck.Cards {
@@ -917,37 +755,37 @@ func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[battleground_p
 	}
 
 	for _, deckCard := range deck.Cards {
-		// Check if this specific edition of a card exists in card library
-		_, editionExists := cardKeyToCardMap[deckCard.CardKey]
-		if !editionExists {
-			// If this edition is not in card library, try to fallback to Normal edition
-			normalEditionCardKey := battleground_proto.CardKey{
+		// Check if this specific variant of a card exists in card library
+		_, variantExists := cardKeyToCardMap[deckCard.CardKey]
+		if !variantExists {
+			// If this variant is not in card library, try to fallback to Normal variant
+			normalVariantCardKey := battleground_proto.CardKey{
 				MouldId: deckCard.CardKey.MouldId,
 				Variant: zb_enums.CardVariant_Standard,
 			}
 
-			_, normalEditionExists := cardKeyToCardMap[normalEditionCardKey]
+			_, normalVariantExists := cardKeyToCardMap[normalVariantCardKey]
 
-			// If normal edition doesn't exist in card library too, just remove card from the deck completely
-			if !normalEditionExists {
+			// If normal variant doesn't exist in card library too, just remove card from the deck completely
+			if !normalVariantExists {
 				changed = true
 			} else {
-				normalEditionDeckCard, normalEditionDeckCardExists := cardKeyToDeckCard[normalEditionCardKey]
-				// If normal edition exists in card library AND in the deck,
-				// add the amount of the special edition to normal edition
-				if normalEditionDeckCardExists {
-					normalEditionDeckCard.Amount += deckCard.Amount
+				normalVariantDeckCard, normalVariantDeckCardExists := cardKeyToDeckCard[normalVariantCardKey]
+				// If normal variant exists in card library AND in the deck,
+				// add the amount of the special variant to normal variant
+				if normalVariantDeckCardExists {
+					normalVariantDeckCard.Amount += deckCard.Amount
 					changed = true
 				} else {
-					// If normal edition exists in card library, but NOT in the deck,
-					// create a normal edition deck card and add special edition amount to it
-					normalEditionDeckCard = &zb_data.DeckCard{
-						CardKey: normalEditionCardKey,
+					// If normal variant exists in card library, but NOT in the deck,
+					// create a normal variant deck card and add special variant amount to it
+					normalVariantDeckCard = &zb_data.DeckCard{
+						CardKey: normalVariantCardKey,
 						Amount: deckCard.Amount,
 					}
 
-					newDeckCards = append(newDeckCards, normalEditionDeckCard)
-					cardKeyToDeckCard[normalEditionCardKey] = normalEditionDeckCard
+					newDeckCards = append(newDeckCards, normalVariantDeckCard)
+					cardKeyToDeckCard[normalVariantCardKey] = normalVariantDeckCard
 					changed = true
 				}
 			}
@@ -958,4 +796,14 @@ func fixDeckCardEditions(deck *zb_data.Deck, cardKeyToCardMap map[battleground_p
 
 	deck.Cards = newDeckCards
 	return changed
+}
+
+func parseUserIdToNumber(userIdString string) *big.Int {
+	userIdNumberString := strings.Replace(userIdString, defaultUserIdPrefix, "", -1)
+	userIdNumber, err := strconv.ParseInt(userIdNumberString, 10, 64)
+	if err != nil {
+		userIdNumber = 0
+	}
+
+	return big.NewInt(userIdNumber)
 }

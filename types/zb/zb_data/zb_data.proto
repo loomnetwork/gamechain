@@ -237,7 +237,7 @@ message LevelReward {
     int32 level = 1;
     oneof reward {
         OverlordSkillRewardItem skillReward = 2;
-        UnitRewardItem unitReward = 3;
+        BoosterPackRewardItem boosterPackReward = 3;
     }
 }
 
@@ -245,9 +245,8 @@ message OverlordSkillRewardItem {
     int32 skillIndex = 1;
 }
 
-message UnitRewardItem {
-    CreatureRank.Enum rank = 1;
-    int32 count = 2;
+message BoosterPackRewardItem {
+    int32 amount = 1;
 }
 
 message ExperienceAction {
@@ -863,4 +862,39 @@ message NotificationList {
 
 message UserIdContainer {
     string userId = 1;
+}
+
+message MintingTransactionReceipt {
+    message VerifySignResult {
+        bytes hash = 1;
+        bytes signature = 2;
+    }
+
+    VerifySignResult verifyHash = 1;
+    BigUInt userId = 2;
+	uint64 booster = 3;
+	uint64 air = 4;
+	uint64 earth = 5;
+	uint64 fire = 6;
+	uint64 life = 7;
+	uint64 toxic = 8;
+	uint64 water = 9;
+	uint64 super = 10;
+	uint64 small = 11;
+	uint64 minion = 12;
+	uint64 binance = 13;
+	BigUInt txId = 14;
+}
+
+message MintingTransactionReceiptCollection {
+    repeated MintingTransactionReceipt receipts = 1;
+}
+
+message CardAmountChangeItemsContainer {
+    repeated CardAmountChangeItem cardAmountChange = 1;
+}
+
+message CardAmountChangeItem {
+    CardKey cardKey = 1 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
+    int64 amountChange = 2;
 }
