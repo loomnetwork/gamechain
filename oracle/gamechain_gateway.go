@@ -43,23 +43,40 @@ func ConnectToGamechainGateway(
 	}, nil
 }
 
-func (gw *GamechainGateway) LastPlasmaBlockNumber() (uint64, error) {
+func (gw *GamechainGateway) GetLastPlasmaBlockNumber() (uint64, error) {
 	var req zb_calls.EmptyRequest
 	var resp zb_calls.GetContractStateResponse
 	if _, err := gw.contract.StaticCall("GetContractState", &req, gw.Address, &resp); err != nil {
+		err = errors.Wrap(err, "failed to call GetContractState")
+		gw.logger.Error(err.Error())
 		return 0, err
 	}
 	gw.LastResponseTime = time.Now()
 	return resp.State.LastPlasmachainBlockNumber, nil
 }
 
-func (gw *GamechainGateway) ProcessEventBatch(events []*orctype.PlasmachainEvent) error {
+func (gw *GamechainGateway) SetLastPlasmaBlockNumber(lastBlock uint64) error {
+	req := zb_calls.SetLastPlasmaBlockNumberRequest{
+		LastPlasmachainBlockNumber: lastBlock,
+	}
+	if _, err := gw.contract.Call("SetLastPlasmaBlockNumber", &req, gw.signer, nil); err != nil {
+		err = errors.Wrap(err, "failed to call SetLastPlasmaBlockNumber")
+		gw.logger.Error(err.Error())
+		return err
+	}
+	gw.LastResponseTime = time.Now()
+	return nil
+}
+
+func (gw *GamechainGateway) ProcessEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64) error {
 	req := orctype.ProcessEventBatchRequest{
-		Events:      events,
-		CardVersion: gw.cardVersion,
+		Events:                     events,
+		CardVersion:                gw.cardVersion,
+		LastPlasmachainBlockNumber: endBlock,
 	}
 	if _, err := gw.contract.Call("ProcessEventBatch", &req, gw.signer, nil); err != nil {
-		gw.logger.Error("failed to call ProcessEventBatch", "err", err)
+		err = errors.Wrap(err, "failed to call ProcessEventBatch")
+		gw.logger.Error(err.Error())
 		return err
 	}
 	gw.LastResponseTime = time.Now()

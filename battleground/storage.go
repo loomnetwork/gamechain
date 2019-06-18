@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
@@ -91,7 +92,7 @@ func MakeVersionedKey(version string, key []byte) []byte {
 }
 
 func MakeAddressToUserIdKey(address loom.Address) []byte {
-	return []byte("address-to-userid:" + string(address.Local.Hex()))
+	return []byte("address-to-userid:" + hex.EncodeToString(address.Local))
 }
 
 func getUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
