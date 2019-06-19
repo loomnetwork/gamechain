@@ -163,9 +163,12 @@ func prepareTestFile(t *testing.T, testFile string, replacementTokens map[string
 func runE2ETests(t *testing.T, tests []testdata) {
 	// required to have loom binary
 	common.LoomPath = path.Join(getLoomchainDir(), "gamechain")
-	common.ContractDir = ""
+	common.ContractDir = "./contracts"
 
 	buildGamechain(t)
+	if err := os.MkdirAll(common.ContractDir, os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
 
 	for _, test := range tests {
 		tempTestFilePath := prepareTestFile(t, test.testFile, test.replacementTokens)
