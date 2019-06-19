@@ -161,10 +161,6 @@ func TestSourceIdBasic(t *testing.T) {
 	assert.Equal(t, testCard.CardKey.MouldId, targetCard.CardKey.MouldId)
 	assert.Equal(t, zb_enums.CardVariant_Limited, targetCard.CardKey.Variant)
 	assert.Equal(t, "Zpitter", targetCard.Name)
-
-	//json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibraryKey})
-	//fmt.Println(json)
-	//assert.Nil(t, json)
 }
 
 func TestSourceIdOverride(t *testing.T) {
@@ -209,9 +205,6 @@ func TestSourceIdOverride(t *testing.T) {
 	assert.Equal(t, zb_enums.CardType_Heavy, targetCard.Type)
 	assert.Equal(t, "legendary-frame.png", targetCard.Frame)
 	assert.Equal(t, false, targetCard.Hidden)
-
-	//json, err := protoMessageToJSON(&zb_data.CardList{Cards: cardLibraryKey})
-	//fmt.Println(json)
 }
 
 func TestValidateDeckCardVariants(t *testing.T) {
