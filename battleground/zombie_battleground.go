@@ -55,8 +55,6 @@ const (
 var (
 	// secret
 	secret string
-	// privateKey to verify JWT Token from loomauth
-	jwtSecret                          = os.Getenv("JWT_SECRET")
 	_, debugEnabled                    = os.LookupEnv("RL_DEBUG")
 	purchaseGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
 	// Error list

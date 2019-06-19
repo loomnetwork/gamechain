@@ -267,6 +267,7 @@ message ContractConfiguration {
     // Plasmachain FiatPurchase contract version
     uint64 fiatPurchaseContractVersion = 1;
     BigUInt initialFiatPurchaseTxId = 2;
+    bool useCardLibraryAsUserCollection = 3;
 }
 
 //////////// Match Making /////////////
