@@ -1,5 +1,5 @@
 [[TestCases]]
-  RunCmd = "echo "
+  RunCmd = "/bin/echo "
   Delay = 10000
 
 ############ Create accounts ############
