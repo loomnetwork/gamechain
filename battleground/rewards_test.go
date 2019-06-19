@@ -15,11 +15,6 @@ import (
 )
 
 func TestRewardMinting(t *testing.T) {
-	debugEnabled = true
-
-	// random key
-	purchaseGatewayPrivateKeyHexString = "527969b4754fca7c3c6146c7c2a12ce1d0dda4a7e75cfb8e3465e0393d531176"
-
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
 	var addr loom.Address
@@ -59,7 +54,6 @@ func TestRewardMinting(t *testing.T) {
 		assert.Equal(t, 65, len(receipt.Receipt.VerifyHash.Signature))
 
 		prevTxId = receipt.Receipt.TxId.Value.Int
-
 
 		// Validate Solidity-like
 		uint256Type, _ := abi.NewType("uint256")

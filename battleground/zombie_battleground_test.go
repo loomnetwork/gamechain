@@ -45,6 +45,11 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 }
 
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
+	debugEnabled = true
+
+	// random key
+	purchaseGatewayPrivateKeyHexString = "527969b4754fca7c3c6146c7c2a12ce1d0dda4a7e75cfb8e3465e0393d531176"
+
 	updateInitRequest.InitData = &zb_data.InitData{}
 	err := readJsonFileToProtobuf("../test_data/simple-init.json", updateInitRequest.InitData)
 	assert.Nil(t, err)
@@ -97,21 +102,6 @@ func TestContractConfigurationAndState(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	/*t.Run("GetContractState not set yet and should fail", func(t *testing.T) {
-		err := saveContractState(ctx, nil)
-		assert.Nil(t, err)
-		err = saveContractConfiguration(ctx, nil)
-		assert.Nil(t, err)
-
-		_, err = c.GetContractState(ctx, &zb_calls.EmptyRequest{})
-		assert.NotNil(t, err)
-	})
-
-	t.Run("GetContractConfiguration not set yet and should fail", func(t *testing.T) {
-		_, err := c.GetContractConfiguration(ctx, &zb_calls.EmptyRequest{})
-		assert.NotNil(t, err)
-	})*/
 
 	t.Run("UpdateContractConfiguration should succeed", func(t *testing.T) {
 		request := zb_calls.UpdateContractConfigurationRequest{
@@ -826,6 +816,65 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb_data.Match_Ended, response.Match.Status, "match status should be 'ended'")
+	})
+}
+
+func TestOverlordLeveling(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	userId := defaultUserIdPrefix + "373"
+	version := "v1"
+	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		UserId:  userId,
+		Version: version,
+	}, t)
+
+	levelingData, err := loadOverlordLevelingData(ctx, version)
+	assert.Nil(t, err)
+
+	t.Run("Level 2 is reached and one reward is given", func(t *testing.T) {
+		addedExperience := getRequiredExperienceForLevel(levelingData, 2)
+		err = applyExperience(ctx, version, levelingData, userId, big.NewInt(373), 1, int64(addedExperience), 1, true)
+		assert.Nil(t, err)
+
+		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{UserId: userId})
+		assert.Nil(t, err)
+
+		notificationEndMatch := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch.OverlordId)
+		assert.Equal(t, int32(1), notificationEndMatch.OldLevel)
+		assert.Equal(t, int64(0), notificationEndMatch.OldExperience)
+		assert.Equal(t, int64(addedExperience), notificationEndMatch.NewExperience)
+		assert.Equal(t, int32(2), notificationEndMatch.NewLevel)
+
+		assert.Equal(t, 1, len(notificationEndMatch.Rewards))
+		assert.Equal(t, int32(2), notificationEndMatch.Rewards[0].Level)
+		boosterPackReward, ok := notificationEndMatch.Rewards[0].GetReward().(*zb_data.LevelReward_BoosterPackReward)
+		assert.True(t, ok)
+		assert.Equal(t, int32(1), boosterPackReward.BoosterPackReward.Amount)
+	})
+
+	t.Run("Level 3 is reached and no rewards are given", func(t *testing.T) {
+		addedExperience := levelingData.ExperienceStep
+		err = applyExperience(ctx, version, levelingData, userId, big.NewInt(373), 1, int64(addedExperience), 1, true)
+		assert.Nil(t, err)
+
+		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{UserId: userId})
+		assert.Nil(t, err)
+
+		notificationEndMatch := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch.OverlordId)
+		assert.Equal(t, int32(2), notificationEndMatch.OldLevel)
+		assert.Equal(t, int64(levelingData.Fixed + levelingData.ExperienceStep), notificationEndMatch.OldExperience)
+		assert.Equal(t, int32(3), notificationEndMatch.NewLevel)
+		assert.Equal(t, getRequiredExperienceForLevel(levelingData, 2) + int64(addedExperience), notificationEndMatch.NewExperience)
+
+		assert.Equal(t, 0, len(notificationEndMatch.Rewards))
 	})
 }
 
