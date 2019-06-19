@@ -227,6 +227,9 @@ func (orc *Oracle) pollPlasmaChain() error {
 	}
 
 	orc.logger.Debug("got last processed Plasmachain block number from Gamechain", "lastPlasmachainBlockNumber", lastPlasmachainBlockNumber)
+	if lastPlasmachainBlockNumber == 0 {
+		orc.logger.Warn("last processed Plasmachain block number from Gamechain == 0, unable to proceed, will retry")
+	}
 
 	startBlock := lastPlasmachainBlockNumber + 1
 	if orc.startBlock > startBlock {

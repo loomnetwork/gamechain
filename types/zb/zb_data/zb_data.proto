@@ -268,6 +268,8 @@ message ContractConfiguration {
     uint64 fiatPurchaseContractVersion = 1;
     BigUInt initialFiatPurchaseTxId = 2;
     bool useCardLibraryAsUserCollection = 3;
+    repeated DataWipeConfiguration dataWipeConfiguration = 4;
+    bool debugMode = 5;
 }
 
 //////////// Match Making /////////////
@@ -827,6 +829,23 @@ message AIDecksDataContainer {
 
 message OverlordLevelingDataContainer {
     OverlordLevelingData overlordLeveling = 1;
+}
+
+message DataWipeConfiguration{
+    string version = 1;
+    bool wipeDecks = 2;
+}
+
+message DataWipeConfigurationList {
+    repeated DataWipeConfiguration configurations = 1;
+}
+
+message DataWipeConfigurationContainer {
+    repeated DataWipeConfiguration dataWipeConfiguration = 1;
+}
+
+message UserExecutedDataWipesList {
+    repeated string versions = 1;
 }
 
 message NotificationEndMatch {
