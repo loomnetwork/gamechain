@@ -166,6 +166,8 @@ func runE2ETests(t *testing.T, tests []testdata) {
 	common.ContractDir = "./contracts"
 
 	buildGamechain(t)
+
+	// create ContractDir to make e2e happy
 	if err := os.MkdirAll(common.ContractDir, os.ModePerm); err != nil {
 		t.Fatal(err)
 	}

@@ -117,7 +117,7 @@ func NewGamePlay(ctx contract.Context,
 	}
 
 	var err error
-	g.cardLibrary, err = getCardLibrary(ctx, version)
+	g.cardLibrary, err = loadCardLibrary(ctx, version)
 	if err != nil {
 		return nil, err
 	}

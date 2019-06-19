@@ -27,14 +27,13 @@ func TestGameStateFunc(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb_data.PlayerState{
-		{Id: player1, Deck: deckList.Decks[0]},
-		{Id: player2, Deck: deckList.Decks[0]},
+		{Id: player1, Deck: defaultDecks.Decks[0]},
+		{Id: player2, Deck: defaultDecks.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
@@ -179,14 +178,13 @@ func TestInvalidUserTurn(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb_data.PlayerState{
-		{Id: player1, Deck: deckList.Decks[0]},
-		{Id: player2, Deck: deckList.Decks[0]},
+		{Id: player1, Deck: defaultDecks.Decks[0]},
+		{Id: player2, Deck: defaultDecks.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
@@ -210,14 +208,13 @@ func TestInitialGameplayWithMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb_data.PlayerState{
-		{Id: player1, Deck: deckList.Decks[0]},
-		{Id: player2, Deck: deckList.Decks[0]},
+		{Id: player1, Deck: defaultDecks.Decks[0]},
+		{Id: player2, Deck: defaultDecks.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
@@ -278,14 +275,13 @@ func TestInitialGameplayWithInvalidMulligan(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	players := []*zb_data.PlayerState{
-		{Id: player1, Deck: deckList.Decks[0]},
-		{Id: player2, Deck: deckList.Decks[0]},
+		{Id: player1, Deck: defaultDecks.Decks[0]},
+		{Id: player2, Deck: defaultDecks.Decks[0]},
 	}
 	seed := int64(0)
 	gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
@@ -346,7 +342,7 @@ func TestPopulateDeckCards(t *testing.T) {
 		},
 	}
 
-	cardLibrary, err := getCardLibrary(ctx, "v1")
+	cardLibrary, err := loadCardLibrary(ctx, "v1")
 	assert.Nil(t, err)
 
 	err = populateDeckCards(cardLibrary, playerStates, true)
@@ -619,15 +615,14 @@ func TestCardPlay(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	t.Run("Normal Card Play", func(t *testing.T) {
 		players := []*zb_data.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
+			{Id: player1, Deck: defaultDecks.Decks[0]},
+			{Id: player2, Deck: defaultDecks.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
@@ -645,8 +640,8 @@ func TestCardPlay(t *testing.T) {
 	})
 	t.Run("Card not found in hand", func(t *testing.T) {
 		players := []*zb_data.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
+			{Id: player1, Deck: defaultDecks.Decks[0]},
+			{Id: player2, Deck: defaultDecks.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, nil)
@@ -666,8 +661,8 @@ func TestCardPlay(t *testing.T) {
 	})
 	t.Run("CardPlay from empty hand", func(t *testing.T) {
 		players := []*zb_data.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
+			{Id: player1, Deck: defaultDecks.Decks[0]},
+			{Id: player2, Deck: defaultDecks.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 5, "v1", players, seed, nil, true, nil)
@@ -733,15 +728,14 @@ func TestCheats(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	var deckList zb_data.DeckList
-	err := ctx.Get(MakeVersionedKey("v1", defaultDecksKey), &deckList)
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
 	assert.Nil(t, err)
 	player1 := "player-1"
 	player2 := "player-2"
 	t.Run("CheatDestroyCardsOnBoard", func(t *testing.T) {
 		players := []*zb_data.PlayerState{
-			{Id: player1, Deck: deckList.Decks[0]},
-			{Id: player2, Deck: deckList.Decks[0]},
+			{Id: player1, Deck: defaultDecks.Decks[0]},
+			{Id: player2, Deck: defaultDecks.Decks[0]},
 		}
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 4, "v1", players, seed, nil, true, []*zb_data.DebugCheatsConfiguration{{Enabled: true}, {Enabled: true}})

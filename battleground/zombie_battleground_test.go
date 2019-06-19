@@ -24,10 +24,10 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-var initRequest = zb_calls.InitRequest {
+var initRequest = zb_calls.InitRequest{
 }
 
-var updateInitRequest = zb_calls.UpdateInitRequest {
+var updateInitRequest = zb_calls.UpdateInitRequest{
 }
 
 func readJsonFileToProtobuf(filename string, message proto.Message) error {
@@ -38,7 +38,7 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 
 	json := string(bytes)
 	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file " + filename)
+		return errors.Wrap(err, "error parsing JSON file "+filename)
 	}
 
 	return nil
@@ -55,14 +55,14 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 	assert.Nil(t, err)
 
 	initRequest = zb_calls.InitRequest{
-		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
-		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
-		Cards:                updateInitRequest.InitData.Cards,
-		Overlords:            updateInitRequest.InitData.Overlords,
-		AiDecks:              updateInitRequest.InitData.AiDecks,
-		Version:              updateInitRequest.InitData.Version,
-		Oracle:               updateInitRequest.InitData.Oracle,
-		OverlordLeveling:     updateInitRequest.InitData.OverlordLeveling,
+		DefaultDecks:      updateInitRequest.InitData.DefaultDecks,
+		DefaultCollection: updateInitRequest.InitData.DefaultCollection,
+		Cards:             updateInitRequest.InitData.Cards,
+		Overlords:         updateInitRequest.InitData.Overlords,
+		AiDecks:           updateInitRequest.InitData.AiDecks,
+		Version:           updateInitRequest.InitData.Version,
+		Oracle:            updateInitRequest.InitData.Oracle,
+		OverlordLeveling:  updateInitRequest.InitData.OverlordLeveling,
 	}
 
 	c = &ZombieBattleground{}
@@ -178,12 +178,113 @@ func TestCardCollectionCardOperations(t *testing.T) {
 	}, t)
 
 	CardCollectionCard, err := c.GetCollection(ctx, &zb_calls.GetCollectionRequest{
-		UserId: "CardUser",
+		UserId:  "CardUser",
 		Version: "v1",
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, 12, len(CardCollectionCard.Cards))
 
+}
+
+func TestUserDataWipe(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "7796b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		UserId:  "DeckUser",
+		Image:   "PathToImage",
+		Version: "v1",
+	}, t)
+
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
+
+	t.Run("Default decks make sense", func(t *testing.T) {
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(defaultDecks.Decks))
+		assert.Equal(t, int64(0), defaultDecks.Decks[0].Id)
+		assert.Equal(t, "Default", defaultDecks.Decks[0].Name)
+	})
+
+	t.Run("ListDecks should have default decks", func(t *testing.T) {
+		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Equal(t, nil, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
+
+	t.Run("Data wipe should reset user data", func(t *testing.T) {
+		// Mess decks up: add new deck, rename the default one
+		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb_data.Deck{
+				Name:       "NewDeck",
+				OverlordId: 1,
+				Cards: []*zb_data.DeckCard{
+					{
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
+					},
+					{
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
+					},
+				},
+			},
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		deckResponse.Decks[0].Name = "RenamedDefaultDeck"
+
+		err = c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: deckResponse.Decks[0],
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		// Enable data wipe
+		contractConfiguration, err := loadContractConfiguration(ctx)
+		assert.Nil(t, err)
+
+		contractConfiguration.DataWipeConfiguration = append(
+			contractConfiguration.DataWipeConfiguration,
+			&zb_data.DataWipeConfiguration{
+				Version:   "v1",
+				WipeDecks: true,
+			},
+		)
+
+		err = saveContractConfiguration(ctx, contractConfiguration)
+		assert.Nil(t, err)
+
+		// Re-login and check if data is reset
+		err = c.Login(ctx, &zb_calls.LoginRequest{Version: "v1", UserId: "DeckUser"})
+		assert.Nil(t, err)
+
+		deckResponse, err = c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
 }
 
 func TestDeckOperations(t *testing.T) {
@@ -201,7 +302,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("ListDecks", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 		assert.Equal(t, nil, err)
@@ -212,8 +313,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 0xDEADBEEF,
+			UserId:  "DeckUser",
+			DeckId:  0xDEADBEEF,
 			Version: "v1",
 		})
 		assert.Equal(t, (*zb_calls.GetDeckResponse)(nil), deckResponse)
@@ -222,8 +323,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 1,
+			UserId:  "DeckUser",
+			DeckId:  1,
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -241,11 +342,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -256,7 +357,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
 
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 
@@ -272,11 +373,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   200,
+						Amount:  200,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   100,
+						Amount:  100,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -295,11 +396,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   2,
+						Amount:  2,
 						CardKey: battleground_proto.CardKey{MouldId: -100},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: -101},
 					},
 				},
@@ -318,11 +419,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -341,11 +442,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -365,11 +466,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -379,8 +480,8 @@ func TestDeckOperations(t *testing.T) {
 		assert.Nil(t, err)
 
 		getDeckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 2,
+			UserId:  "DeckUser",
+			DeckId:  2,
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -421,11 +522,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -445,11 +546,11 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
+						Amount:  1,
 						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
@@ -463,8 +564,8 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("DeleteDeck", func(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
 		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
-			UserId: "DeckUser",
-			DeckId: createDeckResponse.DeckId,
+			UserId:  "DeckUser",
+			DeckId:  createDeckResponse.DeckId,
 			Version: "v1",
 		})
 
@@ -473,8 +574,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 0xDEADBEEF,
+			UserId:  "DeckUser",
+			DeckId:  0xDEADBEEF,
 			Version: "v1",
 		})
 
@@ -547,7 +648,7 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		assert.Nil(t, err)
 
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 
@@ -646,7 +747,7 @@ func TestFindMatchOperations(t *testing.T) {
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-1",
+			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -656,7 +757,7 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-2",
+			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -870,9 +971,9 @@ func TestOverlordLeveling(t *testing.T) {
 		notificationEndMatch := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
 		assert.Equal(t, int64(1), notificationEndMatch.OverlordId)
 		assert.Equal(t, int32(2), notificationEndMatch.OldLevel)
-		assert.Equal(t, int64(levelingData.Fixed + levelingData.ExperienceStep), notificationEndMatch.OldExperience)
+		assert.Equal(t, int64(levelingData.Fixed+levelingData.ExperienceStep), notificationEndMatch.OldExperience)
 		assert.Equal(t, int32(3), notificationEndMatch.NewLevel)
-		assert.Equal(t, getRequiredExperienceForLevel(levelingData, 2) + int64(addedExperience), notificationEndMatch.NewExperience)
+		assert.Equal(t, getRequiredExperienceForLevel(levelingData, 2)+int64(addedExperience), notificationEndMatch.NewExperience)
 
 		assert.Equal(t, 0, len(notificationEndMatch.Rewards))
 	})
@@ -1021,9 +1122,9 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 
 	t.Run("EndMatch", func(t *testing.T) {
 		response, err := c.EndMatch(ctx, &zb_calls.EndMatchRequest{
-			UserId:   "player-2",
-			MatchId:  matchID,
-			WinnerId: "player-2",
+			UserId:           "player-2",
+			MatchId:          matchID,
+			WinnerId:         "player-2",
 			MatchExperiences: []int64{0, 0},
 		})
 		assert.Nil(t, err)
@@ -1613,7 +1714,7 @@ func TestGameStateOperations(t *testing.T) {
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-1",
+			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -1623,7 +1724,7 @@ func TestGameStateOperations(t *testing.T) {
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-2",
+			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)

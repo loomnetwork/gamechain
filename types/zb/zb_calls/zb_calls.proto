@@ -62,8 +62,18 @@ message GetContractStateResponse {
 message UpdateContractConfigurationRequest {
     bool setFiatPurchaseContractVersion = 1;
     uint64 fiatPurchaseContractVersion = 2;
+
     bool setInitialFiatPurchaseTxId = 3;
     BigUInt initialFiatPurchaseTxId = 4;
+
+    bool setUseCardLibraryAsUserCollection = 5;
+    bool useCardLibraryAsUserCollection = 6;
+
+    bool setDataWipeConfiguration = 7;
+    DataWipeConfiguration dataWipeConfiguration = 8;
+
+    bool setDebugMode = 9;
+    bool debugMode = 10;
 }
 
 message SetLastPlasmaBlockNumberRequest {
@@ -463,4 +473,11 @@ message DebugGetPendingCardAmountChangeItemsRequest {
 
 message DebugGetPendingCardAmountChangeItemsResponse {
     CardAmountChangeItemsContainer container = 1;
+}
+
+message WipeUserDataRequest {
+    string version = 1;
+    string userId = 2;
+    bool wipeDecks = 3;
+    bool wipeOverlordsUserData = 4;
 }

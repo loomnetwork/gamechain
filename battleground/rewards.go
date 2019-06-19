@@ -108,7 +108,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 		return err
 	}
 
-	cardCollection, err := loadCardCollectionByUserId(ctx, userID, version)
+	cardCollection, err := loadCardCollectionRaw(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 			Amount:  amount,
 		})
 	}
-	return saveCardCollectionByUserId(ctx, userID, cardCollection)
+	return saveCardCollection(ctx, userID, cardCollection)
 }
 
 // loads the list of card amount changes, merges with changes, saves the list back

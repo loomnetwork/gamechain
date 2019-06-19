@@ -27,7 +27,7 @@ var (
 	pendingMatchesPrefix = []byte("pending-matches")
 	matchMakingPrefix    = []byte("matchmaking")
 
-	cardListKey                 = []byte("cardlist")
+	cardLibraryKey              = []byte("cardlist")
 	overlordPrototypeListKey    = []byte("overlord-prototype-list")
 	defaultDecksKey             = []byte("default-deck")
 	defaultCollectionKey        = []byte("default-collection")
@@ -83,6 +83,10 @@ func UserNotificationsKey(userID string) []byte {
 	return []byte("user:" + userID + ":notifications")
 }
 
+func UserExecutedDataWipesKey(userID string) []byte {
+	return []byte("user:" + userID + ":executed-data-wipes")
+}
+
 func MatchKey(matchID int64) []byte {
 	return []byte(fmt.Sprintf("match:%d", matchID))
 }
@@ -104,7 +108,7 @@ func MakeVersionedKey(version string, key []byte) []byte {
 }
 
 func MakeAddressToUserIdKey(address loom.Address) []byte {
-	return []byte("address-to-userid:" + string(address.Local))
+	return []byte("address-to-user-id:" + string(address.Local))
 }
 
 func loadPendingCardAmountChangeItemsContainerByAddress(ctx contract.StaticContext, address loom.Address) (*zb_data.CardAmountChangeItemsContainer, error) {
@@ -125,9 +129,8 @@ func loadPendingCardAmountChangeItemsContainerByAddress(ctx contract.StaticConte
 }
 
 func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, address loom.Address, container *zb_data.CardAmountChangeItemsContainer,) error {
-	err := ctx.Set(AddressToPendingCardAmountChangeItemsKey(address), container)
-	if err != nil {
-		return err
+	if err := ctx.Set(AddressToPendingCardAmountChangeItemsKey(address), container); err != nil {
+		return errors.Wrap(err, "error saving PendingCardAmountChangeItemsContainerByAddress")
 	}
 
 	return nil
@@ -136,9 +139,8 @@ func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, ad
 func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
 	var userId zb_data.UserIdContainer
 
-	err := ctx.Get(MakeAddressToUserIdKey(address), &userId)
-	if err != nil {
-		return "", err
+	if err := ctx.Get(MakeAddressToUserIdKey(address), &userId); err != nil {
+		return "", errors.Wrap(err, "error loading user id by address")
 	}
 
 	return userId.UserId, nil
@@ -146,9 +148,8 @@ func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (stri
 
 func saveUserIdAddress(ctx contract.Context, userId string, address loom.Address) error {
 	userIdContainer := zb_data.UserIdContainer{UserId: userId}
-	err := ctx.Set(MakeAddressToUserIdKey(address), &userIdContainer)
-	if err != nil {
-		return err
+	if err := ctx.Set(MakeAddressToUserIdKey(address), &userIdContainer); err != nil {
+		return errors.Wrap(err, "error saving user id for address")
 	}
 
 	return nil
@@ -156,85 +157,58 @@ func saveUserIdAddress(ctx contract.Context, userId string, address loom.Address
 
 func saveContractState(ctx contract.Context, state *zb_data.ContractState) error {
 	if err := ctx.Set(contractStateKey, state); err != nil {
-		return err
+		return errors.Wrap(err, "error saving contract state")
 	}
 	return nil
 }
 
 func loadContractState(ctx contract.StaticContext) (*zb_data.ContractState, error) {
 	var m zb_data.ContractState
-	err := ctx.Get(contractStateKey, &m)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get contract state")
+	if err := ctx.Get(contractStateKey, &m); err != nil {
+		return nil, errors.Wrap(err, "error loading contract state")
 	}
+	return &m, nil
+}
+
+func loadContractConfiguration(ctx contract.StaticContext) (*zb_data.ContractConfiguration, error) {
+	var m zb_data.ContractConfiguration
+	if err := ctx.Get(contractConfigurationKey, &m); err != nil {
+		return nil, errors.Wrap(err, "error loading contract configuration")
+	}
+
 	return &m, nil
 }
 
 func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConfiguration) error {
 	if err := ctx.Set(contractConfigurationKey, state); err != nil {
-		return errors.Wrap(err, "failed to save contract configuration")
+		return errors.Wrap(err, "error saving contract configuration")
 	}
 	return nil
 }
 
-func loadContractConfiguration(ctx contract.StaticContext) (*zb_data.ContractConfiguration, error) {
-	var m zb_data.ContractConfiguration
-	err := ctx.Get(contractConfigurationKey, &m)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to load contract configuration")
-	}
-
-	return &m, nil
-}
-
-func loadCardCollectionByUserId(ctx contract.Context, userID string, version string) (*zb_data.CardCollectionList, error) {
+func loadCardCollectionRaw(ctx contract.Context, userID string) (*zb_data.CardCollectionList, error) {
 	var userCollection zb_data.CardCollectionList
-	err := ctx.Get(CardCollectionKey(userID), &userCollection)
-	if err != nil {
+	if err := ctx.Get(CardCollectionKey(userID), &userCollection); err != nil {
 		if err == contract.ErrNotFound {
 			userCollection.Cards = []*zb_data.CardCollectionCard{}
 		} else {
-			return nil, err
-		}
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &userCollection, nil
-}
-
-func saveCardCollectionByUserId(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
-	return ctx.Set(CardCollectionKey(userID), cardCollection)
-}
-
-// loadCardCollectionFromAddress loads address mapping to card collection
-func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data.CardCollectionList, error) {
-	var userCollection zb_data.CardCollectionList
-	addr := string(ctx.Message().Sender.Local)
-	err := ctx.Get(CardCollectionKey(addr), &userCollection)
-	if err != nil {
-		if err == contract.ErrNotFound {
-			userCollection.Cards = []*zb_data.CardCollectionCard{}
-		} else {
-			return nil, err
+			return nil, errors.Wrap(err, "error loading card collection")
 		}
 	}
 
 	return &userCollection, nil
 }
 
-// saveCardCollectionByAddress save card collection using address as a key
-func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.CardCollectionList) error {
-	addr := string(ctx.Message().Sender.Local)
-	return ctx.Set(CardCollectionKey(addr), cardCollection)
+func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
+	if err := ctx.Set(CardCollectionKey(userID), cardCollection); err != nil {
+		return errors.Wrap(err, "error saving card collection")
+	}
+	return nil
 }
 
 func loadPendingMintingTransactionReceipts(ctx contract.StaticContext, userID string) (*zb_data.MintingTransactionReceiptCollection, error) {
 	var receiptCollection zb_data.MintingTransactionReceiptCollection
-	err := ctx.Get(PendingMintingTransactionReceiptCollectionKey(userID), &receiptCollection)
-	if err != nil {
+	if err := ctx.Get(PendingMintingTransactionReceiptCollectionKey(userID), &receiptCollection); err != nil {
 		if err == contract.ErrNotFound {
 			receiptCollection.Receipts = []*zb_data.MintingTransactionReceipt{}
 		} else {
@@ -245,44 +219,64 @@ func loadPendingMintingTransactionReceipts(ctx contract.StaticContext, userID st
 	return &receiptCollection, nil
 }
 
+func loadUserExecutedDataWipesList(ctx contract.StaticContext, userID string) (*zb_data.UserExecutedDataWipesList, error) {
+	var wipesList zb_data.UserExecutedDataWipesList
+	if err := ctx.Get(UserExecutedDataWipesKey(userID), &wipesList); err != nil {
+		if err == contract.ErrNotFound {
+			wipesList.Versions = []string{}
+		} else {
+			return nil, errors.Wrap(err, "error loading user's executed data wipes")
+		}
+	}
+	return &wipesList, nil
+}
+
+func saveUserExecutedDataWipesList(ctx contract.Context, userID string, dataWipesList *zb_data.UserExecutedDataWipesList) error {
+	if err := ctx.Set(UserExecutedDataWipesKey(userID), dataWipesList); err != nil {
+		return errors.Wrap(err, "error saving user's executed data wipes")
+	}
+	return nil
+}
+
 func savePendingMintingTransactionReceipts(ctx contract.Context, userID string, receiptCollection *zb_data.MintingTransactionReceiptCollection) error {
-	err := ctx.Set(PendingMintingTransactionReceiptCollectionKey(userID), receiptCollection)
-	if err != nil {
-		err = errors.Wrap(err, "failed to save minting transaction receipts")
+	if err := ctx.Set(PendingMintingTransactionReceiptCollectionKey(userID), receiptCollection); err != nil {
+		return errors.Wrap(err, "failed to save minting transaction receipts")
 	}
 
-	return err
+	return nil
 }
 
 func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
 	_, err := fixDeckListCardVariants(ctx, decks, version)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error saving decks")
 	}
 
-	return ctx.Set(DecksKey(userID), decks)
+	if err = ctx.Set(DecksKey(userID), decks); err != nil {
+		return errors.Wrap(err, "error saving decks")
+	}
+	return nil
 }
 
 func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
 	var deckList zb_data.DeckList
-	err := ctx.Get(DecksKey(userID), &deckList)
-	if err != nil {
+	if err := ctx.Get(DecksKey(userID), &deckList); err != nil {
 		if err == contract.ErrNotFound {
 			deckList.Decks = []*zb_data.Deck{}
 		} else {
-			return nil, err
+			return nil, errors.Wrap(err, "error loading decks")
 		}
 	}
 
 	deckListChanged, err := fixDeckListCardVariants(ctx, &deckList, version)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "error loading decks")
 	}
 
 	if deckListChanged {
 		err = saveDecks(ctx, version, userID, &deckList)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "error loading decks")
 		}
 	}
 
@@ -290,13 +284,15 @@ func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.De
 }
 
 func saveAIDecks(ctx contract.Context, version string, decks *zb_data.AIDeckList) error {
-	return ctx.Set(MakeVersionedKey(version, aiDecksKey), decks)
+	if err := ctx.Set(MakeVersionedKey(version, aiDecksKey), decks); err != nil {
+		return errors.Wrap(err, "error saving AI decks")
+	}
+	return nil
 }
 
 func loadAIDecks(ctx contract.StaticContext, version string) (*zb_data.AIDeckList, error) {
 	var deckList zb_data.AIDeckList
-	err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList)
-	if err != nil {
+	if err := ctx.Get(MakeVersionedKey(version, aiDecksKey), &deckList); err != nil {
 		return nil, err
 	}
 	return &deckList, nil
@@ -304,41 +300,45 @@ func loadAIDecks(ctx contract.StaticContext, version string) (*zb_data.AIDeckLis
 
 func loadOverlordPrototypes(ctx contract.StaticContext, version string) (*zb_data.OverlordPrototypeList, error) {
 	var overlordPrototypes zb_data.OverlordPrototypeList
-	err := ctx.Get(MakeVersionedKey(version, overlordPrototypeListKey), &overlordPrototypes)
-	if err != nil {
+	if err := ctx.Get(MakeVersionedKey(version, overlordPrototypeListKey), &overlordPrototypes); err != nil {
 		return nil, errors.Wrap(err, "error loading overlord prototypes")
 	}
 	return &overlordPrototypes, nil
 }
 
 func saveOverlordPrototypes(ctx contract.Context, version string, overlordPrototypes *zb_data.OverlordPrototypeList) error {
-	return ctx.Set(MakeVersionedKey(version, overlordPrototypeListKey), overlordPrototypes)
+	if err := ctx.Set(MakeVersionedKey(version, overlordPrototypeListKey), overlordPrototypes); err != nil {
+		return errors.Wrap(err, "error saving overlord prototypes")
+	}
+	return nil
 }
 
-func loadOverlordsUserData(ctx contract.StaticContext, userID string) (*zb_data.OverlordUserDataList, error) {
+func loadOverlordUserDataList(ctx contract.StaticContext, userID string) (*zb_data.OverlordUserDataList, error) {
 	var overlordsUserData zb_data.OverlordUserDataList
-	err := ctx.Get(OverlordsUserDataKey(userID), &overlordsUserData)
-	if err != nil {
+	if err := ctx.Get(OverlordsUserDataKey(userID), &overlordsUserData); err != nil {
 		if err == contract.ErrNotFound {
 			overlordsUserData.OverlordsUserData = []*zb_data.OverlordUserData{}
 		} else {
-			return nil, errors.Wrap(err, "error loading overlords user data")
+			return nil, errors.Wrap(err, "error loading overlords user data list")
 		}
 	}
 	return &overlordsUserData, nil
 }
 
-func saveOverlordsUserData(ctx contract.Context, userID string, overlordsUserData *zb_data.OverlordUserDataList) error {
-	return ctx.Set(OverlordsUserDataKey(userID), overlordsUserData)
+func saveOverlordUserDataList(ctx contract.Context, userID string, overlordsUserData *zb_data.OverlordUserDataList) error {
+	if err := ctx.Set(OverlordsUserDataKey(userID), overlordsUserData); err != nil {
+		return errors.Wrap(err, "error saving overlord user data lis")
+	}
+	return nil
 }
 
 func loadOverlordUserInstances(ctx contract.StaticContext, version string, userID string) ([]*zb_data.OverlordUserInstance, error) {
 	prototypeList, err := loadOverlordPrototypes(ctx, version)
 	if err != nil {
-		return nil, errors.Wrap(err, "error loading overlordUserData user instances")
+		return nil, errors.Wrap(err, "error loading overlord user instances")
 	}
 
-	userDataList, err := loadOverlordsUserData(ctx, userID)
+	userDataList, err := loadOverlordUserDataList(ctx, userID)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading overlord user instances")
 	}
@@ -375,24 +375,6 @@ func getOverlordsUserDataFromOverlordUserInstances(overlordUserInstances []*zb_d
 	return overlordsUserData
 }
 
-/*
-func saveContractState(ctx contract.Context, state *zb.ContractState) error {
-	if err := ctx.Set(contractStateKey, state); err != nil {
-		return err
-	}
-	return nil
-}
-
-func loadContractState(ctx contract.StaticContext) (*zb.ContractState, error) {
-	var m zb.ContractState
-	err := ctx.Get(contractStateKey, &m)
-	if err != nil {
-		return nil, err
-	}
-	return &m, nil
-}
- */
-
 func loadOverlordLevelingData(ctx contract.StaticContext, version string) (*zb_data.OverlordLevelingData, error) {
 	var overlordLevelingData zb_data.OverlordLevelingData
 	if err := ctx.Get(MakeVersionedKey(version, overlordLevelingDataKey), &overlordLevelingData); err != nil {
@@ -408,6 +390,28 @@ func saveOverlordLevelingData(ctx contract.Context, version string, overlordLeve
 	}
 
 	return nil
+}
+
+// loadCardCollectionFromAddress loads address mapping to card collection
+func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data.CardCollectionList, error) {
+	var userCollection zb_data.CardCollectionList
+	addr := string(ctx.Message().Sender.Local)
+	err := ctx.Get(CardCollectionKey(addr), &userCollection)
+	if err != nil {
+		if err == contract.ErrNotFound {
+			userCollection.Cards = []*zb_data.CardCollectionCard{}
+		} else {
+			return nil, err
+		}
+	}
+
+	return &userCollection, nil
+}
+
+// saveCardCollectionByAddress save card collection using address as a key
+func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.CardCollectionList) error {
+	addr := string(ctx.Message().Sender.Local)
+	return ctx.Set(CardCollectionKey(addr), cardCollection)
 }
 
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
@@ -456,15 +460,6 @@ func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb_data
 func getDeckByID(deckList []*zb_data.Deck, id int64) *zb_data.Deck {
 	for _, deck := range deckList {
 		if deck.Id == id {
-			return deck
-		}
-	}
-	return nil
-}
-
-func getDeckByName(deckList []*zb_data.Deck, name string) *zb_data.Deck {
-	for _, deck := range deckList {
-		if strings.EqualFold(deck.Name, name) {
 			return deck
 		}
 	}
@@ -627,6 +622,78 @@ func loadUserNotifications(ctx contract.StaticContext, userID string) (*zb_data.
 	return &notificationList, nil
 }
 
+func loadCardLibraryRaw(ctx contract.StaticContext, version string) (*zb_data.CardList, error) {
+	var cardList zb_data.CardList
+	if err := ctx.Get(MakeVersionedKey(version, cardLibraryKey), &cardList); err != nil {
+		return nil, errors.Wrap(err, "error loading card library")
+	}
+
+	return &cardList, nil
+}
+
+func loadCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardList, error) {
+	cardList, err := loadCardLibraryRaw(ctx, version)
+	if err != nil {
+		return nil, err
+	}
+
+	mouldIdToCard, err := getCardKeyToCardMap(cardList.Cards)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, card := range cardList.Cards {
+		err = applySourceMouldIdAndOverrides(card, mouldIdToCard)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return cardList, nil
+}
+
+func saveCardLibrary(ctx contract.Context, version string, cardList *zb_data.CardList) error {
+	if err := ctx.Set(MakeVersionedKey(version, cardLibraryKey), cardList); err != nil {
+		return errors.Wrap(err, "error saving card library")
+	}
+
+	return nil
+}
+
+func loadDefaultCardCollection(ctx contract.StaticContext, version string) (*zb_data.CardCollectionList, error) {
+	var cardCollectionList zb_data.CardCollectionList
+	if err := ctx.Get(MakeVersionedKey(version, defaultCollectionKey), &cardCollectionList); err != nil {
+		return nil, errors.Wrap(err, "error loading default card collection")
+	}
+
+	return &cardCollectionList, nil
+}
+
+func saveDefaultCardCollection(ctx contract.Context, version string, cardCollectionList *zb_data.CardCollectionList) error {
+	if err := ctx.Set(MakeVersionedKey(version, defaultCollectionKey), cardCollectionList); err != nil {
+		return errors.Wrap(err, "error saving default card collection")
+	}
+
+	return nil
+}
+
+func loadDefaultDecks(ctx contract.StaticContext, version string) (*zb_data.DeckList, error) {
+	var deckList zb_data.DeckList
+	if err := ctx.Get(MakeVersionedKey(version, defaultDecksKey), &deckList); err != nil {
+		return nil, errors.Wrap(err, "error loading default decks")
+	}
+
+	return &deckList, nil
+}
+
+func saveDefaultDecks(ctx contract.Context, version string, deckList *zb_data.DeckList) error {
+	if err := ctx.Set(MakeVersionedKey(version, defaultDecksKey), deckList); err != nil {
+		return errors.Wrap(err, "error saving default decks")
+	}
+
+	return nil
+}
+
 func addGameModeToList(ctx contract.Context, gameMode *zb_data.GameMode) error {
 	gameModeList, err := loadGameModeList(ctx)
 	if gameModeList == nil {
@@ -696,27 +763,6 @@ func deleteGameMode(gameModeList *zb_data.GameModeList, ID string) (*zb_data.Gam
 	return &zb_data.GameModeList{GameModes: newList}, len(newList) != len(gameModeList.GameModes)
 }
 
-func getCardLibrary(ctx contract.StaticContext, version string) (*zb_data.CardList, error) {
-	var cardList zb_data.CardList
-	if err := ctx.Get(MakeVersionedKey(version, cardListKey), &cardList); err != nil {
-		return nil, fmt.Errorf("error getting card library: %s", err)
-	}
-
-	mouldIdToCard, err := getCardKeyToCardMap(cardList.Cards)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, card := range cardList.Cards {
-		err = applySourceMouldIdAndOverrides(card, mouldIdToCard)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return &cardList, nil
-}
-
 func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.CardKey) (*zb_data.Card, error) {
 	for _, card := range cardList.Cards {
 		if card.CardKey == cardKey {
@@ -727,14 +773,14 @@ func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.Car
 }
 
 func fixDeckListCardVariants(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
-	cardLibrary, err := getCardLibrary(ctx, version)
+	cardLibrary, err := loadCardLibrary(ctx, version)
 	if err != nil {
-		return false, err
+		return false, errors.Wrap(err, "error fixing card variants")
 	}
 
 	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
 	if err != nil {
-		return false, err
+		return false, errors.Wrap(err, "error fixing card variants")
 	}
 
 	changed = false
