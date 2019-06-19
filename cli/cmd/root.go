@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 
 	"github.com/loomnetwork/go-loom/client"
@@ -23,22 +24,19 @@ var commonTxObjs struct {
 	rpcClient  *client.DAppChainRPCClient
 }
 
-func readKeyFile() error {
-	fileContents, err := ioutil.ReadFile(rootCmdArgs.privateKeyFilePath)
+func readKeyFile(path string) ([]byte, error) {
+	fileContents, err := ioutil.ReadFile(path)
 	if err != nil {
-		return fmt.Errorf("unable to read private key from file: %s",
-			rootCmdArgs.privateKeyFilePath)
+		return nil, errors.Wrapf(err, "unable to read private key from file: %s", path)
 	}
 
 	decodeBuffer := make([]byte, len(fileContents))
 	bytesDecoded, err := base64.StdEncoding.Decode(decodeBuffer, fileContents)
 	if err != nil {
-		return fmt.Errorf("invalid base64 content in private key file: %s",
-			rootCmdArgs.privateKeyFilePath)
+		return nil, errors.Wrapf(err, "invalid base64 content in private key file: %s", path)
 	}
 
-	commonTxObjs.privateKey = decodeBuffer[:bytesDecoded]
-	return nil
+	return decodeBuffer[:bytesDecoded], nil
 }
 
 func connectToRPC(chainID, readURI, writeURI string) error {
@@ -65,7 +63,7 @@ var rootCmd = &cobra.Command{
 
 		var err error
 
-		err = readKeyFile()
+		commonTxObjs.privateKey, err = readKeyFile(rootCmdArgs.privateKeyFilePath)
 		if err != nil {
 			return fmt.Errorf("error while reading private key file: %s", err.Error())
 		}

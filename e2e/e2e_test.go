@@ -2,42 +2,106 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/loomnetwork/e2e/common"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
-func setupInternalPlugin(dir string) error {
-	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
-		return err
+type testdata struct {
+	name       string
+	testFile   string
+	validators int
+	accounts   int
+	genFile    string
+	replacementTokens map[string]string
+}
+
+var (
+	isZbCliBuilt = false
+	isGamechainBuilt = false
+)
+
+func getLoomchainDir() string {
+	goPath := os.Getenv("GOPATH")
+	return path.Join(goPath, "src", "github.com/loomnetwork/loomchain")
+}
+
+func buildGamechain(t *testing.T) {
+	if isGamechainBuilt {
+		return
 	}
-	binary, err := exec.LookPath("go")
+
+	// build loomchain with gamechain compiled in
+	if err := runCommand(getLoomchainDir(), "make", "gamechain"); err != nil {
+		t.Fatal(err)
+	}
+
+	isGamechainBuilt = true
+}
+
+func buildZbCli( t *testing.T) {
+	if isZbCliBuilt {
+		return
+	}
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := runCommand(filepath.Dir(currentDir), "make", "cli", "-B"); err != nil {
+		t.Fatal(err)
+	}
+
+	isZbCliBuilt = true
+}
+
+func runCommand(workingDir, binary string, args ...string) error {
+	binary, err := exec.LookPath(binary)
 	if err != nil {
 		return err
 	}
 
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	//noinspection ALL
+	defer os.Chdir(currentDir)
+	err = os.Chdir(workingDir)
+	if err != nil {
+		return err
+	}
+
+	args = append([]string{binary}, args...)
+
 	cmd := exec.Cmd{
 		Path: binary,
-		Args: []string{binary, "build", "-buildmode", "plugin", "-o", path.Join(dir, "zombiebattleground.so.1.0.0"), "github.com/loomnetwork/gamechain/plugin"},
+		Args: args,
 	}
-	if err := cmd.Run(); err != nil {
-		return err
+	combinedOutput, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("fail to execute command: %s\n%v\n%s", strings.Join(cmd.Args, " "), err, string(combinedOutput))
 	}
 
 	return nil
 }
 
-func rune2e(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
-	singlenode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+func runE2E(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
+	singleNode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+
 	// skip multi-node tests?
-	if singlenode && validators > 1 {
+	if singleNode && validators > 1 {
 		return
 	}
 
@@ -45,19 +109,19 @@ func rune2e(t *testing.T, name string, testFile string, validators int, accounts
 	if err != nil {
 		t.Fatal(err)
 	}
-	binary, err := exec.LookPath("go")
+
+	buildZbCli(t)
+
+	// copy zb-cli to basedir
+	currentDir, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
 	}
-	// required binary
-	cmd := exec.Cmd{
-		Dir:  config.BaseDir,
-		Path: binary,
-		Args: []string{binary, "build", "-o", "zb-cli", "github.com/loomnetwork/gamechain/cli"},
-	}
-	if err := cmd.Run(); err != nil {
-		t.Fatal(fmt.Errorf("fail to execute command: %s\n%v", strings.Join(cmd.Args, " "), err))
-	}
+
+	zbCliBytes, err := ioutil.ReadFile(path.Join(currentDir, "..", "bin", "zb-cli"))
+	assert.Nil(t, err)
+	err = ioutil.WriteFile(path.Join(config.BaseDir, "zb-cli"), zbCliBytes, os.ModePerm)
+	assert.Nil(t, err)
 
 	if err := common.DoRun(*config); err != nil {
 		t.Fatal(err)
@@ -67,82 +131,112 @@ func rune2e(t *testing.T, name string, testFile string, validators int, accounts
 	time.Sleep(3000 * time.Millisecond)
 
 	// clean up test data if successful
+	//noinspection ALL
 	os.RemoveAll(config.BaseDir)
-
 }
 
-func TestE2EAccountDeck(t *testing.T) {
-	tests := []struct {
-		name       string
-		testFile   string
-		validators int
-		accounts   int
-		genFile    string
-	}{
-		{"zb-account-1", "test_account.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-account-4", "test_account.toml", 4, 10, "e2e.genesis.json"},
-		{"zb-deck-1", "test_deck.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-deck-4", "test_deck.toml", 4, 10, "e2e.genesis.json"},
-		{"zb-overlord-1", "test_overlord.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-overlord-4", "test_overlord.toml", 4, 10, "e2e.genesis.json"},
+func prepareTestFile(t *testing.T, testFile string, replacementTokens map[string]string) string {
+	data, err := ioutil.ReadFile(testFile)
+	assert.Nil(t, err)
+	str := string(data)
+
+	if len(replacementTokens) > 0 {
+		for tokenKey, tokenValue := range replacementTokens {
+			tokenKey = "{{" + tokenKey + "}}"
+
+			str = strings.Replace(str, tokenKey, tokenValue, -1)
+		}
 	}
 
-	// required to have loom binary
-	common.LoomPath = "loom"
-	common.ContractDir = "./contracts"
-	// required internal contract to resolve port conflicts
-	err := setupInternalPlugin(common.ContractDir)
+	_, testFileName := filepath.Split(testFile)
+
+	tempFile, err := ioutil.TempFile("", testFileName)
 	assert.Nil(t, err)
+	_, err = tempFile.WriteString(str)
+	assert.Nil(t, err)
+	//noinspection ALL
+	defer tempFile.Close()
+
+	return tempFile.Name()
+}
+
+func runE2ETests(t *testing.T, tests []testdata) {
+	// required to have loom binary
+	common.LoomPath = path.Join(getLoomchainDir(), "gamechain")
+	common.ContractDir = "./contracts"
+
+	buildGamechain(t)
+
+	// create ContractDir to make e2e happy
+	if err := os.MkdirAll(common.ContractDir, os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
 
 	for _, test := range tests {
-		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
+		tempTestFilePath := prepareTestFile(t, test.testFile, test.replacementTokens)
+
+		//noinspection ALL
+		defer os.Remove(tempTestFilePath)
+		runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
 	}
+}
+
+func TestE2EAccount(t *testing.T) {
+	tests := []testdata {
+		{"zb-account-1", "test_account.toml", 1, 10, "../test_data/simple-genesis.json", nil},
+		{"zb-account-4", "test_account.toml", 4, 10, "../test_data/simple-genesis.json", nil},
+	}
+
+	runE2ETests(t, tests)
+}
+
+func TestE2EDeck(t *testing.T) {
+	tests := []testdata {
+		{"zb-deck-1", "test_deck.toml", 1, 10, "../test_data/simple-genesis.json", nil},
+		{"zb-deck-4", "test_deck.toml", 4, 10, "../test_data/simple-genesis.json", nil},
+	}
+
+	runE2ETests(t, tests)
+}
+
+func TestE2EOverlord(t *testing.T) {
+	tests := []testdata {
+		{"zb-overlord-1", "test_overlord.toml", 1, 10, "../test_data/simple-genesis.json", nil},
+		{"zb-overlord-4", "test_overlord.toml", 4, 10, "../test_data/simple-genesis.json", nil},
+	}
+
+	runE2ETests(t, tests)
 }
 
 func TestE2EMatchMaking(t *testing.T) {
-	tests := []struct {
-		name       string
-		testFile   string
-		validators int
-		accounts   int
-		genFile    string
-	}{
-		{"zb-findmatch-1", "test_findmatch.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-findmatch-4", "test_findmatch.toml", 4, 10, "e2e.genesis.json"},
+	tests := []testdata {
+		{"zb-findmatch-1", "test_findmatch.toml", 1, 10, "../test_data/simple-genesis.json", nil},
+		{"zb-findmatch-4", "test_findmatch.toml", 4, 10, "../test_data/simple-genesis.json", nil},
 	}
 
-	// required to have loom binary
-	common.LoomPath = "loom"
-	common.ContractDir = "./contracts"
-	// required internal contract to resolve port conflicts
-	err := setupInternalPlugin(common.ContractDir)
-	assert.Nil(t, err)
-
-	for _, test := range tests {
-		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
-	}
+	runE2ETests(t, tests)
 }
 
 func TestE2EGameplay(t *testing.T) {
-	tests := []struct {
-		name       string
-		testFile   string
-		validators int
-		accounts   int
-		genFile    string
-	}{
-		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "e2e.genesis.json"},
-		{"zb-gameplay-4", "test_gameplay.toml", 4, 10, "e2e.genesis.json"},
+	replacementTokens := map[string]string{
+		"BackendLogicEnabled": "false",
+	}
+	tests := []testdata{
+		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../test_data/simple-genesis.json", replacementTokens},
+		{"zb-gameplay-1", "test_gameplay.toml", 4, 10, "../test_data/simple-genesis.json", replacementTokens},
 	}
 
-	// required to have loom binary
-	common.LoomPath = "loom"
-	common.ContractDir = "./contracts"
-	// required internal contract to resolve port conflicts
-	err := setupInternalPlugin(common.ContractDir)
-	assert.Nil(t, err)
+	runE2ETests(t, tests)
+}
 
-	for _, test := range tests {
-		rune2e(t, test.name, test.testFile, test.validators, test.accounts, test.genFile)
+func TestE2EGameplayBackendLogic(t *testing.T) {
+	replacementTokens := map[string]string{
+		"BackendLogicEnabled": "true",
 	}
+	tests := []testdata{
+		{"zb-gameplay-1", "test_gameplay.toml", 1, 10, "../test_data/simple-genesis.json", replacementTokens},
+		{"zb-gameplay-1", "test_gameplay.toml", 4, 10, "../test_data/simple-genesis.json", replacementTokens},
+	}
+
+	runE2ETests(t, tests)
 }

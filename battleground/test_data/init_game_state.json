@@ -6,7 +6,9 @@
       "cardsInHand": [
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -87,7 +89,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -168,7 +172,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -249,7 +255,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -332,7 +340,9 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -413,7 +423,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -494,7 +506,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -575,7 +589,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -656,7 +672,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -737,7 +755,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -818,7 +838,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -899,7 +921,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -980,7 +1004,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1061,7 +1087,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1142,7 +1170,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1223,7 +1253,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1304,7 +1336,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1385,7 +1419,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1466,7 +1502,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1547,7 +1585,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1628,7 +1668,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1709,7 +1751,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1790,7 +1834,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1871,7 +1917,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1952,7 +2000,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2033,7 +2083,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2114,7 +2166,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2195,7 +2249,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2276,7 +2332,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2357,7 +2415,9 @@
         },
         {
           "prototype": {
-            "mouldId": 25,
+            "cardKey": {
+              "mouldId": 25
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2442,7 +2502,9 @@
         "name": "custom deck",
         "cards": [
           {
-            "cardName": "Ghoul",
+            "cardKey": {
+              "mouldId": 70
+            },
             "amount": "30"
           }
         ]
@@ -2463,7 +2525,9 @@
       "cardsInHand": [
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2517,7 +2581,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2571,7 +2637,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2627,7 +2695,9 @@
       "cardsInDeck": [
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2681,7 +2751,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2735,7 +2807,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2789,7 +2863,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2843,7 +2919,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2897,7 +2975,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2951,7 +3031,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3005,7 +3087,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3059,7 +3143,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3113,7 +3199,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3167,7 +3255,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3221,7 +3311,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3275,7 +3367,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3329,7 +3423,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3383,7 +3479,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3437,7 +3535,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3491,7 +3591,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3545,7 +3647,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3599,7 +3703,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3653,7 +3759,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3707,7 +3815,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3761,7 +3871,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3815,7 +3927,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3869,7 +3983,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3923,7 +4039,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3977,7 +4095,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4031,7 +4151,9 @@
         },
         {
           "prototype": {
-            "mouldId": 24,
+            "cardKey": {
+              "mouldId": 24
+            },
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4089,7 +4211,9 @@
         "name": "custom deck",
         "cards": [
           {
-            "cardName": "Poizom",
+            "cardKey": {
+              "mouldId": 66
+            },
             "amount": "30"
           }
         ]

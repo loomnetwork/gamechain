@@ -1,39 +1,36 @@
 package battleground
 
 import (
-	"crypto/ecdsa"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
+	"github.com/loomnetwork/go-loom/common"
+	"math/big"
 	"os"
 	"sort"
-	"strconv"
 	"time"
 	"unicode/utf8"
 
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gogo/protobuf/proto"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/loomnetwork/go-loom/types"
-	ltypes "github.com/loomnetwork/go-loom/types"
-	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 )
 
 const (
-	MaxGameModeNameChar         = 48
-	MaxGameModeDescriptionChar  = 255
-	MaxGameModeVersionChar      = 16
-	TurnTimeout                 = 120 * time.Second
-	KeepAliveTimeout            = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
-	RewardTypeTutorialCompleted = "tutorial-completed"
+	MaxGameModeNameChar        = 48
+	MaxGameModeDescriptionChar = 255
+	MaxGameModeVersionChar     = 16
+	TurnTimeout                = 120 * time.Second
+	KeepAliveTimeout           = 60 * time.Second // client keeps sending keepalive every 30 second. have to make sure we have some buffer for network delays
 )
 
 const (
@@ -57,15 +54,15 @@ const (
 
 var (
 	// secret
-	secret string
-	// privateKey to sign reward
-	privateKeyStr = os.Getenv("CZ_KEY")
-	// privateKey to verify JWT Token from loomauth
-	jwtSecret = os.Getenv("JWT_SECRET")
+	secret                             string
+	_, debugEnabled                    = os.LookupEnv("RL_DEBUG")
+	purchaseGatewayPrivateKeyHexString = os.Getenv("RL_PURCHASE_GATEWAY_PRIVATE_KEY")
 	// Error list
-	ErrOracleNotSpecified          = errors.New("oracle not specified")
-	ErrInvalidEventBatch           = errors.New("invalid event batch")
-	ErrVersionNotSet               = errors.New("data version not set")
+	ErrOracleNotSpecified = errors.New("oracle not specified")
+	ErrOracleNotVerified  = errors.New("oracle not verified")
+	ErrInvalidEventBatch  = errors.New("invalid event batch")
+	ErrVersionNotSet      = errors.New("data version not set")
+	ErrDebugNotEnabled    = errors.New("debug mode not enabled")
 )
 
 type ZombieBattleground struct {
@@ -87,59 +84,49 @@ func (z *ZombieBattleground) Init(ctx contract.Context, req *zb_calls.InitReques
 	if req.Oracle != nil {
 		ctx.GrantPermissionTo(loom.UnmarshalAddressPB(req.Oracle), []byte(req.Oracle.String()), OracleRole)
 		if err := ctx.Set(oracleKey, req.Oracle); err != nil {
-			return errors.Wrap(err, "Error setting oracle")
+			return errors.Wrap(err, "error setting oracle")
 		}
 	}
 
-	// init state
-	state := zb_data.GamechainState{
-		LastPlasmachainBlockNum: 1,
-		RewardContractVersion:   1,
-		TutorialRewardAmount:    1,
-	}
-	if err := saveState(ctx, &state); err != nil {
-		return err
-	}
-
 	// initialize card library
-	cardList := zb_data.CardList{
+	cardLibrary := zb_data.CardList{
 		Cards: req.Cards,
 	}
 
-	if err := ctx.Set(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
+	if err := saveCardLibrary(ctx, req.Version, &cardLibrary); err != nil {
 		return err
 	}
 
 	// initialize overlords
-	overlordList := zb_data.OverlordPrototypeList{
+	overlordPrototypeList := zb_data.OverlordPrototypeList{
 		Overlords: req.Overlords,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, overlordPrototypeListKey), &overlordList); err != nil {
+	if err := saveOverlordPrototypes(ctx, req.Version, &overlordPrototypeList); err != nil {
 		return err
 	}
 
 	// initialize card collection
-	cardCollectionList := zb_data.CardCollectionList{
+	defaultCardCollection := zb_data.CardCollectionList{
 		Cards: req.DefaultCollection,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
+	if err := saveDefaultCardCollection(ctx, req.Version, &defaultCardCollection); err != nil {
 		return err
 	}
 
 	// initialize default deck
-	deckList := zb_data.DeckList{
+	defaultDecks := zb_data.DeckList{
 		Decks: req.DefaultDecks,
 	}
-	if err := ctx.Set(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
+	if err := saveDefaultDecks(ctx, req.Version, &defaultDecks); err != nil {
 		return err
 	}
 
 	// initialize AI decks
-	aiDeckList := zb_data.AIDeckList{
+	aiDecks := zb_data.AIDeckList{
 		Decks: req.AiDecks,
 	}
 
-	if err := ctx.Set(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
+	if err := saveAIDecks(ctx, req.Version, &aiDecks); err != nil {
 		return err
 	}
 
@@ -183,7 +170,7 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb_calls.Upda
 	if defaultCardCollectionList.Cards == nil {
 		// HACK: for some reason, empty message are converted to nil
 		// Allow empty card collection for now, since it is not used anyway
-		defaultCardCollectionList.Cards = make([]*zb_data.CardCollectionCard, 0)
+		defaultCardCollectionList.Cards = []*zb_data.CardCollectionCard{}
 	}
 	if defaultCardCollectionList.Cards == nil {
 		return fmt.Errorf("'defaultCollection' key missing")
@@ -229,8 +216,8 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb_calls.Upda
 	}
 
 	// initialize card library
-	if err := ctx.Set(MakeVersionedKey(initData.Version, cardListKey), &cardList); err != nil {
-		return errors.Wrap(err, "error updating card library")
+	if err := saveCardLibrary(ctx, initData.Version, &cardList); err != nil {
+		return err
 	}
 
 	// initialize overlords
@@ -239,17 +226,17 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb_calls.Upda
 	}
 
 	// initialize default collection
-	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultCollectionKey), &defaultCardCollectionList); err != nil {
+	if err := saveDefaultCardCollection(ctx, initData.Version, &defaultCardCollectionList); err != nil {
 		return errors.Wrap(err, "error updating default collection")
 	}
 
 	// initialize default deck
-	if err := ctx.Set(MakeVersionedKey(initData.Version, defaultDecksKey), &defaultDecks); err != nil {
+	if err := saveDefaultDecks(ctx, initData.Version, &defaultDecks); err != nil {
 		return errors.Wrap(err, "error updating default decks")
 	}
 
 	// initialize AI decks
-	if err := ctx.Set(MakeVersionedKey(initData.Version, aiDecksKey), &aiDeckList); err != nil {
+	if err := saveAIDecks(ctx, initData.Version, &aiDeckList); err != nil {
 		return errors.Wrap(err, "error updating ai decks")
 	}
 
@@ -262,32 +249,36 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb_calls.Upda
 }
 
 func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb_calls.GetInitRequest) (*zb_calls.GetInitResponse, error) {
-	var cardList zb_data.CardList
+	var cardLibrary *zb_data.CardList
 	var overlordPrototypeList *zb_data.OverlordPrototypeList
-	var cardCollectionList zb_data.CardCollectionList
-	var deckList zb_data.DeckList
-	var aiDeckList zb_data.AIDeckList
+	var defaultCardCollection *zb_data.CardCollectionList
+	var defaultDecks *zb_data.DeckList
+	var aiDeckList *zb_data.AIDeckList
 	var overlordLevelingData *zb_data.OverlordLevelingData
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, cardListKey), &cardList); err != nil {
-		return nil, errors.Wrap(err, "error getting cardList")
-	}
-
-	overlordPrototypeList, err := loadOverlordPrototypes(ctx, req.Version)
+	cardLibrary, err := loadCardLibraryRaw(ctx, req.Version)
 	if err != nil {
-		return nil, errors.Wrap(err, "error getting overlordPrototypeList")
+		return nil, err
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &cardCollectionList); err != nil {
-		return nil, errors.Wrap(err, "error getting default collectionList")
+	overlordPrototypeList, err = loadOverlordPrototypes(ctx, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
-		return nil, errors.Wrap(err, "error getting default deckList")
+	defaultCardCollection, err = loadDefaultCardCollection(ctx, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := ctx.Get(MakeVersionedKey(req.Version, aiDecksKey), &aiDeckList); err != nil {
-		return nil, errors.Wrap(err, "error getting aiDeckList")
+	defaultDecks, err = loadDefaultDecks(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	aiDeckList, err = loadAIDecks(ctx, req.Version)
+	if err != nil {
+		return nil, err
 	}
 
 	overlordLevelingData, err = loadOverlordLevelingData(ctx, req.Version)
@@ -297,10 +288,10 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb_calls.G
 
 	return &zb_calls.GetInitResponse{
 		InitData: &zb_data.InitData{
-			Cards:             cardList.Cards,
+			Cards:             cardLibrary.Cards,
 			Overlords:         overlordPrototypeList.Overlords,
-			DefaultDecks:      deckList.Decks,
-			DefaultCollection: cardCollectionList.Cards,
+			DefaultDecks:      defaultDecks.Decks,
+			DefaultCollection: defaultCardCollection.Cards,
 			AiDecks:           aiDeckList.Decks,
 			OverlordLeveling:  overlordLevelingData,
 			Version:           req.Version,
@@ -314,7 +305,7 @@ func (z *ZombieBattleground) GetCardList(ctx contract.StaticContext, req *zb_cal
 		return nil, ErrVersionNotSet
 	}
 
-	cardList, err := getCardLibrary(ctx, req.Version)
+	cardList, err := loadCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -364,8 +355,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	// confirm owner doesnt exist already
 	if ctx.Has(AccountKey(req.UserId)) {
 		ctx.Logger().Debug(fmt.Sprintf("user already exists -%s", req.UserId))
-		return nil //right now the client can't handle this sending an error
-		//		return errors.New("user already exists")
+		return errors.New("user already exists")
 	}
 
 	var account zb_data.Account
@@ -378,40 +368,22 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	}
 	ctx.GrantPermission([]byte(req.UserId), []string{OwnerRole})
 
-	// add default collection list
-	var collectionList zb_data.CardCollectionList
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &collectionList); err != nil && err.Error() != ErrNotfound.Error() {
-		return errors.Wrapf(err, "unable to get default collectionlist")
+	err := z.initializeUserDefaultCardCollection(ctx, req.Version, req.UserId)
+	if err != nil {
+		return err
 	}
 
-	if err := ctx.Set(CardCollectionKey(req.UserId), &collectionList); err != nil {
-		return errors.Wrapf(err, "unable to save card collection for userId: %s", req.UserId)
-	}
-
-	var deckList zb_data.DeckList
-	if err := ctx.Get(MakeVersionedKey(req.Version, defaultDecksKey), &deckList); err != nil {
-		return errors.Wrapf(err, "unable to get default decks")
-	}
-	// update default deck with none-zero id
-	for i := 0; i < len(deckList.Decks); i++ {
-		deckList.Decks[i].Id = int64(i + 1)
-	}
-	if err := ctx.Set(DecksKey(req.UserId), &deckList); err != nil {
-		return errors.Wrapf(err, "unable to save decks for userId: %s", req.UserId)
-	}
-
-	senderAddress := []byte(ctx.Message().Sender.Local)
-	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
-	if err == nil {
-		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
+	defaultDecks, err := z.initializeUserDefaultDecks(ctx, req.Version, req.UserId)
+	if err != nil {
+		return err
 	}
 
 	//Emit CreateDeck event when creating new default decks for this new account
-	for i := 0; i < len(deckList.Decks); i++ {
+	for i := 0; i < len(defaultDecks.Decks); i++ {
 		emitMsg := zb_calls.CreateDeckEvent{
 			UserId:        req.UserId,
 			SenderAddress: ctx.Message().Sender.Local.String(),
-			Deck:          deckList.Decks[i],
+			Deck:          defaultDecks.Decks[i],
 			Version:       req.Version,
 		}
 
@@ -420,6 +392,32 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 			return err
 		}
 		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
+	}
+
+	senderAddress := []byte(ctx.Message().Sender.Local)
+	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
+	if err == nil {
+		ctx.EmitTopics(emitMsgJSON, TopicCreateAccountEvent)
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) error {
+	if req.Version == "" {
+		return ErrVersionNotSet
+	}
+
+	err := saveUserIdAddress(ctx, req.UserId, ctx.Message().Sender)
+	if err != nil {
+		return err
+	}
+
+	// TODO: check if any pending cards await by address
+
+	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
+	if err != nil {
+		return err
 	}
 
 	return nil
@@ -476,7 +474,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 		return nil, errors.Wrap(err, "unable to load decks")
 	}
 
-	cardLibrary, err := getCardLibrary(ctx, req.Version)
+	cardLibrary, err := loadCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -499,7 +497,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 	newDeckID++
 	req.Deck.Id = newDeckID
 	deckList.Decks = append(deckList.Decks, req.Deck)
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return nil, err
 	}
 
@@ -542,7 +540,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 		return errors.Wrap(err, "unable to load decks")
 	}
 
-	cardLibrary, err := getCardLibrary(ctx, req.Version)
+	cardLibrary, err := loadCardLibrary(ctx, req.Version)
 	if err != nil {
 		return err
 	}
@@ -556,7 +554,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 	deckID := req.Deck.Id
 	existingDeck := getDeckByID(deckList.Decks, deckID)
 	if existingDeck == nil {
-		return ErrNotfound
+		return ErrNotFound
 	}
 	// update deck
 	existingDeck.Name = req.Deck.Name
@@ -566,7 +564,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 	existingDeck.SecondarySkill = req.Deck.SecondarySkill
 
 	// update decklist
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return errors.Wrap(err, "error saving decks")
 	}
 
@@ -608,7 +606,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb_calls.Dele
 		return fmt.Errorf("deck not found")
 	}
 
-	if err := saveDecks(ctx, req.UserId, deckList); err != nil {
+	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
 		return err
 	}
 
@@ -681,13 +679,15 @@ func (z *ZombieBattleground) GetCollection(ctx contract.Context, req *zb_calls.G
 		return nil, ErrVersionNotSet
 	}
 
-	collectionList, err := loadCardCollectionByUserId(ctx, req.UserId, req.Version)
+	collectionList, err := loadCardCollectionRaw(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 	return &zb_calls.GetCollectionResponse{Cards: collectionList.Cards}, nil
 }
 
+
+// FIXME: what is this for?
 func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.Context, req *zb_calls.GetCollectionByAddressRequest) (*zb_calls.GetCollectionByAddressResponse, error) {
 	if req.Version == "" {
 		return nil, ErrVersionNotSet
@@ -706,7 +706,7 @@ func (z *ZombieBattleground) ListCardLibrary(ctx contract.StaticContext, req *zb
 		return nil, ErrVersionNotSet
 	}
 
-	cardList, err := getCardLibrary(ctx, req.Version)
+	cardList, err := loadCardLibrary(ctx, req.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -719,8 +719,8 @@ func (z *ZombieBattleground) ListOverlordLibrary(ctx contract.StaticContext, req
 		return nil, ErrVersionNotSet
 	}
 
-	var overlordPrototypeList zb_data.OverlordPrototypeList
-	if err := ctx.Get(MakeVersionedKey(req.Version, overlordPrototypeListKey), &overlordPrototypeList); err != nil {
+	overlordPrototypeList, err := loadOverlordPrototypes(ctx, req.Version)
+	if err != nil {
 		return nil, err
 	}
 	return &zb_calls.ListOverlordLibraryResponse{Overlords: overlordPrototypeList.Overlords}, nil
@@ -1254,7 +1254,7 @@ func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb_cal
 		return nil, err
 	}
 
-	if err := applyExperience(ctx, req.Version, overlordLevelingData, req.UserId, req.OverlordId, req.Experience, req.DeckId, req.IsWin); err != nil {
+	if err := applyExperience(ctx, req.Version, overlordLevelingData, req.UserId, parseUserIdToNumber(req.UserId), req.OverlordId, req.Experience, req.DeckId, req.IsWin); err != nil {
 		return nil, err
 	}
 
@@ -1262,11 +1262,6 @@ func (z *ZombieBattleground) AddSoloExperience(ctx contract.Context, req *zb_cal
 }
 
 func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb_calls.EndMatchRequest) (*zb_calls.EndMatchResponse, error) {
-	// Only for old clients
-	if len(req.MatchExperiences) != 2 {
-		req.MatchExperiences = []int64{0, 0}
-	}
-
 	match, err := loadMatch(ctx, req.MatchId)
 	if err != nil {
 		return nil, err
@@ -1295,6 +1290,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb_calls.EndMat
 			match.Version,
 			overlordLevelingData,
 			playerState.Id,
+			parseUserIdToNumber(playerState.Id),
 			playerState.Deck.OverlordId,
 			req.MatchExperiences[index],
 			playerState.Deck.Id,
@@ -1377,7 +1373,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb_call
 		return nil, err
 	}
 	// TODO: change me. this is a bit hacky way to set card libarary
-	cardlist, err := getCardLibrary(ctx, gamestate.Version)
+	cardlist, err := loadCardLibrary(ctx, gamestate.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1481,7 +1477,7 @@ func (z *ZombieBattleground) ReplayGame(ctx contract.Context, req *zb_calls.Repl
 		return nil, err
 	}
 	// TODO: change me. this is a bit hacky way to set card libarary
-	cardlist, err := getCardLibrary(ctx, initGameState.Version)
+	cardlist, err := loadCardLibrary(ctx, initGameState.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -1659,64 +1655,136 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb_calls.KeepA
 	return &zb_calls.KeepAliveResponse{}, nil
 }
 
-func (z *ZombieBattleground) GetState(ctx contract.StaticContext, req *zb_calls.GetGamechainStateRequest) (*zb_calls.GetGamechainStateResponse, error) {
-	state, err := loadState(ctx)
+func (z *ZombieBattleground) GetContractState(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractStateResponse, error) {
+	state, err := loadContractState(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &zb_calls.GetGamechainStateResponse{
+
+	return &zb_calls.GetContractStateResponse{
 		State: state,
 	}, nil
 }
 
-func (z *ZombieBattleground) InitState(ctx contract.Context, req *zb_calls.InitGamechainStateRequest) error {
-	state, err := loadState(ctx)
-	if err != nil && err != contract.ErrNotFound {
-		return err
-	}
-	if state != nil {
-		return fmt.Errorf("state already inilialized")
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
+func (z *ZombieBattleground) GetContractConfiguration(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractConfigurationResponse, error) {
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state = &zb_data.GamechainState{
-		LastPlasmachainBlockNum: 1,
-		RewardContractVersion:   1,
-		TutorialRewardAmount:    1,
-	}
-	return saveState(ctx, state)
+	return &zb_calls.GetContractConfigurationResponse{
+		Configuration: configuration,
+	}, nil
 }
 
-func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, params *zb_calls.UpdateOracleRequest) error {
-	if ctx.Has(oracleKey) {
-		if params.OldOracle.String() == params.NewOracle.String() {
-			return errors.New("Cannot set new oracle to same address as old oracle")
-		}
-		if err := z.validateOracle(ctx, params.OldOracle); err != nil {
-			return errors.Wrap(err, "validating oracle")
-		}
-		ctx.GrantPermission([]byte(params.OldOracle.String()), []string{"old-oracle"})
+func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, req *zb_calls.UpdateContractConfigurationRequest) error {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return err
 	}
-	ctx.GrantPermission([]byte(params.NewOracle.String()), []string{OracleRole})
 
-	if err := ctx.Set(oracleKey, params.NewOracle); err != nil {
-		return errors.Wrap(err, "setting new oracle")
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		if errors.Cause(err).Error() == ErrNotFound.Error() {
+			configuration = &zb_data.ContractConfiguration{
+				InitialFiatPurchaseTxId:     &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				FiatPurchaseContractVersion: 0,
+			}
+		} else {
+			return err
+		}
 	}
+
+	state, err := loadContractState(ctx)
+	if err != nil {
+		if errors.Cause(err).Error() == ErrNotFound.Error() {
+			state = &zb_data.ContractState{
+				LastPlasmachainBlockNumber: 0,
+				CurrentFiatPurchaseTxId:    &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+			}
+		} else {
+			return err
+		}
+	}
+
+	if req.SetFiatPurchaseContractVersion {
+		configuration.FiatPurchaseContractVersion = req.FiatPurchaseContractVersion
+	}
+
+	if req.SetInitialFiatPurchaseTxId {
+		if req.InitialFiatPurchaseTxId == nil {
+			return fmt.Errorf("InitialFiatPurchaseTxId == nil")
+		}
+
+		if req.InitialFiatPurchaseTxId.Value.Int.Cmp(configuration.InitialFiatPurchaseTxId.Value.Int) != 0 {
+			configuration.InitialFiatPurchaseTxId = req.InitialFiatPurchaseTxId
+			state.CurrentFiatPurchaseTxId = req.InitialFiatPurchaseTxId
+
+			ctx.Logger().Info("txId reset", "configuration.InitialFiatPurchaseTxId", configuration.InitialFiatPurchaseTxId, "state.CurrentFiatPurchaseTxId", state.CurrentFiatPurchaseTxId)
+		}
+	}
+
+	if req.SetUseCardLibraryAsUserCollection {
+		configuration.UseCardLibraryAsUserCollection = req.UseCardLibraryAsUserCollection
+	}
+
+	if req.SetDataWipeConfiguration {
+		found := false
+		for _, existingDataWipeConfiguration := range configuration.DataWipeConfiguration {
+			if existingDataWipeConfiguration.Version == req.DataWipeConfiguration.Version {
+				existingDataWipeConfiguration.Reset()
+				proto.Merge(existingDataWipeConfiguration, req.DataWipeConfiguration)
+				found = true
+				break
+			}
+		}
+
+		if !found {
+			configuration.DataWipeConfiguration = append(configuration.DataWipeConfiguration, req.DataWipeConfiguration)
+		}
+	}
+
+	if req.SetDebugMode {
+		configuration.DebugMode = true
+	}
+
+	err = saveContractState(ctx, state)
+	if err != nil {
+		return err
+	}
+
+	err = saveContractConfiguration(ctx, configuration)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (z *ZombieBattleground) validateOracle(ctx contract.Context, zo *types.Address) error {
-	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{OracleRole}); !ok {
-		return errors.New("Oracle unverified")
+func (z *ZombieBattleground) UpdateOracle(ctx contract.Context, req *zb_calls.UpdateOracleRequest) error {
+	var oldOraclePB types.Address
+	err := ctx.Get(oracleKey, &oldOraclePB)
+	if err != nil {
+		return nil
 	}
 
-	if ok, _ := ctx.HasPermission([]byte(zo.String()), []string{"old-oracle"}); ok {
-		return errors.New("This oracle is expired. Please use latest oracle")
+	oldOracle := loom.UnmarshalAddressPB(&oldOraclePB)
+	newOraclePB := req.NewOracle
+	newOracle := loom.UnmarshalAddressPB(newOraclePB)
+	if ctx.Has(oracleKey) {
+		if oldOracle.String() == newOracle.String() {
+			return errors.New("cannot set new oracle to same address as old oracle")
+		}
+		if err := z.validateOracle(ctx); err != nil {
+			return errors.Wrap(err, "sender is not the current oracle")
+		}
+
+		ctx.GrantPermissionTo(oldOracle, []byte(oldOraclePB.String()), "old-oracle")
+	}
+	ctx.GrantPermissionTo(newOracle, []byte(newOraclePB.String()), OracleRole)
+
+	if err := ctx.Set(oracleKey, newOraclePB); err != nil {
+		return errors.Wrap(err, "failed to set new oracle")
 	}
 	return nil
 }
@@ -1823,21 +1891,15 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb_calls.Gam
 		return nil, err
 	}
 
-	gameModeType := zb_data.GameModeType_Community
 	owner := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: ctx.Message().Sender.Local}
+	gameModeType := zb_data.GameModeType_Community
+
 	// if request was made with a valid oracle, set type and owner to Loom
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return nil, err
-		}
+	var oldOraclePB types.Address
+	err = ctx.Get(oracleKey, &oldOraclePB)
+	oracleNotSet := err != nil && err.Error() == ErrNotFound.Error()
 
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return nil, err
-		}
-
+	if err := z.validateOracle(ctx); !oracleNotSet && err == nil {
 		gameModeType = zb_data.GameModeType_Loom
 		owner = loom.RootAddress(ctx.ContractAddress().ChainID).MarshalPB()
 	}
@@ -1862,20 +1924,12 @@ func (z *ZombieBattleground) AddGameMode(ctx contract.Context, req *zb_calls.Gam
 }
 
 func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb_calls.UpdateGameModeRequest) (*zb_data.GameMode, error) {
-	// Require either oracle or owner permission to update a game mode
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return nil, err
+	// Require either oracle or owner permission to delete a game mode
+	err := z.validateOracle(ctx)
+	if err == ErrOracleNotVerified {
+		if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+			return nil, ErrUserNotVerified
 		}
-
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return nil, err
-		}
-	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
-		return nil, ErrUserNotVerified
 	}
 
 	gameModeList, err := loadGameModeList(ctx)
@@ -1922,19 +1976,11 @@ func (z *ZombieBattleground) UpdateGameMode(ctx contract.Context, req *zb_calls.
 
 func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.DeleteGameModeRequest) error {
 	// Require either oracle or owner permission to delete a game mode
-	if req.Oracle != "" {
-		oracleLocal, err := loom.LocalAddressFromHexString(req.Oracle)
-		if err != nil {
-			return err
+	err := z.validateOracle(ctx)
+	if err == ErrOracleNotVerified {
+		if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
+			return ErrUserNotVerified
 		}
-
-		oracleAddr := &types.Address{ChainId: ctx.ContractAddress().ChainID, Local: oracleLocal}
-
-		if err := z.validateOracle(ctx, oracleAddr); err != nil {
-			return err
-		}
-	} else if ok, _ := ctx.HasPermission([]byte(req.ID), []string{OwnerRole}); !ok {
-		return ErrUserNotVerified
 	}
 
 	gameModeList, err := loadGameModeList(ctx)
@@ -1955,52 +2001,355 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.
 	return nil
 }
 
-func (z *ZombieBattleground) RewardTutorialCompleted(ctx contract.Context, req *zb_calls.RewardTutorialCompletedRequest) (*zb_calls.RewardTutorialCompletedResponse, error) {
-	address := ctx.Message().Sender.String()
-	rewardTutorialClaimed, err := getRewardTutorialClaimed(ctx, address)
+func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
+	state, err := loadContractState(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if rewardTutorialClaimed.Nonce > 0 {
-		return nil, fmt.Errorf("reward already claimed")
+	eventCount := 0           // number of blocks that were actually processed in this batch
+	lastEthBlock := uint64(0) // the last block processed in this batch
+
+	addressToCardAmountsChangeMap := addressToCardAmountsChangeMap{}
+
+	for _, ev := range req.Events {
+		// Events in the batch are expected to be ordered by block, so a batch should contain
+		// events from block N, followed by events from block N+1, any other order is invalid.
+		if ev.EthBlock < lastEthBlock {
+			ctx.Logger().Error("Oracle invalid event batch, block has already been processed",
+				"block", ev.EthBlock)
+			return ErrInvalidEventBatch
+		}
+
+		// Multiple validators might submit batches with overlapping block ranges because the
+		// Gateway oracles will fetch events from Plasmachian at different times, with different
+		// latencies, etc. Simply skip blocks that have already been processed.
+		if ev.EthBlock <= state.LastPlasmachainBlockNumber {
+			continue
+		}
+
+		switch payload := ev.Payload.(type) {
+		case *orctype.PlasmachainEvent_Transfer:
+			ctx.Logger().Info("got Transfer event")
+			err := z.handleCardAmountChange(
+				addressToCardAmountsChangeMap,
+				payload.Transfer.From.Local,
+				payload.Transfer.To.Local,
+				cardKeyFromCardTokenId(payload.Transfer.TokenId.Value.Int64()),
+				1,
+			)
+
+			if err != nil {
+				err = errors.Wrap(err, "error handling Transfer event")
+				ctx.Logger().Error(err.Error())
+				return err
+			}
+		case *orctype.PlasmachainEvent_TransferWithQuantity:
+			ctx.Logger().Debug("got TransferWithQuantity event")
+			err := z.handleCardAmountChange(
+				addressToCardAmountsChangeMap,
+				payload.TransferWithQuantity.From.Local,
+				payload.TransferWithQuantity.To.Local,
+				cardKeyFromCardTokenId(payload.TransferWithQuantity.TokenId.Value.Int64()),
+				uint(payload.TransferWithQuantity.Amount.Value.Uint64()),
+			)
+
+			if err != nil {
+				err = errors.Wrap(err, "error handling TransferWithQuantity event")
+				ctx.Logger().Error(err.Error())
+				return err
+			}
+		case *orctype.PlasmachainEvent_BatchTransfer:
+			ctx.Logger().Info("got TransferWithQuantity event")
+
+			for index, cardTokenId := range payload.BatchTransfer.TokenIds {
+				amount := payload.BatchTransfer.Amounts[index]
+				err := z.handleCardAmountChange(
+					addressToCardAmountsChangeMap,
+					payload.BatchTransfer.From.Local,
+					payload.BatchTransfer.To.Local,
+					cardKeyFromCardTokenId(cardTokenId.Value.Int64()),
+					uint(amount.Value.Uint64()),
+				)
+
+				if err != nil {
+					err = errors.Wrap(err, "error handling TransferWithQuantity event")
+					ctx.Logger().Error(err.Error())
+					return err
+				}
+			}
+
+		/*case *orctype.PlasmachainEvent_Card:
+		if err := validateGeneratedCard(payload.Card); err != nil {
+			return err
+		}
+		userID := string(payload.Card.Owner.Local) // should be bytes that represents address
+		cardID := payload.Card.CardID.Value.Int64()
+		amount := payload.Card.Amount.Value.Int64()
+		err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
+		if err != nil {
+			ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
+			return err
+		}
+		*/
+		case nil:
+			ctx.Logger().Error("Oracle missing event payload")
+			continue
+
+		default:
+			ctx.Logger().Error("Oracle unknown event payload type %T", payload)
+			continue
+		}
+
+		if ev.EthBlock > lastEthBlock {
+			lastEthBlock = ev.EthBlock
+		}
+
+		eventCount++
 	}
 
-	privateKey, err := crypto.HexToECDSA(privateKeyStr)
+	if debugEnabled {
+		for address, cardAmountsChangeMap := range addressToCardAmountsChangeMap {
+			fmt.Printf("Address %s card amount changes:\n", address)
+			for cardKey, amountChange := range cardAmountsChangeMap {
+				fmt.Printf("   (%s) = %d\n", cardKey.String(), amountChange)
+			}
+		}
+	}
+
+	// If there are no new events in this batch return an error so that the batch tx isn't
+	// propagated to the other nodes.
+	if eventCount == 0 {
+		return fmt.Errorf("no new events found in the batch")
+	}
+
+	err = z.saveAddressToCardAmountsChangeMapDelta(ctx, addressToCardAmountsChangeMap)
 	if err != nil {
-		return nil, fmt.Errorf("error reading private key")
+		return errors.Wrap(err, "failed to apply address to card amounts change map")
 	}
 
-	state, err := loadState(ctx)
+	ctx.Logger().Debug("setting last Plasmachain block", "LastPlasmachainBlockNumber", req.LastPlasmachainBlockNumber)
+
+	state.LastPlasmachainBlockNumber = req.LastPlasmachainBlockNumber
+	return saveContractState(ctx, state)
+}
+
+func (z *ZombieBattleground) SetLastPlasmaBlockNumber(ctx contract.Context, req *zb_calls.SetLastPlasmaBlockNumberRequest) error {
+	err := z.validateOracle(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	verifySignResult, err := generateVerifyHash(state.TutorialRewardAmount, state.RewardContractVersion, privateKey)
+	state, err := loadContractState(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if len(verifySignResult.Signature) != 132 {
-		return nil, fmt.Errorf("signature length invalid")
-	}
+	ctx.Logger().Debug("setting last Plasmachain block", "LastPlasmachainBlockNumber", req.LastPlasmachainBlockNumber)
+	state.LastPlasmachainBlockNumber = req.LastPlasmachainBlockNumber
+	return saveContractState(ctx, state)
+}
 
-	r := verifySignResult.Signature[0:66]
-	s := "0x" + verifySignResult.Signature[66:130]
-	vStr := verifySignResult.Signature[130:132]
-	v, err := strconv.ParseUint(vStr, 16, 8)
-	if err != nil {
-		return nil, err
-	}
-
-	return &zb_calls.RewardTutorialCompletedResponse{
-		R:          r,
-		S:          s,
-		V:          v,
-		Hash:       verifySignResult.Hash,
-		Amount:     &ltypes.BigUInt{Value: *loom.NewBigUIntFromInt(int64(state.TutorialRewardAmount))},
-		RewardType: RewardTypeTutorialCompleted,
+func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb_calls.GetContractBuildMetadataRequest) (*zb_calls.GetContractBuildMetadataResponse, error) {
+	return &zb_calls.GetContractBuildMetadataResponse{
+		Date:   BuildDate,
+		GitSha: BuildGitSha,
+		Build:  BuildNumber,
 	}, nil
+}
+
+func (z *ZombieBattleground) GetPendingMintingTransactionReceipts(ctx contract.StaticContext, req *zb_calls.GetPendingMintingTransactionReceiptsRequest) (*zb_calls.GetPendingMintingTransactionReceiptsResponse, error) {
+	if !isOwner(ctx, req.UserId) {
+		return nil, ErrUserNotVerified
+	}
+
+	receiptCollection, err := loadPendingMintingTransactionReceipts(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.GetPendingMintingTransactionReceiptsResponse{
+		ReceiptCollection: receiptCollection,
+	}, nil
+}
+
+func (z *ZombieBattleground) ConfirmPendingMintingTransactionReceipt(ctx contract.Context, req *zb_calls.ConfirmPendingMintingTransactionReceiptRequest) error {
+	if !isOwner(ctx, req.UserId) {
+		return ErrUserNotVerified
+	}
+
+	receiptCollection, err := loadPendingMintingTransactionReceipts(ctx, req.UserId)
+	if err != nil {
+		return err
+	}
+
+	found := false
+	for i, receipt := range receiptCollection.Receipts {
+		if receipt.TxId.Value.Int.Cmp(req.TxId.Value.Int) == 0 {
+			receiptCollection.Receipts = append(receiptCollection.Receipts[:i], receiptCollection.Receipts[i+1:]...)
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return fmt.Errorf("receipt for txId %s not found", req.TxId.Value.String())
+	}
+
+	err = savePendingMintingTransactionReceipts(ctx, req.UserId, receiptCollection)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) DebugMintBoosterPackReceipt(ctx contract.Context, req *zb_calls.DebugMintBoosterPackReceiptRequest) (*zb_calls.DebugMintBoosterPackReceiptResponse, error) {
+	if !debugEnabled {
+		configuration, err := loadContractConfiguration(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		if !configuration.DebugMode {
+			return nil, ErrDebugNotEnabled
+		}
+	}
+
+	userIdString := defaultUserIdPrefix + req.UserId.Value.Int.String()
+	receipt, err := mintBoosterPacksAndSave(ctx, userIdString, req.UserId.Value.Int, uint(req.BoosterAmount))
+	if err != nil {
+		return nil, err
+	}
+
+	receiptJson, err := json.Marshal(receipt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.DebugMintBoosterPackReceiptResponse{
+		ReceiptJson: string(receiptJson),
+		Receipt:     receipt.MarshalPB(),
+	}, nil
+}
+
+func (z *ZombieBattleground) DebugGetUserIdByAddress(ctx contract.StaticContext, req *zb_calls.DebugGetUserIdByAddressRequest) (*zb_data.UserIdContainer, error) {
+	userId, err := loadUserIdByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_data.UserIdContainer{
+		UserId: userId,
+	}, nil
+}
+
+func (z *ZombieBattleground) DebugGetPendingCardAmountChangeItems(ctx contract.StaticContext, req *zb_calls.DebugGetPendingCardAmountChangeItemsRequest) (*zb_calls.DebugGetPendingCardAmountChangeItemsResponse, error) {
+	container, err := loadPendingCardAmountChangeItemsContainerByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.DebugGetPendingCardAmountChangeItemsResponse{
+		Container: container,
+	}, nil
+}
+
+func (z *ZombieBattleground) validateOracle(ctx contract.StaticContext) error {
+	var oldOraclePB types.Address
+	err := ctx.Get(oracleKey, &oldOraclePB)
+	if err != nil && err.Error() == ErrNotFound.Error() {
+		return nil
+	}
+
+	if ok, _ := ctx.HasPermissionFor(ctx.Message().Sender, []byte(ctx.Message().Sender.MarshalPB().String()), []string{OracleRole}); !ok {
+		return ErrOracleNotVerified
+	}
+
+	if ok, _ := ctx.HasPermissionFor(ctx.Message().Sender, []byte(ctx.Message().Sender.MarshalPB().String()), []string{"old-oracle"}); ok {
+		return errors.New("This oracle is expired. Please use latest oracle")
+	}
+	return nil
+}
+
+func (z *ZombieBattleground) initializeUserDefaultCardCollection(ctx contract.Context, version string, userId string) error {
+	// add default collection list
+	defaultCardCollection, err := loadDefaultCardCollection(ctx, version)
+	if err != nil {
+		return errors.Wrap(err, "error initializing user default card collection")
+	}
+
+	if err := saveCardCollection(ctx, userId, defaultCardCollection); err != nil {
+		return errors.Wrap(err, "error initializing user default card collection")
+	}
+
+	return nil
+}
+
+func (z *ZombieBattleground) initializeUserDefaultDecks(ctx contract.Context, version string, userId string) (defaultDecks *zb_data.DeckList, err error) {
+	defaultDecks, err = loadDefaultDecks(ctx, version)
+	if err != nil {
+		return nil, errors.Wrap(err, "error initializing user default decks")
+	}
+
+	// update default deck with none-zero id
+	for i := 0; i < len(defaultDecks.Decks); i++ {
+		defaultDecks.Decks[i].Id = int64(i + 1)
+	}
+	if err := saveDecks(ctx, version, userId, defaultDecks); err != nil {
+		return nil, errors.Wrap(err, "error initializing user default decks")
+	}
+
+	return defaultDecks, nil
+}
+
+func (z *ZombieBattleground) handleUserDataWipe(ctx contract.Context, version string, userId string) (wipeExecuted bool, err error) {
+	wipeExecuted = false
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return false, errors.Wrap(err,"error handling user data wipe")
+	}
+
+	executedDataWipes, err := loadUserExecutedDataWipesList(ctx, userId)
+	if err != nil {
+		return false, errors.Wrap(err,"error handling user data wipe")
+	}
+
+	var matchingDataWipeConfiguration *zb_data.DataWipeConfiguration
+loop:
+	for _, dataWipeItem := range configuration.DataWipeConfiguration {
+		// Check if a wipe is configured for this data version
+		if dataWipeItem.Version == version {
+			// Check if wipe for this version was already executed for this user
+			for _, alreadyExecutedWipeVersion := range executedDataWipes.Versions {
+				if alreadyExecutedWipeVersion == version {
+					break loop
+				}
+			}
+
+			matchingDataWipeConfiguration = dataWipeItem
+		}
+	}
+
+	if matchingDataWipeConfiguration != nil {
+		wipeExecuted = true
+
+		if matchingDataWipeConfiguration.WipeDecks {
+			_, err = z.initializeUserDefaultDecks(ctx, version, userId)
+			if err != nil {
+				return false, errors.Wrap(err, "error handling user data wipe")
+			}
+		}
+	}
+
+	if wipeExecuted {
+		err = saveUserExecutedDataWipesList(ctx, userId, executedDataWipes)
+		if err != nil {
+			return false, errors.Wrap(err, "error handling user data wipe")
+		}
+	}
+
+	return wipeExecuted, nil
 }
 
 func applyExperience(
@@ -2008,6 +2357,7 @@ func applyExperience(
 	version string,
 	overlordLevelingData *zb_data.OverlordLevelingData,
 	userId string,
+	userIdInt *big.Int,
 	overlordId int64,
 	experience int64,
 	deckId int64,
@@ -2023,7 +2373,7 @@ func applyExperience(
 		return fmt.Errorf("overlord with prototype id %d not found", overlordId)
 	}
 
-	if err := applyExperienceInternal(ctx, userId, overlordLevelingData, overlordUserInstances, overlord, experience, deckId, isWin); err != nil {
+	if err := applyExperienceInternal(ctx, userId, userIdInt, overlordLevelingData, overlordUserInstances, overlord, experience, deckId, isWin); err != nil {
 		return errors.Wrap(err, "failed to apply experience")
 	}
 
@@ -2033,6 +2383,7 @@ func applyExperience(
 func applyExperienceInternal(
 	ctx contract.Context,
 	userId string,
+	userIdInt *big.Int,
 	overlordLevelingData *zb_data.OverlordLevelingData,
 	overlordUserInstances []*zb_data.OverlordUserInstance,
 	targetOverlordUserInstance *zb_data.OverlordUserInstance,
@@ -2050,7 +2401,7 @@ func applyExperienceInternal(
 		targetOverlordUserInstance.UserData.Level = int64(newLevel)
 
 		// Get rewards for all in-between levels
-		for level := oldLevel; level <= newLevel; level++ {
+		for level := oldLevel + 1; level <= newLevel; level++ {
 			levelReward := getLevelReward(overlordLevelingData, level)
 			if levelReward != nil {
 				levelRewards = append(levelRewards, levelReward)
@@ -2059,9 +2410,9 @@ func applyExperienceInternal(
 
 		for i := 0; i < len(levelRewards); i++ {
 			// skill rewards
-			switch levelRewards[i].Reward.(type) {
+			switch reward := levelRewards[i].Reward.(type) {
 			case *zb_data.LevelReward_SkillReward:
-				skillReward := levelRewards[i].Reward.(*zb_data.LevelReward_SkillReward).SkillReward
+				skillReward := reward.SkillReward
 				var skillToUnlock *zb_data.OverlordSkillPrototype = nil
 				for j := 0; j < len(targetOverlordUserInstance.Prototype.Skills); j++ {
 					if j == int(skillReward.SkillIndex) {
@@ -2087,10 +2438,13 @@ func applyExperienceInternal(
 				}
 
 				// TODO: Update decks with no skills for players convenience?
-			case *zb_data.LevelReward_UnitReward:
-				unitReward := levelRewards[i].Reward.(*zb_data.LevelReward_UnitReward).UnitReward
-				fmt.Println(unitReward)
-				// TODO: handle
+			case *zb_data.LevelReward_BoosterPackReward:
+				boosterPackReward := reward.BoosterPackReward
+
+				_, err := mintBoosterPacksAndSave(ctx, userId, userIdInt, uint(boosterPackReward.Amount))
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -2098,7 +2452,7 @@ func applyExperienceInternal(
 	overlordUserDataList := &zb_data.OverlordUserDataList{
 		OverlordsUserData: getOverlordsUserDataFromOverlordUserInstances(overlordUserInstances),
 	}
-	if err := saveOverlordsUserData(ctx, userId, overlordUserDataList); err != nil {
+	if err := saveOverlordUserDataList(ctx, userId, overlordUserDataList); err != nil {
 		return err
 	}
 
@@ -2142,269 +2496,6 @@ loop:
 	}
 
 	return nil
-}
-
-func createBaseNotification(ctx contract.Context, currentNotifications []*zb_data.Notification, notificationType zb_data.NotificationType_Enum) *zb_data.Notification {
-	var id int32 = 0
-	if len(currentNotifications) > 0 {
-		id = currentNotifications[len(currentNotifications)-1].Id + 1
-	}
-
-	return &zb_data.Notification{
-		Id:        id,
-		Type:      notificationType,
-		CreatedAt: ctx.Now().Unix(),
-		Seen:      false,
-	}
-}
-
-func removeNotification(notifications []*zb_data.Notification, id int32) ([]*zb_data.Notification, error) {
-	for index, notification := range notifications {
-		if notification.Id == id {
-			notifications = append(notifications[:index], notifications[index+1:]...)
-			return notifications, nil
-		}
-	}
-
-	return nil, fmt.Errorf("notification with id %d not found", id)
-}
-
-func (z *ZombieBattleground) ConfirmRewardTutorialClaimed(ctx contract.Context, req *zb_calls.ConfirmRewardTutorialClaimedRequest) error {
-	address := ctx.Message().Sender.String()
-	rewardClaimed, err := getRewardTutorialClaimed(ctx, address)
-	if err != nil {
-		return err
-	}
-	rewardClaimed.Nonce++
-	err = setRewardTutorialClaimed(ctx, address, rewardClaimed)
-	return err
-}
-
-type verifySignResult struct {
-	Hash      string
-	Signature string
-}
-
-func generateVerifyHash(amount uint64, tutorialRewardContractVersion uint64, privKey *ecdsa.PrivateKey) (*verifySignResult, error) {
-	hash, err := createHash(amount, tutorialRewardContractVersion)
-
-	if err != nil {
-		return nil, err
-	}
-
-	sig, err := soliditySign(hash, privKey)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &verifySignResult{
-		Hash:      "0x" + hex.EncodeToString(hash),
-		Signature: "0x" + hex.EncodeToString(sig),
-	}, nil
-}
-
-func createHash(amount uint64, tutorialRewardContractVersion uint64) ([]byte, error) {
-	hash := solsha3.SoliditySHA3(
-		solsha3.Uint256(strconv.FormatUint(amount, 10)),
-		solsha3.Uint256(strconv.FormatUint(tutorialRewardContractVersion, 10)),
-	)
-
-	if len(hash) == 0 {
-		return nil, errors.New("Failed to generate hash")
-	}
-
-	return hash, nil
-}
-
-func soliditySign(data []byte, privKey *ecdsa.PrivateKey) ([]byte, error) {
-	sig, err := crypto.Sign(data, privKey)
-	if err != nil {
-		return nil, err
-	}
-
-	v := sig[len(sig)-1]
-	sig[len(sig)-1] = v + 27
-	return sig, nil
-}
-
-func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
-	state, err := loadState(ctx)
-	if err != nil {
-		return err
-	}
-
-	blockCount := 0           // number of blocks that were actually processed in this batch
-	lastEthBlock := uint64(0) // the last block processed in this batch
-
-	for _, ev := range req.Events {
-		// Events in the batch are expected to be ordered by block, so a batch should contain
-		// events from block N, followed by events from block N+1, any other order is invalid.
-		if ev.EthBlock < lastEthBlock {
-			ctx.Logger().Error("Oracle invalid event batch, block has already been processed",
-				"block", ev.EthBlock)
-			return ErrInvalidEventBatch
-		}
-
-		// Multiple validators might submit batches with overlapping block ranges because the
-		// Gateway oracles will fetch events from Plasmachian at different times, with different
-		// latencies, etc. Simply skip blocks that have already been processed.
-		if ev.EthBlock <= state.LastPlasmachainBlockNum {
-			continue
-		}
-
-		switch payload := ev.Payload.(type) {
-		case *orctype.PlasmachainEvent_Card:
-			if err := validateGeneratedCard(payload.Card); err != nil {
-				return err
-			}
-			userID := string(payload.Card.Owner.Local) // should be bytes that represents address
-			cardID := payload.Card.CardID.Value.Int64()
-			amount := payload.Card.Amount.Value.Int64()
-			err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
-			if err != nil {
-				ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
-				return err
-			}
-		case nil:
-			ctx.Logger().Error("Oracle missing event payload")
-			continue
-
-		default:
-			ctx.Logger().Error("Oracle unknown event payload type %T", payload)
-			continue
-		}
-
-		if ev.EthBlock > lastEthBlock {
-			blockCount++
-			lastEthBlock = ev.EthBlock
-		}
-	}
-
-	// If there are no new events in this batch return an error so that the batch tx isn't
-	// propagated to the other nodes.
-	if blockCount == 0 {
-		return fmt.Errorf("no new events found in the batch")
-	}
-
-	state.LastPlasmachainBlockNum = lastEthBlock
-
-	return saveState(ctx, state)
-}
-
-func validateGeneratedCard(card *orctype.PlasmachainGeneratedCard) error {
-	if card == nil {
-		return errors.New("card is nil")
-	}
-	if card.CardID == nil {
-		return errors.New("card id is nil")
-	}
-	if card.Amount == nil {
-		return errors.New("card amount is nil")
-	}
-	if card.Owner == nil {
-		return errors.New("card owner is nil")
-	}
-	if card.Contract == nil {
-		return errors.New("card contract is nil")
-	}
-	return nil
-}
-
-func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardID int64, amount int64, version string) error {
-	// check the oracle
-	addr := ctx.Message().Sender.MarshalPB()
-	if err := z.validateOracle(ctx, addr); err != nil {
-		return err
-	}
-	cardCollection, err := loadCardCollectionByUserId(ctx, userID, version)
-	if err != nil {
-		return err
-	}
-	cardlib, err := getCardLibrary(ctx, version)
-	if err != nil {
-		return err
-	}
-
-	// Map from cardID to mouldID
-	// the formular is cardID = mouldID + x
-	// for example cardID 250 = 25 + 0
-	//   or 161 = 16 + 1
-	mouldID := cardID / 10
-	card, err := getCardByMouldId(cardlib, mouldID)
-	if err != nil {
-		return err
-	}
-
-	// add to collection
-	found := false
-	for i := range cardCollection.Cards {
-		if cardCollection.Cards[i].MouldId == card.MouldId {
-			cardCollection.Cards[i].Amount += amount
-			found = true
-			break
-		}
-	}
-	if !found {
-		cardCollection.Cards = append(cardCollection.Cards, &zb_data.CardCollectionCard{
-			MouldId: card.MouldId,
-			Amount:  amount,
-		})
-	}
-	return saveCardCollectionByUserId(ctx, userID, cardCollection)
-}
-
-func (z *ZombieBattleground) SetLastPlasmaBlockNum(ctx contract.Context, req *zb_calls.SetLastPlasmaBlockNumRequest) error {
-	state, err := loadState(ctx)
-	if err != nil {
-		return err
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.LastPlasmachainBlockNum = req.LastBlockNum
-	return saveState(ctx, state)
-}
-
-func (z *ZombieBattleground) SetRewardContractVersion(ctx contract.Context, req *zb_calls.SetRewardContractVersionRequest) error {
-	state, err := loadState(ctx)
-	if err != nil {
-		return err
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.RewardContractVersion = req.Version
-	return saveState(ctx, state)
-}
-
-func (z *ZombieBattleground) SetTutorialRewardAmount(ctx contract.Context, req *zb_calls.SetTutorialRewardAmountRequest) error {
-	state, err := loadState(ctx)
-	if err != nil {
-		return err
-	}
-	if req.Oracle == nil {
-		return ErrOracleNotSpecified
-	}
-	if err := z.validateOracle(ctx, req.Oracle); err != nil {
-		return err
-	}
-	state.TutorialRewardAmount = req.Amount
-	return saveState(ctx, state)
-}
-
-func (z *ZombieBattleground) GetContractBuildMetadata(ctx contract.StaticContext, req *zb_calls.GetContractBuildMetadataRequest) (*zb_calls.GetContractBuildMetadataResponse, error) {
-	return &zb_calls.GetContractBuildMetadataResponse{
-		Date:   BuildDate,
-		GitSha: BuildGitSha,
-		Build:  BuildNumber,
-	}, nil
 }
 
 var Contract plugin.Contract = contract.MakePluginContract(&ZombieBattleground{})

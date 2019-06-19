@@ -22,6 +22,8 @@ build-ext: contracts/zombiebattleground.1.0.0
 
 cli: bin/zb-cli
 
+oracle: bin/gcoracle
+
 tools: bin/zb-enum-gen bin/zb-console-game
 
 gamechain-logger: proto bin/gamechain-logger
@@ -67,7 +69,7 @@ protoc-gen-gogo:
 %.cs: %.proto protoc-gen-gogo
 	if [ -e "protoc-gen-gogo.exe" ]; then mv protoc-gen-gogo.exe protoc-gen-gogo; fi
 	cp $< $<-cs.bak
-	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g' > $<-cs && rm $<-cs.bak
+	grep -vw 'import "github.com/gogo/protobuf/gogoproto/gogo.proto";' $<-cs.bak | sed -e 's/\[[^][]*\]//g;s/option (gogoproto\.[a-z_]*) = false;//g' > $<-cs && rm $<-cs.bak
 	$(PROTOC) --csharp_out=./$(dir $<) $(PKG)/$<-cs
 	rm $<-cs
 	find ./$(dir $<)*.cs -type f -exec sed -i.bak 's/global::Google.Protobuf/global::Loom.Google.Protobuf/g' {} \;
@@ -76,9 +78,11 @@ protoc-gen-gogo:
 proto: types/zb/zb_data/zb_data.pb.go \
     types/zb/zb_enums/zb_enums.pb.go \
     types/zb/zb_calls/zb_calls.pb.go \
+    types/zb/zb_custombase/zb_custombase.pb.go \
     types/zb/zb_data/zb_data.cs \
     types/zb/zb_enums/zb_enums.cs \
     types/zb/zb_calls/zb_calls.cs \
+    types/zb/zb_custombase/zb_custombase.cs \
     types/oracle/oracle.pb.go \
     types/nullable/nullable_pb/nullable.pb.go \
     types/nullable/nullable_pb/nullable.cs \
@@ -139,7 +143,7 @@ abigen:
 
 oracle-abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
-	./abigen --abi oracle/abi/card_faucet.abi --pkg ethcontract --type CardFaucet --out oracle/ethcontract/card_faucet.go
+	./abigen --abi oracle/abi/ZBGCardABI.json --pkg ethcontract --type ZBGCard --out oracle/ethcontract/zbgcard.go
 
 test:
 	#TODO fix go vet in tests
@@ -154,9 +158,11 @@ clean:
 		types/zb/zb_data/zb_data.pb.go \
 		types/zb/zb_enums/zb_enums.pb.go \
 		types/zb/zb_calls/zb_calls.pb.go \
+		types/zb/zb_custombase/zb_custombase.pb.go \
 		types/zb/zb_data/ZbData.cs \
 		types/zb/zb_calls/ZbCalls.cs \
 		types/zb/zb_enums/ZbEnums.cs \
+		types/zb/zb_custombase/ZbCustombase.cs \
 		types/oracle/oracle.pb.go \
 		types/nullable/nullable_pb/nullable.pb.go \
 		types/nullable/nullable_pb/Nullable.cs \

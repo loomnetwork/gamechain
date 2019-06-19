@@ -12,7 +12,6 @@ import (
 
 var deleteGameModeCmdArgs struct {
 	ID     string
-	oracle string
 }
 
 var deleteGameModeCmd = &cobra.Command{
@@ -23,7 +22,6 @@ var deleteGameModeCmd = &cobra.Command{
 		var req zb_calls.DeleteGameModeRequest
 
 		req.ID = deleteGameModeCmdArgs.ID
-		req.Oracle = deleteGameModeCmdArgs.oracle
 
 		_, err := commonTxObjs.contract.Call("DeleteGameMode", &req, signer, nil)
 		if err != nil {
@@ -38,7 +36,7 @@ var deleteGameModeCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("deleted game mode: %s", req.ID)
+			fmt.Printf("deleted game mode: %s\n", req.ID)
 		}
 
 		return nil
@@ -48,5 +46,4 @@ var deleteGameModeCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(deleteGameModeCmd)
 	deleteGameModeCmd.Flags().StringVar(&deleteGameModeCmdArgs.ID, "id", "", "id of the game mode")
-	deleteGameModeCmd.Flags().StringVarP(&deleteGameModeCmdArgs.oracle, "oracle", "o", "", "oracle address")
 }

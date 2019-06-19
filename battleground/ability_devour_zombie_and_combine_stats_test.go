@@ -1,6 +1,7 @@
 package battleground
 
 import (
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"testing"
@@ -8,7 +9,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	loom "github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
@@ -24,20 +25,20 @@ func TestAbilityDevourZombieAndCombineStats(t *testing.T) {
 
 	deck0 := &zb_data.Deck{
 		Id:     0,
-		OverlordId: 2,
+		OverlordId: 1,
 		Name:   "Default",
 		Cards: []*zb_data.DeckCard{
-			{MouldId: 53, Amount: 2},
-			{MouldId: 91, Amount: 2},
-			{MouldId: 96, Amount: 2},
-			{MouldId: 3, Amount: 2},
-			{MouldId: 2, Amount: 2},
-			{MouldId: 92, Amount: 2},
-			{MouldId: 1, Amount: 1},
-			{MouldId: 93, Amount: 1},
-			{MouldId: 7, Amount: 1},
-			{MouldId: 94, Amount: 1},
-			{MouldId: 5, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 53}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 2}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 92}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 93}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 7}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 94}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 5}, Amount: 1},
 		},
 	}
 

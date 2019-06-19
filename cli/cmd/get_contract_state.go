@@ -1,43 +1,42 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
-var initStateCmd = &cobra.Command{
-	Use:   "init_state",
-	Short: "initialize gamechain state",
+var getContractStateCmdArgs struct {
+}
+
+var getContractStateCmd = &cobra.Command{
+	Use:   "get_contract_state",
+	Short: "get contract state",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 		callerAddr := loom.Address{
 			ChainID: commonTxObjs.rpcClient.GetChainID(),
 			Local:   loom.LocalAddressFromPublicKey(signer.PublicKey()),
 		}
-		req := &zb_calls.InitGamechainStateRequest{
-			Oracle: callerAddr.MarshalPB(),
-		}
-		_, err := commonTxObjs.contract.Call("InitState", req, signer, nil)
+
+		var resp zb_calls.GetContractStateResponse
+		_, err := commonTxObjs.contract.StaticCall("GetContractState", &zb_calls.EmptyRequest{}, callerAddr, &resp)
 		if err != nil {
-			return errors.Wrap(err, "call contract")
+			return err
 		}
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := json.Marshal(map[string]interface{}{"success": true})
+			err := printProtoMessageAsJSONToStdout(resp.State)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
-			fmt.Println("state initialized")
+			fmt.Printf("%+v\n", resp.State)
 		}
 
 		return nil
@@ -45,5 +44,5 @@ var initStateCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(initStateCmd)
+	rootCmd.AddCommand(getContractStateCmd)
 }

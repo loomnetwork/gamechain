@@ -1,23 +1,44 @@
 syntax = "proto3";
 
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
+
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 
 message PlasmachainEvent {
-    uint64 eth_block = 1;
+    uint64 ethBlock = 1;
     oneof payload {
-        PlasmachainGeneratedCard card = 2;
+        PlasmachainEventTransfer transfer = 2;
+        PlasmachainEventTransferWithQuantity transferWithQuantity = 3;
+        PlasmachainEventBatchTransfer batchTransfer = 4;
     }
 }
 
-message PlasmachainGeneratedCard {
-    Address owner = 1;
-    Address contract = 2;
-    BigUInt card_id = 3 [(gogoproto.customname)="CardID"];
+// event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+message PlasmachainEventTransfer {
+    Address from = 1;
+    Address to = 2;
+    BigUInt tokenId = 3;
+}
+
+// event TransferWithQuantity(address indexed from, address indexed to, uint256 indexed tokenId, uint256 quantity);
+message PlasmachainEventTransferWithQuantity {
+    Address from = 1;
+    Address to = 2;
+    BigUInt tokenId = 3;
     BigUInt amount = 4;
+}
+
+// event BatchTransfer(address indexed from, address indexed to, uint256[] tokenTypes, uint256[] amounts);
+message PlasmachainEventBatchTransfer {
+    Address from = 1;
+    Address to = 2;
+    repeated BigUInt tokenIds = 3;
+    repeated BigUInt amounts = 4;
 }
 
 message ProcessEventBatchRequest {
     repeated PlasmachainEvent events = 1;
     string card_version = 2;
+    uint64 lastPlasmachainBlockNumber = 3;
 }

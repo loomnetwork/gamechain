@@ -40,7 +40,7 @@ var cancelFindMatchCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("Cancel match %d successfully", req.MatchId)
+			fmt.Printf("Cancel match %d successfully\n", req.MatchId)
 		}
 
 		return nil

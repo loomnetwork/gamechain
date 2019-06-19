@@ -6,8 +6,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -38,11 +37,10 @@ var getGameModeCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(&gameMode)
+			err := printProtoMessageAsJSONToStdout(&gameMode)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			fmt.Printf("found game mode: %+v", gameMode)
 		}

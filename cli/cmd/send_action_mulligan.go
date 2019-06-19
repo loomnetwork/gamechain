@@ -55,7 +55,7 @@ var sendActionMulliganCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("sent action mulligan successfully")
+			fmt.Println("sent action mulligan successfully")
 		}
 
 		return nil

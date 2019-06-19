@@ -7,8 +7,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -39,11 +38,10 @@ var getGameStateCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(state)
+			err := printProtoMessageAsJSONToStdout(state)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			formatAbility := func(abilities []*zb_data.CardAbilityInstance) string {
 				b := new(bytes.Buffer)

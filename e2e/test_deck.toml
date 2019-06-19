@@ -1,5 +1,5 @@
 [[TestCases]]
-  RunCmd = "echo "
+  RunCmd = "/bin/echo "
   Delay = 10000
 
 [[TestCases]]
@@ -20,7 +20,7 @@
   Expected = ["deck size: 1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"mouldId\": 10, \"amount\": 2}, {\"mouldId\": 11, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
   Condition = "contains"
   Expected = ["deck created successfully"]
 
@@ -49,7 +49,7 @@
   Expected = ["NewDeck1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"id\": 2, \"overlord_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"mouldId\": 10, \"amount\": 2}, {\"mouldId\": 11, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"id\": 2, \"overlord_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
   Condition = "contains"
   Expected = ["deck edited successfully"]
 
@@ -73,7 +73,7 @@
   Expected = ["deck size: 0"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"mouldId\": 10, \"amount\": 2}, {\"mouldId\": 11, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
   Condition = "contains"
   Expected = ["deck created successfully"]
 

@@ -6,6 +6,12 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 import "github.com/loomnetwork/gamechain/types/zb/zb_data/zb_data.proto";
 
+message EmptyRequest {
+}
+
+message EmptyResponse {
+}
+
 message InitRequest {
     repeated Deck defaultDecks = 1;
     repeated CardCollectionCard defaultCollection = 2;
@@ -19,8 +25,7 @@ message InitRequest {
 }
 
 message UpdateOracleRequest {
-    Address new_oracle = 1;
-    Address old_oracle = 2;
+    Address newOracle = 1;
 }
 
 message UpdateInitRequest {
@@ -46,30 +51,33 @@ message GetContractBuildMetadataResponse {
     string build = 3;
 }
 
-message GetGamechainStateRequest {
+message GetContractConfigurationResponse {
+    ContractConfiguration configuration = 1;
 }
 
-message GetGamechainStateResponse {
-    GamechainState state = 1;
+message GetContractStateResponse {
+    ContractState state = 1;
 }
 
-message InitGamechainStateRequest {
-    Address oracle = 1;
+message UpdateContractConfigurationRequest {
+    bool setFiatPurchaseContractVersion = 1;
+    uint64 fiatPurchaseContractVersion = 2;
+
+    bool setInitialFiatPurchaseTxId = 3;
+    BigUInt initialFiatPurchaseTxId = 4;
+
+    bool setUseCardLibraryAsUserCollection = 5;
+    bool useCardLibraryAsUserCollection = 6;
+
+    bool setDataWipeConfiguration = 7;
+    DataWipeConfiguration dataWipeConfiguration = 8;
+
+    bool setDebugMode = 9;
+    bool debugMode = 10;
 }
 
-message SetLastPlasmaBlockNumRequest {
-    uint64 last_block_num = 1;
-    Address oracle = 2;
-}
-
-message SetRewardContractVersionRequest {
-    uint64 version = 1;
-    Address oracle = 2;
-}
-
-message SetTutorialRewardAmountRequest {
-    uint64 amount = 1;
-    Address oracle = 2;
+message SetLastPlasmaBlockNumberRequest {
+    uint64 lastPlasmachainBlockNumber = 1;
 }
 
 message GetCardListRequest {
@@ -108,6 +116,11 @@ message UpdateUserEloRequest {
 
 message GetAccountRequest {
     string user_id = 1;
+}
+
+message LoginRequest {
+    string userId = 1;
+    string version = 2;
 }
 
 message GetDeckRequest {
@@ -234,26 +247,6 @@ message GetCollectionByAddressRequest {
 
 message GetCollectionByAddressResponse {
     repeated CardCollectionCard cards = 1;
-}
-
-message RewardTutorialCompletedRequest {
-}
-
-message RewardTutorialCompletedResponse {
-    // string user_id = 1;
-    string reward_type = 2;
-    string hash = 3;
-    string r = 4;
-    string s = 5;
-    uint64 v = 6;
-    // int64 nonce = 7;
-    // uint64 minion_pack = 8;
-    // uint64 user_id_uint = 9;
-    // BigUInt user_id = 10;
-    BigUInt amount = 11;
-}
-
-message ConfirmRewardTutorialClaimedRequest {
 }
 
 message RegisterPlayerPoolRequest {
@@ -406,7 +399,6 @@ message GameModeRequest {
     string version = 3;
     string address = 4;
     GameModeType game_mode_type = 5;
-    string oracle = 6;
 }
 
 message UpdateGameModeRequest {
@@ -416,12 +408,10 @@ message UpdateGameModeRequest {
     string version = 4;
     string address = 5;
     GameModeType game_mode_type = 6;
-    string oracle = 7;
 }
 
 message DeleteGameModeRequest {
     string ID = 1;
-    string oracle = 2;
 }
 
 message GetGameModeRequest {
@@ -446,4 +436,48 @@ message CallCustomGameModeFunctionRequest {
 
 message StaticCallCustomGameModeFunctionResponse {
     bytes output = 1;
+}
+
+//
+
+message GetPendingMintingTransactionReceiptsRequest {
+    string userId = 1;
+}
+
+message GetPendingMintingTransactionReceiptsResponse {
+    MintingTransactionReceiptCollection receiptCollection = 1;
+}
+
+message ConfirmPendingMintingTransactionReceiptRequest {
+    string userId = 1;
+    BigUInt txId = 2;
+}
+
+message DebugMintBoosterPackReceiptRequest {
+    BigUInt userId = 1;
+    int32 boosterAmount = 2;
+}
+
+message DebugMintBoosterPackReceiptResponse {
+    string receiptJson = 1;
+    MintingTransactionReceipt receipt = 2;
+}
+
+message DebugGetUserIdByAddressRequest {
+    Address address = 1;
+}
+
+message DebugGetPendingCardAmountChangeItemsRequest {
+    Address address = 1;
+}
+
+message DebugGetPendingCardAmountChangeItemsResponse {
+    CardAmountChangeItemsContainer container = 1;
+}
+
+message WipeUserDataRequest {
+    string version = 1;
+    string userId = 2;
+    bool wipeDecks = 3;
+    bool wipeOverlordsUserData = 4;
 }

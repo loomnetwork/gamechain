@@ -48,7 +48,7 @@ var createDeckCmd = &cobra.Command{
 			}
 			fmt.Println(string(output))
 		default:
-			fmt.Printf("deck created successfully with id %d", result.DeckId)
+			fmt.Printf("deck created successfully with id %d\n", result.DeckId)
 		}
 
 		return nil

@@ -7,7 +7,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/nullable"
 	"github.com/loomnetwork/gamechain/types/nullable/nullable_test_pb"
 	"github.com/pkg/errors"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 	"io"
 	"testing"
 )
