@@ -3,13 +3,14 @@ package oracle
 import (
 	"context"
 	"encoding/json"
+	hexutil "github.com/ethereum/go-ethereum/common/hexutil"
 	"math/big"
 
-	ethereum "github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/client"
 	loomcommon "github.com/loomnetwork/go-loom/common"
 	"github.com/loomnetwork/loomchain/rpc/eth"
@@ -78,19 +79,38 @@ func (l *LoomchainBackend) FilterLogs(ctx context.Context, query ethereum.Filter
 	if len(query.Topics) > 0 {
 		ethFilter.Topics = hashToStrings(query.Topics)
 	}
-	filter, err := json.Marshal(&ethFilter)
+
+	// If eth.EthFilter is used, we get strange results with missing first topic
+	jsonFilter := eth.JsonFilter{}
+	jsonFilter.FromBlock = ethFilter.FromBlock
+	jsonFilter.ToBlock = ethFilter.ToBlock
+	jsonFilter.Address = query.Addresses[0]
+	jsonFilter.Topics = []interface{}{query.Topics[0][0].String()}
+
+	filter, err := json.Marshal(&jsonFilter)
 	if err != nil {
 		return nil, err
 	}
+
 	logs, err := l.GetEvmLogs(string(filter))
 	if err != nil {
 		return nil, err
 	}
+
 	var tlogs []types.Log
 	for _, log := range logs.EthBlockLogs {
+		topicBytes := make([][]byte, len(log.Topics))
+		for i, topicHexStringBytes := range log.Topics {
+			topicBytes[i], err = hexutil.Decode(string(topicHexStringBytes))
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to decode topics")
+			}
+		}
+		topicHashes := byteArrayToHashes(topicBytes...)
+
 		tlogs = append(tlogs, types.Log{
 			Address:     common.BytesToAddress(log.Address),
-			Topics:      byteArrayToHashes(log.Topics...),
+			Topics:      topicHashes,
 			Data:        log.Data,
 			BlockNumber: uint64(log.BlockNumber),
 			TxHash:      common.BytesToHash(log.TransactionHash),

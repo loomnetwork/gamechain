@@ -6,6 +6,7 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/loomnetwork/go-loom/types/types.proto";
 import "github.com/loomnetwork/gamechain/types/nullable/nullable_pb/nullable.proto";
 import "github.com/loomnetwork/gamechain/types/zb/zb_enums/zb_enums.proto";
+import "github.com/loomnetwork/gamechain/types/zb/zb_custombase/zb_custombase.proto";
 
 message InitData {
     repeated Deck defaultDecks = 1;
@@ -41,7 +42,8 @@ message Deck {
 }
 
 message Card {
-    int64 mouldId = 1;
+    reserved 1; // int64 mouldId
+    CardKey cardKey = 23 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
@@ -59,26 +61,26 @@ message Card {
     UniqueAnimation.Enum uniqueAnimation = 18;
     reserved 19;
     bool hidden = 20;
-    int64 sourceMouldId = 21;
+    reserved 21; // int64 sourceMouldId = 21;
     CardOverrides overrides = 22;
 }
 
 message CardOverrides {
-    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardKindEnumValue"];
-    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.FactionEnumValue"];
+    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardKindEnumValue"];
+    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.FactionEnumValue"];
     StringValue name = 3 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue description = 4 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue flavorText = 5 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     StringValue picture = 6 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CreatureRankEnumValue"];
-    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.CardTypeEnumValue"];
+    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CreatureRankEnumValue"];
+    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardTypeEnumValue"];
     StringValue frame = 9 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
     Int32Value damage = 10 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     Int32Value defense = 11 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     Int32Value cost = 12 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
     PictureTransform pictureTransform = 13;
     repeated AbilityData abilities = 14;
-    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/battleground_nullable.UniqueAnimationEnumValue"];
+    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.UniqueAnimationEnumValue"];
     BoolValue hidden = 16 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.BoolValue"];
 }
 
@@ -117,15 +119,17 @@ message CardList {
 }
 
 message CardCollectionCard {
-    string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    reserved 1; //string cardName_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
-    int64 mouldId = 3;
+    reserved 3; // int64 mouldId = 3;
+    CardKey cardKey = 4 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
 }
 
 message DeckCard {
-    string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
+    reserved 1; // string card_name_deprecated = 1 [deprecated = true, json_name = "cardName"];
     int64 amount = 2;
-    int64 mouldId = 3;
+    reserved 3; // int64 mouldId = 3;
+    CardKey cardKey = 4 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
 }
 
 message CardLibrary {
@@ -233,7 +237,7 @@ message LevelReward {
     int32 level = 1;
     oneof reward {
         OverlordSkillRewardItem skillReward = 2;
-        UnitRewardItem unitReward = 3;
+        BoosterPackRewardItem boosterPackReward = 3;
     }
 }
 
@@ -241,28 +245,31 @@ message OverlordSkillRewardItem {
     int32 skillIndex = 1;
 }
 
-message UnitRewardItem {
-    CreatureRank.Enum rank = 1;
-    int32 count = 2;
+message BoosterPackRewardItem {
+    int32 amount = 1;
 }
 
-message ExperienceAction{
+message ExperienceAction {
     ExperienceActionType.Enum action = 1;
     int32 experience = 2;
 }
 
-message GamechainState {
-    // The last plasmachain block number pulling by oracle
-    uint64 last_plasmachain_block_num = 1;
-    // the plasmachain reward contract version 
-    uint64 reward_contract_version = 2;
-    // the number of card packs reward when players finish tutorial
-    uint64 tutorial_reward_amount = 3;
+message ContractState {
+    // Last Plasmachain block succesfully processed by oracle
+    uint64 lastPlasmachainBlockNumber = 1;
+    reserved 2; //uint64 reward_contract_version = 2;
+    reserved 3; // uint64 tutorial_reward_amount = 3;
     reserved 4; // default_player_defense
+    BigUInt currentFiatPurchaseTxId = 5;
 }
 
-message RewardTutorialClaimed {
-    uint64 nonce = 1;
+message ContractConfiguration {
+    // Plasmachain FiatPurchase contract version
+    uint64 fiatPurchaseContractVersion = 1;
+    BigUInt initialFiatPurchaseTxId = 2;
+    bool useCardLibraryAsUserCollection = 3;
+    repeated DataWipeConfiguration dataWipeConfiguration = 4;
+    bool debugMode = 5;
 }
 
 //////////// Match Making /////////////
@@ -408,9 +415,6 @@ message DebugCheatsConfiguration {
 
     bool skipMulligan = 9;
 }
-
-
-
 
 // Game Modes
 
@@ -827,6 +831,23 @@ message OverlordLevelingDataContainer {
     OverlordLevelingData overlordLeveling = 1;
 }
 
+message DataWipeConfiguration{
+    string version = 1;
+    bool wipeDecks = 2;
+}
+
+message DataWipeConfigurationList {
+    repeated DataWipeConfiguration configurations = 1;
+}
+
+message DataWipeConfigurationContainer {
+    repeated DataWipeConfiguration dataWipeConfiguration = 1;
+}
+
+message UserExecutedDataWipesList {
+    repeated string versions = 1;
+}
+
 message NotificationEndMatch {
     int64 overlordId = 1;
     int32 oldLevel = 2;
@@ -857,4 +878,43 @@ message Notification {
 
 message NotificationList {
     repeated Notification notifications = 1;
+}
+
+message UserIdContainer {
+    string userId = 1;
+}
+
+message MintingTransactionReceipt {
+    message VerifySignResult {
+        bytes hash = 1;
+        bytes signature = 2;
+    }
+
+    VerifySignResult verifyHash = 1;
+    BigUInt userId = 2;
+	uint64 booster = 3;
+	uint64 air = 4;
+	uint64 earth = 5;
+	uint64 fire = 6;
+	uint64 life = 7;
+	uint64 toxic = 8;
+	uint64 water = 9;
+	uint64 super = 10;
+	uint64 small = 11;
+	uint64 minion = 12;
+	uint64 binance = 13;
+	BigUInt txId = 14;
+}
+
+message MintingTransactionReceiptCollection {
+    repeated MintingTransactionReceipt receipts = 1;
+}
+
+message CardAmountChangeItemsContainer {
+    repeated CardAmountChangeItem cardAmountChange = 1;
+}
+
+message CardAmountChangeItem {
+    CardKey cardKey = 1 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
+    int64 amountChange = 2;
 }

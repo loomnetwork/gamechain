@@ -5,27 +5,29 @@ import (
 	"fmt"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
+	"github.com/loomnetwork/go-loom/common"
+	"github.com/loomnetwork/go-loom/types"
 	"github.com/pkg/errors"
 	"io/ioutil"
+	"math/big"
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	latypes "github.com/loomnetwork/loomauth/types"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
-var initRequest = zb_calls.InitRequest {
+var initRequest = zb_calls.InitRequest{
 }
 
-var updateInitRequest = zb_calls.UpdateInitRequest {
+var updateInitRequest = zb_calls.UpdateInitRequest{
 }
 
 func readJsonFileToProtobuf(filename string, message proto.Message) error {
@@ -36,26 +38,31 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 
 	json := string(bytes)
 	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file " + filename)
+		return errors.Wrap(err, "error parsing JSON file "+filename)
 	}
 
 	return nil
 }
 
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
+	debugEnabled = true
+
+	// random key
+	purchaseGatewayPrivateKeyHexString = "527969b4754fca7c3c6146c7c2a12ce1d0dda4a7e75cfb8e3465e0393d531176"
+
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("simple-init.json", updateInitRequest.InitData)
+	err := readJsonFileToProtobuf("../test_data/simple-init.json", updateInitRequest.InitData)
 	assert.Nil(t, err)
 
 	initRequest = zb_calls.InitRequest{
-		DefaultDecks:         updateInitRequest.InitData.DefaultDecks,
-		DefaultCollection:    updateInitRequest.InitData.DefaultCollection,
-		Cards:                updateInitRequest.InitData.Cards,
-		Overlords:            updateInitRequest.InitData.Overlords,
-		AiDecks:              updateInitRequest.InitData.AiDecks,
-		Version:              updateInitRequest.InitData.Version,
-		Oracle:               updateInitRequest.InitData.Oracle,
-		OverlordLeveling:     updateInitRequest.InitData.OverlordLeveling,
+		DefaultDecks:      updateInitRequest.InitData.DefaultDecks,
+		DefaultCollection: updateInitRequest.InitData.DefaultCollection,
+		Cards:             updateInitRequest.InitData.Cards,
+		Overlords:         updateInitRequest.InitData.Overlords,
+		AiDecks:           updateInitRequest.InitData.AiDecks,
+		Version:           updateInitRequest.InitData.Version,
+		Oracle:            updateInitRequest.InitData.Oracle,
+		OverlordLeveling:  updateInitRequest.InitData.OverlordLeveling,
 	}
 
 	c = &ZombieBattleground{}
@@ -71,11 +78,56 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 
 	err = c.Init(*ctx, &initRequest)
 	assert.Nil(t, err)
+
+	request := zb_calls.UpdateContractConfigurationRequest{
+		SetFiatPurchaseContractVersion: true,
+		FiatPurchaseContractVersion:    3,
+		SetInitialFiatPurchaseTxId:     true,
+		InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+	}
+
+	err = c.UpdateContractConfiguration(*ctx, &request)
+	assert.Nil(t, err)
 }
 
 func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest, t *testing.T) {
 	err := c.CreateAccount(ctx, upsertAccountRequest)
 	assert.Nil(t, err)
+}
+
+func TestContractConfigurationAndState(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	t.Run("UpdateContractConfiguration should succeed", func(t *testing.T) {
+		request := zb_calls.UpdateContractConfigurationRequest{
+			SetFiatPurchaseContractVersion: true,
+			FiatPurchaseContractVersion:    373,
+			SetInitialFiatPurchaseTxId:     true,
+			InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+		}
+
+		err := c.UpdateContractConfiguration(ctx, &request)
+		assert.Nil(t, err)
+	})
+
+	t.Run("GetContractState should succeed", func(t *testing.T) {
+		response, err := c.GetContractState(ctx, &zb_calls.EmptyRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, int64(100), response.State.CurrentFiatPurchaseTxId.Value.Int.Int64())
+		assert.Equal(t, uint64(0), response.State.LastPlasmachainBlockNumber)
+	})
+
+	t.Run("GetContractConfiguration should succeed", func(t *testing.T) {
+		response, err := c.GetContractConfiguration(ctx, &zb_calls.EmptyRequest{})
+		assert.Nil(t, err)
+		assert.Equal(t, int64(100), response.Configuration.InitialFiatPurchaseTxId.Value.Int.Int64())
+		assert.Equal(t, uint64(373), response.Configuration.FiatPurchaseContractVersion)
+	})
 }
 
 func TestAccountOperations(t *testing.T) {
@@ -126,12 +178,113 @@ func TestCardCollectionCardOperations(t *testing.T) {
 	}, t)
 
 	CardCollectionCard, err := c.GetCollection(ctx, &zb_calls.GetCollectionRequest{
-		UserId: "CardUser",
+		UserId:  "CardUser",
 		Version: "v1",
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, 12, len(CardCollectionCard.Cards))
 
+}
+
+func TestUserDataWipe(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "7796b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		UserId:  "DeckUser",
+		Image:   "PathToImage",
+		Version: "v1",
+	}, t)
+
+	defaultDecks, err := loadDefaultDecks(ctx, "v1")
+
+	t.Run("Default decks make sense", func(t *testing.T) {
+		assert.Nil(t, err)
+		assert.Equal(t, 1, len(defaultDecks.Decks))
+		assert.Equal(t, int64(0), defaultDecks.Decks[0].Id)
+		assert.Equal(t, "Default", defaultDecks.Decks[0].Name)
+	})
+
+	t.Run("ListDecks should have default decks", func(t *testing.T) {
+		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Equal(t, nil, err)
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
+
+	t.Run("Data wipe should reset user data", func(t *testing.T) {
+		// Mess decks up: add new deck, rename the default one
+		_, err := c.CreateDeck(ctx, &zb_calls.CreateDeckRequest{
+			UserId: "DeckUser",
+			Deck: &zb_data.Deck{
+				Name:       "NewDeck",
+				OverlordId: 1,
+				Cards: []*zb_data.DeckCard{
+					{
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
+					},
+					{
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
+					},
+				},
+			},
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		deckResponse.Decks[0].Name = "RenamedDefaultDeck"
+
+		err = c.EditDeck(ctx, &zb_calls.EditDeckRequest{
+			UserId: "DeckUser",
+			Deck: deckResponse.Decks[0],
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		// Enable data wipe
+		contractConfiguration, err := loadContractConfiguration(ctx)
+		assert.Nil(t, err)
+
+		contractConfiguration.DataWipeConfiguration = append(
+			contractConfiguration.DataWipeConfiguration,
+			&zb_data.DataWipeConfiguration{
+				Version:   "v1",
+				WipeDecks: true,
+			},
+		)
+
+		err = saveContractConfiguration(ctx, contractConfiguration)
+		assert.Nil(t, err)
+
+		// Re-login and check if data is reset
+		err = c.Login(ctx, &zb_calls.LoginRequest{Version: "v1", UserId: "DeckUser"})
+		assert.Nil(t, err)
+
+		deckResponse, err = c.ListDecks(ctx, &zb_calls.ListDecksRequest{
+			UserId:  "DeckUser",
+			Version: "v1",
+		})
+		assert.Nil(t, err)
+
+		assert.Equal(t, 1, len(deckResponse.Decks))
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Id)
+		assert.Equal(t, "Default", deckResponse.Decks[0].Name)
+	})
 }
 
 func TestDeckOperations(t *testing.T) {
@@ -149,7 +302,7 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("ListDecks", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 		assert.Equal(t, nil, err)
@@ -160,8 +313,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck (Not Exists)", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 0xDEADBEEF,
+			UserId:  "DeckUser",
+			DeckId:  0xDEADBEEF,
 			Version: "v1",
 		})
 		assert.Equal(t, (*zb_calls.GetDeckResponse)(nil), deckResponse)
@@ -170,8 +323,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("GetDeck", func(t *testing.T) {
 		deckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 1,
+			UserId:  "DeckUser",
+			DeckId:  1,
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -189,12 +342,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -204,7 +357,7 @@ func TestDeckOperations(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
 
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 
@@ -220,12 +373,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   200,
-						MouldId: 43,
+						Amount:  200,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   100,
-						MouldId: 48,
+						Amount:  100,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -243,12 +396,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   2,
-						MouldId: -100,
+						Amount:  2,
+						CardKey: battleground_proto.CardKey{MouldId: -100},
 					},
 					{
-						Amount:   1,
-						MouldId: -101,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: -101},
 					},
 				},
 			},
@@ -266,12 +419,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -289,12 +442,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -313,12 +466,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -327,8 +480,8 @@ func TestDeckOperations(t *testing.T) {
 		assert.Nil(t, err)
 
 		getDeckResponse, err := c.GetDeck(ctx, &zb_calls.GetDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 2,
+			UserId:  "DeckUser",
+			DeckId:  2,
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -347,11 +500,11 @@ func TestDeckOperations(t *testing.T) {
 				Cards: []*zb_data.DeckCard{
 					{
 						Amount:  100,
-						MouldId: 43,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
 						Amount:  1,
-						MouldId: 48,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -369,12 +522,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -393,12 +546,12 @@ func TestDeckOperations(t *testing.T) {
 				OverlordId: 1,
 				Cards: []*zb_data.DeckCard{
 					{
-						Amount:   1,
-						MouldId: 43,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 43},
 					},
 					{
-						Amount:   1,
-						MouldId: 48,
+						Amount:  1,
+						CardKey: battleground_proto.CardKey{MouldId: 48},
 					},
 				},
 			},
@@ -411,8 +564,8 @@ func TestDeckOperations(t *testing.T) {
 	t.Run("DeleteDeck", func(t *testing.T) {
 		assert.NotNil(t, createDeckResponse)
 		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
-			UserId: "DeckUser",
-			DeckId: createDeckResponse.DeckId,
+			UserId:  "DeckUser",
+			DeckId:  createDeckResponse.DeckId,
 			Version: "v1",
 		})
 
@@ -421,8 +574,8 @@ func TestDeckOperations(t *testing.T) {
 
 	t.Run("DeleteDeck (Non existant)", func(t *testing.T) {
 		err := c.DeleteDeck(ctx, &zb_calls.DeleteDeckRequest{
-			UserId: "DeckUser",
-			DeckId: 0xDEADBEEF,
+			UserId:  "DeckUser",
+			DeckId:  0xDEADBEEF,
 			Version: "v1",
 		})
 
@@ -471,43 +624,6 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 		Version: "v1",
 	}, t)
 
-	t.Run("Should upgrade data to use mould ID", func(t *testing.T) {
-		// Create deck with card names
-		deckList := &zb_data.DeckList{
-			Decks: []*zb_data.Deck{
-				{
-					Name:       "NewDeck",
-					OverlordId: 1,
-					Cards: []*zb_data.DeckCard{
-						{
-							Amount:             1,
-							CardNameDeprecated: "Whizpar",
-						},
-						{
-							Amount:             2,
-							CardNameDeprecated: "Wheezy",
-						},
-					},
-				},
-			},
-		}
-
-		err := saveDecks(ctx, "DeckUser", deckList)
-		assert.Nil(t, err)
-
-		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
-			Version: "v1",
-		})
-
-		assert.Equal(t, nil, err)
-		assert.Equal(t, 1, len(deckResponse.Decks))
-		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
-		assert.Equal(t, int64(2), deckResponse.Decks[0].Cards[1].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[1].CardNameDeprecated)
-	})
-
 	t.Run("Should remove unknown cards from decks", func(t *testing.T) {
 		deckList := &zb_data.DeckList{
 			Decks: []*zb_data.Deck{
@@ -517,30 +633,29 @@ func TestCardDataUpgradeAndValidation(t *testing.T) {
 					Cards: []*zb_data.DeckCard{
 						{
 							Amount:  1,
-							MouldId: -1,
+							CardKey: battleground_proto.CardKey{MouldId: -1},
 						},
 						{
 							Amount:  2,
-							MouldId: 1,
+							CardKey: battleground_proto.CardKey{MouldId: 1},
 						},
 					},
 				},
 			},
 		}
 
-		err := saveDecks(ctx, "DeckUser", deckList)
+		err := saveDecks(ctx, "v1", "DeckUser", deckList)
 		assert.Nil(t, err)
 
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "DeckUser",
+			UserId:  "DeckUser",
 			Version: "v1",
 		})
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, 1, len(deckResponse.Decks))
 		assert.Equal(t, 1, len(deckResponse.Decks[0].Cards))
-		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].MouldId)
-		assert.Equal(t, "", deckResponse.Decks[0].Cards[0].CardNameDeprecated)
+		assert.Equal(t, int64(1), deckResponse.Decks[0].Cards[0].CardKey.MouldId)
 	})
 }
 
@@ -632,7 +747,7 @@ func TestFindMatchOperations(t *testing.T) {
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-1",
+			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -642,7 +757,7 @@ func TestFindMatchOperations(t *testing.T) {
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-2",
+			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -784,6 +899,7 @@ func TestFindMatchOperations(t *testing.T) {
 		})
 
 		assert.Nil(t, err)
+		assert.Equal(t, int(1), len(getNotificationsResponse2.Notifications))
 		notificationEndMatch2 := getNotificationsResponse2.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
 		assert.Equal(t, int64(1), notificationEndMatch2.OverlordId)
 		assert.Equal(t, int32(1), notificationEndMatch2.OldLevel)
@@ -801,6 +917,65 @@ func TestFindMatchOperations(t *testing.T) {
 		assert.NotNil(t, response)
 		assert.Equal(t, 2, len(response.Match.PlayerStates), "the second player should 2 player states")
 		assert.Equal(t, zb_data.Match_Ended, response.Match.Status, "match status should be 'ended'")
+	})
+}
+
+func TestOverlordLeveling(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+
+	userId := defaultUserIdPrefix + "373"
+	version := "v1"
+	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		UserId:  userId,
+		Version: version,
+	}, t)
+
+	levelingData, err := loadOverlordLevelingData(ctx, version)
+	assert.Nil(t, err)
+
+	t.Run("Level 2 is reached and one reward is given", func(t *testing.T) {
+		addedExperience := getRequiredExperienceForLevel(levelingData, 2)
+		err = applyExperience(ctx, version, levelingData, userId, big.NewInt(373), 1, int64(addedExperience), 1, true)
+		assert.Nil(t, err)
+
+		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{UserId: userId})
+		assert.Nil(t, err)
+
+		notificationEndMatch := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch.OverlordId)
+		assert.Equal(t, int32(1), notificationEndMatch.OldLevel)
+		assert.Equal(t, int64(0), notificationEndMatch.OldExperience)
+		assert.Equal(t, int64(addedExperience), notificationEndMatch.NewExperience)
+		assert.Equal(t, int32(2), notificationEndMatch.NewLevel)
+
+		assert.Equal(t, 1, len(notificationEndMatch.Rewards))
+		assert.Equal(t, int32(2), notificationEndMatch.Rewards[0].Level)
+		boosterPackReward, ok := notificationEndMatch.Rewards[0].GetReward().(*zb_data.LevelReward_BoosterPackReward)
+		assert.True(t, ok)
+		assert.Equal(t, int32(1), boosterPackReward.BoosterPackReward.Amount)
+	})
+
+	t.Run("Level 3 is reached and no rewards are given", func(t *testing.T) {
+		addedExperience := levelingData.ExperienceStep
+		err = applyExperience(ctx, version, levelingData, userId, big.NewInt(373), 1, int64(addedExperience), 1, true)
+		assert.Nil(t, err)
+
+		getNotificationsResponse1, err := c.GetNotifications(ctx, &zb_calls.GetNotificationsRequest{UserId: userId})
+		assert.Nil(t, err)
+
+		notificationEndMatch := getNotificationsResponse1.Notifications[0].Notification.(*zb_data.Notification_EndMatch).EndMatch
+		assert.Equal(t, int64(1), notificationEndMatch.OverlordId)
+		assert.Equal(t, int32(2), notificationEndMatch.OldLevel)
+		assert.Equal(t, int64(levelingData.Fixed+levelingData.ExperienceStep), notificationEndMatch.OldExperience)
+		assert.Equal(t, int32(3), notificationEndMatch.NewLevel)
+		assert.Equal(t, getRequiredExperienceForLevel(levelingData, 2)+int64(addedExperience), notificationEndMatch.NewExperience)
+
+		assert.Equal(t, 0, len(notificationEndMatch.Rewards))
 	})
 }
 
@@ -947,9 +1122,9 @@ func TestCancelFindMatchOnEndedMatchOperations(t *testing.T) {
 
 	t.Run("EndMatch", func(t *testing.T) {
 		response, err := c.EndMatch(ctx, &zb_calls.EndMatchRequest{
-			UserId:   "player-2",
-			MatchId:  matchID,
-			WinnerId: "player-2",
+			UserId:           "player-2",
+			MatchId:          matchID,
+			WinnerId:         "player-2",
 			MatchExperiences: []int64{0, 0},
 		})
 		assert.Nil(t, err)
@@ -1539,7 +1714,7 @@ func TestGameStateOperations(t *testing.T) {
 	// make users have decks
 	t.Run("ListDecksPlayer1", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-1",
+			UserId:  "player-1",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -1549,7 +1724,7 @@ func TestGameStateOperations(t *testing.T) {
 	})
 	t.Run("ListDecksPlayer2", func(t *testing.T) {
 		deckResponse, err := c.ListDecks(ctx, &zb_calls.ListDecksRequest{
-			UserId: "player-2",
+			UserId:  "player-2",
 			Version: "v1",
 		})
 		assert.Nil(t, err)
@@ -2407,21 +2582,21 @@ func TestAIDeckOperations(t *testing.T) {
 		{
 			Deck: &zb_data.Deck{
 				Id:         1,
-				OverlordId: 2,
+				OverlordId: 1,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{MouldId: 1, Amount: 2},
-					{MouldId: 2, Amount: 2},
-					{MouldId: 3, Amount: 2},
-					{MouldId: 4, Amount: 2},
-					{MouldId: 5, Amount: 2},
-					{MouldId: 6, Amount: 2},
-					{MouldId: 7, Amount: 1},
-					{MouldId: 8, Amount: 1},
-					{MouldId: 9, Amount: 1},
-					{MouldId: 10, Amount: 1},
-					{MouldId: 11, Amount: 1},
-					{MouldId: 12, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 2}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 4}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 5}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 6}, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: 7}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 8}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 9}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 10}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 11}, Amount: 1},
+					{CardKey: battleground_proto.CardKey{MouldId: 12}, Amount: 1},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,
@@ -2440,10 +2615,10 @@ func TestAIDeckOperations(t *testing.T) {
 		{
 			Deck: &zb_data.Deck{
 				Id:         1,
-				OverlordId: 2,
+				OverlordId: 1,
 				Name:       "AI Decks",
 				Cards: []*zb_data.DeckCard{
-					{MouldId: -1, Amount: 2},
+					{CardKey: battleground_proto.CardKey{MouldId: -1}, Amount: 2},
 				},
 			},
 			Type: zb_enums.AIType_MIXED_AI,
@@ -2653,83 +2828,31 @@ func TestKeepAlive(t *testing.T) {
 	})
 }
 
-func TestRewardTutorialCompleted(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
-		UserId:  "loom1",
-		Version: "v1",
-	}, t)
-
-	privateKeyStr = "757fc001c98d83eb8288d6c5294f31c284f1c83dbdbc516e3062365f682ffd8a"
-
-	// make sure we have the correct reward_contract_version and tutorial_reward_amount
-	resp, err := c.GetState(ctx, &zb_calls.GetGamechainStateRequest{})
-	assert.Nil(t, err)
-	assert.EqualValues(t, 1, resp.State.RewardContractVersion)
-	assert.EqualValues(t, 1, resp.State.TutorialRewardAmount)
-	var rewardTutorialCompletedResp *zb_calls.RewardTutorialCompletedResponse
-
-	// get reward on completing tutorial
-	t.Run("RewardTutorialCompleted", func(t *testing.T) {
-		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.Nil(t, err)
-		assert.NotNil(t, rewardTutorialCompletedResp)
-		assert.Equal(t, "0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f", rewardTutorialCompletedResp.Hash)
-		assert.Equal(t, "0x25d667d7a5afa5fc9cfacf67aeaf35bff6b3d54bf40e8b3b5a90fe86ce596732", rewardTutorialCompletedResp.R)
-		assert.Equal(t, "0x02a59d7fd35f07738ac2931193b92e8f31941c15a123d07f0990c28a1fef2760", rewardTutorialCompletedResp.S)
-		assert.Equal(t, uint64(27), rewardTutorialCompletedResp.V)
-	})
-
-	// send the correct request
-	t.Run("ConfirmRewardClaimed", func(t *testing.T) {
-		err := c.ConfirmRewardTutorialClaimed(ctx, &zb_calls.ConfirmRewardTutorialClaimedRequest{})
-		assert.Nil(t, err)
-	})
-
-	// attempt to claim reward again should fail
-	t.Run("RewardTutorialCompleted again should fail", func(t *testing.T) {
-		var err error
-		rewardTutorialCompletedResp, err = c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "reward already claimed")
-		assert.Nil(t, rewardTutorialCompletedResp)
-	})
-
-	// attempt to get reward again should fail
-	t.Run("repeated RewardTutorialCompleted fails", func(t *testing.T) {
-		resp, err := c.RewardTutorialCompleted(ctx, &zb_calls.RewardTutorialCompletedRequest{})
-		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "reward already claimed")
-		assert.Nil(t, resp)
-	})
-}
-
 func TestHashSignature(t *testing.T) {
-	privateKeyStr = "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
+	privateKeyStr := "921660bf3e5c7a404beed663f00462645fd8d50751d21e262f6f1a3b7e5b5da3"
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	assert.Nil(t, err)
 
-	verifySignResult, err := generateVerifyHash(5, 1, privateKey)
+	generator, err := NewMintingReceiptGenerator(privateKey, 1)
 	assert.Nil(t, err)
-	assert.Equal(t, "0xe2689cd4a84e23ad2f564004f1c9013e9589d260bde6380aba3ca7e09e4df40c", verifySignResult.Hash)
-	assert.Equal(t, "0x0e729720a48e6164451792e657bd4c68c25c67884e8852790d0cf2fbe999f2bb2833d41711917583d70dacbb5c80206edafa3bc4bca079ceafbb2fc50af1c8fc1b", verifySignResult.Signature)
-}
+	verifySignResult, err := generator.generateEosVerifySignResult(
+		big.NewInt(5),
+		generator.gatewayPrivateKey,
+		3,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		big.NewInt(373),
+		generator.contractVersion)
 
-// createJwtToken creates a jwt token from a User model
-func createJwtToken(userID uint, secret string) (string, error) {
-	// create the token
-	claims := latypes.UserClaims{
-		UserID: userID,
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// sign and get the complete encoded token as string
-	return token.SignedString([]byte(secret))
+	assert.Nil(t, err)
+	assert.Equal(t, "0x4cc40300d439c52ca6bb577ac42d883fff58df81309c8a41d7a9f54a1641c110", verifySignResult.Hash)
+	assert.Equal(t, "0x6f27beb227b13842d994360d549f16242cfe474a147da9a391b80460cb3ec291047ee645a1a5c634287368b2d582a8f935ac3f0348840a71d9a015e8e6e7a1d11c", verifySignResult.Signature)
 }

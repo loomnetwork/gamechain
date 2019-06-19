@@ -5,8 +5,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -37,11 +36,10 @@ var getMatchCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(match)
+			err := printProtoMessageAsJSONToStdout(match)
 			if err != nil {
 				return err
 			}
-			fmt.Println(output)
 		default:
 			fmt.Printf("MatchID: %d\n", match.Id)
 			fmt.Printf("Status: %s\n", match.Status)

@@ -3,6 +3,7 @@ package battleground
 import (
 	"encoding/binary"
 	"fmt"
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io"
 
@@ -144,7 +145,7 @@ func (c *CustomGameMode) updateCardsFromSimpleCards(
 		isMatchingInstanceIdFound := false
 		for _, card := range cards {
 			if simpleCard.instanceId == card.InstanceId.Id {
-				cardLibraryCard, err := getCardByName(gameplay.cardLibrary, simpleCard.mouldName)
+				cardLibraryCard, err := getCardByCardKey(gameplay.cardLibrary, battleground_proto.CardKey{MouldId: simpleCard.mouldId})
 				if err != nil {
 					return nil, err
 				}
@@ -348,7 +349,7 @@ type SimpleCardInstance struct {
 func newSimpleCardInstanceFromCardInstance(card *zb_data.CardInstance) *SimpleCardInstance {
 	return &SimpleCardInstance{
 		instanceId:       card.InstanceId.Id,
-		mouldId:          card.Prototype.MouldId,
+		mouldId:          card.Prototype.CardKey.MouldId,
 		mouldName:        card.Prototype.Name,
 		damage:           card.Prototype.Damage,
 		damageInherited:  true,

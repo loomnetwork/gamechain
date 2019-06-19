@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option csharp_namespace = "Loom.ZombieBattleground.Protobuf";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/loomnetwork/gamechain/types/zb/zb_enums/zb_enums.proto";
+
+message CardKey {
+    int64 mouldId = 1;
+    CardVariant.Enum variant = 2;
+}

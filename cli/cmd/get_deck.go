@@ -5,7 +5,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -35,17 +34,16 @@ var getDeckCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(&result)
+			err := printProtoMessageAsJSONToStdout(&result)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			fmt.Printf("deck name: %v\n", result.Deck.Name)
 			fmt.Printf("deck id: %v\n", result.Deck.Id)
 			fmt.Printf("overlord id: %v\n", result.Deck.OverlordId)
 			for _, card := range result.Deck.Cards {
-				fmt.Printf("mould id: %d, amount: %d\n", card.MouldId, card.Amount)
+				fmt.Printf("card key: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
 			}
 		}
 		return nil

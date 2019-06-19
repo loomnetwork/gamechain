@@ -6,8 +6,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -38,11 +37,10 @@ var getAccountCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(&result)
+			err := printProtoMessageAsJSONToStdout(&result)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			fmt.Printf("User: %s\n", result.UserId)
 			fmt.Printf("Image: %s\n", result.Image)

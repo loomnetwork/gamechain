@@ -11,13 +11,6 @@ import (
 	"github.com/loomnetwork/go-loom/client"
 )
 
-type (
-	PlasmachainEvent              = orctype.PlasmachainEvent
-	PlasmachainGeneratedCardEvent = orctype.PlasmachainEvent_Card
-	PlasmachainGeneratedCard      = orctype.PlasmachainGeneratedCard
-	ProcessEventBatchRequest      = orctype.ProcessEventBatchRequest
-)
-
 type plasmachainEventInfo struct {
 	BlockNum uint64
 	TxIdx    uint
@@ -35,8 +28,8 @@ type PlasmachainGateway struct {
 	signer   auth.Signer
 	// client
 	client *client.DAppChainRPCClient
-	// cardfaucet
-	cardFaucet *ethcontract.CardFaucet
+	// zbgCard
+	zbgCard *ethcontract.ZBGCard
 }
 
 func ConnectToPlasmachainGateway(
@@ -53,7 +46,7 @@ func ConnectToPlasmachainGateway(
 	}
 
 	backend := NewLoomchainBackend(loomClient)
-	cardFaucet, err := ethcontract.NewCardFaucet(common.HexToAddress(contractAddressHex), backend)
+	zbgCard, err := ethcontract.NewZBGCard(common.HexToAddress(contractAddressHex), backend)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +59,7 @@ func ConnectToPlasmachainGateway(
 		signer:           signer,
 		logger:           logger,
 		client:           loomClient,
-		cardFaucet:       cardFaucet,
+		zbgCard:          zbgCard,
 	}, nil
 }
 

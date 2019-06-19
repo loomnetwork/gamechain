@@ -5,8 +5,7 @@ import (
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
-	"github.com/gogo/protobuf/jsonpb"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/spf13/cobra"
 )
@@ -36,15 +35,14 @@ var getCollectionCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			output, err := new(jsonpb.Marshaler).MarshalToString(&result)
+			err := printProtoMessageAsJSONToStdout(&result)
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(output))
 		default:
 			fmt.Printf("collection:\n")
 			for _, card := range result.Cards {
-				fmt.Printf("mould id: %d, amount: %d\n", card.MouldId, card.Amount)
+				fmt.Printf("card key: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
 			}
 		}
 		return nil

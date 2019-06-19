@@ -1,14 +1,15 @@
 package battleground
 
 import (
+	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"testing"
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
-	loom "github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/stretchr/testify/assert"
+	assert "github.com/stretchr/testify/require"
 )
 
 func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
@@ -24,20 +25,20 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 
 	deck0 := &zb_data.Deck{
 		Id:         0,
-		OverlordId: 2,
+		OverlordId: 1,
 		Name:       "Default",
 		Cards: []*zb_data.DeckCard{
-			{MouldId: 90, Amount: 2},
-			{MouldId: 91, Amount: 2},
-			{MouldId: 96, Amount: 2},
-			{MouldId: 3, Amount: 2},
-			{MouldId: 2, Amount: 2},
-			{MouldId: 92, Amount: 2},
-			{MouldId: 1, Amount: 1},
-			{MouldId: 93, Amount: 1},
-			{MouldId: 7, Amount: 1},
-			{MouldId: 94, Amount: 1},
-			{MouldId: 5, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 2}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 92}, Amount: 2},
+			{CardKey: battleground_proto.CardKey{MouldId: 1}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 93}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 7}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 94}, Amount: 1},
+			{CardKey: battleground_proto.CardKey{MouldId: 5}, Amount: 1},
 		},
 	}
 
@@ -113,6 +114,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 		seed := int64(0)
 		gp, err := NewGamePlay(ctx, 3, "v1", players, seed, nil, true, nil)
 		assert.Nil(t, err)
+		assert.NotNil(t, gp)
 
 		card0 := &zb_data.Card{
 			Defense: 5,
@@ -125,7 +127,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			},
 		}
 		instance0 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 1},
+			InstanceId: &zb_data.InstanceId{Id: 2},
 			Instance:   newCardInstanceSpecificDataFromCardDetails(card0),
 			Prototype:  proto.Clone(card0).(*zb_data.Card),
 			AbilitiesInstances: []*zb_data.CardAbilityInstance{
@@ -141,7 +143,7 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			},
 		}
 		instance1 := &zb_data.CardInstance{
-			InstanceId: &zb_data.InstanceId{Id: 2},
+			InstanceId: &zb_data.InstanceId{Id: 3},
 			Prototype:  &zb_data.Card{},
 			Instance: &zb_data.CardInstanceSpecificData{
 				Defense: 5,
@@ -158,9 +160,9 @@ func TestAbilityAdditionalDamageToHeavyInAttack(t *testing.T) {
 			PlayerId:   player1,
 			Action: &zb_data.PlayerAction_CardAttack{
 				CardAttack: &zb_data.PlayerActionCardAttack{
-					Attacker: &zb_data.InstanceId{Id: 1},
+					Attacker: &zb_data.InstanceId{Id: 2},
 					Target: &zb_data.Unit{
-						InstanceId: &zb_data.InstanceId{Id: 2},
+						InstanceId: &zb_data.InstanceId{Id: 3},
 					},
 				},
 			},
