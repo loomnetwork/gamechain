@@ -2059,7 +2059,7 @@ func applyExperienceInternal(
 		targetOverlordUserInstance.UserData.Level = int64(newLevel)
 
 		// Get rewards for all in-between levels
-		for level := oldLevel; level <= newLevel; level++ {
+		for level := oldLevel + 1; level <= newLevel; level++ {
 			levelReward := getLevelReward(overlordLevelingData, level)
 			if levelReward != nil {
 				levelRewards = append(levelRewards, levelReward)
