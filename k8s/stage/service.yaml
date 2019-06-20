@@ -10,5 +10,5 @@ spec:
     protocol: TCP
     targetPort: 8888
   selector:
-    app: gamechain-oracle
+    app: gamechain-2-oracle
   sessionAffinity: None
