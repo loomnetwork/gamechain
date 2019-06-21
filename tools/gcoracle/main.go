@@ -26,9 +26,9 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
 	// plasmchain
 	rootCmd.PersistentFlags().String("plasmachain-private-key", "", "Plasmachain Private Key")
-	_ = rootCmd.MarkPersistentFlagRequired("plasmachain-private-key")
 	rootCmd.PersistentFlags().String("plasmachain-chain-id", "default", "Plasmachain Chain ID")
 	rootCmd.PersistentFlags().String("plasmachain-read-uri", "http://localhost:46658/query", "Plasmachain Read URI")
 	rootCmd.PersistentFlags().String("plasmachain-write-uri", "http://localhost:46658/rpc", "Plasmachain Write URI")
@@ -37,7 +37,6 @@ func init() {
 	rootCmd.PersistentFlags().Int("plasmachain-poll-interval", 10, "Plasmachain Pool Interval in seconds")
 	// gamechain
 	rootCmd.PersistentFlags().String("gamechain-private-key", "", "Gamechain Private Key")
-	_ = rootCmd.MarkPersistentFlagRequired("gamechain-private-key")
 	rootCmd.PersistentFlags().String("gamechain-chain-id", "default", "Gamechain Chain ID")
 	rootCmd.PersistentFlags().String("gamechain-read-uri", "http://localhost:46658/query", "Gamechain Read URI")
 	rootCmd.PersistentFlags().String("gamechain-write-uri", "http://localhost:46658/rpc", "Gamechain Write URI")

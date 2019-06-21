@@ -392,28 +392,6 @@ func saveOverlordLevelingData(ctx contract.Context, version string, overlordLeve
 	return nil
 }
 
-// loadCardCollectionFromAddress loads address mapping to card collection
-func loadCardCollectionByAddress(ctx contract.Context, version string) (*zb_data.CardCollectionList, error) {
-	var userCollection zb_data.CardCollectionList
-	addr := string(ctx.Message().Sender.Local)
-	err := ctx.Get(CardCollectionKey(addr), &userCollection)
-	if err != nil {
-		if err == contract.ErrNotFound {
-			userCollection.Cards = []*zb_data.CardCollectionCard{}
-		} else {
-			return nil, err
-		}
-	}
-
-	return &userCollection, nil
-}
-
-// saveCardCollectionByAddress save card collection using address as a key
-func saveCardCollectionByAddress(ctx contract.Context, cardCollection *zb_data.CardCollectionList) error {
-	addr := string(ctx.Message().Sender.Local)
-	return ctx.Set(CardCollectionKey(addr), cardCollection)
-}
-
 func prepareEmitMsgJSON(address []byte, owner, method string) ([]byte, error) {
 	emitMsg := struct {
 		Owner  string
