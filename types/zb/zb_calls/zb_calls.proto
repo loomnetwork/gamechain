@@ -241,14 +241,6 @@ message GetCollectionResponse {
     repeated CardCollectionCard cards = 1;
 }
 
-message GetCollectionByAddressRequest {
-    string version = 1;
-}
-
-message GetCollectionByAddressResponse {
-    repeated CardCollectionCard cards = 1;
-}
-
 message RegisterPlayerPoolRequest {
     PlayerProfileRegistrationData registrationData = 1;
 }
