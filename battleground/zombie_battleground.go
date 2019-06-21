@@ -370,12 +370,12 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 
 	err := z.initializeUserDefaultCardCollection(ctx, req.Version, req.UserId)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "CreateAccount")
 	}
 
 	defaultDecks, err := z.initializeUserDefaultDecks(ctx, req.Version, req.UserId)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "CreateAccount")
 	}
 
 	//Emit CreateDeck event when creating new default decks for this new account
@@ -389,7 +389,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 
 		data, err := proto.Marshal(&emitMsg)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "CreateAccount")
 		}
 		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
 	}
@@ -684,20 +684,6 @@ func (z *ZombieBattleground) GetCollection(ctx contract.Context, req *zb_calls.G
 		return nil, err
 	}
 	return &zb_calls.GetCollectionResponse{Cards: collectionList.Cards}, nil
-}
-
-
-// FIXME: what is this for?
-func (z *ZombieBattleground) GetCollectionByAddress(ctx contract.Context, req *zb_calls.GetCollectionByAddressRequest) (*zb_calls.GetCollectionByAddressResponse, error) {
-	if req.Version == "" {
-		return nil, ErrVersionNotSet
-	}
-
-	collectionList, err := loadCardCollectionByAddress(ctx, req.Version)
-	if err != nil {
-		return nil, err
-	}
-	return &zb_calls.GetCollectionByAddressResponse{Cards: collectionList.Cards}, nil
 }
 
 // ListCardLibrary list all the card library data
@@ -2286,21 +2272,21 @@ func (z *ZombieBattleground) initializeUserDefaultCardCollection(ctx contract.Co
 	return nil
 }
 
-func (z *ZombieBattleground) initializeUserDefaultDecks(ctx contract.Context, version string, userId string) (defaultDecks *zb_data.DeckList, err error) {
-	defaultDecks, err = loadDefaultDecks(ctx, version)
+func (z *ZombieBattleground) initializeUserDefaultDecks(ctx contract.Context, version string, userId string) (decks *zb_data.DeckList, err error) {
+	decks, err = loadDefaultDecks(ctx, version)
 	if err != nil {
 		return nil, errors.Wrap(err, "error initializing user default decks")
 	}
 
 	// update default deck with none-zero id
-	for i := 0; i < len(defaultDecks.Decks); i++ {
-		defaultDecks.Decks[i].Id = int64(i + 1)
+	for i := 0; i < len(decks.Decks); i++ {
+		decks.Decks[i].Id = int64(i + 1)
 	}
-	if err := saveDecks(ctx, version, userId, defaultDecks); err != nil {
+	if err := saveDecks(ctx, version, userId, decks); err != nil {
 		return nil, errors.Wrap(err, "error initializing user default decks")
 	}
 
-	return defaultDecks, nil
+	return decks, nil
 }
 
 func (z *ZombieBattleground) handleUserDataWipe(ctx contract.Context, version string, userId string) (wipeExecuted bool, err error) {
