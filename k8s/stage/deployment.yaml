@@ -103,9 +103,9 @@ spec:
           - name: PLASMACHAIN_CHAIN_ID
             value: "default"
           - name: PLASMACHAIN_READ_URI
-            value: "https://test-z-us1.dappchains.com:80/rpc"
+            value: "http://test-z-us1.dappchains.com:80/rpc"
           - name: PLASMACHAIN_WRITE_URI
-            value: "https://test-z-us1.dappchains.com:80/query"
+            value: "http://test-z-us1.dappchains.com:80/query"
           - name: PLASMACHAIN_CONTRACT_HEX_ADDRESS
             value: "0x2658d8c94062227d17a4ba61adb166e152369de3"
           - name: PLASMACHAIN_POLL_INTERVAL
