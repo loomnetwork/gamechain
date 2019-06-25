@@ -2000,7 +2000,7 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.
 	return nil
 }
 
-func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
+func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *orctype.ProcessOracleEventBatchRequest) error {
 	state, err := loadContractState(ctx)
 	if err != nil {
 		return err
