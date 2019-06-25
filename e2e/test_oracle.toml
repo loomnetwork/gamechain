@@ -1,0 +1,21 @@
+[[TestCases]]
+  RunCmd = "/bin/echo "
+  Delay = 10000
+
+[[TestCases]]
+  RunCmd = "zb-cli contract_configuration -k {{index $.AccountPrivKeyPathList 0}} set_fiat_purchase_contract_version -v 3"
+  Condition = "contains"
+  Expected = ["success"]
+
+[[TestCases]]
+  RunCmd = "zb-cli process_oracle_event_batch -k {{index $.AccountPrivKeyPathList 0}} --requestPb ../../test-data/ProcessEventBatchRequest.pb.bin"
+  Condition = "contains"
+  Expected = ["simulated event batch sent"]
+
+[[TestCases]]
+  RunCmd = "checkapphash"
+
+[[TestCases]]
+  RunCmd = "zb-cli process_oracle_event_batch -k {{index $.AccountPrivKeyPathList 0}} --requestPb ../../test-data/ProcessEventBatchRequest.pb.bin"
+  Condition = "contains"
+  Expected = ["no new events found in the batch"]

@@ -263,11 +263,11 @@ func (orc *Oracle) pollPlasmaChain() error {
 		orc.numPlasmachainEventsFetched = orc.numPlasmachainEventsFetched + uint64(len(events))
 		orc.updateStatus()
 
-		orc.logger.Debug("calling ProcessEventBatch")
-		if err := orc.gcGateway.ProcessEventBatch(events, latestBlock); err != nil {
+		orc.logger.Debug("calling ProcessOracleEventBatch")
+		if err := orc.gcGateway.ProcessOracleEventBatch(events, latestBlock); err != nil {
 			return err
 		}
-		orc.logger.Debug("finished calling ProcessEventBatch")
+		orc.logger.Debug("finished calling ProcessOracleEventBatch")
 
 		orc.numPlasmachainEventsSubmitted = orc.numPlasmachainEventsSubmitted + uint64(len(events))
 		orc.metrics.SubmittedPlasmachainEvents(len(events))
@@ -301,7 +301,7 @@ func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*orctype.Plasmach
 	var rawEvents []*plasmachainEventInfo
 	var err error
 
-	rawEvents, err = orc.fetchTransfers(filterOpts)
+	rawEvents, err = orc.fetchTransferEvents(filterOpts)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch transfer events")
 	}
@@ -390,13 +390,13 @@ func protoMessageToJSON(pb proto.Message) (string, error) {
 	return json, nil
 }
 
-func (orc *Oracle) fetchTransfers(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
+func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
 	var err error
 	numTransferEvents := 0
 	numTransferWithQuantityEvents := 0
 	numBatchTransferEvents := 0
 	defer func(begin time.Time) {
-		orc.metrics.MethodCalled(begin, "fetchTransfers", err)
+		orc.metrics.MethodCalled(begin, "fetchTransferEvents", err)
 		orc.metrics.FetchedPlasmachainEvents(numTransferEvents, "Transfer")
 		orc.metrics.FetchedPlasmachainEvents(numTransferWithQuantityEvents, "TransferWithQuantity")
 		orc.metrics.FetchedPlasmachainEvents(numBatchTransferEvents, "BatchTransfer")
@@ -404,7 +404,7 @@ func (orc *Oracle) fetchTransfers(filterOpts *bind.FilterOpts) ([]*plasmachainEv
 	}(time.Now())
 
 	var chainID = orc.pcGateway.client.GetChainID()
-	events := []*plasmachainEventInfo{}
+	events := make([]*plasmachainEventInfo, 0)
 
 	// Transfer
 	transferIterator, err := orc.pcGateway.zbgCard.FilterTransfer(filterOpts, nil, nil, nil)

@@ -286,6 +286,12 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb_calls.G
 		return nil, err
 	}
 
+	var oracleAddress types.Address
+	err = ctx.Get(oracleKey, &oracleAddress)
+	if err != nil {
+		return nil, err
+	}
+
 	return &zb_calls.GetInitResponse{
 		InitData: &zb_data.InitData{
 			Cards:             cardLibrary.Cards,
@@ -295,6 +301,7 @@ func (z *ZombieBattleground) GetInit(ctx contract.StaticContext, req *zb_calls.G
 			AiDecks:           aiDeckList.Decks,
 			OverlordLeveling:  overlordLevelingData,
 			Version:           req.Version,
+			Oracle:            &oracleAddress,
 		},
 	}, nil
 }
@@ -2000,7 +2007,7 @@ func (z *ZombieBattleground) DeleteGameMode(ctx contract.Context, req *zb_calls.
 	return nil
 }
 
-func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctype.ProcessEventBatchRequest) error {
+func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *orctype.ProcessOracleEventBatchRequest) error {
 	state, err := loadContractState(ctx)
 	if err != nil {
 		return err
@@ -2009,7 +2016,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 	eventCount := 0           // number of blocks that were actually processed in this batch
 	lastEthBlock := uint64(0) // the last block processed in this batch
 
-	addressToCardAmountsChangeMap := addressToCardAmountsChangeMap{}
+	addressToCardKeyToAmountChangesMap := addressToCardKeyToAmountChangesMap{}
 
 	for _, ev := range req.Events {
 		// Events in the batch are expected to be ordered by block, so a batch should contain
@@ -2031,7 +2038,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		case *orctype.PlasmachainEvent_Transfer:
 			ctx.Logger().Info("got Transfer event")
 			err := z.handleCardAmountChange(
-				addressToCardAmountsChangeMap,
+				addressToCardKeyToAmountChangesMap,
 				payload.Transfer.From.Local,
 				payload.Transfer.To.Local,
 				cardKeyFromCardTokenId(payload.Transfer.TokenId.Value.Int64()),
@@ -2046,7 +2053,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		case *orctype.PlasmachainEvent_TransferWithQuantity:
 			ctx.Logger().Debug("got TransferWithQuantity event")
 			err := z.handleCardAmountChange(
-				addressToCardAmountsChangeMap,
+				addressToCardKeyToAmountChangesMap,
 				payload.TransferWithQuantity.From.Local,
 				payload.TransferWithQuantity.To.Local,
 				cardKeyFromCardTokenId(payload.TransferWithQuantity.TokenId.Value.Int64()),
@@ -2064,7 +2071,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 			for index, cardTokenId := range payload.BatchTransfer.TokenIds {
 				amount := payload.BatchTransfer.Amounts[index]
 				err := z.handleCardAmountChange(
-					addressToCardAmountsChangeMap,
+					addressToCardKeyToAmountChangesMap,
 					payload.BatchTransfer.From.Local,
 					payload.BatchTransfer.To.Local,
 					cardKeyFromCardTokenId(cardTokenId.Value.Int64()),
@@ -2108,7 +2115,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 	}
 
 	if debugEnabled {
-		for address, cardAmountsChangeMap := range addressToCardAmountsChangeMap {
+		for address, cardAmountsChangeMap := range addressToCardKeyToAmountChangesMap {
 			fmt.Printf("Address %s card amount changes:\n", address)
 			for cardKey, amountChange := range cardAmountsChangeMap {
 				fmt.Printf("   (%s) = %d\n", cardKey.String(), amountChange)
@@ -2122,7 +2129,7 @@ func (z *ZombieBattleground) ProcessEventBatch(ctx contract.Context, req *orctyp
 		return fmt.Errorf("no new events found in the batch")
 	}
 
-	err = z.saveAddressToCardAmountsChangeMapDelta(ctx, addressToCardAmountsChangeMap)
+	err = z.saveAddressToCardAmountsChangeMapDelta(ctx, addressToCardKeyToAmountChangesMap)
 	if err != nil {
 		return errors.Wrap(err, "failed to apply address to card amounts change map")
 	}
@@ -2237,7 +2244,7 @@ func (z *ZombieBattleground) DebugGetUserIdByAddress(ctx contract.StaticContext,
 }
 
 func (z *ZombieBattleground) DebugGetPendingCardAmountChangeItems(ctx contract.StaticContext, req *zb_calls.DebugGetPendingCardAmountChangeItemsRequest) (*zb_calls.DebugGetPendingCardAmountChangeItemsResponse, error) {
-	container, err := loadPendingCardAmountChangeItemsContainerByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
+	container, err := loadPendingCardAmountChangesContainerByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
 	if err != nil {
 		return nil, err
 	}

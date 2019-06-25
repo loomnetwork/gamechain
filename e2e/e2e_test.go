@@ -164,6 +164,7 @@ func runE2ETests(t *testing.T, tests []testdata) {
 	// required to have loom binary
 	common.LoomPath = path.Join(getLoomchainDir(), "gamechain")
 	common.ContractDir = "./contracts"
+	common.BaseDir = "temp-test-data"
 
 	buildGamechain(t)
 
@@ -179,6 +180,15 @@ func runE2ETests(t *testing.T, tests []testdata) {
 		defer os.Remove(tempTestFilePath)
 		runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
 	}
+}
+
+func TestE2EOracle(t *testing.T) {
+	tests := []testdata {
+		{"zb-oracle-1", "test_oracle.toml", 1, 10, "../test_data/simple-genesis.json", nil},
+		{"zb-oracle-8", "test_oracle.toml", 8, 10, "../test_data/simple-genesis.json", nil},
+	}
+
+	runE2ETests(t, tests)
 }
 
 func TestE2EAccount(t *testing.T) {
