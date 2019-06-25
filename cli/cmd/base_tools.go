@@ -24,6 +24,14 @@ func readJsonFileToProtobuf(filename string, message proto.Message) error {
 	return nil
 }
 
+func readJsonStringToProtobuf(json string, message proto.Message) error {
+	if err := jsonpb.UnmarshalString(json, message); err != nil {
+		return errors.Wrap(err, "error parsing JSON ")
+	}
+
+	return nil
+}
+
 func readFileToString(filename string) (string, error) {
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {

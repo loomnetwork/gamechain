@@ -71,9 +71,6 @@ message UpdateContractConfigurationRequest {
 
     bool setDataWipeConfiguration = 7;
     DataWipeConfiguration dataWipeConfiguration = 8;
-
-    bool setDebugMode = 9;
-    bool debugMode = 10;
 }
 
 message SetLastPlasmaBlockNumberRequest {
@@ -121,6 +118,10 @@ message GetAccountRequest {
 message LoginRequest {
     string userId = 1;
     string version = 2;
+}
+
+message LoginResponse {
+    bool fullCardCollectionRequested = 1;
 }
 
 message GetDeckRequest {

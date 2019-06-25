@@ -37,7 +37,7 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 
 		if card.CardKey.Variant == zb_enums.CardVariant_Standard {
 			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
-				return fmt.Errorf("card '%s' (card key %d) missing value for PictureTransform field", card.Name, card.CardKey.MouldId)
+				return fmt.Errorf("card '%s' (card key %s) missing value for PictureTransform field", card.Name, card.CardKey.String())
 			}
 		}
 
