@@ -75,19 +75,19 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: gamechain-2-oracle
+  name: gamechain-oracle
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: gamechain-2-oracle
-        instance: gamechain-2-oracle
+        app: gamechain-oracle
+        instance: gamechain-oracle
     spec:
       securityContext:
         fsGroup: 1000
       containers:
-      - name: gamechain-2-oracle
+      - name: gamechain-oracle
         image: gcr.io/robotic-catwalk-188706/gamechain-oracle:%BUILD_NUMBER%
         resources:
           requests:
