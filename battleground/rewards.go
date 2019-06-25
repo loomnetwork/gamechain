@@ -143,74 +143,64 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 }
 
 // loads the list of card amount changes, merges with changes, saves the list back
-func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract.Context, addressToCardAmountsChangeMapDelta1 addressToCardAmountsChangeMap) error {
-	type addressStringAndCardAmountsChangeMapTuple struct {
-		address              string
-		cardAmountsChangeMap map[battleground_proto.CardKey]int64
+func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract.Context, deltaAddressToCardKeyToAmountChangesMap addressToCardKeyToAmountChangesMap) error {
+	// get sorted keys
+	deltaAddresses := make([]string, 0, len(deltaAddressToCardKeyToAmountChangesMap))
+	for deltaAddress := range deltaAddressToCardKeyToAmountChangesMap {
+		deltaAddresses = append(deltaAddresses, deltaAddress)
 	}
-
-	// Convert and sort outer map
-	// TODO: switch to sorted map?
-	addressStringAndCardAmountsChangeMapTuples := make([]addressStringAndCardAmountsChangeMapTuple, 0)
-	for k, v := range addressToCardAmountsChangeMapDelta1 {
-		addressStringAndCardAmountsChangeMapTuples = append(addressStringAndCardAmountsChangeMapTuples,
-			addressStringAndCardAmountsChangeMapTuple{
-				address:              k,
-				cardAmountsChangeMap: v,
-			})
-	}
-
-	sort.SliceStable(addressStringAndCardAmountsChangeMapTuples, func(i, j int) bool {
-		return strings.Compare(addressStringAndCardAmountsChangeMapTuples[i].address, addressStringAndCardAmountsChangeMapTuples[j].address) < 0
+	sort.SliceStable(deltaAddresses, func(i, j int) bool {
+		return strings.Compare(deltaAddresses[i], deltaAddresses[j]) < 0
 	})
 
-	for _, addressStringAndCardAmountsChangeMapTuple := range addressStringAndCardAmountsChangeMapTuples {
+	for _, deltaAddress := range deltaAddresses {
+		deltaCardKeyToAmountChangesMap := deltaAddressToCardKeyToAmountChangesMap[deltaAddress]
+
 		// Get address from string
-		localAddress, _ := loom.LocalAddressFromHexString("0x" + addressStringAndCardAmountsChangeMapTuple.address)
-		address := loom.Address{
+		deltaLocalAddress, _ := loom.LocalAddressFromHexString("0x" + deltaAddress)
+		deltaAddress := loom.Address{
 			ChainID: ctx.Message().Sender.ChainID,
-			Local: localAddress,
+			Local:   deltaLocalAddress,
 		}
 
 		// Load current list and convert to map
-		cardAmountChangeItemsContainer, err := loadPendingCardAmountChangeItemsContainerByAddress(ctx, address)
+		cardAmountChangesContainer, err := loadPendingCardAmountChangesContainerByAddress(ctx, deltaAddress)
 		if err != nil {
 			return err
 		}
 
-		cardAmountChangeItemMap := map[battleground_proto.CardKey]int64{}
-		for _, cardAmountChangeItem := range cardAmountChangeItemsContainer.CardAmountChange {
-			cardAmountChangeItemMap[cardAmountChangeItem.CardKey] = int64(cardAmountChangeItem.AmountChange)
+		cardKeyToAmountChangeMap := cardKeyToAmountChangeMap{}
+		for _, cardAmountChangeItem := range cardAmountChangesContainer.CardAmountChange {
+			cardKeyToAmountChangeMap[cardAmountChangeItem.CardKey] = int64(cardAmountChangeItem.AmountChange)
 		}
 
 		// Update map
-		for cardKey, amountChange := range addressStringAndCardAmountsChangeMapTuple.cardAmountsChangeMap {
-			currentAmountChange, _ := cardAmountChangeItemMap[cardKey]
-			cardAmountChangeItemMap[cardKey] = currentAmountChange + amountChange
+		for cardKey, amountChange := range deltaCardKeyToAmountChangesMap {
+			currentAmountChange, _ := cardKeyToAmountChangeMap[cardKey]
+			cardKeyToAmountChangeMap[cardKey] = currentAmountChange + amountChange
 		}
 
 		// Convert map back to list and save
-		cardAmountChangeItemsContainer.CardAmountChange = []*zb_data.CardAmountChangeItem{}
-		for cardKey, amountChange := range cardAmountChangeItemMap {
+		// get sorted keys
+		cardKeys := make([]battleground_proto.CardKey, 0, len(cardKeyToAmountChangeMap))
+		for cardKey := range cardKeyToAmountChangeMap {
+			cardKeys = append(cardKeys, cardKey)
+		}
+		sort.SliceStable(cardKeys, func(i, j int) bool {
+			return cardKeys[i].Compare(&cardKeys[j]) < 0
+		})
+
+		cardAmountChangesContainer.CardAmountChange = []*zb_data.CardAmountChangeItem{}
+		for _, cardKey := range cardKeys {
+			amountChange := cardKeyToAmountChangeMap[cardKey]
 			cardAmountChangeItem := &zb_data.CardAmountChangeItem{
 				CardKey: cardKey,
 				AmountChange: amountChange,
 			}
-			cardAmountChangeItemsContainer.CardAmountChange = append(cardAmountChangeItemsContainer.CardAmountChange, cardAmountChangeItem)
+			cardAmountChangesContainer.CardAmountChange = append(cardAmountChangesContainer.CardAmountChange, cardAmountChangeItem)
 		}
 
-		sort.SliceStable(cardAmountChangeItemsContainer.CardAmountChange, func(i, j int) bool {
-			cardKeyCompareResult := cardAmountChangeItemsContainer.CardAmountChange[i].CardKey.Compare(&cardAmountChangeItemsContainer.CardAmountChange[j].CardKey)
-			if cardKeyCompareResult > 0 {
-				return true
-			} else if cardKeyCompareResult < 0 {
-				return false
-			} else {
-				return cardAmountChangeItemsContainer.CardAmountChange[i].AmountChange < cardAmountChangeItemsContainer.CardAmountChange[j].AmountChange
-			}
-		})
-
-		err = savePendingCardAmountChangeItemsContainerByAddress(ctx, address, cardAmountChangeItemsContainer)
+		err = savePendingCardAmountChangeItemsContainerByAddress(ctx, deltaAddress, cardAmountChangesContainer)
 		if err != nil {
 			return err
 		}
@@ -219,7 +209,7 @@ func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract
 }
 
 func (z *ZombieBattleground) handleCardAmountChange(
-	addressToCardAmountsChangeMap addressToCardAmountsChangeMap,
+	addressToCardAmountsChangeMap addressToCardKeyToAmountChangesMap,
 	from common.LocalAddress,
 	to common.LocalAddress,
 	cardKey battleground_proto.CardKey,
@@ -230,13 +220,13 @@ func (z *ZombieBattleground) handleCardAmountChange(
 
 	fromCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[fromHex]
 	if !exists {
-		fromCardAmountsChangeMap = cardAmountsChangeMap{}
+		fromCardAmountsChangeMap = cardKeyToAmountChangeMap{}
 		addressToCardAmountsChangeMap[fromHex] = fromCardAmountsChangeMap
 	}
 
 	toCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[toHex]
 	if !exists {
-		toCardAmountsChangeMap = cardAmountsChangeMap{}
+		toCardAmountsChangeMap = cardKeyToAmountChangeMap{}
 		addressToCardAmountsChangeMap[toHex] = toCardAmountsChangeMap
 	}
 

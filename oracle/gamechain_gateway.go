@@ -1,10 +1,7 @@
 package oracle
 
 import (
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	"io/ioutil"
-	"os"
 	"time"
 
 	orctype "github.com/loomnetwork/gamechain/types/oracle"

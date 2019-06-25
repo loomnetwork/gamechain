@@ -1,6 +1,6 @@
 [[TestCases]]
   RunCmd = "/bin/echo "
-  Delay = 1500
+  Delay = 10000
 
 [[TestCases]]
   RunCmd = "zb-cli contract_configuration -k {{index $.AccountPrivKeyPathList 0}} set_fiat_purchase_contract_version -v 3"
