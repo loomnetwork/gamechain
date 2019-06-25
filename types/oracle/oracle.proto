@@ -42,3 +42,37 @@ message ProcessEventBatchRequest {
     string card_version = 2;
     uint64 lastPlasmachainBlockNumber = 3;
 }
+
+message RawCardCollectionCard {
+    BigUInt cardTokenId = 3;
+    int64 amount = 2;
+}
+message OracleCommandRequestList {
+    repeated OracleCommandRequest commands = 1;
+}
+
+message OracleCommandRequest {
+    uint64 commandId = 1;
+
+    oneof Command {
+        GetUserFullCardCollectionCommandRequest getUserFullCardCollection = 2;
+    }
+
+    message GetUserFullCardCollectionCommandRequest {
+        BigUInt userId = 1;
+    }
+}
+
+message OracleCommandResponse {
+    uint64 commandId = 1;
+
+    oneof Command {
+        GetUserFullCardCollectionCommandResponse getUserFullCardCollection = 2;
+    }
+
+    message GetUserFullCardCollectionCommandResponse {
+        BigUInt userId = 1;
+        repeated RawCardCollectionCard ownedCards = 2;
+        uint64 blockHeight = 3;
+    }
+}

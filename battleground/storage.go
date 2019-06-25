@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
+	"github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -43,6 +44,7 @@ var (
 	nonceKey                    = []byte("nonce")
 	currentUserIDUIntKey        = []byte("current-user-id")
 	overlordLevelingDataKey     = []byte("overlord-leveling")
+	oracleCommandRequestListKey = []byte("oracle-command-request-list")
 )
 
 var (
@@ -59,16 +61,20 @@ func AccountKey(userID string) []byte {
 	return []byte("user:" + userID)
 }
 
+func UserPersistentDataKey(userID string) []byte {
+	return []byte("user:" + userID + ":persistent-data")
+}
+
 func DecksKey(userID string) []byte {
 	return []byte("user:" + userID + ":decks")
 }
 
 func PendingMintingTransactionReceiptCollectionKey(userID string) []byte {
-	return []byte("address:" + userID + ":pending-minting-transaction-receipts")
+	return []byte("user:" + userID + ":pending-minting-transaction-receipts")
 }
 
 func AddressToPendingCardAmountChangeItemsKey(address loom.Address) []byte {
-	return []byte("user:" + string(address.Local) + ":address-to-pending-card-amount-change-items")
+	return []byte("address" + string(address.Local) + ":address-to-pending-card-amount-change-items")
 }
 
 func CardCollectionKey(userID string) []byte {
@@ -81,10 +87,6 @@ func OverlordsUserDataKey(userID string) []byte {
 
 func UserNotificationsKey(userID string) []byte {
 	return []byte("user:" + userID + ":notifications")
-}
-
-func UserExecutedDataWipesKey(userID string) []byte {
-	return []byte("user:" + userID + ":executed-data-wipes")
 }
 
 func MatchKey(matchID int64) []byte {
@@ -107,7 +109,7 @@ func MakeVersionedKey(version string, key []byte) []byte {
 	return util.PrefixKey([]byte(version), key)
 }
 
-func MakeAddressToUserIdKey(address loom.Address) []byte {
+func MakeAddressToUserIdLinkKey(address loom.Address) []byte {
 	return []byte("address-to-user-id:" + string(address.Local))
 }
 
@@ -128,7 +130,7 @@ func loadPendingCardAmountChangeItemsContainerByAddress(ctx contract.StaticConte
 	return &container, nil
 }
 
-func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, address loom.Address, container *zb_data.CardAmountChangeItemsContainer,) error {
+func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, address loom.Address, container *zb_data.CardAmountChangeItemsContainer) error {
 	if err := ctx.Set(AddressToPendingCardAmountChangeItemsKey(address), container); err != nil {
 		return errors.Wrap(err, "error saving PendingCardAmountChangeItemsContainerByAddress")
 	}
@@ -138,21 +140,39 @@ func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, ad
 
 func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
 	var userId zb_data.UserIdContainer
-
-	if err := ctx.Get(MakeAddressToUserIdKey(address), &userId); err != nil {
+	if err := ctx.Get(MakeAddressToUserIdLinkKey(address), &userId); err != nil {
 		return "", errors.Wrap(err, "error loading user id by address")
 	}
 
 	return userId.UserId, nil
 }
 
-func saveUserIdAddress(ctx contract.Context, userId string, address loom.Address) error {
+func saveAddressToUserIdLink(ctx contract.Context, userId string, address loom.Address) error {
 	userIdContainer := zb_data.UserIdContainer{UserId: userId}
-	if err := ctx.Set(MakeAddressToUserIdKey(address), &userIdContainer); err != nil {
+	if err := ctx.Set(MakeAddressToUserIdLinkKey(address), &userIdContainer); err != nil {
 		return errors.Wrap(err, "error saving user id for address")
 	}
 
 	return nil
+}
+
+func saveOracleCommandRequestList(ctx contract.Context, commandRequestList *oracle.OracleCommandRequestList) error {
+	if err := ctx.Set(oracleCommandRequestListKey, commandRequestList); err != nil {
+		return errors.Wrap(err, "error saving oracle command request list")
+	}
+	return nil
+}
+
+func loadOracleCommandRequestList(ctx contract.StaticContext) (*oracle.OracleCommandRequestList, error) {
+	var commandRequestList oracle.OracleCommandRequestList
+	if err := ctx.Get(oracleCommandRequestListKey, &commandRequestList); err != nil {
+		if err == contract.ErrNotFound {
+			commandRequestList.Commands = []*oracle.OracleCommandRequest{}
+		} else {
+			return nil, errors.Wrap(err, "error loading oracle command request list")
+		}
+	}
+	return &commandRequestList, nil
 }
 
 func saveContractState(ctx contract.Context, state *zb_data.ContractState) error {
@@ -163,20 +183,21 @@ func saveContractState(ctx contract.Context, state *zb_data.ContractState) error
 }
 
 func loadContractState(ctx contract.StaticContext) (*zb_data.ContractState, error) {
-	var m zb_data.ContractState
-	if err := ctx.Get(contractStateKey, &m); err != nil {
+	var state zb_data.ContractState
+	if err := ctx.Get(contractStateKey, &state); err != nil {
 		return nil, errors.Wrap(err, "error loading contract state")
+
 	}
-	return &m, nil
+	return &state, nil
 }
 
 func loadContractConfiguration(ctx contract.StaticContext) (*zb_data.ContractConfiguration, error) {
-	var m zb_data.ContractConfiguration
-	if err := ctx.Get(contractConfigurationKey, &m); err != nil {
+	var configuration zb_data.ContractConfiguration
+	if err := ctx.Get(contractConfigurationKey, &configuration); err != nil {
 		return nil, errors.Wrap(err, "error loading contract configuration")
 	}
 
-	return &m, nil
+	return &configuration, nil
 }
 
 func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConfiguration) error {
@@ -219,21 +240,21 @@ func loadPendingMintingTransactionReceipts(ctx contract.StaticContext, userID st
 	return &receiptCollection, nil
 }
 
-func loadUserExecutedDataWipesList(ctx contract.StaticContext, userID string) (*zb_data.UserExecutedDataWipesList, error) {
-	var wipesList zb_data.UserExecutedDataWipesList
-	if err := ctx.Get(UserExecutedDataWipesKey(userID), &wipesList); err != nil {
+func loadUserPersistentData(ctx contract.StaticContext, userID string) (*zb_data.UserPersistentData, error) {
+	var userPersistentData zb_data.UserPersistentData
+	if err := ctx.Get(UserPersistentDataKey(userID), &userPersistentData); err != nil {
 		if err == contract.ErrNotFound {
-			wipesList.Versions = []string{}
+			userPersistentData.ExecutedDataWipesVersions = []string{}
 		} else {
-			return nil, errors.Wrap(err, "error loading user's executed data wipes")
+			return nil, errors.Wrap(err, "error loading user's persistent data")
 		}
 	}
-	return &wipesList, nil
+	return &userPersistentData, nil
 }
 
-func saveUserExecutedDataWipesList(ctx contract.Context, userID string, dataWipesList *zb_data.UserExecutedDataWipesList) error {
-	if err := ctx.Set(UserExecutedDataWipesKey(userID), dataWipesList); err != nil {
-		return errors.Wrap(err, "error saving user's executed data wipes")
+func saveUserPersistentData(ctx contract.Context, userID string, userPersistentData *zb_data.UserPersistentData) error {
+	if err := ctx.Set(UserPersistentDataKey(userID), userPersistentData); err != nil {
+		return errors.Wrap(err, "error saving user's persistent data")
 	}
 	return nil
 }

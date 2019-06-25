@@ -272,7 +272,7 @@ func TestUserDataWipe(t *testing.T) {
 		assert.Nil(t, err)
 
 		// Re-login and check if data is reset
-		err = c.Login(ctx, &zb_calls.LoginRequest{Version: "v1", UserId: "DeckUser"})
+		_, err = c.Login(ctx, &zb_calls.LoginRequest{Version: "v1", UserId: "DeckUser"})
 		assert.Nil(t, err)
 
 		deckResponse, err = c.ListDecks(ctx, &zb_calls.ListDecksRequest{

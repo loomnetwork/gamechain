@@ -18,7 +18,6 @@ var configurationCmdArgs struct {
 	fiatPurchaseContractVersion    uint64
 	initialFiatPurchaseTxId        string
 	useCardLibraryAsUserCollection bool
-	debugMode                      bool
 }
 
 var configuration_setDataWipeConfigurationCmdArgs struct {
@@ -120,18 +119,6 @@ var configuration_setDataWipeConfigurationCmd = &cobra.Command{
 	},
 }
 
-var configuration_setDebugModeCmd = &cobra.Command{
-	Use:   "set_debug_mode",
-	Short: "sets debug mode state",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		request := &zb_calls.UpdateContractConfigurationRequest{
-			SetDebugMode: true,
-			DebugMode:    configurationCmdArgs.debugMode,
-		}
-		return configurationSetMain(request)
-	},
-}
-
 func configurationSetMain(configurationRequest *zb_calls.UpdateContractConfigurationRequest) error {
 	signer := auth.NewEd25519Signer(commonTxObjs.privateKey)
 	var result zb_calls.EmptyResponse
@@ -159,13 +146,12 @@ func init() {
 	configuration_setFiatPurchaseContractVersionCmd.Flags().Uint64VarP(&configurationCmdArgs.fiatPurchaseContractVersion, "value", "v", 3, "")
 	configuration_setInitialFiatPurchaseTxIdCmd.Flags().StringVarP(&configurationCmdArgs.initialFiatPurchaseTxId, "value", "v", "0", "Starting txId used for transaction receipt created by the contract")
 	configuration_useCardLibraryAsUserCollectionCmd.Flags().BoolVarP(&configurationCmdArgs.useCardLibraryAsUserCollection, "value", "v", false, "If false, user personal collection is used, if true, card library is used to make a full fake collection")
-	configuration_setDebugModeCmd.Flags().BoolVarP(&configurationCmdArgs.debugMode, "value", "v", false, "Debug mode state")
 
 	configuration_setDataWipeConfigurationCmd.Flags().StringVarP(&configuration_setDataWipeConfigurationCmdArgs.version, "version", "v", "v1", "Data version to wipe on")
 	configuration_setDataWipeConfigurationCmd.Flags().BoolVarP(&configuration_setDataWipeConfigurationCmdArgs.wipeDecks, "wipeDecks", "d", false, "Whether to wipe user decks")
 	_ = configuration_setFiatPurchaseContractVersionCmd.MarkFlagRequired("value")
 	_ = configuration_setInitialFiatPurchaseTxIdCmd.MarkFlagRequired("value")
-	_ = configuration_setDebugModeCmd.MarkFlagRequired("value")
+	_ = configuration_useCardLibraryAsUserCollectionCmd.MarkFlagRequired("value")
 	_ = configuration_setDataWipeConfigurationCmd.MarkFlagRequired("version")
 
 	configurationCmd.AddCommand(
@@ -174,7 +160,6 @@ func init() {
 		configuration_setInitialFiatPurchaseTxIdCmd,
 		configuration_useCardLibraryAsUserCollectionCmd,
 		configuration_setDataWipeConfigurationCmd,
-		configuration_setDebugModeCmd,
 	)
 
 	rootCmd.AddCommand(configurationCmd)
