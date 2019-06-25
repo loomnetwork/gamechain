@@ -403,24 +403,41 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	return nil
 }
 
-func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) error {
-	if req.Version == "" {
-		return ErrVersionNotSet
+func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error)  {
+	if !isOwner(ctx, req.UserId) {
+		return nil, ErrUserNotVerified
 	}
 
-	err := saveUserIdAddress(ctx, req.UserId, ctx.Message().Sender)
+	if req.Version == "" {
+		return nil, ErrVersionNotSet
+	}
+
+	err := saveAddressToUserIdLink(ctx, req.UserId, ctx.Message().Sender)
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	userPersistentData, err := loadUserPersistentData(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	response := zb_calls.LoginResponse{}
+	if userPersistentData.LastFullCardSyncPlasmachainBlockHeight == 0 {
+		// TODO: save the request for the oracle to do the full sync
+		//addFullCardCollectionSyncRequest(req.UserId)
+
+		// notify the user that a full collection sync is scheduled so they can react
+		response.FullCardCollectionRequested = true
 	}
 
 	// TODO: check if any pending cards await by address
-
 	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &response, err
 }
 
 func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb_calls.UpdateUserEloRequest) error {
@@ -1730,10 +1747,6 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		}
 	}
 
-	if req.SetDebugMode {
-		configuration.DebugMode = true
-	}
-
 	err = saveContractState(ctx, state)
 	if err != nil {
 		return err
@@ -2192,14 +2205,7 @@ func (z *ZombieBattleground) ConfirmPendingMintingTransactionReceipt(ctx contrac
 
 func (z *ZombieBattleground) DebugMintBoosterPackReceipt(ctx contract.Context, req *zb_calls.DebugMintBoosterPackReceiptRequest) (*zb_calls.DebugMintBoosterPackReceiptResponse, error) {
 	if !debugEnabled {
-		configuration, err := loadContractConfiguration(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		if !configuration.DebugMode {
-			return nil, ErrDebugNotEnabled
-		}
+		return nil, ErrDebugNotEnabled
 	}
 
 	userIdString := defaultUserIdPrefix + req.UserId.Value.Int.String()
@@ -2296,7 +2302,7 @@ func (z *ZombieBattleground) handleUserDataWipe(ctx contract.Context, version st
 		return false, errors.Wrap(err,"error handling user data wipe")
 	}
 
-	executedDataWipes, err := loadUserExecutedDataWipesList(ctx, userId)
+	userPersistentData, err := loadUserPersistentData(ctx, userId)
 	if err != nil {
 		return false, errors.Wrap(err,"error handling user data wipe")
 	}
@@ -2307,7 +2313,7 @@ loop:
 		// Check if a wipe is configured for this data version
 		if dataWipeItem.Version == version {
 			// Check if wipe for this version was already executed for this user
-			for _, alreadyExecutedWipeVersion := range executedDataWipes.Versions {
+			for _, alreadyExecutedWipeVersion := range userPersistentData.ExecutedDataWipesVersions {
 				if alreadyExecutedWipeVersion == version {
 					break loop
 				}
@@ -2329,7 +2335,7 @@ loop:
 	}
 
 	if wipeExecuted {
-		err = saveUserExecutedDataWipesList(ctx, userId, executedDataWipes)
+		err = saveUserPersistentData(ctx, userId, userPersistentData)
 		if err != nil {
 			return false, errors.Wrap(err, "error handling user data wipe")
 		}

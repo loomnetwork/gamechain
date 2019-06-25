@@ -261,6 +261,7 @@ message ContractState {
     reserved 3; // uint64 tutorial_reward_amount = 3;
     reserved 4; // default_player_defense
     BigUInt currentFiatPurchaseTxId = 5;
+    uint64 currentOracleCommandId = 6;
 }
 
 message ContractConfiguration {
@@ -269,7 +270,6 @@ message ContractConfiguration {
     BigUInt initialFiatPurchaseTxId = 2;
     bool useCardLibraryAsUserCollection = 3;
     repeated DataWipeConfiguration dataWipeConfiguration = 4;
-    bool debugMode = 5;
 }
 
 //////////// Match Making /////////////
@@ -844,8 +844,10 @@ message DataWipeConfigurationContainer {
     repeated DataWipeConfiguration dataWipeConfiguration = 1;
 }
 
-message UserExecutedDataWipesList {
-    repeated string versions = 1;
+message UserPersistentData {
+    Address address = 1;
+    repeated string executedDataWipesVersions = 2;
+    uint64 lastFullCardSyncPlasmachainBlockHeight = 3;
 }
 
 message NotificationEndMatch {
