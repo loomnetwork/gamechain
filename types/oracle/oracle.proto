@@ -37,7 +37,7 @@ message PlasmachainEventBatchTransfer {
     repeated BigUInt amounts = 4;
 }
 
-message ProcessEventBatchRequest {
+message ProcessOracleEventBatchRequest {
     repeated PlasmachainEvent events = 1;
     string card_version = 2;
     uint64 lastPlasmachainBlockNumber = 3;

@@ -71,6 +71,22 @@ func (value *CardKey) String() string {
 	return out
 }
 
+func (value *CardKey) Compare(other *CardKey) int {
+	if value.MouldId > other.MouldId {
+		return 1
+	} else if value.MouldId < other.MouldId {
+		return -1
+	} else {
+		if value.Variant > other.Variant {
+			return 1
+		} else if value.Variant < other.Variant {
+			return -1
+		} else {
+			return 0
+		}
+	}
+}
+
 func (value *CardKey) protoType() *zb_custombase.CardKey {
 	return &zb_custombase.CardKey {
 		MouldId: value.MouldId,

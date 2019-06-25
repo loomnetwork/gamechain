@@ -5,15 +5,17 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/go-loom"
+	loom "github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/common"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
 	"math/big"
+	"sort"
+	"strings"
 )
 
 type MintingContext struct {
-	context contract.Context
+	context               contract.Context
 	contractConfiguration *zb_data.ContractConfiguration
 	contractState         *zb_data.ContractState
 	generator             *MintingReceiptGenerator
@@ -141,10 +143,30 @@ func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID s
 }
 
 // loads the list of card amount changes, merges with changes, saves the list back
-func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract.Context, addressToCardAmountsChangeMapDelta addressToCardAmountsChangeMap) error {
-	for addressString, cardAmountsChangeMapDelta := range addressToCardAmountsChangeMapDelta {
+func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract.Context, addressToCardAmountsChangeMapDelta1 addressToCardAmountsChangeMap) error {
+	type addressStringAndCardAmountsChangeMapTuple struct {
+		address              string
+		cardAmountsChangeMap map[battleground_proto.CardKey]int64
+	}
+
+	// Convert and sort outer map
+	// TODO: switch to sorted map?
+	addressStringAndCardAmountsChangeMapTuples := make([]addressStringAndCardAmountsChangeMapTuple, 0)
+	for k, v := range addressToCardAmountsChangeMapDelta1 {
+		addressStringAndCardAmountsChangeMapTuples = append(addressStringAndCardAmountsChangeMapTuples,
+			addressStringAndCardAmountsChangeMapTuple{
+				address:              k,
+				cardAmountsChangeMap: v,
+			})
+	}
+
+	sort.SliceStable(addressStringAndCardAmountsChangeMapTuples, func(i, j int) bool {
+		return strings.Compare(addressStringAndCardAmountsChangeMapTuples[i].address, addressStringAndCardAmountsChangeMapTuples[j].address) < 0
+	})
+
+	for _, addressStringAndCardAmountsChangeMapTuple := range addressStringAndCardAmountsChangeMapTuples {
 		// Get address from string
-		localAddress, _ := loom.LocalAddressFromHexString("0x" + addressString)
+		localAddress, _ := loom.LocalAddressFromHexString("0x" + addressStringAndCardAmountsChangeMapTuple.address)
 		address := loom.Address{
 			ChainID: ctx.Message().Sender.ChainID,
 			Local: localAddress,
@@ -162,7 +184,7 @@ func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract
 		}
 
 		// Update map
-		for cardKey, amountChange := range cardAmountsChangeMapDelta {
+		for cardKey, amountChange := range addressStringAndCardAmountsChangeMapTuple.cardAmountsChangeMap {
 			currentAmountChange, _ := cardAmountChangeItemMap[cardKey]
 			cardAmountChangeItemMap[cardKey] = currentAmountChange + amountChange
 		}
@@ -176,6 +198,17 @@ func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract
 			}
 			cardAmountChangeItemsContainer.CardAmountChange = append(cardAmountChangeItemsContainer.CardAmountChange, cardAmountChangeItem)
 		}
+
+		sort.SliceStable(cardAmountChangeItemsContainer.CardAmountChange, func(i, j int) bool {
+			cardKeyCompareResult := cardAmountChangeItemsContainer.CardAmountChange[i].CardKey.Compare(&cardAmountChangeItemsContainer.CardAmountChange[j].CardKey)
+			if cardKeyCompareResult > 0 {
+				return true
+			} else if cardKeyCompareResult < 0 {
+				return false
+			} else {
+				return cardAmountChangeItemsContainer.CardAmountChange[i].AmountChange < cardAmountChangeItemsContainer.CardAmountChange[j].AmountChange
+			}
+		})
 
 		err = savePendingCardAmountChangeItemsContainerByAddress(ctx, address, cardAmountChangeItemsContainer)
 		if err != nil {
