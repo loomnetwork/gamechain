@@ -7,5 +7,5 @@ import "github.com/loomnetwork/gamechain/types/zb/zb_enums/zb_enums.proto";
 
 message CardKey {
     int64 mouldId = 1;
-    CardVariant.Enum variant = 2;
+    CardVariant.Enum variant = 2 [json_name = "variant"];
 }

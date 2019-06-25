@@ -1,8 +1,9 @@
 package battleground_proto
 
 import (
-	"encoding/json"
+	"bytes"
 	"fmt"
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_custombase"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -34,12 +35,23 @@ func (value *CardKey) Unmarshal(data []byte) error {
 }
 
 func (value CardKey) MarshalJSON() ([]byte, error) {
-	return json.Marshal(value.protoType())
+	m := jsonpb.Marshaler{
+		OrigName:     false,
+		Indent:       "",
+		EmitDefaults: true,
+	}
+
+	jsonString, err := m.MarshalToString(value.protoType())
+	if err != nil {
+		return nil, err
+	}
+
+	return []byte(jsonString), nil
 }
 
 func (value *CardKey) UnmarshalJSON(data []byte) error {
 	var raw zb_custombase.CardKey
-	err := json.Unmarshal(data, &raw)
+	err := jsonpb.Unmarshal(bytes.NewReader(data), &raw)
 	if err != nil {
 		return err
 	}
