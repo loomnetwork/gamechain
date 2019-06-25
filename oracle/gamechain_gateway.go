@@ -68,14 +68,15 @@ func (gw *GamechainGateway) SetLastPlasmaBlockNumber(lastBlock uint64) error {
 	return nil
 }
 
-func (gw *GamechainGateway) ProcessEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64) error {
-	req := orctype.ProcessEventBatchRequest{
+func (gw *GamechainGateway) ProcessOracleEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64) error {
+	req := orctype.ProcessOracleEventBatchRequest{
 		Events:                     events,
 		CardVersion:                gw.cardVersion,
 		LastPlasmachainBlockNumber: endBlock,
 	}
-	if _, err := gw.contract.Call("ProcessEventBatch", &req, gw.signer, nil); err != nil {
-		err = errors.Wrap(err, "failed to call ProcessEventBatch")
+
+	if _, err := gw.contract.Call("ProcessOracleEventBatch", &req, gw.signer, nil); err != nil {
+		err = errors.Wrap(err, "failed to call ProcessOracleEventBatch")
 		gw.logger.Error(err.Error())
 		return err
 	}

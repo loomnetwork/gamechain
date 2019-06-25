@@ -52,8 +52,8 @@ var (
 	ErrUserNotVerified = errors.New("user is not verified")
 )
 
-type cardAmountsChangeMap map[battleground_proto.CardKey]int64
-type addressToCardAmountsChangeMap map[string]map[battleground_proto.CardKey]int64
+type cardKeyToAmountChangeMap map[battleground_proto.CardKey]int64
+type addressToCardKeyToAmountChangesMap map[string]map[battleground_proto.CardKey]int64
 
 const defaultUserIdPrefix = "ZombieSlayer_"
 
@@ -113,7 +113,7 @@ func MakeAddressToUserIdLinkKey(address loom.Address) []byte {
 	return []byte("address-to-user-id:" + string(address.Local))
 }
 
-func loadPendingCardAmountChangeItemsContainerByAddress(ctx contract.StaticContext, address loom.Address) (*zb_data.CardAmountChangeItemsContainer, error) {
+func loadPendingCardAmountChangesContainerByAddress(ctx contract.StaticContext, address loom.Address) (*zb_data.CardAmountChangeItemsContainer, error) {
 	var container zb_data.CardAmountChangeItemsContainer
 
 	err := ctx.Get(AddressToPendingCardAmountChangeItemsKey(address), &container)
