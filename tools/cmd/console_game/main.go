@@ -3,16 +3,13 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/battleground"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/plugin"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/pkg/errors"
-	"io/ioutil"
 )
 
 var initRequest = zb_calls.InitRequest {
@@ -21,23 +18,9 @@ var initRequest = zb_calls.InitRequest {
 var updateInitRequest = zb_calls.UpdateInitRequest {
 }
 
-func readJsonFileToProtobuf(filename string, message proto.Message) error {
-	bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
-	}
-
-	json := string(bytes)
-	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file " + filename)
-	}
-
-	return nil
-}
-
 func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("../../../test_data/simple-init.json", updateInitRequest.InitData)
+	err := battleground_utility.ReadJsonStringToProtoMessage("../../../test_data/simple-init.json", updateInitRequest.InitData)
 	if err != nil {
 		return err
 	}

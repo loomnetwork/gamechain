@@ -68,6 +68,32 @@ func (gw *GamechainGateway) SetLastPlasmaBlockNumber(lastBlock uint64) error {
 	return nil
 }
 
+func (gw *GamechainGateway) GetOracleCommandRequestList() ([]*orctype.OracleCommandRequest, error) {
+	var req orctype.GetOracleCommandRequestListRequest
+	var resp orctype.GetOracleCommandRequestListResponse
+	if _, err := gw.contract.StaticCall("GetOracleCommandRequestList", &req, gw.Address, &resp); err != nil {
+		err = errors.Wrap(err, "failed to call GetOracleCommandRequestList")
+		gw.logger.Error(err.Error())
+		return nil, err
+	}
+	gw.LastResponseTime = time.Now()
+	return resp.CommandRequests, nil
+}
+
+func (gw *GamechainGateway) ProcessOracleCommandResponseBatch(commandResponses []*orctype.OracleCommandResponse) error {
+	req := orctype.ProcessOracleCommandResponseBatchRequest{
+		CommandResponses: commandResponses,
+	}
+
+	if _, err := gw.contract.Call("ProcessOracleCommandResponseBatch", &req, gw.signer, nil); err != nil {
+		err = errors.Wrap(err, "failed to call ProcessOracleCommandResponseBatch")
+		gw.logger.Error(err.Error())
+		return err
+	}
+	gw.LastResponseTime = time.Now()
+	return nil
+}
+
 func (gw *GamechainGateway) ProcessOracleEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64) error {
 	req := orctype.ProcessOracleEventBatchRequest{
 		Events:                     events,

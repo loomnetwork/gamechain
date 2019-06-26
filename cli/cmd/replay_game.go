@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"strings"
@@ -35,7 +36,7 @@ var replayGameCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			err := printProtoMessageAsJSONToStdout(resp.GameState)
+			err := battleground_utility.PrintProtoMessageAsJsonToStdout(resp.GameState)
 			if err != nil {
 				return err
 			}

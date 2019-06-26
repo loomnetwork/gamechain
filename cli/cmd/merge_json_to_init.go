@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -35,37 +36,37 @@ var mergeJsonToInitCmd = &cobra.Command{
 		var overlordLevelingData zb_data.OverlordLevelingDataContainer
 
 		// Read pieces
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.defaultDecksFile, &defaultDecksData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.defaultDecksFile, &defaultDecksData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.defaultCollectionFile, &defaultCollectionData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.defaultCollectionFile, &defaultCollectionData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.cardLibraryFile, &cardLibraryData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.cardLibraryFile, &cardLibraryData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.overlordsFile, &overlordsPrototypesData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.overlordsFile, &overlordsPrototypesData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.aiDecksFile, &aiDecksData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.aiDecksFile, &aiDecksData)
 		if err != nil {
 			return err
 		}
 
-		err = readJsonFileToProtobuf(mergeJsonToInitCmdArgs.overlordLevelingFile, &overlordLevelingData)
+		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.overlordLevelingFile, &overlordLevelingData)
 		if err != nil {
 			return err
 		}
@@ -90,7 +91,7 @@ var mergeJsonToInitCmd = &cobra.Command{
 			}
 		}()
 
-		err = printProtoMessageAsJSON(mergedFile, &initData)
+		err = battleground_utility.PrintProtoMessageAsJson(mergedFile, &initData)
 		if err != nil {
 			return errors.Wrap(err, "error writing output file")
 		}

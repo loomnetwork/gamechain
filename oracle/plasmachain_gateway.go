@@ -1,9 +1,11 @@
 package oracle
 
 import (
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/loomnetwork/gamechain/oracle/ethcontract"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	loom "github.com/loomnetwork/go-loom"
@@ -15,6 +17,11 @@ type plasmachainEventInfo struct {
 	BlockNum uint64
 	TxIdx    uint
 	Event    *orctype.PlasmachainEvent
+}
+
+type tokensOwnedResponseItem struct{
+	Index  *big.Int
+	Balance *big.Int
 }
 
 type PlasmachainGateway struct {
@@ -70,4 +77,26 @@ func (gw *PlasmachainGateway) LastBlockNumber() (uint64, error) {
 	}
 	gw.LastResponseTime = time.Now()
 	return uint64(block.Number), nil
+}
+
+func (gw *PlasmachainGateway) GetTokensOwned(owner loom.Address) ([]tokensOwnedResponseItem, error) {
+	ownerCommonAddress := common.BytesToAddress(owner.Local)
+	opts := &bind.CallOpts{
+	}
+
+	tokensOwnedRaw, err := gw.zbgCard.TokensOwned(opts, ownerCommonAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	tokensOwned := make([]tokensOwnedResponseItem, 0, len(tokensOwnedRaw.Balances))
+	for i := range tokensOwnedRaw.Balances {
+		tokensOwned[i] = tokensOwnedResponseItem {
+			Index: tokensOwnedRaw.Indexes[i],
+			Balance: tokensOwnedRaw.Balances[i],
+		}
+	}
+
+	gw.LastResponseTime = time.Now()
+	return tokensOwned, nil
 }

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
@@ -26,7 +27,7 @@ var getBuildMetadataCmd = &cobra.Command{
 			return err
 		}
 
-		return printProtoMessageAsJSONToStdout(&result)
+		return battleground_utility.PrintProtoMessageAsJsonToStdout(&result)
 	},
 }
 

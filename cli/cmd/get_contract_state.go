@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
@@ -31,7 +32,7 @@ var getContractStateCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			err := printProtoMessageAsJSONToStdout(resp.State)
+			err := battleground_utility.PrintProtoMessageAsJsonToStdout(resp.State)
 			if err != nil {
 				return err
 			}
