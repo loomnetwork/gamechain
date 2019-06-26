@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
@@ -36,7 +37,7 @@ var listOverlordsLibraryCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			return printProtoMessageAsJSONToStdout(&result)
+			return battleground_utility.PrintProtoMessageAsJsonToStdout(&result)
 		default:
 			for _, overlordInfo := range result.Overlords {
 				fmt.Printf("overlord_id: %d\n", overlordInfo.Id)

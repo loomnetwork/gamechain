@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/go-loom"
 	"os"
@@ -32,7 +33,7 @@ var getAIDecksCmd = &cobra.Command{
 			return err
 		}
 
-		err = printProtoMessageAsJSON(os.Stdout, &result)
+		err = battleground_utility.PrintProtoMessageAsJson(os.Stdout, &result)
 		if err != nil {
 			return err
 		}

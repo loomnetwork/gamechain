@@ -6,10 +6,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
-	"github.com/loomnetwork/go-loom/common"
 	"math/big"
 	"os"
 	"sort"
@@ -410,7 +410,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	return nil
 }
 
-func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error)  {
+func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error) {
 	if !isOwner(ctx, req.UserId) {
 		return nil, ErrUserNotVerified
 	}
@@ -1697,7 +1697,7 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 	if err != nil {
 		if errors.Cause(err).Error() == ErrNotFound.Error() {
 			configuration = &zb_data.ContractConfiguration{
-				InitialFiatPurchaseTxId:     &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				InitialFiatPurchaseTxId:     battleground_utility.MarshalBigIntProto(big.NewInt(0)),
 				FiatPurchaseContractVersion: 0,
 			}
 		} else {
@@ -1710,7 +1710,7 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		if errors.Cause(err).Error() == ErrNotFound.Error() {
 			state = &zb_data.ContractState{
 				LastPlasmachainBlockNumber: 0,
-				CurrentFiatPurchaseTxId:    &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				CurrentFiatPurchaseTxId:    battleground_utility.MarshalBigIntProto(big.NewInt(0)),
 			}
 		} else {
 			return err
@@ -2084,24 +2084,9 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 					return err
 				}
 			}
-
-		/*case *orctype.PlasmachainEvent_Card:
-		if err := validateGeneratedCard(payload.Card); err != nil {
-			return err
-		}
-		userID := string(payload.Card.Owner.Local) // should be bytes that represents address
-		cardID := payload.Card.CardID.Value.Int64()
-		amount := payload.Card.Amount.Value.Int64()
-		err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
-		if err != nil {
-			ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
-			return err
-		}
-		*/
 		case nil:
 			ctx.Logger().Error("Oracle missing event payload")
 			continue
-
 		default:
 			ctx.Logger().Error("Oracle unknown event payload type %T", payload)
 			continue
@@ -2243,6 +2228,36 @@ func (z *ZombieBattleground) DebugGetUserIdByAddress(ctx contract.StaticContext,
 	}, nil
 }
 
+func (z *ZombieBattleground) GetOracleCommandRequestList(ctx contract.StaticContext, req *orctype.GetOracleCommandRequestListRequest) (*orctype.GetOracleCommandRequestListResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	list, err := loadOracleCommandRequestList(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &orctype.GetOracleCommandRequestListResponse{
+		CommandRequests: list.Commands,
+	}, nil
+}
+
+func (z *ZombieBattleground) ProcessOracleCommandResponseBatch(ctx contract.Context, req *orctype.ProcessOracleCommandResponseBatchRequest) (*zb_calls.EmptyResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = z.processOracleCommandResponseBatchInternal(ctx, req.CommandResponses)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.EmptyResponse{}, nil
+}
+
 func (z *ZombieBattleground) DebugGetPendingCardAmountChangeItems(ctx contract.StaticContext, req *zb_calls.DebugGetPendingCardAmountChangeItemsRequest) (*zb_calls.DebugGetPendingCardAmountChangeItemsResponse, error) {
 	container, err := loadPendingCardAmountChangesContainerByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
 	if err != nil {
@@ -2306,12 +2321,12 @@ func (z *ZombieBattleground) handleUserDataWipe(ctx contract.Context, version st
 	wipeExecuted = false
 	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
-		return false, errors.Wrap(err,"error handling user data wipe")
+		return false, errors.Wrap(err, "error handling user data wipe")
 	}
 
 	userPersistentData, err := loadUserPersistentData(ctx, userId)
 	if err != nil {
-		return false, errors.Wrap(err,"error handling user data wipe")
+		return false, errors.Wrap(err, "error handling user data wipe")
 	}
 
 	var matchingDataWipeConfiguration *zb_data.DataWipeConfiguration

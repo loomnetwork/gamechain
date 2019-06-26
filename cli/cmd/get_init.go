@@ -3,6 +3,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 
 	"github.com/loomnetwork/go-loom"
@@ -39,7 +40,7 @@ var getInitCmd = &cobra.Command{
 			return err
 		}
 
-		return printProtoMessageAsJSONToStdout(result.InitData)
+		return battleground_utility.PrintProtoMessageAsJsonToStdout(result.InitData)
 	},
 }
 

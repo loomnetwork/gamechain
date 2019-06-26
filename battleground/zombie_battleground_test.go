@@ -3,16 +3,12 @@ package battleground
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
-	"github.com/loomnetwork/go-loom/common"
-	"github.com/loomnetwork/go-loom/types"
-	"github.com/pkg/errors"
-	"io/ioutil"
 	"math/big"
 	"testing"
 	"time"
@@ -30,20 +26,6 @@ var initRequest = zb_calls.InitRequest{
 var updateInitRequest = zb_calls.UpdateInitRequest{
 }
 
-func readJsonFileToProtobuf(filename string, message proto.Message) error {
-	bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
-	}
-
-	json := string(bytes)
-	if err := jsonpb.UnmarshalString(json, message); err != nil {
-		return errors.Wrap(err, "error parsing JSON file "+filename)
-	}
-
-	return nil
-}
-
 func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
 	debugEnabled = true
 
@@ -51,7 +33,7 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 	purchaseGatewayPrivateKeyHexString = "527969b4754fca7c3c6146c7c2a12ce1d0dda4a7e75cfb8e3465e0393d531176"
 
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := readJsonFileToProtobuf("../test_data/simple-init.json", updateInitRequest.InitData)
+	err := battleground_utility.ReadJsonFileToProtoMessage("../test_data/simple-init.json", updateInitRequest.InitData)
 	assert.Nil(t, err)
 
 	initRequest = zb_calls.InitRequest{
@@ -83,7 +65,7 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 		SetFiatPurchaseContractVersion: true,
 		FiatPurchaseContractVersion:    3,
 		SetInitialFiatPurchaseTxId:     true,
-		InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+		InitialFiatPurchaseTxId:        battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 	}
 
 	err = c.UpdateContractConfiguration(*ctx, &request)
@@ -108,7 +90,7 @@ func TestContractConfigurationAndState(t *testing.T) {
 			SetFiatPurchaseContractVersion: true,
 			FiatPurchaseContractVersion:    373,
 			SetInitialFiatPurchaseTxId:     true,
-			InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+			InitialFiatPurchaseTxId:        battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 		}
 
 		err := c.UpdateContractConfiguration(ctx, &request)
@@ -250,8 +232,8 @@ func TestUserDataWipe(t *testing.T) {
 		deckResponse.Decks[0].Name = "RenamedDefaultDeck"
 
 		err = c.EditDeck(ctx, &zb_calls.EditDeckRequest{
-			UserId: "DeckUser",
-			Deck: deckResponse.Decks[0],
+			UserId:  "DeckUser",
+			Deck:    deckResponse.Decks[0],
 			Version: "v1",
 		})
 		assert.Nil(t, err)
