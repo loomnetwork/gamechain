@@ -2,10 +2,7 @@ package oracle
 
 import (
 	"encoding/base64"
-	"fmt"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
 	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/go-loom/common"
 	"io/ioutil"
@@ -74,6 +71,8 @@ type Oracle struct {
 }
 
 func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
+	logger := loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination)
+
 	privKey, err := LoadDappChainPrivateKey(cfg.GamechainPrivateKey)
 	if err != nil {
 		return nil, err
@@ -97,6 +96,9 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 	hashPool := newRecentHashPool(time.Duration(cfg.PlasmachainPollInterval) * time.Second * 4)
 	hashPool.startCleanupRoutine()
 
+	logger.Info("Gamechain address " + gcAddress.String())
+	logger.Info("Plasmachain address " + pcAddress.String())
+
 	return &Oracle{
 		cfg:               *cfg,
 		gcAddress:         gcAddress,
@@ -105,7 +107,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		pcSigner:          pcSigner,
 		pcContractAddress: cfg.PlasmachainContractHexAddress,
 		metrics:           NewMetrics(metricSubsystem),
-		logger:            loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
+		logger:            logger,
 		pcPollInterval:    time.Duration(cfg.PlasmachainPollInterval) * time.Second,
 		startupDelay:      time.Duration(cfg.OracleStartupDelay) * time.Second,
 		reconnectInterval: time.Duration(cfg.OracleReconnectInterval) * time.Second,
@@ -240,11 +242,11 @@ func (orc *Oracle) executeGamechainCommands(latestPlasmaBlock uint64) error {
 		return err
 	}
 
-	commandResponses := make([]*orctype.OracleCommandResponse, len(commandRequests))
+	commandResponses := make([]*orctype.OracleCommandResponse, 0, len(commandRequests))
 
 	orc.logger.Debug("Executing Gamechain commands", "len(commandRequests)", len(commandRequests))
 	for _, commandRequestWrapper := range commandRequests {
-		orc.logger.Info("Executing command", "commandId", commandRequestWrapper.CommandId, "commandType", reflect.TypeOf(commandRequestWrapper.Command).Name())
+		orc.logger.Info("Executing command", "commandId", commandRequestWrapper.CommandId, "commandType", reflect.TypeOf(commandRequestWrapper.GetCommand()).String())
 		switch commandRequest := commandRequestWrapper.Command.(type) {
 		case *orctype.OracleCommandRequest_GetUserFullCardCollection:
 			userAddress := commandRequest.GetUserFullCardCollection.UserAddress
@@ -272,11 +274,18 @@ func (orc *Oracle) executeGamechainCommands(latestPlasmaBlock uint64) error {
 				},
 			}
 			commandResponses = append(commandResponses, responseWrapper)
-			break
+		default:
+			orc.logger.Warn("unknown command type", "commandType", reflect.TypeOf(commandRequestWrapper.GetCommand()).String())
 		}
 	}
 
-	orc.logger.Debug("Sending executed command responses to Gamechain")
+	if len(commandRequests) > 0 {
+		orc.logger.Debug("Sending executed command responses to Gamechain")
+		err := orc.gcGateway.ProcessOracleCommandResponseBatch(commandResponses)
+		if err != nil {
+			return err
+		}
+	}
 
 	orc.logger.Debug("Finished executing Gamechain commands")
 	return nil
@@ -341,6 +350,7 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 		// so that we won't process same events again.
 		orc.logger.Info("calling SetLastPlasmaBlockNumber")
 		if err := orc.gcGateway.SetLastPlasmaBlockNumber(latestBlock); err != nil {
+			orc.logger.Warn(err.Error())
 			return 0, err
 		}
 	}
@@ -436,21 +446,6 @@ func (orc *Oracle) processSingleRawEvent(rawEvent ethtypes.Log) (eventInfo *plas
 			EthBlock: rawEvent.BlockNumber,
 		},
 	}, receipt, nil
-}
-
-func protoMessageToJSON(pb proto.Message) (string, error) {
-	m := jsonpb.Marshaler{
-		OrigName:     false,
-		Indent:       "  ",
-		EmitDefaults: true,
-	}
-
-	json, err := m.MarshalToString(pb)
-	if err != nil {
-		return "", fmt.Errorf("error marshaling Proto to JSON: %s", err.Error())
-	}
-
-	return json, nil
 }
 
 func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {

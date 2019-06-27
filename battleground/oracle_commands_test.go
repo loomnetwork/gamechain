@@ -2,7 +2,7 @@ package battleground
 
 import (
 	"github.com/loomnetwork/gamechain/tools/battleground_utility"
-	"github.com/loomnetwork/gamechain/types/oracle"
+	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	assert "github.com/stretchr/testify/require"
@@ -18,13 +18,13 @@ func TestProcessEventBatch(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	req := &oracle.ProcessOracleEventBatchRequest{
+	req := &orctype.ProcessOracleEventBatchRequest{
 		LastPlasmachainBlockNumber: 123,
-		Events: []*oracle.PlasmachainEvent{
+		Events: []*orctype.PlasmachainEvent{
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
 						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(3)),
 						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
@@ -34,8 +34,8 @@ func TestProcessEventBatch(t *testing.T) {
 			},
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
 						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(7)),
 						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
@@ -45,8 +45,8 @@ func TestProcessEventBatch(t *testing.T) {
 			},
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
 						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(2)),
 						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
@@ -83,8 +83,8 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	})
 
 	t.Run("Add basic command", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{}
-		err := c.saveOracleCommandRequestToList(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
+		command := &orctype.OracleCommandRequest{}
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
 			return false
 		})
 
@@ -101,14 +101,14 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	})
 
 	t.Run("Add command with data", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{
-			Command: &oracle.OracleCommandRequest_GetUserFullCardCollection{
-				GetUserFullCardCollection: &oracle.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+		command := &orctype.OracleCommandRequest{
+			Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
+				GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
 					UserAddress: userAddress.MarshalPB(),
 				},
 			},
 		}
-		err := c.saveOracleCommandRequestToList(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
 			return false
 		})
 
@@ -128,14 +128,14 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	})
 
 	t.Run("Add unique type per-user command", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{
-			Command: &oracle.OracleCommandRequest_GetUserFullCardCollection{
-				GetUserFullCardCollection: &oracle.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+		command := &orctype.OracleCommandRequest{
+			Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
+				GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
 					UserAddress: userAddress.MarshalPB(),
 				},
 			},
 		}
-		err := c.saveOracleCommandRequestToList(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
 			return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(userAddress) == 0
 		})
 

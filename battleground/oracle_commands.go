@@ -74,7 +74,7 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 func (z *ZombieBattleground) saveOracleCommandRequestToList(
 	ctx contract.Context,
 	commandRequest *orctype.OracleCommandRequest,
-	filterSameTypePredicate func(request *orctype.OracleCommandRequest) (remove bool),
+	filterSameTypePredicate func(request *orctype.OracleCommandRequest) (mustRemove bool),
 ) error {
 	// load data
 	commandRequestList, err := loadOracleCommandRequestList(ctx)

@@ -48,8 +48,9 @@ var (
 )
 
 var (
-	ErrNotFound        = errors.New("not found")
-	ErrUserNotVerified = errors.New("user is not verified")
+	ErrNotFound                    = errors.New("not found")
+	ErrUserNotVerified             = errors.New("user is not verified")
+	ErrNotOwnerOrOracleNotVerified = errors.New("sender is not user owner or oracle")
 )
 
 type cardKeyToAmountChangeMap map[battleground_proto.CardKey]int64
