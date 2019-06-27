@@ -46,7 +46,8 @@ func ConnectToGamechainGateway(
 func (gw *GamechainGateway) GetLastPlasmaBlockNumber() (uint64, error) {
 	var req zb_calls.EmptyRequest
 	var resp zb_calls.GetContractStateResponse
-	if _, err := gw.contract.StaticCall("GetContractState", &req, gw.Address, &resp); err != nil {
+
+	if _, err := gw.contract.StaticCall("GetContractState", &req, gw.caller, &resp); err != nil {
 		err = errors.Wrap(err, "failed to call GetContractState")
 		gw.logger.Error(err.Error())
 		return 0, err
@@ -59,6 +60,7 @@ func (gw *GamechainGateway) SetLastPlasmaBlockNumber(lastBlock uint64) error {
 	req := zb_calls.SetLastPlasmaBlockNumberRequest{
 		LastPlasmachainBlockNumber: lastBlock,
 	}
+
 	if _, err := gw.contract.Call("SetLastPlasmaBlockNumber", &req, gw.signer, nil); err != nil {
 		err = errors.Wrap(err, "failed to call SetLastPlasmaBlockNumber")
 		gw.logger.Error(err.Error())
@@ -71,7 +73,8 @@ func (gw *GamechainGateway) SetLastPlasmaBlockNumber(lastBlock uint64) error {
 func (gw *GamechainGateway) GetOracleCommandRequestList() ([]*orctype.OracleCommandRequest, error) {
 	var req orctype.GetOracleCommandRequestListRequest
 	var resp orctype.GetOracleCommandRequestListResponse
-	if _, err := gw.contract.StaticCall("GetOracleCommandRequestList", &req, gw.Address, &resp); err != nil {
+
+	if _, err := gw.contract.StaticCall("GetOracleCommandRequestList", &req, gw.caller, &resp); err != nil {
 		err = errors.Wrap(err, "failed to call GetOracleCommandRequestList")
 		gw.logger.Error(err.Error())
 		return nil, err

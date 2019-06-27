@@ -3,30 +3,34 @@ package oracle
 import (
 	"context"
 	"encoding/json"
-	hexutil "github.com/ethereum/go-ethereum/common/hexutil"
-	"math/big"
-
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/loomnetwork/go-loom"
+	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
 	loomcommon "github.com/loomnetwork/go-loom/common"
 	"github.com/loomnetwork/loomchain/rpc/eth"
 	"github.com/pkg/errors"
+	"math/big"
 )
 
 var ErrNotImplemented = errors.New("not implememented")
 
 type LoomchainBackend struct {
 	*client.DAppChainRPCClient
+	signer auth.Signer
 }
 
 var _ bind.ContractBackend = &LoomchainBackend{}
 
-func NewLoomchainBackend(cli *client.DAppChainRPCClient) bind.ContractBackend {
-	return &LoomchainBackend{DAppChainRPCClient: cli}
+func NewLoomchainBackend(cli *client.DAppChainRPCClient, signer auth.Signer) bind.ContractBackend {
+	return &LoomchainBackend{
+		DAppChainRPCClient: cli,
+		signer: signer,
+	}
 }
 
 func (l *LoomchainBackend) CodeAt(ctx context.Context, contract common.Address, blockNumber *big.Int) ([]byte, error) {
@@ -34,7 +38,24 @@ func (l *LoomchainBackend) CodeAt(ctx context.Context, contract common.Address, 
 }
 
 func (l *LoomchainBackend) CallContract(ctx context.Context, call ethereum.CallMsg, blockNumber *big.Int) ([]byte, error) {
-	return l.CallContract(ctx, call, blockNumber)
+
+	contractAddress, err := commonAddressToLoomAddress(*call.To, l.GetChainID())
+	if err != nil {
+		return nil, err
+	}
+	callerAddres := loom.Address{
+		ChainID: l.GetChainID(),
+		Local:   loom.LocalAddressFromPublicKey(l.signer.PublicKey()),
+	}
+
+	evmContract := client.NewEvmContract(l.DAppChainRPCClient, contractAddress.Local)
+
+	bytes, err := evmContract.StaticCall(call.Data, callerAddres)
+	if err != nil {
+		return nil, err
+	}
+
+	return bytes, nil
 }
 
 func (l *LoomchainBackend) PendingCodeAt(ctx context.Context, contract common.Address) ([]byte, error) {
@@ -70,7 +91,7 @@ func (l *LoomchainBackend) FilterLogs(ctx context.Context, query ethereum.Filter
 		ethFilter.ToBlock = eth.BlockHeight(query.ToBlock.String())
 	}
 	if len(query.Addresses) > 0 {
-		addrs, err := commonAddressToLoomAddress(query.Addresses...)
+		addrs, err := commonAddressesToLoomAddresses(query.Addresses...)
 		if err != nil {
 			return nil, err
 		}
@@ -153,7 +174,19 @@ func hashToStrings(hss [][]common.Hash) [][]string {
 	return strs
 }
 
-func commonAddressToLoomAddress(ca ...common.Address) ([]loomcommon.LocalAddress, error) {
+func commonAddressToLoomAddress(ca common.Address, chainId string) (*loom.Address, error) {
+	localAddress, err := loom.LocalAddressFromHexString(ca.Hex())
+	if err != nil {
+		return nil, err
+	}
+
+	return &loom.Address{
+		ChainID: chainId,
+		Local:   localAddress,
+	}, nil
+}
+
+func commonAddressesToLoomAddresses(ca ...common.Address) ([]loomcommon.LocalAddress, error) {
 	var addrs []loomcommon.LocalAddress
 	for _, a := range ca {
 		addr, err := loom.LocalAddressFromHexString(a.Hex())

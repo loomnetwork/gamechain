@@ -52,7 +52,7 @@ func ConnectToPlasmachainGateway(
 		Local:   addr,
 	}
 
-	backend := NewLoomchainBackend(loomClient)
+	backend := NewLoomchainBackend(loomClient, signer)
 	zbgCard, err := ethcontract.NewZBGCard(common.HexToAddress(contractAddressHex), backend)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (gw *PlasmachainGateway) GetTokensOwned(owner loom.Address) ([]tokensOwnedR
 		return nil, err
 	}
 
-	tokensOwned := make([]tokensOwnedResponseItem, 0, len(tokensOwnedRaw.Balances))
+	tokensOwned := make([]tokensOwnedResponseItem, len(tokensOwnedRaw.Balances))
 	for i := range tokensOwnedRaw.Balances {
 		tokensOwned[i] = tokensOwnedResponseItem {
 			Index: tokensOwnedRaw.Indexes[i],
