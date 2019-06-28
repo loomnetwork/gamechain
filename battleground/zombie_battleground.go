@@ -437,6 +437,8 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 	response := zb_calls.LoginResponse{}
 	if userPersistentData.LastFullCardSyncPlasmachainBlockHeight == 0 {
 		// TODO: save the request for the oracle to do the full sync
+
+		// TODO: check if a request is already pending?
 		//addFullCardCollectionSyncRequest(req.UserId)
 
 		// notify the user that a full collection sync is scheduled so they can react

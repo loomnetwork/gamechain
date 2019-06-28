@@ -28,6 +28,21 @@ func ProtoMessageToJsonString(pb proto.Message) (string, error) {
 	return json, nil
 }
 
+func ProtoMessageToJsonStringNoIndent(pb proto.Message) (string, error) {
+	m := jsonpb.Marshaler{
+		OrigName:     false,
+		Indent:       "",
+		EmitDefaults: true,
+	}
+
+	json, err := m.MarshalToString(pb)
+	if err != nil {
+		return "", fmt.Errorf("error marshaling Proto to JSON: %s", err.Error())
+	}
+
+	return json, nil
+}
+
 func PrintProtoMessageAsJson(out io.Writer, pb proto.Message) error {
 	m := jsonpb.Marshaler{
 		OrigName:     false,
