@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 
 	"github.com/loomnetwork/go-loom"
@@ -38,7 +39,7 @@ var listCardCmd = &cobra.Command{
 			return err
 		}
 
-		return printProtoMessageAsJSONToStdout(&result)
+		return battleground_utility.PrintProtoMessageAsJsonToStdout(&result)
 	},
 }
 

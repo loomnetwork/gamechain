@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/go-loom/common"
-	"github.com/loomnetwork/go-loom/types"
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/pkg/errors"
 	"math/big"
@@ -187,7 +186,7 @@ func (t *MintingReceipt) MarshalPB() *zb_data.MintingTransactionReceipt {
 			Hash:      hexutil.MustDecode(t.VerifyHash.Hash),
 			Signature: hexutil.MustDecode(t.VerifyHash.Signature),
 		},
-		UserId:  &types.BigUInt{Value: common.BigUInt{Int: t.UserId}},
+		UserId:  battleground_utility.MarshalBigIntProto(t.UserId),
 		Booster: uint64(t.Booster),
 		Air:     uint64(t.Air),
 		Earth:   uint64(t.Earth),
@@ -199,6 +198,6 @@ func (t *MintingReceipt) MarshalPB() *zb_data.MintingTransactionReceipt {
 		Small:   uint64(t.Small),
 		Minion:  uint64(t.Minion),
 		Binance: uint64(t.Binance),
-		TxId:    &types.BigUInt{Value: common.BigUInt{Int: t.TxID}},
+		TxId:    battleground_utility.MarshalBigIntProto(t.TxID),
 	}
 }

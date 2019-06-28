@@ -1,11 +1,10 @@
 package battleground
 
 import (
-	"github.com/loomnetwork/gamechain/types/oracle"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
+	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/common"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/go-loom/types"
 	assert "github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
@@ -19,39 +18,39 @@ func TestProcessEventBatch(t *testing.T) {
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
 
-	req := &oracle.ProcessOracleEventBatchRequest{
+	req := &orctype.ProcessOracleEventBatchRequest{
 		LastPlasmachainBlockNumber: 123,
-		Events: []*oracle.PlasmachainEvent{
+		Events: []*orctype.PlasmachainEvent{
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
-						Amount: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(3)}},
-						TokenId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
-						From: loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
-						To: loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
+						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(3)),
+						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
+						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
+						To:      loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
 					},
 				},
 			},
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
-						Amount: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(7)}},
-						TokenId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
-						From: loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
-						To: loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
+						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(7)),
+						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
+						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
+						To:      loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
 					},
 				},
 			},
 			{
 				EthBlock: 120,
-				Payload: &oracle.PlasmachainEvent_TransferWithQuantity{
-					TransferWithQuantity: &oracle.PlasmachainEventTransferWithQuantity{
-						Amount: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(2)}},
-						TokenId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
-						From: loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
-						To: loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
+				Payload: &orctype.PlasmachainEvent_TransferWithQuantity{
+					TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
+						Amount:  battleground_utility.MarshalBigIntProto(big.NewInt(2)),
+						TokenId: battleground_utility.MarshalBigIntProto(big.NewInt(100)),
+						From:    loom.MustParseAddress("default:0x0000000000000000000000000000000000000002").MarshalPB(),
+						To:      loom.MustParseAddress("default:0x0000000000000000000000000000000000000001").MarshalPB(),
 					},
 				},
 			},
@@ -68,6 +67,7 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	var ctx contract.Context
 
 	setup(c, pubKeyHexString, &addr, &ctx, t)
+	userAddress := loom.MustParseAddress("default:0x0000000000000000000000000000000000000003")
 
 	t.Run("No commands initially", func(t *testing.T) {
 		commandRequestList, err := loadOracleCommandRequestList(ctx)
@@ -83,8 +83,8 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	})
 
 	t.Run("Add basic command", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{}
-		err := c.saveOracleCommandRequest(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
+		command := &orctype.OracleCommandRequest{}
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
 			return false
 		})
 
@@ -101,14 +101,14 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 	})
 
 	t.Run("Add command with data", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{
-			Command: &oracle.OracleCommandRequest_GetUserFullCardCollection{
-				GetUserFullCardCollection:	&oracle.OracleCommandRequest_GetUserFullCardCollectionCommandRequest {
-					UserId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(373)}},
+		command := &orctype.OracleCommandRequest{
+			Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
+				GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+					UserAddress: userAddress.MarshalPB(),
 				},
 			},
 		}
-		err := c.saveOracleCommandRequest(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
 			return false
 		})
 
@@ -118,7 +118,8 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(commandRequestList.Commands))
 		assert.NotNil(t, commandRequestList.Commands[1].GetGetUserFullCardCollection())
-		assert.Equal(t, int64(373), commandRequestList.Commands[1].GetGetUserFullCardCollection().UserId.Value.Int64())
+		assert.Equal(t, userAddress.String(),
+			loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
 
 		state, err := loadContractState(ctx)
 		assert.Nil(t, err)
@@ -126,16 +127,16 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.Equal(t, uint64(2), state.CurrentOracleCommandId)
 	})
 
-	t.Run("Add unique command", func(t *testing.T) {
-		command := &oracle.OracleCommandRequest{
-			Command: &oracle.OracleCommandRequest_GetUserFullCardCollection{
-				GetUserFullCardCollection:	&oracle.OracleCommandRequest_GetUserFullCardCollectionCommandRequest {
-					UserId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(374)}},
+	t.Run("Add unique type per-user command", func(t *testing.T) {
+		command := &orctype.OracleCommandRequest{
+			Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
+				GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+					UserAddress: userAddress.MarshalPB(),
 				},
 			},
 		}
-		err := c.saveOracleCommandRequest(ctx, command, func(request *oracle.OracleCommandRequest) (remove bool) {
-			return request.GetGetUserFullCardCollection() != nil
+		err := c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
+			return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(userAddress) == 0
 		})
 
 		assert.Nil(t, err)
@@ -144,7 +145,8 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(commandRequestList.Commands))
 		assert.NotNil(t, commandRequestList.Commands[1].GetGetUserFullCardCollection())
-		assert.Equal(t, int64(374), commandRequestList.Commands[1].GetGetUserFullCardCollection().UserId.Value.Int64())
+		assert.Equal(t, userAddress.String(),
+			loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
 
 		state, err := loadContractState(ctx)
 		assert.Nil(t, err)

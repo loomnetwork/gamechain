@@ -3,12 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
-	"github.com/loomnetwork/go-loom/common"
-	"github.com/loomnetwork/go-loom/types"
 	"github.com/spf13/cobra"
 	"math/big"
 	"strings"
@@ -43,7 +42,7 @@ var configuration_get = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			err := printProtoMessageAsJSONToStdout(resp.Configuration)
+			err := battleground_utility.PrintProtoMessageAsJsonToStdout(resp.Configuration)
 			if err != nil {
 				return err
 			}
@@ -86,7 +85,7 @@ var configuration_setInitialFiatPurchaseTxIdCmd = &cobra.Command{
 
 		request := &zb_calls.UpdateContractConfigurationRequest{
 			SetInitialFiatPurchaseTxId: true,
-			InitialFiatPurchaseTxId:    &types.BigUInt{Value: common.BigUInt{Int: initialFiatPurchaseTxId}},
+			InitialFiatPurchaseTxId:    battleground_utility.MarshalBigIntProto(initialFiatPurchaseTxId),
 		}
 		return configurationSetMain(request)
 	},

@@ -2,12 +2,11 @@ package oracle
 
 import (
 	"encoding/base64"
-	"fmt"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gogo/protobuf/proto"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/go-loom/common"
 	"io/ioutil"
+	"reflect"
 	"runtime"
 	"runtime/debug"
 	"sort"
@@ -72,6 +71,8 @@ type Oracle struct {
 }
 
 func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
+	logger := loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination)
+
 	privKey, err := LoadDappChainPrivateKey(cfg.GamechainPrivateKey)
 	if err != nil {
 		return nil, err
@@ -95,6 +96,9 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 	hashPool := newRecentHashPool(time.Duration(cfg.PlasmachainPollInterval) * time.Second * 4)
 	hashPool.startCleanupRoutine()
 
+	logger.Info("Gamechain address " + gcAddress.String())
+	logger.Info("Plasmachain address " + pcAddress.String())
+
 	return &Oracle{
 		cfg:               *cfg,
 		gcAddress:         gcAddress,
@@ -103,7 +107,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		pcSigner:          pcSigner,
 		pcContractAddress: cfg.PlasmachainContractHexAddress,
 		metrics:           NewMetrics(metricSubsystem),
-		logger:            loom.NewLoomLogger(cfg.OracleLogLevel, cfg.OracleLogDestination),
+		logger:            logger,
 		pcPollInterval:    time.Duration(cfg.PlasmachainPollInterval) * time.Second,
 		startupDelay:      time.Duration(cfg.OracleStartupDelay) * time.Second,
 		reconnectInterval: time.Duration(cfg.OracleReconnectInterval) * time.Second,
@@ -210,20 +214,89 @@ func (orc *Oracle) Run() {
 		} else {
 			skipSleep = false
 		}
-		err := orc.pollPlasmaChain()
+		err := orc.doCommunicationRound()
 		if err != nil {
 			orc.logger.Error(err.Error())
 		}
 	}
-
 }
 
-func (orc *Oracle) pollPlasmaChain() error {
+func (orc *Oracle) doCommunicationRound() error {
+	latestPlasmaBlock, err := orc.pollPlasmachainForEvents()
+	if err != nil {
+		return errors.Wrap(err, "failed to poll Plasmachain for events")
+	}
+
+	if err := orc.executeGamechainCommands(latestPlasmaBlock); err != nil {
+		return errors.Wrap(err, "failed to execute Gamechain commands")
+	}
+
+	return nil
+}
+
+func (orc *Oracle) executeGamechainCommands(latestPlasmaBlock uint64) error {
+	orc.logger.Debug("Fetching Gamechain commands")
+
+	commandRequests, err := orc.gcGateway.GetOracleCommandRequestList()
+	if err != nil {
+		return err
+	}
+
+	commandResponses := make([]*orctype.OracleCommandResponse, 0, len(commandRequests))
+
+	orc.logger.Debug("Executing Gamechain commands", "len(commandRequests)", len(commandRequests))
+	for _, commandRequestWrapper := range commandRequests {
+		orc.logger.Info("Executing command", "commandId", commandRequestWrapper.CommandId, "commandType", reflect.TypeOf(commandRequestWrapper.GetCommand()).String())
+		switch commandRequest := commandRequestWrapper.Command.(type) {
+		case *orctype.OracleCommandRequest_GetUserFullCardCollection:
+			userAddress := commandRequest.GetUserFullCardCollection.UserAddress
+			tokensOwned, err := orc.pcGateway.GetTokensOwned(loom.UnmarshalAddressPB(userAddress))
+			if err != nil {
+				return err
+			}
+
+			response := &orctype.OracleCommandResponse_GetUserFullCardCollectionCommandResponse{
+				UserAddress: userAddress,
+				BlockHeight: latestPlasmaBlock,
+			}
+
+			for _, tokensOwnedResponseItem := range tokensOwned {
+				response.OwnedCards = append(response.OwnedCards, &orctype.RawCardCollectionCard{
+					CardTokenId: battleground_utility.MarshalBigIntProto(tokensOwnedResponseItem.Index),
+					Amount:      battleground_utility.MarshalBigIntProto(tokensOwnedResponseItem.Balance),
+				})
+			}
+
+			responseWrapper := &orctype.OracleCommandResponse{
+				CommandId: commandRequestWrapper.CommandId,
+				Command: &orctype.OracleCommandResponse_GetUserFullCardCollection{
+					GetUserFullCardCollection: response,
+				},
+			}
+			commandResponses = append(commandResponses, responseWrapper)
+		default:
+			orc.logger.Warn("unknown command type", "commandType", reflect.TypeOf(commandRequestWrapper.GetCommand()).String())
+		}
+	}
+
+	if len(commandRequests) > 0 {
+		orc.logger.Debug("Sending executed command responses to Gamechain")
+		err := orc.gcGateway.ProcessOracleCommandResponseBatch(commandResponses)
+		if err != nil {
+			return err
+		}
+	}
+
+	orc.logger.Debug("Finished executing Gamechain commands")
+	return nil
+}
+
+func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err error) {
 	orc.logger.Info("Start polling Plasmachain")
 	lastPlasmachainBlockNumber, err := orc.gcGateway.GetLastPlasmaBlockNumber()
 	if err != nil {
 		orc.logger.Error("failed to obtain last Plasmachain block number from Gamechain", "err", err)
-		return err
+		return 0, err
 	}
 
 	orc.logger.Debug("got last processed Plasmachain block number from Gamechain", "lastPlasmachainBlockNumber", lastPlasmachainBlockNumber)
@@ -240,21 +313,21 @@ func (orc *Oracle) pollPlasmaChain() error {
 	latestBlock, err := orc.getLatestEthBlockNumber()
 	if err != nil {
 		orc.logger.Error("failed to obtain latest Plasmachain block number", "err", err)
-		return err
+		return 0, err
 	}
 
 	orc.logger.Debug("current latest Plasmachain block number", "latestBlock", latestBlock)
 
 	if latestBlock < startBlock {
 		// Wait for Plasmachain to produce a new block...
-		return nil
+		return 0, nil
 	}
 
 	orc.logger.Info("fetching events", "startBlock", startBlock, "latestBlock", latestBlock)
 	events, err := orc.fetchEvents(startBlock, latestBlock)
 	if err != nil {
 		orc.logger.Error("failed to fetch events from Plasmachain", "err", err)
-		return err
+		return 0, err
 	}
 
 	orc.logger.Debug("finished fetching events", "len(events)", len(events))
@@ -265,7 +338,7 @@ func (orc *Oracle) pollPlasmaChain() error {
 
 		orc.logger.Debug("calling ProcessOracleEventBatch")
 		if err := orc.gcGateway.ProcessOracleEventBatch(events, latestBlock); err != nil {
-			return err
+			return 0, err
 		}
 		orc.logger.Debug("finished calling ProcessOracleEventBatch")
 
@@ -275,15 +348,15 @@ func (orc *Oracle) pollPlasmaChain() error {
 	} else {
 		// If there were no events, just update the latest Plasmachain block number
 		// so that we won't process same events again.
-
 		orc.logger.Info("calling SetLastPlasmaBlockNumber")
 		if err := orc.gcGateway.SetLastPlasmaBlockNumber(latestBlock); err != nil {
-			return err
+			orc.logger.Warn(err.Error())
+			return 0, err
 		}
 	}
 
 	orc.startBlock = latestBlock + 1
-	return nil
+	return latestBlock, nil
 }
 
 func (orc *Oracle) getLatestEthBlockNumber() (uint64, error) {
@@ -357,7 +430,7 @@ func LoadDappChainPrivateKey(privKeyB64 string) ([]byte, error) {
 	return privKey, nil
 }
 
-func (orc *Oracle) processSingleRawEvent(rawEvent types.Log) (eventInfo *plasmachainEventInfo, receipt *ptypes.EvmTxReceipt, err error) {
+func (orc *Oracle) processSingleRawEvent(rawEvent ethtypes.Log) (eventInfo *plasmachainEventInfo, receipt *ptypes.EvmTxReceipt, err error) {
 	receiptRaw, err := orc.pcGateway.client.GetEvmTxReceipt(rawEvent.TxHash.Bytes())
 	if err != nil {
 		orc.logger.Error(err.Error(), "txHash", rawEvent.TxHash.Hex())
@@ -373,21 +446,6 @@ func (orc *Oracle) processSingleRawEvent(rawEvent types.Log) (eventInfo *plasmac
 			EthBlock: rawEvent.BlockNumber,
 		},
 	}, receipt, nil
-}
-
-func protoMessageToJSON(pb proto.Message) (string, error) {
-	m := jsonpb.Marshaler{
-		OrigName:     false,
-		Indent:       "  ",
-		EmitDefaults: true,
-	}
-
-	json, err := m.MarshalToString(pb)
-	if err != nil {
-		return "", fmt.Errorf("error marshaling Proto to JSON: %s", err.Error())
-	}
-
-	return json, nil
 }
 
 func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {

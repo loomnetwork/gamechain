@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gogo/protobuf/proto"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/oracle"
 	"io/ioutil"
 	"strings"
@@ -25,7 +26,7 @@ var processOracleEventBatchCmd = &cobra.Command{
 
 		var err error
 		if processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile != "" {
-			err = readJsonFileToProtobuf(processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile, &req)
+			err = battleground_utility.ReadJsonStringToProtoMessage(processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile, &req)
 			if err != nil {
 				return err
 			}
