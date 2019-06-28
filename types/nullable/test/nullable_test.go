@@ -16,7 +16,7 @@ func TestNullableWithValue(t *testing.T) {
 		},
 	}
 
-	json, err := battleground_utility.ProtoMessageToJsonString(message)
+	json, err := battleground_utility.ProtoMessageToJsonStringNoIndent(message)
 	assert.Nil(t, err)
 	assert.Equal(t, "{\"int32Value\":373}", json)
 
@@ -32,7 +32,7 @@ func TestNullableNull(t *testing.T) {
 	message := &nullable_test_pb.TestMessage{
 	}
 
-	json, err := battleground_utility.ProtoMessageToJsonString(message)
+	json, err := battleground_utility.ProtoMessageToJsonStringNoIndent(message)
 	assert.Nil(t, err)
 	assert.Equal(t, "{\"int32Value\":null}", json)
 
