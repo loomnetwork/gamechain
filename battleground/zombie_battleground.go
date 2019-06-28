@@ -6,10 +6,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
-	"github.com/loomnetwork/go-loom/common"
 	"math/big"
 	"os"
 	"sort"
@@ -401,6 +401,11 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
 	}
 
+	err = saveAddressToUserIdLink(ctx, req.UserId, ctx.Message().Sender)
+	if err != nil {
+		return err
+	}
+
 	senderAddress := []byte(ctx.Message().Sender.Local)
 	emitMsgJSON, err := prepareEmitMsgJSON(senderAddress, req.UserId, "createaccount")
 	if err == nil {
@@ -410,7 +415,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 	return nil
 }
 
-func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error)  {
+func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error) {
 	if !isOwner(ctx, req.UserId) {
 		return nil, ErrUserNotVerified
 	}
@@ -432,6 +437,8 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 	response := zb_calls.LoginResponse{}
 	if userPersistentData.LastFullCardSyncPlasmachainBlockHeight == 0 {
 		// TODO: save the request for the oracle to do the full sync
+
+		// TODO: check if a request is already pending?
 		//addFullCardCollectionSyncRequest(req.UserId)
 
 		// notify the user that a full collection sync is scheduled so they can react
@@ -1666,6 +1673,11 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb_calls.KeepA
 }
 
 func (z *ZombieBattleground) GetContractState(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractStateResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	state, err := loadContractState(ctx)
 	if err != nil {
 		return nil, err
@@ -1677,6 +1689,11 @@ func (z *ZombieBattleground) GetContractState(ctx contract.StaticContext, req *z
 }
 
 func (z *ZombieBattleground) GetContractConfiguration(ctx contract.StaticContext, req *zb_calls.EmptyRequest) (*zb_calls.GetContractConfigurationResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
 		return nil, err
@@ -1697,7 +1714,7 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 	if err != nil {
 		if errors.Cause(err).Error() == ErrNotFound.Error() {
 			configuration = &zb_data.ContractConfiguration{
-				InitialFiatPurchaseTxId:     &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				InitialFiatPurchaseTxId:     battleground_utility.MarshalBigIntProto(big.NewInt(0)),
 				FiatPurchaseContractVersion: 0,
 			}
 		} else {
@@ -1710,7 +1727,7 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		if errors.Cause(err).Error() == ErrNotFound.Error() {
 			state = &zb_data.ContractState{
 				LastPlasmachainBlockNumber: 0,
-				CurrentFiatPurchaseTxId:    &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(0)}},
+				CurrentFiatPurchaseTxId:    battleground_utility.MarshalBigIntProto(big.NewInt(0)),
 			}
 		} else {
 			return err
@@ -2084,24 +2101,9 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 					return err
 				}
 			}
-
-		/*case *orctype.PlasmachainEvent_Card:
-		if err := validateGeneratedCard(payload.Card); err != nil {
-			return err
-		}
-		userID := string(payload.Card.Owner.Local) // should be bytes that represents address
-		cardID := payload.Card.CardID.Value.Int64()
-		amount := payload.Card.Amount.Value.Int64()
-		err := z.syncCardToCollection(ctx, userID, cardID, amount, req.CardVersion)
-		if err != nil {
-			ctx.Logger().Error("Oracle failed to add card to user collection", "err", err)
-			return err
-		}
-		*/
 		case nil:
 			ctx.Logger().Error("Oracle missing event payload")
 			continue
-
 		default:
 			ctx.Logger().Error("Oracle unknown event payload type %T", payload)
 			continue
@@ -2243,6 +2245,60 @@ func (z *ZombieBattleground) DebugGetUserIdByAddress(ctx contract.StaticContext,
 	}, nil
 }
 
+func (z *ZombieBattleground) GetOracleCommandRequestList(ctx contract.StaticContext, req *orctype.GetOracleCommandRequestListRequest) (*orctype.GetOracleCommandRequestListResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	list, err := loadOracleCommandRequestList(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &orctype.GetOracleCommandRequestListResponse{
+		CommandRequests: list.Commands,
+	}, nil
+}
+
+func (z *ZombieBattleground) ProcessOracleCommandResponseBatch(ctx contract.Context, req *orctype.ProcessOracleCommandResponseBatchRequest) (*zb_calls.EmptyResponse, error) {
+	err := z.validateOracle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = z.processOracleCommandResponseBatchInternal(ctx, req.CommandResponses)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.EmptyResponse{}, nil
+}
+
+
+func (z *ZombieBattleground) RequestUserFullCardCollectionSync(ctx contract.Context, req *zb_calls.RequestUserFullCardCollectionSyncRequest) (*zb_calls.EmptyResponse, error) {
+	err := z.isOwnerOrOracle(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	command := &orctype.OracleCommandRequest{
+		Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
+			GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+				UserAddress: ctx.Message().Sender.MarshalPB(),
+			},
+		},
+	}
+	err = z.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
+		return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(ctx.Message().Sender) == 0
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.EmptyResponse{}, nil
+}
+
 func (z *ZombieBattleground) DebugGetPendingCardAmountChangeItems(ctx contract.StaticContext, req *zb_calls.DebugGetPendingCardAmountChangeItemsRequest) (*zb_calls.DebugGetPendingCardAmountChangeItemsResponse, error) {
 	container, err := loadPendingCardAmountChangesContainerByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
 	if err != nil {
@@ -2306,12 +2362,12 @@ func (z *ZombieBattleground) handleUserDataWipe(ctx contract.Context, version st
 	wipeExecuted = false
 	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
-		return false, errors.Wrap(err,"error handling user data wipe")
+		return false, errors.Wrap(err, "error handling user data wipe")
 	}
 
 	userPersistentData, err := loadUserPersistentData(ctx, userId)
 	if err != nil {
-		return false, errors.Wrap(err,"error handling user data wipe")
+		return false, errors.Wrap(err, "error handling user data wipe")
 	}
 
 	var matchingDataWipeConfiguration *zb_data.DataWipeConfiguration
@@ -2349,6 +2405,18 @@ loop:
 	}
 
 	return wipeExecuted, nil
+}
+
+func (z *ZombieBattleground) isOwnerOrOracle(ctx contract.StaticContext, userId string) error {
+	if !isOwner(ctx, userId) {
+		err := z.validateOracle(ctx)
+		if err != nil {
+			return errors.Wrap(ErrNotOwnerOrOracleNotVerified, err.Error())
+		}
+		return ErrUserNotVerified
+	}
+
+	return nil
 }
 
 func applyExperience(

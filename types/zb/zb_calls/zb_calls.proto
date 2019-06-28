@@ -474,3 +474,7 @@ message WipeUserDataRequest {
     bool wipeDecks = 3;
     bool wipeOverlordsUserData = 4;
 }
+
+message RequestUserFullCardCollectionSyncRequest {
+    string userId = 1;
+}

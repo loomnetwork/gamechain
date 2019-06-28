@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"strings"
 
@@ -40,7 +41,7 @@ var getOverlordForUserCmd = &cobra.Command{
 
 		switch strings.ToLower(rootCmdArgs.outputFormat) {
 		case "json":
-			err := printProtoMessageAsJSONToStdout(&result)
+			err := battleground_utility.PrintProtoMessageAsJsonToStdout(&result)
 			if err != nil {
 				return err
 			}

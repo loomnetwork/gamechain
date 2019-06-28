@@ -45,10 +45,23 @@ message ProcessOracleEventBatchRequest {
 
 message RawCardCollectionCard {
     BigUInt cardTokenId = 3;
-    int64 amount = 2;
+    BigUInt amount = 2;
 }
+
 message OracleCommandRequestList {
     repeated OracleCommandRequest commands = 1;
+}
+
+message GetOracleCommandRequestListRequest {
+
+}
+
+message GetOracleCommandRequestListResponse {
+    repeated OracleCommandRequest commandRequests = 1;
+}
+
+message ProcessOracleCommandResponseBatchRequest {
+    repeated OracleCommandResponse commandResponses = 1;
 }
 
 message OracleCommandRequest {
@@ -59,7 +72,7 @@ message OracleCommandRequest {
     }
 
     message GetUserFullCardCollectionCommandRequest {
-        BigUInt userId = 1;
+        Address userAddress = 1;
     }
 }
 
@@ -71,7 +84,7 @@ message OracleCommandResponse {
     }
 
     message GetUserFullCardCollectionCommandResponse {
-        BigUInt userId = 1;
+        Address userAddress = 1;
         repeated RawCardCollectionCard ownedCards = 2;
         uint64 blockHeight = 3;
     }

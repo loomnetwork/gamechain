@@ -4,11 +4,10 @@ import (
 	"github.com/eosspark/eos-go/common/hexutil"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/crypto/sha3"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
-	loom "github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/common"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	"github.com/loomnetwork/go-loom/types"
 	assert "github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
@@ -33,7 +32,7 @@ func TestRewardMinting(t *testing.T) {
 			SetFiatPurchaseContractVersion: true,
 			FiatPurchaseContractVersion:    3,
 			SetInitialFiatPurchaseTxId:     true,
-			InitialFiatPurchaseTxId:        &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(100)}},
+			InitialFiatPurchaseTxId:        battleground_utility.MarshalBigIntProto(big.NewInt(100)),
 		}
 
 		err := c.UpdateContractConfiguration(ctx, &request)
@@ -42,8 +41,8 @@ func TestRewardMinting(t *testing.T) {
 
 	var prevTxId *big.Int
 	t.Run("DebugMintBoosterPackReceipt should create receipt", func(t *testing.T) {
-		req := &zb_calls.DebugMintBoosterPackReceiptRequest {
-			UserId: &types.BigUInt{Value: common.BigUInt{Int: big.NewInt(373)}},
+		req := &zb_calls.DebugMintBoosterPackReceiptRequest{
+			UserId:        battleground_utility.MarshalBigIntProto(big.NewInt(373)),
 			BoosterAmount: 3,
 		}
 		receipt, err := c.DebugMintBoosterPackReceipt(ctx, req)
@@ -75,7 +74,7 @@ func TestRewardMinting(t *testing.T) {
 
 		bytes, err := arguments.Pack(
 			receipt.Receipt.UserId.Value.Int,
-			[11]*big.Int {
+			[11]*big.Int{
 				big.NewInt(int64(receipt.Receipt.Booster)),
 				big.NewInt(int64(receipt.Receipt.Super)),
 				big.NewInt(int64(receipt.Receipt.Air)),
@@ -103,7 +102,7 @@ func TestRewardMinting(t *testing.T) {
 	})
 
 	t.Run("GetPendingMintingTransactionReceipts should contain the receipt", func(t *testing.T) {
-		req := &zb_calls.GetPendingMintingTransactionReceiptsRequest {
+		req := &zb_calls.GetPendingMintingTransactionReceiptsRequest{
 			UserId: userId,
 		}
 		receipts, err := c.GetPendingMintingTransactionReceipts(ctx, req)
@@ -116,16 +115,16 @@ func TestRewardMinting(t *testing.T) {
 	})
 
 	t.Run("ConfirmPendingMintingTransactionReceipt should succeed", func(t *testing.T) {
-		req := &zb_calls.ConfirmPendingMintingTransactionReceiptRequest {
+		req := &zb_calls.ConfirmPendingMintingTransactionReceiptRequest{
 			UserId: userId,
-			TxId: &types.BigUInt{Value: common.BigUInt{Int: prevTxId}},
+			TxId:   battleground_utility.MarshalBigIntProto(prevTxId),
 		}
 		err := c.ConfirmPendingMintingTransactionReceipt(ctx, req)
 		assert.Nil(t, err)
 	})
 
 	t.Run("Receipt should be absent from pending receipts list", func(t *testing.T) {
-		req := &zb_calls.GetPendingMintingTransactionReceiptsRequest {
+		req := &zb_calls.GetPendingMintingTransactionReceiptsRequest{
 			UserId: userId,
 		}
 		receipts, err := c.GetPendingMintingTransactionReceipts(ctx, req)
@@ -135,9 +134,9 @@ func TestRewardMinting(t *testing.T) {
 	})
 
 	t.Run("Confirming already confirmed receipt should fail", func(t *testing.T) {
-		req := &zb_calls.ConfirmPendingMintingTransactionReceiptRequest {
+		req := &zb_calls.ConfirmPendingMintingTransactionReceiptRequest{
 			UserId: userId,
-			TxId: &types.BigUInt{Value: common.BigUInt{Int: prevTxId}},
+			TxId:   battleground_utility.MarshalBigIntProto(prevTxId),
 		}
 		err := c.ConfirmPendingMintingTransactionReceipt(ctx, req)
 		assert.NotNil(t, err)
