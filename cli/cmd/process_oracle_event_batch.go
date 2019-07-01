@@ -26,7 +26,7 @@ var processOracleEventBatchCmd = &cobra.Command{
 
 		var err error
 		if processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile != "" {
-			err = battleground_utility.ReadJsonStringToProtoMessage(processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile, &req)
+			err = battleground_utility.ReadJsonFileToProtoMessage(processOracleEventBatchCmdArgs.processOracleEventBatchJsonFile, &req)
 			if err != nil {
 				return err
 			}

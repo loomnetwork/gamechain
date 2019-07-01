@@ -20,7 +20,7 @@ var updateInitRequest = zb_calls.UpdateInitRequest {
 
 func setup(c *battleground.ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context) error {
 	updateInitRequest.InitData = &zb_data.InitData{}
-	err := battleground_utility.ReadJsonStringToProtoMessage("../../../test_data/simple-init.json", updateInitRequest.InitData)
+	err := battleground_utility.ReadJsonFileToProtoMessage("../../../test_data/simple-init.json", updateInitRequest.InitData)
 	if err != nil {
 		return err
 	}

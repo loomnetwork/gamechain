@@ -68,7 +68,7 @@ func PrintProtoMessageAsJsonToStdout(pb proto.Message) error {
 func ReadJsonFileToProtoMessage(filename string, message proto.Message) error {
 	json, err := ReadFileToString(filename)
 	if err != nil {
-		return errors.Wrap(err, "error reading "+filename)
+		return errors.Wrap(err, "error reading file"+filename)
 	}
 
 	if err := jsonpb.UnmarshalString(json, message); err != nil {

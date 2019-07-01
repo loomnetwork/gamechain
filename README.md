@@ -86,7 +86,7 @@ Contract must be initialized with correct data to work properly.
 ## TxId Start 
 ### Production
 
-Starts from (2^127 + 10000) = 170141183460469231731687303715884105728
+Starts from (2^127 + 10000) = 170141183460469231731687303715884115728
 Ends on (2^256 - 1)
 
 ### Staging
