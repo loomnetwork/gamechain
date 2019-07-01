@@ -36,39 +36,39 @@ var mergeJsonToInitCmd = &cobra.Command{
 		var overlordLevelingData zb_data.OverlordLevelingDataContainer
 
 		// Read pieces
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.initJsonTemplateFile, &initData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.initJsonTemplateFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.defaultDecksFile, &defaultDecksData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.defaultDecksFile, &defaultDecksData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.defaultDecksFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.defaultCollectionFile, &defaultCollectionData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.defaultCollectionFile, &defaultCollectionData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.defaultCollectionFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.cardLibraryFile, &cardLibraryData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.cardLibraryFile, &cardLibraryData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.cardLibraryFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.overlordsFile, &overlordsPrototypesData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.overlordsFile, &overlordsPrototypesData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.overlordsFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.aiDecksFile, &aiDecksData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.aiDecksFile, &aiDecksData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.aiDecksFile)
 		}
 
-		err = battleground_utility.ReadJsonStringToProtoMessage(mergeJsonToInitCmdArgs.overlordLevelingFile, &overlordLevelingData)
+		err = battleground_utility.ReadJsonFileToProtoMessage(mergeJsonToInitCmdArgs.overlordLevelingFile, &overlordLevelingData)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error parsing " + mergeJsonToInitCmdArgs.overlordLevelingFile)
 		}
 
 		// Merge

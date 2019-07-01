@@ -301,7 +301,8 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 
 	orc.logger.Debug("got last processed Plasmachain block number from Gamechain", "lastPlasmachainBlockNumber", lastPlasmachainBlockNumber)
 	if lastPlasmachainBlockNumber == 0 {
-		orc.logger.Warn("last processed Plasmachain block number from Gamechain == 0, unable to proceed, will retry")
+		err = errors.New("last processed Plasmachain block number from Gamechain == 0, unable to proceed, will retry")
+		return 0, err
 	}
 
 	startBlock := lastPlasmachainBlockNumber + 1
