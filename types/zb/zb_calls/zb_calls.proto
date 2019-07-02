@@ -71,6 +71,9 @@ message UpdateContractConfigurationRequest {
 
     bool setDataWipeConfiguration = 7;
     DataWipeConfiguration dataWipeConfiguration = 8;
+
+    bool setCardSyncDataVersion = 9;
+    string cardSyncDataVersion = 10;
 }
 
 message SetLastPlasmaBlockNumberRequest {

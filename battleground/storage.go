@@ -208,7 +208,7 @@ func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConf
 	return nil
 }
 
-func loadCardCollectionRaw(ctx contract.Context, userID string) (*zb_data.CardCollectionList, error) {
+func loadUserCardCollectionRaw(ctx contract.StaticContext, userID string) (*zb_data.CardCollectionList, error) {
 	var userCollection zb_data.CardCollectionList
 	if err := ctx.Get(CardCollectionKey(userID), &userCollection); err != nil {
 		if err == contract.ErrNotFound {
@@ -221,7 +221,7 @@ func loadCardCollectionRaw(ctx contract.Context, userID string) (*zb_data.CardCo
 	return &userCollection, nil
 }
 
-func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
+func saveUserCardCollection(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
 	if err := ctx.Set(CardCollectionKey(userID), cardCollection); err != nil {
 		return errors.Wrap(err, "error saving card collection")
 	}

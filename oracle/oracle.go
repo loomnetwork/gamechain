@@ -250,10 +250,12 @@ func (orc *Oracle) executeGamechainCommands(latestPlasmaBlock uint64) error {
 		switch commandRequest := commandRequestWrapper.Command.(type) {
 		case *orctype.OracleCommandRequest_GetUserFullCardCollection:
 			userAddress := commandRequest.GetUserFullCardCollection.UserAddress
-			tokensOwned, err := orc.pcGateway.GetTokensOwned(loom.UnmarshalAddressPB(userAddress))
+			tokensOwned, err := orc.pcGateway.GetTokensOwned(loom.UnmarshalAddressPB(userAddress).Local)
 			if err != nil {
 				return err
 			}
+
+			orc.logger.Info("GetUserFullCardCollection", "userAddress", loom.UnmarshalAddressPB(userAddress), "tokensOwned", len(tokensOwned))
 
 			response := &orctype.OracleCommandResponse_GetUserFullCardCollectionCommandResponse{
 				UserAddress: userAddress,
