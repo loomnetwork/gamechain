@@ -17,6 +17,7 @@ var configurationCmdArgs struct {
 	fiatPurchaseContractVersion    uint64
 	initialFiatPurchaseTxId        string
 	useCardLibraryAsUserCollection bool
+	cardSyncDataVersion string
 }
 
 var configuration_setDataWipeConfigurationCmdArgs struct {
@@ -103,6 +104,18 @@ var configuration_useCardLibraryAsUserCollectionCmd = &cobra.Command{
 	},
 }
 
+var configuration_cardSyncDataVersionCmd = &cobra.Command{
+	Use:   "set_card_sync_data_version",
+	Short: "sets the data version to be used for card sync operations",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		request := &zb_calls.UpdateContractConfigurationRequest{
+			SetCardSyncDataVersion: true,
+			CardSyncDataVersion:    configurationCmdArgs.cardSyncDataVersion,
+		}
+		return configurationSetMain(request)
+	},
+}
+
 var configuration_setDataWipeConfigurationCmd = &cobra.Command{
 	Use:   "set_data_wipe_configuration",
 	Short: "sets data wipe configuration",
@@ -145,12 +158,14 @@ func init() {
 	configuration_setFiatPurchaseContractVersionCmd.Flags().Uint64VarP(&configurationCmdArgs.fiatPurchaseContractVersion, "value", "v", 3, "")
 	configuration_setInitialFiatPurchaseTxIdCmd.Flags().StringVarP(&configurationCmdArgs.initialFiatPurchaseTxId, "value", "v", "0", "Starting txId used for transaction receipt created by the contract")
 	configuration_useCardLibraryAsUserCollectionCmd.Flags().BoolVarP(&configurationCmdArgs.useCardLibraryAsUserCollection, "value", "v", false, "If false, user personal collection is used, if true, card library is used to make a full fake collection")
+	configuration_cardSyncDataVersionCmd.Flags().StringVarP(&configurationCmdArgs.cardSyncDataVersion, "value", "v", "", "")
 
 	configuration_setDataWipeConfigurationCmd.Flags().StringVarP(&configuration_setDataWipeConfigurationCmdArgs.version, "version", "v", "v1", "Data version to wipe on")
 	configuration_setDataWipeConfigurationCmd.Flags().BoolVarP(&configuration_setDataWipeConfigurationCmdArgs.wipeDecks, "wipeDecks", "d", false, "Whether to wipe user decks")
 	_ = configuration_setFiatPurchaseContractVersionCmd.MarkFlagRequired("value")
 	_ = configuration_setInitialFiatPurchaseTxIdCmd.MarkFlagRequired("value")
 	_ = configuration_useCardLibraryAsUserCollectionCmd.MarkFlagRequired("value")
+	_ = configuration_cardSyncDataVersionCmd.MarkFlagRequired("value")
 	_ = configuration_setDataWipeConfigurationCmd.MarkFlagRequired("version")
 
 	configurationCmd.AddCommand(
@@ -158,6 +173,7 @@ func init() {
 		configuration_setFiatPurchaseContractVersionCmd,
 		configuration_setInitialFiatPurchaseTxIdCmd,
 		configuration_useCardLibraryAsUserCollectionCmd,
+		configuration_cardSyncDataVersionCmd,
 		configuration_setDataWipeConfigurationCmd,
 	)
 

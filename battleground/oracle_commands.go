@@ -3,8 +3,8 @@ package battleground
 import (
 	"fmt"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/pkg/errors"
 )
 
@@ -34,6 +34,7 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		switch commandResponse := commandResponseOneOf.Command.(type) {
 		case *orctype.OracleCommandResponse_GetUserFullCardCollection:
 			err = z.processOracleCommandResponseGetUserFullCardCollection(
+				ctx,
 				loom.UnmarshalAddressPB(commandResponse.GetUserFullCardCollection.UserAddress),
 				commandResponse.GetUserFullCardCollection.OwnedCards,
 				commandResponse.GetUserFullCardCollection.BlockHeight,
@@ -42,7 +43,7 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		}
 
 		// We allow single commands to fail
-		// Just keep it unconfirmed until something is fixed for it to become processed and confirmed.
+		// Just keep them unconfirmed until something is fixed for it to become processed and confirmed.
 		if err != nil {
 			newCommandRequests = append(newCommandRequests, matchingCommandRequest)
 			ctx.Logger().Error(errors.Wrap(err, "error processing oracle command response").Error())
@@ -55,19 +56,6 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		return errors.Wrap(err, "processOracleCommandResponseBatchInternal")
 	}
 
-	return nil
-}
-
-func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollection(
-	userAddress loom.Address,
-	ownedCards []*orctype.RawCardCollectionCard,
-	blockHeight uint64,
-) error {
-	fmt.Println("==================")
-	fmt.Println("processOracleCommandResponseGetUserFullCardCollection")
-	fmt.Println(userAddress.String())
-	fmt.Println(len(ownedCards))
-	fmt.Println(blockHeight)
 	return nil
 }
 

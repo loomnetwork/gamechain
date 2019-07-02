@@ -58,52 +58,52 @@ func TestValidateDeckCollection(t *testing.T) {
 	}
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 4},
 			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 3},
 			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 5},
 			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 4},
 		}
-		assert.Nil(t, validateDeckCollections(userHas, newCollection))
+		assert.Nil(t, validateDeckAgainstUserCardCollection(userHas, newCollection))
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 0},
 			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 0},
 			{CardKey: battleground_proto.CardKey{MouldId: 96}, Amount: 0},
 			{CardKey: battleground_proto.CardKey{MouldId: 3}, Amount: 0},
 		}
-		assert.Nil(t, validateDeckCollections(userHas, newCollection))
+		assert.Nil(t, validateDeckAgainstUserCardCollection(userHas, newCollection))
 	})
 
 	t.Run("Successful validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{}
-		assert.Nil(t, validateDeckCollections([]*zb_data.CardCollectionCard{}, newCollection))
+		newCollection := []*zb_data.DeckCard{}
+		assert.Nil(t, validateDeckAgainstUserCardCollection([]*zb_data.CardCollectionCard{}, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 8},
 			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 10},
 		}
-		assert.NotNil(t, validateDeckCollections(userHas, newCollection))
+		assert.NotNil(t, validateDeckAgainstUserCardCollection(userHas, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: -2}, Amount: 0},
 			{CardKey: battleground_proto.CardKey{MouldId: -3}, Amount: 0},
 		}
-		assert.NotNil(t, validateDeckCollections(userHas, newCollection))
+		assert.NotNil(t, validateDeckAgainstUserCardCollection(userHas, newCollection))
 	})
 
 	t.Run("Failed validation", func(t *testing.T) {
-		newCollection := []*zb_data.CardCollectionCard{
+		newCollection := []*zb_data.DeckCard{
 			{CardKey: battleground_proto.CardKey{MouldId: 90}, Amount: 8},
 			{CardKey: battleground_proto.CardKey{MouldId: 91}, Amount: 10},
 		}
-		assert.NotNil(t, validateDeckCollections([]*zb_data.CardCollectionCard{}, newCollection))
+		assert.NotNil(t, validateDeckAgainstUserCardCollection([]*zb_data.CardCollectionCard{}, newCollection))
 	})
 }
 

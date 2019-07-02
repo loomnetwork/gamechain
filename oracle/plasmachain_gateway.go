@@ -79,8 +79,8 @@ func (gw *PlasmachainGateway) LastBlockNumber() (uint64, error) {
 	return uint64(block.Number), nil
 }
 
-func (gw *PlasmachainGateway) GetTokensOwned(owner loom.Address) ([]tokensOwnedResponseItem, error) {
-	ownerCommonAddress := common.BytesToAddress(owner.Local)
+func (gw *PlasmachainGateway) GetTokensOwned(owner loom.LocalAddress) ([]tokensOwnedResponseItem, error) {
+	ownerCommonAddress := common.BytesToAddress(owner)
 	opts := &bind.CallOpts{
 	}
 

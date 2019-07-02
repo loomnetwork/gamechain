@@ -203,14 +203,14 @@ func (z *ZombieBattleground) UpdateInit(ctx contract.Context, req *zb_calls.Upda
 
 	// default decks
 	for _, deck := range defaultDecks.Decks {
-		if err := validateDeckCards(cardList.Cards, deck.Cards); err != nil {
+		if err := validateDeckAgainstCardLibrary(cardList.Cards, deck.Cards); err != nil {
 			return errors.Wrap(err, fmt.Sprintf("error validating default deck with id %d", deck.Id))
 		}
 	}
 
 	// ai decks
 	for index, deck := range aiDeckList.Decks {
-		if err := validateDeckCards(cardList.Cards, deck.Deck.Cards); err != nil {
+		if err := validateDeckAgainstCardLibrary(cardList.Cards, deck.Deck.Cards); err != nil {
 			return errors.Wrap(err, fmt.Sprintf("error validating AI deck %d", index))
 		}
 	}
@@ -435,6 +435,13 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 	}
 
 	response := zb_calls.LoginResponse{}
+
+	// TODO: check if any pending cards await by address
+	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
 	if userPersistentData.LastFullCardSyncPlasmachainBlockHeight == 0 {
 		// TODO: save the request for the oracle to do the full sync
 
@@ -443,12 +450,6 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 
 		// notify the user that a full collection sync is scheduled so they can react
 		response.FullCardCollectionRequested = true
-	}
-
-	// TODO: check if any pending cards await by address
-	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
-	if err != nil {
-		return nil, err
 	}
 
 	return &response, err
@@ -510,8 +511,12 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 		return nil, err
 	}
 
-	// TODO: check for unlocked skills
-	err = validateDeck(false, cardLibrary, req.Deck, deckList.Decks, overlords)
+	userCardCollection, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	err = validateDeck(false, cardLibrary, userCardCollection, req.Deck, deckList.Decks, overlords)
 	if err != nil {
 		return nil, errors.Wrap(err, "error validating deck")
 	}
@@ -576,23 +581,24 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 		return err
 	}
 
-	// TODO: check for unlocked skills
-	err = validateDeck(false, cardLibrary, req.Deck, deckList.Decks, overlords)
+	userCardCollection, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
+	if err != nil {
+		return err
+	}
+
+	err = validateDeck(true, cardLibrary, userCardCollection, req.Deck, deckList.Decks, overlords)
 	if err != nil {
 		return errors.Wrap(err, "error validating deck")
 	}
 
-	deckID := req.Deck.Id
-	existingDeck := getDeckByID(deckList.Decks, deckID)
+	existingDeck := getDeckByID(deckList.Decks, req.Deck.Id)
 	if existingDeck == nil {
 		return ErrNotFound
 	}
+
 	// update deck
-	existingDeck.Name = req.Deck.Name
-	existingDeck.Cards = req.Deck.Cards
-	existingDeck.OverlordId = req.Deck.OverlordId
-	existingDeck.PrimarySkill = req.Deck.PrimarySkill
-	existingDeck.SecondarySkill = req.Deck.SecondarySkill
+	existingDeck.Reset()
+	proto.Merge(existingDeck, req.Deck)
 
 	// update decklist
 	if err := saveDecks(ctx, req.Version, req.UserId, deckList); err != nil {
@@ -710,11 +716,11 @@ func (z *ZombieBattleground) GetCollection(ctx contract.Context, req *zb_calls.G
 		return nil, ErrVersionNotSet
 	}
 
-	collectionList, err := loadCardCollectionRaw(ctx, req.UserId)
+	collectionList, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
-	return &zb_calls.GetCollectionResponse{Cards: collectionList.Cards}, nil
+	return &zb_calls.GetCollectionResponse{Cards: collectionList}, nil
 }
 
 // ListCardLibrary list all the card library data
@@ -1771,6 +1777,14 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		}
 	}
 
+	if req.SetCardSyncDataVersion {
+		if req.CardSyncDataVersion == "" {
+			return ErrVersionNotSet
+		}
+
+		configuration.CardSyncDataVersion = req.CardSyncDataVersion
+	}
+
 	err = saveContractState(ctx, state)
 	if err != nil {
 		return err
@@ -2334,7 +2348,7 @@ func (z *ZombieBattleground) initializeUserDefaultCardCollection(ctx contract.Co
 		return errors.Wrap(err, "error initializing user default card collection")
 	}
 
-	if err := saveCardCollection(ctx, userId, defaultCardCollection); err != nil {
+	if err := saveUserCardCollection(ctx, userId, defaultCardCollection); err != nil {
 		return errors.Wrap(err, "error initializing user default card collection")
 	}
 
@@ -2391,6 +2405,16 @@ loop:
 
 		if matchingDataWipeConfiguration.WipeDecks {
 			_, err = z.initializeUserDefaultDecks(ctx, version, userId)
+			if err != nil {
+				return false, errors.Wrap(err, "error handling user data wipe")
+			}
+		}
+
+		if matchingDataWipeConfiguration.WipeOverlordUserInstances {
+			emptyOverlordUserInstances := zb_data.OverlordUserDataList{
+				OverlordsUserData: []*zb_data.OverlordUserData{},
+			}
+			err = saveOverlordUserDataList(ctx, userId, &emptyOverlordUserInstances)
 			if err != nil {
 				return false, errors.Wrap(err, "error handling user data wipe")
 			}

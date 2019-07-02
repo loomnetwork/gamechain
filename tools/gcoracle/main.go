@@ -33,7 +33,7 @@ func init() {
 	rootCmd.PersistentFlags().String("plasmachain-read-uri", "http://localhost:46658/query", "Plasmachain Read URI")
 	rootCmd.PersistentFlags().String("plasmachain-write-uri", "http://localhost:46658/rpc", "Plasmachain Write URI")
 	rootCmd.PersistentFlags().String("plasmachain-event-uri", "ws://localhost:9999/queryws", "Plasmachain Events URI")
-	rootCmd.PersistentFlags().String("plasmachain-contract-hex-address", "0x2658d8c94062227d17a4ba61adb166e152369de3", "Plasmachain ZBGCard Contract Hex Address")
+	rootCmd.PersistentFlags().String("plasmachain-contract-hex-address", "0x3fc83db9ad1513c181e9a7345a28f62c0844abbb", "Plasmachain ZBGCard Contract Hex Address")
 	rootCmd.PersistentFlags().Int("plasmachain-poll-interval", 10, "Plasmachain Pool Interval in seconds")
 	// gamechain
 	rootCmd.PersistentFlags().String("gamechain-private-key", "", "Gamechain Private Key")

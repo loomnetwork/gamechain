@@ -1,17 +1,11 @@
 package battleground
 
 import (
-	"encoding/hex"
 	"github.com/ethereum/go-ethereum/crypto"
-	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	loom "github.com/loomnetwork/go-loom"
-	"github.com/loomnetwork/go-loom/common"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
 	"github.com/pkg/errors"
 	"math/big"
-	"sort"
-	"strings"
 )
 
 type MintingContext struct {
@@ -103,141 +97,4 @@ func mintBoosterPacksAndSave(ctx contract.Context, userId string, userIdInt *big
 	}
 
 	return receipt, nil
-}
-
-func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardTokenId int64, amount int64, version string) error {
-	if err := z.validateOracle(ctx); err != nil {
-		return err
-	}
-
-	cardCollection, err := loadCardCollectionRaw(ctx, userID)
-	if err != nil {
-		return err
-	}
-
-	// Map from cardTokenId to mouldID
-	// the formular is cardTokenId = mouldID + x
-	// for example cardTokenId 250 = 25 + 0
-	//   or 161 = 16 + 1
-	cardKey := cardKeyFromCardTokenId(cardTokenId)
-
-	// We are allowing unknown cards to be added.
-	// This is to handle the case user buying a card not existing on gamechain yet.
-
-	// add to collection
-	found := false
-	for i := range cardCollection.Cards {
-		if cardCollection.Cards[i].CardKey == cardKey {
-			cardCollection.Cards[i].Amount += amount
-			found = true
-			break
-		}
-	}
-	if !found {
-		cardCollection.Cards = append(cardCollection.Cards, &zb_data.CardCollectionCard{
-			CardKey: cardKey,
-			Amount:  amount,
-		})
-	}
-	return saveCardCollection(ctx, userID, cardCollection)
-}
-
-// loads the list of card amount changes, merges with changes, saves the list back
-func (z *ZombieBattleground) saveAddressToCardAmountsChangeMapDelta(ctx contract.Context, deltaAddressToCardKeyToAmountChangesMap addressToCardKeyToAmountChangesMap) error {
-	// get sorted keys
-	deltaAddresses := make([]string, 0, len(deltaAddressToCardKeyToAmountChangesMap))
-	for deltaAddress := range deltaAddressToCardKeyToAmountChangesMap {
-		deltaAddresses = append(deltaAddresses, deltaAddress)
-	}
-	sort.SliceStable(deltaAddresses, func(i, j int) bool {
-		return strings.Compare(deltaAddresses[i], deltaAddresses[j]) < 0
-	})
-
-	for _, deltaAddress := range deltaAddresses {
-		deltaCardKeyToAmountChangesMap := deltaAddressToCardKeyToAmountChangesMap[deltaAddress]
-
-		// Get address from string
-		deltaLocalAddress, _ := loom.LocalAddressFromHexString("0x" + deltaAddress)
-		deltaAddress := loom.Address{
-			ChainID: ctx.Message().Sender.ChainID,
-			Local:   deltaLocalAddress,
-		}
-
-		// Load current list and convert to map
-		cardAmountChangesContainer, err := loadPendingCardAmountChangesContainerByAddress(ctx, deltaAddress)
-		if err != nil {
-			return err
-		}
-
-		cardKeyToAmountChangeMap := cardKeyToAmountChangeMap{}
-		for _, cardAmountChangeItem := range cardAmountChangesContainer.CardAmountChange {
-			cardKeyToAmountChangeMap[cardAmountChangeItem.CardKey] = int64(cardAmountChangeItem.AmountChange)
-		}
-
-		// Update map
-		for cardKey, amountChange := range deltaCardKeyToAmountChangesMap {
-			currentAmountChange, _ := cardKeyToAmountChangeMap[cardKey]
-			cardKeyToAmountChangeMap[cardKey] = currentAmountChange + amountChange
-		}
-
-		// Convert map back to list and save
-		// get sorted keys
-		cardKeys := make([]battleground_proto.CardKey, 0, len(cardKeyToAmountChangeMap))
-		for cardKey := range cardKeyToAmountChangeMap {
-			cardKeys = append(cardKeys, cardKey)
-		}
-		sort.SliceStable(cardKeys, func(i, j int) bool {
-			return cardKeys[i].Compare(&cardKeys[j]) < 0
-		})
-
-		cardAmountChangesContainer.CardAmountChange = []*zb_data.CardAmountChangeItem{}
-		for _, cardKey := range cardKeys {
-			amountChange := cardKeyToAmountChangeMap[cardKey]
-			cardAmountChangeItem := &zb_data.CardAmountChangeItem{
-				CardKey: cardKey,
-				AmountChange: amountChange,
-			}
-			cardAmountChangesContainer.CardAmountChange = append(cardAmountChangesContainer.CardAmountChange, cardAmountChangeItem)
-		}
-
-		err = savePendingCardAmountChangeItemsContainerByAddress(ctx, deltaAddress, cardAmountChangesContainer)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (z *ZombieBattleground) handleCardAmountChange(
-	addressToCardAmountsChangeMap addressToCardKeyToAmountChangesMap,
-	from common.LocalAddress,
-	to common.LocalAddress,
-	cardKey battleground_proto.CardKey,
-	amount uint,
-) error {
-	fromHex := hex.EncodeToString(from)
-	toHex := hex.EncodeToString(to)
-
-	fromCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[fromHex]
-	if !exists {
-		fromCardAmountsChangeMap = cardKeyToAmountChangeMap{}
-		addressToCardAmountsChangeMap[fromHex] = fromCardAmountsChangeMap
-	}
-
-	toCardAmountsChangeMap, exists := addressToCardAmountsChangeMap[toHex]
-	if !exists {
-		toCardAmountsChangeMap = cardKeyToAmountChangeMap{}
-		addressToCardAmountsChangeMap[toHex] = toCardAmountsChangeMap
-	}
-
-	fromAmountValue, _ := fromCardAmountsChangeMap[cardKey]
-	toAmountValue, _ := toCardAmountsChangeMap[cardKey]
-
-	fromAmountValue = fromAmountValue - int64(amount)
-	toAmountValue = toAmountValue + int64(amount)
-
-	fromCardAmountsChangeMap[cardKey] = fromAmountValue
-	toCardAmountsChangeMap[cardKey] = toAmountValue
-
-	return nil
 }

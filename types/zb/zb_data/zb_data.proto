@@ -270,6 +270,7 @@ message ContractConfiguration {
     BigUInt initialFiatPurchaseTxId = 2;
     bool useCardLibraryAsUserCollection = 3;
     repeated DataWipeConfiguration dataWipeConfiguration = 4;
+    string cardSyncDataVersion = 5;
 }
 
 //////////// Match Making /////////////
@@ -834,6 +835,7 @@ message OverlordLevelingDataContainer {
 message DataWipeConfiguration{
     string version = 1;
     bool wipeDecks = 2;
+    bool wipeOverlordUserInstances = 3;
 }
 
 message DataWipeConfigurationList {

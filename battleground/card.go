@@ -50,7 +50,7 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 	return nil
 }
 
-func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCard) error {
+func validateDeckAgainstCardLibrary(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCard) error {
 	cardKeyToCard, err := getCardKeyToCardMap(cardLibrary)
 	if err != nil {
 		return err
@@ -68,40 +68,29 @@ func validateDeckCards(cardLibrary []*zb_data.Card, deckCards []*zb_data.DeckCar
 	return nil
 }
 
-func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, deck *zb_data.Deck, deckList []*zb_data.Deck, overlords []*zb_data.OverlordUserInstance) error {
-	// validate version on card library
-	if err := validateDeckCards(cardLibrary.Cards, deck.Cards); err != nil {
+func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, userCardCollection []*zb_data.CardCollectionCard, deck *zb_data.Deck, deckList []*zb_data.Deck, overlords []*zb_data.OverlordUserInstance) error {
+	if err := validateDeckAgainstUserCardCollection(userCardCollection, deck.Cards); err != nil {
 		return errors.Wrap(err, "error validating deck cards")
 	}
-
-	// Since the server side does not have any knowleadge on user's collection, we skip this logic on the server side for now.
-	// TODO: Turn on the check when the server side knows user's collection
-	// validating against default card collection
-	// var defaultCollection zb.CardCollectionList
-	// if err := ctx.Get(MakeVersionedKey(req.Version, defaultCollectionKey), &defaultCollection); err != nil {
-	// 	return nil, errors.Wrapf(err, "unable to get default collectionlist")
-	// }
-	// // make sure the given cards and amount must be a subset of user's cards
-	// if err := validateDeckCollections(defaultCollection.Cards, req.Deck.Cards); err != nil {
-	// 	return nil, err
-	// }
 
 	if err := validateDeckName(deckList, deck); err != nil {
 		return errors.Wrap(err, "error validating deck name")
 	}
 
+	// TODO: check for unlocked overlord skills
+
 	return nil
 }
 
-func validateDeckCollections(userCollections []*zb_data.CardCollectionCard, deckCollections []*zb_data.CardCollectionCard) error {
-	maxAmountMap := make(map[battleground_proto.CardKey]int64)
-	for _, collection := range userCollections {
-		maxAmountMap[collection.CardKey] = collection.Amount
+func validateDeckAgainstUserCardCollection(userCardCollection []*zb_data.CardCollectionCard, deckCards []*zb_data.DeckCard) error {
+	amountMap := make(map[battleground_proto.CardKey]int64)
+	for _, collectionCard := range userCardCollection {
+		amountMap[collectionCard.CardKey] = collectionCard.Amount
 	}
 
 	var errorString = ""
-	for _, collection := range deckCollections {
-		cardAmount, ok := maxAmountMap[collection.CardKey]
+	for _, collection := range deckCards {
+		cardAmount, ok := amountMap[collection.CardKey]
 		if !ok {
 			return fmt.Errorf("cannot add card [%s]", collection.CardKey.String())
 		}
