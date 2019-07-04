@@ -8,6 +8,49 @@ import (
 	"github.com/pkg/errors"
 )
 
+func createBaseOracleCommand(ctx contract.StaticContext) (*orctype.OracleCommandRequest, error) {
+	contractState, err := loadContractState(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &orctype.OracleCommandRequest{
+		CommandId: contractState.CurrentOracleCommandId,
+	}, nil
+}
+
+func (z *ZombieBattleground) addGetUserFullCardCollectionOracleCommand(ctx contract.Context, address loom.Address) error {
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	if configuration.CardCollectionSyncDataVersion == "" {
+		return errors.New("configuration.CardCollectionSyncDataVersion is not set")
+	}
+
+	command, err := createBaseOracleCommand(ctx)
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	command.Command = &orctype.OracleCommandRequest_GetUserFullCardCollection{
+		GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+			UserAddress: address.MarshalPB(),
+		},
+	}
+
+	err = z.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
+		return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(address) == 0
+	})
+
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	return nil
+}
+
 func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contract.Context, commandResponses []*orctype.OracleCommandResponse) error {
 	commandRequestList, err := loadOracleCommandRequestList(ctx)
 	if err != nil {
@@ -39,6 +82,9 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 				commandResponse.GetUserFullCardCollection.OwnedCards,
 				commandResponse.GetUserFullCardCollection.BlockHeight,
 			)
+			if err != nil {
+				err = errors.Wrap(err, "processOracleCommandResponseGetUserFullCardCollection failed")
+			}
 			break
 		}
 
@@ -75,7 +121,7 @@ func (z *ZombieBattleground) saveOracleCommandRequestToList(
 		return err
 	}
 
-	// filter our commands. Useful for commands that must be unique in list
+	// filter out commands. Useful for commands that must be unique in list
 	filteredCommandsRequests := make([]*orctype.OracleCommandRequest, 0)
 	for _, commandRequest := range commandRequestList.Commands {
 		if !filterSameTypePredicate(commandRequest) {

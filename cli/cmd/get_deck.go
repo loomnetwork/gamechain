@@ -44,7 +44,7 @@ var getDeckCmd = &cobra.Command{
 			fmt.Printf("deck id: %v\n", result.Deck.Id)
 			fmt.Printf("overlord id: %v\n", result.Deck.OverlordId)
 			for _, card := range result.Deck.Cards {
-				fmt.Printf("card key: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
+				fmt.Printf("card: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
 			}
 		}
 		return nil

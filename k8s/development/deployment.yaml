@@ -100,16 +100,26 @@ spec:
         env:
           - name: PLASMACHAIN_PRIVATE_KEY
             value: "Lb8e6kt8QunIMQwtKJGvRZDaizC9eESkazwj3UZlzS+x2bAb2IRRg2cgV+qQAuokLSPKuBpAmJ1DPxB43UlTVQ=="
+
+# use staging Plasmachain for now
+#          - name: PLASMACHAIN_CHAIN_ID
+#            value: "asia1"
+#          - name: PLASMACHAIN_READ_URI
+#            value: "http://test-z-asia1.dappchains.com:80/query"
+#          - name: PLASMACHAIN_WRITE_URI
+#            value: "http://test-z-asia1.dappchains.com:80/rpc"
+#          - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
+#            value: "0xea59a949651ffc6d3e039db2d89f4e047301718d"
           - name: PLASMACHAIN_CHAIN_ID
-            value: "asia1"
+            value: "default"
           - name: PLASMACHAIN_READ_URI
-            value: "http://test-z-asia1.dappchains.com:80/query"
+            value: "http://test-z-us1.dappchains.com:80/query"
           - name: PLASMACHAIN_WRITE_URI
-            value: "http://test-z-asia1.dappchains.com:80/rpc"
-          - name: PLASMACHAIN_CONTRACT_HEX_ADDRESS
-            value: "0xea59a949651ffc6d3e039db2d89f4e047301718d"
+            value: "http://test-z-us1.dappchains.com:80/rpc"
+          - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
+            value: "0x3fc83db9ad1513c181e9a7345a28f62c0844abbb"
           - name: PLASMACHAIN_POLL_INTERVAL
-            value: "10"
+            value: "5"
           - name: GAMECHAIN_PRIVATE_KEY
             value: "ErjfbI2nWdp6GwtnfKJ2ImJdUId84ux4L9k/C017gkV8zZVz0oAcmZ+lFMYTmP7z17tUdInC3dPgTKhq9PXauQ=="
           - name: GAMECHAIN_CHAIN_ID
@@ -120,8 +130,6 @@ spec:
             value: "http://battleground-testnet-asia2.dappchains.com:46658/rpc"
           - name: GAMECHAIN_CONTRACT_NAME
             value: "ZombieBattleground"
-          - name: GAMECHAIN_CARD_VERSION
-            value: "v3"
           - name: ORACLE_QUERY_ADDRESS
             value: ":8888"
           - name: ORACLE_LOG_LEVEL

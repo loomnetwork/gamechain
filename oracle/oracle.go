@@ -3,6 +3,7 @@ package oracle
 import (
 	"encoding/base64"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/go-loom/common"
 	"io/ioutil"
@@ -42,18 +43,15 @@ type Oracle struct {
 	cfg     Config
 	chainID string
 	// Plasmachain address
-	pcAddress         loom.Address
-	pcSigner          auth.Signer
-	pcChainID         string
-	pcContractAddress string
-	pcGateway         *PlasmachainGateway
-	pcPollInterval    time.Duration
+	pcAddress                loom.Address
+	pcSigner                 auth.Signer
+	pcZbgCardContractAddress loom.Address
+	pcGateway                *PlasmachainGateway
+	pcPollInterval           time.Duration
 	// Gamechain
-	gcAddress      loom.Address
-	gcSigner       auth.Signer
-	gcChainID      string
-	gcContractName string
-	gcGateway      *GamechainGateway
+	gcAddress loom.Address
+	gcSigner  auth.Signer
+	gcGateway *GamechainGateway
 	// oracle
 	logger            *loom.Logger
 	reconnectInterval time.Duration
@@ -93,24 +91,35 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		Local:   loom.LocalAddressFromPublicKey(pcSigner.PublicKey()),
 	}
 
+	pcZbgCardContractLocalAddress, err := loom.LocalAddressFromHexString(cfg.PlasmachainZbgCardContractHexAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	pcZbgCardContractAddress := loom.Address{
+		ChainID: cfg.PlasmachainChainID,
+		Local:   pcZbgCardContractLocalAddress,
+	}
+
 	hashPool := newRecentHashPool(time.Duration(cfg.PlasmachainPollInterval) * time.Second * 4)
 	hashPool.startCleanupRoutine()
 
 	logger.Info("Gamechain address " + gcAddress.String())
 	logger.Info("Plasmachain address " + pcAddress.String())
+	logger.Info("Plasmachain ZBGCard contract address " + pcZbgCardContractAddress.String())
 
 	return &Oracle{
-		cfg:               *cfg,
-		gcAddress:         gcAddress,
-		gcSigner:          gcSigner,
-		pcAddress:         pcAddress,
-		pcSigner:          pcSigner,
-		pcContractAddress: cfg.PlasmachainContractHexAddress,
-		metrics:           NewMetrics(metricSubsystem),
-		logger:            logger,
-		pcPollInterval:    time.Duration(cfg.PlasmachainPollInterval) * time.Second,
-		startupDelay:      time.Duration(cfg.OracleStartupDelay) * time.Second,
-		reconnectInterval: time.Duration(cfg.OracleReconnectInterval) * time.Second,
+		cfg:                      *cfg,
+		gcAddress:                gcAddress,
+		gcSigner:                 gcSigner,
+		pcAddress:                pcAddress,
+		pcSigner:                 pcSigner,
+		pcZbgCardContractAddress: pcZbgCardContractAddress,
+		metrics:                  NewMetrics(metricSubsystem),
+		logger:                   logger,
+		pcPollInterval:           time.Duration(cfg.PlasmachainPollInterval) * time.Second,
+		startupDelay:             time.Duration(cfg.OracleStartupDelay) * time.Second,
+		reconnectInterval:        time.Duration(cfg.OracleReconnectInterval) * time.Second,
 		status: Status{
 			Version: "1.0.0",
 		},
@@ -152,7 +161,7 @@ func (orc *Oracle) connect() error {
 	var err error
 	if orc.pcGateway == nil {
 		dappClient := client.NewDAppChainRPCClient(orc.cfg.PlasmachainChainID, orc.cfg.PlasmachainWriteURI, orc.cfg.PlasmachainReadURI)
-		orc.pcGateway, err = ConnectToPlasmachainGateway(dappClient, orc.pcAddress, orc.cfg.PlasmachainContractHexAddress, orc.pcSigner, orc.logger)
+		orc.pcGateway, err = ConnectToPlasmachainGateway(dappClient, orc.pcAddress, orc.pcZbgCardContractAddress, orc.pcSigner, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create plasmachain gateway")
 		}
@@ -161,7 +170,7 @@ func (orc *Oracle) connect() error {
 
 	if orc.gcGateway == nil {
 		dappClient := client.NewDAppChainRPCClient(orc.cfg.GamechainChainID, orc.cfg.GamechainWriteURI, orc.cfg.GamechainReadURI)
-		orc.gcGateway, err = ConnectToGamechainGateway(dappClient, orc.gcAddress, orc.cfg.GamechainContractName, orc.gcSigner, orc.logger, orc.cfg.GamechainCardVersion)
+		orc.gcGateway, err = ConnectToGamechainGateway(dappClient, orc.gcAddress, orc.cfg.GamechainContractName, orc.gcSigner, orc.logger)
 		if err != nil {
 			return errors.Wrap(err, "failed to create gamechain gateway")
 		}
@@ -340,7 +349,7 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 		orc.updateStatus()
 
 		orc.logger.Debug("calling ProcessOracleEventBatch")
-		if err := orc.gcGateway.ProcessOracleEventBatch(events, latestBlock); err != nil {
+		if err := orc.gcGateway.ProcessOracleEventBatch(events, latestBlock, orc.pcZbgCardContractAddress); err != nil {
 			return 0, err
 		}
 		orc.logger.Debug("finished calling ProcessOracleEventBatch")
@@ -402,7 +411,7 @@ func (orc *Oracle) fetchEvents(startBlock, endBlock uint64) ([]*orctype.Plasmach
 func sortPlasmachainEvents(events []*plasmachainEventInfo) {
 	// Sort events by block & tx index (within the block)?
 	// Need to check if plasmachain event contains TxIdx
-	sort.Slice(events, func(i, j int) bool {
+	sort.SliceStable(events, func(i, j int) bool {
 		if events[i].BlockNum == events[j].BlockNum {
 			return events[i].TxIdx < events[j].TxIdx
 		}
@@ -451,14 +460,39 @@ func (orc *Oracle) processSingleRawEvent(rawEvent ethtypes.Log) (eventInfo *plas
 	}, receipt, nil
 }
 
+func parseBasicEventData(ethFromAddress *ethcommon.Address, ethToAddress *ethcommon.Address, chainId string) (fromAddress *ltypes.Address, toAddress *ltypes.Address, err error) {
+	fromLocal, err := loom.LocalAddressFromHexString(ethFromAddress.Hex())
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "error parsing address %s", ethFromAddress.Hex())
+	}
+
+	toLocal, err := loom.LocalAddressFromHexString(ethToAddress.Hex())
+	if err != nil {
+		return nil, nil, errors.Wrapf(err, "error parsing address %s", ethToAddress.Hex())
+	}
+
+	fromAddress = &ltypes.Address{
+	ChainId: chainId,
+	Local:   fromLocal,
+}
+	toAddress = &ltypes.Address{
+		ChainId: chainId,
+		Local:   toLocal,
+	}
+
+	return fromAddress, toAddress, nil
+}
+
 func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmachainEventInfo, error) {
 	var err error
 	numTransferEvents := 0
+	numTransferTokenEvents := 0
 	numTransferWithQuantityEvents := 0
 	numBatchTransferEvents := 0
 	defer func(begin time.Time) {
 		orc.metrics.MethodCalled(begin, "fetchTransferEvents", err)
 		orc.metrics.FetchedPlasmachainEvents(numTransferEvents, "Transfer")
+		orc.metrics.FetchedPlasmachainEvents(numTransferTokenEvents, "TransferToken")
 		orc.metrics.FetchedPlasmachainEvents(numTransferWithQuantityEvents, "TransferWithQuantity")
 		orc.metrics.FetchedPlasmachainEvents(numBatchTransferEvents, "BatchTransfer")
 		orc.updateStatus()
@@ -481,26 +515,15 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 				return nil, err
 			}
 
-			fromLocal, err := loom.LocalAddressFromHexString(event.From.Hex())
+			fromAddress, toAddress, err := parseBasicEventData(&event.From, &event.To, chainID)
 			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.From.Hex())
-			}
-
-			toLocal, err := loom.LocalAddressFromHexString(event.To.Hex())
-			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.To.Hex())
+				return nil, errors.Wrap(err, "error parsing basic event data")
 			}
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_Transfer{
 				Transfer: &orctype.PlasmachainEventTransfer{
-					From: &ltypes.Address{
-						ChainId: chainID,
-						Local:   fromLocal,
-					},
-					To: &ltypes.Address{
-						ChainId: chainID,
-						Local:   toLocal,
-					},
+					From: fromAddress,
+					To: toAddress,
 					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
 				},
 			}
@@ -513,6 +536,47 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 				return nil, errors.Wrap(err, "Failed to get event data for Transfer")
 			}
 			transferIterator.Close()
+			break
+		}
+	}
+
+	// TransferToken
+	transferTokenIterator, err := orc.pcGateway.zbgCard.FilterTransferToken(filterOpts, nil, nil, nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get logs for TransferToken")
+	}
+	for {
+		ok := transferTokenIterator.Next()
+		if ok {
+			event := transferTokenIterator.Event
+			eventInfo, _, err := orc.processSingleRawEvent(event.Raw)
+			if err != nil {
+				return nil, err
+			}
+
+			fromAddress, toAddress, err := parseBasicEventData(&event.From, &event.To, chainID)
+			if err != nil {
+				return nil, errors.Wrap(err, "error parsing basic event data")
+			}
+
+			// TransferToken is just an old name for TransferWithQuantity, we can use the same event type
+			eventInfo.Event.Payload = &orctype.PlasmachainEvent_TransferWithQuantity{
+				TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
+					From: fromAddress,
+					To: toAddress,
+					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
+					Amount:  &ltypes.BigUInt{Value: common.BigUInt{Int: event.Quantity}},
+				},
+			}
+
+			events = append(events, eventInfo)
+			numTransferTokenEvents++
+		} else {
+			err = transferTokenIterator.Error()
+			if err != nil {
+				return nil, errors.Wrap(err, "Failed to get event data for TransferToken")
+			}
+			transferTokenIterator.Close()
 			break
 		}
 	}
@@ -531,26 +595,15 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 				return nil, err
 			}
 
-			fromLocal, err := loom.LocalAddressFromHexString(event.From.Hex())
+			fromAddress, toAddress, err := parseBasicEventData(&event.From, &event.To, chainID)
 			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.From.Hex())
-			}
-
-			toLocal, err := loom.LocalAddressFromHexString(event.To.Hex())
-			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.To.Hex())
+				return nil, errors.Wrap(err, "error parsing basic event data")
 			}
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_TransferWithQuantity{
 				TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
-					From: &ltypes.Address{
-						ChainId: chainID,
-						Local:   fromLocal,
-					},
-					To: &ltypes.Address{
-						ChainId: chainID,
-						Local:   toLocal,
-					},
+					From: fromAddress,
+					To: toAddress,
 					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
 					Amount:  &ltypes.BigUInt{Value: common.BigUInt{Int: event.Amount}},
 				},
@@ -582,14 +635,9 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 				return nil, err
 			}
 
-			fromLocal, err := loom.LocalAddressFromHexString(event.From.Hex())
+			fromAddress, toAddress, err := parseBasicEventData(&event.From, &event.To, chainID)
 			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.From.Hex())
-			}
-
-			toLocal, err := loom.LocalAddressFromHexString(event.To.Hex())
-			if err != nil {
-				return nil, errors.Wrapf(err, "error parsing address %s", event.To.Hex())
+				return nil, errors.Wrap(err, "error parsing basic event data")
 			}
 
 			tokenIds := make([]*ltypes.BigUInt, len(event.TokenTypes))
@@ -604,14 +652,8 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_BatchTransfer{
 				BatchTransfer: &orctype.PlasmachainEventBatchTransfer{
-					From: &ltypes.Address{
-						ChainId: chainID,
-						Local:   fromLocal,
-					},
-					To: &ltypes.Address{
-						ChainId: chainID,
-						Local:   toLocal,
-					},
+					From: fromAddress,
+					To: toAddress,
 					TokenIds: tokenIds,
 					Amounts:  amounts,
 				},

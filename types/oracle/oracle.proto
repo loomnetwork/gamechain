@@ -8,9 +8,9 @@ import "github.com/loomnetwork/go-loom/types/types.proto";
 message PlasmachainEvent {
     uint64 ethBlock = 1;
     oneof payload {
-        PlasmachainEventTransfer transfer = 2;
-        PlasmachainEventTransferWithQuantity transferWithQuantity = 3;
-        PlasmachainEventBatchTransfer batchTransfer = 4;
+        PlasmachainEventTransfer transfer = 10;
+        PlasmachainEventTransferWithQuantity transferWithQuantity = 11;
+        PlasmachainEventBatchTransfer batchTransfer = 12;
     }
 }
 
@@ -39,8 +39,9 @@ message PlasmachainEventBatchTransfer {
 
 message ProcessOracleEventBatchRequest {
     repeated PlasmachainEvent events = 1;
-    string card_version = 2;
+    reserved 2; // string card_version = 2;
     uint64 lastPlasmachainBlockNumber = 3;
+    Address zbgCardContractAddress = 4;
 }
 
 message RawCardCollectionCard {

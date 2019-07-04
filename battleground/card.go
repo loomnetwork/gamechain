@@ -41,6 +41,23 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 			}
 		}
 
+		// FIXME: add check
+		/*if card.Type == zb_enums.CardType_Undefined {
+			return fmt.Errorf("type is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+		}*/
+
+		if card.Kind == zb_enums.CardKind_Undefined {
+			return fmt.Errorf("kind is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+		}
+
+		if card.Rank == zb_enums.CreatureRank_Undefined {
+			return fmt.Errorf("rank is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+		}
+
+		if card.Faction == zb_enums.Faction_None {
+			return fmt.Errorf("faction is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+		}
+
 		err = validateCardVariant(card, existingCardsSet)
 		if err != nil {
 			return err
