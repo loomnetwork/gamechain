@@ -113,6 +113,8 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		return err
 	}
 
+	fmt.Println("=========")
+	fmt.Println(blockHeight)
 	persistentData.LastFullCardCollectionSyncPlasmachainBlockHeight = blockHeight
 	err = saveUserPersistentData(ctx, userId, persistentData)
 	if err != nil {
@@ -129,7 +131,7 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 	if err != nil {
 		return errors.Wrap(err, "failed to marshal FullCardCollectionSyncEvent")
 	}
-	ctx.EmitTopics([]byte(data), createUserEventTopic(userId))
+	ctx.EmitTopics(data, createUserEventTopic(userId))
 
 	return nil
 }
@@ -351,7 +353,7 @@ func (z *ZombieBattleground) applyPendingCardAmountChanges(ctx contract.Context,
 	if err != nil {
 		return userIdFound, errors.Wrap(err, "failed to marshal AutoCardCollectionSyncEvent")
 	}
-	ctx.EmitTopics([]byte(data), createUserEventTopic(userId))
+	ctx.EmitTopics(data, createUserEventTopic(userId))
 
 	return userIdFound, nil
 }

@@ -99,25 +99,26 @@ func validateDeck(isEditDeck bool, cardLibrary *zb_data.CardList, userCardCollec
 }
 
 func validateDeckAgainstUserCardCollection(userCardCollection []*zb_data.CardCollectionCard, deckCards []*zb_data.DeckCard) error {
-	amountMap := make(map[battleground_proto.CardKey]int64)
+	collectionAmountMap := make(map[battleground_proto.CardKey]int64)
 	for _, collectionCard := range userCardCollection {
-		amountMap[collectionCard.CardKey] = collectionCard.Amount
+		collectionAmountMap[collectionCard.CardKey] = collectionCard.Amount
 	}
 
 	var errorString = ""
-	for _, collection := range deckCards {
-		cardAmount, ok := amountMap[collection.CardKey]
+	for _, deckCard := range deckCards {
+		collectionCardAmount, ok := collectionAmountMap[deckCard.CardKey]
 		if !ok {
-			return fmt.Errorf("card [%s] not found in card collection", collection.CardKey.String())
+			return fmt.Errorf("card [%s] not found in card deckCard", deckCard.CardKey.String())
 		}
-		if cardAmount < collection.Amount {
-			errorString += fmt.Sprintf("[%s]: %d ", collection.CardKey.String(), cardAmount)
+		if collectionCardAmount < deckCard.Amount {
+			errorString += fmt.Sprintf("[%s]: %d cards in collection, %d in deck", deckCard.CardKey.String(), collectionCardAmount, deckCard.Amount)
 		}
 	}
 
 	if errorString != "" {
 		return fmt.Errorf("cannot add more than maximum for these cards: %s", errorString)
 	}
+
 	return nil
 }
 

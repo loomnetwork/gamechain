@@ -399,7 +399,7 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 		if err != nil {
 			return errors.Wrap(err, "CreateAccount")
 		}
-		ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
+		ctx.EmitTopics(data, TopicCreateDeckEvent)
 	}
 
 	err = saveAddressToUserIdLink(ctx, req.UserId, ctx.Message().Sender)
@@ -490,7 +490,7 @@ func (z *ZombieBattleground) UpdateUserElo(ctx contract.Context, req *zb_calls.U
 	if err != nil {
 		return err
 	}
-	ctx.EmitTopics([]byte(data), "zombiebattleground:update_elo")
+	ctx.EmitTopics(data, "zombiebattleground:update_elo")
 	return nil
 }
 
@@ -559,7 +559,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), TopicCreateDeckEvent)
+	ctx.EmitTopics(data, TopicCreateDeckEvent)
 
 	return &zb_calls.CreateDeckResponse{DeckId: newDeckID}, nil
 }
@@ -627,7 +627,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 	if err != nil {
 		return err
 	}
-	ctx.EmitTopics([]byte(data), TopicEditDeckEvent)
+	ctx.EmitTopics(data, TopicEditDeckEvent)
 
 	return nil
 }
@@ -668,7 +668,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb_calls.Dele
 	if err != nil {
 		return err
 	}
-	ctx.EmitTopics([]byte(data), TopicDeleteDeckEvent)
+	ctx.EmitTopics(data, TopicDeleteDeckEvent)
 
 	return nil
 }
@@ -866,7 +866,7 @@ func (z *ZombieBattleground) RegisterPlayerPool(ctx contract.Context, req *zb_ca
 				if err != nil {
 					return nil, err
 				}
-				ctx.EmitTopics([]byte(data), match.Topics...)
+				ctx.EmitTopics(data, match.Topics...)
 			}
 		}
 	}
@@ -924,10 +924,9 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb_calls.FindM
 		if err != nil {
 			return nil, err
 		}
-		if err == nil {
-			topics := append(match.Topics, TopicFindMatchEvent)
-			ctx.EmitTopics([]byte(data), topics...)
-		}
+
+		topics := append(match.Topics, TopicFindMatchEvent)
+		ctx.EmitTopics(data, topics...)
 
 		return &zb_calls.FindMatchResponse{
 			Match:      match,
@@ -1056,7 +1055,7 @@ func (z *ZombieBattleground) FindMatch(ctx contract.Context, req *zb_calls.FindM
 		return nil, err
 	}
 	topics := append(match.Topics, TopicFindMatchEvent)
-	ctx.EmitTopics([]byte(data), topics...)
+	ctx.EmitTopics(data, topics...)
 
 	return &zb_calls.FindMatchResponse{
 		Match:      match,
@@ -1163,7 +1162,7 @@ func (z *ZombieBattleground) AcceptMatch(ctx contract.Context, req *zb_calls.Acc
 		return nil, err
 	}
 	topics := append(match.Topics, TopicAcceptMatchEvent)
-	ctx.EmitTopics([]byte(data), topics...)
+	ctx.EmitTopics(data, topics...)
 
 	return &zb_calls.AcceptMatchResponse{
 		Match: match,
@@ -1216,7 +1215,7 @@ func (z *ZombieBattleground) CancelFindMatch(ctx contract.Context, req *zb_calls
 			return nil, err
 		}
 		if err == nil {
-			ctx.EmitTopics([]byte(data), match.Topics...)
+			ctx.EmitTopics(data, match.Topics...)
 		}
 	}
 
@@ -1375,7 +1374,7 @@ func (z *ZombieBattleground) EndMatch(ctx contract.Context, req *zb_calls.EndMat
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	ctx.EmitTopics(data, match.Topics...)
 
 	return &zb_calls.EndMatchResponse{GameState: gamestate}, nil
 }
@@ -1449,7 +1448,7 @@ func (z *ZombieBattleground) SendPlayerAction(ctx contract.Context, req *zb_call
 	if err != nil {
 		return nil, err
 	}
-	ctx.EmitTopics([]byte(data), match.Topics...)
+	ctx.EmitTopics(data, match.Topics...)
 
 	return &zb_calls.PlayerActionResponse{
 		Match: match,
@@ -1681,7 +1680,7 @@ func (z *ZombieBattleground) KeepAlive(ctx contract.Context, req *zb_calls.KeepA
 			if err != nil {
 				return nil, err
 			}
-			ctx.EmitTopics([]byte(data), match.Topics...)
+			ctx.EmitTopics(data, match.Topics...)
 		}
 	}
 
