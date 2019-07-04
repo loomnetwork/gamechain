@@ -133,6 +133,7 @@ message LoginRequest {
 
 message LoginResponse {
     bool fullCardCollectionSyncExecuted = 1;
+    bool dataWiped = 2;
 }
 
 message GetDeckRequest {
