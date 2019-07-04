@@ -41,10 +41,9 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 			}
 		}
 
-		// FIXME: add check
-		/*if card.Type == zb_enums.CardType_Undefined {
+		if card.Type == zb_enums.CardType_Undefined {
 			return fmt.Errorf("type is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
-		}*/
+		}
 
 		if card.Kind == zb_enums.CardKind_Undefined {
 			return fmt.Errorf("kind is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
@@ -109,7 +108,7 @@ func validateDeckAgainstUserCardCollection(userCardCollection []*zb_data.CardCol
 	for _, collection := range deckCards {
 		cardAmount, ok := amountMap[collection.CardKey]
 		if !ok {
-			return fmt.Errorf("cannot add card [%s]", collection.CardKey.String())
+			return fmt.Errorf("card [%s] not found in card collection", collection.CardKey.String())
 		}
 		if cardAmount < collection.Amount {
 			errorString += fmt.Sprintf("[%s]: %d ", collection.CardKey.String(), cardAmount)

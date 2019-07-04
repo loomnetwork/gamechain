@@ -66,10 +66,12 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 	assert.Nil(t, err)
 
 	request := zb_calls.UpdateContractConfigurationRequest{
-		SetFiatPurchaseContractVersion: true,
-		FiatPurchaseContractVersion:    3,
-		SetInitialFiatPurchaseTxId:     true,
-		InitialFiatPurchaseTxId:        battleground_utility.MarshalBigIntProto(big.NewInt(100)),
+		SetFiatPurchaseContractVersion:   true,
+		FiatPurchaseContractVersion:      3,
+		SetInitialFiatPurchaseTxId:       true,
+		InitialFiatPurchaseTxId:          battleground_utility.MarshalBigIntProto(big.NewInt(100)),
+		SetCardCollectionSyncDataVersion: true,
+		CardCollectionSyncDataVersion:    "v1",
 	}
 
 	err = c.UpdateContractConfiguration(*ctx, &request)

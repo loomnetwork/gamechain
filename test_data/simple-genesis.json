@@ -66,19 +66,19 @@
           {
             "amount": "4",
             "cardKey": {
-              "mouldId": 90
+              "mouldId": 4
             }
           },
           {
-            "amount": "3",
+            "amount": "2",
             "cardKey": {
-              "mouldId": 91
+              "mouldId": 43
             }
           },
           {
-            "amount": "5",
+            "amount": "4",
             "cardKey": {
-              "mouldId": 96
+              "mouldId": 48
             }
           },
           {
@@ -88,15 +88,9 @@
             }
           },
           {
-            "amount": "3",
+            "amount": "4",
             "cardKey": {
               "mouldId": 2
-            }
-          },
-          {
-            "amount": "5",
-            "cardKey": {
-              "mouldId": 92
             }
           },
           {
@@ -106,31 +100,13 @@
             }
           },
           {
-            "amount": "3",
-            "cardKey": {
-              "mouldId": 93
-            }
-          },
-          {
-            "amount": "5",
+            "amount": "4",
             "cardKey": {
               "mouldId": 7
             }
           },
           {
             "amount": "4",
-            "cardKey": {
-              "mouldId": 94
-            }
-          },
-          {
-            "amount": "3",
-            "cardKey": {
-              "mouldId": 95
-            }
-          },
-          {
-            "amount": "5",
             "cardKey": {
               "mouldId": 5
             }
@@ -143,6 +119,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Whizpar",
             "damage": 1,
             "defense": 1,
@@ -165,6 +143,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Wheezy",
             "damage": 1,
             "defense": 2,
@@ -187,6 +167,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Soothsayer",
             "damage": 1,
             "defense": 1,
@@ -209,6 +191,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Fumez",
             "damage": 1,
             "defense": 1,
@@ -231,6 +215,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Pushhh",
             "damage": 3,
             "defense": 3,
@@ -253,6 +239,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Ztormmcaller",
             "damage": 3,
             "defense": 3,
@@ -275,6 +263,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Bouncer",
             "damage": 2,
             "defense": 3,
@@ -297,6 +287,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Gaz",
             "damage": 2,
             "defense": 2,
@@ -319,6 +311,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Draft",
             "damage": 4,
             "defense": 5,
@@ -341,6 +335,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "MonZoon",
             "damage": 6,
             "defense": 6,
@@ -363,6 +359,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zeuz",
             "damage": 5,
             "defense": 6,
@@ -385,6 +383,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Ztorm Shield",
             "damage": 4,
             "defense": 4,
@@ -407,6 +407,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Rockky",
             "damage": 1,
             "defense": 1,
@@ -429,6 +431,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Bolderr",
             "damage": 1,
             "defense": 2,
@@ -451,6 +455,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Blocker",
             "defense": 3,
             "pictureTransform": {
@@ -472,6 +478,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Slab",
             "damage": 3,
             "defense": 4,
@@ -494,6 +502,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Pit",
             "defense": 2,
             "pictureTransform": {
@@ -515,6 +525,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Golem",
             "damage": 2,
             "defense": 6,
@@ -537,6 +549,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Walley",
             "damage": 2,
             "defense": 2,
@@ -559,6 +573,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Tiny",
             "defense": 7,
             "pictureTransform": {
@@ -580,6 +596,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Spiker",
             "damage": 2,
             "defense": 3,
@@ -602,6 +620,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Crater",
             "damage": 1,
             "defense": 4,
@@ -624,6 +644,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Earthshaker",
             "damage": 4,
             "defense": 4,
@@ -646,6 +668,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "IgneouZ",
             "damage": 3,
             "defense": 3,
@@ -668,6 +692,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Pyrite",
             "defense": 8,
             "pictureTransform": {
@@ -689,6 +715,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Mountain",
             "damage": 6,
             "defense": 8,
@@ -711,6 +739,8 @@
             },
             "kind": "CREATURE",
             "faction": "EARTH",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Gaea",
             "damage": 4,
             "defense": 7,
@@ -733,6 +763,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Pyromaz",
             "damage": 1,
             "defense": 1,
@@ -755,6 +787,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Quazi",
             "defense": 1,
             "pictureTransform": {
@@ -776,6 +810,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Burrrnn",
             "damage": 2,
             "defense": 2,
@@ -798,6 +834,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Cynderman",
             "damage": 2,
             "defense": 3,
@@ -820,6 +858,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Werezomb",
             "damage": 1,
             "defense": 1,
@@ -842,6 +882,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Modo",
             "damage": 2,
             "defense": 2,
@@ -864,6 +906,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Fire-Maw",
             "damage": 3,
             "defense": 3,
@@ -886,6 +930,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zhampion",
             "damage": 5,
             "defense": 2,
@@ -908,6 +954,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Gargantua",
             "damage": 6,
             "defense": 8,
@@ -930,6 +978,8 @@
             },
             "kind": "CREATURE",
             "faction": "FIRE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Cerberus",
             "damage": 7,
             "defense": 8,
@@ -952,6 +1002,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Chainsaw",
             "pictureTransform": {
               "position": {
@@ -972,6 +1024,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Goo Beaker",
             "pictureTransform": {
               "position": {
@@ -992,6 +1046,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Stapler",
             "pictureTransform": {
               "position": {
@@ -1012,6 +1068,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Nail Bomb",
             "pictureTransform": {
               "position": {
@@ -1032,6 +1090,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Goo Bottles",
             "pictureTransform": {
               "position": {
@@ -1052,6 +1112,8 @@
             },
             "kind": "SPELL",
             "faction": "ITEM",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Fresh Meat",
             "pictureTransform": {
               "position": {
@@ -1072,6 +1134,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Azuraz",
             "damage": 1,
             "defense": 1,
@@ -1094,6 +1158,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Bloomer",
             "damage": 1,
             "defense": 1,
@@ -1116,6 +1182,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zap",
             "damage": 1,
             "defense": 1,
@@ -1138,6 +1206,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Shroom",
             "damage": 4,
             "defense": 2,
@@ -1160,6 +1230,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Vindrom",
             "damage": 2,
             "defense": 3,
@@ -1182,6 +1254,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Puffer",
             "damage": 2,
             "defense": 2,
@@ -1204,6 +1278,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Sapper",
             "damage": 2,
             "defense": 4,
@@ -1226,6 +1302,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Keeper",
             "damage": 1,
             "defense": 3,
@@ -1248,6 +1326,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Cactuz",
             "damage": 2,
             "defense": 2,
@@ -1270,6 +1350,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Shammann",
             "damage": 5,
             "defense": 6,
@@ -1292,6 +1374,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Z-Virus",
             "pictureTransform": {
               "position": {
@@ -1312,6 +1396,8 @@
             },
             "kind": "CREATURE",
             "faction": "LIFE",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Yggdrazil",
             "damage": 4,
             "defense": 5,
@@ -1334,6 +1420,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zombie 1/1",
             "damage": 1,
             "defense": 1,
@@ -1356,6 +1444,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zombie 2/2",
             "damage": 2,
             "defense": 2,
@@ -1378,6 +1468,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zombie Feral",
             "damage": 1,
             "defense": 1,
@@ -1400,6 +1492,8 @@
             },
             "kind": "SPELL",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Tainted Goo",
             "pictureTransform": {
               "position": {
@@ -1420,6 +1514,8 @@
             },
             "kind": "SPELL",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Corrupted Goo",
             "pictureTransform": {
               "position": {
@@ -1440,6 +1536,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Rainz",
             "damage": 3,
             "defense": 4,
@@ -1462,6 +1560,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Blight",
             "damage": 5,
             "defense": 4,
@@ -1484,6 +1584,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zteroid",
             "damage": 5,
             "defense": 4,
@@ -1506,6 +1608,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "BurZt",
             "damage": 4,
             "defense": 1,
@@ -1528,6 +1632,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Vortex",
             "damage": 6,
             "defense": 7,
@@ -1550,6 +1656,8 @@
             },
             "kind": "CREATURE",
             "faction": "OTHERS",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Defender",
             "damage": 4,
             "defense": 6,
@@ -1572,6 +1680,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Poizom",
             "damage": 1,
             "defense": 1,
@@ -1594,6 +1704,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Hazmaz",
             "damage": 1,
             "defense": 2,
@@ -1616,6 +1728,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zpitter",
             "damage": 2,
             "defense": 2,
@@ -1638,6 +1752,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zeptic",
             "damage": 1,
             "defense": 1,
@@ -1660,6 +1776,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Ghoul",
             "damage": 3,
             "defense": 2,
@@ -1682,6 +1800,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zeeter",
             "damage": 1,
             "defense": 1,
@@ -1704,6 +1824,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Hazzard",
             "damage": 4,
             "defense": 4,
@@ -1726,6 +1848,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zludge",
             "damage": 4,
             "defense": 4,
@@ -1748,6 +1872,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Ectoplasm",
             "damage": 2,
             "defense": 2,
@@ -1770,6 +1896,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Cherno-bill",
             "damage": 7,
             "defense": 9,
@@ -1792,6 +1920,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "GooZilla",
             "damage": 1,
             "defense": 1,
@@ -1814,6 +1944,8 @@
             },
             "kind": "CREATURE",
             "faction": "TOXIC",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zlopper",
             "damage": 3,
             "defense": 5,
@@ -1836,6 +1968,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Izze",
             "damage": 1,
             "defense": 1,
@@ -1858,6 +1992,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Znowman",
             "defense": 5,
             "pictureTransform": {
@@ -1879,6 +2015,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Ozmoziz",
             "damage": 1,
             "defense": 2,
@@ -1901,6 +2039,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Jetter",
             "damage": 3,
             "defense": 4,
@@ -1923,6 +2063,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Freezzee",
             "damage": 2,
             "defense": 2,
@@ -1945,6 +2087,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Geyzer",
             "damage": 2,
             "defense": 3,
@@ -1967,6 +2111,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Blizzard",
             "damage": 3,
             "defense": 4,
@@ -1989,6 +2135,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Froztbite",
             "defense": 6,
             "pictureTransform": {
@@ -2010,6 +2158,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zhatterer",
             "damage": 1,
             "defense": 2,
@@ -2032,6 +2182,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Maelstrom",
             "damage": 5,
             "defense": 5,
@@ -2054,6 +2206,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Tzunamy",
             "damage": 6,
             "defense": 6,
@@ -2076,6 +2230,8 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Germs",
             "damage": 6,
             "defense": 6,
@@ -2098,6 +2254,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Banshee",
             "damage": 2,
             "defense": 1,
@@ -2120,6 +2278,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Breezee",
             "damage": 2,
             "defense": 1,
@@ -2142,6 +2302,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Whiffer",
             "damage": 2,
             "defense": 1,
@@ -2164,6 +2326,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Zhocker",
             "damage": 2,
             "defense": 1,
@@ -2186,6 +2350,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Dragger",
             "damage": 2,
             "defense": 1,
@@ -2208,6 +2374,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Gust",
             "damage": 2,
             "defense": 1,
@@ -2230,6 +2398,8 @@
             },
             "kind": "CREATURE",
             "faction": "AIR",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Buffer",
             "damage": 2,
             "defense": 1,
@@ -2279,9 +2449,7 @@
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": [
-                  "PLAYER"
-                ],
+                "targets": ["PLAYER"],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2296,19 +2464,15 @@
                 "turns": 0,
                 "count": 2,
                 "delay": 0,
-                "visualEffectsToPlay": [
-                ],
+                "visualEffectsToPlay": [],
                 "gameMechanicDescription": "ENTRY",
                 "targetFaction": "NONE",
                 "subTrigger": "LessDefThanInOpponent",
-                "choosableAbilities": [
-                ],
+                "choosableAbilities": [],
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": [
-                  "UNDEFINED"
-                ]
+                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
               }
             ],
             "uniqueAnimation": "None",
@@ -2347,9 +2511,7 @@
                 "ability": "CHANGE_STAT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": [
-                  "PLAYER_CARD"
-                ],
+                "targets": ["PLAYER_CARD"],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2364,19 +2526,15 @@
                 "turns": 0,
                 "count": 0,
                 "delay": 0,
-                "visualEffectsToPlay": [
-                ],
+                "visualEffectsToPlay": [],
                 "gameMechanicDescription": "ENTRY",
                 "targetFaction": "NONE",
                 "subTrigger": "None",
-                "choosableAbilities": [
-                ],
+                "choosableAbilities": [],
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": [
-                  "UNDEFINED"
-                ]
+                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
               }
             ],
             "uniqueAnimation": "None",
@@ -2388,12 +2546,12 @@
             },
             "kind": "CREATURE",
             "faction": "WATER",
+            "type": "WALKER",
+            "rank": "MINION",
             "name": "Znowy",
             "description": "<b>Entry:</b> Give an ally zombie +1/+2.",
             "flavorText": "eeeehhehehehe",
             "picture": "133",
-            "rank": "MINION",
-            "type": "WALKER",
             "frame": "",
             "damage": 1,
             "defense": 1,
@@ -2415,9 +2573,7 @@
                 "ability": "CHANGE_STAT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": [
-                  "PLAYER_CARD"
-                ],
+                "targets": ["PLAYER_CARD"],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2432,19 +2588,15 @@
                 "turns": 0,
                 "count": 0,
                 "delay": 0,
-                "visualEffectsToPlay": [
-                ],
+                "visualEffectsToPlay": [],
                 "gameMechanicDescription": "ENTRY",
                 "targetFaction": "NONE",
                 "subTrigger": "None",
-                "choosableAbilities": [
-                ],
+                "choosableAbilities": [],
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": [
-                  "UNDEFINED"
-                ]
+                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
               }
             ],
             "uniqueAnimation": "None",
@@ -2458,10 +2610,7 @@
               {
                 "title": "Attack",
                 "skill": "ICE_BOLT",
-                "skillTargets": [
-                  "ALL_CARDS",
-                  "PLAYER_CARD"
-                ],
+                "skillTargets": ["ALL_CARDS", "PLAYER_CARD"],
                 "value": 1
               }
             ]
@@ -2473,10 +2622,7 @@
               {
                 "title": "Deffence",
                 "skill": "BLIZZARD",
-                "skillTargets": [
-                  "PLAYER",
-                  "OPPONENT_CARD"
-                ],
+                "skillTargets": ["PLAYER", "OPPONENT_CARD"],
                 "value": 2
               }
             ]

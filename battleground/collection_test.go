@@ -29,7 +29,7 @@ func TestCardCollectionCardOperations(t *testing.T) {
 			Version: "v1",
 		})
 		assert.Nil(t, err)
-		assert.Equal(t, 12, len(CardCollectionCard.Cards))
+		assert.Equal(t, 8, len(CardCollectionCard.Cards))
 	})
 
 	t.Run("GetCollection should not return unknown card stored in card collection", func(t *testing.T) {

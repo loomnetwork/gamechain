@@ -134,12 +134,16 @@ func TestValidateDeckName(t *testing.T) {
 	}
 }
 
-func TestSourceIdBasic(t *testing.T) {
+func TestVariantBasic(t *testing.T) {
 	targetCard := zb_data.Card{
 		CardKey: battleground_proto.CardKey{
 			MouldId: 3,
 			Variant: zb_enums.CardVariant_Limited,
 		},
+		Type:    zb_enums.CardType_Walker,
+		Kind:    zb_enums.CardKind_Creature,
+		Faction: zb_enums.Faction_Earth,
+		Rank:    zb_enums.CreatureRank_Minion,
 	}
 	var cardLibrary = []*zb_data.Card{
 		&testCard,
@@ -163,12 +167,16 @@ func TestSourceIdBasic(t *testing.T) {
 	assert.Equal(t, "Zpitter", targetCard.Name)
 }
 
-func TestSourceIdOverride(t *testing.T) {
+func TestVariantOverride(t *testing.T) {
 	targetCard := zb_data.Card{
 		CardKey: battleground_proto.CardKey{
 			MouldId: 3,
 			Variant: zb_enums.CardVariant_Limited,
 		},
+		Type:    zb_enums.CardType_Walker,
+		Kind:    zb_enums.CardKind_Creature,
+		Faction: zb_enums.Faction_Earth,
+		Rank:    zb_enums.CreatureRank_Minion,
 		Overrides: &zb_data.CardOverrides{
 			Name:       &nullable_pb.StringValue{Value: "Legendary Zpitter"},
 			FlavorText: &nullable_pb.StringValue{Value: "Zpittity-zpit, now with more zpit"},
@@ -215,18 +223,30 @@ func TestValidateDeckCardVariants(t *testing.T) {
 					MouldId: 5,
 					Variant: zb_enums.CardVariant_Standard,
 				},
+				Type:    zb_enums.CardType_Walker,
+				Kind:    zb_enums.CardKind_Creature,
+				Faction: zb_enums.Faction_Earth,
+				Rank:    zb_enums.CreatureRank_Minion,
 			},
 			{
 				CardKey: battleground_proto.CardKey{
 					MouldId: 5,
 					Variant: zb_enums.CardVariant_Limited,
 				},
+				Type:    zb_enums.CardType_Walker,
+				Kind:    zb_enums.CardKind_Creature,
+				Faction: zb_enums.Faction_Earth,
+				Rank:    zb_enums.CreatureRank_Minion,
 			},
 			{
 				CardKey: battleground_proto.CardKey{
 					MouldId: 6,
 					Variant: zb_enums.CardVariant_Standard,
 				},
+				Type:    zb_enums.CardType_Walker,
+				Kind:    zb_enums.CardKind_Creature,
+				Faction: zb_enums.Faction_Earth,
+				Rank:    zb_enums.CreatureRank_Minion,
 			},
 		},
 	}
