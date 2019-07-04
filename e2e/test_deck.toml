@@ -3,6 +3,11 @@
   Delay = 10000
 
 [[TestCases]]
+  RunCmd = "zb-cli contract_configuration -k {{index $.AccountPrivKeyPathList 0}} set_fiat_purchase_contract_version -v 3"
+  Condition = "contains"
+  Expected = ["success"]
+
+[[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
   Condition = "contains"
   Expected = ["created successfully"]
@@ -20,7 +25,7 @@
   Expected = ["deck size: 1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck1\", \"cards\": [ {\"cardKey\": {\"mouldId\": 4}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 43}, \"amount\": 2} ]}'"
   Condition = "contains"
   Expected = ["deck created successfully"]
 
@@ -49,7 +54,7 @@
   Expected = ["NewDeck1"]
 
 [[TestCases]]
-  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"id\": 2, \"overlord_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli edit_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"id\": 2, \"overlord_id\":2, \"name\": \"AwesomeName\", \"cards\": [ {\"cardKey\": {\"mouldId\": 4}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 43}, \"amount\": 2} ]}'"
   Condition = "contains"
   Expected = ["deck edited successfully"]
 
@@ -73,7 +78,7 @@
   Expected = ["deck size: 0"]
 
 [[TestCases]]
-  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}'"
+  RunCmd = "zb-cli create_deck -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1 -d '{\"overlord_id\":1, \"name\": \"NewDeck3\", \"cards\": [ {\"cardKey\": {\"mouldId\": 4}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 43}, \"amount\": 2} ]}'"
   Condition = "contains"
   Expected = ["deck created successfully"]
 

@@ -157,33 +157,6 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.NotNil(t, state)
 		assert.Equal(t, uint64(3), state.CurrentOracleCommandId)
 	})
-
-	t.Run("Add unique type per-user command", func(t *testing.T) {
-		command, err := createBaseOracleCommand(ctx)
-		assert.Nil(t, err)
-		command.Command = &orctype.OracleCommandRequest_GetUserFullCardCollection{
-			GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
-				UserAddress: user1Address.MarshalPB(),
-			},
-		}
-
-		err = c.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
-			return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(user1Address) == 0
-		})
-
-		assert.Nil(t, err)
-
-		commandRequestList, err := loadOracleCommandRequestList(ctx)
-		assert.Nil(t, err)
-		assert.Equal(t, 2, len(commandRequestList.Commands))
-		assert.NotNil(t, commandRequestList.Commands[1].GetGetUserFullCardCollection())
-		assert.Equal(t, user1Address.String(),loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
-
-		state, err := loadContractState(ctx)
-		assert.Nil(t, err)
-		assert.NotNil(t, state)
-		assert.Equal(t, uint64(3), state.CurrentOracleCommandId)
-	})
 }
 
 func TestGetUserFullCardCollectionCommandRequest(t *testing.T) {

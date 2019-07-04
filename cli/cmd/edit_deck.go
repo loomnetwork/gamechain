@@ -58,7 +58,7 @@ func init() {
 	rootCmd.AddCommand(editDeckCmd)
 
 	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.userID, "userId", "u", "loom", "UserId of account")
-	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.data, "data", "d", "{\"id\": 0, \"overlord_id\":1, \"name\": \"NewDefaultDeck\", \"cards\": [ {\"cardKey\": {\"mouldId\": 10}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 11}, \"amount\": 1} ]}", "Deck data in serialized json format")
+	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.data, "data", "d", "{\"id\": 0, \"overlord_id\":1, \"name\": \"NewDefaultDeck\", \"cards\": [ {\"cardKey\": {\"mouldId\": 4}, \"amount\": 2}, {\"cardKey\": {\"mouldId\": 43}, \"amount\": 2} ]}", "Deck data in serialized json format")
 	editDeckCmd.Flags().StringVarP(&editDeckCmdArgs.version, "version", "v", "v1", "Version")
 
 	_ = editDeckCmd.MarkFlagRequired("version")
