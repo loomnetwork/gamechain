@@ -33,7 +33,7 @@ func init() {
 	rootCmd.PersistentFlags().String("plasmachain-read-uri", "http://localhost:46658/query", "Plasmachain Read URI")
 	rootCmd.PersistentFlags().String("plasmachain-write-uri", "http://localhost:46658/rpc", "Plasmachain Write URI")
 	rootCmd.PersistentFlags().String("plasmachain-event-uri", "ws://localhost:9999/queryws", "Plasmachain Events URI")
-	rootCmd.PersistentFlags().String("plasmachain-contract-hex-address", "0x2658d8c94062227d17a4ba61adb166e152369de3", "Plasmachain ZBGCard Contract Hex Address")
+	rootCmd.PersistentFlags().String("plasmachain-zbgcard-contract-hex-address", "0x3fc83db9ad1513c181e9a7345a28f62c0844abbb", "Plasmachain ZBGCard Contract Hex Address")
 	rootCmd.PersistentFlags().Int("plasmachain-poll-interval", 10, "Plasmachain Pool Interval in seconds")
 	// gamechain
 	rootCmd.PersistentFlags().String("gamechain-private-key", "", "Gamechain Private Key")
@@ -42,7 +42,6 @@ func init() {
 	rootCmd.PersistentFlags().String("gamechain-write-uri", "http://localhost:46658/rpc", "Gamechain Write URI")
 	rootCmd.PersistentFlags().String("gamechain-event-uri", "ws://localhost:9999/queryws", "Gamechain Events URI")
 	rootCmd.PersistentFlags().String("gamechain-contract-name", "ZombieBattleground", "Gamechain Contract Name")
-	rootCmd.PersistentFlags().String("gamechain-card-version", "v3", "Gamechain Card Version")
 	// oracle
 	rootCmd.PersistentFlags().String("oracle-query-address", ":8888", "Oracle Query Address")
 	rootCmd.PersistentFlags().String("oracle-log-level", "debug", "Oracle Log Level")
@@ -55,7 +54,7 @@ func init() {
 	viper.BindPFlag("plasmachain-read-uri", rootCmd.PersistentFlags().Lookup("plasmachain-read-uri"))
 	viper.BindPFlag("plasmachain-write-uri", rootCmd.PersistentFlags().Lookup("plasmachain-write-uri"))
 	viper.BindPFlag("plasmachain-event-uri", rootCmd.PersistentFlags().Lookup("plasmachain-event-uri"))
-	viper.BindPFlag("plasmachain-contract-hex-address", rootCmd.PersistentFlags().Lookup("plasmachain-contract-hex-address"))
+	viper.BindPFlag("plasmachain-zbgcard-contract-hex-address", rootCmd.PersistentFlags().Lookup("plasmachain-zbgcard-contract-hex-address"))
 	viper.BindPFlag("plasmachain-poll-interval", rootCmd.PersistentFlags().Lookup("plasmachain-poll-interval"))
 
 	viper.BindPFlag("gamechain-private-key", rootCmd.PersistentFlags().Lookup("gamechain-private-key"))
@@ -64,7 +63,6 @@ func init() {
 	viper.BindPFlag("gamechain-write-uri", rootCmd.PersistentFlags().Lookup("gamechain-write-uri"))
 	viper.BindPFlag("gamechain-event-uri", rootCmd.PersistentFlags().Lookup("gamechain-event-uri"))
 	viper.BindPFlag("gamechain-contract-name", rootCmd.PersistentFlags().Lookup("gamechain-contract-name"))
-	viper.BindPFlag("gamechain-card-version", rootCmd.PersistentFlags().Lookup("gamechain-card-version"))
 
 	viper.BindPFlag("oracle-query-address", rootCmd.PersistentFlags().Lookup("oracle-query-address"))
 	viper.BindPFlag("oracle-log-level", rootCmd.PersistentFlags().Lookup("oracle-log-level"))
@@ -86,25 +84,24 @@ func main() {
 
 func run() error {
 	cfg := &oracle.Config{
-		PlasmachainPrivateKey:         viper.GetString("plasmachain-private-key"),
-		PlasmachainChainID:            viper.GetString("plasmachain-chain-id"),
-		PlasmachainReadURI:            viper.GetString("plasmachain-read-uri"),
-		PlasmachainWriteURI:           viper.GetString("plasmachain-write-uri"),
-		PlasmachainEventsURI:          viper.GetString("plasmachain-event-uri"),
-		PlasmachainContractHexAddress: viper.GetString("plasmachain-contract-hex-address"),
-		PlasmachainPollInterval:       viper.GetInt("plasmachain-poll-interval"),
-		GamechainPrivateKey:           viper.GetString("gamechain-private-key"),
-		GamechainChainID:              viper.GetString("gamechain-chain-id"),
-		GamechainReadURI:              viper.GetString("gamechain-read-uri"),
-		GamechainWriteURI:             viper.GetString("gamechain-write-uri"),
-		GamechainEventsURI:            viper.GetString("gamechain-event-uri"),
-		GamechainContractName:         viper.GetString("gamechain-contract-name"),
-		GamechainCardVersion:          viper.GetString("gamechain-card-version"),
-		OracleQueryAddress:            viper.GetString("oracle-query-address"),
-		OracleLogLevel:                viper.GetString("oracle-log-level"),
-		OracleLogDestination:          viper.GetString("oracle-log-destination"),
-		OracleReconnectInterval:       int32(viper.GetInt("oracle-reconnect-interval")),
-		OracleStartupDelay:            int32(viper.GetInt("oracle-startup-delay")),
+		PlasmachainPrivateKey:                viper.GetString("plasmachain-private-key"),
+		PlasmachainChainID:                   viper.GetString("plasmachain-chain-id"),
+		PlasmachainReadURI:                   viper.GetString("plasmachain-read-uri"),
+		PlasmachainWriteURI:                  viper.GetString("plasmachain-write-uri"),
+		PlasmachainEventsURI:                 viper.GetString("plasmachain-event-uri"),
+		PlasmachainZbgCardContractHexAddress: viper.GetString("plasmachain-zbgcard-contract-hex-address"),
+		PlasmachainPollInterval:              viper.GetInt("plasmachain-poll-interval"),
+		GamechainPrivateKey:                  viper.GetString("gamechain-private-key"),
+		GamechainChainID:                     viper.GetString("gamechain-chain-id"),
+		GamechainReadURI:                     viper.GetString("gamechain-read-uri"),
+		GamechainWriteURI:                    viper.GetString("gamechain-write-uri"),
+		GamechainEventsURI:                   viper.GetString("gamechain-event-uri"),
+		GamechainContractName:                viper.GetString("gamechain-contract-name"),
+		OracleQueryAddress:                   viper.GetString("oracle-query-address"),
+		OracleLogLevel:                       viper.GetString("oracle-log-level"),
+		OracleLogDestination:                 viper.GetString("oracle-log-destination"),
+		OracleReconnectInterval:              int32(viper.GetInt("oracle-reconnect-interval")),
+		OracleStartupDelay:                   int32(viper.GetInt("oracle-startup-delay")),
 	}
 
 	orc, err := oracle.CreateOracle(cfg, "gcoracle")

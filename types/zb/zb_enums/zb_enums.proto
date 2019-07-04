@@ -65,6 +65,8 @@ message UniqueAnimation
         CerberusArrival = 4;
         TzunamyArrival = 5;
         ChernoBillArrival = 6;
+        MountainArrival = 7;
+        GargantuaArrival = 8;
     }
 }
 

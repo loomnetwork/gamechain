@@ -20,13 +20,11 @@ type GamechainGateway struct {
 	caller   loom.Address
 	logger   *loom.Logger
 	signer   auth.Signer
-	// CardVersion
-	cardVersion string
 }
 
 func ConnectToGamechainGateway(
 	loomClient *client.DAppChainRPCClient, caller loom.Address, contractName string, signer auth.Signer,
-	logger *loom.Logger, cardVersion string,
+	logger *loom.Logger,
 ) (*GamechainGateway, error) {
 	gatewayAddr, err := loomClient.Resolve(contractName)
 	if err != nil {
@@ -39,7 +37,6 @@ func ConnectToGamechainGateway(
 		caller:           caller,
 		signer:           signer,
 		logger:           logger,
-		cardVersion:      cardVersion,
 	}, nil
 }
 
@@ -97,11 +94,11 @@ func (gw *GamechainGateway) ProcessOracleCommandResponseBatch(commandResponses [
 	return nil
 }
 
-func (gw *GamechainGateway) ProcessOracleEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64) error {
+func (gw *GamechainGateway) ProcessOracleEventBatch(events []*orctype.PlasmachainEvent, endBlock uint64, zbgCardContractAddress loom.Address) error {
 	req := orctype.ProcessOracleEventBatchRequest{
 		Events:                     events,
-		CardVersion:                gw.cardVersion,
 		LastPlasmachainBlockNumber: endBlock,
+		ZbgCardContractAddress:     zbgCardContractAddress.MarshalPB(),
 	}
 
 	if _, err := gw.contract.Call("ProcessOracleEventBatch", &req, gw.signer, nil); err != nil {

@@ -71,6 +71,9 @@ message UpdateContractConfigurationRequest {
 
     bool setDataWipeConfiguration = 7;
     DataWipeConfiguration dataWipeConfiguration = 8;
+
+    bool setCardCollectionSyncDataVersion = 9;
+    string cardCollectionSyncDataVersion = 10;
 }
 
 message SetLastPlasmaBlockNumberRequest {
@@ -115,13 +118,21 @@ message GetAccountRequest {
     string user_id = 1;
 }
 
+message GetUserPersistentDataRequest {
+    string userId = 1;
+}
+
+message GetUserPersistentDataResponse {
+    UserPersistentData persistentData = 1;
+}
+
 message LoginRequest {
     string userId = 1;
     string version = 2;
 }
 
 message LoginResponse {
-    bool fullCardCollectionRequested = 1;
+    bool fullCardCollectionSyncExecuted = 1;
 }
 
 message GetDeckRequest {
@@ -477,4 +488,19 @@ message WipeUserDataRequest {
 
 message RequestUserFullCardCollectionSyncRequest {
     string userId = 1;
+}
+
+message UserEvent {
+    string userId = 1;
+
+    oneof Event {
+        AutoCardCollectionSyncEvent autoCardCollectionSync = 10;
+        FullCardCollectionSyncEvent fullCardCollectionSync = 11;
+    }
+
+    message AutoCardCollectionSyncEvent {
+    }
+
+    message FullCardCollectionSyncEvent {
+    }
 }

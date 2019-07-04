@@ -3,10 +3,53 @@ package battleground
 import (
 	"fmt"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
+	"github.com/loomnetwork/go-loom"
 	contract "github.com/loomnetwork/go-loom/plugin/contractpb"
-	loom "github.com/loomnetwork/go-loom"
 	"github.com/pkg/errors"
 )
+
+func createBaseOracleCommand(ctx contract.StaticContext) (*orctype.OracleCommandRequest, error) {
+	contractState, err := loadContractState(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &orctype.OracleCommandRequest{
+		CommandId: contractState.CurrentOracleCommandId,
+	}, nil
+}
+
+func (z *ZombieBattleground) addGetUserFullCardCollectionOracleCommand(ctx contract.Context, address loom.Address) error {
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	if configuration.CardCollectionSyncDataVersion == "" {
+		return errors.New("configuration.CardCollectionSyncDataVersion is not set")
+	}
+
+	command, err := createBaseOracleCommand(ctx)
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	command.Command = &orctype.OracleCommandRequest_GetUserFullCardCollection{
+		GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
+			UserAddress: address.MarshalPB(),
+		},
+	}
+
+	err = z.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
+		return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(address) == 0
+	})
+
+	if err != nil {
+		return errors.Wrap(err, "addGetUserFullCardCollectionOracleCommand")
+	}
+
+	return nil
+}
 
 func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contract.Context, commandResponses []*orctype.OracleCommandResponse) error {
 	commandRequestList, err := loadOracleCommandRequestList(ctx)
@@ -34,15 +77,19 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		switch commandResponse := commandResponseOneOf.Command.(type) {
 		case *orctype.OracleCommandResponse_GetUserFullCardCollection:
 			err = z.processOracleCommandResponseGetUserFullCardCollection(
+				ctx,
 				loom.UnmarshalAddressPB(commandResponse.GetUserFullCardCollection.UserAddress),
 				commandResponse.GetUserFullCardCollection.OwnedCards,
 				commandResponse.GetUserFullCardCollection.BlockHeight,
 			)
+			if err != nil {
+				err = errors.Wrap(err, "processOracleCommandResponseGetUserFullCardCollection failed")
+			}
 			break
 		}
 
 		// We allow single commands to fail
-		// Just keep it unconfirmed until something is fixed for it to become processed and confirmed.
+		// Just keep them unconfirmed until something is fixed for it to become processed and confirmed.
 		if err != nil {
 			newCommandRequests = append(newCommandRequests, matchingCommandRequest)
 			ctx.Logger().Error(errors.Wrap(err, "error processing oracle command response").Error())
@@ -55,19 +102,6 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		return errors.Wrap(err, "processOracleCommandResponseBatchInternal")
 	}
 
-	return nil
-}
-
-func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollection(
-	userAddress loom.Address,
-	ownedCards []*orctype.RawCardCollectionCard,
-	blockHeight uint64,
-) error {
-	fmt.Println("==================")
-	fmt.Println("processOracleCommandResponseGetUserFullCardCollection")
-	fmt.Println(userAddress.String())
-	fmt.Println(len(ownedCards))
-	fmt.Println(blockHeight)
 	return nil
 }
 
@@ -87,7 +121,7 @@ func (z *ZombieBattleground) saveOracleCommandRequestToList(
 		return err
 	}
 
-	// filter our commands. Useful for commands that must be unique in list
+	// filter out commands. Useful for commands that must be unique in list
 	filteredCommandsRequests := make([]*orctype.OracleCommandRequest, 0)
 	for _, commandRequest := range commandRequestList.Commands {
 		if !filterSameTypePredicate(commandRequest) {

@@ -121,7 +121,7 @@ func loadPendingCardAmountChangesContainerByAddress(ctx contract.StaticContext, 
 	if err != nil {
 		if err == contract.ErrNotFound {
 			container = zb_data.CardAmountChangeItemsContainer{
-				CardAmountChange: []*zb_data.CardAmountChangeItem{},
+				CardAmountChanges: []*zb_data.CardAmountChangeItem{},
 			}
 		} else {
 			return nil, err
@@ -139,13 +139,17 @@ func savePendingCardAmountChangeItemsContainerByAddress(ctx contract.Context, ad
 	return nil
 }
 
-func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (string, error) {
-	var userId zb_data.UserIdContainer
-	if err := ctx.Get(MakeAddressToUserIdLinkKey(address), &userId); err != nil {
-		return "", errors.Wrap(err, "error loading user id by address")
+func loadUserIdByAddress(ctx contract.StaticContext, address loom.Address) (found bool, userId string, err error) {
+	var userIdContainer zb_data.UserIdContainer
+	if err := ctx.Get(MakeAddressToUserIdLinkKey(address), &userIdContainer); err != nil {
+		if err == contract.ErrNotFound {
+			return false, "", nil
+		}
+
+		return false, "", errors.Wrap(err, "error loading user id by address")
 	}
 
-	return userId.UserId, nil
+	return true, userIdContainer.UserId, nil
 }
 
 func saveAddressToUserIdLink(ctx contract.Context, userId string, address loom.Address) error {
@@ -208,7 +212,7 @@ func saveContractConfiguration(ctx contract.Context, state *zb_data.ContractConf
 	return nil
 }
 
-func loadCardCollectionRaw(ctx contract.Context, userID string) (*zb_data.CardCollectionList, error) {
+func loadUserCardCollectionRaw(ctx contract.StaticContext, userID string) (*zb_data.CardCollectionList, error) {
 	var userCollection zb_data.CardCollectionList
 	if err := ctx.Get(CardCollectionKey(userID), &userCollection); err != nil {
 		if err == contract.ErrNotFound {
@@ -221,7 +225,7 @@ func loadCardCollectionRaw(ctx contract.Context, userID string) (*zb_data.CardCo
 	return &userCollection, nil
 }
 
-func saveCardCollection(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
+func saveUserCardCollection(ctx contract.Context, userID string, cardCollection *zb_data.CardCollectionList) error {
 	if err := ctx.Set(CardCollectionKey(userID), cardCollection); err != nil {
 		return errors.Wrap(err, "error saving card collection")
 	}
@@ -269,7 +273,7 @@ func savePendingMintingTransactionReceipts(ctx contract.Context, userID string, 
 }
 
 func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
-	_, err := fixDeckListCardVariants(ctx, decks, version)
+	_, err := fixDeckListCards(ctx, decks, version)
 	if err != nil {
 		return errors.Wrap(err, "error saving decks")
 	}
@@ -281,23 +285,32 @@ func saveDecks(ctx contract.Context, version string, userID string, decks *zb_da
 }
 
 func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
-	var deckList zb_data.DeckList
-	if err := ctx.Get(DecksKey(userID), &deckList); err != nil {
-		if err == contract.ErrNotFound {
-			deckList.Decks = []*zb_data.Deck{}
-		} else {
-			return nil, errors.Wrap(err, "error loading decks")
-		}
+	deckList, err := loadDecksRaw(ctx, userID)
+	if err != nil {
+		return nil, err
 	}
 
-	deckListChanged, err := fixDeckListCardVariants(ctx, &deckList, version)
+	deckListChanged, err := fixDeckListCards(ctx, deckList, version)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading decks")
 	}
 
 	if deckListChanged {
-		err = saveDecks(ctx, version, userID, &deckList)
+		err = saveDecks(ctx, version, userID, deckList)
 		if err != nil {
+			return nil, errors.Wrap(err, "error loading decks")
+		}
+	}
+
+	return deckList, nil
+}
+
+func loadDecksRaw(ctx contract.Context, userID string) (*zb_data.DeckList, error) {
+	var deckList zb_data.DeckList
+	if err := ctx.Get(DecksKey(userID), &deckList); err != nil {
+		if err == contract.ErrNotFound {
+			deckList.Decks = []*zb_data.Deck{}
+		} else {
 			return nil, errors.Wrap(err, "error loading decks")
 		}
 	}
@@ -376,13 +389,13 @@ func loadOverlordUserInstances(ctx contract.StaticContext, version string, userI
 		if !exists {
 			overlordUserData = &zb_data.OverlordUserData{
 				PrototypeId: overlord.Id,
-				Level: 1,
+				Level:       1,
 			}
 		}
 
 		userInstances = append(userInstances, &zb_data.OverlordUserInstance{
 			Prototype: overlord,
-			UserData: overlordUserData,
+			UserData:  overlordUserData,
 		})
 	}
 	return userInstances, nil
@@ -526,7 +539,7 @@ func createMatch(ctx contract.Context, match *zb_data.Match, useBackendGameLogic
 		return err
 	}
 	match.Id = nextID
-	match.Topics = []string{fmt.Sprintf("match:%d", nextID)}
+	match.Topics = []string{fmt.Sprintf(TopicMatchEventPrefix+"%d", nextID)}
 	match.CreatedAt = ctx.Now().Unix()
 	match.UseBackendGameLogic = useBackendGameLogic
 	return saveMatch(ctx, match)
@@ -772,15 +785,15 @@ func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.Car
 	return nil, fmt.Errorf("card with card key [%s] not found in card library", cardKey.String())
 }
 
-func fixDeckListCardVariants(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
+func fixDeckListCards(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
 	cardLibrary, err := loadCardLibrary(ctx, version)
 	if err != nil {
-		return false, errors.Wrap(err, "error fixing card variants")
+		return false, errors.Wrap(err, "error fixing deck list")
 	}
 
 	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
 	if err != nil {
-		return false, errors.Wrap(err, "error fixing card variants")
+		return false, errors.Wrap(err, "error fixing deck list")
 	}
 
 	changed = false
@@ -812,7 +825,7 @@ func fixDeckCardVariants(deck *zb_data.Deck, cardKeyToCardMap map[battleground_p
 
 			_, normalVariantExists := cardKeyToCardMap[normalVariantCardKey]
 
-			// If normal variant doesn't exist in card library too, just remove card from the deck completely
+			// If normal variant doesn't exist in card library too, just remove the card from the deck completely
 			if !normalVariantExists {
 				changed = true
 			} else {
@@ -827,7 +840,7 @@ func fixDeckCardVariants(deck *zb_data.Deck, cardKeyToCardMap map[battleground_p
 					// create a normal variant deck card and add special variant amount to it
 					normalVariantDeckCard = &zb_data.DeckCard{
 						CardKey: normalVariantCardKey,
-						Amount: deckCard.Amount,
+						Amount:  deckCard.Amount,
 					}
 
 					newDeckCards = append(newDeckCards, normalVariantDeckCard)

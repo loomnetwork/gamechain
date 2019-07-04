@@ -15,6 +15,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	TopicMatchEventPrefix = "match:"
+)
+
 type TopicHandler func(eventData *types.EventData, db *gorm.DB) error
 
 func FindMatchHandler(eventData *types.EventData, db *gorm.DB) error {
@@ -215,7 +219,7 @@ func MatchHandler(eventData *types.EventData, db *gorm.DB) error {
 	if match == nil {
 		return fmt.Errorf("match is nil")
 	}
-	topic := fmt.Sprintf("match:%d", match.Id)
+	topic := fmt.Sprintf(TopicMatchEventPrefix + ":%d", match.Id)
 	replay, err := writeReplayFile(topic, event)
 	if err != nil {
 		return errors.Wrap(err, "Error writing replay file: ")
