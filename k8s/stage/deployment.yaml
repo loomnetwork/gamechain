@@ -105,8 +105,8 @@ spec:
             value: "http://test-z-us1.dappchains.com:80/query"
           - name: PLASMACHAIN_WRITE_URI
             value: "http://test-z-us1.dappchains.com:80/rpc"
-          - name: PLASMACHAIN_CONTRACT_HEX_ADDRESS
-            value: "0x2658d8c94062227d17a4ba61adb166e152369de3"
+          - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
+            value: "0x3fc83db9ad1513c181e9a7345a28f62c0844abbb"
           - name: PLASMACHAIN_POLL_INTERVAL
             value: "5"
           - name: GAMECHAIN_PRIVATE_KEY
@@ -119,8 +119,6 @@ spec:
             value: "http://gamechain-staging.dappchains.com:46658/rpc"
           - name: GAMECHAIN_CONTRACT_NAME
             value: "ZombieBattleground"
-          - name: GAMECHAIN_CARD_VERSION
-            value: "v3"
           - name: ORACLE_QUERY_ADDRESS
             value: ":8888"
           - name: ORACLE_LOG_LEVEL

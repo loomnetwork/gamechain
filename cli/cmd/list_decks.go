@@ -44,7 +44,7 @@ var listDecksCmd = &cobra.Command{
 				fmt.Printf("id: %d\n", deck.Id)
 				fmt.Printf("name: %s\n", deck.Name)
 				for _, card := range deck.Cards {
-					fmt.Printf("  card key: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
+					fmt.Printf("  card: [%v], amount: %d\n", card.CardKey.String(), card.Amount)
 				}
 			}
 		}

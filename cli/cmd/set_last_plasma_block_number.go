@@ -46,5 +46,6 @@ var setLastPlasmaBlockNumCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(setLastPlasmaBlockNumCmd)
 
-	setLastPlasmaBlockNumCmd.Flags().Uint64VarP(&setLastPlasmaBlockNumCmdArgs.blockNum, "blocknum", "n", 1, "block number")
+	setLastPlasmaBlockNumCmd.Flags().Uint64VarP(&setLastPlasmaBlockNumCmdArgs.blockNum, "blocknum", "n", 0, "block number")
+	_ = setLastPlasmaBlockNumCmd.MarkFlagRequired("blocknum")
 }
