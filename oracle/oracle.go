@@ -290,8 +290,8 @@ func (orc *Oracle) executeGamechainCommands(latestPlasmaBlock uint64) error {
 		}
 	}
 
-	if len(commandRequests) > 0 {
-		orc.logger.Debug("Sending executed command responses to Gamechain")
+	if len(commandResponses) > 0 {
+		orc.logger.Debug("Sending executed command responses to Gamechain", "len(commandResponses)", len(commandResponses))
 		err := orc.gcGateway.ProcessOracleCommandResponseBatch(commandResponses)
 		if err != nil {
 			return err

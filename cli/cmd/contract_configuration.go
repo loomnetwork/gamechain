@@ -21,8 +21,9 @@ var configurationCmdArgs struct {
 }
 
 var configuration_setDataWipeConfigurationCmdArgs struct {
-	version   string
-	wipeDecks bool
+	version                    string
+	wipeDecks                  bool
+	wipeOverlordsUserInstances bool
 }
 
 var configuration_get = &cobra.Command{
@@ -123,8 +124,9 @@ var configuration_setDataWipeConfigurationCmd = &cobra.Command{
 		request := &zb_calls.UpdateContractConfigurationRequest{
 			SetDataWipeConfiguration: true,
 			DataWipeConfiguration: &zb_data.DataWipeConfiguration{
-				Version:   configuration_setDataWipeConfigurationCmdArgs.version,
-				WipeDecks: configuration_setDataWipeConfigurationCmdArgs.wipeDecks,
+				Version:                   configuration_setDataWipeConfigurationCmdArgs.version,
+				WipeDecks:                 configuration_setDataWipeConfigurationCmdArgs.wipeDecks,
+				WipeOverlordUserInstances: configuration_setDataWipeConfigurationCmdArgs.wipeOverlordsUserInstances,
 			},
 		}
 		return configurationSetMain(request)
@@ -162,6 +164,7 @@ func init() {
 
 	configuration_setDataWipeConfigurationCmd.Flags().StringVarP(&configuration_setDataWipeConfigurationCmdArgs.version, "version", "v", "v1", "Data version to wipe on")
 	configuration_setDataWipeConfigurationCmd.Flags().BoolVarP(&configuration_setDataWipeConfigurationCmdArgs.wipeDecks, "wipeDecks", "d", false, "Whether to wipe user decks")
+	configuration_setDataWipeConfigurationCmd.Flags().BoolVarP(&configuration_setDataWipeConfigurationCmdArgs.wipeOverlordsUserInstances, "wipeOverlords", "o", false, "Whether to wipe user overlords progress")
 	_ = configuration_setFiatPurchaseContractVersionCmd.MarkFlagRequired("value")
 	_ = configuration_setInitialFiatPurchaseTxIdCmd.MarkFlagRequired("value")
 	_ = configuration_useCardLibraryAsUserCollectionCmd.MarkFlagRequired("value")
