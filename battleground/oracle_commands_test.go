@@ -20,7 +20,7 @@ func TestProcessEventBatch(t *testing.T) {
 
 	req := &orctype.ProcessOracleEventBatchRequest{
 		LastPlasmachainBlockNumber: 123,
-		ZbgCardContractAddress: loom.MustParseAddress("default:0x0000000000000000000000000000000000000099").MarshalPB(),
+		ZbgCardContractAddress:     loom.MustParseAddress("default:0x0000000000000000000000000000000000000099").MarshalPB(),
 		Events: []*orctype.PlasmachainEvent{
 			{
 				EthBlock: 120,
@@ -122,7 +122,7 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(commandRequestList.Commands))
 		assert.NotNil(t, commandRequestList.Commands[1].GetGetUserFullCardCollection())
-		assert.Equal(t, user1Address.String(),loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
+		assert.Equal(t, user1Address.String(), loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
 		assert.Equal(t, uint64(1), commandRequestList.Commands[1].CommandId)
 
 		state, err := loadContractState(ctx)
@@ -150,7 +150,7 @@ func TestCreateOracleCommandRequest(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 2, len(commandRequestList.Commands))
 		assert.NotNil(t, commandRequestList.Commands[1].GetGetUserFullCardCollection())
-		assert.Equal(t, user1Address.String(),loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
+		assert.Equal(t, user1Address.String(), loom.UnmarshalAddressPB(commandRequestList.Commands[1].GetGetUserFullCardCollection().UserAddress).String())
 
 		state, err := loadContractState(ctx)
 		assert.Nil(t, err)
