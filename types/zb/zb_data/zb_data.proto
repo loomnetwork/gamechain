@@ -270,7 +270,7 @@ message ContractConfiguration {
     BigUInt initialFiatPurchaseTxId = 2;
     bool useCardLibraryAsUserCollection = 3;
     repeated DataWipeConfiguration dataWipeConfiguration = 4;
-    string cardSyncDataVersion = 5;
+    string cardCollectionSyncDataVersion = 5;
 }
 
 //////////// Match Making /////////////
@@ -849,7 +849,8 @@ message DataWipeConfigurationContainer {
 message UserPersistentData {
     Address address = 1;
     repeated string executedDataWipesVersions = 2;
-    uint64 lastFullCardSyncPlasmachainBlockHeight = 3;
+    uint64 lastFullCardCollectionSyncPlasmachainBlockHeight = 3;
+    uint64 lastAutoCardCollectionSyncPlasmachainBlockHeight = 4;
 }
 
 message NotificationEndMatch {
@@ -915,7 +916,7 @@ message MintingTransactionReceiptCollection {
 }
 
 message CardAmountChangeItemsContainer {
-    repeated CardAmountChangeItem cardAmountChange = 1;
+    repeated CardAmountChangeItem cardAmountChanges = 1;
 }
 
 message CardAmountChangeItem {

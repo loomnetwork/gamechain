@@ -58,7 +58,11 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 		plugin.CreateFakeContext(*addr, *addr),
 	)
 
+	// Check both Init and UpdateInit
 	err = c.Init(*ctx, &initRequest)
+	assert.Nil(t, err)
+
+	err = c.UpdateInit(*ctx, &updateInitRequest)
 	assert.Nil(t, err)
 
 	request := zb_calls.UpdateContractConfigurationRequest{
@@ -144,28 +148,6 @@ func TestAccountOperations(t *testing.T) {
 		assert.Equal(t, int32(5), account.CurrentTier)
 		assert.Equal(t, "PathToImage2", account.Image)
 	})
-}
-
-func TestCardCollectionCardOperations(t *testing.T) {
-	c := &ZombieBattleground{}
-	var pubKeyHexString = "8996b813617b283f81ea1747fbddbe73fe4b5fce0eac0728e47de51d8e506701"
-	var addr loom.Address
-	var ctx contract.Context
-
-	setup(c, pubKeyHexString, &addr, &ctx, t)
-	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
-		UserId:  "CardUser",
-		Image:   "PathToImage",
-		Version: "v1",
-	}, t)
-
-	CardCollectionCard, err := c.GetCollection(ctx, &zb_calls.GetCollectionRequest{
-		UserId:  "CardUser",
-		Version: "v1",
-	})
-	assert.Nil(t, err)
-	assert.Equal(t, 12, len(CardCollectionCard.Cards))
-
 }
 
 func TestUserDataWipe(t *testing.T) {

@@ -44,7 +44,8 @@ const (
 	TopicFindMatchEvent          = "findmatch"
 	TopicAcceptMatchEvent        = "acceptmatch"
 	// match pattern match:id e.g. match:1, match:2, ...
-	TopicMatchEventPrefix = "match:"
+	TopicMatchEventPrefix      = "match:"
+	TopicUserEventPrefix       = "user:"
 )
 
 const (
@@ -436,20 +437,29 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 
 	response := zb_calls.LoginResponse{}
 
-	// TODO: check if any pending cards await by address
 	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	if userPersistentData.LastFullCardSyncPlasmachainBlockHeight == 0 {
-		// TODO: save the request for the oracle to do the full sync
+	// apply any pending card collection changes that were pending because address to user id was not set
+	userIdFound, err := z.applyPendingCardAmountChanges(ctx, ctx.Message().Sender)
+	if err != nil {
+		return nil, err
+	}
 
-		// TODO: check if a request is already pending?
-		//addFullCardCollectionSyncRequest(req.UserId)
+	if !userIdFound {
+		ctx.Logger().Warn("user id not found when doing applyPendingCardAmountChanges in Login", "userId", req.UserId, "userAddress", ctx.Message().Sender.String())
+	}
 
-		// notify the user that a full collection sync is scheduled so they can react
-		response.FullCardCollectionRequested = true
+	if userPersistentData.LastFullCardCollectionSyncPlasmachainBlockHeight == 0 {
+		err = z.addGetUserFullCardCollectionOracleCommand(ctx, ctx.Message().Sender)
+		if err != nil {
+			return nil, err
+		}
+
+		// notify the client that a full collection sync is scheduled so it can wait a bit
+		response.FullCardCollectionSyncExecuted = true
 	}
 
 	return &response, err
@@ -1740,11 +1750,14 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		}
 	}
 
+	changed := false
 	if req.SetFiatPurchaseContractVersion {
+		changed = true
 		configuration.FiatPurchaseContractVersion = req.FiatPurchaseContractVersion
 	}
 
 	if req.SetInitialFiatPurchaseTxId {
+		changed = true
 		if req.InitialFiatPurchaseTxId == nil {
 			return fmt.Errorf("InitialFiatPurchaseTxId == nil")
 		}
@@ -1758,10 +1771,12 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 	}
 
 	if req.SetUseCardLibraryAsUserCollection {
+		changed = true
 		configuration.UseCardLibraryAsUserCollection = req.UseCardLibraryAsUserCollection
 	}
 
 	if req.SetDataWipeConfiguration {
+		changed = true
 		found := false
 		for _, existingDataWipeConfiguration := range configuration.DataWipeConfiguration {
 			if existingDataWipeConfiguration.Version == req.DataWipeConfiguration.Version {
@@ -1777,12 +1792,17 @@ func (z *ZombieBattleground) UpdateContractConfiguration(ctx contract.Context, r
 		}
 	}
 
-	if req.SetCardSyncDataVersion {
-		if req.CardSyncDataVersion == "" {
+	if req.SetCardCollectionSyncDataVersion {
+		changed = true
+		if req.CardCollectionSyncDataVersion == "" {
 			return ErrVersionNotSet
 		}
 
-		configuration.CardSyncDataVersion = req.CardSyncDataVersion
+		configuration.CardCollectionSyncDataVersion = req.CardCollectionSyncDataVersion
+	}
+
+	if !changed {
+		return fmt.Errorf("no configuration changes specified")
 	}
 
 	err = saveContractState(ctx, state)
@@ -2068,12 +2088,13 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 		switch payload := ev.Payload.(type) {
 		case *orctype.PlasmachainEvent_Transfer:
 			ctx.Logger().Info("got Transfer event")
-			err := z.handleCardAmountChange(
+			err := z.updateCardAmountChangeToAddressToCardAmountsChangeMap(
 				addressToCardKeyToAmountChangesMap,
 				payload.Transfer.From.Local,
 				payload.Transfer.To.Local,
 				cardKeyFromCardTokenId(payload.Transfer.TokenId.Value.Int64()),
 				1,
+				loom.UnmarshalAddressPB(req.ZbgCardContractAddress),
 			)
 
 			if err != nil {
@@ -2083,12 +2104,13 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 			}
 		case *orctype.PlasmachainEvent_TransferWithQuantity:
 			ctx.Logger().Debug("got TransferWithQuantity event")
-			err := z.handleCardAmountChange(
+			err := z.updateCardAmountChangeToAddressToCardAmountsChangeMap(
 				addressToCardKeyToAmountChangesMap,
 				payload.TransferWithQuantity.From.Local,
 				payload.TransferWithQuantity.To.Local,
 				cardKeyFromCardTokenId(payload.TransferWithQuantity.TokenId.Value.Int64()),
 				uint(payload.TransferWithQuantity.Amount.Value.Uint64()),
+				loom.UnmarshalAddressPB(req.ZbgCardContractAddress),
 			)
 
 			if err != nil {
@@ -2101,12 +2123,13 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 
 			for index, cardTokenId := range payload.BatchTransfer.TokenIds {
 				amount := payload.BatchTransfer.Amounts[index]
-				err := z.handleCardAmountChange(
+				err := z.updateCardAmountChangeToAddressToCardAmountsChangeMap(
 					addressToCardKeyToAmountChangesMap,
 					payload.BatchTransfer.From.Local,
 					payload.BatchTransfer.To.Local,
 					cardKeyFromCardTokenId(cardTokenId.Value.Int64()),
 					uint(amount.Value.Uint64()),
+					loom.UnmarshalAddressPB(req.ZbgCardContractAddress),
 				)
 
 				if err != nil {
@@ -2145,7 +2168,7 @@ func (z *ZombieBattleground) ProcessOracleEventBatch(ctx contract.Context, req *
 		return fmt.Errorf("no new events found in the batch")
 	}
 
-	err = z.saveAddressToCardAmountsChangeMapDelta(ctx, addressToCardKeyToAmountChangesMap)
+	err = z.applyAddressToCardAmountsChangeMapDelta(ctx, addressToCardKeyToAmountChangesMap)
 	if err != nil {
 		return errors.Wrap(err, "failed to apply address to card amounts change map")
 	}
@@ -2249,9 +2272,13 @@ func (z *ZombieBattleground) DebugMintBoosterPackReceipt(ctx contract.Context, r
 }
 
 func (z *ZombieBattleground) DebugGetUserIdByAddress(ctx contract.StaticContext, req *zb_calls.DebugGetUserIdByAddressRequest) (*zb_data.UserIdContainer, error) {
-	userId, err := loadUserIdByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
+	found, userId, err := loadUserIdByAddress(ctx, loom.UnmarshalAddressPB(req.Address))
 	if err != nil {
 		return nil, err
+	}
+
+	if !found {
+		return nil, ErrNotFound
 	}
 
 	return &zb_data.UserIdContainer{
@@ -2289,23 +2316,13 @@ func (z *ZombieBattleground) ProcessOracleCommandResponseBatch(ctx contract.Cont
 	return &zb_calls.EmptyResponse{}, nil
 }
 
-
 func (z *ZombieBattleground) RequestUserFullCardCollectionSync(ctx contract.Context, req *zb_calls.RequestUserFullCardCollectionSyncRequest) (*zb_calls.EmptyResponse, error) {
 	err := z.isOwnerOrOracle(ctx, req.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	command := &orctype.OracleCommandRequest{
-		Command: &orctype.OracleCommandRequest_GetUserFullCardCollection{
-			GetUserFullCardCollection: &orctype.OracleCommandRequest_GetUserFullCardCollectionCommandRequest{
-				UserAddress: ctx.Message().Sender.MarshalPB(),
-			},
-		},
-	}
-	err = z.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
-		return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(ctx.Message().Sender) == 0
-	})
+	err = z.addGetUserFullCardCollectionOracleCommand(ctx, ctx.Message().Sender)
 	if err != nil {
 		return nil, err
 	}
@@ -2406,7 +2423,7 @@ loop:
 		if matchingDataWipeConfiguration.WipeDecks {
 			_, err = z.initializeUserDefaultDecks(ctx, version, userId)
 			if err != nil {
-				return false, errors.Wrap(err, "error handling user data wipe")
+				return false, errors.Wrap(err, "error wiping user decks")
 			}
 		}
 
@@ -2416,7 +2433,7 @@ loop:
 			}
 			err = saveOverlordUserDataList(ctx, userId, &emptyOverlordUserInstances)
 			if err != nil {
-				return false, errors.Wrap(err, "error handling user data wipe")
+				return false, errors.Wrap(err, "error wiping overlord user data")
 			}
 		}
 	}

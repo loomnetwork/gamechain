@@ -40,20 +40,16 @@ type PlasmachainGateway struct {
 }
 
 func ConnectToPlasmachainGateway(
-	loomClient *client.DAppChainRPCClient, caller loom.Address, contractAddressHex string, signer auth.Signer,
+	loomClient *client.DAppChainRPCClient,
+	caller loom.Address,
+	zbgCardContractAddress loom.Address,
+	signer auth.Signer,
 	logger *loom.Logger,
 ) (*PlasmachainGateway, error) {
-	addr, err := loom.LocalAddressFromHexString(contractAddressHex)
-	if err != nil {
-		return nil, err
-	}
-	gatewayAddr := loom.Address{
-		ChainID: loomClient.GetChainID(),
-		Local:   addr,
-	}
+	gatewayAddr := zbgCardContractAddress
 
 	backend := NewLoomchainBackend(loomClient, signer)
-	zbgCard, err := ethcontract.NewZBGCard(common.HexToAddress(contractAddressHex), backend)
+	zbgCard, err := ethcontract.NewZBGCard(common.HexToAddress(zbgCardContractAddress.Local.Hex()), backend)
 	if err != nil {
 		return nil, err
 	}
