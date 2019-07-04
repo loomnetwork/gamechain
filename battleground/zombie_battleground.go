@@ -437,10 +437,12 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 
 	response := zb_calls.LoginResponse{}
 
-	_, err = z.handleUserDataWipe(ctx, req.Version, req.UserId)
+	wipeExecuted, err := z.handleUserDataWipe(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
+
+	response.DataWiped = wipeExecuted
 
 	// apply any pending card collection changes that were pending because address to user id was not set
 	userIdFound, err := z.applyPendingCardAmountChanges(ctx, ctx.Message().Sender)
@@ -2435,9 +2437,9 @@ loop:
 				return false, errors.Wrap(err, "error wiping overlord user data")
 			}
 		}
-	}
 
-	if wipeExecuted {
+		userPersistentData.ExecutedDataWipesVersions =
+			append(userPersistentData.ExecutedDataWipesVersions, matchingDataWipeConfiguration.Version)
 		err = saveUserPersistentData(ctx, userId, userPersistentData)
 		if err != nil {
 			return false, errors.Wrap(err, "error handling user data wipe")

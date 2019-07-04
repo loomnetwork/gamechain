@@ -55,7 +55,12 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		"processOracleCommandResponseGetUserFullCardCollection",
 		"userAddress", userAddress.String(),
 		"len(ownedCards)", len(ownedCards),
+		"blockHeight", blockHeight,
 	)
+
+	if blockHeight == 0 {
+		return errors.Wrap(errors.New("blockHeight == 0"), "processOracleCommandResponseGetUserFullCardCollection")
+	}
 
 	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
@@ -113,8 +118,12 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		return err
 	}
 
-	fmt.Println("=========")
-	fmt.Println(blockHeight)
+	ctx.Logger().Debug(
+		"setting LastFullCardCollectionSyncPlasmachainBlockHeight",
+		"userAddress", userAddress.String(),
+		"userId", userId,
+		"blockHeight", blockHeight,
+	)
 	persistentData.LastFullCardCollectionSyncPlasmachainBlockHeight = blockHeight
 	err = saveUserPersistentData(ctx, userId, persistentData)
 	if err != nil {
