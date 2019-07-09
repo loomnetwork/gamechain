@@ -134,6 +134,7 @@ message LoginRequest {
 message LoginResponse {
     bool fullCardCollectionSyncExecuted = 1;
     bool dataWiped = 2;
+    bool userNotRegistered = 3;
 }
 
 message GetDeckRequest {

@@ -67,6 +67,8 @@ message UniqueAnimation
         ChernoBillArrival = 6;
         MountainArrival = 7;
         GargantuaArrival = 8;
+        BlizzardArrival = 9;
+        GoozillaArrival = 10;
     }
 }
 
