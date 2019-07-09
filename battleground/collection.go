@@ -88,6 +88,7 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 	}
 
 	for _, rawCard := range ownedCards {
+		// TODO: remove cards with amount == 0 from the collection
 		cardCollection.Cards = z.syncCardToCollection(
 			ctx,
 			userId,
@@ -101,6 +102,8 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		return cardCollection.Cards[i].CardKey.Compare(&cardCollection.Cards[j].CardKey) < 0
 	})
 
+	// TODO: remove cards with amount == 0 from the collection
+	// TODO: reduce card amounts in deck to match the changes in card amounts
 	err = saveUserCardCollection(ctx, userId, cardCollection)
 	if debugEnabled {
 		fmt.Println("-----------------")
@@ -205,6 +208,8 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 }
 
 func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardKey battleground_proto.CardKey, amount int64, collectionCards []*zb_data.CardCollectionCard) []*zb_data.CardCollectionCard {
+	// TODO: remove cards with amount == 0 from the collection
+
 	// We are allowing unknown cards to be added.
 	// This is to handle the case of user buying a card not existing on gamechain yet.
 
