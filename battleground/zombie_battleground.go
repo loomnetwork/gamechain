@@ -417,6 +417,15 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 }
 
 func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequest) (*zb_calls.LoginResponse, error) {
+	response := zb_calls.LoginResponse{}
+
+	// confirm account exists
+	if !ctx.Has(AccountKey(req.UserId)) {
+		ctx.Logger().Debug(fmt.Sprintf("user not registered -%s", req.UserId))
+		response.UserNotRegistered = true
+		return &response, nil
+	}
+
 	if !isOwner(ctx, req.UserId) {
 		return nil, ErrUserNotVerified
 	}
@@ -434,8 +443,6 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 	if err != nil {
 		return nil, err
 	}
-
-	response := zb_calls.LoginResponse{}
 
 	wipeExecuted, err := z.handleUserDataWipe(ctx, req.Version, req.UserId)
 	if err != nil {
