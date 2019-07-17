@@ -55,7 +55,7 @@ spec:
           - name: DB_PORT
             value: "3306"
           - name: EV_URL
-            value: "http://battleground-testnet-asia2.dappchains.com:46658/query"
+            value: "http://52.220.194.13:46658/query"
           - name: RECONNECT_INTERVAL
             value: "1000"
           - name: SENTRY_ENVIRONMENT
@@ -125,9 +125,9 @@ spec:
           - name: GAMECHAIN_CHAIN_ID
             value: "default"
           - name: GAMECHAIN_READ_URI
-            value: "http://battleground-testnet-asia2.dappchains.com:46658/query"
+            value: "http://52.220.194.13:46658/query"
           - name: GAMECHAIN_WRITE_URI
-            value: "http://battleground-testnet-asia2.dappchains.com:46658/rpc"
+            value: "http://52.220.194.13:46658/rpc"
           - name: GAMECHAIN_CONTRACT_NAME
             value: "ZombieBattleground"
           - name: ORACLE_QUERY_ADDRESS
