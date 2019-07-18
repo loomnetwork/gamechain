@@ -41,6 +41,7 @@ func (z *ZombieBattleground) addGetUserFullCardCollectionOracleCommand(ctx contr
 	}
 
 	err = z.saveOracleCommandRequestToList(ctx, command, func(request *orctype.OracleCommandRequest) (mustRemove bool) {
+		// Remove any other request for the same address
 		return request.GetGetUserFullCardCollection() != nil && loom.UnmarshalAddressPB(request.GetGetUserFullCardCollection().UserAddress).Compare(address) == 0
 	})
 
@@ -57,7 +58,7 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		return errors.Wrap(err, "processOracleCommandResponseBatchInternal")
 	}
 
-	newCommandRequests := make([]*orctype.OracleCommandRequest, 0)
+	unhandledCommandRequests := make([]*orctype.OracleCommandRequest, 0)
 	for _, commandResponseOneOf := range commandResponses {
 		// check if a command with such id even exists
 		var matchingCommandRequest *orctype.OracleCommandRequest = nil
@@ -91,12 +92,12 @@ func (z *ZombieBattleground) processOracleCommandResponseBatchInternal(ctx contr
 		// We allow single commands to fail
 		// Just keep them unconfirmed until something is fixed for it to become processed and confirmed.
 		if err != nil {
-			newCommandRequests = append(newCommandRequests, matchingCommandRequest)
+			unhandledCommandRequests = append(unhandledCommandRequests, matchingCommandRequest)
 			ctx.Logger().Error(errors.Wrap(err, "error processing oracle command response").Error())
 		}
 	}
 
-	commandRequestList.Commands = newCommandRequests
+	commandRequestList.Commands = unhandledCommandRequests
 	err = saveOracleCommandRequestList(ctx, commandRequestList)
 	if err != nil {
 		return errors.Wrap(err, "processOracleCommandResponseBatchInternal")
