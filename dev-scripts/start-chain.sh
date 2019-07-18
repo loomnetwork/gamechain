@@ -28,7 +28,9 @@ if [ $# -eq 0 ]; then
 fi
 set -e
 
-cp ./config.toml ../chaindata/config/config.toml
+if [ -f "./config.toml" ]; then
+    cp ./config.toml ../chaindata/config/config.toml
+fi
 
 (sleep 5; ./chain-setup.sh) &
 (cd ..; ${LOOMCHAIN_DIR}/${LOOM_NAME} run)
