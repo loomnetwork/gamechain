@@ -125,15 +125,15 @@ spec:
           - name: GAMECHAIN_CHAIN_ID
             value: "default"
           - name: GAMECHAIN_READ_URI
-            value: "http://52.220.194.13:46658/query"
+            value: "GAMECHAIN_READ_URI_JENKINS_PARAM"
           - name: GAMECHAIN_WRITE_URI
-            value: "http://52.220.194.13:46658/rpc"
+            value: "GAMECHAIN_WRITE_URI_JENKINS_PARAM"
           - name: GAMECHAIN_CONTRACT_NAME
             value: "ZombieBattleground"
           - name: ORACLE_QUERY_ADDRESS
             value: ":8888"
           - name: ORACLE_LOG_LEVEL
-            value: "debug"
+            value: "ORACLE_LOG_LEVEL_JENKINS_PARAM"
           - name: ORACLE_LOG_DESTINATION
             value: "file://-"
           - name: ORACLE_RECONNECT_INTERVAL
