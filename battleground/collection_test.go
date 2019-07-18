@@ -76,3 +76,31 @@ func TestCardCollectionCardOperations(t *testing.T) {
 		assert.Equal(t, 100, len(CardCollectionCard.Cards))
 	})
 }
+
+func TestDebugCheatSetFullCardCollection(t *testing.T) {
+	c := &ZombieBattleground{}
+	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"
+	var addr loom.Address
+	var ctx contract.Context
+
+	setup(c, pubKeyHexString, &addr, &ctx, t)
+	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
+		UserId:  "CardUser",
+		Image:   "PathToImage",
+		Version: "v1",
+	}, t)
+
+	collection, err := loadUserCardCollectionRaw(ctx, "CardUser")
+	assert.Nil(t, err)
+	assert.Equal(t, 8, len(collection.Cards))
+
+	_, err = c.DebugCheatSetFullCardCollection(ctx, &zb_calls.DebugCheatSetFullCardCollectionRequest{
+		UserId:  "CardUser",
+		Version: "v1",
+	})
+	assert.Nil(t, err)
+
+	collection, err = loadUserCardCollectionRaw(ctx, "CardUser")
+	assert.Nil(t, err)
+	assert.Equal(t, 100, len(collection.Cards))
+}

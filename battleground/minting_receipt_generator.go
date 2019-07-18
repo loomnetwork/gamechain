@@ -98,20 +98,20 @@ func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
 	userId *big.Int,
 	privateKey *ecdsa.PrivateKey,
 	booster uint,
+	super uint,
 	air uint,
 	earth uint,
 	fire uint,
 	life uint,
 	toxic uint,
 	water uint,
-	super uint,
 	small uint,
 	minion uint,
 	binance uint,
 	txID *big.Int,
 	contractVersion uint) (*VerifySignResult, error) {
 
-	hash, err := generator.createEosHash(userId, booster, air, earth, fire, life, toxic, water, super, small, minion, binance, txID, contractVersion)
+	hash, err := generator.createEosHash(userId, booster, super, air, earth, fire, life, toxic, water, small, minion, binance, txID, contractVersion)
 
 	if err != nil {
 		return nil, err
@@ -132,13 +132,13 @@ func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
 func (generator *MintingReceiptGenerator) createEosHash(
 	userID *big.Int,
 	booster uint,
+	super uint,
 	air uint,
 	earth uint,
 	fire uint,
 	life uint,
 	toxic uint,
 	water uint,
-	super uint,
 	small uint,
 	minion uint,
 	binance uint,

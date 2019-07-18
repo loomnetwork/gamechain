@@ -44,8 +44,8 @@ const (
 	TopicFindMatchEvent          = "findmatch"
 	TopicAcceptMatchEvent        = "acceptmatch"
 	// match pattern match:id e.g. match:1, match:2, ...
-	TopicMatchEventPrefix      = "match:"
-	TopicUserEventPrefix       = "user:"
+	TopicMatchEventPrefix = "match:"
+	TopicUserEventPrefix  = "user:"
 )
 
 const (
@@ -386,6 +386,23 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 		return errors.Wrap(err, "CreateAccount")
 	}
 
+	err = saveAddressToUserIdLink(ctx, req.UserId, ctx.Message().Sender)
+	if err != nil {
+		return err
+	}
+
+	userPersistentData, err := loadUserPersistentData(ctx, req.UserId)
+	if err != nil {
+		return err
+	}
+
+	userPersistentData.Address = ctx.Message().Sender.MarshalPB()
+
+	err = saveUserPersistentData(ctx, req.UserId, userPersistentData)
+	if err != nil {
+		return err
+	}
+
 	//Emit CreateDeck event when creating new default decks for this new account
 	for i := 0; i < len(defaultDecks.Decks); i++ {
 		emitMsg := zb_calls.CreateDeckEvent{
@@ -400,11 +417,6 @@ func (z *ZombieBattleground) CreateAccount(ctx contract.Context, req *zb_calls.U
 			return errors.Wrap(err, "CreateAccount")
 		}
 		ctx.EmitTopics(data, TopicCreateDeckEvent)
-	}
-
-	err = saveAddressToUserIdLink(ctx, req.UserId, ctx.Message().Sender)
-	if err != nil {
-		return err
 	}
 
 	senderAddress := []byte(ctx.Message().Sender.Local)
@@ -439,11 +451,6 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 		return nil, err
 	}
 
-	userPersistentData, err := loadUserPersistentData(ctx, req.UserId)
-	if err != nil {
-		return nil, err
-	}
-
 	wipeExecuted, err := z.handleUserDataWipe(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
@@ -461,6 +468,13 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 		ctx.Logger().Warn("user id not found when doing applyPendingCardAmountChanges in Login", "userId", req.UserId, "userAddress", ctx.Message().Sender.String())
 	}
 
+	userPersistentData, err := loadUserPersistentData(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	userPersistentData.Address = ctx.Message().Sender.MarshalPB()
+
 	if userPersistentData.LastFullCardCollectionSyncPlasmachainBlockHeight == 0 {
 		err = z.addGetUserFullCardCollectionOracleCommand(ctx, ctx.Message().Sender)
 		if err != nil {
@@ -469,6 +483,11 @@ func (z *ZombieBattleground) Login(ctx contract.Context, req *zb_calls.LoginRequ
 
 		// notify the client that a full collection sync is scheduled so it can wait a bit
 		response.FullCardCollectionSyncExecuted = true
+	}
+
+	err = saveUserPersistentData(ctx, req.UserId, userPersistentData)
+	if err != nil {
+		return nil, err
 	}
 
 	return &response, err
@@ -2330,7 +2349,12 @@ func (z *ZombieBattleground) RequestUserFullCardCollectionSync(ctx contract.Cont
 		return nil, err
 	}
 
-	err = z.addGetUserFullCardCollectionOracleCommand(ctx, ctx.Message().Sender)
+	persistentData, err := loadUserPersistentData(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	err = z.addGetUserFullCardCollectionOracleCommand(ctx, loom.UnmarshalAddressPB(persistentData.Address))
 	if err != nil {
 		return nil, err
 	}
@@ -2347,6 +2371,39 @@ func (z *ZombieBattleground) DebugGetPendingCardAmountChangeItems(ctx contract.S
 	return &zb_calls.DebugGetPendingCardAmountChangeItemsResponse{
 		Container: container,
 	}, nil
+}
+
+func (z *ZombieBattleground) DebugCheatSetFullCardCollection(ctx contract.Context, req *zb_calls.DebugCheatSetFullCardCollectionRequest) (*zb_calls.EmptyResponse, error) {
+	if !debugEnabled {
+		return nil, ErrDebugNotEnabled
+	}
+
+	// Load user collection
+	userCardCollection, err := loadUserCardCollectionRaw(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Replace user collection with card library
+	cardLibrary, err := loadCardLibrary(ctx, req.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	collectionCards, err := z.generateFullCardCollection(cardLibrary)
+	if err != nil {
+		return nil, err
+	}
+
+	userCardCollection.Cards = collectionCards
+
+	// Save collection
+	err = saveUserCardCollection(ctx, req.UserId, userCardCollection)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zb_calls.EmptyResponse{}, nil
 }
 
 func (z *ZombieBattleground) validateOracle(ctx contract.StaticContext) error {
