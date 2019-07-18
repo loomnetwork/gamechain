@@ -77,6 +77,104 @@ func TestCardCollectionCardOperations(t *testing.T) {
 	})
 }
 
+func TestSyncCardToCollection(t *testing.T) {
+	c := &ZombieBattleground{}
+	collection := c.syncCardAmountChangesToCollection(
+		[]*zb_data.CardCollectionCard{
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 2},
+				Amount:  3,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 5},
+				Amount:  2,
+			},
+		},
+		[]CardAmountChangeItem{
+			{
+				CardKey:      battleground_proto.CardKey{MouldId: 2},
+				AmountChange: 1,
+			},
+			{
+				CardKey:      battleground_proto.CardKey{MouldId: 5},
+				AmountChange: -2,
+			},
+		},
+	)
+
+	assert.NotNil(t, collection)
+	assert.Equal(t, 1, len(collection))
+	assert.Equal(t, int64(2), collection[0].CardKey.MouldId)
+	assert.Equal(t, int64(4), collection[0].Amount)
+}
+
+func TestLimitDeckByCardCollection(t *testing.T) {
+	deck := &zb_data.Deck{
+		Cards: []*zb_data.DeckCard{
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 2},
+				Amount:  3,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 5},
+				Amount:  4,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 7},
+				Amount:  4,
+			},
+		},
+	}
+
+	t.Run("Collection shouldn't change", func(t *testing.T) {
+		collectionCards := []*zb_data.CardCollectionCard{
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 2},
+				Amount:  3,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 5},
+				Amount:  4,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 7},
+				Amount:  4,
+			},
+		}
+
+		limitDeckByCardCollection(deck, collectionCards)
+
+		assert.Equal(t, 3, len(deck.Cards))
+		assert.Equal(t, int64(2), deck.Cards[0].CardKey.MouldId)
+		assert.Equal(t, int64(3), deck.Cards[0].Amount)
+		assert.Equal(t, int64(5), deck.Cards[1].CardKey.MouldId)
+		assert.Equal(t, int64(4), deck.Cards[1].Amount)
+		assert.Equal(t, int64(7), deck.Cards[2].CardKey.MouldId)
+		assert.Equal(t, int64(4), deck.Cards[2].Amount)
+	})
+
+	t.Run("Deck shouldn't contain more cards than exists in collection", func(t *testing.T) {
+		collectionCards := []*zb_data.CardCollectionCard{
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 2},
+				Amount:  3,
+			},
+			{
+				CardKey: battleground_proto.CardKey{MouldId: 5},
+				Amount:  2,
+			},
+		}
+
+		limitDeckByCardCollection(deck, collectionCards)
+
+		assert.Equal(t, 2, len(deck.Cards))
+		assert.Equal(t, int64(2), deck.Cards[0].CardKey.MouldId)
+		assert.Equal(t, int64(3), deck.Cards[0].Amount)
+		assert.Equal(t, int64(5), deck.Cards[1].CardKey.MouldId)
+		assert.Equal(t, int64(2), deck.Cards[1].Amount)
+	})
+}
+
 func TestDebugCheatSetFullCardCollection(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "e4008e26428a9bca87465e8de3a8d0e9c37a56ca619d3d6202b0567528786618"

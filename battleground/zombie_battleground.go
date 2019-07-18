@@ -539,7 +539,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 		return nil, errors.Wrapf(err, "unable to get overlord instances for userId: %s", req.UserId)
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId, req.Version)
+	deckList, err := loadDecks(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to load decks")
 	}
@@ -549,7 +549,7 @@ func (z *ZombieBattleground) CreateDeck(ctx contract.Context, req *zb_calls.Crea
 		return nil, err
 	}
 
-	userCardCollection, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
+	userCardCollection, err := loadUserCardCollection(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -609,7 +609,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 		return errors.Wrapf(err, "unable to get overlord instances for userId: %s", req.UserId)
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId, req.Version)
+	deckList, err := loadDecks(ctx, req.Version, req.UserId)
 	if err != nil {
 		return errors.Wrap(err, "unable to load decks")
 	}
@@ -619,7 +619,7 @@ func (z *ZombieBattleground) EditDeck(ctx contract.Context, req *zb_calls.EditDe
 		return err
 	}
 
-	userCardCollection, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
+	userCardCollection, err := loadUserCardCollection(ctx, req.Version, req.UserId)
 	if err != nil {
 		return err
 	}
@@ -670,7 +670,7 @@ func (z *ZombieBattleground) DeleteDeck(ctx contract.Context, req *zb_calls.Dele
 		return ErrUserNotVerified
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId, req.Version)
+	deckList, err := loadDecks(ctx, req.Version, req.UserId)
 	if err != nil {
 		return err
 	}
@@ -707,7 +707,7 @@ func (z *ZombieBattleground) ListDecks(ctx contract.Context, req *zb_calls.ListD
 		return nil, ErrVersionNotSet
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId, req.Version)
+	deckList, err := loadDecks(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -722,7 +722,7 @@ func (z *ZombieBattleground) GetDeck(ctx contract.Context, req *zb_calls.GetDeck
 		return nil, ErrVersionNotSet
 	}
 
-	deckList, err := loadDecks(ctx, req.UserId, req.Version)
+	deckList, err := loadDecks(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -754,7 +754,7 @@ func (z *ZombieBattleground) GetCollection(ctx contract.Context, req *zb_calls.G
 		return nil, ErrVersionNotSet
 	}
 
-	collectionList, err := z.loadUserCardCollection(ctx, req.Version, req.UserId)
+	collectionList, err := loadUserCardCollection(ctx, req.Version, req.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -2390,7 +2390,7 @@ func (z *ZombieBattleground) DebugCheatSetFullCardCollection(ctx contract.Contex
 		return nil, err
 	}
 
-	collectionCards, err := z.generateFullCardCollection(cardLibrary, false)
+	collectionCards, err := generateFullCardCollection(cardLibrary, false)
 	if err != nil {
 		return nil, err
 	}
