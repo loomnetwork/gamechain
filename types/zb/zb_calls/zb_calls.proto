@@ -481,6 +481,11 @@ message DebugGetPendingCardAmountChangeItemsResponse {
     CardAmountChangeItemsContainer container = 1;
 }
 
+message DebugCheatSetFullCardCollectionRequest {
+    string userId = 1;
+    string version = 2;
+}
+
 message WipeUserDataRequest {
     string version = 1;
     string userId = 2;

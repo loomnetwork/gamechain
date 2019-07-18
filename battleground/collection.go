@@ -182,26 +182,36 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 
 		collectionCards = knownCollectionCards
 	} else {
-		// Construct fake collection with max count of every card
-		for _, card := range cardLibrary.Cards {
-			if card.Hidden {
-				continue
-			}
-
-			if card.CardKey.Variant != zb_enums.CardVariant_Standard {
-				continue
-			}
-
-			maxAmountOfCardInDeck, err := getMaxAmountOfCardInDeck(card)
-			if err != nil {
-				return nil, err
-			}
-
-			collectionCards = append(collectionCards, &zb_data.CardCollectionCard{
-				CardKey: card.CardKey,
-				Amount:  int64(maxAmountOfCardInDeck),
-			})
+		collectionCards, err = z.generateFullCardCollection(cardLibrary, true)
+		if err != nil {
+			return nil, err
 		}
+	}
+
+	return collectionCards, nil
+}
+
+func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.CardList, onlyStandardCardVariant bool) ([]*zb_data.CardCollectionCard, error) {
+	// Construct fake collection with max count of every standard card
+	collectionCards := []*zb_data.CardCollectionCard{}
+	for _, card := range cardLibrary.Cards {
+		if card.Hidden {
+			continue
+		}
+
+		if onlyStandardCardVariant && card.CardKey.Variant != zb_enums.CardVariant_Standard {
+			continue
+		}
+
+		maxAmountOfCardInDeck, err := getMaxAmountOfCardInDeck(card)
+		if err != nil {
+			return nil, err
+		}
+
+		collectionCards = append(collectionCards, &zb_data.CardCollectionCard{
+			CardKey: card.CardKey,
+			Amount:  int64(maxAmountOfCardInDeck),
+		})
 	}
 
 	return collectionCards, nil
