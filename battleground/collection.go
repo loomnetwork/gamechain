@@ -182,7 +182,7 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 
 		collectionCards = knownCollectionCards
 	} else {
-		collectionCards, err = z.generateFullCardCollection(cardLibrary)
+		collectionCards, err = z.generateFullCardCollection(cardLibrary, true)
 		if err != nil {
 			return nil, err
 		}
@@ -191,7 +191,7 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 	return collectionCards, nil
 }
 
-func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.CardList) ([]*zb_data.CardCollectionCard, error) {
+func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.CardList, onlyStandardCardVariant bool) ([]*zb_data.CardCollectionCard, error) {
 	// Construct fake collection with max count of every standard card
 	collectionCards := []*zb_data.CardCollectionCard{}
 	for _, card := range cardLibrary.Cards {
@@ -199,7 +199,7 @@ func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.Car
 			continue
 		}
 
-		if card.CardKey.Variant != zb_enums.CardVariant_Standard {
+		if onlyStandardCardVariant && card.CardKey.Variant != zb_enums.CardVariant_Standard {
 			continue
 		}
 

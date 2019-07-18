@@ -2390,7 +2390,7 @@ func (z *ZombieBattleground) DebugCheatSetFullCardCollection(ctx contract.Contex
 		return nil, err
 	}
 
-	collectionCards, err := z.generateFullCardCollection(cardLibrary)
+	collectionCards, err := z.generateFullCardCollection(cardLibrary, false)
 	if err != nil {
 		return nil, err
 	}
