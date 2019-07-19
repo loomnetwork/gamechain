@@ -179,7 +179,9 @@ func runE2ETests(t *testing.T, tests []testdata) {
 
 		//noinspection ALL
 		defer os.Remove(tempTestFilePath)
-		runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
+		t.Run(test.name, func(t *testing.T) {
+			runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
+		})
 	}
 }
 
