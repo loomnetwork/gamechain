@@ -2,6 +2,11 @@
   RunCmd = "/bin/echo "
   Delay = 10000
 
+[[TestCases]]
+  RunCmd = "zb-cli contract_configuration -k {{index $.AccountPrivKeyPathList 0}} set_fiat_purchase_contract_version -v 3"
+  Condition = "contains"
+  Expected = ["success"]
+
 ############ Create 1st match ############
 [[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u player-1 -v v1"
