@@ -7,7 +7,6 @@ import (
 	"github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/gamechain/types/zb/zb_calls"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
-	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
 	"github.com/loomnetwork/go-loom"
 	"math/big"
 	"strconv"
@@ -53,6 +52,7 @@ var (
 	ErrNotOwnerOrOracleNotVerified = errors.New("sender is not user owner or oracle")
 )
 
+type cardKeyToAmountMap map[battleground_proto.CardKey]int64
 type cardKeyToAmountChangeMap map[battleground_proto.CardKey]int64
 type addressToCardKeyToAmountChangesMap map[string]map[battleground_proto.CardKey]int64
 
@@ -273,7 +273,7 @@ func savePendingMintingTransactionReceipts(ctx contract.Context, userID string, 
 }
 
 func saveDecks(ctx contract.Context, version string, userID string, decks *zb_data.DeckList) error {
-	_, err := fixDeckListCards(ctx, decks, version)
+	_, err := fixDeckListCards(ctx, decks, version, userID)
 	if err != nil {
 		return errors.Wrap(err, "error saving decks")
 	}
@@ -284,13 +284,13 @@ func saveDecks(ctx contract.Context, version string, userID string, decks *zb_da
 	return nil
 }
 
-func loadDecks(ctx contract.Context, userID string, version string) (*zb_data.DeckList, error) {
+func loadDecks(ctx contract.Context, version string, userID string) (*zb_data.DeckList, error) {
 	deckList, err := loadDecksRaw(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
-	deckListChanged, err := fixDeckListCards(ctx, deckList, version)
+	deckListChanged, err := fixDeckListCards(ctx, deckList, version, userID)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading decks")
 	}
@@ -368,6 +368,7 @@ func saveOverlordUserDataList(ctx contract.Context, userID string, overlordsUser
 }
 
 func loadOverlordUserInstances(ctx contract.StaticContext, version string, userID string) ([]*zb_data.OverlordUserInstance, error) {
+	// overlord user instance consists of prototype + user data
 	prototypeList, err := loadOverlordPrototypes(ctx, version)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading overlord user instances")
@@ -458,7 +459,7 @@ func getDeckWithRegistrationData(ctx contract.Context, registrationData *zb_data
 	}
 
 	// get matched player deck
-	matchedDl, err := loadDecks(ctx, registrationData.UserId, version)
+	matchedDl, err := loadDecks(ctx, version, registrationData.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -783,78 +784,6 @@ func getCardByCardKey(cardList *zb_data.CardList, cardKey battleground_proto.Car
 		}
 	}
 	return nil, fmt.Errorf("card with card key [%s] not found in card library", cardKey.String())
-}
-
-func fixDeckListCards(ctx contract.Context, deckList *zb_data.DeckList, version string) (changed bool, err error) {
-	cardLibrary, err := loadCardLibrary(ctx, version)
-	if err != nil {
-		return false, errors.Wrap(err, "error fixing deck list")
-	}
-
-	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
-	if err != nil {
-		return false, errors.Wrap(err, "error fixing deck list")
-	}
-
-	changed = false
-	for _, deck := range deckList.Decks {
-		if fixDeckCardVariants(deck, cardKeyToCardMap) {
-			changed = true
-		}
-	}
-
-	return changed, nil
-}
-
-func fixDeckCardVariants(deck *zb_data.Deck, cardKeyToCardMap map[battleground_proto.CardKey]*zb_data.Card) (changed bool) {
-	var newDeckCards = make([]*zb_data.DeckCard, 0)
-	var cardKeyToDeckCard = make(map[battleground_proto.CardKey]*zb_data.DeckCard)
-	for _, deckCard := range deck.Cards {
-		cardKeyToDeckCard[deckCard.CardKey] = deckCard
-	}
-
-	for _, deckCard := range deck.Cards {
-		// Check if this specific variant of a card exists in card library
-		_, variantExists := cardKeyToCardMap[deckCard.CardKey]
-		if !variantExists {
-			// If this variant is not in card library, try to fallback to Normal variant
-			normalVariantCardKey := battleground_proto.CardKey{
-				MouldId: deckCard.CardKey.MouldId,
-				Variant: zb_enums.CardVariant_Standard,
-			}
-
-			_, normalVariantExists := cardKeyToCardMap[normalVariantCardKey]
-
-			// If normal variant doesn't exist in card library too, just remove the card from the deck completely
-			if !normalVariantExists {
-				changed = true
-			} else {
-				normalVariantDeckCard, normalVariantDeckCardExists := cardKeyToDeckCard[normalVariantCardKey]
-				// If normal variant exists in card library AND in the deck,
-				// add the amount of the special variant to normal variant
-				if normalVariantDeckCardExists {
-					normalVariantDeckCard.Amount += deckCard.Amount
-					changed = true
-				} else {
-					// If normal variant exists in card library, but NOT in the deck,
-					// create a normal variant deck card and add special variant amount to it
-					normalVariantDeckCard = &zb_data.DeckCard{
-						CardKey: normalVariantCardKey,
-						Amount:  deckCard.Amount,
-					}
-
-					newDeckCards = append(newDeckCards, normalVariantDeckCard)
-					cardKeyToDeckCard[normalVariantCardKey] = normalVariantDeckCard
-					changed = true
-				}
-			}
-		} else {
-			newDeckCards = append(newDeckCards, deckCard)
-		}
-	}
-
-	deck.Cards = newDeckCards
-	return changed
 }
 
 func parseUserIdToNumber(userIdString string) *big.Int {

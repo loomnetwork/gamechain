@@ -26,7 +26,7 @@ var initRequest = zb_calls.InitRequest{
 var updateInitRequest = zb_calls.UpdateInitRequest{
 }
 
-func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) {
+func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *contract.Context, t *testing.T) *plugin.FakeContext {
 	debugEnabled = true
 
 	// random key
@@ -54,9 +54,9 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 		Local: loom.LocalAddressFromPublicKey(pubKey),
 	}
 
-	*ctx = contract.WrapPluginContext(
-		plugin.CreateFakeContext(*addr, *addr),
-	)
+	fc := plugin.CreateFakeContext(*addr, *addr)
+
+	*ctx = contract.WrapPluginContext(fc)
 
 	// Check both Init and UpdateInit
 	err = c.Init(*ctx, &initRequest)
@@ -76,6 +76,8 @@ func setup(c *ZombieBattleground, pubKeyHex string, addr *loom.Address, ctx *con
 
 	err = c.UpdateContractConfiguration(*ctx, &request)
 	assert.Nil(t, err)
+
+	return fc
 }
 
 func setupAccount(c *ZombieBattleground, ctx contract.Context, upsertAccountRequest *zb_calls.UpsertAccountRequest, t *testing.T) {
@@ -1568,21 +1570,13 @@ func TestMatchMakingPlayerPool(t *testing.T) {
 func TestMatchMakingTimeout(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr *loom.Address
+	var addr loom.Address
 	var ctx contract.Context
 
 	// setup ctx
-	c = &ZombieBattleground{}
-	pubKey, _ := hex.DecodeString(pubKeyHexString)
-	addr = &loom.Address{
-		Local: loom.LocalAddressFromPublicKey(pubKey),
-	}
+	fc := setup(c, pubKeyHexString, &addr, &ctx, t)
 	now := time.Now()
-	fc := plugin.CreateFakeContext(*addr, *addr)
 	fc.SetTime(now)
-	ctx = contract.WrapPluginContext(fc)
-	err := c.Init(ctx, &initRequest)
-	assert.Nil(t, err)
 
 	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "player-1",
@@ -2198,21 +2192,12 @@ func TestCardPlayOperations(t *testing.T) {
 func TestCheckGameStatusWithTimeout(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr *loom.Address
+	var addr loom.Address
 	var ctx contract.Context
 
-	// setup ctx
-	c = &ZombieBattleground{}
-	pubKey, _ := hex.DecodeString(pubKeyHexString)
-	addr = &loom.Address{
-		Local: loom.LocalAddressFromPublicKey(pubKey),
-	}
+	fc := setup(c, pubKeyHexString, &addr, &ctx, t)
 	now := time.Now()
-	fc := plugin.CreateFakeContext(*addr, *addr)
 	fc.SetTime(now)
-	ctx = contract.WrapPluginContext(fc)
-	err := c.Init(ctx, &initRequest)
-	assert.Nil(t, err)
 
 	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "player-1",
@@ -2383,22 +2368,12 @@ func TestCheckGameStatusWithTimeout(t *testing.T) {
 func TestCheckGameStatusNoPlayerAction(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr *loom.Address
+	var addr loom.Address
 	var ctx contract.Context
 
-	// setup ctx
-	c = &ZombieBattleground{}
-	pubKey, _ := hex.DecodeString(pubKeyHexString)
-	addr = &loom.Address{
-		Local: loom.LocalAddressFromPublicKey(pubKey),
-	}
+	fc := setup(c, pubKeyHexString, &addr, &ctx, t)
 	now := time.Now()
-	fc := plugin.CreateFakeContext(*addr, *addr)
 	fc.SetTime(now)
-	ctx = contract.WrapPluginContext(fc)
-	err := c.Init(ctx, &initRequest)
-	assert.Nil(t, err)
-
 	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
@@ -2595,22 +2570,13 @@ func TestAIDeckOperations(t *testing.T) {
 func TestKeepAlive(t *testing.T) {
 	c := &ZombieBattleground{}
 	var pubKeyHexString = "3866f776276246e4f9998aa90632931d89b0d3a5930e804e02299533f55b39e1"
-	var addr *loom.Address
+	var addr*loom.Address
 	var ctx contract.Context
 
 	// setup ctx
-	c = &ZombieBattleground{}
-	pubKey, _ := hex.DecodeString(pubKeyHexString)
-	addr = &loom.Address{
-		Local: loom.LocalAddressFromPublicKey(pubKey),
-	}
+	fc := setup(c, pubKeyHexString, addr, &ctx, t)
 	now := time.Now()
-	fc := plugin.CreateFakeContext(*addr, *addr)
 	fc.SetTime(now)
-	ctx = contract.WrapPluginContext(fc)
-	err := c.Init(ctx, &initRequest)
-	assert.Nil(t, err)
-
 	setupAccount(c, ctx, &zb_calls.UpsertAccountRequest{
 		UserId:  "player-1",
 		Version: "v1",
@@ -2801,7 +2767,7 @@ func TestHashSignature(t *testing.T) {
 
 	generator, err := NewMintingReceiptGenerator(privateKey, 1)
 	assert.Nil(t, err)
-	verifySignResult, err := generator.generateEosVerifySignResult(
+	verifySignResult, err := generator.generateVerifySignResult(
 		big.NewInt(5),
 		generator.gatewayPrivateKey,
 		3,
