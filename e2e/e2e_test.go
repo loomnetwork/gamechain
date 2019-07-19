@@ -99,6 +99,7 @@ func runCommand(workingDir, binary string, args ...string) error {
 
 func runE2E(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
 	singleNode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+	fmt.Printf("Running in SINGLENODE mode: %t\n", singleNode)
 
 	// skip multi-node tests?
 	if singleNode && validators > 1 {
