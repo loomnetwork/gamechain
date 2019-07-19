@@ -99,6 +99,7 @@ func runCommand(workingDir, binary string, args ...string) error {
 
 func runE2E(t *testing.T, name string, testFile string, validators int, accounts int, genFile string) {
 	singleNode, _ := strconv.ParseBool(os.Getenv("SINGLENODE"))
+	fmt.Printf("Running in SINGLENODE mode: %t\n", singleNode)
 
 	// skip multi-node tests?
 	if singleNode && validators > 1 {
@@ -178,7 +179,9 @@ func runE2ETests(t *testing.T, tests []testdata) {
 
 		//noinspection ALL
 		defer os.Remove(tempTestFilePath)
-		runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
+		t.Run(test.name, func(t *testing.T) {
+			runE2E(t, test.name, tempTestFilePath, test.validators, test.accounts, test.genFile)
+		})
 	}
 }
 
