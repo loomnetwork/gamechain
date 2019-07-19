@@ -2282,7 +2282,22 @@ func (z *ZombieBattleground) DebugMintBoosterPackReceipt(ctx contract.Context, r
 	}
 
 	userIdString := defaultUserIdPrefix + req.UserId.Value.Int.String()
-	receipt, err := mintBoosterPacksAndSave(ctx, userIdString, req.UserId.Value.Int, uint(req.BoosterAmount))
+	receipt, err := mintGenericPacksAndSave(
+		ctx,
+		userIdString,
+		req.UserId.Value.Int,
+		uint(req.BoosterAmount),
+		uint(req.SuperAmount),
+		uint(req.AirAmount),
+		uint(req.EarthAmount),
+		uint(req.FireAmount),
+		uint(req.LifeAmount),
+		uint(req.ToxicAmount),
+		uint(req.WaterAmount),
+		uint(req.SmallAmount),
+		uint(req.MinionAmount),
+		uint(req.BinanceAmount),
+	)
 	if err != nil {
 		return nil, err
 	}

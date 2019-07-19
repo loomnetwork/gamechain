@@ -1,7 +1,7 @@
 set -e
 
 ZB_CARD_META_DATA_DIR=${GOPATH}/src/github.com/loomnetwork/zb_card_meta_data
-PLASMACHAIN_LAST_BLOCK=3066893 # for staging
+PLASMACHAIN_LAST_BLOCK=3153887 # for staging, update to avoid scanning long ranges every time
 
 echo "--- Updating data"
 
