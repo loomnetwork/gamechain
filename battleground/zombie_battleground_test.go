@@ -2801,7 +2801,7 @@ func TestHashSignature(t *testing.T) {
 
 	generator, err := NewMintingReceiptGenerator(privateKey, 1)
 	assert.Nil(t, err)
-	verifySignResult, err := generator.generateEosVerifySignResult(
+	verifySignResult, err := generator.generateVerifySignResult(
 		big.NewInt(5),
 		generator.gatewayPrivateKey,
 		3,

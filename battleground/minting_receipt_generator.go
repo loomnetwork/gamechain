@@ -28,13 +28,13 @@ type MintingReceipt struct {
 	VerifyHash *VerifySignResult
 	UserId     *big.Int
 	Booster    uint
+	Super      uint
 	Air        uint
 	Earth      uint
 	Fire       uint
 	Life       uint
 	Toxic      uint
 	Water      uint
-	Super      uint
 	Small      uint
 	Minion     uint
 	Binance    uint
@@ -52,21 +52,35 @@ func NewMintingReceiptGenerator(gatewayPrivateKey *ecdsa.PrivateKey, contractVer
 	}, nil
 }
 
-func (generator *MintingReceiptGenerator) CreateBoosterReceipt(userId *big.Int, boosterAmount uint, txId *big.Int) (*MintingReceipt, error) {
-	verifyHash, err := generator.generateEosVerifySignResult(
+func (generator *MintingReceiptGenerator) CreateGenericPackReceipt(
+	userId *big.Int,
+	booster uint,
+	super uint,
+	air uint,
+	earth uint,
+	fire uint,
+	life uint,
+	toxic uint,
+	water uint,
+	small uint,
+	minion uint,
+	binance uint,
+	txId *big.Int,
+) (*MintingReceipt, error) {
+	verifyHash, err := generator.generateVerifySignResult(
 		userId,
 		generator.gatewayPrivateKey,
-		boosterAmount,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
+		booster,
+		super,
+		air,
+		earth,
+		fire,
+		life,
+		toxic,
+		water,
+		small,
+		minion,
+		binance,
 		txId,
 		generator.contractVersion)
 
@@ -78,23 +92,23 @@ func (generator *MintingReceiptGenerator) CreateBoosterReceipt(userId *big.Int, 
 	response := MintingReceipt{
 		VerifyHash: verifyHash,
 		UserId:     userId,
-		Booster:    boosterAmount,
-		Air:        0,
-		Earth:      0,
-		Fire:       0,
-		Life:       0,
-		Toxic:      0,
-		Water:      0,
-		Super:      0,
-		Small:      0,
-		Minion:     0,
-		Binance:    0,
+		Booster:    booster,
+		Super:      super,
+		Air:        air,
+		Earth:      earth,
+		Fire:       fire,
+		Life:       life,
+		Toxic:      toxic,
+		Water:      water,
+		Small:      small,
+		Minion:     minion,
+		Binance:    binance,
 		TxID:       txId}
 
 	return &response, nil
 }
 
-func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
+func (generator *MintingReceiptGenerator) generateVerifySignResult(
 	userId *big.Int,
 	privateKey *ecdsa.PrivateKey,
 	booster uint,
@@ -111,7 +125,7 @@ func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
 	txID *big.Int,
 	contractVersion uint) (*VerifySignResult, error) {
 
-	hash, err := generator.createEosHash(userId, booster, super, air, earth, fire, life, toxic, water, small, minion, binance, txID, contractVersion)
+	hash, err := generator.createHash(userId, booster, super, air, earth, fire, life, toxic, water, small, minion, binance, txID, contractVersion)
 
 	if err != nil {
 		return nil, err
@@ -129,7 +143,7 @@ func (generator *MintingReceiptGenerator) generateEosVerifySignResult(
 	}, nil
 }
 
-func (generator *MintingReceiptGenerator) createEosHash(
+func (generator *MintingReceiptGenerator) createHash(
 	userID *big.Int,
 	booster uint,
 	super uint,
@@ -188,13 +202,13 @@ func (t *MintingReceipt) MarshalPB() *zb_data.MintingTransactionReceipt {
 		},
 		UserId:  battleground_utility.MarshalBigIntProto(t.UserId),
 		Booster: uint64(t.Booster),
+		Super:   uint64(t.Super),
 		Air:     uint64(t.Air),
 		Earth:   uint64(t.Earth),
 		Fire:    uint64(t.Fire),
 		Life:    uint64(t.Life),
 		Toxic:   uint64(t.Toxic),
 		Water:   uint64(t.Water),
-		Super:   uint64(t.Super),
 		Small:   uint64(t.Small),
 		Minion:  uint64(t.Minion),
 		Binance: uint64(t.Binance),
