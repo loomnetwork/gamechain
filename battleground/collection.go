@@ -17,6 +17,11 @@ import (
 	"strings"
 )
 
+type CardAmountChangeItem struct {
+	CardKey      battleground_proto.CardKey
+	AmountChange int64
+}
+
 func getMaxAmountOfCardInDeck(card *zb_data.Card) (int, error) {
 	const cardItemMaxCopies = 2
 	const cardMinionMaxCopies = 4
@@ -49,17 +54,17 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 	ctx contract.Context,
 	userAddress loom.Address,
 	ownedCards []*orctype.RawCardCollectionCard,
-	blockHeight uint64,
+	plasmachainBlockHeight uint64,
 ) error {
 	ctx.Logger().Debug(
 		"processOracleCommandResponseGetUserFullCardCollection",
 		"userAddress", userAddress.String(),
 		"len(ownedCards)", len(ownedCards),
-		"blockHeight", blockHeight,
+		"plasmachainBlockHeight", plasmachainBlockHeight,
 	)
 
-	if blockHeight == 0 {
-		return errors.Wrap(errors.New("blockHeight == 0"), "processOracleCommandResponseGetUserFullCardCollection")
+	if plasmachainBlockHeight == 0 {
+		return errors.Wrap(errors.New("plasmachainBlockHeight == 0"), "processOracleCommandResponseGetUserFullCardCollection")
 	}
 
 	configuration, err := loadContractConfiguration(ctx)
@@ -81,36 +86,29 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		return nil
 	}
 
-	// Take default collection and add owned cards to it
+	// New collection is equal to default collection + owned cards
 	cardCollection, err := loadDefaultCardCollection(ctx, configuration.CardCollectionSyncDataVersion)
 	if err != nil {
 		return err
 	}
 
-	for _, rawCard := range ownedCards {
-		// TODO: remove cards with amount == 0 from the collection
-		cardCollection.Cards = z.syncCardToCollection(
-			ctx,
-			userId,
-			cardKeyFromCardTokenId(rawCard.CardTokenId.Value.Int64()),
-			rawCard.Amount.Value.Int64(),
-			cardCollection.Cards,
-		)
-	}
-
-	sort.SliceStable(cardCollection.Cards, func(i, j int) bool {
-		return cardCollection.Cards[i].CardKey.Compare(&cardCollection.Cards[j].CardKey) < 0
-	})
-
-	// TODO: remove cards with amount == 0 from the collection
-	// TODO: reduce card amounts in deck to match the changes in card amounts
-	err = saveUserCardCollection(ctx, userId, cardCollection)
-	if debugEnabled {
-		fmt.Println("-----------------")
-		for _, card := range cardCollection.Cards {
-			fmt.Printf("card: %s, amount: %d\n", card.CardKey.String(), card.Amount)
+	// Add owned cards
+	cardAmountChanges := make([]CardAmountChangeItem, len(ownedCards), len(ownedCards))
+	for index, rawCard := range ownedCards {
+		cardAmountChanges[index] = CardAmountChangeItem{
+			CardKey:      cardKeyFromCardTokenId(rawCard.CardTokenId.Value.Int64()),
+			AmountChange: rawCard.Amount.Value.Int64(),
 		}
 	}
+
+	cardCollection.Cards, err =
+		z.syncAndSaveCardAmountChangesToCollectionAndUpdateDecks(
+			ctx,
+			cardCollection.Cards,
+			cardAmountChanges,
+			configuration.CardCollectionSyncDataVersion,
+			userId,
+		)
 
 	if err != nil {
 		return err
@@ -125,9 +123,9 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 		"setting LastFullCardCollectionSyncPlasmachainBlockHeight",
 		"userAddress", userAddress.String(),
 		"userId", userId,
-		"blockHeight", blockHeight,
+		"plasmachainBlockHeight", plasmachainBlockHeight,
 	)
-	persistentData.LastFullCardCollectionSyncPlasmachainBlockHeight = blockHeight
+	persistentData.LastFullCardCollectionSyncPlasmachainBlockHeight = plasmachainBlockHeight
 	err = saveUserPersistentData(ctx, userId, persistentData)
 	if err != nil {
 		return err
@@ -148,7 +146,7 @@ func (z *ZombieBattleground) processOracleCommandResponseGetUserFullCardCollecti
 	return nil
 }
 
-func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, version string, userID string) ([]*zb_data.CardCollectionCard, error) {
+func loadUserCardCollection(ctx contract.StaticContext, version string, userID string) ([]*zb_data.CardCollectionCard, error) {
 	configuration, err := loadContractConfiguration(ctx)
 	if err != nil {
 		return nil, err
@@ -171,7 +169,7 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 			return nil, err
 		}
 
-		// Filter our cards not in card library
+		// Filter out cards not in card library
 		knownCollectionCards := make([]*zb_data.CardCollectionCard, 0)
 		for _, collectionCard := range collectionCardsRaw.Cards {
 			_, exists := cardKeyToCardMap[collectionCard.CardKey]
@@ -182,7 +180,7 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 
 		collectionCards = knownCollectionCards
 	} else {
-		collectionCards, err = z.generateFullCardCollection(cardLibrary, true)
+		collectionCards, err = generateFullCardCollection(cardLibrary, true)
 		if err != nil {
 			return nil, err
 		}
@@ -191,7 +189,7 @@ func (z *ZombieBattleground) loadUserCardCollection(ctx contract.StaticContext, 
 	return collectionCards, nil
 }
 
-func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.CardList, onlyStandardCardVariant bool) ([]*zb_data.CardCollectionCard, error) {
+func generateFullCardCollection(cardLibrary *zb_data.CardList, onlyStandardCardVariant bool) ([]*zb_data.CardCollectionCard, error) {
 	// Construct fake collection with max count of every standard card
 	collectionCards := []*zb_data.CardCollectionCard{}
 	for _, card := range cardLibrary.Cards {
@@ -217,29 +215,80 @@ func (z *ZombieBattleground) generateFullCardCollection(cardLibrary *zb_data.Car
 	return collectionCards, nil
 }
 
-func (z *ZombieBattleground) syncCardToCollection(ctx contract.Context, userID string, cardKey battleground_proto.CardKey, amount int64, collectionCards []*zb_data.CardCollectionCard) []*zb_data.CardCollectionCard {
-	// TODO: remove cards with amount == 0 from the collection
-
-	// We are allowing unknown cards to be added.
-	// This is to handle the case of user buying a card not existing on gamechain yet.
-
-	// add to collection
-	found := false
+func cardCollectionToCardKeyToAmountMap(collectionCards []*zb_data.CardCollectionCard) cardKeyToAmountMap {
+	cardKeyToAmountMap := cardKeyToAmountMap{}
 	for _, collectionCard := range collectionCards {
-		if collectionCard.CardKey == cardKey {
-			collectionCard.Amount += amount
-			found = true
-			break
-		}
+		cardKeyToAmountMap[collectionCard.CardKey] = collectionCard.Amount
 	}
-	if !found {
+
+	return cardKeyToAmountMap
+}
+
+func (z *ZombieBattleground) syncCardAmountChangesToCollection(collectionCards []*zb_data.CardCollectionCard, changes []CardAmountChangeItem) []*zb_data.CardCollectionCard {
+	// We are allowing unknown cards to be added.
+	// This is to handle the case of user owning a card not existing on gamechain yet.
+
+	cardKeyToAmountMap := cardCollectionToCardKeyToAmountMap(collectionCards)
+
+	// Apply changes
+	for _, change := range changes {
+		currentAmount, _ := cardKeyToAmountMap[change.CardKey]
+		currentAmount += change.AmountChange
+		cardKeyToAmountMap[change.CardKey] = currentAmount
+	}
+
+	// Convert back to list
+	collectionCards = []*zb_data.CardCollectionCard{}
+	for cardKey, amount := range cardKeyToAmountMap {
+		if amount == 0 {
+			continue
+		}
+
 		collectionCards = append(collectionCards, &zb_data.CardCollectionCard{
 			CardKey: cardKey,
 			Amount:  amount,
 		})
 	}
 
+	sort.SliceStable(collectionCards, func(i, j int) bool {
+		return collectionCards[i].CardKey.Compare(&collectionCards[j].CardKey) < 0
+	})
+
 	return collectionCards
+}
+
+func (z *ZombieBattleground) syncAndSaveCardAmountChangesToCollectionAndUpdateDecks(
+	ctx contract.Context,
+	collectionCards []*zb_data.CardCollectionCard,
+	changes []CardAmountChangeItem,
+	version string,
+	userId string,
+) ([]*zb_data.CardCollectionCard, error) {
+	collectionCards = z.syncCardAmountChangesToCollection(collectionCards, changes)
+
+	if debugEnabled {
+		fmt.Println("----------------- " + userId)
+		for _, card := range collectionCards {
+			fmt.Printf("card: %s, amount: %d\n", card.CardKey.String(), card.Amount)
+		}
+	}
+
+	err := saveUserCardCollection(ctx, userId, &zb_data.CardCollectionList{
+		Cards: collectionCards,
+	})
+
+	// Load and save decks to limit cards in deck to cards in collection
+	deckList, err := loadDecks(ctx, version, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	err = saveDecks(ctx, version, userId, deckList)
+	if err != nil {
+		return nil, err
+	}
+
+	return collectionCards, nil
 }
 
 // loads the list of card amount changes, merges with changes, saves the list back
@@ -328,6 +377,15 @@ func (z *ZombieBattleground) applyPendingCardAmountChanges(ctx contract.Context,
 		return userIdFound, nil
 	}
 
+	configuration, err := loadContractConfiguration(ctx)
+	if err != nil {
+		return userIdFound, err
+	}
+
+	if configuration.CardCollectionSyncDataVersion == "" {
+		return userIdFound, fmt.Errorf("configuration.CardCollectionSyncDataVersion is not set")
+	}
+
 	cardAmountChangesContainer, err := loadPendingCardAmountChangesContainerByAddress(ctx, address)
 	if err != nil {
 		return userIdFound, err
@@ -343,19 +401,24 @@ func (z *ZombieBattleground) applyPendingCardAmountChanges(ctx contract.Context,
 		return userIdFound, err
 	}
 
-	// Apply changes
-	for _, cardAmountChange := range cardAmountChangesContainer.CardAmountChanges {
-		userCardCollection.Cards = z.syncCardToCollection(
-			ctx,
-			userId,
-			cardAmountChange.CardKey,
-			cardAmountChange.AmountChange,
-			userCardCollection.Cards,
-		)
+	// Add owned cards
+	cardAmountChanges := make([]CardAmountChangeItem, len(cardAmountChangesContainer.CardAmountChanges), len(cardAmountChangesContainer.CardAmountChanges))
+	for index, cardAmountChange := range cardAmountChangesContainer.CardAmountChanges {
+		cardAmountChanges[index] = CardAmountChangeItem{
+			CardKey:      cardAmountChange.CardKey,
+			AmountChange: cardAmountChange.AmountChange,
+		}
 	}
 
-	// Save collection
-	err = saveUserCardCollection(ctx, userId, userCardCollection)
+	userCardCollection.Cards, err =
+		z.syncAndSaveCardAmountChangesToCollectionAndUpdateDecks(
+			ctx,
+			userCardCollection.Cards,
+			cardAmountChanges,
+			configuration.CardCollectionSyncDataVersion,
+			userId,
+		)
+
 	if err != nil {
 		return userIdFound, err
 	}
@@ -419,4 +482,109 @@ func (z *ZombieBattleground) updateCardAmountChangeToAddressToCardAmountsChangeM
 	}
 
 	return nil
+}
+
+func fixDeckListCards(ctx contract.Context, deckList *zb_data.DeckList, version string, userID string) (changed bool, err error) {
+	cardLibrary, err := loadCardLibrary(ctx, version)
+	if err != nil {
+		return false, errors.Wrap(err, "error fixing deck list")
+	}
+
+	cardKeyToCardMap, err := getCardKeyToCardMap(cardLibrary.Cards)
+	if err != nil {
+		return false, errors.Wrap(err, "error fixing deck list")
+	}
+
+	collectionCards, err := loadUserCardCollection(ctx, version, userID)
+	if err != nil {
+		return false, errors.Wrap(err, "error fixing deck list")
+	}
+
+	changed = false
+	for _, deck := range deckList.Decks {
+		if fixDeckCardVariants(deck, cardKeyToCardMap) {
+			changed = true
+		}
+
+		if limitDeckByCardCollection(deck, collectionCards) {
+			changed = true
+		}
+	}
+
+	return changed, nil
+}
+
+func limitDeckByCardCollection(deck *zb_data.Deck, collectionCards []*zb_data.CardCollectionCard) (changed bool) {
+	changed = false
+	collectionCardKeyToAmountMap := cardCollectionToCardKeyToAmountMap(collectionCards)
+	var newDeckCards = make([]*zb_data.DeckCard, 0)
+
+	for _, deckCard := range deck.Cards {
+		amountInCollection, existsInCollection := collectionCardKeyToAmountMap[deckCard.CardKey]
+		if !existsInCollection {
+			changed = true
+			continue
+		}
+
+		if deckCard.Amount > amountInCollection {
+			deckCard.Amount = amountInCollection
+			changed = true
+		}
+
+		newDeckCards = append(newDeckCards, deckCard)
+	}
+
+	deck.Cards = newDeckCards
+	return changed
+}
+
+func fixDeckCardVariants(deck *zb_data.Deck, cardKeyToCardMap map[battleground_proto.CardKey]*zb_data.Card) (changed bool) {
+	var newDeckCards = make([]*zb_data.DeckCard, 0)
+	var cardKeyToDeckCard = make(map[battleground_proto.CardKey]*zb_data.DeckCard)
+	for _, deckCard := range deck.Cards {
+		cardKeyToDeckCard[deckCard.CardKey] = deckCard
+	}
+
+	for _, deckCard := range deck.Cards {
+		// Check if this specific variant of a card exists in card library
+		_, variantExists := cardKeyToCardMap[deckCard.CardKey]
+		if !variantExists {
+			// If this variant is not in card library, try to fallback to Normal variant
+			normalVariantCardKey := battleground_proto.CardKey{
+				MouldId: deckCard.CardKey.MouldId,
+				Variant: zb_enums.CardVariant_Standard,
+			}
+
+			_, normalVariantExists := cardKeyToCardMap[normalVariantCardKey]
+
+			// If normal variant doesn't exist in card library too, just remove the card from the deck completely
+			if !normalVariantExists {
+				changed = true
+			} else {
+				normalVariantDeckCard, normalVariantDeckCardExists := cardKeyToDeckCard[normalVariantCardKey]
+				// If normal variant exists in card library AND in the deck,
+				// add the amount of the special variant to normal variant
+				if normalVariantDeckCardExists {
+					normalVariantDeckCard.Amount += deckCard.Amount
+					changed = true
+				} else {
+					// If normal variant exists in card library, but NOT in the deck,
+					// create a normal variant deck card and add special variant amount to it
+					normalVariantDeckCard = &zb_data.DeckCard{
+						CardKey: normalVariantCardKey,
+						Amount:  deckCard.Amount,
+					}
+
+					newDeckCards = append(newDeckCards, normalVariantDeckCard)
+					cardKeyToDeckCard[normalVariantCardKey] = normalVariantDeckCard
+					changed = true
+				}
+			}
+		} else {
+			newDeckCards = append(newDeckCards, deckCard)
+		}
+	}
+
+	deck.Cards = newDeckCards
+	return changed
 }

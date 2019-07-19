@@ -3,6 +3,11 @@
   Delay = 10000
 
 [[TestCases]]
+  RunCmd = "zb-cli contract_configuration -k {{index $.AccountPrivKeyPathList 0}} set_fiat_purchase_contract_version -v 3"
+  Condition = "contains"
+  Expected = ["success"]
+
+[[TestCases]]
   RunCmd = "zb-cli create_account -k {{index $.AccountPrivKeyPathList 0}} -u loom -v v1"
   Condition = "contains"
   Expected = ["created successfully"]

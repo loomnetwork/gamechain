@@ -461,7 +461,17 @@ message ConfirmPendingMintingTransactionReceiptRequest {
 
 message DebugMintBoosterPackReceiptRequest {
     BigUInt userId = 1;
-    int32 boosterAmount = 2;
+    uint64 boosterAmount = 2;
+    uint64 superAmount = 3;
+    uint64 airAmount = 4;
+    uint64 earthAmount = 5;
+    uint64 fireAmount = 6;
+    uint64 lifeAmount = 7;
+    uint64 toxicAmount = 8;
+    uint64 waterAmount = 9;
+    uint64 smallAmount = 10;
+    uint64 minionAmount = 11;
+    uint64 binanceAmount = 12;
 }
 
 message DebugMintBoosterPackReceiptResponse {

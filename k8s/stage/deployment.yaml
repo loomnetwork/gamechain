@@ -108,7 +108,7 @@ spec:
           - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
             value: "PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS_JENKINS_PARAM"
           - name: PLASMACHAIN_POLL_INTERVAL
-            value: "5"
+            value: "1"
           - name: GAMECHAIN_PRIVATE_KEY
             value: "ErjfbI2nWdp6GwtnfKJ2ImJdUId84ux4L9k/C017gkV8zZVz0oAcmZ+lFMYTmP7z17tUdInC3dPgTKhq9PXauQ=="
           - name: GAMECHAIN_CHAIN_ID

@@ -898,13 +898,13 @@ message MintingTransactionReceipt {
     VerifySignResult verifyHash = 1;
     BigUInt userId = 2;
 	uint64 booster = 3;
+    uint64 super = 10;
 	uint64 air = 4;
 	uint64 earth = 5;
 	uint64 fire = 6;
 	uint64 life = 7;
 	uint64 toxic = 8;
 	uint64 water = 9;
-	uint64 super = 10;
 	uint64 small = 11;
 	uint64 minion = 12;
 	uint64 binance = 13;

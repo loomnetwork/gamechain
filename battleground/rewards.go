@@ -44,14 +44,64 @@ func NewMintingContext(ctx contract.Context) (MintingContext, error) {
 	return mintingContext, nil
 }
 
-func (m *MintingContext) MintBoosterPacksReceipt(userId *big.Int, amount uint) (*MintingReceipt, error) {
+func (m *MintingContext) MintGenericPacksReceipt(
+	userId *big.Int,
+	boosterPackAmount uint,
+	superPackAmount uint,
+	airPackAmount uint,
+	earthPackAmount uint,
+	firePackAmount uint,
+	lifePackAmount uint,
+	toxicPackAmount uint,
+	waterPackAmount uint,
+	smallPackAmount uint,
+	minionPackAmount uint,
+	binancePackAmount uint,
+) (*MintingReceipt, error) {
 	txId := m.contractState.CurrentFiatPurchaseTxId.Value.Int
-	receipt, err := m.generator.CreateBoosterReceipt(userId, amount, new(big.Int).SetBytes(txId.Bytes()))
+	receipt, err :=
+		m.generator.CreateGenericPackReceipt(
+			userId,
+			boosterPackAmount,
+			superPackAmount,
+			airPackAmount,
+			earthPackAmount,
+			firePackAmount,
+			lifePackAmount,
+			toxicPackAmount,
+			waterPackAmount,
+			smallPackAmount,
+			minionPackAmount,
+			binancePackAmount,
+			new(big.Int).Set(txId),
+		)
 	if err != nil {
 		return nil, err
 	}
 
 	m.contractState.CurrentFiatPurchaseTxId.Value.Int.Add(m.contractState.CurrentFiatPurchaseTxId.Value.Int, big.NewInt(1))
+	return receipt, nil
+}
+
+func (m *MintingContext) MintBoosterPacksReceipt(userId *big.Int, boosterPackAmount uint) (*MintingReceipt, error) {
+	receipt, err := m.MintGenericPacksReceipt(
+		userId,
+		boosterPackAmount,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return receipt, nil
 }
 
@@ -64,7 +114,22 @@ func (m *MintingContext) SaveState() error {
 	return nil
 }
 
-func mintBoosterPacksAndSave(ctx contract.Context, userId string, userIdInt *big.Int, amount uint) (*MintingReceipt, error) {
+func mintGenericPacksAndSave(
+	ctx contract.Context,
+	userId string,
+	userIdInt *big.Int,
+	boosterPackAmount uint,
+	superPackAmount uint,
+	airPackAmount uint,
+	earthPackAmount uint,
+	firePackAmount uint,
+	lifePackAmount uint,
+	toxicPackAmount uint,
+	waterPackAmount uint,
+	smallPackAmount uint,
+	minionPackAmount uint,
+	binancePackAmount uint,
+) (*MintingReceipt, error) {
 	// Create minting receipt
 	mintingContext, err := NewMintingContext(ctx)
 	if err != nil {
@@ -74,7 +139,20 @@ func mintBoosterPacksAndSave(ctx contract.Context, userId string, userIdInt *big
 	if userIdInt == nil {
 		userIdInt = parseUserIdToNumber(userId)
 	}
-	receipt, err := mintingContext.MintBoosterPacksReceipt(userIdInt, amount)
+	receipt, err := mintingContext.MintGenericPacksReceipt(
+		userIdInt,
+		boosterPackAmount,
+		superPackAmount,
+		airPackAmount,
+		earthPackAmount,
+		firePackAmount,
+		lifePackAmount,
+		toxicPackAmount,
+		waterPackAmount,
+		smallPackAmount,
+		minionPackAmount,
+		binancePackAmount,
+	)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to mint")
 	}
@@ -92,6 +170,30 @@ func mintBoosterPacksAndSave(ctx contract.Context, userId string, userIdInt *big
 
 	receiptCollection.Receipts = append(receiptCollection.Receipts, receipt.MarshalPB())
 	err = savePendingMintingTransactionReceipts(ctx, userId, receiptCollection)
+	if err != nil {
+		return nil, err
+	}
+
+	return receipt, nil
+}
+
+func mintBoosterPacksAndSave(ctx contract.Context, userId string, userIdInt *big.Int, amount uint) (*MintingReceipt, error) {
+	receipt, err := mintGenericPacksAndSave(
+		ctx,
+		userId,
+		userIdInt,
+		amount,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+	)
 	if err != nil {
 		return nil, err
 	}
