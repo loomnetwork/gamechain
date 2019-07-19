@@ -69,6 +69,7 @@ message UniqueAnimation
         GargantuaArrival = 8;
         BlizzardArrival = 9;
         GoozillaArrival = 10;
+        VortexArrival = 11;
     }
 }
 
