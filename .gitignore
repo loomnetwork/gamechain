@@ -51,3 +51,5 @@ loom
 replays/*
 !replays/.gitkeep
 tools/replay_logger/replays/*
+dev-scripts/config.toml
+dev-scripts/purchaseGatewayPrivateKeyHex.txt
