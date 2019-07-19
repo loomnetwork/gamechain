@@ -2517,8 +2517,10 @@ loop:
 			}
 		}
 
-		userPersistentData.ExecutedDataWipesVersions =
-			append(userPersistentData.ExecutedDataWipesVersions, matchingDataWipeConfiguration.Version)
+		userPersistentData.LastFullCardCollectionSyncPlasmachainBlockHeight = 0
+		userPersistentData.LastAutoCardCollectionSyncPlasmachainBlockHeight = 0
+
+		userPersistentData.ExecutedDataWipesVersions = append(userPersistentData.ExecutedDataWipesVersions, matchingDataWipeConfiguration.Version)
 		err = saveUserPersistentData(ctx, userId, userPersistentData)
 		if err != nil {
 			return false, errors.Wrap(err, "error handling user data wipe")
