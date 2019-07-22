@@ -54,7 +54,7 @@ spec:
           - name: DB_PORT
             value: "3306"
           - name: EV_URL
-            value: "http://gamechain-staging.dappchains.com:46658/query"
+            value: "GAMECHAIN_READ_URI_JENKINS_PARAM"
           - name: RECONNECT_INTERVAL
             value: "1000"
           - name: SENTRY_ENVIRONMENT
