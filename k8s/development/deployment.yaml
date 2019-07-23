@@ -140,3 +140,4 @@ spec:
             value: "5"
           - name: ORACLE_STARTUP_DELAY
             value: "10"
+
