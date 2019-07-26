@@ -44,6 +44,7 @@ message Deck {
 message Card {
     reserved 1; // int64 mouldId
     CardKey cardKey = 23 [(gogoproto.nullable) = false, (gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto.CardKey"];
+    CardSet.Enum set = 24;
     CardKind.Enum kind = 2;
     Faction.Enum faction = 3;
     string name = 4;
@@ -66,22 +67,23 @@ message Card {
 }
 
 message CardOverrides {
-    CardKindEnumValue kind = 1 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardKindEnumValue"];
-    FactionEnumValue faction = 2 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.FactionEnumValue"];
-    StringValue name = 3 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    StringValue description = 4 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    StringValue flavorText = 5 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    StringValue picture = 6 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    CreatureRankEnumValue rank = 7 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CreatureRankEnumValue"];
-    CardTypeEnumValue type = 8 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.CardTypeEnumValue"];
-    StringValue frame = 9 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.StringValue"];
-    Int32Value damage = 10 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
-    Int32Value defense = 11 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
-    Int32Value cost = 12 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.Int32Value"];
+    CardSetEnumValue set = 17;
+    CardKindEnumValue kind = 1;
+    FactionEnumValue faction = 2;
+    StringValue name = 3;
+    StringValue description = 4;
+    StringValue flavorText = 5;
+    StringValue picture = 6;
+    CreatureRankEnumValue rank = 7;
+    CardTypeEnumValue type = 8;
+    StringValue frame = 9;
+    Int32Value damage = 10;
+    Int32Value defense = 11;
+    Int32Value cost = 12;
     PictureTransform pictureTransform = 13;
     repeated AbilityData abilities = 14;
-    UniqueAnimationEnumValue uniqueAnimation = 15 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable.UniqueAnimationEnumValue"];
-    BoolValue hidden = 16 [(gogoproto.customtype) = "github.com/loomnetwork/gamechain/types/nullable/nullable_pb.BoolValue"];
+    UniqueAnimationEnumValue uniqueAnimation = 15;
+    BoolValue hidden = 16;
 }
 
 message CardInstanceSpecificData {
@@ -94,14 +96,14 @@ message CardInstanceSpecificData {
 }
 
 message PictureTransform {
-    Vector3Float position   = 1;
-    Vector3Float scale      = 2;
+    Vector2Float position = 1;
+    float scale = 3;
+    reserved 2; // Vector3Float scale      = 2;
 }
 
-message Vector3Float {
+message Vector2Float {
     float x = 1;
     float y = 2;
-    float z = 3;
 }
 
 message Vector2Int {
