@@ -256,6 +256,10 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[battle
 	}
 
 	// per-field merge
+	if overrides.Set != nil {
+		card.Set = overrides.Set.Value
+	}
+
 	if overrides.Kind != nil {
 		card.Kind = overrides.Kind.Value
 	}
