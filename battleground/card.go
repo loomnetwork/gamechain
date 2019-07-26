@@ -43,8 +43,7 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 			if card.PictureTransforms.Battleground == nil {
 				return fmt.Errorf("PictureTransform.Battleground is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
 			} else {
-				if card.PictureTransforms.Battleground.Position == nil ||
-					card.PictureTransforms.Battleground.Scale == 0 {
+				if card.PictureTransforms.Battleground.Scale == 0 {
 					return fmt.Errorf("card '%s' (card key %s) is missing value for PictureTransform.Battleground field", card.Name, card.CardKey.String())
 				}
 			}
