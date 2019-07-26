@@ -125,12 +125,14 @@
             "name": "Whizpar",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -145,12 +147,14 @@
             "name": "Wheezy",
             "damage": 1,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -165,12 +169,14 @@
             "name": "Soothsayer",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -185,12 +191,14 @@
             "name": "Fumez",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -205,12 +213,14 @@
             "name": "Pushhh",
             "damage": 3,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -225,12 +235,14 @@
             "name": "Ztormmcaller",
             "damage": 3,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -245,12 +257,14 @@
             "name": "Bouncer",
             "damage": 2,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -265,12 +279,14 @@
             "name": "Gaz",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -285,12 +301,14 @@
             "name": "Draft",
             "damage": 4,
             "defense": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -305,12 +323,14 @@
             "name": "MonZoon",
             "damage": 6,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -325,12 +345,14 @@
             "name": "Zeuz",
             "damage": 5,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -345,12 +367,14 @@
             "name": "Ztorm Shield",
             "damage": 4,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -365,12 +389,14 @@
             "name": "Rockky",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -385,12 +411,14 @@
             "name": "Bolderr",
             "damage": 1,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -404,12 +432,14 @@
             "rank": "MINION",
             "name": "Blocker",
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -424,12 +454,14 @@
             "name": "Slab",
             "damage": 3,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -443,12 +475,14 @@
             "rank": "MINION",
             "name": "Pit",
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -463,12 +497,14 @@
             "name": "Golem",
             "damage": 2,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -483,12 +519,14 @@
             "name": "Walley",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -502,12 +540,14 @@
             "rank": "MINION",
             "name": "Tiny",
             "defense": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -522,12 +562,14 @@
             "name": "Spiker",
             "damage": 2,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -542,12 +584,14 @@
             "name": "Crater",
             "damage": 1,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -562,12 +606,14 @@
             "name": "Earthshaker",
             "damage": 4,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -582,12 +628,14 @@
             "name": "IgneouZ",
             "damage": 3,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -601,12 +649,14 @@
             "rank": "MINION",
             "name": "Pyrite",
             "defense": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -621,12 +671,14 @@
             "name": "Mountain",
             "damage": 6,
             "defense": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -641,12 +693,14 @@
             "name": "Gaea",
             "damage": 4,
             "defense": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -661,12 +715,14 @@
             "name": "Pyromaz",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -680,12 +736,14 @@
             "rank": "MINION",
             "name": "Quazi",
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -700,12 +758,14 @@
             "name": "Burrrnn",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -720,12 +780,14 @@
             "name": "Cynderman",
             "damage": 2,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -740,12 +802,14 @@
             "name": "Werezomb",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -760,12 +824,14 @@
             "name": "Modo",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -780,12 +846,14 @@
             "name": "Fire-Maw",
             "damage": 3,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -800,12 +868,14 @@
             "name": "Zhampion",
             "damage": 5,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -820,12 +890,14 @@
             "name": "Gargantua",
             "damage": 6,
             "defense": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -840,12 +912,14 @@
             "name": "Cerberus",
             "damage": 7,
             "defense": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -858,12 +932,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Chainsaw",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -876,12 +952,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Goo Beaker",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -894,12 +972,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Stapler",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -912,12 +992,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Nail Bomb",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -930,12 +1012,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Goo Bottles",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -948,12 +1032,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Fresh Meat",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -968,12 +1054,14 @@
             "name": "Azuraz",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -988,12 +1076,14 @@
             "name": "Bloomer",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1008,12 +1098,14 @@
             "name": "Zap",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1028,12 +1120,14 @@
             "name": "Shroom",
             "damage": 4,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1048,12 +1142,14 @@
             "name": "Vindrom",
             "damage": 2,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1068,12 +1164,14 @@
             "name": "Puffer",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1088,12 +1186,14 @@
             "name": "Sapper",
             "damage": 2,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1108,12 +1208,14 @@
             "name": "Keeper",
             "damage": 1,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1128,12 +1230,14 @@
             "name": "Cactuz",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1148,12 +1252,14 @@
             "name": "Shammann",
             "damage": 5,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1166,12 +1272,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Z-Virus",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1186,12 +1294,14 @@
             "name": "Yggdrazil",
             "damage": 4,
             "defense": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1206,12 +1316,14 @@
             "name": "Zombie 1/1",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1226,12 +1338,14 @@
             "name": "Zombie 2/2",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1246,12 +1360,14 @@
             "name": "Zombie Feral",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1264,12 +1380,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Tainted Goo",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1282,12 +1400,14 @@
             "type": "WALKER",
             "rank": "MINION",
             "name": "Corrupted Goo",
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1302,12 +1422,14 @@
             "name": "Rainz",
             "damage": 3,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1322,12 +1444,14 @@
             "name": "Blight",
             "damage": 5,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1342,12 +1466,14 @@
             "name": "Zteroid",
             "damage": 5,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1362,12 +1488,14 @@
             "name": "BurZt",
             "damage": 4,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1382,12 +1510,14 @@
             "name": "Vortex",
             "damage": 6,
             "defense": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1402,12 +1532,14 @@
             "name": "Defender",
             "damage": 4,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1422,12 +1554,14 @@
             "name": "Poizom",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1442,12 +1576,14 @@
             "name": "Hazmaz",
             "damage": 1,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1462,12 +1598,14 @@
             "name": "Zpitter",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1482,12 +1620,14 @@
             "name": "Zeptic",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1502,12 +1642,14 @@
             "name": "Ghoul",
             "damage": 3,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1522,12 +1664,14 @@
             "name": "Zeeter",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1542,12 +1686,14 @@
             "name": "Hazzard",
             "damage": 4,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1562,12 +1708,14 @@
             "name": "Zludge",
             "damage": 4,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1582,12 +1730,14 @@
             "name": "Ectoplasm",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1602,12 +1752,14 @@
             "name": "Cherno-bill",
             "damage": 7,
             "defense": 9,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1622,12 +1774,14 @@
             "name": "GooZilla",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1642,12 +1796,14 @@
             "name": "Zlopper",
             "damage": 3,
             "defense": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1662,12 +1818,14 @@
             "name": "Izze",
             "damage": 1,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1681,12 +1839,14 @@
             "rank": "MINION",
             "name": "Znowman",
             "defense": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1701,12 +1861,14 @@
             "name": "Ozmoziz",
             "damage": 1,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1721,12 +1883,14 @@
             "name": "Jetter",
             "damage": 3,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1741,12 +1905,14 @@
             "name": "Freezzee",
             "damage": 2,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1761,12 +1927,14 @@
             "name": "Geyzer",
             "damage": 2,
             "defense": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1781,12 +1949,14 @@
             "name": "Blizzard",
             "damage": 3,
             "defense": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1800,12 +1970,14 @@
             "rank": "MINION",
             "name": "Froztbite",
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1820,12 +1992,14 @@
             "name": "Zhatterer",
             "damage": 1,
             "defense": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1840,12 +2014,14 @@
             "name": "Maelstrom",
             "damage": 5,
             "defense": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1860,12 +2036,14 @@
             "name": "Tzunamy",
             "damage": 6,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1880,12 +2058,14 @@
             "name": "Germs",
             "damage": 6,
             "defense": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1900,12 +2080,14 @@
             "name": "Banshee",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1920,12 +2102,14 @@
             "name": "Breezee",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1940,12 +2124,14 @@
             "name": "Whiffer",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1960,12 +2146,14 @@
             "name": "Zhocker",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -1980,12 +2168,14 @@
             "name": "Dragger",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -2000,12 +2190,14 @@
             "name": "Gust",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -2020,12 +2212,14 @@
             "name": "Buffer",
             "damage": 2,
             "defense": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 1,
-                "y": 1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 1,
+                  "y": 1
+                },
+                "scale": 1
+              }
             }
           },
           {
@@ -2045,19 +2239,23 @@
             "damage": 8,
             "defense": 8,
             "cost": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2080,7 +2278,9 @@
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
               }
             ],
             "uniqueAnimation": "None",
@@ -2103,19 +2303,23 @@
             "damage": 5,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2138,7 +2342,9 @@
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
               }
             ],
             "uniqueAnimation": "None",
@@ -2161,19 +2367,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.5,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.5,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2196,7 +2406,9 @@
                 "defense2": 0,
                 "cost": 0,
                 "targetCardKind": "UNDEFINED",
-                "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+                "targetGameMechanicDescriptionTypes": [
+                  "UNDEFINED"
+                ]
               }
             ],
             "uniqueAnimation": "None",
@@ -2210,7 +2422,10 @@
               {
                 "title": "Attack",
                 "skill": "ICE_BOLT",
-                "skillTargets": ["ALL_CARDS", "PLAYER_CARD"],
+                "skillTargets": [
+                  "ALL_CARDS",
+                  "PLAYER_CARD"
+                ],
                 "value": 1
               }
             ]
@@ -2222,7 +2437,10 @@
               {
                 "title": "Deffence",
                 "skill": "BLIZZARD",
-                "skillTargets": ["PLAYER", "OPPONENT_CARD"],
+                "skillTargets": [
+                  "PLAYER",
+                  "OPPONENT_CARD"
+                ],
                 "value": 2
               }
             ]

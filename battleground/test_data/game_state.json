@@ -22,12 +22,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -102,12 +104,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -182,12 +186,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -262,12 +268,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -342,12 +350,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -424,12 +434,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -504,12 +516,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -584,12 +598,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -664,12 +680,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -744,12 +762,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -824,12 +844,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -904,12 +926,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -984,12 +1008,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1064,12 +1090,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1144,12 +1172,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1224,12 +1254,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1304,12 +1336,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1384,12 +1418,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1464,12 +1500,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1544,12 +1582,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1624,12 +1664,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1704,12 +1746,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1784,12 +1828,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1864,12 +1910,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -1944,12 +1992,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2024,12 +2074,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2104,12 +2156,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2184,12 +2238,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2264,12 +2320,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2362,12 +2420,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -2453,12 +2513,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2506,12 +2568,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2559,12 +2623,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2612,12 +2678,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2665,12 +2733,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2720,12 +2790,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2774,12 +2846,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2827,12 +2901,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2880,12 +2956,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2933,12 +3011,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2986,12 +3066,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3039,12 +3121,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3092,12 +3176,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3145,12 +3231,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3198,12 +3286,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3251,12 +3341,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3304,12 +3396,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3357,12 +3451,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3410,12 +3506,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3463,12 +3561,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3516,12 +3616,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3569,12 +3671,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3622,12 +3726,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3675,12 +3781,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3728,12 +3836,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3781,12 +3891,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3834,12 +3946,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3887,12 +4001,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3940,12 +4056,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4011,12 +4129,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {

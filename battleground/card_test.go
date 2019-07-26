@@ -26,12 +26,16 @@ var testCard = zb_data.Card{
 	Damage:      3,
 	Defense:     4,
 	Cost:        5,
-	PictureTransform: &zb_data.PictureTransform{
-		Position: &zb_data.Vector2Float{
-			X: 0.1,
-			Y: 0.2,
+	PictureTransforms: &zb_data.CardPictureTransforms{
+		Battleground: &zb_data.PictureTransform{
+			Position: &zb_data.Vector2Float{
+				X: 0.1,
+				Y: 0.2,
+			},
+			Scale: 0.7,
 		},
-		Scale: 0.7,
+		DeckUI:               nil,
+		PastAction:           nil,
 	},
 	Abilities: []*zb_data.AbilityData{
 		{
@@ -236,12 +240,14 @@ func TestVariantOverride(t *testing.T) {
       "damage": 1,
       "defense": 2,
       "cost": 0,
-      "pictureTransform": {
-        "position": {
-          "x": 0.07,
-          "y": 0.36
-        },
-        "scale": 0.9
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 0.07,
+            "y": 0.36
+          },
+          "scale": 0.9
+        }
       },
       "abilities": [],
       "uniqueAnimation": "None",
