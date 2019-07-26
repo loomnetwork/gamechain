@@ -730,19 +730,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.3,
-                "y": 0.2
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.3,
+                  "y": 0.2
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "WATER",
                 "effect": "NONE",
@@ -786,19 +790,24 @@
             "damage": 2,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.465,
-                "y": 0.05
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.465,
+                  "y": 0.05
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [
               {
                 "ability": "CARD_RETURN",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -842,12 +851,14 @@
             "damage": 3,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -886,7 +897,12 @@
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD", "PLAYER", "OPPONENT"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD",
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -935,19 +951,24 @@
             "damage": 9,
             "defense": 7,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": 0.1,
-                "y": -0.27
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.1,
+                  "y": -0.27
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MASSIVE_DAMAGE",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "MASSIVE_LIGHTNING",
@@ -996,19 +1017,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "AIR",
                 "effect": "NONE",
@@ -1052,12 +1077,14 @@
             "damage": 2,
             "defense": 5,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.18,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.18,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -1080,12 +1107,14 @@
             "damage": 8,
             "defense": 10,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
@@ -1141,12 +1170,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -1197,19 +1228,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.05,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.05,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "TOXIC",
                 "effect": "NONE",
@@ -1253,12 +1288,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -1281,19 +1318,24 @@
             "damage": 2,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "TARGET_FIRE",
@@ -1346,19 +1388,24 @@
             "damage": 8,
             "defense": 8,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "MASSIVE_DAMAGE",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "MASSIVE_FIRE",
@@ -1402,19 +1449,23 @@
             "damage": 2,
             "defense": 3,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "ATTACK_NUMBER_OF_TIMES_PER_TURN",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1458,19 +1509,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "HEAL",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1519,19 +1575,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET_ADJUSTMENTS",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "TARGET_ADJUSTMENTS_BOMB",
@@ -1580,19 +1641,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "ADD_GOO_VIAL",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1641,19 +1706,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "UNIT_WEAPON",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1710,19 +1780,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.13,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.13,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "EARTH",
                 "effect": "NONE",
@@ -1766,19 +1840,24 @@
             "damage": 2,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.35,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.35,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "TARGET_LIFE",
@@ -1831,19 +1910,24 @@
             "damage": 3,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "STUN",
                 "activity": "ACTIVE",
                 "trigger": "ATTACK",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1887,19 +1971,23 @@
             "damage": 6,
             "defense": 7,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.05,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.05,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "TURN",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -1943,19 +2031,23 @@
             "damage": 2,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT_OF_CREATURES_BY_TYPE",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "DAMAGE",
                 "faction": "LIFE",
                 "effect": "TARGET_LIFE",
@@ -1999,19 +2091,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "LIFE",
                 "effect": "NONE",
@@ -2055,19 +2151,23 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT",
                 "activity": "PASSIVE",
                 "trigger": "ATTACK",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2094,7 +2194,9 @@
                 "ability": "CHANGE_STAT",
                 "activity": "PASSIVE",
                 "trigger": "ATTACK",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DEFENSE",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2138,12 +2240,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": -0.36
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": -0.36
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -2166,19 +2270,26 @@
             "damage": 7,
             "defense": 10,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": -0.2
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": -0.2
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MASSIVE_DAMAGE",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["PLAYER_ALL_CARDS", "OPPONENT_ALL_CARDS", "PLAYER", "OPPONENT"],
+                "targets": [
+                  "PLAYER_ALL_CARDS",
+                  "OPPONENT_ALL_CARDS",
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "MASSIVE_TOXIC_ALL",
@@ -2222,19 +2333,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "PERMANENT",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "DAMAGE",
                 "faction": "FIRE",
                 "effect": "NONE",
@@ -2278,19 +2393,24 @@
             "damage": 3,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.4,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.4,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "TARGET_WATER",
@@ -2343,19 +2463,23 @@
             "damage": 2,
             "defense": 3,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": -0.15,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "STUN_OR_DAMAGE_ADJUSTMENTS",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "STUN_OR_DAMAGE_FREEZES",
@@ -2404,19 +2528,24 @@
             "damage": 6,
             "defense": 8,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": 0.11,
-                "y": -0.16
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.11,
+                  "y": -0.16
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_ENEMY_UNITS_AND_FREEZE_THEM",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "MASSIVE_WATER_WAVE",
@@ -2465,12 +2594,14 @@
             "damage": 2,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": -0.45,
-                "y": -0.12
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.45,
+                  "y": -0.12
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -2493,19 +2624,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.7
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.7
+              }
             },
             "abilities": [
               {
                 "ability": "LOWER_COST_OF_CARD_IN_HAND",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2549,12 +2684,14 @@
             "damage": 1,
             "defense": 4,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.075,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.075,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -2577,19 +2714,24 @@
             "damage": 4,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DESTROY_UNIT_BY_TYPE",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2638,12 +2780,14 @@
             "damage": 7,
             "defense": 8,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2694,19 +2838,23 @@
             "damage": 3,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "BLITZ",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "FIRE",
                 "effect": "NONE",
@@ -2750,12 +2898,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.05,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.05,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2811,19 +2961,24 @@
             "damage": 5,
             "defense": 7,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "REVIVE_DIED_UNITS_OF_TYPE_FROM_MATCH",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "LIFE",
                 "effect": "NONE",
@@ -2867,12 +3022,14 @@
             "damage": 2,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -2928,19 +3085,23 @@
             "damage": 1,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -2984,19 +3145,24 @@
             "damage": 2,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3049,19 +3215,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": -0.11,
-                "y": 0.13
-              },
-              "scale": 0.47
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.11,
+                  "y": 0.13
+                },
+                "scale": 0.47
+              }
             },
             "abilities": [
               {
                 "ability": "DEVOUR_ZOMBIES_AND_COMBINE_STATS",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3105,19 +3275,23 @@
             "damage": 2,
             "defense": 4,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": -0.65,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.65,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DESTROY_FROZEN_UNIT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3170,12 +3344,14 @@
             "damage": 1,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3226,12 +3402,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [
               {
@@ -3282,12 +3460,14 @@
             "damage": 3,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.225,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.225,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -3310,12 +3490,14 @@
             "damage": 5,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3366,19 +3548,23 @@
             "damage": 5,
             "defense": 2,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0.05
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0.05
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT"],
+                "targets": [
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3422,19 +3608,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "ADD_GOO_VIAL",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3487,12 +3677,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3543,12 +3735,14 @@
             "damage": 4,
             "defense": 4,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3604,19 +3798,23 @@
             "damage": 4,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0.05,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.05,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "FREEZE_UNITS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3665,12 +3863,14 @@
             "damage": 4,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": -0.25,
-                "y": 0.11
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.25,
+                  "y": 0.11
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3748,19 +3948,23 @@
             "damage": 4,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": -0.075,
-                "y": -0.05
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.075,
+                  "y": -0.05
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [
               {
                 "ability": "DRAW_CARD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT"],
+                "targets": [
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -3804,19 +4008,23 @@
             "damage": 6,
             "defense": 6,
             "cost": 8,
-            "pictureTransform": {
-              "position": {
-                "x": -0.075,
-                "y": -0.05
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.075,
+                  "y": -0.05
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [
               {
                 "ability": "COSTS_LESS_IF_CARD_TYPE_IN_HAND",
                 "activity": "PASSIVE",
                 "trigger": "IN_HAND",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "AIR",
                 "effect": "NONE",
@@ -3860,12 +4068,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.6,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.6,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -3888,12 +4098,14 @@
             "damage": 2,
             "defense": 4,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -3916,12 +4128,14 @@
             "damage": 3,
             "defense": 6,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": -0.25
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": -0.25
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -3972,12 +4186,14 @@
             "damage": 4,
             "defense": 7,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4028,19 +4244,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.55
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.55
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT_UNTILL_END_OF_TURN",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -4089,12 +4309,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4145,12 +4367,14 @@
             "damage": 6,
             "defense": 6,
             "cost": 8,
-            "pictureTransform": {
-              "position": {
-                "x": 0.4,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.4,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4201,19 +4425,24 @@
             "damage": 5,
             "defense": 5,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "PLAYER_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -4257,12 +4486,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4313,19 +4544,23 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.62
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.62
+              }
             },
             "abilities": [
               {
                 "ability": "GUARD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -4396,12 +4631,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.07,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.07,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4452,12 +4689,14 @@
             "damage": 1,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4508,12 +4747,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.15,
-                "y": 0.2
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.15,
+                  "y": 0.2
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4569,12 +4810,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.16,
-                "y": 0.2
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.16,
+                  "y": 0.2
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4662,12 +4905,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4718,12 +4963,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4801,12 +5048,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4845,7 +5094,9 @@
                 "ability": "ATTACK_OVERLORD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -4894,12 +5145,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -4987,12 +5240,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.3,
-                "y": -0.08
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.3,
+                  "y": -0.08
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5048,12 +5303,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5173,12 +5430,14 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5256,12 +5515,14 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5339,12 +5600,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 0,
-            "pictureTransform": {
-              "position": {
-                "x": -0.45,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.45,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5367,12 +5630,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 0,
-            "pictureTransform": {
-              "position": {
-                "x": -0.45,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.45,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5395,12 +5660,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 0,
-            "pictureTransform": {
-              "position": {
-                "x": -0.45,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.45,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5423,12 +5690,14 @@
             "damage": 0,
             "defense": 2,
             "cost": 0,
-            "pictureTransform": {
-              "position": {
-                "x": -0.45,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.45,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5451,12 +5720,14 @@
             "damage": 0,
             "defense": 0,
             "cost": 0,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5507,12 +5778,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.5,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.5,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5535,12 +5808,14 @@
             "damage": 3,
             "defense": 3,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5591,19 +5866,23 @@
             "damage": 3,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "ATTACK_OVERLORD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -5647,12 +5926,14 @@
             "damage": 4,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5675,12 +5956,14 @@
             "damage": 0,
             "defense": 6,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.3,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.3,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5731,12 +6014,14 @@
             "damage": 0,
             "defense": 3,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5787,12 +6072,14 @@
             "damage": 0,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.32,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.32,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5815,12 +6102,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -5871,12 +6160,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5899,12 +6190,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.27,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.27,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -5927,19 +6220,23 @@
             "damage": 3,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SET_ATTACK_AVAILABILITY",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -5983,19 +6280,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "FREEZE_UNITS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6044,19 +6345,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MASSIVE_DAMAGE",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6105,19 +6410,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CHOOSABLE_ABILITIES",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6143,7 +6453,10 @@
                       "ability": "DAMAGE_TARGET",
                       "activity": "ACTIVE",
                       "trigger": "ENTRY",
-                      "targets": ["OPPONENT", "OPPONENT_CARD"],
+                      "targets": [
+                        "OPPONENT",
+                        "OPPONENT_CARD"
+                      ],
                       "stat": "UNDEFINED",
                       "faction": "NONE",
                       "effect": "NONE",
@@ -6173,7 +6486,10 @@
                       "ability": "HEAL",
                       "activity": "ACTIVE",
                       "trigger": "ENTRY",
-                      "targets": ["PLAYER", "PLAYER_CARD"],
+                      "targets": [
+                        "PLAYER",
+                        "PLAYER_CARD"
+                      ],
                       "stat": "UNDEFINED",
                       "faction": "NONE",
                       "effect": "NONE",
@@ -6222,12 +6538,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -6250,12 +6568,14 @@
             "damage": 2,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.24,
-                "y": 0.035
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.24,
+                  "y": 0.035
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -6278,12 +6598,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -6306,12 +6628,14 @@
             "damage": 2,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.17,
-                "y": 0.215
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.17,
+                  "y": 0.215
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -6334,12 +6658,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -6390,19 +6716,24 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.22,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.22,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "TARGET_ROCK",
@@ -6455,19 +6786,23 @@
             "damage": 2,
             "defense": 2,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.17,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.17,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "ATTACK_OVERLORD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6511,12 +6846,14 @@
             "damage": 2,
             "defense": 1,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -6594,19 +6931,24 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.3,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.3,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "HEAL",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6655,19 +6997,23 @@
             "damage": 4,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "COSTS_LESS_IF_CARD_TYPE_IN_PLAY",
                 "activity": "PASSIVE",
                 "trigger": "IN_HAND",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "AIR",
                 "effect": "NONE",
@@ -6711,19 +7057,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6767,19 +7117,23 @@
             "damage": 3,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "ATTACK_OVERLORD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6823,19 +7177,23 @@
             "damage": 5,
             "defense": 5,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_CONTROL_ENEMY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6879,19 +7237,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DEAL_DAMAGE_TO_UNIT_AND_SWING",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -6940,19 +7302,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_AND_DISTRACT_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7001,19 +7368,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "UNIT_WEAPON",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7062,19 +7433,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.545,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.545,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "DAMAGE",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7118,19 +7493,23 @@
             "damage": 2,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": -0.125,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.125,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CARD_RETURN",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7174,19 +7553,23 @@
             "damage": 1,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.7,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.7,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON_UNIT_FROM_HAND",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7230,19 +7613,24 @@
             "damage": 2,
             "defense": 3,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "RETURN_UNITS_ON_BOARD_TO_OWNERS_HANDS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "PLAYER_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7286,19 +7674,23 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7342,12 +7734,14 @@
             "damage": 1,
             "defense": 3,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -7398,12 +7792,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -7454,19 +7850,23 @@
             "damage": 5,
             "defense": 7,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "EARTH",
                 "effect": "NONE",
@@ -7510,12 +7910,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -7566,19 +7968,23 @@
             "damage": 2,
             "defense": 1,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": -0.65,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.65,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7622,12 +8028,14 @@
             "damage": 5,
             "defense": 3,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -7650,19 +8058,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "PUT_RANDOM_UNIT_FROM_DECK_ON_BOARD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER", "OPPONENT"],
+                "targets": [
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7706,19 +8119,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_OVERLORD_ON_COUNT_ITEMS_PLAYED",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT"],
+                "targets": [
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7762,19 +8179,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "HEAL",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "PLAYER"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7823,19 +8245,23 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.44,
-                "y": -0.11
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.44,
+                  "y": -0.11
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "HEAL",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7879,19 +8305,23 @@
             "damage": 2,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SHUFFLE_THIS_CARD_TO_DECK",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7935,19 +8365,23 @@
             "damage": 2,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DEFENSE_TO_OVERLORD_WITH_DEFENSE",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -7991,19 +8425,24 @@
             "damage": 4,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "RESTORE_DEF_RANDOMLY_SPLIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER", "PLAYER_CARD"],
+                "targets": [
+                  "PLAYER",
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8047,12 +8486,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -8103,19 +8544,23 @@
             "damage": 2,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "TURN",
-                "targets": ["OPPONENT"],
+                "targets": [
+                  "OPPONENT"
+                ],
                 "stat": "DAMAGE",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8159,19 +8604,23 @@
             "damage": 3,
             "defense": 6,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["ITSELF"],
+                "targets": [
+                  "ITSELF"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8215,19 +8664,23 @@
             "damage": 3,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "ADD_GOO_VIAL",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8271,12 +8724,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -8327,12 +8782,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -8383,19 +8840,23 @@
             "damage": 1,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.55,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.55,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DISTRACT",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8439,19 +8900,24 @@
             "damage": 5,
             "defense": 6,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET_FREEZE_IT_IF_SURVIVES",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8495,19 +8961,23 @@
             "damage": 4,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON_UNIT_FROM_HAND",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "AIR",
                 "effect": "NONE",
@@ -8551,19 +9021,23 @@
             "damage": 4,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8607,19 +9081,23 @@
             "damage": 2,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "PASSIVE",
                 "trigger": "END",
-                "targets": ["ITSELF"],
+                "targets": [
+                  "ITSELF"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8663,19 +9141,23 @@
             "damage": 4,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_UNIT_TYPE_TO_ALLY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["NONE"],
+                "targets": [
+                  "NONE"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8719,19 +9201,23 @@
             "damage": 4,
             "defense": 3,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "BLITZ",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "FIRE",
                 "effect": "NONE",
@@ -8775,19 +9261,24 @@
             "damage": 5,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "END",
-                "targets": ["OPPONENT_ALL_CARDS", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8858,19 +9349,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DESTROY_UNIT_BY_COST",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8919,19 +9415,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_SWING_TO_UNITS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -8980,19 +9480,23 @@
             "damage": 0,
             "defense": 0,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_CONTROL_ENEMY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD"],
+                "targets": [
+                  "OPPONENT_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9049,19 +9553,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 10,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DESTROY_UNITS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "PLAYER_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9110,12 +9619,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -9171,19 +9682,23 @@
             "damage": 3,
             "defense": 4,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.48
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.48
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9227,19 +9742,23 @@
             "damage": 2,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "SUMMON",
                 "activity": "PASSIVE",
                 "trigger": "END",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9283,19 +9802,23 @@
             "damage": 0,
             "defense": 6,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DELAYED_PLACE_COPIES_IN_PLAY_DESTROY_UNIT",
                 "activity": "PASSIVE",
                 "trigger": "TURN",
-                "targets": ["ITSELF"],
+                "targets": [
+                  "ITSELF"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9339,19 +9862,23 @@
             "damage": 3,
             "defense": 5,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0.4,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.4,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "MODIFICATOR_STATS",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_ALL_CARDS"],
+                "targets": [
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "DAMAGE",
                 "faction": "TOXIC",
                 "effect": "NONE",
@@ -9395,12 +9922,14 @@
             "damage": 6,
             "defense": 6,
             "cost": 7,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -9451,19 +9980,23 @@
             "damage": 5,
             "defense": 4,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "CHANGE_STAT_UNTILL_END_OF_TURN",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["PLAYER_ALL_CARDS"],
+                "targets": [
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "DAMAGE",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9507,19 +10040,23 @@
             "damage": 7,
             "defense": 7,
             "cost": 11,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "REPLACE_UNITS_WITH_TYPE_ON_STRONGER_ONES",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD"],
+                "targets": [
+                  "PLAYER_CARD"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "WATER",
                 "effect": "MASSIVE_WATER_WAVE",
@@ -9563,19 +10100,24 @@
             "damage": 4,
             "defense": 4,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "WATER",
                 "effect": "NONE",
@@ -9619,19 +10161,24 @@
             "damage": 4,
             "defense": 4,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0.4,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.4,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9675,12 +10222,14 @@
             "damage": 3,
             "defense": 4,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [
               {
@@ -9731,19 +10280,24 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["OPPONENT_ALL_CARDS", "PLAYER_ALL_CARDS"],
+                "targets": [
+                  "OPPONENT_ALL_CARDS",
+                  "PLAYER_ALL_CARDS"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9792,12 +10346,14 @@
             "damage": 4,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -9820,12 +10376,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.3,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.3,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -9876,12 +10434,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.16,
-                "y": 0.15
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.16,
+                  "y": 0.15
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -9904,19 +10464,24 @@
             "damage": 1,
             "defense": 2,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0.07,
-                "y": -0.1
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.07,
+                  "y": -0.1
+                },
+                "scale": 1
+              }
             },
             "abilities": [
               {
                 "ability": "TAKE_DAMAGE_RANDOM_ENEMY",
                 "activity": "PASSIVE",
                 "trigger": "DEATH",
-                "targets": ["OPPONENT_CARD", "OPPONENT"],
+                "targets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -9960,12 +10525,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.03,
-                "y": 0.23
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.03,
+                  "y": 0.23
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -9988,12 +10555,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.3,
-                "y": 0.1
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.3,
+                  "y": 0.1
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -10044,12 +10613,14 @@
             "damage": 4,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10072,12 +10643,14 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.7,
-                "y": -0.7
-              },
-              "scale": 1.1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.7,
+                  "y": -0.7
+                },
+                "scale": 1.1
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10100,12 +10673,14 @@
             "damage": 2,
             "defense": 1,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": 0
-              },
-              "scale": 0.7
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": 0
+                },
+                "scale": 0.7
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10128,12 +10703,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [
               {
@@ -10184,12 +10761,14 @@
             "damage": 2,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.2,
-                "y": -0.6
-              },
-              "scale": 0.8
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.2,
+                  "y": -0.6
+                },
+                "scale": 0.8
+              }
             },
             "abilities": [
               {
@@ -10240,12 +10819,14 @@
             "damage": 4,
             "defense": 3,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": -0.45
-              },
-              "scale": 0.8
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": -0.45
+                },
+                "scale": 0.8
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10268,12 +10849,14 @@
             "damage": 4,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0,
-                "y": 0
-              },
-              "scale": 1.2
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0,
+                  "y": 0
+                },
+                "scale": 1.2
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10296,12 +10879,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": -0.4,
-                "y": -0.5
-              },
-              "scale": 0.8
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.4,
+                  "y": -0.5
+                },
+                "scale": 0.8
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10324,19 +10909,23 @@
             "damage": 3,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": -1,
-                "y": -0.9
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -1,
+                  "y": -0.9
+                },
+                "scale": 1
+              }
             },
             "abilities": [
               {
                 "ability": "ATTACK_OVERLORD",
                 "activity": "PASSIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER"],
+                "targets": [
+                  "PLAYER"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -10380,12 +10969,14 @@
             "damage": 3,
             "defense": 2,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.5,
-                "y": -0.8
-              },
-              "scale": 1
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.5,
+                  "y": -0.8
+                },
+                "scale": 1
+              }
             },
             "abilities": [
               {
@@ -10436,12 +11027,14 @@
             "damage": 2,
             "defense": 5,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.9,
-                "y": -1
-              },
-              "scale": 1.2
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.9,
+                  "y": -1
+                },
+                "scale": 1.2
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10464,12 +11057,14 @@
             "damage": 3,
             "defense": 5,
             "cost": 6,
-            "pictureTransform": {
-              "position": {
-                "x": 0.05,
-                "y": 0
-              },
-              "scale": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.05,
+                  "y": 0
+                },
+                "scale": 0.5
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10492,12 +11087,14 @@
             "damage": 1,
             "defense": 2,
             "cost": 3,
-            "pictureTransform": {
-              "position": {
-                "x": 0.07,
-                "y": 0.66
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.07,
+                  "y": 0.66
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10520,12 +11117,14 @@
             "damage": 3,
             "defense": 4,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": 0.32,
-                "y": 0.55
-              },
-              "scale": 0.8
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.32,
+                  "y": 0.55
+                },
+                "scale": 0.8
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10548,19 +11147,26 @@
             "damage": 0,
             "defense": 0,
             "cost": 4,
-            "pictureTransform": {
-              "position": {
-                "x": -0.1,
-                "y": 0.3
-              },
-              "scale": 0.44
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.1,
+                  "y": 0.3
+                },
+                "scale": 0.44
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD", "PLAYER", "OPPONENT"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD",
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -10604,19 +11210,26 @@
             "damage": 0,
             "defense": 0,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": 0.3,
-                "y": 0.1
-              },
-              "scale": 0.45
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.3,
+                  "y": 0.1
+                },
+                "scale": 0.45
+              }
             },
             "abilities": [
               {
                 "ability": "DAMAGE_TARGET",
                 "activity": "ACTIVE",
                 "trigger": "ENTRY",
-                "targets": ["PLAYER_CARD", "OPPONENT_CARD", "PLAYER", "OPPONENT"],
+                "targets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD",
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "stat": "UNDEFINED",
                 "faction": "NONE",
                 "effect": "NONE",
@@ -10660,12 +11273,14 @@
             "damage": 4,
             "defense": 5,
             "cost": 5,
-            "pictureTransform": {
-              "position": {
-                "x": 0.2,
-                "y": 0.6
-              },
-              "scale": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.2,
+                  "y": 0.6
+                },
+                "scale": 0.6
+              }
             },
             "abilities": [],
             "uniqueAnimation": "None",
@@ -10707,9 +11322,13 @@
                 "skill": "STONE_SKIN",
                 "iconPath": "overlordability_earth_stone_skin",
                 "description": "Give an ally Earth zombie +1 Def",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["EARTH"],
+                "targetFactions": [
+                  "EARTH"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10726,9 +11345,13 @@
                 "skill": "FORTIFY",
                 "iconPath": "overlordability_earth_fortify",
                 "description": "Give an ally Earth zombie Heavy",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["EARTH"],
+                "targetFactions": [
+                  "EARTH"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10747,7 +11370,9 @@
                 "description": "Give all ally Earth zombies +1 Def",
                 "skillTargets": [],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["EARTH"],
+                "targetFactions": [
+                  "EARTH"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10766,7 +11391,9 @@
                 "description": "Give 2 random ally Earth zombies Heavy",
                 "skillTargets": [],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["EARTH"],
+                "targetFactions": [
+                  "EARTH"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10795,7 +11422,12 @@
                 "skill": "FIRE_BOLT",
                 "iconPath": "overlordability_fire_firebolt",
                 "description": "Deal 1 damage to target",
-                "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD", "PLAYER", "OPPONENT"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD",
+                  "PLAYER",
+                  "OPPONENT"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 1,
@@ -10814,9 +11446,13 @@
                 "skill": "RABIES",
                 "iconPath": "overlordability_fire_rabies",
                 "description": "Give an ally Fire zombie Feral",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["FIRE"],
+                "targetFactions": [
+                  "FIRE"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10833,9 +11469,16 @@
                 "skill": "FIREBALL",
                 "iconPath": "overlordability_fire_fireball",
                 "description": "Deal 2 damage to a target",
-                "skillTargets": ["OPPONENT", "OPPONENT_CARD", "PLAYER_CARD", "PLAYER"],
+                "skillTargets": [
+                  "OPPONENT",
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD",
+                  "PLAYER"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["FIRE"],
+                "targetFactions": [
+                  "FIRE"
+                ],
                 "value": 2,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10852,9 +11495,13 @@
                 "skill": "MASS_RABIES",
                 "iconPath": "overlordability_fire_massrabies",
                 "description": "Give 2 random ally Fire zombies Feral",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["FIRE"],
+                "targetFactions": [
+                  "FIRE"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10873,7 +11520,9 @@
                 "description": "Deal 2 damage to all zombies",
                 "skillTargets": [],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["FIRE"],
+                "targetFactions": [
+                  "FIRE"
+                ],
                 "value": 2,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10902,7 +11551,10 @@
                 "skill": "FREEZE",
                 "iconPath": "overlordability_water_freeze",
                 "description": "Freeze a zombie",
-                "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 1,
@@ -10921,7 +11573,10 @@
                 "skill": "ICE_BOLT",
                 "iconPath": "overlordability_water_ice_bolt",
                 "description": "Deal 2 damage to a target zombie. If it survives, Freeze it",
-                "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 2,
@@ -10940,9 +11595,15 @@
                 "skill": "ICE_WALL",
                 "iconPath": "overlordability_water_icewall",
                 "description": "Add 2 Def to target Water zombie or your Overlord",
-                "skillTargets": ["OPPONENT_CARD", "PLAYER_CARD", "PLAYER"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "PLAYER_CARD",
+                  "PLAYER"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["WATER"],
+                "targetFactions": [
+                  "WATER"
+                ],
                 "value": 2,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -10959,7 +11620,9 @@
                 "skill": "SHATTER",
                 "iconPath": "overlordability_water_shatter",
                 "description": "Destroy a Frozen enemy zombie",
-                "skillTargets": ["OPPONENT_CARD"],
+                "skillTargets": [
+                  "OPPONENT_CARD"
+                ],
                 "targetUnitSpecialStatus": "FROZEN",
                 "targetFactions": [],
                 "value": 1,
@@ -11009,7 +11672,10 @@
                 "skill": "PUSH",
                 "iconPath": "overlordability_air_push",
                 "description": "Spend remaining goo to return a zombie of equal cost, or less, to owner's hand",
-                "skillTargets": ["PLAYER_CARD", "OPPONENT_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD",
+                  "OPPONENT_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 0,
@@ -11049,7 +11715,9 @@
                 "description": "Give a random ally Air zombie Guard",
                 "skillTargets": [],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["AIR"],
+                "targetFactions": [
+                  "AIR"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11116,7 +11784,10 @@
                 "skill": "POISON_DART",
                 "iconPath": "overlordability_toxic_poisondart",
                 "description": "Deal 1 damage to an enemy",
-                "skillTargets": ["OPPONENT_CARD", "OPPONENT"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 1,
@@ -11135,9 +11806,13 @@
                 "skill": "TOXIC_POWER",
                 "iconPath": "overlordability_toxic_toxic_power",
                 "description": "Deal 1 damage to an ally Toxic zombie and give it +1 Atk",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["TOXIC"],
+                "targetFactions": [
+                  "TOXIC"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11154,7 +11829,10 @@
                 "skill": "BREAKOUT",
                 "iconPath": "overlordability_toxic_breakout",
                 "description": "Deal 1 damage to 5 random enemies",
-                "skillTargets": ["OPPONENT_CARD", "OPPONENT"],
+                "skillTargets": [
+                  "OPPONENT_CARD",
+                  "OPPONENT"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 1,
@@ -11173,9 +11851,13 @@
                 "skill": "INFECT",
                 "iconPath": "overlordability_toxic_infect",
                 "description": "Destroy an ally Toxic zombie, deal its Atk to a random enemy zombie",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["TOXIC"],
+                "targetFactions": [
+                  "TOXIC"
+                ],
                 "value": 1,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11192,9 +11874,13 @@
                 "skill": "EPIDEMIC",
                 "iconPath": "overlordability_toxic_epidemic",
                 "description": "Destroy an 2 random Toxic zombies, deal their Atk to 2 enemy zombies",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["TOXIC"],
+                "targetFactions": [
+                  "TOXIC"
+                ],
                 "value": 0,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11223,7 +11909,9 @@
                 "skill": "HEALING_TOUCH",
                 "iconPath": "overlordability_life_healingtouch",
                 "description": "Restore 2 Def to an ally zombie",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 2,
@@ -11242,7 +11930,9 @@
                 "skill": "MEND",
                 "iconPath": "overlordability_life_mend",
                 "description": "Restore 2 Def to your Overlord",
-                "skillTargets": ["PLAYER"],
+                "skillTargets": [
+                  "PLAYER"
+                ],
                 "targetUnitSpecialStatus": "NONE",
                 "targetFactions": [],
                 "value": 2,
@@ -11261,9 +11951,13 @@
                 "skill": "RESSURECT",
                 "iconPath": "overlordability_life_resurrect",
                 "description": "Reanimate a random 3 goo-cost ally Life zombie",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["LIFE"],
+                "targetFactions": [
+                  "LIFE"
+                ],
                 "value": 3,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11280,9 +11974,14 @@
                 "skill": "ENHANCE",
                 "iconPath": "overlordability_life_enhance",
                 "description": "Restore 2 Def to all ally Life zombies and your Overlord",
-                "skillTargets": ["PLAYER", "PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER",
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["LIFE"],
+                "targetFactions": [
+                  "LIFE"
+                ],
                 "value": 2,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -11299,9 +11998,13 @@
                 "skill": "REANIMATE",
                 "iconPath": "overlordability_life_reanimate",
                 "description": "Reanimate 2 random ally Life zombies",
-                "skillTargets": ["PLAYER_CARD"],
+                "skillTargets": [
+                  "PLAYER_CARD"
+                ],
                 "targetUnitSpecialStatus": "NONE",
-                "targetFactions": ["LIFE"],
+                "targetFactions": [
+                  "LIFE"
+                ],
                 "value": 2,
                 "cooldown": 4,
                 "initialCooldown": 4,
@@ -13070,8 +13773,7 @@
             "type": "MIXED_BLITZ_AI"
           }
         ],
-        "overlordLeveling":
-        {
+        "overlordLeveling": {
           "rewards": [
             {
               "level": 2,

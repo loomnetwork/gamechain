@@ -36,8 +36,17 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 		}
 
 		if card.CardKey.Variant == zb_enums.CardVariant_Standard {
-			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == 0 {
-				return fmt.Errorf("card '%s' (card key %s) missing value for PictureTransform field", card.Name, card.CardKey.String())
+			if card.PictureTransforms == nil {
+				return fmt.Errorf("PictureTransform is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
+
+			if card.PictureTransforms.Battleground == nil {
+				return fmt.Errorf("PictureTransform.Battleground is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			} else {
+				if card.PictureTransforms.Battleground.Position == nil ||
+					card.PictureTransforms.Battleground.Scale == 0 {
+					return fmt.Errorf("card '%s' (card key %s) is missing value for PictureTransform.Battleground field", card.Name, card.CardKey.String())
+				}
 			}
 
 			if card.Type == zb_enums.CardType_Undefined {
@@ -146,7 +155,7 @@ func validateDeckName(deckList []*zb_data.Deck, validatedDeck *zb_data.Deck) err
 	return nil
 }
 
-func getOverlordUserDataByPrototypeId(overlordsUserData []*zb_data.OverlordUserData, overlordPrototypeId int64) (*zb_data.OverlordUserData, bool){
+func getOverlordUserDataByPrototypeId(overlordsUserData []*zb_data.OverlordUserData, overlordPrototypeId int64) (*zb_data.OverlordUserData, bool) {
 	for _, overlordUserData := range overlordsUserData {
 		if overlordUserData.PrototypeId == overlordPrototypeId {
 			return overlordUserData, true
@@ -295,8 +304,8 @@ func applySourceMouldIdAndOverrides(card *zb_data.Card, cardKeyToCard map[battle
 		card.Cost = overrides.Cost.Value
 	}
 
-	if overrides.PictureTransform != nil {
-		card.PictureTransform = overrides.PictureTransform
+	if overrides.PictureTransforms != nil {
+		card.PictureTransforms = overrides.PictureTransforms
 	}
 
 	if len(overrides.Abilities) > 0 {
