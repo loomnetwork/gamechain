@@ -11,7 +11,7 @@ popd
 
 echo "--- Data updated"
 
-echo "--- Update configuration"
+echo "--- Updating configuration"
 
 ../bin/zb-cli -k ../oracle.priv contract_configuration set_fiat_purchase_contract_version -v 3
 ../bin/zb-cli -k ../oracle.priv contract_configuration set_initial_fiat_purchase_txid -v `cat initialFiatPurchaseTxId.txt`
