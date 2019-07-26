@@ -2,7 +2,7 @@ package battleground
 
 import (
 	battleground_proto "github.com/loomnetwork/gamechain/battleground/proto"
-	"github.com/loomnetwork/gamechain/battleground/proto/battleground_nullable"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	"github.com/loomnetwork/gamechain/types/nullable/nullable_pb"
 	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/loomnetwork/gamechain/types/zb/zb_enums"
@@ -14,6 +14,7 @@ import (
 var testCard = zb_data.Card{
 	CardKey:     battleground_proto.CardKey{MouldId: 3},
 	Kind:        zb_enums.CardKind_Creature,
+	Set:         zb_enums.CardSet_Season1,
 	Faction:     zb_enums.Faction_Earth,
 	Name:        "Zpitter",
 	Description: "Amazing zpit of unfathomeable power.",
@@ -25,17 +26,16 @@ var testCard = zb_data.Card{
 	Damage:      3,
 	Defense:     4,
 	Cost:        5,
-	PictureTransform: &zb_data.PictureTransform{
-		Position: &zb_data.Vector3Float{
-			X: 0.1,
-			Y: 0.2,
-			Z: 0.3,
+	PictureTransforms: &zb_data.CardPictureTransforms{
+		Battleground: &zb_data.PictureTransform{
+			Position: &zb_data.Vector2Float{
+				X: 0.1,
+				Y: 0.2,
+			},
+			Scale: 0.7,
 		},
-		Scale: &zb_data.Vector3Float{
-			X: 0.7,
-			Y: 0.8,
-			Z: 0.9,
-		},
+		DeckUI:               nil,
+		PastAction:           nil,
 	},
 	Abilities: []*zb_data.AbilityData{
 		{
@@ -168,51 +168,125 @@ func TestVariantBasic(t *testing.T) {
 }
 
 func TestVariantOverride(t *testing.T) {
-	targetCard := zb_data.Card{
-		CardKey: battleground_proto.CardKey{
-			MouldId: 3,
-			Variant: zb_enums.CardVariant_Limited,
-		},
-		Type:    zb_enums.CardType_Walker,
-		Kind:    zb_enums.CardKind_Creature,
-		Faction: zb_enums.Faction_Earth,
-		Rank:    zb_enums.CreatureRank_Minion,
-		Overrides: &zb_data.CardOverrides{
-			Name:       &nullable_pb.StringValue{Value: "Legendary Zpitter"},
-			FlavorText: &nullable_pb.StringValue{Value: "Zpittity-zpit, now with more zpit"},
-			Picture:    &nullable_pb.StringValue{Value: "zpitter_legendary.png"},
-			Rank:       &battleground_nullable.CreatureRankEnumValue{Value: zb_enums.CreatureRank_General},
-			Type:       &battleground_nullable.CardTypeEnumValue{Value: zb_enums.CardType_Heavy},
-			Frame:      &nullable_pb.StringValue{Value: "legendary-frame.png"},
-			Hidden:     &nullable_pb.BoolValue{Value: false},
-		},
-	}
-	var cardLibrary = []*zb_data.Card{
-		&testCard,
-		&targetCard,
-	}
+	testFunc := func(t *testing.T, card *zb_data.Card) {
+		var cardLibrary = []*zb_data.Card{
+			&testCard,
+			card,
+		}
 
-	err := validateCardLibraryCards(cardLibrary)
-	assert.Nil(t, err)
-
-	mouldIdToCard, err := getCardKeyToCardMap(cardLibrary)
-	assert.Nil(t, err)
-
-	for _, card := range cardLibrary {
-		err = applySourceMouldIdAndOverrides(card, mouldIdToCard)
+		err := validateCardLibraryCards(cardLibrary)
 		assert.Nil(t, err)
+
+		mouldIdToCard, err := getCardKeyToCardMap(cardLibrary)
+		assert.Nil(t, err)
+
+		for _, card := range cardLibrary {
+			err = applySourceMouldIdAndOverrides(card, mouldIdToCard)
+			assert.Nil(t, err)
+		}
+
+		assert.Equal(t, 3, int(card.CardKey.MouldId))
+		assert.Equal(t, testCard.CardKey.MouldId, card.CardKey.MouldId)
+		assert.Equal(t, zb_enums.CardVariant_Limited, card.CardKey.Variant)
+		assert.Equal(t, "Legendary Zpitter", card.Name)
+		assert.Equal(t, "Zpittity-zpit, now with more zpit", card.FlavorText)
+		assert.Equal(t, "zpitter_legendary.png", card.Picture)
+		assert.Equal(t, zb_enums.CreatureRank_General, card.Rank)
+		assert.Equal(t, zb_enums.CardType_Heavy, card.Type)
+		assert.Equal(t, "legendary-frame.png", card.Frame)
+		assert.Equal(t, false, card.Hidden)
 	}
 
-	assert.Equal(t, 3, int(targetCard.CardKey.MouldId))
-	assert.Equal(t, testCard.CardKey.MouldId, targetCard.CardKey.MouldId)
-	assert.Equal(t, zb_enums.CardVariant_Limited, targetCard.CardKey.Variant)
-	assert.Equal(t, "Legendary Zpitter", targetCard.Name)
-	assert.Equal(t, "Zpittity-zpit, now with more zpit", targetCard.FlavorText)
-	assert.Equal(t, "zpitter_legendary.png", targetCard.Picture)
-	assert.Equal(t, zb_enums.CreatureRank_General, targetCard.Rank)
-	assert.Equal(t, zb_enums.CardType_Heavy, targetCard.Type)
-	assert.Equal(t, "legendary-frame.png", targetCard.Frame)
-	assert.Equal(t, false, targetCard.Hidden)
+	t.Run("Should apply override", func(t *testing.T) {
+		targetCard := zb_data.Card{
+			CardKey: battleground_proto.CardKey{
+				MouldId: 3,
+				Variant: zb_enums.CardVariant_Limited,
+			},
+			Type:    zb_enums.CardType_Walker,
+			Kind:    zb_enums.CardKind_Creature,
+			Faction: zb_enums.Faction_Earth,
+			Rank:    zb_enums.CreatureRank_Minion,
+			Overrides: &zb_data.CardOverrides{
+				Name:       &nullable_pb.StringValue{Value: "Legendary Zpitter"},
+				FlavorText: &nullable_pb.StringValue{Value: "Zpittity-zpit, now with more zpit"},
+				Picture:    &nullable_pb.StringValue{Value: "zpitter_legendary.png"},
+				Rank:       &zb_enums.CreatureRankEnumValue{Value: zb_enums.CreatureRank_General},
+				Type:       &zb_enums.CardTypeEnumValue{Value: zb_enums.CardType_Heavy},
+				Frame:      &nullable_pb.StringValue{Value: "legendary-frame.png"},
+				Hidden:     &nullable_pb.BoolValue{Value: false},
+			},
+		}
+		testFunc(t, &targetCard)
+	})
+
+	t.Run("Should apply override from JSON", func(t *testing.T) {
+		const json = `
+    {
+      "cardKey": {
+        "mouldId": 3,
+        "variant": "Limited"
+      },
+      "set": "Season1",
+      "kind": "CREATURE",
+      "faction": "AIR",
+      "name": "Whizper",
+      "description": "",
+      "flavorText": "The unfriendly ghost...",
+      "picture": "001",
+      "rank": "MINION",
+      "type": "WALKER",
+      "frame": "",
+      "damage": 1,
+      "defense": 2,
+      "cost": 0,
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 0.07,
+            "y": 0.36
+          },
+          "scale": 0.9
+        }
+      },
+      "abilities": [],
+      "uniqueAnimation": "None",
+      "hidden": false,
+      "overrides": {
+        "name": {
+            "value": "Legendary Zpitter"
+        },
+        "flavorText": {
+            "value": "Zpittity-zpit, now with more zpit"
+        },
+        "type": {
+            "value": "HEAVY"
+        },
+        "faction": {
+            "value": "EARTH"
+        },
+        "rank": {
+            "value": "GENERAL"
+        },
+        "frame": {
+            "value": "legendary-frame.png"
+        },
+        "picture": {
+            "value": "zpitter_legendary.png"
+        },
+		"hidden": {
+            "value": false
+        }
+      }
+    }
+`
+
+		targetCard := zb_data.Card{}
+		err := battleground_utility.ReadJsonStringToProtoMessage(json, &targetCard)
+		assert.Nil(t, err)
+
+		testFunc(t, &targetCard)
+	})
 }
 
 func TestValidateDeckCardVariants(t *testing.T) {

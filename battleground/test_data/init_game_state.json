@@ -9,6 +9,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -20,15 +21,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -92,6 +91,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -103,15 +103,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -175,6 +173,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -186,15 +185,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -258,6 +255,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -269,15 +267,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -343,6 +339,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -354,15 +351,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -426,6 +421,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -437,15 +433,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -509,6 +503,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -520,15 +515,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -592,6 +585,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -603,15 +597,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -675,6 +667,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -686,15 +679,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -758,6 +749,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -769,15 +761,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -841,6 +831,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -852,15 +843,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -924,6 +913,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -935,15 +925,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1007,6 +995,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1018,15 +1007,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1090,6 +1077,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1101,15 +1089,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1173,6 +1159,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1184,15 +1171,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1256,6 +1241,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1267,15 +1253,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1339,6 +1323,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1350,15 +1335,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1422,6 +1405,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1433,15 +1417,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1505,6 +1487,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1516,15 +1499,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1588,6 +1569,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1599,15 +1581,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1671,6 +1651,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1682,15 +1663,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1754,6 +1733,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1765,15 +1745,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1837,6 +1815,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1848,15 +1827,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -1920,6 +1897,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -1931,15 +1909,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2003,6 +1979,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2014,15 +1991,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2086,6 +2061,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2097,15 +2073,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2169,6 +2143,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2180,15 +2155,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2252,6 +2225,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2263,15 +2237,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2335,6 +2307,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2346,15 +2319,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2418,6 +2389,7 @@
             "cardKey": {
               "mouldId": 25
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Ghoul",
@@ -2429,15 +2401,13 @@
             "damage": 3,
             "defense": 2,
             "cost": 2,
-            "pictureTransform": {
-              "position": {
-                "x": -0.23,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.5,
-                "y": 0.5,
-                "z": 0.5
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": -0.23,
+                  "y": 0.1
+                },
+                "scale": 0.5
               }
             },
             "abilities": [
@@ -2528,6 +2498,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2539,15 +2510,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2584,6 +2553,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2595,15 +2565,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2640,6 +2608,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2651,15 +2620,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2698,6 +2665,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2709,15 +2677,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2754,6 +2720,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2765,15 +2732,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2810,6 +2775,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2821,15 +2787,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2866,6 +2830,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2877,15 +2842,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2922,6 +2885,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2933,15 +2897,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -2978,6 +2940,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -2989,15 +2952,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3034,6 +2995,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3045,15 +3007,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3090,6 +3050,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3101,15 +3062,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3146,6 +3105,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3157,15 +3117,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3202,6 +3160,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3213,15 +3172,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3258,6 +3215,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3269,15 +3227,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3314,6 +3270,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3325,15 +3282,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3370,6 +3325,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3381,15 +3337,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3426,6 +3380,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3437,15 +3392,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3482,6 +3435,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3493,15 +3447,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3538,6 +3490,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3549,15 +3502,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3594,6 +3545,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3605,15 +3557,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3650,6 +3600,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3661,15 +3612,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3706,6 +3655,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3717,15 +3667,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3762,6 +3710,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3773,15 +3722,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3818,6 +3765,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3829,15 +3777,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3874,6 +3820,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3885,15 +3832,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3930,6 +3875,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3941,15 +3887,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -3986,6 +3930,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -3997,15 +3942,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -4042,6 +3985,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4053,15 +3997,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -4098,6 +4040,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4109,15 +4052,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [
@@ -4154,6 +4095,7 @@
             "cardKey": {
               "mouldId": 24
             },
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "name": "Poizom",
@@ -4165,15 +4107,13 @@
             "damage": 1,
             "defense": 1,
             "cost": 1,
-            "pictureTransform": {
-              "position": {
-                "x": 0.15,
-                "y": 0.1
-              },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
+            "pictureTransforms": {
+              "battleground": {
+                "position": {
+                  "x": 0.15,
+                  "y": 0.1
+                },
+                "scale": 0.6
               }
             },
             "abilities": [

@@ -110,6 +110,7 @@
       "cardKey": {
         "mouldId": 1
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -117,16 +118,13 @@
       "name": "Whizpar",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -134,6 +132,7 @@
       "cardKey": {
         "mouldId": 2
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -141,16 +140,13 @@
       "name": "Wheezy",
       "damage": 1,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -158,6 +154,7 @@
       "cardKey": {
         "mouldId": 3
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -165,16 +162,13 @@
       "name": "Soothsayer",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -182,6 +176,7 @@
       "cardKey": {
         "mouldId": 4
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -189,16 +184,13 @@
       "name": "Fumez",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -206,6 +198,7 @@
       "cardKey": {
         "mouldId": 5
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -213,16 +206,13 @@
       "name": "Pushhh",
       "damage": 3,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -230,6 +220,7 @@
       "cardKey": {
         "mouldId": 6
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -237,16 +228,13 @@
       "name": "Ztormmcaller",
       "damage": 3,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -254,6 +242,7 @@
       "cardKey": {
         "mouldId": 7
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -261,16 +250,13 @@
       "name": "Bouncer",
       "damage": 2,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -278,6 +264,7 @@
       "cardKey": {
         "mouldId": 8
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -285,16 +272,13 @@
       "name": "Gaz",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -302,6 +286,7 @@
       "cardKey": {
         "mouldId": 9
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -309,16 +294,13 @@
       "name": "Draft",
       "damage": 4,
       "defense": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -326,6 +308,7 @@
       "cardKey": {
         "mouldId": 10
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -333,16 +316,13 @@
       "name": "MonZoon",
       "damage": 6,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -350,6 +330,7 @@
       "cardKey": {
         "mouldId": 11
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -357,16 +338,13 @@
       "name": "Zeuz",
       "damage": 5,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -374,6 +352,7 @@
       "cardKey": {
         "mouldId": 12
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -381,16 +360,13 @@
       "name": "Ztorm Shield",
       "damage": 4,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -398,6 +374,7 @@
       "cardKey": {
         "mouldId": 13
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -405,16 +382,13 @@
       "name": "Rockky",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -422,6 +396,7 @@
       "cardKey": {
         "mouldId": 14
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -429,16 +404,13 @@
       "name": "Bolderr",
       "damage": 1,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -446,22 +418,20 @@
       "cardKey": {
         "mouldId": 15
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Blocker",
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -469,6 +439,7 @@
       "cardKey": {
         "mouldId": 16
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -476,16 +447,13 @@
       "name": "Slab",
       "damage": 3,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -493,22 +461,20 @@
       "cardKey": {
         "mouldId": 17
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Pit",
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -516,6 +482,7 @@
       "cardKey": {
         "mouldId": 18
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -523,16 +490,13 @@
       "name": "Golem",
       "damage": 2,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -540,6 +504,7 @@
       "cardKey": {
         "mouldId": 19
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -547,16 +512,13 @@
       "name": "Walley",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -564,22 +526,20 @@
       "cardKey": {
         "mouldId": 20
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Tiny",
       "defense": 7,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -587,6 +547,7 @@
       "cardKey": {
         "mouldId": 21
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -594,16 +555,13 @@
       "name": "Spiker",
       "damage": 2,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -611,6 +569,7 @@
       "cardKey": {
         "mouldId": 212
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -618,16 +577,13 @@
       "name": "Crater",
       "damage": 1,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -635,6 +591,7 @@
       "cardKey": {
         "mouldId": 22
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -642,16 +599,13 @@
       "name": "Earthshaker",
       "damage": 4,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -659,6 +613,7 @@
       "cardKey": {
         "mouldId": 23
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -666,16 +621,13 @@
       "name": "IgneouZ",
       "damage": 3,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -683,22 +635,20 @@
       "cardKey": {
         "mouldId": 24
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Pyrite",
       "defense": 8,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -706,6 +656,7 @@
       "cardKey": {
         "mouldId": 25
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -713,16 +664,13 @@
       "name": "Mountain",
       "damage": 6,
       "defense": 8,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -730,6 +678,7 @@
       "cardKey": {
         "mouldId": 26
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "EARTH",
       "type": "WALKER",
@@ -737,16 +686,13 @@
       "name": "Gaea",
       "damage": 4,
       "defense": 7,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -754,6 +700,7 @@
       "cardKey": {
         "mouldId": 27
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -761,16 +708,13 @@
       "name": "Pyromaz",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -778,22 +722,20 @@
       "cardKey": {
         "mouldId": 28
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Quazi",
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -801,6 +743,7 @@
       "cardKey": {
         "mouldId": 29
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -808,16 +751,13 @@
       "name": "Burrrnn",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -825,6 +765,7 @@
       "cardKey": {
         "mouldId": 30
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -832,16 +773,13 @@
       "name": "Cynderman",
       "damage": 2,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -849,6 +787,7 @@
       "cardKey": {
         "mouldId": 31
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -856,16 +795,13 @@
       "name": "Werezomb",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -873,6 +809,7 @@
       "cardKey": {
         "mouldId": 32
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -880,16 +817,13 @@
       "name": "Modo",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -897,6 +831,7 @@
       "cardKey": {
         "mouldId": 33
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -904,16 +839,13 @@
       "name": "Fire-Maw",
       "damage": 3,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -921,6 +853,7 @@
       "cardKey": {
         "mouldId": 34
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -928,16 +861,13 @@
       "name": "Zhampion",
       "damage": 5,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -945,6 +875,7 @@
       "cardKey": {
         "mouldId": 35
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -952,16 +883,13 @@
       "name": "Gargantua",
       "damage": 6,
       "defense": 8,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -969,6 +897,7 @@
       "cardKey": {
         "mouldId": 36
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "FIRE",
       "type": "WALKER",
@@ -976,16 +905,13 @@
       "name": "Cerberus",
       "damage": 7,
       "defense": 8,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -993,21 +919,19 @@
       "cardKey": {
         "mouldId": 37
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Chainsaw",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1015,21 +939,19 @@
       "cardKey": {
         "mouldId": 38
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Goo Beaker",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1037,21 +959,19 @@
       "cardKey": {
         "mouldId": 39
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Stapler",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1059,21 +979,19 @@
       "cardKey": {
         "mouldId": 40
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Nail Bomb",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1081,21 +999,19 @@
       "cardKey": {
         "mouldId": 41
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Goo Bottles",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1103,21 +1019,19 @@
       "cardKey": {
         "mouldId": 42
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "ITEM",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Fresh Meat",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1125,6 +1039,7 @@
       "cardKey": {
         "mouldId": 43
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1132,16 +1047,13 @@
       "name": "Azuraz",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1149,6 +1061,7 @@
       "cardKey": {
         "mouldId": 44
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1156,16 +1069,13 @@
       "name": "Bloomer",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1173,6 +1083,7 @@
       "cardKey": {
         "mouldId": 45
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1180,16 +1091,13 @@
       "name": "Zap",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1197,6 +1105,7 @@
       "cardKey": {
         "mouldId": 46
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1204,16 +1113,13 @@
       "name": "Shroom",
       "damage": 4,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1221,6 +1127,7 @@
       "cardKey": {
         "mouldId": 47
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1228,16 +1135,13 @@
       "name": "Vindrom",
       "damage": 2,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1245,6 +1149,7 @@
       "cardKey": {
         "mouldId": 48
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1252,16 +1157,13 @@
       "name": "Puffer",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1269,6 +1171,7 @@
       "cardKey": {
         "mouldId": 49
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1276,16 +1179,13 @@
       "name": "Sapper",
       "damage": 2,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1293,6 +1193,7 @@
       "cardKey": {
         "mouldId": 50
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1300,16 +1201,13 @@
       "name": "Keeper",
       "damage": 1,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1317,6 +1215,7 @@
       "cardKey": {
         "mouldId": 51
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1324,16 +1223,13 @@
       "name": "Cactuz",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1341,6 +1237,7 @@
       "cardKey": {
         "mouldId": 52
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1348,16 +1245,13 @@
       "name": "Shammann",
       "damage": 5,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1365,21 +1259,19 @@
       "cardKey": {
         "mouldId": 53
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Z-Virus",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1387,6 +1279,7 @@
       "cardKey": {
         "mouldId": 54
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "LIFE",
       "type": "WALKER",
@@ -1394,16 +1287,13 @@
       "name": "Yggdrazil",
       "damage": 4,
       "defense": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1411,6 +1301,7 @@
       "cardKey": {
         "mouldId": 55
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1418,16 +1309,13 @@
       "name": "Zombie 1/1",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1435,6 +1323,7 @@
       "cardKey": {
         "mouldId": 56
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1442,16 +1331,13 @@
       "name": "Zombie 2/2",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1459,6 +1345,7 @@
       "cardKey": {
         "mouldId": 57
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1466,16 +1353,13 @@
       "name": "Zombie Feral",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1483,21 +1367,19 @@
       "cardKey": {
         "mouldId": 58
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "OTHERS",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Tainted Goo",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1505,21 +1387,19 @@
       "cardKey": {
         "mouldId": 59
       },
-      "kind": "SPELL",
+      "set": "Season1",
+      "kind": "ITEM",
       "faction": "OTHERS",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Corrupted Goo",
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1527,6 +1407,7 @@
       "cardKey": {
         "mouldId": 60
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1534,16 +1415,13 @@
       "name": "Rainz",
       "damage": 3,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1551,6 +1429,7 @@
       "cardKey": {
         "mouldId": 61
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1558,16 +1437,13 @@
       "name": "Blight",
       "damage": 5,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1575,6 +1451,7 @@
       "cardKey": {
         "mouldId": 62
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1582,16 +1459,13 @@
       "name": "Zteroid",
       "damage": 5,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1599,6 +1473,7 @@
       "cardKey": {
         "mouldId": 63
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1606,16 +1481,13 @@
       "name": "BurZt",
       "damage": 4,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1623,6 +1495,7 @@
       "cardKey": {
         "mouldId": 64
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1630,16 +1503,13 @@
       "name": "Vortex",
       "damage": 6,
       "defense": 7,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1647,6 +1517,7 @@
       "cardKey": {
         "mouldId": 65
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "OTHERS",
       "type": "WALKER",
@@ -1654,16 +1525,13 @@
       "name": "Defender",
       "damage": 4,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1671,6 +1539,7 @@
       "cardKey": {
         "mouldId": 66
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1678,16 +1547,13 @@
       "name": "Poizom",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1695,6 +1561,7 @@
       "cardKey": {
         "mouldId": 67
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1702,16 +1569,13 @@
       "name": "Hazmaz",
       "damage": 1,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1719,6 +1583,7 @@
       "cardKey": {
         "mouldId": 68
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1726,16 +1591,13 @@
       "name": "Zpitter",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1743,6 +1605,7 @@
       "cardKey": {
         "mouldId": 69
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1750,16 +1613,13 @@
       "name": "Zeptic",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1767,6 +1627,7 @@
       "cardKey": {
         "mouldId": 70
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1774,16 +1635,13 @@
       "name": "Ghoul",
       "damage": 3,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1791,6 +1649,7 @@
       "cardKey": {
         "mouldId": 71
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1798,16 +1657,13 @@
       "name": "Zeeter",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1815,6 +1671,7 @@
       "cardKey": {
         "mouldId": 72
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1822,16 +1679,13 @@
       "name": "Hazzard",
       "damage": 4,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1839,6 +1693,7 @@
       "cardKey": {
         "mouldId": 73
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1846,16 +1701,13 @@
       "name": "Zludge",
       "damage": 4,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1863,6 +1715,7 @@
       "cardKey": {
         "mouldId": 74
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1870,16 +1723,13 @@
       "name": "Ectoplasm",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1887,6 +1737,7 @@
       "cardKey": {
         "mouldId": 75
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1894,16 +1745,13 @@
       "name": "Cherno-bill",
       "damage": 7,
       "defense": 9,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1911,6 +1759,7 @@
       "cardKey": {
         "mouldId": 76
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1918,16 +1767,13 @@
       "name": "GooZilla",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1935,6 +1781,7 @@
       "cardKey": {
         "mouldId": 77
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "TOXIC",
       "type": "WALKER",
@@ -1942,16 +1789,13 @@
       "name": "Zlopper",
       "damage": 3,
       "defense": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1959,6 +1803,7 @@
       "cardKey": {
         "mouldId": 78
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -1966,16 +1811,13 @@
       "name": "Izze",
       "damage": 1,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -1983,22 +1825,20 @@
       "cardKey": {
         "mouldId": 79
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Znowman",
       "defense": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2006,6 +1846,7 @@
       "cardKey": {
         "mouldId": 80
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2013,16 +1854,13 @@
       "name": "Ozmoziz",
       "damage": 1,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2030,6 +1868,7 @@
       "cardKey": {
         "mouldId": 81
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2037,16 +1876,13 @@
       "name": "Jetter",
       "damage": 3,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2054,6 +1890,7 @@
       "cardKey": {
         "mouldId": 82
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2061,16 +1898,13 @@
       "name": "Freezzee",
       "damage": 2,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2078,6 +1912,7 @@
       "cardKey": {
         "mouldId": 83
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2085,16 +1920,13 @@
       "name": "Geyzer",
       "damage": 2,
       "defense": 3,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2102,6 +1934,7 @@
       "cardKey": {
         "mouldId": 84
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2109,16 +1942,13 @@
       "name": "Blizzard",
       "damage": 3,
       "defense": 4,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2126,22 +1956,20 @@
       "cardKey": {
         "mouldId": 85
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
       "rank": "MINION",
       "name": "Froztbite",
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2149,6 +1977,7 @@
       "cardKey": {
         "mouldId": 86
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2156,16 +1985,13 @@
       "name": "Zhatterer",
       "damage": 1,
       "defense": 2,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2173,6 +1999,7 @@
       "cardKey": {
         "mouldId": 87
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2180,16 +2007,13 @@
       "name": "Maelstrom",
       "damage": 5,
       "defense": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2197,6 +2021,7 @@
       "cardKey": {
         "mouldId": 88
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2204,16 +2029,13 @@
       "name": "Tzunamy",
       "damage": 6,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2221,6 +2043,7 @@
       "cardKey": {
         "mouldId": 89
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2228,16 +2051,13 @@
       "name": "Germs",
       "damage": 6,
       "defense": 6,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2245,6 +2065,7 @@
       "cardKey": {
         "mouldId": 90
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2252,16 +2073,13 @@
       "name": "Banshee",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2269,6 +2087,7 @@
       "cardKey": {
         "mouldId": 91
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2276,16 +2095,13 @@
       "name": "Breezee",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2293,6 +2109,7 @@
       "cardKey": {
         "mouldId": 92
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2300,16 +2117,13 @@
       "name": "Whiffer",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2317,6 +2131,7 @@
       "cardKey": {
         "mouldId": 93
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2324,16 +2139,13 @@
       "name": "Zhocker",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2341,6 +2153,7 @@
       "cardKey": {
         "mouldId": 94
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2348,16 +2161,13 @@
       "name": "Dragger",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2365,6 +2175,7 @@
       "cardKey": {
         "mouldId": 95
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2372,16 +2183,13 @@
       "name": "Gust",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2389,6 +2197,7 @@
       "cardKey": {
         "mouldId": 96
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "AIR",
       "type": "WALKER",
@@ -2396,16 +2205,13 @@
       "name": "Buffer",
       "damage": 2,
       "defense": 1,
-      "pictureTransform": {
-        "position": {
-          "x": 1,
-          "y": 1,
-          "z": 1
-        },
-        "scale": {
-          "x": 1,
-          "y": 1,
-          "z": 1
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 1,
+            "y": 1
+          },
+          "scale": 1
         }
       }
     },
@@ -2413,6 +2219,7 @@
       "cardKey": {
         "mouldId": 135
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Vortex",
@@ -2425,16 +2232,13 @@
       "damage": 8,
       "defense": 8,
       "cost": 8,
-      "pictureTransform": {
-        "position": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale": {
-          "x": 0.6,
-          "y": 0.6,
-          "z": 0.6
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "scale": 0.6
         }
       },
       "abilities": [
@@ -2442,7 +2246,9 @@
           "ability": "SUMMON",
           "activity": "PASSIVE",
           "trigger": "ENTRY",
-          "targets": ["PLAYER"],
+          "targets": [
+            "PLAYER"
+          ],
           "stat": "UNDEFINED",
           "faction": "NONE",
           "effect": "NONE",
@@ -2465,7 +2271,9 @@
           "defense2": 0,
           "cost": 0,
           "targetCardKind": "UNDEFINED",
-          "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+          "targetGameMechanicDescriptionTypes": [
+            "UNDEFINED"
+          ]
         }
       ],
       "uniqueAnimation": "None",
@@ -2475,6 +2283,7 @@
       "cardKey": {
         "mouldId": 136
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "name": "Igloo",
@@ -2487,16 +2296,13 @@
       "damage": 5,
       "defense": 5,
       "cost": 5,
-      "pictureTransform": {
-        "position": {
-          "x": 0,
-          "y": 0,
-          "z": 0
-        },
-        "scale": {
-          "x": 0.6,
-          "y": 0.6,
-          "z": 0.6
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "scale": 0.6
         }
       },
       "abilities": [
@@ -2504,7 +2310,9 @@
           "ability": "CHANGE_STAT",
           "activity": "ACTIVE",
           "trigger": "ENTRY",
-          "targets": ["PLAYER_CARD"],
+          "targets": [
+            "PLAYER_CARD"
+          ],
           "stat": "UNDEFINED",
           "faction": "NONE",
           "effect": "NONE",
@@ -2527,7 +2335,9 @@
           "defense2": 0,
           "cost": 0,
           "targetCardKind": "UNDEFINED",
-          "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+          "targetGameMechanicDescriptionTypes": [
+            "UNDEFINED"
+          ]
         }
       ],
       "uniqueAnimation": "None",
@@ -2537,6 +2347,7 @@
       "cardKey": {
         "mouldId": 133
       },
+      "set": "Season1",
       "kind": "CREATURE",
       "faction": "WATER",
       "type": "WALKER",
@@ -2549,16 +2360,13 @@
       "damage": 1,
       "defense": 1,
       "cost": 1,
-      "pictureTransform": {
-        "position": {
-          "x": -0.5,
-          "y": 0,
-          "z": 0
-        },
-        "scale": {
-          "x": 0.6,
-          "y": 0.6,
-          "z": 0.6
+      "pictureTransforms": {
+        "battleground": {
+          "position": {
+            "x": -0.5,
+            "y": 0
+          },
+          "scale": 0.6
         }
       },
       "abilities": [
@@ -2566,7 +2374,9 @@
           "ability": "CHANGE_STAT",
           "activity": "ACTIVE",
           "trigger": "ENTRY",
-          "targets": ["PLAYER_CARD"],
+          "targets": [
+            "PLAYER_CARD"
+          ],
           "stat": "UNDEFINED",
           "faction": "NONE",
           "effect": "NONE",
@@ -2589,7 +2399,9 @@
           "defense2": 0,
           "cost": 0,
           "targetCardKind": "UNDEFINED",
-          "targetGameMechanicDescriptionTypes": ["UNDEFINED"]
+          "targetGameMechanicDescriptionTypes": [
+            "UNDEFINED"
+          ]
         }
       ],
       "uniqueAnimation": "None",
@@ -2603,7 +2415,10 @@
         {
           "title": "Attack",
           "skill": "ICE_BOLT",
-          "skillTargets": ["ALL_CARDS", "PLAYER_CARD"],
+          "skillTargets": [
+            "ALL_CARDS",
+            "PLAYER_CARD"
+          ],
           "value": 1
         }
       ]
@@ -2615,7 +2430,10 @@
         {
           "title": "Deffence",
           "skill": "BLIZZARD",
-          "skillTargets": ["PLAYER", "OPPONENT_CARD"],
+          "skillTargets": [
+            "PLAYER",
+            "OPPONENT_CARD"
+          ],
           "value": 2
         }
       ]
