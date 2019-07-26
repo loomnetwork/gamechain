@@ -927,7 +927,7 @@
               "mouldId": 37
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -947,7 +947,7 @@
               "mouldId": 38
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -967,7 +967,7 @@
               "mouldId": 39
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -987,7 +987,7 @@
               "mouldId": 40
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -1007,7 +1007,7 @@
               "mouldId": 41
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -1027,7 +1027,7 @@
               "mouldId": 42
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "type": "WALKER",
             "rank": "MINION",
@@ -1375,7 +1375,7 @@
               "mouldId": 58
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "OTHERS",
             "type": "WALKER",
             "rank": "MINION",
@@ -1395,7 +1395,7 @@
               "mouldId": 59
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "OTHERS",
             "type": "WALKER",
             "rank": "MINION",

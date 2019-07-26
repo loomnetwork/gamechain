@@ -882,8 +882,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/ZtormmcallerVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/ZtormmcallerVFX"
                   }
                 ],
                 "gameMechanicDescription": "SWING",
@@ -919,8 +919,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/ZtormmcallerVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/ZtormmcallerVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -985,8 +985,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Zeuz_Ability"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Zeuz_Ability"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -1138,8 +1138,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/MountainSwing"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/MountainSwing"
                   }
                 ],
                 "gameMechanicDescription": "SWING",
@@ -1352,12 +1352,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Spells/SpellTargetFireAttack"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Spells/SpellTargetFireAttack"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -1497,7 +1497,7 @@
               "mouldId": 15
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Stapler",
             "description": "Restore 4 Def to a zombie",
@@ -1543,8 +1543,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/StaplerVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/StaplerVFX"
                   }
                 ],
                 "gameMechanicDescription": "RESTORE",
@@ -1563,7 +1563,7 @@
               "mouldId": 16
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Nail Bomb",
             "description": "4 damage to a zombie, and adjacent zombies",
@@ -1609,8 +1609,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/NailBomb_ItemEntry"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/NailBomb_ItemEntry"
                   }
                 ],
                 "gameMechanicDescription": "SWING",
@@ -1629,7 +1629,7 @@
               "mouldId": 17
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Goo Bottles",
             "description": "Get 2 empty goo vials",
@@ -1674,8 +1674,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/GooBottles"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/GooBottles"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -1694,7 +1694,7 @@
               "mouldId": 18
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Chainsaw",
             "description": "+4 Atk to a zombie; End: 4 damage to this zombie",
@@ -1740,16 +1740,16 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Chainsaw_Entry_Walker"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Chainsaw_Entry_Walker"
                   },
                   {
-                    "Type": "Impact_Feral",
-                    "Path": "Prefabs/VFX/Chainsaw_Entry_Feral"
+                    "type": "Impact_Feral",
+                    "path": "Prefabs/VFX/Chainsaw_Entry_Feral"
                   },
                   {
-                    "Type": "Impact_Heavy",
-                    "Path": "Prefabs/VFX/Chainsaw_Entry_Heavy"
+                    "type": "Impact_Heavy",
+                    "path": "Prefabs/VFX/Chainsaw_Entry_Heavy"
                   }
                 ],
                 "gameMechanicDescription": "CHAINSAW",
@@ -1874,12 +1874,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Shroom_trail"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Shroom_trail"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Shroom_Impact"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Shroom_Impact"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -2427,12 +2427,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Skills/IceBoltVFX"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Skills/IceBoltVFX"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/IceBolt_Impact"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/IceBolt_Impact"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -2496,8 +2496,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -2562,8 +2562,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Tzunamy_Card_Impact"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Tzunamy_Card_Impact"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -2748,8 +2748,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/EarthshakerVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/EarthshakerVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -2929,8 +2929,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/ZVirus_Ability"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/ZVirus_Ability"
                   }
                 ],
                 "gameMechanicDescription": "DEVOUR",
@@ -3053,8 +3053,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/RestoreVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/RestoreVFX"
                   }
                 ],
                 "gameMechanicDescription": "RESTORE",
@@ -3179,12 +3179,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Skills/PoisonDartVFX"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Skills/PoisonDartVFX"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/PoisonDart_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/PoisonDart_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -3308,12 +3308,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Skills/IceBoltVFX"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Skills/IceBoltVFX"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/ShatterCardDestroyVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/ShatterCardDestroyVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -3596,7 +3596,7 @@
               "mouldId": 70
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Goo Beaker",
             "description": "Get 1 empty goo vial",
@@ -3641,12 +3641,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/GooBeaker"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/GooBeaker"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/GooBeaker"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/GooBeaker"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -3766,8 +3766,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/RageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/RageVFX"
                   }
                 ],
                 "gameMechanicDescription": "RAGE",
@@ -3831,8 +3831,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -4232,7 +4232,7 @@
               "mouldId": 117
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Fresh Meat",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e All enemy zombies get -3 Atk until the end of turn",
@@ -4277,8 +4277,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/FreshMeatVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/FreshMeatVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -4778,8 +4778,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -4841,8 +4841,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "BLITZ",
@@ -4873,8 +4873,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/FireBolt_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -5079,8 +5079,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "OVERFLOW",
@@ -5113,8 +5113,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -5176,8 +5176,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -5208,8 +5208,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "DESTROY",
@@ -5271,8 +5271,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -5334,8 +5334,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -5366,8 +5366,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "FREEZE",
@@ -5398,8 +5398,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/Freeze_ImpactVFX"
                   }
                 ],
                 "gameMechanicDescription": "FREEZE",
@@ -5418,7 +5418,7 @@
               "mouldId": 155
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "OTHERS",
             "name": "Tainted Goo",
             "description": "\u003cb\u003eOverflow 3,\u003c/b\u003e Disables 1 goo vial for next turn",
@@ -5503,7 +5503,7 @@
               "mouldId": 156
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "OTHERS",
             "name": "Corrupted Goo",
             "description": "\u003cb\u003eOverflow 6,\u003c/b\u003e Disables 2 goo vials for next turn",
@@ -5708,7 +5708,7 @@
               "mouldId": 68
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Whistle",
             "description": "Draw a card",
@@ -6268,7 +6268,7 @@
               "mouldId": 113
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Extinguisher",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e Freeze all enemy zombies",
@@ -6313,8 +6313,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Extinguisher"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Extinguisher"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -6333,7 +6333,7 @@
               "mouldId": 114
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Lawnmower",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e 2 damage to all enemy zombies",
@@ -6378,8 +6378,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/LawnmoverVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/LawnmoverVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -6398,7 +6398,7 @@
               "mouldId": 115
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Shovel",
             "description": "3 damage to an enemy OR restore 3 Def to an ally",
@@ -6750,12 +6750,12 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Moving",
-                    "Path": "Prefabs/VFX/Skills/SpellTargetFireAttack"
+                    "type": "Moving",
+                    "path": "Prefabs/VFX/Skills/SpellTargetFireAttack"
                   },
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/toxicDamageVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/toxicDamageVFX"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -6965,8 +6965,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/RestoreVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/RestoreVFX"
                   }
                 ],
                 "gameMechanicDescription": "RESTORE",
@@ -7225,7 +7225,7 @@
               "mouldId": 39
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Molotov",
             "description": "2 damage to a zombie, and adjacent zombies",
@@ -7270,8 +7270,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/MolotovVfx"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/MolotovVfx"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -7290,7 +7290,7 @@
               "mouldId": 40
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Bat",
             "description": "2 damage to a zombie and Distract it",
@@ -7336,8 +7336,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/BatEntry"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/BatEntry"
                   }
                 ],
                 "gameMechanicDescription": "DISTRACT",
@@ -7356,7 +7356,7 @@
               "mouldId": 41
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Super Serum",
             "description": "Give an ally Zombie +3/+3; \u003cb\u003eEnd:\u003c/b\u003e -3 DEF",
@@ -7401,8 +7401,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/SuperSerumVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/SuperSerumVFX"
                   }
                 ],
                 "gameMechanicDescription": "SUPER_SERUM",
@@ -8046,7 +8046,7 @@
               "mouldId": 69
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Supply Drop",
             "description": "Each player puts a random zombie from their deck into play",
@@ -8107,7 +8107,7 @@
               "mouldId": 71
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Junk Spear",
             "description": "Damage enemy Overlord equal to the number of Items you've played",
@@ -8167,7 +8167,7 @@
               "mouldId": 72
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Zed Kit",
             "description": "Restore 4 to 2 random allies ",
@@ -8213,8 +8213,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Skills/RestoreVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Skills/RestoreVFX"
                   }
                 ],
                 "gameMechanicDescription": "RESTORE",
@@ -9337,7 +9337,7 @@
               "mouldId": 112
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Torch",
             "description": "Destroy a random zombie that costs 3 goo or less",
@@ -9383,8 +9383,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Torch"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Torch"
                   }
                 ],
                 "gameMechanicDescription": "DESTROY",
@@ -9403,7 +9403,7 @@
               "mouldId": 116
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Shopping Cart",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e All ally zombies get Swing 1",
@@ -9448,8 +9448,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/ShoppingCart"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/ShoppingCart"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -9468,7 +9468,7 @@
               "mouldId": 118
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Leash",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e Gain control of a random enemy zombie",
@@ -9513,16 +9513,16 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/LeashWalker"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/LeashWalker"
                   },
                   {
-                    "Type": "Impact_Feral",
-                    "Path": "Prefabs/VFX/LeashFeral"
+                    "type": "Impact_Feral",
+                    "path": "Prefabs/VFX/LeashFeral"
                   },
                   {
-                    "Type": "Impact_Heavy",
-                    "Path": "Prefabs/VFX/LeashHeavy"
+                    "type": "Impact_Heavy",
+                    "path": "Prefabs/VFX/LeashHeavy"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -9541,7 +9541,7 @@
               "mouldId": 119
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Bulldozer",
             "description": "\u003cb\u003eEntry:\u003c/b\u003e Destroy all zombies in play",
@@ -9587,8 +9587,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Bulldozer"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Bulldozer"
                   }
                 ],
                 "gameMechanicDescription": "DESTROY",
@@ -9650,8 +9650,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/ReanimateVFX"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/ReanimateVFX"
                   }
                 ],
                 "gameMechanicDescription": "REANIMATE",
@@ -10268,7 +10268,7 @@
               "mouldId": 154
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Boomstick",
             "description": "2 damage to 3 random zombies in play",
@@ -10314,8 +10314,8 @@
                 "delay": 0,
                 "visualEffectsToPlay": [
                   {
-                    "Type": "Impact",
-                    "Path": "Prefabs/VFX/Boomstick"
+                    "type": "Impact",
+                    "path": "Prefabs/VFX/Boomstick"
                   }
                 ],
                 "gameMechanicDescription": "ENTRY",
@@ -11135,7 +11135,7 @@
               "mouldId": 248
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Bazooka",
             "description": "5 damage to a enemy",
@@ -11198,7 +11198,7 @@
               "mouldId": 249
             },
             "set": "Season1",
-            "kind": "SPELL",
+            "kind": "ITEM",
             "faction": "ITEM",
             "name": "Harpoon",
             "description": "3 damage to a enemy",

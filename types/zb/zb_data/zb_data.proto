@@ -526,8 +526,8 @@ message AbilityData {
             Impact_Feral = 4;
         }
 
-        VisualEffectType Type = 1;
-        string Path = 2;
+        VisualEffectType type = 1;
+        string path = 2;
     }
 }
 
