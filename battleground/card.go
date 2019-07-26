@@ -36,25 +36,29 @@ func validateCardLibraryCards(cardLibrary []*zb_data.Card) error {
 		}
 
 		if card.CardKey.Variant == zb_enums.CardVariant_Standard {
-			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == nil {
+			if card.PictureTransform == nil || card.PictureTransform.Position == nil || card.PictureTransform.Scale == 0 {
 				return fmt.Errorf("card '%s' (card key %s) missing value for PictureTransform field", card.Name, card.CardKey.String())
 			}
-		}
 
-		if card.Type == zb_enums.CardType_Undefined {
-			return fmt.Errorf("type is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
-		}
+			if card.Type == zb_enums.CardType_Undefined {
+				return fmt.Errorf("type is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
 
-		if card.Kind == zb_enums.CardKind_Undefined {
-			return fmt.Errorf("kind is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
-		}
+			if card.Kind == zb_enums.CardKind_Undefined {
+				return fmt.Errorf("kind is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
 
-		if card.Rank == zb_enums.CreatureRank_Undefined {
-			return fmt.Errorf("rank is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
-		}
+			if card.Rank == zb_enums.CreatureRank_Undefined {
+				return fmt.Errorf("rank is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
 
-		if card.Faction == zb_enums.Faction_None {
-			return fmt.Errorf("faction is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			if card.Faction == zb_enums.Faction_None {
+				return fmt.Errorf("faction is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
+
+			if card.Set == zb_enums.CardSet_Undefined {
+				return fmt.Errorf("card set is not set for card '%s' (card key %s)", card.Name, card.CardKey.String())
+			}
 		}
 
 		err = validateCardVariant(card, existingCardsSet)
@@ -323,7 +327,7 @@ func validateCardVariant(card *zb_data.Card, cardKeyToCard map[battleground_prot
 	_, exists := cardKeyToCard[sourceCardKey]
 	if !exists {
 		return fmt.Errorf(
-			"card '%s' (cardKey [%s]) has variant %s, but Normal variant is not found for such mouldId",
+			"card '%s' (cardKey [%s]) has variant %s, but Standard variant is not found for such mouldId",
 			card.Name,
 			card.CardKey.String(),
 			zb_enums.CardVariant_Enum_name[int32(card.CardKey.Variant)],

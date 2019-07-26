@@ -110,6 +110,7 @@
         "cardKey": {
           "mouldId": 1
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -120,20 +121,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 2
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -144,20 +141,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 3
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -168,20 +161,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 4
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -192,20 +181,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 5
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -216,20 +201,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 6
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -240,20 +221,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 7
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -264,20 +241,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 8
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -288,20 +261,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 9
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -312,20 +281,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 10
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -336,20 +301,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 11
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -360,20 +321,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 12
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -384,20 +341,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 13
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -408,20 +361,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 14
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -432,20 +381,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 15
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -455,20 +400,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 16
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -479,20 +420,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 17
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -502,20 +439,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 18
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -526,20 +459,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 19
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -550,20 +479,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 20
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -573,20 +498,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 21
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -597,20 +518,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 212
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -621,20 +538,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 22
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -645,20 +558,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 23
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -669,20 +578,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 24
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -692,20 +597,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 25
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -716,20 +617,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 26
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "EARTH",
         "type": "WALKER",
@@ -740,20 +637,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 27
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -764,20 +657,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 28
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -787,20 +676,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 29
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -811,20 +696,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 30
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -835,20 +716,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 31
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -859,20 +736,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 32
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -883,20 +756,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 33
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -907,20 +776,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 34
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -931,20 +796,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 35
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -955,20 +816,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 36
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "FIRE",
         "type": "WALKER",
@@ -979,20 +836,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 37
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1001,20 +854,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 38
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1023,20 +872,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 39
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1045,20 +890,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 40
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1067,20 +908,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 41
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1089,20 +926,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 42
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "ITEM",
         "type": "WALKER",
@@ -1111,20 +944,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 43
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1135,20 +964,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 44
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1159,20 +984,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 45
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1183,20 +1004,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 46
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1207,20 +1024,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 47
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1231,20 +1044,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 48
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1255,20 +1064,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 49
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1279,20 +1084,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 50
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1303,20 +1104,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 51
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1327,20 +1124,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 52
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1351,20 +1144,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 53
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1373,20 +1162,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 54
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "LIFE",
         "type": "WALKER",
@@ -1397,20 +1182,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 55
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1421,20 +1202,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 56
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1445,20 +1222,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 57
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1469,20 +1242,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 58
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1491,20 +1260,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 59
         },
+        "set": "Season1",
         "kind": "SPELL",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1513,20 +1278,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 60
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1537,20 +1298,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 61
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1561,20 +1318,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 62
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1585,20 +1338,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 63
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1609,20 +1358,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 64
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1633,20 +1378,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 65
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "OTHERS",
         "type": "WALKER",
@@ -1657,20 +1398,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 66
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1681,20 +1418,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 67
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1705,20 +1438,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 68
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1729,20 +1458,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 69
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1753,20 +1478,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 70
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1777,20 +1498,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 71
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1801,20 +1518,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 72
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1825,20 +1538,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 73
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1849,20 +1558,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 74
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1873,20 +1578,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 75
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1897,20 +1598,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 76
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1921,20 +1618,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 77
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "TOXIC",
         "type": "WALKER",
@@ -1945,20 +1638,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 78
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -1969,20 +1658,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 79
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -1992,20 +1677,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 80
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2016,20 +1697,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 81
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2040,20 +1717,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 82
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2064,20 +1737,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 83
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2088,20 +1757,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 84
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2112,20 +1777,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 85
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2135,20 +1796,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 86
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2159,20 +1816,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 87
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2183,20 +1836,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 88
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2207,20 +1856,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 89
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2231,20 +1876,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 90
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2255,20 +1896,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 91
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2279,20 +1916,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 92
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2303,20 +1936,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 93
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2327,20 +1956,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 94
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2351,20 +1976,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 95
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2375,20 +1996,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 96
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "AIR",
         "type": "WALKER",
@@ -2399,20 +2016,16 @@
         "pictureTransform": {
           "position": {
             "x": 1,
-            "y": 1,
-            "z": 1
+            "y": 1
           },
-          "scale": {
-            "x": 1,
-            "y": 1,
-            "z": 1
-          }
+          "scale": 1
         }
       },
       {
         "cardKey": {
           "mouldId": 135
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "name": "Vortex",
@@ -2428,14 +2041,9 @@
         "pictureTransform": {
           "position": {
             "x": 0,
-            "y": 0,
-            "z": 0
+            "y": 0
           },
-          "scale": {
-            "x": 0.6,
-            "y": 0.6,
-            "z": 0.6
-          }
+          "scale": 0.6
         },
         "abilities": [
           {
@@ -2475,6 +2083,7 @@
         "cardKey": {
           "mouldId": 136
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "name": "Igloo",
@@ -2490,14 +2099,9 @@
         "pictureTransform": {
           "position": {
             "x": 0,
-            "y": 0,
-            "z": 0
+            "y": 0
           },
-          "scale": {
-            "x": 0.6,
-            "y": 0.6,
-            "z": 0.6
-          }
+          "scale": 0.6
         },
         "abilities": [
           {
@@ -2537,6 +2141,7 @@
         "cardKey": {
           "mouldId": 133
         },
+        "set": "Season1",
         "kind": "CREATURE",
         "faction": "WATER",
         "type": "WALKER",
@@ -2552,14 +2157,9 @@
         "pictureTransform": {
           "position": {
             "x": -0.5,
-            "y": 0,
-            "z": 0
+            "y": 0
           },
-          "scale": {
-            "x": 0.6,
-            "y": 0.6,
-            "z": 0.6
-          }
+          "scale": 0.6
         },
         "abilities": [
           {

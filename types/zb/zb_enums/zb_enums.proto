@@ -14,6 +14,16 @@ message CardVariant {
     }
 }
 
+message CardSet {
+    enum Enum {
+        Undefined = 0;
+        Season1 = 1;
+        Season2 = 2;
+        Season3 = 3;
+        KickstarterExclusive = 4;
+    }
+}
+
 message CardKind {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
@@ -473,6 +483,10 @@ message ExperienceActionType {
 }
 
 // nullable
+
+message CardSetEnumValue {
+    CardSet.Enum value = 1;
+}
 
 message CardKindEnumValue {
     CardKind.Enum value = 1;

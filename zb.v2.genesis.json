@@ -1401,6 +1401,7 @@
           {
             "id": 1,
             "name": "Whizpar",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -1428,19 +1429,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.3,
-                "y": 0.2,
-                "z": 0
+                "y": 0.2
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 2,
             "name": "Pushhh",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -1466,19 +1463,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.075,
-                "y": 0.05,
-                "z": 0
+                "y": 0.05
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 3,
             "name": "Ztormcaller",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -1514,19 +1507,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0.75,
-                "z": 0
+                "y": 0.75
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 4,
             "name": "ZeuZ",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -1554,19 +1543,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.1,
-                "y": -0.27,
-                "z": 0
+                "y": -0.27
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 5,
             "name": "Rockky",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -1594,19 +1579,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 6,
             "name": "Golem",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -1621,19 +1602,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.62,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 8,
             "name": "Mountain",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -1656,19 +1633,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 9,
             "name": "Walley",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -1690,19 +1663,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 10,
             "name": "Pyromaz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -1730,19 +1699,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.05,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 11,
             "name": "Burrrnn",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -1757,19 +1722,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.3,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 12,
             "name": "Cynderman",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -1797,19 +1758,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 13,
             "name": "Gargantua",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "HEAVY",
@@ -1837,19 +1794,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 14,
             "name": "Fire-Maw",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -1875,19 +1828,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 15,
             "name": "Stapler",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -1914,19 +1863,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 16,
             "name": "Nail Bomb",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -1954,19 +1899,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 17,
             "name": "Goo Bottles",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -1993,19 +1934,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 18,
             "name": "Chainsaw",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -2033,19 +1970,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 19,
             "name": "Azuraz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2073,19 +2006,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 20,
             "name": "Shroom",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2113,19 +2042,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.35,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 21,
             "name": "Vindrom",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2152,19 +2077,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 22,
             "name": "Shammann",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2191,19 +2112,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.05,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 23,
             "name": "Puffer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2232,19 +2149,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 24,
             "name": "Poizom",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -2272,19 +2185,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.15,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 25,
             "name": "Ghoul",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -2311,19 +2220,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 26,
             "name": "Hazmaz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "FERAL",
@@ -2338,19 +2243,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.4,
-                "y": 0.125,
-                "z": 0
+                "y": 0.125
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 27,
             "name": "Cherno-bill",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "HEAVY",
@@ -2378,19 +2279,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": -0.2,
-                "z": 0
+                "y": -0.2
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 28,
             "name": "Izze",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -2418,19 +2315,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 29,
             "name": "Jetter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -2458,19 +2351,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.4,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 30,
             "name": "Freezzee",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -2497,19 +2386,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.15,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 31,
             "name": "Tzunamy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -2537,19 +2422,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.11,
-                "y": -0.16,
-                "z": 0
+                "y": -0.16
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 32,
             "name": "Bouncer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "HEAVY",
@@ -2564,19 +2445,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.45,
-                "y": -0.12,
-                "z": 0
+                "y": -0.12
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 34,
             "name": "Wheezy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -2602,19 +2479,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.7,
-                "y": 0.7,
-                "z": 0.7
-              }
+              "scale": 0.7
             }
           },
           {
             "id": 35,
             "name": "Tiny",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -2629,19 +2502,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.15,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 36,
             "name": "Earthshaker",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -2668,19 +2537,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 37,
             "name": "Cerberus",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -2702,19 +2567,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 38,
             "name": "Werezomb",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -2740,19 +2601,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 42,
             "name": "Z-Virus",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2775,19 +2632,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.05,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 43,
             "name": "Yggdrazil",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2814,19 +2667,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 44,
             "name": "Sapper",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2849,19 +2698,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 45,
             "name": "Keeper",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -2888,19 +2733,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 46,
             "name": "Zpitter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -2927,19 +2768,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 47,
             "name": "Zeeter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -2965,19 +2802,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.4,
-                "y": 0.125,
-                "z": 0
+                "y": 0.125
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 48,
             "name": "Zhatterer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -3002,19 +2835,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 49,
             "name": "Znowman",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "HEAVY",
@@ -3036,19 +2865,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 50,
             "name": "Soothsayer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3071,19 +2896,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 59,
             "name": "Spiker",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -3098,19 +2919,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 61,
             "name": "IgneouZ",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -3134,19 +2951,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 67,
             "name": "Zhampion",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -3173,19 +2986,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0.05,
-                "z": 0
+                "y": 0.05
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 70,
             "name": "Goo Beaker",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -3212,19 +3021,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 75,
             "name": "Bloomer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -3247,19 +3052,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 85,
             "name": "Zludge",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -3282,19 +3083,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 90,
             "name": "Blizzard",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -3320,19 +3117,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.05,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 94,
             "name": "Ztormonk",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3360,19 +3153,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.4,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 96,
             "name": "Draft",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3397,19 +3186,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.075,
-                "y": -0.05,
-                "z": 0
+                "y": -0.05
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 97,
             "name": "MonZoon",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3436,19 +3221,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.075,
-                "y": -0.05,
-                "z": 0
+                "y": -0.05
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 98,
             "name": "Blocker",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -3463,19 +3244,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.6,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 101,
             "name": "Slab",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -3490,19 +3267,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 103,
             "name": "Pyrite",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -3526,19 +3299,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": -0.25,
-                "z": 0
+                "y": -0.25
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 104,
             "name": "Gaea",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -3562,19 +3331,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 117,
             "name": "Fresh Meat",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -3601,19 +3366,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.2,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.55,
-                "y": 0.55,
-                "z": 0.55
-              }
+              "scale": 0.55
             }
           },
           {
             "id": 127,
             "name": "Ectoplasm",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -3636,19 +3397,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 132,
             "name": "GooZilla",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -3678,19 +3435,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.4,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 141,
             "name": "Maelstrom",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -3716,19 +3469,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 142,
             "name": "Fumez",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3751,19 +3500,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 143,
             "name": "Gaz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -3795,19 +3540,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.62,
-                "y": 0.62,
-                "z": 0.62
-              }
+              "scale": 0.62
             }
           },
           {
             "id": 144,
             "name": "Pit",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -3830,19 +3571,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.07,
-                "y": 0.1,
-                "z": 0
+                "y": 0.1
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 145,
             "name": "Crater",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -3865,19 +3602,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 146,
             "name": "Quazi",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -3907,19 +3640,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.15,
-                "y": 0.2,
-                "z": 0
+                "y": 0.2
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 147,
             "name": "Modo",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -3949,19 +3678,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.15,
-                "y": 0.2,
-                "z": 0
+                "y": 0.2
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 148,
             "name": "Zap",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -3995,19 +3720,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 149,
             "name": "Cactuz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -4041,19 +3762,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 150,
             "name": "Zeptic",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -4086,19 +3803,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 151,
             "name": "Hazzard",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -4131,19 +3844,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 152,
             "name": "Ozmoziz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -4174,19 +3883,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.3,
-                "y": -0.08,
-                "z": 0
+                "y": -0.08
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 153,
             "name": "Geyzer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -4217,19 +3922,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.1,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 155,
             "name": "Tainted Goo",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "OTHERS",
             "type": "WALKER",
@@ -4260,19 +3961,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 156,
             "name": "Corrupted Goo",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "OTHERS",
             "type": "WALKER",
@@ -4303,19 +4000,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 157,
             "name": "Zombie 1/1",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "OTHERS",
             "type": "WALKER",
@@ -4328,19 +4021,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.45,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 158,
             "name": "Zombie 2/2",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "OTHERS",
             "type": "WALKER",
@@ -4353,19 +4042,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.45,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 159,
             "name": "Zombie Feral",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "OTHERS",
             "type": "FERAL",
@@ -4378,19 +4063,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.45,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 160,
             "name": "Zombie Heavy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "OTHERS",
             "type": "HEAVY",
@@ -4403,19 +4084,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.45,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 68,
             "name": "Whistle",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -4437,19 +4114,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 133,
             "name": "Znowy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -4463,19 +4136,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 128,
             "name": "Wazte",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "HEAVY",
@@ -4498,19 +4167,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 134,
             "name": "Ztalagmite",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -4536,19 +4201,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 136,
             "name": "Igloo",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "HEAVY",
@@ -4563,19 +4224,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 139,
             "name": "Froztbite",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -4599,19 +4256,15 @@
             "card_view_info": {
               "position": {
                 "x": -0.3,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 122,
             "name": "Amber",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -4635,19 +4288,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 123,
             "name": "Bark",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "HEAVY",
@@ -4662,19 +4311,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 126,
             "name": "Germ",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -4688,19 +4333,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 106,
             "name": "Ember",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -4715,19 +4356,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 107,
             "name": "Firewall",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "HEAVY",
@@ -4742,19 +4379,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 108,
             "name": "BurZt",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -4768,19 +4401,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 113,
             "name": "Extinguisher",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -4806,19 +4435,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 114,
             "name": "Lawnmower",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -4844,19 +4469,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 99,
             "name": "Shale",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "FERAL",
@@ -4871,19 +4492,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 100,
             "name": "Hardy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -4898,19 +4515,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 91,
             "name": "Breezee",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -4925,19 +4538,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 92,
             "name": "Banshee",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "FERAL",
@@ -4952,19 +4561,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 93,
             "name": "Zhocker",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -4988,19 +4593,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 7,
             "name": "Bolderr",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -5028,19 +4629,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 79,
             "name": "Zlimey",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -5066,19 +4663,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 82,
             "name": "Azzazzin",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -5110,19 +4703,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 74,
             "name": "PreZerver",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -5149,19 +4738,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 54,
             "name": "Zephyr",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5188,19 +4773,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 62,
             "name": "BlaZter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -5226,19 +4807,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 65,
             "name": "Zlinger",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -5264,19 +4841,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 33,
             "name": "Mind Flayer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5301,19 +4874,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 39,
             "name": "Molotov",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5340,19 +4909,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 40,
             "name": "Bat",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5380,19 +4945,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 41,
             "name": "Super Serum",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5420,19 +4981,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 51,
             "name": "Buffer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5461,19 +5018,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 52,
             "name": "Whiffer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5498,19 +5051,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 53,
             "name": "Dragger",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5537,19 +5086,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 55,
             "name": "Zyclone",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -5576,19 +5121,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 56,
             "name": "Pebble",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -5614,19 +5155,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 57,
             "name": "Crumbz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -5648,19 +5185,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 58,
             "name": "Protector",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "HEAVY",
@@ -5684,19 +5217,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 60,
             "name": "Defender",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -5725,19 +5254,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 63,
             "name": "Firecaller",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -5759,19 +5284,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 64,
             "name": "RabieZ",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -5798,19 +5319,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 66,
             "name": "Enrager",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -5835,19 +5352,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 69,
             "name": "Supply Drop",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5874,19 +5387,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 71,
             "name": "Junk Spear",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5911,19 +5420,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 72,
             "name": "Zed Kit",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -5950,19 +5455,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 73,
             "name": "Grower",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -5989,19 +5490,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 76,
             "name": "EverlaZting",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6026,19 +5523,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 77,
             "name": "Healz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6066,19 +5559,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 78,
             "name": "Rainz",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6105,19 +5594,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 80,
             "name": "Zcavenger",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -6139,19 +5624,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 81,
             "name": "Spikez",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "HEAVY",
@@ -6179,19 +5660,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 83,
             "name": "RelentleZZ",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -6217,19 +5694,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 84,
             "name": "Polluter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -6252,19 +5725,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 86,
             "name": "HoZer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -6289,19 +5758,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 87,
             "name": "FroZen",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -6324,19 +5789,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 88,
             "name": "Slider",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -6361,19 +5822,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 89,
             "name": "Zub-Zero",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -6400,19 +5857,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 95,
             "name": "Zquall",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "AIR",
             "type": "WALKER",
@@ -6440,19 +5893,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 102,
             "name": "Groundy",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "EARTH",
             "type": "WALKER",
@@ -6479,19 +5928,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 105,
             "name": "Sparky",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "FERAL",
@@ -6517,19 +5962,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 109,
             "name": "Rager",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -6556,19 +5997,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 110,
             "name": "Alpha",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -6596,19 +6033,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 111,
             "name": "Volcan",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "FIRE",
             "type": "WALKER",
@@ -6642,19 +6075,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 112,
             "name": "Torch",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -6679,19 +6108,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 115,
             "name": "Shovel",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -6747,19 +6172,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 116,
             "name": "Shopping Cart",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -6785,19 +6206,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 118,
             "name": "Leash",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -6822,19 +6239,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 119,
             "name": "Bulldozer",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -6860,19 +6273,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 120,
             "name": "WiZp",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6894,19 +6303,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 121,
             "name": "Zplitter",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6933,19 +6338,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 124,
             "name": "Zeeder",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6972,19 +6373,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 125,
             "name": "Blight",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "LIFE",
             "type": "WALKER",
@@ -6999,19 +6396,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 129,
             "name": "Zlopper",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -7040,19 +6433,15 @@
             "card_view_info": {
               "position": {
                 "x": 0.4,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 130,
             "name": "Boomer",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -7076,19 +6465,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 131,
             "name": "Zteroid",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "TOXIC",
             "type": "WALKER",
@@ -7115,19 +6500,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 135,
             "name": "Vortex",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -7154,19 +6535,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 137,
             "name": "Zplash",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -7196,19 +6573,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 138,
             "name": "Izicle",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -7237,19 +6610,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 140,
             "name": "Zpring",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "WATER",
             "type": "WALKER",
@@ -7272,19 +6641,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 154,
             "name": "Boomstick",
+            "set": "Season1",
             "kind": "SPELL",
             "faction": "ITEM",
             "type": "WALKER",
@@ -7312,19 +6677,15 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           },
           {
             "id": 161,
             "name": "Blight Minion",
+            "set": "Season1",
             "kind": "CREATURE",
             "faction": "OTHERS",
             "type": "WALKER",
@@ -7338,14 +6699,9 @@
             "card_view_info": {
               "position": {
                 "x": 0,
-                "y": 0,
-                "z": 0
+                "y": 0
               },
-              "scale": {
-                "x": 0.6,
-                "y": 0.6,
-                "z": 0.6
-              }
+              "scale": 0.6
             }
           }
         ]
