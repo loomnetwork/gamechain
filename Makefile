@@ -146,7 +146,7 @@ oracle-abigen:
 
 test:
 	#TODO fix go vet in tests
-	go test -timeout=20m -vet=off -v ./... -tags evm
+	go test -timeout=30m -vet=off -v ./... -tags evm
 
 clean:
 	go clean
