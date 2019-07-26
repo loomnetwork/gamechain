@@ -1,7 +1,7 @@
 set -e
 
 ZB_CARD_META_DATA_DIR=${GOPATH}/src/github.com/loomnetwork/zb_card_meta_data
-PLASMACHAIN_LAST_BLOCK=3153887 # for staging, update to avoid scanning long ranges every time
+PLASMACHAIN_LAST_BLOCK=3294410 # for staging, update to avoid scanning long ranges every time
 
 echo "--- Updating data"
 
@@ -11,7 +11,7 @@ popd
 
 echo "--- Data updated"
 
-echo "--- Update configuration"
+echo "--- Updating configuration"
 
 ../bin/zb-cli -k ../oracle.priv contract_configuration set_fiat_purchase_contract_version -v 3
 ../bin/zb-cli -k ../oracle.priv contract_configuration set_initial_fiat_purchase_txid -v `cat initialFiatPurchaseTxId.txt`

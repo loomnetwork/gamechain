@@ -85,8 +85,7 @@ proto: types/zb/zb_data/zb_data.pb.go \
     types/zb/zb_custombase/zb_custombase.cs \
     types/oracle/oracle.pb.go \
     types/nullable/nullable_pb/nullable.pb.go \
-    types/nullable/nullable_pb/nullable.cs \
-    types/nullable/nullable_test_pb/nullable_test.pb.go
+    types/nullable/nullable_pb/nullable.cs
 
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
@@ -147,7 +146,7 @@ oracle-abigen:
 
 test:
 	#TODO fix go vet in tests
-	go test -timeout=20m -vet=off -v ./... -tags evm
+	go test -timeout=30m -vet=off -v ./... -tags evm
 
 clean:
 	go clean
