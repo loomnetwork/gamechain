@@ -28,7 +28,7 @@ message CardKind {
     enum Enum {
         UNDEFINED = 0 [(gogoproto.enumvalue_customname) = "Undefined"];
         CREATURE = 1 [(gogoproto.enumvalue_customname) = "Creature"];
-        SPELL    = 2 [(gogoproto.enumvalue_customname) = "Spell"];
+        ITEM = 2 [(gogoproto.enumvalue_customname) = "Item"];
     }
 }
 
