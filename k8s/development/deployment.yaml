@@ -18,7 +18,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=robotic-catwalk-188706:asia-northeast1:mysql-dev2-database=tcp:3306",
+                  "-instances=robotic-catwalk-188706:asia-south1:mysql-stage-database=tcp:3306",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-loomauth-credentials
@@ -51,7 +51,7 @@ spec:
           - name: DB_HOST
             value: 127.0.0.1
           - name: DB_NAME
-            value: loomauth
+            value: loomauth_dev
           - name: DB_PORT
             value: "3306"
           - name: EV_URL
