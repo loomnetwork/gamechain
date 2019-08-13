@@ -71,3 +71,61 @@ spec:
         - name: ssl-certs
           hostPath:
             path: /etc/ssl/certs
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gamechain-oracle
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gamechain-oracle
+        instance: gamechain-oracle
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: gamechain-oracle
+        image: gcr.io/robotic-catwalk-188706/gamechain-oracle:%BUILD_NUMBER%
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            cpu: 300m
+            memory: 1000Mi
+        env:
+          - name: PLASMACHAIN_PRIVATE_KEY
+            value: "Lb8e6kt8QunIMQwtKJGvRZDaizC9eESkazwj3UZlzS+x2bAb2IRRg2cgV+qQAuokLSPKuBpAmJ1DPxB43UlTVQ=="
+          - name: PLASMACHAIN_CHAIN_ID
+            value: "default"
+          - name: PLASMACHAIN_READ_URI
+            value: "http://plasma.dappchains.com:80/query"
+          - name: PLASMACHAIN_WRITE_URI
+            value: "http://plasma.dappchains.com:80/rpc"
+          - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
+            value: "PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS_JENKINS_PARAM"
+          - name: PLASMACHAIN_POLL_INTERVAL
+            value: "1"
+          - name: GAMECHAIN_PRIVATE_KEY
+            value: "ErjfbI2nWdp6GwtnfKJ2ImJdUId84ux4L9k/C017gkV8zZVz0oAcmZ+lFMYTmP7z17tUdInC3dPgTKhq9PXauQ=="
+          - name: GAMECHAIN_CHAIN_ID
+            value: "default"
+          - name: GAMECHAIN_READ_URI
+            value: "GAMECHAIN_READ_URI_JENKINS_PARAM"
+          - name: GAMECHAIN_WRITE_URI
+            value: "GAMECHAIN_WRITE_URI_JENKINS_PARAM"
+          - name: GAMECHAIN_CONTRACT_NAME
+            value: "ZombieBattleground"
+          - name: ORACLE_QUERY_ADDRESS
+            value: ":8888"
+          - name: ORACLE_LOG_LEVEL
+            value: "ORACLE_LOG_LEVEL_JENKINS_PARAM"
+          - name: ORACLE_LOG_DESTINATION
+            value: "file://-"
+          - name: ORACLE_RECONNECT_INTERVAL
+            value: "5"
+          - name: ORACLE_STARTUP_DELAY
+            value: "10"
