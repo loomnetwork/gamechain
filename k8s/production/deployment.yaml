@@ -102,9 +102,9 @@ spec:
           - name: PLASMACHAIN_CHAIN_ID
             value: "default"
           - name: PLASMACHAIN_READ_URI
-            value: "http://gamechain.dappchains.com:80/query"
+            value: "http://plasma.dappchains.com:80/query"
           - name: PLASMACHAIN_WRITE_URI
-            value: "http://gamechain.dappchains.com:80/rpc"
+            value: "http://plasma.dappchains.com:80/rpc"
           - name: PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS
             value: "PLASMACHAIN_ZBGCARD_CONTRACT_HEX_ADDRESS_JENKINS_PARAM"
           - name: PLASMACHAIN_POLL_INTERVAL
