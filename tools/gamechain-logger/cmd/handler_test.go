@@ -84,6 +84,7 @@ func InitDB() *gorm.DB {
 	return db
 }
 func TestEventHandlers(t *testing.T) {
+	t.Skip()
 	DropDB()
 	db := InitDB()
 
