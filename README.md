@@ -131,3 +131,11 @@ Ends on (2^126 + 300000000)
 
 Starts from (2^126) = 85070591730234615865843651857942052864
 Ends on (2^126 + 100000000 - 1)
+
+## Update initial data
+
+When new initial data such as cards, overlords, or decks, needs to be updated, run the following command:
+
+```bash
+./bin/zb-cli -k oracle-priv.key update_init -f update_init_v26.json
+```
