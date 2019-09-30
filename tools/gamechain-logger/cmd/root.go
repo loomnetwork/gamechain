@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -17,9 +15,8 @@ import (
 	raven "github.com/getsentry/raven-go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/gorilla/websocket"
 	"github.com/jinzhu/gorm"
-	loom "github.com/loomnetwork/go-loom/plugin/types"
+	"github.com/loomnetwork/gamechain/types/zb/zb_data"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -45,9 +42,11 @@ func init() {
 	rootCmd.PersistentFlags().String("db-user", "root", "MySQL database user")
 	rootCmd.PersistentFlags().String("db-password", "", "MySQL database password")
 	rootCmd.PersistentFlags().String("replay-dir", "replay", "replay directory")
-	rootCmd.PersistentFlags().String("ev-url", "http://localhost:46658/query", "Event Indexer RPC Host")
+	rootCmd.PersistentFlags().String("chain-id", "default", "Chain Id")
+	rootCmd.PersistentFlags().String("read-uri", "http://localhost:46658/query", "URI for quering app state")
 	rootCmd.PersistentFlags().String("contract-name", "zombiebattleground:1.0.0", "Contract Name")
-	rootCmd.PersistentFlags().Int("reconnect-interval", 1000, "Reconnect interval in MS")
+	rootCmd.PersistentFlags().Int("reconnect-interval", 10, "Reconnect interval in seconds")
+	rootCmd.PersistentFlags().Int("poll-interval", 10, "Poll interval in seconds")
 	rootCmd.PersistentFlags().Int("block-interval", 20, "Amount of blocks to fetch")
 	rootCmd.PersistentFlags().String("sentry-dsn", "", "sentry DSN, blank locally cause we dont want to send errors locally")
 	rootCmd.PersistentFlags().String("sentry-environment", "", "sentry environment, leave it blank for localhost")
@@ -59,8 +58,10 @@ func init() {
 	viper.BindPFlag("db-user", rootCmd.PersistentFlags().Lookup("db-user"))
 	viper.BindPFlag("db-password", rootCmd.PersistentFlags().Lookup("db-password"))
 	viper.BindPFlag("replay-dir", rootCmd.PersistentFlags().Lookup("replay-dir"))
-	viper.BindPFlag("ev-url", rootCmd.PersistentFlags().Lookup("ev-url"))
+	viper.BindPFlag("chain-id", rootCmd.PersistentFlags().Lookup("chain-id"))
+	viper.BindPFlag("read-uri", rootCmd.PersistentFlags().Lookup("read-uri"))
 	viper.BindPFlag("contract-name", rootCmd.PersistentFlags().Lookup("contract-name"))
+	viper.BindPFlag("poll-interval", rootCmd.PersistentFlags().Lookup("poll-interval"))
 	viper.BindPFlag("reconnect-interval", rootCmd.PersistentFlags().Lookup("reconnect-interval"))
 	viper.BindPFlag("block-interval", rootCmd.PersistentFlags().Lookup("block-interval"))
 	viper.BindPFlag("sentry-dsn", rootCmd.PersistentFlags().Lookup("sentry-dsn"))
@@ -94,8 +95,10 @@ func run() error {
 		dbName            = viper.GetString("db-name")
 		dbUser            = viper.GetString("db-user")
 		dbPassword        = viper.GetString("db-password")
-		evURL             = viper.GetString("ev-url")
+		chainID           = viper.GetString("chain-id")
+		readURI           = viper.GetString("read-uri")
 		contractName      = viper.GetString("contract-name")
+		pollInterval      = viper.GetInt("poll-interval")
 		reconnectInterval = viper.GetInt("reconnect-interval")
 		blockInterval     = viper.GetInt("block-interval")
 	)
@@ -116,12 +119,9 @@ func run() error {
 	log.Printf("connected to database host %s", dbHost)
 	defer db.Close()
 
-	parsedURL, err = url.Parse(evURL)
+	parsedURL, err = url.Parse(readURI)
 	if err != nil {
-		return errors.Wrapf(err, "Error parsing url %s", evURL)
-	}
-	if parsedURL.String() == "" {
-		return errors.New("Eventstore Connection URL (--ev-url) is required")
+		return errors.Wrapf(err, "Error parsing url %s", readURI)
 	}
 
 	// control channels
@@ -130,8 +130,16 @@ func run() error {
 	signal.Notify(sigC, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	defer signal.Stop(sigC)
 
-	reconnectIntervalDur := time.Duration(int64(reconnectInterval)) * time.Millisecond
-	r := NewRunner(parsedURL.String(), db, reconnectIntervalDur, blockInterval, contractName)
+	config := &Config{
+		ReadURI:           parsedURL.String(),
+		ChainID:           chainID,
+		ReconnectInterval: time.Duration(int64(reconnectInterval)) * time.Second,
+		PollInterval:      time.Duration(int64(pollInterval)) * time.Second,
+		ContractName:      contractName,
+		BlockInterval:     blockInterval,
+	}
+
+	r := NewRunner(db, config)
 	go r.Start()
 	go func() {
 		select {
@@ -145,56 +153,6 @@ func run() error {
 	<-doneC
 
 	return nil
-}
-
-func connectGamechain(wsURL string) (*websocket.Conn, error) {
-	subscribeCommand := struct {
-		Method  string            `json:"method"`
-		JSONRPC string            `json:"jsonrpc"`
-		Params  map[string]string `json:"params"`
-		ID      string            `json:"id"`
-	}{"subevents", "2.0", make(map[string]string), "dummy"}
-	subscribeMsg, err := json.Marshal(subscribeCommand)
-	if err != nil {
-		return nil, errors.Wrapf(err, "Cannot marshal command to json")
-	}
-
-	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
-	if err != nil {
-		return nil, errors.Wrapf(err, "Fail to connect to %s", wsURL)
-	}
-	if err := conn.WriteMessage(websocket.TextMessage, subscribeMsg); err != nil {
-		return nil, err
-	}
-	return conn, nil
-}
-
-func queryEventStore(evURL string, fromBlock uint64, toBlock uint64, contract string) (*loom.ContractEventsResult, error) {
-	log.Println("Querying Events from block:", fromBlock, "to block:", toBlock)
-
-	rpcClient := NewJSONRPCClient(evURL)
-	params := map[string]interface{}{
-		"fromBlock": fromBlock,
-		"toBlock":   toBlock,
-		"contract":  contract,
-	}
-	result := &loom.ContractEventsResult{}
-	_, err := rpcClient.Call("contractevents", params, &result)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
-}
-
-func queryBlockHeight(evURL string, contract string) (uint64, error) {
-	rpcClient := NewJSONRPCClient(evURL)
-	params := map[string]interface{}{}
-	result := uint64(1)
-	_, err := rpcClient.Call("getblockheight", params, &result)
-	if err != nil {
-		return 0, err
-	}
-	return result, nil
 }
 
 func connectDb(dbURL string) (*gorm.DB, error) {

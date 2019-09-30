@@ -8,31 +8,37 @@ import (
 	raven "github.com/getsentry/raven-go"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/gamechain/battleground"
+	"github.com/loomnetwork/go-loom/client"
 	"github.com/loomnetwork/go-loom/plugin/types"
 	"github.com/loomnetwork/loomauth/models"
 	"github.com/pkg/errors"
 )
 
-type Runner struct {
-	db                *gorm.DB
-	stopC             chan struct{}
-	errC              chan error
-	URL               string
-	URLType           string
-	reconnectInterval time.Duration
-	blockInterval     int
-	contractName      string
+type Config struct {
+	ChainID           string
+	ReadURI           string
+	WriteURI          string
+	ReconnectInterval time.Duration
+	PollInterval      time.Duration
+	BlockInterval     int
+	ContractName      string
 }
 
-func NewRunner(URL string, db *gorm.DB, reconnectInterval time.Duration, blockInterval int, contractName string) *Runner {
+type Runner struct {
+	db              *gorm.DB
+	stopC           chan struct{}
+	errC            chan error
+	cfg             *Config
+	dappchainClient *client.DAppChainRPCClient
+}
+
+func NewRunner(db *gorm.DB, config *Config) *Runner {
 	return &Runner{
-		URL:               URL,
-		db:                db,
-		stopC:             make(chan struct{}),
-		errC:              make(chan error),
-		reconnectInterval: reconnectInterval,
-		blockInterval:     blockInterval,
-		contractName:      contractName,
+		db:              db,
+		cfg:             config,
+		stopC:           make(chan struct{}),
+		errC:            make(chan error),
+		dappchainClient: client.NewDAppChainRPCClient(config.ChainID, config.WriteURI, config.ReadURI),
 	}
 }
 
@@ -46,7 +52,7 @@ func (r *Runner) Start() {
 		log.Printf("error: %v", err)
 		raven.CaptureErrorAndWait(err, map[string]string{})
 		// delay before connecting again
-		time.Sleep(r.reconnectInterval)
+		time.Sleep(r.cfg.ReconnectInterval)
 	}
 }
 
@@ -59,19 +65,23 @@ func (r *Runner) Error() chan error {
 }
 
 func (r *Runner) watchTopic() error {
-	ticker := time.NewTicker(r.reconnectInterval)
+	ticker := time.NewTicker(r.cfg.PollInterval)
 	for {
 		select {
 		case <-ticker.C:
 			height := models.ZbHeightCheck{}
-			err := r.db.Where(&models.ZbHeightCheck{Key: 1}).First(&height).Error
-			if err != nil && !gorm.IsRecordNotFoundError(err) {
+			err := r.db.Where(&models.ZbHeightCheck{Key: 1}).
+				Attrs(models.ZbHeightCheck{Key: 1}).
+				FirstOrCreate(&height).
+				Error
+			if err != nil {
 				return err
 			}
-			fromBlock := height.LastBlockHeight + 1
-			toBlock := fromBlock + uint64(r.blockInterval) - 1
 
-			lastBlockHeight, err := queryBlockHeight(r.URL, r.contractName)
+			fromBlock := height.LastBlockHeight + 1
+			toBlock := fromBlock + uint64(r.cfg.BlockInterval) - 1
+
+			lastBlockHeight, err := r.dappchainClient.GetBlockHeight()
 			if err != nil {
 				return err
 			}
@@ -79,16 +89,27 @@ func (r *Runner) watchTopic() error {
 			if toBlock > lastBlockHeight {
 				continue
 			}
-			result, err := queryEventStore(r.URL, fromBlock, toBlock, r.contractName)
+			result, err := r.dappchainClient.GetContractEvents(fromBlock, toBlock, r.cfg.ContractName)
 			if err != nil {
 				return err
 			}
-			if err := r.batchProcessEvents(result.Events); err != nil {
+
+			tx := r.db.Begin()
+			if err := r.batchProcessEvents(tx, result.Events); err != nil {
+				tx.Rollback()
 				return err
 			}
-			if err = updateBlockHeight(r.db, result.ToBlock); err != nil {
+
+			height.LastBlockHeight = result.ToBlock
+			err = tx.Model(&models.ZbHeightCheck{}).
+				Update(height).
+				Error
+			if err != nil {
+				tx.Rollback()
 				return err
 			}
+
+			tx.Commit()
 		case <-r.stopC:
 			ticker.Stop()
 			return nil
@@ -97,14 +118,12 @@ func (r *Runner) watchTopic() error {
 	}
 }
 
-func (r *Runner) batchProcessEvents(events []*types.EventData) error {
+func (r *Runner) batchProcessEvents(db *gorm.DB, events []*types.EventData) error {
 	if len(events) == 0 {
 		return nil
 	}
-	// need to create transaction to make sure all the data goes into db
-	tx := r.db.Begin()
-	for _, e := range events {
-		for _, topic := range e.Topics {
+	for _, event := range events {
+		for _, topic := range event.Topics {
 			var topicHandler TopicHandler
 			switch topic {
 			case battleground.TopicFindMatchEvent:
@@ -124,29 +143,14 @@ func (r *Runner) batchProcessEvents(events []*types.EventData) error {
 			}
 
 			if topicHandler != nil {
-				err := topicHandler(e, tx)
+				err := topicHandler(event, db)
 				if err != nil {
-					tx.Rollback()
 					err = errors.Wrapf(err, "error calling topic handler")
-					log.Printf("error: %s from event: %+v", err, e)
+					log.Printf("error: %s from event: %+v", err, event)
 					return err
 				}
 			}
 		}
-	}
-	tx.Commit()
-	return nil
-}
-
-func updateBlockHeight(db *gorm.DB, blockHeight uint64) error {
-	query := db.Model(&models.ZbHeightCheck{}).Where(&models.ZbHeightCheck{Key: 1}).Update("last_block_height", blockHeight)
-
-	err, rows := query.Error, query.RowsAffected
-	if err != nil {
-		return err
-	}
-	if rows < 1 {
-		db.Save(&models.ZbHeightCheck{Key: 1, LastBlockHeight: blockHeight})
 	}
 
 	return nil
