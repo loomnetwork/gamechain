@@ -10,9 +10,14 @@ GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
+GO_ETHEREUM_DIR = $(GOPATH)/src/github.com/ethereum/go-ethereum
+SSHA3_DIR = $(GOPATH)/src/github.com/miguelmota/go-solidity-sha3
 
 GOFLAGS_BASE = -X $(PKG_BATTLEGROUND).BuildDate=$(BUILD_DATE) -X $(PKG_BATTLEGROUND).BuildGitSha=$(GIT_SHA) -X $(PKG_BATTLEGROUND).BuildNumber=$(BUILD_NUMBER)
 GOFLAGS = -ldflags "$(GOFLAGS_BASE)"
+
+LOOM_BIN_URL = "https://downloads.loomx.io/loom/linux/build-1332/loom"
+ETHEREUM_GIT_REV = 1fb6138d017a4309105d91f187c126cf979c93f9
 
 all: build-ext cli
 
@@ -90,13 +95,16 @@ proto: types/zb/zb_data/zb_data.pb.go \
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
-$(LOOMCHAIN_DIR):
-	git clone -q git@github.com:loomnetwork/loomchain.git $@
-
 $(LOOMAUTH_DIR):
 	git clone -q git@github.com:loomnetwork/loomauth.git $@
 
-deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
+$(GO_ETHEREUM_DIR):
+	git clone -q git@github.com:loomnetwork/go-ethereum.git $@
+
+$(SSHA3_DIR):
+	git clone -q git@github.com:loomnetwork/go-solidity-sha3.git $@
+
+deps: $(PLUGIN_DIR) $(LOOMAUTH_DIR) $(GO_ETHEREUM_DIR) $(SSHA3_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
@@ -126,11 +134,11 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/gobuffalo/packr/v2/... \
 		github.com/gorilla/mux 
 		
-	go install github.com/golang/dep/cmd/dep
+	go install github.com/golang/dep/cmd/dep	
 	# Need loomchain to run e2e test
-	curl https://downloads.loomx.io/loom/osx/build-1332/loom -s -o $(GOPATH)/bin/loom
+	curl $(LOOM_BIN_URL) -s -o $(GOPATH)/bin/loom
 	chmod +x $(GOPATH)/bin/loom
-	# cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
+	cd $(GO_ETHEREUM_DIR) && git checkout master && git pull && git checkout $(ETHEREUM_GIT_REV)
 	cd $(LOOMAUTH_DIR) && make deps
 
 abigen:
