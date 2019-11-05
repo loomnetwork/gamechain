@@ -128,7 +128,9 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
-	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
+	curl https://downloads.loomx.io/loom/osx/build-1332/loom -s -o $(GOPATH)/bin/loom
+	chmod +x $(GOPATH)/bin/loom
+	# cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(LOOMAUTH_DIR) && make deps
 
 abigen:
