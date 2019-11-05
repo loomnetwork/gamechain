@@ -93,10 +93,13 @@ proto: types/zb/zb_data/zb_data.pb.go \
 $(PLUGIN_DIR):
 	git clone -q git@github.com:loomnetwork/go-loom.git $@
 
+$(LOOMCHAIN_DIR):
+	git clone -q git@github.com:loomnetwork/loomchain.git $@
+
 $(LOOMAUTH_DIR):
 	git clone -q git@github.com:loomnetwork/loomauth.git $@
 
-deps: $(PLUGIN_DIR) $(LOOMAUTH_DIR)
+deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
