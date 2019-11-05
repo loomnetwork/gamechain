@@ -66,7 +66,7 @@ type Oracle struct {
 
 	hashPool *recentHashPool
 
-	maxBlockRange int
+	maxBlockRange uint64
 }
 
 func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
@@ -336,8 +336,8 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 		return 0, nil
 	}
 
-	if latestBlock-startBlock > 20 {
-		latestBlock = startBlock + 20
+	if latestBlock-startBlock > orc.maxBlockRange {
+		latestBlock = startBlock + orc.maxBlockRange
 		orc.logger.Info("adjust latestBlock due to range limit", "startBlock", startBlock, "latestBlock", latestBlock)
 	}
 
