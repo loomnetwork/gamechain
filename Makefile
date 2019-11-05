@@ -10,12 +10,10 @@ GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
+PROMETHEUS_PROCFS_DIR = $(GOPATH)/src/github.com/prometheus/procfs
 
 GOFLAGS_BASE = -X $(PKG_BATTLEGROUND).BuildDate=$(BUILD_DATE) -X $(PKG_BATTLEGROUND).BuildGitSha=$(GIT_SHA) -X $(PKG_BATTLEGROUND).BuildNumber=$(BUILD_NUMBER)
 GOFLAGS = -ldflags "$(GOFLAGS_BASE)"
-
-LOOM_BIN_URL = "https://downloads.loomx.io/loom/linux/build-1332/loom"
-ETHEREUM_GIT_REV = 1fb6138d017a4309105d91f187c126cf979c93f9
 
 all: build-ext cli
 
@@ -129,11 +127,10 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 		github.com/gobuffalo/packr/v2/... \
 		github.com/gorilla/mux 
 		
-	go install github.com/golang/dep/cmd/dep	
+	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
-	curl $(LOOM_BIN_URL) -s -o $(GOPATH)/bin/loom
-	chmod +x $(GOPATH)/bin/loom
-	cd $(PLUGIN_DIR) && make deps-all
+	rm -rf $(PROMETHEUS_PROCFS_DIR)
+	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
 	cd $(LOOMAUTH_DIR) && make deps
 
 abigen:
