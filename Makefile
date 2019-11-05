@@ -10,8 +10,6 @@ GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
-GO_ETHEREUM_DIR = $(GOPATH)/src/github.com/ethereum/go-ethereum
-SSHA3_DIR = $(GOPATH)/src/github.com/miguelmota/go-solidity-sha3
 
 GOFLAGS_BASE = -X $(PKG_BATTLEGROUND).BuildDate=$(BUILD_DATE) -X $(PKG_BATTLEGROUND).BuildGitSha=$(GIT_SHA) -X $(PKG_BATTLEGROUND).BuildNumber=$(BUILD_NUMBER)
 GOFLAGS = -ldflags "$(GOFLAGS_BASE)"
@@ -98,13 +96,7 @@ $(PLUGIN_DIR):
 $(LOOMAUTH_DIR):
 	git clone -q git@github.com:loomnetwork/loomauth.git $@
 
-$(GO_ETHEREUM_DIR):
-	git clone -q git@github.com:loomnetwork/go-ethereum.git $@
-
-$(SSHA3_DIR):
-	git clone -q git@github.com:loomnetwork/go-solidity-sha3.git $@
-
-deps: $(PLUGIN_DIR) $(LOOMAUTH_DIR) $(GO_ETHEREUM_DIR) $(SSHA3_DIR)
+deps: $(PLUGIN_DIR) $(LOOMAUTH_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
@@ -138,7 +130,7 @@ deps: $(PLUGIN_DIR) $(LOOMAUTH_DIR) $(GO_ETHEREUM_DIR) $(SSHA3_DIR)
 	# Need loomchain to run e2e test
 	curl $(LOOM_BIN_URL) -s -o $(GOPATH)/bin/loom
 	chmod +x $(GOPATH)/bin/loom
-	cd $(GO_ETHEREUM_DIR) && git checkout master && git pull && git checkout $(ETHEREUM_GIT_REV)
+	cd $(PLUGIN_DIR) && make deps-all
 	cd $(LOOMAUTH_DIR) && make deps
 
 abigen:
