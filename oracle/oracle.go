@@ -109,6 +109,8 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 	logger.Info("Plasmachain address " + pcAddress.String())
 	logger.Info("Plasmachain ZBGCard contract address " + pcZbgCardContractAddress.String())
 
+	maxBlockRange := uint64(cfg.PlasmachainMaxBlockRange)
+
 	return &Oracle{
 		cfg:                      *cfg,
 		gcAddress:                gcAddress,
@@ -125,7 +127,7 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 			Version: "1.0.0",
 		},
 		hashPool:      hashPool,
-		maxBlockRange: 20, // current max block range on loomchain
+		maxBlockRange: maxBlockRange,
 	}, nil
 }
 
