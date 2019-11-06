@@ -9,6 +9,7 @@ type Config struct {
 	PlasmachainEventsURI                 string
 	PlasmachainZbgCardContractHexAddress string
 	PlasmachainPollInterval              int // in second
+	PlasmachainMaxBlockRange             int
 	// Gamechain
 	GamechainPrivateKey   string
 	GamechainChainID      string
@@ -35,6 +36,7 @@ func DefaultConfig() *Config {
 		PlasmachainEventsURI:                 "ws://127.0.0.1:%d/queryws",
 		PlasmachainZbgCardContractHexAddress: "0xC5dFc9282BF68DFAd041a04a0c09bE927b093992",
 		PlasmachainPollInterval:              10,
+		PlasmachainMaxBlockRange:             20,
 		GamechainChainID:                     "default",
 		GamechainReadURI:                     "http://127.0.0.1:46658/query",
 		GamechainWriteURI:                    "http://127.0.0.1:46658/rpc",

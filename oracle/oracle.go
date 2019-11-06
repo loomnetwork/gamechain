@@ -2,10 +2,6 @@ package oracle
 
 import (
 	"encoding/base64"
-	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	ethcommon "github.com/ethereum/go-ethereum/common"
-	"github.com/loomnetwork/gamechain/tools/battleground_utility"
-	"github.com/loomnetwork/go-loom/common"
 	"io/ioutil"
 	"reflect"
 	"runtime"
@@ -15,13 +11,16 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	ethcommon "github.com/ethereum/go-ethereum/common"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/loomnetwork/gamechain/tools/battleground_utility"
 	orctype "github.com/loomnetwork/gamechain/types/oracle"
 	"github.com/loomnetwork/go-loom"
 	"github.com/loomnetwork/go-loom/auth"
 	"github.com/loomnetwork/go-loom/client"
+	"github.com/loomnetwork/go-loom/common"
 	ptypes "github.com/loomnetwork/go-loom/plugin/types"
 	ltypes "github.com/loomnetwork/go-loom/types"
-
 	"github.com/pkg/errors"
 )
 
@@ -66,6 +65,8 @@ type Oracle struct {
 	numPlasmachainEventsSubmitted uint64
 
 	hashPool *recentHashPool
+
+	maxBlockRange uint64
 }
 
 func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
@@ -108,6 +109,8 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 	logger.Info("Plasmachain address " + pcAddress.String())
 	logger.Info("Plasmachain ZBGCard contract address " + pcZbgCardContractAddress.String())
 
+	maxBlockRange := uint64(cfg.PlasmachainMaxBlockRange)
+
 	return &Oracle{
 		cfg:                      *cfg,
 		gcAddress:                gcAddress,
@@ -123,7 +126,8 @@ func CreateOracle(cfg *Config, metricSubsystem string) (*Oracle, error) {
 		status: Status{
 			Version: "1.0.0",
 		},
-		hashPool: hashPool,
+		hashPool:      hashPool,
+		maxBlockRange: maxBlockRange,
 	}, nil
 }
 
@@ -321,7 +325,6 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 		startBlock = orc.startBlock
 	}
 
-	// TODO: limit max block range per batch
 	latestBlock, err := orc.getLatestEthBlockNumber()
 	if err != nil {
 		orc.logger.Error("failed to obtain latest Plasmachain block number", "err", err)
@@ -333,6 +336,11 @@ func (orc *Oracle) pollPlasmachainForEvents() (latestPlasmaBlock uint64, err err
 	if latestBlock < startBlock {
 		// Wait for Plasmachain to produce a new block...
 		return 0, nil
+	}
+
+	if latestBlock-startBlock > orc.maxBlockRange {
+		latestBlock = startBlock + orc.maxBlockRange
+		orc.logger.Info("adjust latestBlock due to range limit", "startBlock", startBlock, "latestBlock", latestBlock)
 	}
 
 	orc.logger.Info("fetching events", "startBlock", startBlock, "latestBlock", latestBlock)
@@ -472,9 +480,9 @@ func parseBasicEventData(ethFromAddress *ethcommon.Address, ethToAddress *ethcom
 	}
 
 	fromAddress = &ltypes.Address{
-	ChainId: chainId,
-	Local:   fromLocal,
-}
+		ChainId: chainId,
+		Local:   fromLocal,
+	}
 	toAddress = &ltypes.Address{
 		ChainId: chainId,
 		Local:   toLocal,
@@ -522,8 +530,8 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_Transfer{
 				Transfer: &orctype.PlasmachainEventTransfer{
-					From: fromAddress,
-					To: toAddress,
+					From:    fromAddress,
+					To:      toAddress,
 					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
 				},
 			}
@@ -562,8 +570,8 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 			// TransferToken is just an old name for TransferWithQuantity, we can use the same event type
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_TransferWithQuantity{
 				TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
-					From: fromAddress,
-					To: toAddress,
+					From:    fromAddress,
+					To:      toAddress,
 					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
 					Amount:  &ltypes.BigUInt{Value: common.BigUInt{Int: event.Quantity}},
 				},
@@ -602,8 +610,8 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_TransferWithQuantity{
 				TransferWithQuantity: &orctype.PlasmachainEventTransferWithQuantity{
-					From: fromAddress,
-					To: toAddress,
+					From:    fromAddress,
+					To:      toAddress,
 					TokenId: &ltypes.BigUInt{Value: common.BigUInt{Int: event.TokenId}},
 					Amount:  &ltypes.BigUInt{Value: common.BigUInt{Int: event.Amount}},
 				},
@@ -652,8 +660,8 @@ func (orc *Oracle) fetchTransferEvents(filterOpts *bind.FilterOpts) ([]*plasmach
 
 			eventInfo.Event.Payload = &orctype.PlasmachainEvent_BatchTransfer{
 				BatchTransfer: &orctype.PlasmachainEventBatchTransfer{
-					From: fromAddress,
-					To: toAddress,
+					From:     fromAddress,
+					To:       toAddress,
 					TokenIds: tokenIds,
 					Amounts:  amounts,
 				},

@@ -35,6 +35,7 @@ func init() {
 	rootCmd.PersistentFlags().String("plasmachain-event-uri", "ws://localhost:9999/queryws", "Plasmachain Events URI")
 	rootCmd.PersistentFlags().String("plasmachain-zbgcard-contract-hex-address", "0x3fc83db9ad1513c181e9a7345a28f62c0844abbb", "Plasmachain ZBGCard Contract Hex Address")
 	rootCmd.PersistentFlags().Int("plasmachain-poll-interval", 10, "Plasmachain Pool Interval in seconds")
+	rootCmd.PersistentFlags().Int("plasmachain-max-block-range", 20, "Plasmachain Max Block Range")
 	// gamechain
 	rootCmd.PersistentFlags().String("gamechain-private-key", "", "Gamechain Private Key")
 	rootCmd.PersistentFlags().String("gamechain-chain-id", "default", "Gamechain Chain ID")
@@ -56,6 +57,7 @@ func init() {
 	viper.BindPFlag("plasmachain-event-uri", rootCmd.PersistentFlags().Lookup("plasmachain-event-uri"))
 	viper.BindPFlag("plasmachain-zbgcard-contract-hex-address", rootCmd.PersistentFlags().Lookup("plasmachain-zbgcard-contract-hex-address"))
 	viper.BindPFlag("plasmachain-poll-interval", rootCmd.PersistentFlags().Lookup("plasmachain-poll-interval"))
+	viper.BindPFlag("plasmachain-max-block-range", rootCmd.PersistentFlags().Lookup("plasmachain-max-block-range"))
 
 	viper.BindPFlag("gamechain-private-key", rootCmd.PersistentFlags().Lookup("gamechain-private-key"))
 	viper.BindPFlag("gamechain-chain-id", rootCmd.PersistentFlags().Lookup("gamechain-chain-id"))
@@ -91,6 +93,7 @@ func run() error {
 		PlasmachainEventsURI:                 viper.GetString("plasmachain-event-uri"),
 		PlasmachainZbgCardContractHexAddress: viper.GetString("plasmachain-zbgcard-contract-hex-address"),
 		PlasmachainPollInterval:              viper.GetInt("plasmachain-poll-interval"),
+		PlasmachainMaxBlockRange:             viper.GetInt("plasmachain-max-block-range"),
 		GamechainPrivateKey:                  viper.GetString("gamechain-private-key"),
 		GamechainChainID:                     viper.GetString("gamechain-chain-id"),
 		GamechainReadURI:                     viper.GetString("gamechain-read-uri"),
@@ -102,6 +105,10 @@ func run() error {
 		OracleLogDestination:                 viper.GetString("oracle-log-destination"),
 		OracleReconnectInterval:              int32(viper.GetInt("oracle-reconnect-interval")),
 		OracleStartupDelay:                   int32(viper.GetInt("oracle-startup-delay")),
+	}
+
+	if cfg.PlasmachainMaxBlockRange <= 0 {
+		panic("max block height must be > 0")
 	}
 
 	orc, err := oracle.CreateOracle(cfg, "gcoracle")
