@@ -10,7 +10,7 @@ import (
 	"github.com/loomnetwork/gamechain/battleground"
 	"github.com/loomnetwork/go-loom/client"
 	"github.com/loomnetwork/go-loom/plugin/types"
-	"github.com/loomnetwork/loomauth/models"
+	"github.com/loomnetwork/gamechain/tools/gamechain-logger/modles"
 	"github.com/pkg/errors"
 )
 

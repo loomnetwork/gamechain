@@ -11,7 +11,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/jinzhu/gorm"
 	"github.com/loomnetwork/go-loom/plugin/types"
-	"github.com/loomnetwork/loomauth/models"
+	"github.com/loomnetwork/gamechain/tools/gamechain-logger/modles"
 	"github.com/pkg/errors"
 )
 

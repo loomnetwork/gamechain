@@ -10,7 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/loomnetwork/go-loom/plugin/types"
-	"github.com/loomnetwork/loomauth/models"
+	"github.com/loomnetwork/gamechain/tools/gamechain-logger/modles"
 	assert "github.com/stretchr/testify/require"
 )
 

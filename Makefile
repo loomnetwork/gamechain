@@ -8,7 +8,6 @@ PROTOC = protoc --plugin=./protoc-gen-gogo -I. -I$(GOPATH)/src -I/usr/local/incl
 PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
-LOOMAUTH_DIR = $(GOPATH)/src/github.com/loomnetwork/loomauth
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
 PROMETHEUS_PROCFS_DIR = $(GOPATH)/src/github.com/prometheus/procfs
 
@@ -94,10 +93,7 @@ $(PLUGIN_DIR):
 $(LOOMCHAIN_DIR):
 	git clone -q git@github.com:loomnetwork/loomchain.git $@
 
-$(LOOMAUTH_DIR):
-	git clone -q git@github.com:loomnetwork/loomauth.git $@
-
-deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
+deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go get \
 		github.com/golang/dep/cmd/dep \
 		github.com/spf13/cobra \
@@ -131,7 +127,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR) $(LOOMAUTH_DIR)
 	# Need loomchain to run e2e test
 	rm -rf $(PROMETHEUS_PROCFS_DIR)
 	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
-	cd $(LOOMAUTH_DIR) && make deps
+
 
 abigen:
 	go build github.com/ethereum/go-ethereum/cmd/abigen
