@@ -1,7 +1,7 @@
 package battleground
 
 import (
-	"github.com/eosspark/eos-go/common/hexutil"
+	"github.com/eosspark/geos/common/hexutil"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/crypto/sha3"
 	"github.com/loomnetwork/gamechain/tools/battleground_utility"
