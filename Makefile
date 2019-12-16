@@ -121,7 +121,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/getsentry/raven-go \
 		github.com/gobuffalo/packr/v2 \
 		github.com/gobuffalo/packr/v2/... \
-		github.com/gorilla/mux 
+		github.com/gorilla/mux \
+		github.com/eosspark/geos/common/hexutil
 		
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
