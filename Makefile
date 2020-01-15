@@ -1,6 +1,11 @@
 PKG = github.com/loomnetwork/gamechain
 PKG_BATTLEGROUND = $(PKG)/battleground
 
+# Specifies the loomnetwork/go-loom branch/revision to use
+GO_LOOM_GIT_REV = HEAD
+# Specifies the loomnetwork/loomchain branch/revision to use
+LOOMCHAIN_GIT_REV = HEAD
+
 GIT_SHA = `git rev-parse --verify HEAD`
 BUILD_DATE = `date -Iseconds`
 
@@ -127,7 +132,12 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
 	rm -rf $(PROMETHEUS_PROCFS_DIR)
-	cd $(LOOMCHAIN_DIR) && make deps && make && cp loom $(GOPATH)/bin
+	cd $(LOOMCHAIN_DIR) && git checkout master && git pull && git checkout $(LOOMCHAIN_GIT_REV)
+	# loomchain make deps might checkout a go-loom revision different to the one we want,
+	# so explicitely checkout GO_LOOM_GIT_REV here
+	cd $(LOOMCHAIN_DIR) && make deps && \
+		cd $(PLUGIN_DIR) && git checkout master && git pull && git checkout $(GO_LOOM_GIT_REV) && \
+		cd $(LOOMCHAIN_DIR) && make && cp loom $(GOPATH)/bin
 
 
 abigen:
