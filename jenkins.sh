@@ -22,29 +22,31 @@ make bin/gcoracle
 make test
 
 # Docker image for gamechain-logger
-
-DOC_IMAGE_LOGGER=gcr.io/robotic-catwalk-188706/gamechain-logger
-
-chmod +x bin/gamechain-logger
-
-echo "Building $DOC_IMAGE_LOGGER"
-docker build -t $DOC_IMAGE_LOGGER:latest -f Dockerfile .
-docker tag $DOC_IMAGE_LOGGER:latest $DOC_IMAGE_LOGGER:$BUILD_NUMBER
-
-echo "Pushing $DOC_IMAGE_LOGGER to google container registry"
-gcloud docker -- push $DOC_IMAGE_LOGGER:$BUILD_NUMBER
-gcloud docker -- push $DOC_IMAGE_LOGGER:latest
+if [ "${MAKE_GAMECHAIN_LOGGER_DOCKER}" = "true" ]; then
+  DOC_IMAGE_LOGGER=gcr.io/robotic-catwalk-188706/gamechain-logger
+  
+  chmod +x bin/gamechain-logger
+  
+  echo "Building $DOC_IMAGE_LOGGER"
+  docker build -t $DOC_IMAGE_LOGGER:latest -f Dockerfile .
+  docker tag $DOC_IMAGE_LOGGER:latest $DOC_IMAGE_LOGGER:$BUILD_NUMBER
+  
+  echo "Pushing $DOC_IMAGE_LOGGER to google container registry"
+  gcloud docker -- push $DOC_IMAGE_LOGGER:$BUILD_NUMBER
+  gcloud docker -- push $DOC_IMAGE_LOGGER:latest
+fi
 
 # Docker image for gamechain-oracle
-
-DOC_IMAGE_ORACLE=gcr.io/robotic-catwalk-188706/gamechain-oracle
-
-chmod +x bin/gcoracle
-
-echo "Building $DOC_IMAGE_ORACLE"
-docker build -t $DOC_IMAGE_ORACLE:latest -f Dockerfile_gcoracle .
-docker tag $DOC_IMAGE_ORACLE:latest $DOC_IMAGE_ORACLE:$BUILD_NUMBER
-
-echo "Pushing $DOC_IMAGE_ORACLE to google container registry"
-gcloud docker -- push $DOC_IMAGE_ORACLE:$BUILD_NUMBER
-gcloud docker -- push $DOC_IMAGE_ORACLE:latest
+if [ "${MAKE_GAMECHAIN_ORACLE_DOCKER}" = "true" ]; then
+  DOC_IMAGE_ORACLE=gcr.io/robotic-catwalk-188706/gamechain-oracle
+  
+  chmod +x bin/gcoracle
+  
+  echo "Building $DOC_IMAGE_ORACLE"
+  docker build -t $DOC_IMAGE_ORACLE:latest -f Dockerfile_gcoracle .
+  docker tag $DOC_IMAGE_ORACLE:latest $DOC_IMAGE_ORACLE:$BUILD_NUMBER
+  
+  echo "Pushing $DOC_IMAGE_ORACLE to google container registry"
+  gcloud docker -- push $DOC_IMAGE_ORACLE:$BUILD_NUMBER
+  gcloud docker -- push $DOC_IMAGE_ORACLE:latest
+fi
