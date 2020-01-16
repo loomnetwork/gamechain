@@ -130,7 +130,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go install github.com/golang/dep/cmd/dep
 	# Need loomchain to run e2e test
 	rm -rf $(PROMETHEUS_PROCFS_DIR)
-	cd $(LOOMCHAIN_DIR) && git checkout master && git pull && git checkout $(LOOMCHAIN_GIT_REV) && \
+	cd $(LOOMCHAIN_DIR) && git checkout master && git pull && git checkout $(LOOMCHAIN_GIT_REV) && git pull && \
 	make deps && make && cp loom $(GOPATH)/bin
 
 
