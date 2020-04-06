@@ -126,7 +126,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go install github.com/golang/dep/cmd/dep
 	# loomchain make deps will try to clone prometheus/** and will fail if the directory exists
 	rm -rf $(GOPATH)/src/github.com/prometheus
-	cd $(LOOMCHAIN_DIR) && git fetch && git checkout -b gamechain --track origin/gamechain && git pull && \
+	cd $(LOOMCHAIN_DIR) && git fetch && git checkout -B gamechain --track origin/gamechain && git pull && \
 	make deps && make && cp loom $(GOPATH)/bin
 
 
