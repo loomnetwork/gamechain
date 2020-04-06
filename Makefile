@@ -1,6 +1,9 @@
 PKG = github.com/loomnetwork/gamechain
 PKG_BATTLEGROUND = $(PKG)/battleground
 
+# Specifies the loomnetwork/loomchain branch/revision to use
+LOOMCHAIN_GIT_REV = gamechain
+
 GIT_SHA = `git rev-parse --verify HEAD`
 BUILD_DATE = `date -Iseconds`
 
@@ -139,7 +142,7 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 	go install github.com/golang/dep/cmd/dep
 	# loomchain make deps will try to clone prometheus/** and will fail if the directory exists
 	rm -rf $(GOPATH)/src/github.com/prometheus
-	cd $(LOOMCHAIN_DIR) && git fetch && git checkout -B gamechain --track origin/gamechain && git pull && \
+	cd $(LOOMCHAIN_DIR) && git checkout master && git pull && git checkout $(LOOMCHAIN_GIT_REV) && git pull && \
 	make deps && make && cp loom $(GOPATH)/bin
 
 
