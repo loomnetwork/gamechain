@@ -9,7 +9,6 @@ PLUGIN_DIR = $(GOPATH)/src/github.com/loomnetwork/go-loom
 GOGO_PROTOBUF_DIR = $(GOPATH)/src/github.com/gogo/protobuf
 LOOMCHAIN_DIR = $(GOPATH)/src/github.com/loomnetwork/loomchain
 HASHICORP_DIR = $(GOPATH)/src/github.com/hashicorp/go-plugin
-PROMETHEUS_PROCFS_DIR = $(GOPATH)/src/github.com/prometheus/procfs
 
 GOFLAGS_BASE = -X $(PKG_BATTLEGROUND).BuildDate=$(BUILD_DATE) -X $(PKG_BATTLEGROUND).BuildGitSha=$(GIT_SHA) -X $(PKG_BATTLEGROUND).BuildNumber=$(BUILD_NUMBER)
 GOFLAGS = -ldflags "$(GOFLAGS_BASE)"
@@ -125,8 +124,8 @@ deps: $(PLUGIN_DIR) $(LOOMCHAIN_DIR)
 		github.com/eosspark/geos/common/hexutil
 		
 	go install github.com/golang/dep/cmd/dep
-	# Need loomchain to run e2e test
-	rm -rf $(PROMETHEUS_PROCFS_DIR)
+	# loomchain make deps will try to clone prometheus/** and will fail if the directory exists
+	rm -rf $(GOPATH)/src/github.com/prometheus
 	cd $(LOOMCHAIN_DIR) && git fetch && git checkout -b gamechain --track origin/gamechain && git pull && \
 	make deps && make && cp loom $(GOPATH)/bin
 
