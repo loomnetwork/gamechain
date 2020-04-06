@@ -2,7 +2,7 @@ PKG = github.com/loomnetwork/gamechain
 PKG_BATTLEGROUND = $(PKG)/battleground
 
 # Specifies the loomnetwork/loomchain branch/revision to use
-LOOMCHAIN_GIT_REV = gamechain-validator-override
+LOOMCHAIN_GIT_REV = gamechain
 
 GIT_SHA = `git rev-parse --verify HEAD`
 BUILD_DATE = `date -Iseconds`
